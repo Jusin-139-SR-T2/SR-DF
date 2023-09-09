@@ -91,25 +91,40 @@ HRESULT CGraphicDev::Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, W
 
 	FAILED_CHECK_MSG(D3DXCreateFontIndirect(m_pGraphicDev, &tFontInfo, &m_pFont), L"Create Font Failed");
 
-	return S_OK;
+	return m_dwReady = S_OK;
 }
 
-void CGraphicDev::Render_Begin(D3DXCOLOR Color)
+HRESULT CGraphicDev::Render_Begin(D3DXCOLOR Color)
 {
-	m_pGraphicDev->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_STENCIL | D3DCLEAR_ZBUFFER,
+	HRESULT hr = S_OK;
+	hr = m_pGraphicDev->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_STENCIL | D3DCLEAR_ZBUFFER,
 						Color, 1.f, 0);
 
-	m_pGraphicDev->BeginScene();
+	hr = m_pGraphicDev->BeginScene();
+
+	return hr;
 }
 
-void CGraphicDev::Render_End()
+HRESULT CGraphicDev::Render_End()
 {
-	m_pGraphicDev->EndScene();
-	m_pGraphicDev->Present(nullptr, nullptr, nullptr, nullptr);
+	HRESULT hr = S_OK;
+	hr = m_pGraphicDev->EndScene();
+
+	//RECT srcRect = { 0, 0, m_d3dpp.BackBufferWidth, m_d3dpp.BackBufferHeight };
+	//hr = m_pGraphicDev->Present(&srcRect, NULL, NULL, NULL);
+	hr = m_pGraphicDev->Present(nullptr, nullptr, nullptr, nullptr);
+
+	return hr;
+}
+
+HRESULT CGraphicDev::Reset_GraphicDev()
+{
+	return m_pGraphicDev->Reset(&m_d3dpp);
 }
 
 void CGraphicDev::Free()
 {
 	Safe_Release(m_pGraphicDev);
 	Safe_Release(m_pSDK);
+	m_dwReady = E_FAIL;
 }

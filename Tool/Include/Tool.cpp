@@ -15,11 +15,13 @@
 
 #define MAX_LOADSTRING 100
 
-// 전역 변수:
+// 전역 변수: 어플리케이션에서 윈도우를 제어할 때는 창을 제어한다.
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
-HWND	g_hWnd;
+HWND g_hWnd;
+UINT g_ResizeWidth = 0, g_ResizeHeight = 0;     // 창 변화시 사이즈를 변경해 주기 위한 변수
+CMainApp* g_pMainApp = nullptr;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -57,7 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
     msg.message = WM_NULL;
 
-    CMainApp* pMainApp = CMainApp::Create();
+    CMainApp* pMainApp = g_pMainApp = CMainApp::Create();
 
     if (nullptr == pMainApp)
         return FALSE;
@@ -83,6 +85,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else
         {
+            // Handle window resize (we don't resize directly in the WM_SIZE handler)
+            if (g_ResizeWidth != 0 && g_ResizeHeight != 0)
+            {
+                pMainApp->ResetDevice(g_ResizeWidth, g_ResizeHeight);
+                g_ResizeWidth = g_ResizeHeight = 0;
+            }
+
             Engine::Set_TimeDelta(L"Timer_Immediate");
 
             _float	fTimeDelta_Immediate = Engine::Get_TimeDelta(L"Timer_Immediate");
@@ -200,6 +209,47 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+    case WM_SIZE:
+    {
+        if (wParam == SIZE_MINIMIZED)
+            return 0;
+        g_ResizeWidth = (UINT)LOWORD(lParam); // Queue resize
+        g_ResizeHeight = (UINT)HIWORD(lParam);
+
+        RECT clientRect;
+        GetClientRect(hWnd, &clientRect);
+
+        int clientWidth = clientRect.right - clientRect.left;
+        int clientHeight = clientRect.bottom - clientRect.top;
+
+        HDC hdc = GetDC(hWnd); // 윈도우의 DC 얻기
+
+        // 빨간색으로 채우기 (255, 0, 0은 각각 R, G, B를 나타냄)
+        ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+        HBRUSH redBrush = CreateSolidBrush(RGB((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f)));
+        FillRect(hdc, &clientRect, redBrush);
+        DeleteObject(redBrush);
+
+        ReleaseDC(hWnd, hdc); // DC 반환
+
+        // 디바이스 초기화가 되었을 때
+        if (Engine::Get_DeviceAvailable() == S_OK)
+        {
+            RECT srcRect = { 0, 0, g_ResizeWidth, g_ResizeHeight };
+
+            // 메인 앱에서 디바이스 패러미터 초기화를 진행
+            // if (nullptr != g_pMainApp)
+                //g_pMainApp->ResetDevice(g_ResizeWidth, g_ResizeHeight);
+
+            /*ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+            D3DXCOLOR clear_col_dx = D3DCOLOR_RGBA((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f));
+            Get_GraphicDev()->Clear(0, NULL, D3DCLEAR_TARGET, clear_col_dx, 1.f, 0);*/
+
+            // 버퍼 뒤집기 진행
+            Get_GraphicDev()->Present(&srcRect, NULL, NULL, NULL);
+        }
+        break;
+    }
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -219,10 +269,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
+            ValidateRect(g_hWnd, NULL);
+            //PAINTSTRUCT ps;
+            // HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-            EndPaint(hWnd, &ps);
+            //EndPaint(hWnd, &ps);
         }
         break;
     case WM_KEYDOWN:

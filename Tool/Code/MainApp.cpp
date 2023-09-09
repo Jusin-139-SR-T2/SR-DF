@@ -176,18 +176,23 @@ void CMainApp::LateUpdate_MainApp()
 
 void CMainApp::Render_MainApp()
 {
+	HRESULT result = S_OK;
 	D3DXCOLOR clear_col_dx = D3DCOLOR_RGBA((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f));
-	Engine::Render_Begin(clear_col_dx);
+	// [렌더 시작]
+	result = Engine::Render_Begin(clear_col_dx);
 
-	//if (m_pGraphicDev->BeginScene() >= 0)
+	if (result >= 0)
 	{
-		//ImTextureID::
-		//PDIRECT3DTEXTURE9
+		// [IMGUI 렌더]
 		ImGui::Render();
-
 		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
-		m_pGraphicDev->EndScene();
+
+		// [오브젝트 렌더] 렌더러에 요청해서 그려야할 오브젝트들을 그린다.
+		Engine::Render_Scene(m_pGraphicDev);
 	}
+
+	// [렌더 종료] 스왑 체인을 하여 백버퍼를 앞으로 불러들이고 종료시킨다.
+	result = Engine::Render_End();
 
 	// Update and Render additional Platform Windows
 	if (m_io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -196,15 +201,9 @@ void CMainApp::Render_MainApp()
 		ImGui::RenderPlatformWindowsDefault();
 	}
 
-	HRESULT result = m_pGraphicDev->Present(nullptr, nullptr, nullptr, nullptr);
-
-	// Handle loss of D3D9 device
+	// 핸들을 잃으면 디바이스를 초기화한다.
 	if (result == D3DERR_DEVICELOST && m_pGraphicDev->TestCooperativeLevel() == D3DERR_DEVICENOTRESET)
 		ResetDevice();
-
-	Engine::Render_Scene(m_pGraphicDev);
-
-	Engine::Render_End();
 }
 
 HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement** ppManagement)
@@ -274,13 +273,19 @@ void CMainApp::CleanupDeviceD3D()
 	if (m_pSDK) { m_pSDK->Release(); m_pSDK = nullptr; }
 }
 
-void CMainApp::ResetDevice()
+void CMainApp::ResetDevice(_uint dwResizeWidth, _uint dwResizeHeight)
 {
-	/*ImGui_ImplDX9_InvalidateDeviceObjects();
-	HRESULT hr = m_pGraphicDev->Reset(&g_d3dpp);
+	if (!(dwResizeWidth != 0 || dwResizeHeight != 0))
+		return;
+
+	m_pDeviceClass->Get_D3DPP()->BackBufferWidth = dwResizeWidth;
+	m_pDeviceClass->Get_D3DPP()->BackBufferHeight = dwResizeHeight;
+
+	ImGui_ImplDX9_InvalidateDeviceObjects();
+	HRESULT hr = m_pDeviceClass->Reset_GraphicDev();
 	if (hr == D3DERR_INVALIDCALL)
 		IM_ASSERT(0);
-	ImGui_ImplDX9_CreateDeviceObjects();*/
+	ImGui_ImplDX9_CreateDeviceObjects();
 }
 
 bool CMainApp::LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 pOutTex, _int* pOutWidth, _int* pOutHeight)

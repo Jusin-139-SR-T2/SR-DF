@@ -33,13 +33,16 @@ protected:		// 상속관련 함수, 변수
 private:
 	HRESULT		Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement** ppManagement);
 	HRESULT		SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev);
+	void		CleanupDeviceD3D();
+
 
 private:		// 접근을 최소화하는 함수, 변수
-	Engine::CGraphicDev* m_pDeviceClass;
-	Engine::CManagement* m_pManagementClass;
+	Engine::CGraphicDev*		m_pDeviceClass;
+	Engine::CManagement*		m_pManagementClass;
 	LPDIRECT3D9					m_pSDK;
 	LPDIRECT3DDEVICE9			m_pGraphicDev;
 
+private:		// IMGUI 관련 변수
 	ImGuiIO* m_io;
 	bool show_demo_window = true;
 	bool show_another_window = false;
@@ -47,10 +50,19 @@ private:		// 접근을 최소화하는 함수, 변수
 
 	LPDIRECT3DSURFACE9 m_pOriginalRenderTarget;
 
-	void CleanupDeviceD3D();
-	void ResetDevice();
+public:
+	// 디바이스의 매개변수에 창 사이즈를 바꿔 초기화를 다시해줍니다.
+	void ResetDevice(_uint dwResizeWidth = 0, _uint dwResizeHeight = 0);
 	bool LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 pOutTex, _int* pOutWidth, _int* pOutHeight);
 
 private: // 소영 새로운창 create용
 	bool show_map_window = true;
+
+public:
+	GETSET_EX2(_uint, m_dwResizeWidth, ResizedWidth, SET_REF, GET_REF)
+	GETSET_EX2(_uint, m_dwResizeHeight, ResizedHeight, SET_REF, GET_REF)
+
+private:
+	_uint m_dwResizeWidth = 0U;
+	_uint m_dwResizeHeight = 0U;
 };

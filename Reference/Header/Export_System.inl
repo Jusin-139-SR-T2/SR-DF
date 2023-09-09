@@ -1,4 +1,8 @@
 #pragma region 그래픽 디바이스
+HRESULT			Get_DeviceAvailable()
+{
+	return CGraphicDev::GetInstance()->Get_DeviceAvailable();
+}
 LPDIRECT3D9		Get_GraphicSDK()
 {
 	return CGraphicDev::GetInstance()->Get_GraphicSDK();
@@ -7,7 +11,7 @@ LPDIRECT3DDEVICE9		Get_GraphicDev()
 {
 	return CGraphicDev::GetInstance()->Get_GraphicDev();
 }
-D3DPRESENT_PARAMETERS	Get_D3DPP()
+D3DPRESENT_PARAMETERS*	Get_D3DPP()
 {
 	return CGraphicDev::GetInstance()->Get_D3DPP();
 }
@@ -15,13 +19,13 @@ HRESULT		Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, WINMODE eMode
 {
 	return CGraphicDev::GetInstance()->Ready_GraphicDev(ppGraphicClass, hWnd, eMode, iSizeX, iSizeY);
 }
-void		Render_Begin(D3DXCOLOR Color)
+HRESULT		Render_Begin(D3DXCOLOR Color)
 {
 	return CGraphicDev::GetInstance()->Render_Begin(Color);
 }
-void		Render_End()
+HRESULT		Render_End()
 {
-	CGraphicDev::GetInstance()->Render_End();
+	return CGraphicDev::GetInstance()->Render_End();
 }
 #pragma endregion
 

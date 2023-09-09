@@ -13,17 +13,23 @@ public:
 	virtual ~CGraphicDev();
 
 public:
-	HRESULT		Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, WINMODE eMode, const _uint& iSizeX, const _uint& iSizeY);
-
-	void		Render_Begin(D3DXCOLOR Color);
-	void		Render_End();
+	virtual void	Free();
 
 public:
-	LPDIRECT3D9				Get_GraphicSDK() { return m_pSDK; }
-	LPDIRECT3DDEVICE9		Get_GraphicDev() { return m_pGraphicDev; }
-	D3DPRESENT_PARAMETERS	Get_D3DPP() { return m_d3dpp; }
-	LPD3DXSPRITE			Get_Sprite() { return m_pSprite; }
-	LPD3DXFONT				Get_Font() { return m_pFont; }
+	static HRESULT Get_DeviceAvailable() { return CGraphicDev::GetInstance()->m_dwReady; }
+
+public:
+	HRESULT		Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, WINMODE eMode, const _uint& iSizeX, const _uint& iSizeY);
+	HRESULT		Render_Begin(D3DXCOLOR Color);
+	HRESULT		Render_End();
+	HRESULT		Reset_GraphicDev();
+
+public:
+	GETSET_EX1(LPDIRECT3D9,				m_pSDK, GraphicSDK,			GET)
+	GETSET_EX1(LPDIRECT3DDEVICE9,		m_pGraphicDev, GraphicDev,	GET)
+	GETSET_EX1(D3DPRESENT_PARAMETERS,	m_d3dpp, D3DPP,				GET_PTR)
+	GETSET_EX1(LPD3DXSPRITE,			m_pSprite, Sprite,			GET)
+	GETSET_EX1(LPD3DXFONT,				m_pFont, Font,				GET)
 
 private:
 	LPDIRECT3D9				m_pSDK;
@@ -32,8 +38,11 @@ private:
 	LPD3DXSPRITE			m_pSprite;
 	LPD3DXFONT				m_pFont;
 
-public:
-	virtual void	Free();
+//public:
+//	GETSET_EX1(HRESULT,					m_dwResult, Result, GET)
+
+private:
+	HRESULT					m_dwReady = E_FAIL;
 };
 
 END

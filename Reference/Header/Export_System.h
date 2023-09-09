@@ -14,12 +14,13 @@
 BEGIN(Engine)
 
 // GraphicDev
+inline HRESULT					Get_DeviceAvailable();
 inline LPDIRECT3D9				Get_GraphicSDK();
 inline LPDIRECT3DDEVICE9		Get_GraphicDev();
-inline D3DPRESENT_PARAMETERS	Get_D3DPP();
+inline D3DPRESENT_PARAMETERS*	Get_D3DPP();
 inline HRESULT					Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, WINMODE eMode, const _uint& iSizeX = WINCX, const _uint& iSizeY = WINCY);
-inline void						Render_Begin(D3DXCOLOR Color);
-inline void						Render_End();
+inline HRESULT					Render_Begin(D3DXCOLOR Color);
+inline HRESULT					Render_End();
 
 // TimerMgr
 inline _float			Get_TimeDelta(const _tchar* pTimerTag);
