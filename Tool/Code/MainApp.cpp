@@ -2,7 +2,6 @@
 //#define IMGUI_DEFINE_MATH_OPERATORS
 //#endif
 
-
 #include "framework.h"
 #include "MainApp.h"
 #include "imgui.h"
@@ -107,8 +106,6 @@ int CMainApp::Update_MainApp(const _float& fTimeDelta)
 
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));*/
 
-	
-
 	//if (m_io->ConfigFlags)// & ImGuiConfigFlags_DockingEnable)
 	//{
 	//	ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
@@ -134,8 +131,6 @@ int CMainApp::Update_MainApp(const _float& fTimeDelta)
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 
-	
-
 	return 0;
 }
 
@@ -154,7 +149,7 @@ void CMainApp::Render_MainApp()
 		//ImTextureID::
 		//PDIRECT3DTEXTURE9
 		ImGui::Render();
-		
+
 		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 		m_pGraphicDev->EndScene();
 	}
@@ -205,7 +200,7 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	return S_OK;
 }
 
-CMainApp * CMainApp::Create()
+CMainApp* CMainApp::Create()
 {
 	ThisClass* pInstance = new	 ThisClass;
 
@@ -278,21 +273,17 @@ bool CMainApp::LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 p
 
 	m_pGraphicDev->SetRenderTarget(0, pRenderTarget);
 	pRenderTarget->Release();
-	
 
 	D3DLOCKED_RECT lockedRect;
 	HRESULT hr = texture->LockRect(0, &lockedRect, NULL, 0);
 
 	if (SUCCEEDED(hr))
 	{
-
-
-
 		texture->UnlockRect(0);
 	}
 	else
 		return false;
-	
+
 	//m_pOriginalRenderTarget->GetDesc(&tImageDesc);
 	D3DXSaveTextureToFileW(pFileName, D3DXIFF_BMP, texture, NULL);
 
