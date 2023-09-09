@@ -34,9 +34,7 @@
 
 # 컴파일 데이터 폴더
 .vs/
-x64/
-Debug/
-Release/
+Bin/
 ipch/
 
 #*.VC.db
