@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>$(DXSDK_DIR)Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
+    <OutDir>Bin\Export\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>Bin\Intermediate\$(Configuration)\$(PlatformTarget)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <PostBuildEvent>
+      <Command>attrib -r "$(SolutionDir)Reference\Header\*.*" /s
+xcopy "$(SolutionDir)Engine\Header\*.*" "$(SolutionDir)Reference\Header\" /y /e
+xcopy "Header\*.*" "$(SolutionDir)Reference\Header\" /y /e
+attrib +r "$(SolutionDir)Reference\Header\*.*" /s
+xcopy "$(OutDir)$(TargetName).lib" "$(SolutionDir)Reference\Library\Engine\$(Configuration)\$(PlatformTarget)\" /y
+xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y
+xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Tool\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <PostBuildEvent>
+      <Message>헤더가 읽기모드로 복사되었습니다.\n바이너리 파일이 복사되었습니다.</Message>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;dinput8.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Reference\Library\Engine\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)Reference\Library\FMod\core\$(PlatformTarget)\;$(SolutionDir)Reference\Library\FMod\fsbank\$(PlatformTarget)\;$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\;Header\;..\Header\;$(SolutionDIr)Base\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
