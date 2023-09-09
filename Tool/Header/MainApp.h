@@ -25,7 +25,7 @@ public:			// 일반적인 함수, 변수
 
 public:		// 생성 함수
 	static		CMainApp* Create();
-	
+
 private:	// 소멸 함수
 	virtual		void			Free();
 
@@ -50,4 +50,7 @@ private:		// 접근을 최소화하는 함수, 변수
 	void CleanupDeviceD3D();
 	void ResetDevice();
 	bool LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 pOutTex, _int* pOutWidth, _int* pOutHeight);
+
+private: // 소영 새로운창 create용
+	bool show_map_window = true;
 };

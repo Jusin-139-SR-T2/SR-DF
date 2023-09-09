@@ -39,6 +39,10 @@ HRESULT CMainApp::Ready_MainApp()
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsLight();
 
+	//소영 - 한글폰트추가
+	ImGuiIO& io = ImGui::GetIO();
+	io.Fonts->AddFontFromFileTTF("wanju.ttf", 15.f, NULL, io.Fonts->GetGlyphRangesKorean());
+
 	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 	ImGuiStyle& style = ImGui::GetStyle();
 	if (m_io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -99,6 +103,37 @@ int CMainApp::Update_MainApp(const _float& fTimeDelta)
 		ImGui::End();
 	}
 
+	// 소영 - 만들어본윈도우
+	if (show_map_window)
+		ImGui::ShowDemoWindow(&show_map_window);
+
+	{
+		ImGui::Begin("Map Tool", &show_map_window, ImGuiWindowFlags_MenuBar);
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("File")) // 위에 메뉴바
+			{
+				if (ImGui::MenuItem("Open..", "Ctrl+O"))
+				{ /* Do stuff */
+					int a = 0;
+				}
+				if (ImGui::MenuItem("Save", "Ctrl+S"))
+				{ /* Do stuff */
+					int a = 0;
+				}
+				if (ImGui::MenuItem("Close", "Ctrl+W"))
+				{// my_tool_active = false;
+					int a = 0;
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
+		ImGui::Text(u8"오로지 텍스트만 입력"); // 한국어 붙일때는 u8"내용"
+		ImGui::Text(u8"한글가능");
+
+		ImGui::End();
+	}
 	/*if (!ImGui::Begin("Window"))
 	{
 		ImGui::End();
