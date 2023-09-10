@@ -10,7 +10,7 @@ class CTransform;
 
 END
 
-class CBackGround : public CGameObject
+class CBackGround : public Engine::CGameObject
 {
 	DERIVED_CLASS(CGameObject, CBackGround)
 
@@ -23,16 +23,16 @@ public:
 	static CBackGround* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
-	virtual void Free();
-
-public:
-	virtual HRESULT Ready_GameObject() override;
-	virtual _int	Update_GameObject(const _float& fDelta) override;
-	virtual void	LateUpdate_GameObject() override;
-	virtual void	Render_GameObject() override;
+	virtual void		Free();
 
 private:
-	HRESULT						Add_Component();
+	HRESULT				Add_Component();
+
+public:
+	virtual HRESULT		Ready_GameObject() override;
+	virtual _int		Update_GameObject(const _float& fDelta) override;
+	virtual void		LateUpdate_GameObject() override;
+	virtual void		Render_GameObject() override;
 
 public:
 	GETSET_EX2(CTransform*, m_pTransformComp, TransformComponent, GET, SET)

@@ -47,7 +47,7 @@ HRESULT CGraphicDev::Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, W
 	m_d3dpp.BackBufferWidth = iSizeX;
 	m_d3dpp.BackBufferHeight = iSizeY;
 	m_d3dpp.BackBufferCount = 1;
-	m_d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+	m_d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8;
 
 	m_d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
 	m_d3dpp.MultiSampleQuality = 0;
@@ -60,7 +60,7 @@ HRESULT CGraphicDev::Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, W
 	m_d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;
 
 	m_d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
-	m_d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
+	m_d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
 
 
@@ -73,23 +73,23 @@ HRESULT CGraphicDev::Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, W
 
 
 
-	// 5 : 스프라이트
-	FAILED_CHECK_MSG(D3DXCreateSprite(m_pGraphicDev, &m_pSprite), L"Create Sprite Failed");
+	//// 5 : 스프라이트
+	//FAILED_CHECK_MSG(D3DXCreateSprite(m_pGraphicDev, &m_pSprite), L"Create Sprite Failed");
 
 
 
 
-	// 6 : 폰트
-	D3DXFONT_DESCW			tFontInfo;
-	ZeroMemory(&tFontInfo, sizeof(D3DXFONT_DESCW));
+	//// 6 : 폰트
+	//D3DXFONT_DESCW			tFontInfo;
+	//ZeroMemory(&tFontInfo, sizeof(D3DXFONT_DESCW));
 
-	tFontInfo.Height = 20;
-	tFontInfo.Width = 10;
-	tFontInfo.Weight = FW_HEAVY;
-	tFontInfo.CharSet = HANGEUL_CHARSET;
-	lstrcpy(tFontInfo.FaceName, L"궁서");
+	//tFontInfo.Height = 20;
+	//tFontInfo.Width = 10;
+	//tFontInfo.Weight = FW_HEAVY;
+	//tFontInfo.CharSet = HANGEUL_CHARSET;
+	//lstrcpy(tFontInfo.FaceName, L"궁서");
 
-	FAILED_CHECK_MSG(D3DXCreateFontIndirect(m_pGraphicDev, &tFontInfo, &m_pFont), L"Create Font Failed");
+	//FAILED_CHECK_MSG(D3DXCreateFontIndirect(m_pGraphicDev, &tFontInfo, &m_pFont), L"Create Font Failed");
 
 	return m_dwReady = S_OK;
 }
@@ -109,9 +109,6 @@ HRESULT CGraphicDev::Render_End()
 {
 	HRESULT hr = S_OK;
 	hr = m_pGraphicDev->EndScene();
-
-	//RECT srcRect = { 0, 0, m_d3dpp.BackBufferWidth, m_d3dpp.BackBufferHeight };
-	//hr = m_pGraphicDev->Present(&srcRect, NULL, NULL, NULL);
 	hr = m_pGraphicDev->Present(nullptr, nullptr, nullptr, nullptr);
 
 	return hr;

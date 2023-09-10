@@ -17,6 +17,17 @@ CGameObject::~CGameObject()
 
 }
 
+void CGameObject::Free()
+{
+    for (size_t i = 0; i < ID_END; i++)
+    {
+        for_each(m_mapComponent[i].begin(), m_mapComponent[i].end(), CDeleteMap());
+        m_mapComponent[i].clear();
+    }
+
+    Safe_Release(m_pGraphicDev);
+}
+
 CComponent* CGameObject::Get_Component(COMPONENTID eID, const _tchar* pComponentTag)
 {
     // 외부에서 컴포넌트에 대한 주소를 얻어올 수 있도록 하는 함수
@@ -73,13 +84,3 @@ CComponent* CGameObject::Find_Component(const _tchar* pComponentTag, COMPONENTID
     return iter->second;
 }
 
-void CGameObject::Free()
-{
-    for (size_t i = 0; i < ID_END; i++)
-    {
-        for_each(m_mapComponent[i].begin(), m_mapComponent[i].end(), CDeleteMap());
-        m_mapComponent[i].clear();
-    }
-
-    Safe_Release(m_pGraphicDev);
-}

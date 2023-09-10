@@ -86,30 +86,6 @@ HRESULT CPlayer::Add_Component()
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransform>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculator>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
 
-#pragma region 레거시
-    //CComponent* pComponent = nullptr;
-
-    // 버퍼 컴포넌트
-    /*NULL_CHECK_RETURN((pComponent = m_pBufferCom = Engine::Clone_Proto<CRcTex>(L"Proto_RcTexComp")), E_FAIL);
-    FAILED_CHECK_RETURN(Bind_Component(ID_STATIC, pComponent, L"Com_Buffer"), E_FAIL);*/
-    //NULL_CHECK_RETURN(m_pBufferCom = Set_DefaultComponent_FromProto<CRcTex>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexComp"));
-
-    // 텍스처 컴포넌트
-    /*NULL_CHECK_RETURN((pComponent = m_pTextureCom = Engine::Clone_Proto<CTexture>(L"Proto_PlayerTextureComp")), E_FAIL);
-    FAILED_CHECK_RETURN(Bind_Component(ID_STATIC, pComponent, L"Com_Texture"), E_FAIL);*/
-    //NULL_CHECK_RETURN(m_pTextureCom = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_PlayerTextureComp"));
-
-    // 트랜스폼 컴포넌트
-    /*NULL_CHECK_RETURN((pComponent = m_pTransformCom = Engine::Clone_Proto<CTransform>(L"Proto_TransformComp")), E_FAIL);
-    FAILED_CHECK_RETURN(Bind_Component(ID_DYNAMIC, pComponent, L"Com_Transform"), E_FAIL);*/
-    //NULL_CHECK_RETURN(m_pTransformCom = Set_DefaultComponent_FromProto<CTransform>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"));
-
-    // 지형 계산 컴포넌트
-    /*NULL_CHECK_RETURN((pComponent = m_pCalculatorCom = Engine::Clone_Proto<CCalculator>(L"Proto_Calculator")), E_FAIL);
-    FAILED_CHECK_RETURN(Bind_Component(ID_STATIC, pComponent, L"Com_Calculator"), E_FAIL);*/
-    //NULL_CHECK_RETURN(m_pCalculatorCom = Set_DefaultComponent_FromProto<CCalculator>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"));
-#pragma endregion
-
     return S_OK;
 }
 

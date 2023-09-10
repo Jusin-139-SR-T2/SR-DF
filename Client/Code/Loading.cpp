@@ -16,6 +16,29 @@ CLoading::~CLoading()
 {
 }
 
+CLoading* CLoading::Create(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_Loading(eID)))
+	{
+		Safe_Release(pInstance);
+		MSG_BOX("Loading Create Failed");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+void CLoading::Free()
+{
+	WaitForSingleObject(m_hThread, INFINITE);
+	CloseHandle(m_hThread);
+	DeleteCriticalSection(&m_Crt);
+
+	Safe_Release(m_pGraphicDev);
+}
+
 HRESULT CLoading::Ready_Loading(LOADINGID eID)
 {
 	InitializeCriticalSection(&m_Crt);
@@ -76,27 +99,4 @@ _uint CLoading::Thread_Main(void * pArg)
 	//_endthreadex(0);
 
 	return iFlag;
-}
-
-CLoading * CLoading::Create(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID)
-{
-	ThisClass* pInstance = new ThisClass(pGraphicDev);
-
-	if (FAILED(pInstance->Ready_Loading(eID)))
-	{
-		Safe_Release(pInstance);
-		MSG_BOX("Loading Create Failed");
-		return nullptr;
-	}
-
-	return pInstance;
-}
-
-void CLoading::Free()
-{
-	WaitForSingleObject(m_hThread, INFINITE);
-	CloseHandle(m_hThread);
-	DeleteCriticalSection(&m_Crt);
-
-	Safe_Release(m_pGraphicDev);
 }

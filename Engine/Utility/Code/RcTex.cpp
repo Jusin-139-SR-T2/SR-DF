@@ -22,6 +22,31 @@ CRcTex::~CRcTex()
 
 }
 
+CRcTex* CRcTex::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_Buffer()))
+	{
+		Safe_Release(pInstance);
+		MSG_BOX("RcTex Create Failed");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CComponent* CRcTex::Clone()
+{
+	return new ThisClass(*this);
+}
+
+void CRcTex::Free()
+{
+	SUPER::Free();
+}
+
+
 HRESULT CRcTex::Ready_Buffer()
 {
 	m_dwFVF = FVF_TEX;
@@ -73,29 +98,6 @@ HRESULT CRcTex::Ready_Buffer()
 
 void CRcTex::Render_Buffer()
 {
-	SUPER::Render_Buffer();
+	CVIBuffer::Render_Buffer();
 }
 
-CRcTex* CRcTex::Create(LPDIRECT3DDEVICE9 pGraphicDev)
-{
-	CRcTex* pInstance = new CRcTex(pGraphicDev);
-
-	if (FAILED(pInstance->Ready_Buffer()))
-	{
-		Safe_Release(pInstance);
-		MSG_BOX("RcTex Create Failed");
-		return nullptr;
-	}
-
-	return pInstance;
-}
-
-CComponent* CRcTex::Clone()
-{
-	return new CRcTex(*this);
-}
-
-void CRcTex::Free()
-{
-	SUPER::Free();
-}

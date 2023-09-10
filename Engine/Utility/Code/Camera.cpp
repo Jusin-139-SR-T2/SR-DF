@@ -21,13 +21,14 @@ void CCamera::Free()
 HRESULT CCamera::Ready_GameObject()
 {
 	// 뷰 행렬을 만들어 장치에게 넘겨 놓는다.
-	//D3DXMatrixLookAtLH(&m_matView, &m_vEye, &m_vAt, &m_vUp);
-	LookAtLH(&m_matView, &m_vEye, &m_vAt, &m_vUp);
+	D3DXMatrixLookAtLH(&m_matView, &m_vEye, &m_vAt, &m_vUp);
+	//LookAtLH(&m_matView, &m_vEye, &m_vAt, &m_vUp);
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 
 	// 투영 변환 행렬은 한번 만들어주면 다시 안만들어 주어도 된다.
 	// 다만 옵션이 바뀌면 만들어 주어야 한다.
-	PerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
+	D3DXMatrixPerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
+	//PerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
 
 	return S_OK;
