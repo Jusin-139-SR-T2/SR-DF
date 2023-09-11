@@ -68,9 +68,6 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 
 	// Terrain
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", CTerrain::Create(m_pGraphicDev)), E_FAIL);
-
-	// Mon
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", CBackGround::Create(m_pGraphicDev)), E_FAIL);
 	
 	return S_OK;
 }

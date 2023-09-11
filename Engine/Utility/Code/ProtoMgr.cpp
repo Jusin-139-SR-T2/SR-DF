@@ -46,7 +46,8 @@ CComponent* CProtoMgr::Clone_Proto(const _tchar* pProtoTag, CComponent*& prCompo
 CComponent* CProtoMgr::Find_Prototype(const _tchar* pProtoTag)
 {
     // 컴포넌트를 찾는다.
-    auto	iter = find_if(m_mapProto.begin(), m_mapProto.end(), CTag_Finder(pProtoTag));
+    //auto	iter = find_if(m_mapProto.begin(), m_mapProto.end(), CTag_Finder(pProtoTag));
+    auto iter = m_mapProto.find(pProtoTag);
 
     if (iter == m_mapProto.end())
         return nullptr;
