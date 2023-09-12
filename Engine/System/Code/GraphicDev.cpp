@@ -15,6 +15,15 @@ CGraphicDev::~CGraphicDev()
 
 }
 
+
+void CGraphicDev::Free()
+{
+	Safe_Release(m_pGraphicDev);
+	Safe_Release(m_pSDK);
+	m_dwReady = E_FAIL;
+}
+
+
 HRESULT CGraphicDev::Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, WINMODE eMode, const _uint& iSizeX, const _uint& iSizeY)
 {
 	// 1 : 버전 확인
@@ -94,6 +103,11 @@ HRESULT CGraphicDev::Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, W
 	return m_dwReady = S_OK;
 }
 
+HRESULT CGraphicDev::Reset_GraphicDev()
+{
+	return m_pGraphicDev->Reset(&m_d3dpp);
+}
+
 HRESULT CGraphicDev::Render_Begin(D3DXCOLOR Color)
 {
 	HRESULT hr = S_OK;
@@ -114,14 +128,4 @@ HRESULT CGraphicDev::Render_End()
 	return hr;
 }
 
-HRESULT CGraphicDev::Reset_GraphicDev()
-{
-	return m_pGraphicDev->Reset(&m_d3dpp);
-}
 
-void CGraphicDev::Free()
-{
-	Safe_Release(m_pGraphicDev);
-	Safe_Release(m_pSDK);
-	m_dwReady = E_FAIL;
-}
