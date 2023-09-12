@@ -10,12 +10,24 @@
     <ClCompile Include="Code\TimerMgr.cpp">
       <Filter>01. Timer</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Frame.cpp" />
-    <ClCompile Include="Code\FrameMgr.cpp" />
-    <ClCompile Include="Code\MyFont.cpp" />
-    <ClCompile Include="Code\FontMgr.cpp" />
-    <ClCompile Include="Code\InputDev.cpp" />
-    <ClCompile Include="Code\SoundMgr.cpp" />
+    <ClCompile Include="Code\FontMgr.cpp">
+      <Filter>03. Font</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Frame.cpp">
+      <Filter>02. Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\FrameMgr.cpp">
+      <Filter>02. Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\InputDev.cpp">
+      <Filter>04. Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\MyFont.cpp">
+      <Filter>03. Font</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\SoundMgr.cpp">
+      <Filter>05. Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Export_System.h" />
@@ -28,12 +40,24 @@
     <ClInclude Include="Header\Timer.h">
       <Filter>01. Timer</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Frame.h" />
-    <ClInclude Include="Header\FrameMgr.h" />
-    <ClInclude Include="Header\MyFont.h" />
-    <ClInclude Include="Header\FontMgr.h" />
-    <ClInclude Include="Header\InputDev.h" />
-    <ClInclude Include="Header\SoundMgr.h" />
+    <ClInclude Include="Header\FontMgr.h">
+      <Filter>03. Font</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Frame.h">
+      <Filter>02. Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\FrameMgr.h">
+      <Filter>02. Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\InputDev.h">
+      <Filter>04. Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\MyFont.h">
+      <Filter>03. Font</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\SoundMgr.h">
+      <Filter>05. Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_System.inl" />
@@ -44,6 +68,18 @@
     </Filter>
     <Filter Include="01. Timer">
       <UniqueIdentifier>{c01b883d-c027-4066-b656-45a95e8113e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Font">
+      <UniqueIdentifier>{d397c0fa-64c1-4ee7-935f-8b859fba0b0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Frame">
+      <UniqueIdentifier>{147bc95e-991f-409b-a646-2b178f4c4328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Input">
+      <UniqueIdentifier>{9e18ee5b-d681-4114-b82e-09e150c6f0bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Sound">
+      <UniqueIdentifier>{0b94a98c-9e25-4f64-94b6-85fc191bdc40}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
