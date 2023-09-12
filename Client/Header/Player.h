@@ -43,14 +43,19 @@ private:
 public:
 	GETSET_EX2(CRcTex*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTransform*, m_pTransformComp, TransformComponent, GET, SET)
-	GETSET_EX2(CTexture*, m_pTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CTexture*, m_pLeftTextureComp, TextureComponent, GET, SET)
+	//GETSET_EX2(CTexture*, m_pRightTextureComp, TextureComponent, GET, SET)
 	GETSET_EX2(CCalculator*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 
 private:
 	CRcTex*				m_pBufferComp = nullptr;
 	CTransform*			m_pTransformComp = nullptr;
-	CTexture*			m_pTextureComp = nullptr;
+	CTexture*			m_pLeftTextureComp = nullptr;
+	CTexture*			m_pRightTextureComp = nullptr;
 	CCalculator*		m_pCalculatorComp = nullptr;
+
+private:
+	_long			dwMouseMove = 0;
 
 public:
 	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)
@@ -58,5 +63,8 @@ public:
 protected:
 	CDynamicCamera*		m_pCamera = nullptr;
 
+protected:
+	_vec3			m_vEye, m_vAt, m_vUp;
+	_matrix		m_matRot;
 };
 

@@ -42,23 +42,6 @@ void CLogo::Free()
 
 HRESULT CLogo::Ready_Scene()
 {
-	/*_matrix	matView, matProj;
-
-	D3DXMatrixLookAtLH(&matView,
-		&_vec3(0.f, 0.f, -10.f),
-		&_vec3(0.f, 0.f, 10.f),
-		&_vec3(0.f, 1.f, 0.f));
-
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60.f), (float)WINCX / WINCY, 0.1f, 1000.f);
-
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);*/
-
-	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);*/
-
-
 	FAILED_CHECK_RETURN(Ready_Prototype(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Environment"), E_FAIL);
 
@@ -111,6 +94,7 @@ HRESULT CLogo::Ready_Prototype()
 
 HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 {
+	// 정상
 	// 레이어 초기화
 	Engine::CLayer* pLayer = nullptr;
 	FAILED_CHECK_RETURN(Add_Layer(pLayerTag, pLayer = Engine::CLayer::Create()), E_FAIL);
