@@ -25,7 +25,8 @@ void CScene::Free()
 CComponent* CScene::Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag)
 {
 	// 씬 -> 레이어 -> 오브젝트 -> 컴포넌트
-	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+	//auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+	auto iter = m_mapLayer.find(pLayerTag);
 
 	if (iter == m_mapLayer.end())
 		return nullptr;

@@ -76,7 +76,8 @@ void CGameObject::LateUpdate_GameObject()
 CComponent* CGameObject::Find_Component(const _tchar* pComponentTag, COMPONENTID eID)
 {
     // 내부적으로 컴포넌트를 태그를 통해 찾도록 지원하는 함수
-    auto iter = find_if(m_mapComponent[eID].begin(), m_mapComponent[eID].end(), CTag_Finder(pComponentTag));
+    //auto iter = find_if(m_mapComponent[eID].begin(), m_mapComponent[eID].end(), CTag_Finder(pComponentTag));
+    auto iter = m_mapComponent[eID].find(pComponentTag);
 
     if (iter == m_mapComponent[eID].end())
         return nullptr;

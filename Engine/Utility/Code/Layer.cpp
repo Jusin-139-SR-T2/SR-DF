@@ -13,7 +13,8 @@ CLayer::~CLayer()
 CComponent* CLayer::Get_Component(COMPONENTID eID, const _tchar* pObjTag, const _tchar* pComponentTag)
 {
 	// 레이어 -> 오브젝트 -> 컴포넌트
-	auto	iter = find_if(m_mapObject.begin(), m_mapObject.end(), CTag_Finder(pObjTag));
+	//auto	iter = find_if(m_mapObject.begin(), m_mapObject.end(), CTag_Finder(pObjTag));
+	auto iter = m_mapObject.find(pObjTag);
 
 	if (iter == m_mapObject.end())
 		return nullptr;
