@@ -72,7 +72,11 @@
     <ClInclude Include="Header\ImguiWin.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Header\ImguiWin_Test.h">
+=======
+    <ClInclude Include="ImguiWin_Test.h">
+>>>>>>> 61c90d14e5603d67e75cd13b0d2814870fc2016c
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -116,7 +120,11 @@
     <ClCompile Include="Code\ImguiWin.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Code\ImguiWin_Test.cpp">
+=======
+    <ClCompile Include="ImguiWin_Test.cpp">
+>>>>>>> 61c90d14e5603d67e75cd13b0d2814870fc2016c
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

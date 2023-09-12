@@ -235,7 +235,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // 디바이스 초기화가 되었을 때
         if (Engine::Get_DeviceAvailable() == S_OK)
         {
-            RECT srcRect = { 0, 0, g_ResizeWidth, g_ResizeHeight };
+            RECT srcRect = { 0, 0, (LONG)g_ResizeWidth, (LONG)g_ResizeHeight };
 
             // 메인 앱에서 디바이스 패러미터 초기화를 진행
             // if (nullptr != g_pMainApp)
