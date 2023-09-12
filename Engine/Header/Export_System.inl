@@ -1,7 +1,7 @@
 #pragma region 그래픽 디바이스
 HRESULT			Get_DeviceAvailable()
 {
-	return CGraphicDev::GetInstance()->Get_DeviceAvailable();
+	return CGraphicDev::GetInstance()->Get_DeviceReadyState();
 }
 LPDIRECT3D9		Get_GraphicSDK()
 {

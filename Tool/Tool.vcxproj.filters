@@ -19,6 +19,9 @@
     <Filter Include="01. Imgui">
       <UniqueIdentifier>{3005e087-f99d-4888-9962-62199a73dd1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. ImguiMgr">
+      <UniqueIdentifier>{238b928c-0cde-4bd0-840f-46385734c26b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\framework.h">
@@ -63,6 +66,15 @@
     <ClInclude Include="Imgui\imconfig.h">
       <Filter>01. Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Header\ImguiMgr.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ImguiWin.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiWin_Test.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\framework.cpp">
@@ -97,6 +109,15 @@
     </ClCompile>
     <ClCompile Include="Imgui\imgui_widgets.cpp">
       <Filter>01. Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ImguiMgr.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ImguiWin.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiWin_Test.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

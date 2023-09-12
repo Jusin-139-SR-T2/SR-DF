@@ -31,6 +31,10 @@ HRESULT CCamera::Ready_GameObject()
 	//PerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
 
+
+	//D3DVIEWPORT9 viewData = { 100, 100, 1280, 1000, 0.f, 1.f };
+	//m_pGraphicDev->SetViewport(&viewData);
+
 	return S_OK;
 }
 

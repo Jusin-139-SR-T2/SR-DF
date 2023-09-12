@@ -16,13 +16,13 @@ public:
 	virtual void	Free();
 
 public:
-	static HRESULT Get_DeviceAvailable() { return CGraphicDev::GetInstance()->m_dwReady; }
+	HRESULT		Get_DeviceReadyState() { return m_dwReady; }
 
 public:
 	HRESULT		Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, WINMODE eMode, const _uint& iSizeX, const _uint& iSizeY);
+	HRESULT		Reset_GraphicDev();
 	HRESULT		Render_Begin(D3DXCOLOR Color);
 	HRESULT		Render_End();
-	HRESULT		Reset_GraphicDev();
 
 public:
 	GETSET_EX1(LPDIRECT3D9,				m_pSDK, GraphicSDK,			GET)
