@@ -19,7 +19,7 @@ protected:
 
 public:
 	virtual HRESULT Ready_ImguiWin();
-	virtual _int	Update_ImgWin(const _float& fTimeDelta);
+	virtual _int	Update_ImguiWin(const _float& fTimeDelta);
 	// IMGUI는 자동으로 렌더를 돌리기 때문에 따로 함수가 필요없다.
 };
 
