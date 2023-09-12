@@ -54,15 +54,14 @@ _uint CLoading::Loading_For_Stage()
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TriColBufferComp", CTriCol::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainBufferComp", CTerrainTexComponent::Create(m_pGraphicDev, L"./Resource/Texture/Terrain/Height.bmp", VTXCNTX, VTXCNTZ, VTXITV)), E_FAIL);
-	
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CameraComp", CCameraComponent::Create(m_pGraphicDev, g_hWnd)), E_FAIL);
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CalculatorComp", CCalculator::Create(m_pGraphicDev)), E_FAIL);
 
 	// 텍스처 컴포넌트
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTextureComp", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Terrain/Terrain0.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBoxTextureComp", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"./Resource/Texture/SkyBox/burger%d.dds", 4)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTextureComp", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Player/Ma.jpg")), E_FAIL);
-
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerLeftTextureComp", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Player/SprintingHands_Left.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerRightTextureComp", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Player/SprintingHands_Right.png")), E_FAIL);
 	
 	FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
 
