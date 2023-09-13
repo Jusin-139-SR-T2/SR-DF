@@ -20,9 +20,9 @@ CSphereColComp::~CSphereColComp()
 {
 }
 
-CSphereColComp* CSphereColComp::Create()
+CSphereColComp* CSphereColComp::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	ThisClass* pInstance = new ThisClass();
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Collider()))
 	{
@@ -43,6 +43,8 @@ CComponent* CSphereColComp::Clone()
 void CSphereColComp::Free()
 {
 	SUPER::Free();
+
+	Safe_Release(m_pShape);
 }
 
 HRESULT CSphereColComp::Ready_Collider()

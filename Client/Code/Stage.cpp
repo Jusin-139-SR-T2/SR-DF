@@ -5,6 +5,7 @@
 #include "Export_Utility.h"
 #include "DynamicCamera.h"
 #include "BackGround.h"
+#include "UI.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -100,6 +101,9 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
 	Engine::CGameObject*		pGameObject = nullptr;
+
+	// Terrain
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI", CUI::Create(m_pGraphicDev)), E_FAIL);
 	
 	return S_OK;
 }

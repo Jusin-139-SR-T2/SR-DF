@@ -15,7 +15,7 @@ protected:
 	virtual ~CSphereColComp();
 
 public:
-	static CSphereColComp*	Create();
+	static CSphereColComp*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual CComponent* Clone();
 	virtual void		Free();
 

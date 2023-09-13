@@ -11,6 +11,7 @@ class CTexture;
 class CTransform;
 class CCameraComponent;
 class CCalculator;
+class CSphereColComp;
 
 END
 
@@ -46,6 +47,7 @@ public:
 	GETSET_EX2(CTexture*, m_pLeftTextureComp, TextureComponent, GET, SET)
 	//GETSET_EX2(CTexture*, m_pRightTextureComp, TextureComponent, GET, SET)
 	GETSET_EX2(CCalculator*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+	GETSET_EX2(CSphereColComp*, m_pColliderComp, SphereColComponent, GET, SET)
 
 private:
 	CRcTex*				m_pBufferComp = nullptr;
@@ -53,6 +55,7 @@ private:
 	CTexture*			m_pLeftTextureComp = nullptr;
 	CTexture*			m_pRightTextureComp = nullptr;
 	CCalculator*		m_pCalculatorComp = nullptr;
+	CSphereColComp*		m_pColliderComp = nullptr;
 
 private:
 	_long			dwMouseMove = 0;
