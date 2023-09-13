@@ -62,6 +62,9 @@
     <ClInclude Include="Header\Light.h">
       <Filter>04. LightMgr</Filter>
     </ClInclude>
+    <ClInclude Include="Header\MeshCol.h">
+      <Filter>01. Component\01. VertexBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component.cpp">
@@ -123,6 +126,9 @@
     </ClCompile>
     <ClCompile Include="Code\LightMgr.cpp">
       <Filter>04. LightMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\MeshCol.cpp">
+      <Filter>01. Component\01. VertexBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

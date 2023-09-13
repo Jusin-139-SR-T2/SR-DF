@@ -172,6 +172,7 @@
     <ClInclude Include="Header\TerrainTexComponent.h" />
     <ClInclude Include="Header\Light.h" />
     <ClInclude Include="Header\LightMgr.h" />
+    <ClInclude Include="Header\MeshCol.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Calculator.cpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Code\Light.cpp" />
     <ClCompile Include="Code\LightMgr.cpp" />
     <ClCompile Include="Code\CubeTexComponent.cpp" />
+    <ClCompile Include="Code\MeshCol.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_Utility.inl" />

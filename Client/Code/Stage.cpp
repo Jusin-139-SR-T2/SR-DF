@@ -13,6 +13,7 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 
 CStage::~CStage()
 {
+
 }
 
 HRESULT CStage::Ready_Scene()
@@ -134,7 +135,5 @@ CStage * CStage::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CStage::Free()
 {
-
-
 	SUPER::Free();
 }
