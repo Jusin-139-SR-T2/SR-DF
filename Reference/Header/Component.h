@@ -24,23 +24,20 @@ public:
 	virtual void			Free();
 
 protected:
-	// 복사본 인스턴스 여부
-	_bool					m_bClone;
+	_bool					m_bClone;		// 인스턴스 복사본 여부
 
 public:
 	virtual _int	Update_Component(const _float& fTimeDelta) { return 0; }
 	virtual void	LateUpdate_Component() {}
 
 protected:
-	// 렌더 장치
-	LPDIRECT3DDEVICE9		m_pGraphicDev;
+	LPDIRECT3DDEVICE9		m_pGraphicDev;	// 렌더 장치
 	
 public:
 	GETSET_EX3(CGameObject*, m_pOwner, Owner, SET, GET, GET_C_C)
 
 protected:
-	// 오너 오브젝트
-	CGameObject*			m_pOwner;
+	CGameObject*			m_pOwner;		// 오너 오브젝트
 	
 };
 
