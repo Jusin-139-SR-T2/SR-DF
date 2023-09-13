@@ -84,6 +84,8 @@
     <ClInclude Include="Header\MeshCol.h">
       <Filter>01. Component\01. VertexBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="Header\PHY_Box.h" />
+    <ClInclude Include="Header\PHY_Capsule.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component.cpp">
@@ -168,6 +170,8 @@
     <ClCompile Include="Code\MeshCol.cpp">
       <Filter>01. Component\01. VertexBuffer</Filter>
     </ClCompile>
+    <ClCompile Include="Code\PHY_Box.cpp" />
+    <ClCompile Include="Code\PHY_Capsule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">
