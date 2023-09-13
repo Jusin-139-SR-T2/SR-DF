@@ -3,6 +3,10 @@
 
 #include "Engine_Typedef.h"
 
+using namespace std;
+class unorded_map;
+
+
 namespace Engine
 {
 	typedef struct tagVertexColor
@@ -52,6 +56,331 @@ namespace Engine
 		_ulong	_2;
 
 	}INDEX32;
+
+
+#pragma region 간이 상태머신
+	// 대충 아무때나 쓸 수 있는 상태머신 구조체
+	template <typename T>
+	struct tagState
+	{
+		tagState() : eState(T()), ePrevState(T()), eNextState(T())
+		{
+			bIsEnter = false;
+			bIsExit = false;
+			bIsReserved = false;
+		}
+		~tagState() {}
+
+		bool	bIsEnter;
+		bool	bIsExit;
+		bool	bIsReserved;
+		T		eState;
+		T		ePrevState;
+		T		eNextState;
+
+#pragma region 상태머신 함수
+		void Set_State(T _eState)
+		{
+			ePrevState = eState;
+			eState = _eState;
+			bIsExit = true;
+			bIsEnter = true;
+		}
+
+		void Reserve_State(T _eState)
+		{
+			eNextState = _eState;
+			bIsReserved = true;
+		}
+
+		// 진입할 때
+		bool IsState_Entered()
+		{
+			if (bIsEnter && !bIsReserved)
+			{
+				bIsEnter = false;
+				bIsExit = false;		// 상태 진입시 탈출 조건 자동 비활성화
+				return true;
+			}
+			return false;
+		}
+
+		// 빠져나갈 때
+		bool IsState_Exit()
+		{
+			// 예약 상태에서는 하나의 
+			if (bIsReserved)
+			{
+				Set_State(eNextState);
+				bIsReserved = false;
+				bIsExit = false;
+				return true;
+			}
+
+			// 이미 Entered 함수를 불러왔을 때 탈출 조건을 OFF 시킨다.
+			if (!bIsEnter)
+				bIsExit = false;
+
+			if (bIsExit)
+			{
+				bIsExit = false;
+				return true;
+			}
+			return false;
+		}
+
+		// 예약이 없는 상태에서만 업데이트를 할 수 있다.
+		bool Can_Update()
+		{
+			return !bIsReserved;
+		}
+
+		bool IsOnState(T _eState)
+		{
+			return (eState == _eState);
+		}
+#pragma endregion
+	};
+
+	template <typename T>
+	using STATE_INFO = tagState<T>;
+
+	// 단순하게 쓰기 위한 템플릿
+	template <typename Key, typename Func>
+	using MAP_FUNC = unordered_map<Key, function<Func>>;
+
+	// 상태머신 세트
+	template<typename Key, typename Func>
+	struct STATE_SET
+	{
+		STATE_SET() {}
+		~STATE_SET() {}
+
+	public:
+		STATE_INFO<Key> tState;
+		MAP_FUNC<Key, Func> mapFunc;
+
+	public:
+#pragma region 상태머신 함수
+		void Set_State(Key _eState)
+		{
+			tState.Set_State(_eState);
+		}
+
+		void Reserve_State(Key _eState)
+		{
+			tState.Reserve_State();
+		}
+
+		// 진입할 때
+		bool IsState_Entered()
+		{
+			return tState.IsState_Entered();
+		}
+
+		// 빠져나갈 때
+		bool IsState_Exit()
+		{
+			return tState.IsState_Exit();
+		}
+
+		// 예약이 없는 상태에서만 업데이트를 할 수 있다.
+		bool Can_Update()
+		{
+			return tState.Can_Update();
+		}
+
+		bool IsOnState(Key _eState)
+		{
+			return tState.IsOnState(_eState);
+		}
+#pragma endregion
+#pragma region 함수 맵
+		void Add_Func(Key eState, function<Func>&& fn)
+		{
+			mapFunc.emplace(eState, fn);
+		}
+
+		function<Func> Get_StateFunc()
+		{
+			return mapFunc[tState.eState];
+		}
+#pragma endregion
+
+	};
+#pragma endregion
+
+#pragma region 딜레이
+	// 딜레이 용도로 만든 구조체
+	template<typename T = float>
+	struct _DELAY
+	{
+		static_assert(std::is_arithmetic<T>::value, "T는 원시 타입이어야만 합니다.");
+
+	public:
+		T Max, Cur;
+	private:
+		T PrevCur;
+
+
+	public:
+		_DELAY() : Max(T()), Cur(T()), PrevCur(Cur) {}
+		_DELAY(T _Max, bool bMax = false) : Max(_Max), Cur(T(T(bMax)* T(_Max))), PrevCur(Cur) {}
+		~_DELAY() {}
+
+		// 값 업데이트 및 맥스값 도달시 반환
+		bool Update(T increase, bool bAutoReset = false)
+		{
+			PrevCur = Cur;
+			Cur += increase;
+			if (Cur >= Max)
+			{
+				if (bAutoReset)
+					Cur = T();
+				else
+					Cur = Max;
+				return true;
+			}
+
+			return false;
+		}
+
+		bool Update(T increase, T point, bool bAutoReset = false)
+		{
+			PrevCur = Cur;
+			Cur += increase;
+			if (Cur >= point)
+			{
+				if (bAutoReset)
+					Cur = T();
+				else
+					Cur = Max;
+				return true;
+			}
+
+			return false;
+		}
+
+		// 현재값 초기화
+		void Reset()
+		{
+			Cur = T();
+		}
+
+		// Max 값 재설정 및 현재값 초기화
+		void ReAdjust(T max)
+		{
+			Max = max;
+			Cur = T();
+		}
+
+		bool IsReach(T point)
+		{
+			return (Cur >= point);
+		}
+
+		// 증가값과 체크하고자 하는 값으로 한번만 지나갈 때를 체크합니다.
+		bool IsReach_Once(T point, T increase)
+		{
+			return (Cur >= point - increase * (T)0.5f && Cur < point + increase * (T)0.5f);
+		}
+
+		bool IsMax()
+		{
+			return (Cur >= Max);
+		}
+
+		bool IsMax_Once()
+		{
+			return (Cur >= Max && PrevCur != Cur);
+		}
+
+		float Get_Percent()
+		{
+			return (static_cast<float>(Cur) / static_cast<float>(Max));
+		}
+	};
+
+	template <typename T = float>
+	using DELAY = _DELAY<T>;
+
+	template <typename T = float>
+	using GAUGE = _DELAY<T>;
+#pragma endregion
+
+#pragma region 액션
+	typedef struct _ACTION
+	{
+		_ACTION() : bAction() {}
+		~_ACTION() {}
+
+		bool bAction;
+
+		void Act()
+		{
+			bAction = true;
+		}
+
+		void Update()
+		{
+			bAction = false;
+		}
+
+		bool Sync()
+		{
+			if (bAction)
+			{
+				bAction = false;
+				return true;
+			}
+			return false;
+		}
+
+		bool IsOnAct()
+		{
+			return bAction;
+		}
+	}ACTION;
+
+	template<typename Key>
+	using MAP_ACTION = unordered_map<Key, ACTION>;
+
+	template<typename Key>
+	class CMapAction_Updator
+	{
+	public:
+		void operator() (pair<const Key, ACTION>& Action)
+		{
+			Action.second.Update();
+		}
+	};
+
+	template<typename Key>
+	struct ACTION_SET
+	{
+		ACTION_SET() {}
+		~ACTION_SET() {}
+
+	public:
+		map<Key, ACTION> mapAction;
+
+		void Add_Action(Key&& tKey)
+		{
+			mapAction.emplace(tKey, ACTION());
+		}
+
+		ACTION& operator[] (Key&& tKey)
+		{
+			return mapAction[tKey];
+		}
+
+		void Update()
+		{
+			for_each(mapAction.begin(), mapAction.end(), CMapAction_Updator<Key>());
+		}
+	};
+#pragma endregion
+
 	
 }
 
