@@ -15,12 +15,20 @@ protected:
 	virtual ~CMeshCol();
 
 public:
-	virtual HRESULT		Ready_Buffer();
-	virtual void		Render_Buffer();
+	void	BoxMesh_Ready(LPDIRECT3DDEVICE9 pDevice, FLOAT _Width, FLOAT _Height, FLOAT Depth, LPD3DXMESH* ppMesh);
+	void	Sphere_Ready(LPDIRECT3DDEVICE9  pDevice, FLOAT Radius, UINT Slices, UINT Stacks, LPD3DXMESH* ppMesh, LPD3DXBUFFER* ppAdjacency);
+	void	BoxMesh_Col();
+	void	SphereMesh_Col();
 
 public:
 	static CMeshCol* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual CComponent* Clone();
+
+private:
+	LPD3DXMESH*	m_Mesh;
+	FLOAT  Width = 0.f;
+	FLOAT  Height = 0.f;
+	FLOAT  Depth = 0.f;
 
 private:
 	virtual void Free();

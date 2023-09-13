@@ -40,6 +40,7 @@ private:
 	HRESULT				Add_Component();
 	void				Key_Input(const _float& fTimeDelta);
 	void				Mouse_Move();
+	void				Height_On_Terrain();
 
 public:
 	GETSET_EX2(CRcTex*, m_pBufferComp, BufferComponent, GET, SET)

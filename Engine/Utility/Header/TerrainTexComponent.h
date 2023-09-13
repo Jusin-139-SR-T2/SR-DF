@@ -34,6 +34,9 @@ private:
 public:
 	virtual HRESULT		Ready_Buffer(const _tchar* pFileName, const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv);
 	virtual void		Render_Buffer();
+
+public:
+	const _vec3* Get_VtxPos() const { return m_pPos; }
 #pragma endregion
 
 public:
@@ -51,6 +54,10 @@ public:
 private:
 	_bool			m_bHeightMap_Loaded;
 	vector<_int>	m_vHeightMap;
+
+private:
+	_vec3* m_pPos;
+
 };
 
 END

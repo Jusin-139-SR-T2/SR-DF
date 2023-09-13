@@ -36,6 +36,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
+    Height_On_Terrain();
     Key_Input(fTimeDelta);
 
     // 플레이어 마우스 무브
@@ -153,4 +154,17 @@ CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 void CPlayer::Free()
 {
     SUPER::Free();
+}
+
+void CPlayer::Height_On_Terrain()
+{
+    _vec3		vPos;
+    m_pTransformComp->Get_Info(INFO_POS, &vPos);
+
+    CTerrainTexComponent* pTerrainBufferComp = dynamic_cast<CTerrainTexComponent*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    NULL_CHECK(pTerrainBufferComp);
+
+    _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
+
+    m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.f, vPos.z);
 }

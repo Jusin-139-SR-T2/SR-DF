@@ -51,6 +51,19 @@ public:
 	}
 	_matrix* Get_WorldMatrix() { return &m_matWorld; }
 
+	// Set_Pos
+	void		Set_Pos(const _float& fX,
+		const _float& fY,
+		const _float& fZ)
+	{
+		m_vInfo[INFO_POS] = { fX, fY, fZ };
+	}
+
+	void		Set_Pos(const _vec3& vPos)
+	{
+		m_vInfo[INFO_POS] = vPos;
+	}
+
 public:
 	_vec3		m_vInfo[INFO_END];
 	_vec3		m_vScale;
