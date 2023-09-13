@@ -36,12 +36,7 @@ protected:
 	virtual void Free() {}
 
 protected:
-	virtual HRESULT Ready_Shape()
-	{
-		uiID = uiID_Count++;		// ID 자동 증가
-
-		return S_OK;
-	}
+	virtual HRESULT Ready_Shape();
 
 public:
 	static _uint uiID_Count;

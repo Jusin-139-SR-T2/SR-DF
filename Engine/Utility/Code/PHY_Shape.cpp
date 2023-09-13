@@ -23,3 +23,10 @@ _uint FPHY_Shape::uiID_Count = 0U;
 //{
 //	return new ThisClass(*this);
 //}
+
+HRESULT FPHY_Shape::Ready_Shape()
+{
+	uiID = uiID_Count++;		// ID 자동 증가
+
+	return S_OK;
+}
