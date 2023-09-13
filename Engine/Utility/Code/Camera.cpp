@@ -79,7 +79,7 @@ _int CCamera::Update_GameObject(const _float& fTimeDelta)
 	return 0;
 }
 
-_matrix* CCamera::LookAtLH(_matrix* pmatOut, _vec3* pvEye, _vec3* pvAt, _vec3* pvUp)
+_matrix* CCamera::LookAtLH(_matrix* pmatOut, _vec3* pvEye, _vec3* pvAt, _vec3* pvUp)	
 {
 	_vec3 vDirection, vRight, vUp;
 	// Look ±¸ÇÏ±â
