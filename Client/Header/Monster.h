@@ -31,16 +31,19 @@ public:
 
 
 private:
-	CRcTex*			m_pBufferCom = nullptr;
-	CTransform*		m_pTransformCom = nullptr;
-	CTexture*		m_pTextureCom = nullptr;
+	CRcTex* m_pBufferComp = nullptr;
+	CTransform*		m_pTransformComp = nullptr;
+	CTexture*		m_pTextureComp = nullptr;
+	CCalculator* m_pCalculatorComp = nullptr;
 
-	CGameObject* m_pTarget = nullptr;
+	CGameObject*	m_pTarget = nullptr;
+
 public:
 	void		Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
 	static CMonster* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 	_matrix m_matRotAxis;
+
 private:
 	virtual void	Free();
 };
