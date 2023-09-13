@@ -13,7 +13,7 @@ private:
 	virtual ~FPHY_Box();
 
 protected:
-	// 박스의 준비물
+	// 박스의 준비물 - 한변의 길이 
 
 
 protected:
