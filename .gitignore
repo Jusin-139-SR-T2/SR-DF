@@ -36,5 +36,6 @@
 .vs/
 Bin/
 ipch/
+Reference/Library/Engine/
 
 #*.VC.db

@@ -98,6 +98,7 @@ HRESULT CImguiMgr::Update_Imgui(const _float& fTimeDelta)
 		ImGui::ShowDemoWindow(&m_bShow_DemoWindow);
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+	if (m_bShow_DemoWindow)
 	{
 		static float f = 0.0f;
 		static int counter = 0;
@@ -180,7 +181,7 @@ HRESULT CImguiMgr::Update_Imgui(const _float& fTimeDelta)
 
 	// 컨테이너에 저장된 윈도우 실행
 	for (auto item : m_mapImguiWin)
-		item.second->Update_ImgWin(fTimeDelta);
+		item.second->Update_ImguiWin(fTimeDelta);
 
 
 	// Rendering
@@ -218,7 +219,7 @@ HRESULT CImguiMgr::Render_AdditionImgui(HRESULT dwDeviceState)
 
 void CImguiMgr::ResetDevice(_uint dwResizeWidth, _uint dwResizeHeight)
 {
-	if (!(dwResizeWidth != 0 || dwResizeHeight != 0))
+	if (dwResizeWidth == 0 && dwResizeHeight == 0)
 		return;
 
 	m_pDeviceClass->Get_D3DPP()->BackBufferWidth = dwResizeWidth;

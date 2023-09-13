@@ -27,9 +27,7 @@ HRESULT CImguiWin::Ready_ImguiWin()
 	return S_OK;
 }
 
-_int CImguiWin::Update_ImgWin(const _float& fTimeDelta)
+_int CImguiWin::Update_ImguiWin(const _float& fTimeDelta)
 {
-	//ImGui::Begin(u8"응애 머신");
-
 	return 0;
 }

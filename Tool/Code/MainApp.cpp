@@ -34,8 +34,10 @@ int CMainApp::Update_MainApp(const _float& fTimeDelta)
 {
 	m_pManagementClass->Update_Scene(fTimeDelta);
 
-	CImguiMgr::GetInstance()->Update_Imgui(fTimeDelta);
 
+	CImguiMgr::GetInstance()->Update_Imgui(fTimeDelta);
+	
+	
 	return 0;
 }
 
@@ -52,16 +54,32 @@ void CMainApp::Render_MainApp()
 	// [렌더 시작]
 	if ((result = Engine::Render_Begin(clear_col_dx)) >= 0)
 	{
-		// [IMGUI 렌더]
-		CImguiMgr::GetInstance()->Render_Imgui();
-
 		// [오브젝트 렌더] 렌더러에 요청해서 그려야할 오브젝트들을 그린다.
 		Engine::Render_Scene(m_pGraphicDev);
+
+		LPDIRECT3DSURFACE9 pBackBuffer = NULL;
+		LPDIRECT3DSURFACE9 pSurface = NULL;
+
+		m_pGraphicDev->CreateTexture(WINCX, WINCY, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_pTexture, NULL);
+		m_pGraphicDev->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer);
+		m_pTexture->GetSurfaceLevel(0, &pSurface);
+		m_pGraphicDev->StretchRect(pBackBuffer, NULL, pSurface, NULL, D3DTEXF_NONE);
+
+		CImguiMgr::GetInstance()->Set_EditorTexture(&m_pTexture);
+
+
+		pSurface->Release();
+		pBackBuffer->Release();
+		//m_pTexture->Release();
+
+
+		// [IMGUI 렌더]
+		CImguiMgr::GetInstance()->Render_Imgui();
 	}
 
 	// [렌더 종료] 스왑 체인을 하여 백버퍼를 앞으로 불러들이고 종료시킨다.
 	result = Engine::Render_End();
-
+	
 	CImguiMgr::GetInstance()->Render_AdditionImgui(result);
 }
 
@@ -136,17 +154,12 @@ void CMainApp::CleanupDeviceD3D()
 void CMainApp::ResetDevice(_uint dwResizeWidth, _uint dwResizeHeight)
 {
 	CImguiMgr::GetInstance()->ResetDevice(dwResizeWidth, dwResizeHeight);
-	if (!(dwResizeWidth != 0 || dwResizeHeight != 0))
-		return;
 
-	m_pDeviceClass->Get_D3DPP()->BackBufferWidth = dwResizeWidth;
-	m_pDeviceClass->Get_D3DPP()->BackBufferHeight = dwResizeHeight;
-
-	ImGui_ImplDX9_InvalidateDeviceObjects();
-	if (m_pDeviceClass->Reset_GraphicDev() == D3DERR_INVALIDCALL)
-		IM_ASSERT(0);
-
-	ImGui_ImplDX9_CreateDeviceObjects();
+	if (m_pTexture != nullptr)
+	{
+		m_pTexture->Release();
+		m_pTexture = nullptr;
+	}
 }
 
 bool CMainApp::LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 pOutTex, _int* pOutWidth, _int* pOutHeight)

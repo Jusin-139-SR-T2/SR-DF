@@ -18,6 +18,15 @@ protected:
 
 public:
 	virtual HRESULT Ready_ImguiWin() override;
-	virtual _int	Update_ImgWin(const _float& fTimeDelta) override;
+	virtual _int	Update_ImguiWin(const _float& fTimeDelta) override;
+
+public:
+	GETSET_EX1(LPDIRECT3DTEXTURE9, m_pTexture, Texture, GET_REF)
+
+private:
+	LPDIRECT3DTEXTURE9 m_pTexture = nullptr;
+	LPDIRECT3DSURFACE9 m_pRenderTargetSurface = nullptr;
+
+
 };
 
