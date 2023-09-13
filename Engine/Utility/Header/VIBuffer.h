@@ -1,15 +1,15 @@
 #pragma once
 
-#include "Component.h"
+#include "SceneComponent.h"
 
 BEGIN(Engine)
 
 /// <summary>
 /// 점에 대한 버퍼를 저장하는 클래스
 /// </summary>
-class ENGINE_DLL CVIBuffer : public CComponent
+class ENGINE_DLL CVIBuffer : public CSceneComponent
 {
-	DERIVED_CLASS(CComponent, CBase)
+	DERIVED_CLASS(CSceneComponent, CVIBuffer)
 protected:
 	explicit CVIBuffer();
 	explicit CVIBuffer(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -19,7 +19,6 @@ protected:
 public:
 	virtual HRESULT		Ready_Buffer();
 	virtual void		Render_Buffer();
-
 
 public:
 	const _ulong& Get_VertexCount() { return m_dwVtxCnt; }

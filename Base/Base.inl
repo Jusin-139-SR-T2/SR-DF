@@ -12,6 +12,12 @@ unsigned	long		CBase::AddRef()
 {
 	return ++m_dwRefCnt;
 }
+template <class T>
+T*						CBase::Get_ByRef()
+{
+	AddRef();
+	return dynamic_cast<T*>(this);
+}
 unsigned	long		CBase::Get_RefCount()
 {
 	return m_dwRefCnt;

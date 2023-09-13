@@ -65,5 +65,6 @@ void			Release_Utility()
 {
 	CRenderer::GetInstance()->DestroyInstance();
 	CProtoMgr::GetInstance()->DestroyInstance();
+	CPhysicsMgr::GetInstance()->DestroyInstance();
 	CManagement::GetInstance()->DestroyInstance();
 }

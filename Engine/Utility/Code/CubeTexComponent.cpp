@@ -162,6 +162,6 @@ HRESULT CCubeTexComponent::Ready_Buffer(void)
 
 void CCubeTexComponent::Render_Buffer(void)
 {
-	CVIBuffer::Render_Buffer();
+	SUPER::Render_Buffer();
 }
 
