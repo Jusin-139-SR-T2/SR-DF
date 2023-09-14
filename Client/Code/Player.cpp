@@ -124,6 +124,7 @@ HRESULT CPlayer::Add_Component()
     // 플레이어 공격 텍스처
     NULL_CHECK_RETURN(m_pAttackTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_PlayerAttackTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pAttackSpinTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_PlayerAttackTestTextureComp"), E_FAIL);
+
     return S_OK;
 }
 

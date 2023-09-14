@@ -21,21 +21,23 @@ CMeshCol::~CMeshCol()
 void CMeshCol::BoxMesh_Ready(LPDIRECT3DDEVICE9 pDevice, FLOAT _Width, FLOAT _Height, FLOAT Depth, LPD3DXMESH* ppMesh)
 {
 	D3DXCreateBox(pDevice, Width, Height, Depth, ppMesh, NULL);
-	m_Mesh = ppMesh;
+	m_Mesh = *ppMesh;
 }
 
 void CMeshCol::Sphere_Ready(LPDIRECT3DDEVICE9  pDevice, FLOAT Radius, UINT Slices, UINT Stacks, LPD3DXMESH* ppMesh, LPD3DXBUFFER* ppAdjacency)
 {
 	D3DXCreateSphere(pDevice, Radius, Slices, Stacks, ppMesh, ppAdjacency);
-	m_Mesh = ppMesh; 
+	m_Mesh = *ppMesh; 
 }
 
 void CMeshCol::BoxMesh_Col()
 {
+	m_Mesh->DrawSubset(0);
 }
 
 void CMeshCol::SphereMesh_Col()
 {
+	m_Mesh->DrawSubset(0);
 }
 
 CMeshCol* CMeshCol::Create(LPDIRECT3DDEVICE9 pGraphicDev)

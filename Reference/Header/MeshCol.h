@@ -25,7 +25,7 @@ public:
 	virtual CComponent* Clone();
 
 private:
-	LPD3DXMESH*	m_Mesh;
+	LPD3DXMESH	m_Mesh;
 	FLOAT  Width = 0.f;
 	FLOAT  Height = 0.f;
 	FLOAT  Depth = 0.f;
