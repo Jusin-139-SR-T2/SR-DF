@@ -49,6 +49,9 @@ CComponent* CTexture::Clone()
 void CTexture::Free()
 {
 	SUPER::Free();
+
+	for (size_t i = 0; i < m_vecTexture.size(); ++i)
+		Safe_Release(m_vecTexture[i]);
 }
 
 HRESULT CTexture::Ready_Texture(TEXTUREID eType, const _tchar* pPath, const _uint& iCnt)

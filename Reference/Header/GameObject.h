@@ -47,10 +47,14 @@ public:
 	virtual void	Render_GameObject()	PURE;
 
 public:
+	void Compute_ViewZ(const _vec3* pPos);
+
+public:
 	GETSET_EX2(CGameObject*, m_pOwner, Owner, GET, SET)
 
 protected:
 	CGameObject*	m_pOwner = nullptr;
+	_float			m_fViewZ;
 
 };
 
@@ -71,7 +75,13 @@ T* CGameObject::Set_DefaultComponent_FromProto(COMPONENTID eID, const _tchar* pC
 {
 	T* pComponent = dynamic_cast<T*>(CProtoMgr::GetInstance()->Clone_Proto(pProtoTag));
 	NULL_CHECK_RETURN(pComponent, nullptr);
-	m_mapComponent[eID].emplace(pComponentTag, pComponent);
+	bool bSuccess = m_mapComponent[eID].emplace(pComponentTag, pComponent).second;
+	if (!bSuccess)
+	{
+		Safe_Release(pComponent);
+		MSG_BOX("Clone Pushback Failed");
+		return nullptr;
+	}
 
 	return pComponent;
 }

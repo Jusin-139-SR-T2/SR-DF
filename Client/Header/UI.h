@@ -53,6 +53,7 @@ private:
 	CCalculator* m_pCalculatorComp = nullptr;
 
 	CGameObject* m_pTarget = nullptr;
+
 public:
 	void		Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
 	_matrix m_matRotAxis;
@@ -62,7 +63,6 @@ public:
 	
 protected:
 	CDynamicCamera* m_pCamera = nullptr;
-	CPlayer* m_pPlayer = nullptr;
 
 private: 
 	float fHp;
