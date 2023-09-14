@@ -180,6 +180,8 @@
     <ClInclude Include="Header\SceneComponent.h" />
     <ClInclude Include="Header\SphereColComp.h" />
     <ClInclude Include="Header\MeshCol.h" />
+    <ClInclude Include="Header\PHY_Box.h" />
+    <ClInclude Include="Header\PHY_Capsule.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\ActorComponent.cpp" />
@@ -210,6 +212,8 @@
     <ClCompile Include="Code\SceneComponent.cpp" />
     <ClCompile Include="Code\SphereColComp.cpp" />
     <ClCompile Include="Code\MeshCol.cpp" />
+    <ClCompile Include="Code\PHY_Box.cpp" />
+    <ClCompile Include="Code\PHY_Capsule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_Utility.inl" />

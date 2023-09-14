@@ -12,13 +12,15 @@ private:
 	explicit FPHY_Sphere(const FPHY_Shape& rhs);
 	virtual ~FPHY_Sphere();
 
+protected:
+	_float m_fRadius ; // 구는 반지름 필요 
+
 public:
 	static FPHY_Sphere* Create();
 	virtual FPHY_Sphere* Clone();
-protected:
-	virtual void Free() override;
 
 protected:
+	virtual void Free() override;
 	virtual HRESULT Ready_Shape();
 };
 

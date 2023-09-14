@@ -24,7 +24,7 @@ HRESULT CUI::Ready_GameObject()
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransformComp->m_vScale.x = 1.f;
-	m_pTransformComp->m_vInfo[INFO_POS] = { 0.f, 0.f, 10.f };
+	m_pTransformComp->m_vInfo[INFO_POS] = { 0.f, 0.f,  2.f };
 
 	return S_OK;
 }

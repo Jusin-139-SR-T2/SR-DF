@@ -33,6 +33,7 @@
     <ClInclude Include="Header\Monster.h" />
     <ClInclude Include="Header\Player.h" />
     <ClInclude Include="Header\Terrain.h" />
+    <ClInclude Include="Header\TitleLogo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\BackGround.cpp" />
@@ -52,6 +53,7 @@
     <ClCompile Include="Code\Monster.cpp" />
     <ClCompile Include="Code\Player.cpp" />
     <ClCompile Include="Code\Terrain.cpp" />
+    <ClCompile Include="Code\TitleLogo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />
@@ -167,8 +169,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "Resource\" "$(OutDir)Resource\" /y /e /k
-xcopy "$(SolutionDir)Reference\Library\FMod\core\$(PlatformTarget)\fmodL.dll" "$(OutDir)" /y
+      <Command>xcopy "$(SolutionDir)Reference\Library\FMod\core\$(PlatformTarget)\fmodL.dll" "$(OutDir)" /y
 xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL.dll" "$(OutDir)" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -188,8 +189,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "Resource\" "$(OutDir)Resource\" /y /e /k
-xcopy "$(SolutionDir)Reference\Library\FMod\core\$(PlatformTarget)\fmodL.dll" "$(OutDir)" /y
+      <Command>xcopy "$(SolutionDir)Reference\Library\FMod\core\$(PlatformTarget)\fmodL.dll" "$(OutDir)" /y
 xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL.dll" "$(OutDir)" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

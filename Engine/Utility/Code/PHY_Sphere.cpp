@@ -7,6 +7,7 @@ FPHY_Sphere::FPHY_Sphere()
 FPHY_Sphere::FPHY_Sphere(const FPHY_Shape& rhs)
 	: Base(rhs)
 {
+		Free();
 }
 
 FPHY_Sphere::~FPHY_Sphere()
@@ -42,6 +43,10 @@ HRESULT FPHY_Sphere::Ready_Shape()
 {
 	SUPER::Ready_Shape();
 	eType = EPHY_SHAPE::SPHERE;
+
+	//Sphere 준비물 = 반지름 
+	m_fRadius = 3; // 반지름
+
 
 	return S_OK;
 }
