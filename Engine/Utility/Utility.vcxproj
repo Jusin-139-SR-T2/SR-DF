@@ -152,6 +152,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Export_Utility.h" />
+    <ClInclude Include="Header\ActorComponent.h" />
+    <ClInclude Include="Header\PHY_Shape.h" />
+    <ClInclude Include="Header\ColliderComponent.h" />
     <ClInclude Include="Header\CubeTexComponent.h" />
     <ClInclude Include="Header\Calculator.h" />
     <ClInclude Include="Header\Camera.h" />
@@ -172,8 +175,16 @@
     <ClInclude Include="Header\TerrainTexComponent.h" />
     <ClInclude Include="Header\Light.h" />
     <ClInclude Include="Header\LightMgr.h" />
+    <ClInclude Include="Header\PhysicsMgr.h" />
+    <ClInclude Include="Header\PHY_Sphere.h" />
+    <ClInclude Include="Header\SceneComponent.h" />
+    <ClInclude Include="Header\SphereColComp.h" />
+    <ClInclude Include="Header\MeshCol.h" />
+    <ClInclude Include="Header\PHY_Box.h" />
+    <ClInclude Include="Header\PHY_Capsule.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\ActorComponent.cpp" />
     <ClCompile Include="Code\Calculator.cpp" />
     <ClCompile Include="Code\Camera.cpp" />
     <ClCompile Include="Code\CameraComponent.cpp" />
@@ -194,6 +205,15 @@
     <ClCompile Include="Code\Light.cpp" />
     <ClCompile Include="Code\LightMgr.cpp" />
     <ClCompile Include="Code\CubeTexComponent.cpp" />
+    <ClCompile Include="Code\ColliderComponent.cpp" />
+    <ClCompile Include="Code\PhysicsMgr.cpp" />
+    <ClCompile Include="Code\PHY_Shape.cpp" />
+    <ClCompile Include="Code\PHY_Sphere.cpp" />
+    <ClCompile Include="Code\SceneComponent.cpp" />
+    <ClCompile Include="Code\SphereColComp.cpp" />
+    <ClCompile Include="Code\MeshCol.cpp" />
+    <ClCompile Include="Code\PHY_Box.cpp" />
+    <ClCompile Include="Code\PHY_Capsule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_Utility.inl" />

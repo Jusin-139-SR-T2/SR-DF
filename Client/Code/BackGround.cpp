@@ -45,7 +45,10 @@ HRESULT CBackGround::Add_Component()
 	// 버퍼
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcTex>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	// 텍스쳐 컴포넌트
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_LogoTextureComp"), E_FAIL);
+	NULL_CHECK_RETURN(m_pBackTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Comp_TitleTexture", L"Proto_TitleBackTextureComp"), E_FAIL);
+	// 텍스쳐 컴포넌트
+	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Comp_LogoTexture", L"Proto_LogoTextureComp"), E_FAIL);
+	
 
 	return S_OK;
 }
@@ -76,9 +79,24 @@ void CBackGround::Render_GameObject()
 	//m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
 	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
+	
+
+	m_pBackTextureComp->Render_Texture(0);
+	m_pBufferComp->Render_Buffer();
+
+	
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pTextureComp->Render_Texture(0);
 	m_pBufferComp->Render_Buffer();
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	
+	
 	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 

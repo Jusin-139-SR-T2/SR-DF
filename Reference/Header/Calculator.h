@@ -1,15 +1,15 @@
 #pragma once
 
-#include "Component.h"
+#include "ActorComponent.h"
 
 BEGIN(Engine)
 
 /// <summary>
 /// [CComponent] ÆÄ»ý
 /// </summary>
-class ENGINE_DLL CCalculator : public CComponent
+class ENGINE_DLL CCalculator : public CActorComponent
 {
-	DERIVED_CLASS(CComponent, CCalculator)
+	DERIVED_CLASS(CActorComponent, CCalculator)
 private:
 	explicit CCalculator(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CCalculator();

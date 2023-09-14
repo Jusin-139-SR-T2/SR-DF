@@ -8,11 +8,17 @@
 #include "TerrainTexComponent.h"
 #include "CameraComponent.h"
 
+#include "PHY_Shape.h"
+#include "PHY_Sphere.h"
+#include "ColliderComponent.h"
+#include "SphereColComp.h"
+
 #include "Texture.h"
 #include "Transform.h"
 
 #include "ProtoMgr.h"
 #include "Renderer.h"
+#include "PhysicsMgr.h"
 
 #include "Camera.h"
 
@@ -41,6 +47,10 @@ inline CComponent*		Clone_Proto(const _tchar* pProtoTag, CComponent*& prComponen
 inline void		Add_RenderGroup(RENDERID eType, CGameObject* pGameObject);
 inline void		Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 inline void		Clear_RenderGroup();
+
+
+// PhysicsMgr
+
 
 
 inline void			Release_Utility();

@@ -3,6 +3,7 @@
 CTerrainTexComponent::CTerrainTexComponent()
 	: m_dwCountX(0U), m_dwCountZ(0U)
 	, m_bHeightMap_Loaded(false)
+	, m_pPos(nullptr)
 {
 }
 
@@ -10,6 +11,7 @@ CTerrainTexComponent::CTerrainTexComponent(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
 	, m_dwCountX(0U), m_dwCountZ(0U)
 	, m_bHeightMap_Loaded(false)
+	, m_pPos(nullptr)
 {
 }
 
@@ -18,6 +20,7 @@ CTerrainTexComponent::CTerrainTexComponent(const CTerrainTexComponent& rhs)
 	, m_dwCountX(rhs.m_dwCountX), m_dwCountZ(rhs.m_dwCountZ)
 	, m_bHeightMap_Loaded(rhs.m_bHeightMap_Loaded)
 	, m_vHeightMap(rhs.m_vHeightMap)
+	, m_pPos(rhs.m_pPos)
 {
 }
 
@@ -108,6 +111,8 @@ HRESULT CTerrainTexComponent::Ready_Buffer(const _tchar* pFileName, const _ulong
 	m_dwIdxSize = sizeof(INDEX32);
 	m_IdxFmt = D3DFMT_INDEX32;
 
+	m_pPos = new _vec3[m_dwVtxCnt];
+
 	// 여기서 위에서 입력한 내용을 토대로 버퍼의 크기를 확보한다.
 	FAILED_CHECK_RETURN(CVIBuffer::Ready_Buffer(), E_FAIL);
 
@@ -136,6 +141,8 @@ HRESULT CTerrainTexComponent::Ready_Buffer(const _tchar* pFileName, const _ulong
 			else
 				pVertex[dwIndex].vPosition = { (_float)j, 0.f, (_float)i };
 
+			m_pPos[dwIndex] = pVertex[dwIndex].vPosition;
+
 			pVertex[dwIndex].vNormal = { 0.f, 0.f, 0.f };
 
 			pVertex[dwIndex].vTexUV = { ((_float)j / ((_float)dwCntX - 1)) * 20.f, ((_float)i / ((_float)dwCntZ - 1)) * 20.f};
@@ -146,6 +153,7 @@ HRESULT CTerrainTexComponent::Ready_Buffer(const _tchar* pFileName, const _ulong
 	_ulong		dwTriIdx(0);
 	_vec3		vDst, vSrc, vNormal;
 
+	//	Safe_Delete_Array(m_pPos);
 
 	m_pIB->Lock(0, 0, (void**)&pIndex, 0);
 	// 점은 좌우로 129개지만 128개로 줄여 계산

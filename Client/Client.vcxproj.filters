@@ -81,6 +81,12 @@
     <ClInclude Include="Header\DynamicCamera.h">
       <Filter>02. GameObject\03. Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\TitleLogo.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -115,6 +121,12 @@
     </ClCompile>
     <ClCompile Include="Code\DynamicCamera.cpp">
       <Filter>02. GameObject\03. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\TitleLogo.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

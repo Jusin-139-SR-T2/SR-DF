@@ -5,6 +5,7 @@
 #include "Export_Utility.h"
 #include "DynamicCamera.h"
 #include "BackGround.h"
+#include "UI.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -13,6 +14,7 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 
 CStage::~CStage()
 {
+
 }
 
 HRESULT CStage::Ready_Scene()
@@ -81,14 +83,14 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	Engine::CGameObject*		pGameObject = nullptr;
 
 	// Player
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", CPlayer::Create(m_pGraphicDev)), E_FAIL);
-
-	// Monster
-	/*pGameObject = CMonster::Create(m_pGraphicDev);
+	pGameObject = CPlayer::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Monster", pGameObject), E_FAIL);*/
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
-	
+	//Monster
+	pGameObject = CMonster::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Monster", pGameObject), E_FAIL);
 
 	return S_OK;
 }
@@ -100,6 +102,9 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
 	Engine::CGameObject*		pGameObject = nullptr;
+
+	// Terrain
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI", CUI::Create(m_pGraphicDev)), E_FAIL);
 	
 	return S_OK;
 }
@@ -134,7 +139,5 @@ CStage * CStage::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CStage::Free()
 {
-
-
 	SUPER::Free();
 }

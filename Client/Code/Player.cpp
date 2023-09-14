@@ -25,9 +25,12 @@ HRESULT CPlayer::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformComp->m_vScale.x = 1.f;
+    m_pTransformComp->m_vScale.x = 0.3f;
+    m_pTransformComp->m_vScale.y = 0.4f;
 
     m_pTransformComp->m_vInfo[INFO_POS] = { 15.f, 10.f, 10.f };
+
+    m_pBufferComp->Set_Vertex(1.7f, 0.f, 1.f);
 
     return S_OK;
 }
@@ -36,7 +39,29 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
+    // 플레이어 마우스 무브
+    Mouse_Move();
+
+    Height_On_Terrain();
     Key_Input(fTimeDelta);
+
+    if (bFrameOn)
+    {
+        m_fFrame += 10.f * fTimeDelta;
+
+        if (m_fFrame > m_fMaxFrame)
+        {
+            m_fFrame = 0;
+            bFrameOn = false;
+
+            if (bSpinOn)
+            {
+                bSpinOn = false;
+                bGunOn = true;
+                m_fMaxFrame = 3.f;
+            }
+        }
+    }
 
     Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -44,7 +69,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 }
 
 void CPlayer::LateUpdate_GameObject()
-{
+{   
     SUPER::LateUpdate_GameObject();
 }
 
@@ -52,41 +77,53 @@ void CPlayer::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-    //m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE,TRUE);
-
-    //m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-    //m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
-    /*m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-    m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);*/
-
-    // A(R.G.B)-> (AR AG AB) * (A`R A`G A`B)
-
-    //(sAR sAG sAB) + (1.f - sA)(R G B)
-
-
-    m_pTextureComp->Render_Texture(0);
-
+    m_pBufferComp->Set_Vertex(-3.5f, -0.7f, 0.f);
+    m_pLeftTextureComp->Render_Texture(0);
     m_pBufferComp->Render_Buffer();
 
-    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+    m_pBufferComp->Set_Vertex(3.5f, 0.f, 0.f);
 
-    //m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-    //m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+    if (!bAttackOn)
+    {
+        m_pRightTextureComp->Render_Texture(0);
+        m_pBufferComp->Render_Buffer();
+    }
+    if (bAttackOn)
+    {
+        if (bGunOn)
+        {
+            m_pAttackTextureComp->Render_Texture((_ulong)m_fFrame);
+            m_pBufferComp->Render_Buffer();
+        }
+        else if (bSpinOn)
+        {
+            m_pAttackSpinTextureComp->Render_Texture((_ulong)m_fFrame);
+            m_pBufferComp->Render_Buffer();
+        }
+    }
+
+
+    m_pBufferComp->Set_Vertex(0.f, 0.7f, 0.f);
+
+    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 HRESULT CPlayer::Add_Component()
 {
     NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcTex>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-
-    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_PlayerTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransform>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculator>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
 
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CSphereColComp>(ID_STATIC, L"Comp_SphereCollider", L"Proto_SphereColComp"), E_FAIL);
+
+    // 플레이어 왼손 텍스처
+    NULL_CHECK_RETURN(m_pLeftTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_PlayerLeftTextureComp"), E_FAIL);
+    // 플레이어 오른손 텍스처
+    NULL_CHECK_RETURN(m_pRightTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_PlayerRightTextureComp"), E_FAIL);
+    // 플레이어 공격 텍스처
+    NULL_CHECK_RETURN(m_pAttackTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_PlayerAttackTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pAttackSpinTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_PlayerAttackTestTextureComp"), E_FAIL);
     return S_OK;
 }
 
@@ -97,97 +134,87 @@ void CPlayer::Key_Input(const _float& fTimeDelta)
     m_pTransformComp->Get_Info(INFO_LOOK, &vLook);
     vLook = { vLook.x, 0.f, vLook.z };
 
+    _vec3 vInverse = (-m_pCamera->Get_At());
+
+    m_pTransformComp->Compute_LootAtTarget(&vInverse);
+
+    // 전진
     if (Engine::Get_DIKeyState(DIK_W) & 0x80)
     {
         D3DXVec3Normalize(&vLook, &vLook);
         m_pTransformComp->Move_Pos(&vLook, fTimeDelta, 5.f);
     }
 
+    // 후진
     if (Engine::Get_DIKeyState(DIK_S) & 0x80)
     {
         D3DXVec3Normalize(&vLook, &vLook);
         m_pTransformComp->Move_Pos(&vLook, fTimeDelta, -5.f);
     }
 
-    _vec3 vInverse = (- m_pCamera->Get_At());
-    
-    m_pTransformComp->Compute_LootAtTarget(&vInverse);
-
-    //if (GetAsyncKeyState('E') & 0x8000)
-    //{
-    //    D3DXVec3Normalize(&vDir, &vDir);
-    //    m_pTransformCom->Move_Pos(&vDir, fTimeDelta, 5.f);
-    //}
-
-    //if (GetAsyncKeyState('Q') & 0x8000)
-    //{
-    //    D3DXVec3Normalize(&vDir, &vDir);
-    //    m_pTransformCom->Move_Pos(&vDir, fTimeDelta, -5.f);
-    //}
-
-    ////D3DXMatrixRotationAxis(m_pTransformCom->Get_WorldMatrix(), &vDir, D3DXToRadian(-90.f * fTimeDelta));
-
-    //if (GetAsyncKeyState('A') & 0x8000)
-    //{
-    //    m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(90.f * fTimeDelta));
-    //}
-
-    //if (GetAsyncKeyState('D') & 0x8000)
-    //{
-    //    m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(-90.f * fTimeDelta));
-    //}
-
-    /*if (GetAsyncKeyState('W') & 0x8000)
+    // 오른쪽
+    if (Engine::Get_DIKeyState(DIK_D) & 0x80)
     {
-        m_pTransformCom->Rotation(ROT_X, D3DXToRadian(90.f * fTimeDelta));
+        m_pTransformComp->Rotation(ROT_Y, D3DXToRadian(90.f * fTimeDelta));
     }
 
-    if (GetAsyncKeyState('S') & 0x8000)
+    // 왼쪽
+    if (Engine::Get_DIKeyState(DIK_A) & 0x80)
     {
-        m_pTransformCom->Rotation(ROT_X, D3DXToRadian(-90.f * fTimeDelta));
-    }*/
-
-    /*if (GetAsyncKeyState('Q') & 0x8000)
-    {
-        m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(90.f * fTimeDelta));
+        m_pTransformComp->Rotation(ROT_Y, D3DXToRadian(-90.f * fTimeDelta));
     }
 
-    if (GetAsyncKeyState('E') & 0x8000)
+    // 권총
+    if (Engine::Get_DIKeyState(DIK_Q) & 0x80)
     {
-        m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(-90.f * fTimeDelta));
-    }*/
+        bAttackOn = true;
+        bGunOn = true;
+        bSpinOn = false;
+        m_fMaxFrame = 3.f;
+    }
+
+    if (Engine::Get_DIKeyState(DIK_E) & 0x80)
+    {
+        bAttackOn = true;
+        bGunOn = true;
+    }
+
+    // 스핀 (장전)
+    if (Engine::Get_DIKeyState(DIK_R) & 0x80)
+    {
+        bFrameOn = true;
+        bSpinOn = true;
+        bGunOn = false;
+        m_fMaxFrame = 4.f;
+    }
+
+    // 마우스 좌클릭
+    if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
+    {
+        bFrameOn = true;
+    }
+
+    // 마우스 우클릭
+    if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
+    {
+        
+    }
 }
 
+// 마우스 움직임
 void CPlayer::Mouse_Move()
 {
-    // 마우스로 이동하는 동작
-    _long	dwMouseMove = 0;
-    _matrix matWorld;
-
-    
-
-    /*if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
+    // 마우스로 플레이어 회전
+    // 상, 하
+    if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
     {
-        _vec3	vRight;
-        memcpy(&vRight, &m_matWorld.m[0][0], sizeof(_vec3));
-        _vec3		vLook = m_vAt - m_vEye;
-        _matrix		matRot;
-
-        D3DXMatrixRotationAxis(&matRot, &vRight, D3DXToRadian(dwMouseMove / 10.f));
-        D3DXVec3TransformNormal(&vLook, &vLook, &matRot);
-        m_vAt = m_vEye + vLook;
+        m_pTransformComp->Rotation(ROT_X, D3DXToRadian(dwMouseMove / 10.f));
     }
-
+    // 좌, 우
     if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
     {
-        _vec3	vUp = { 0.f, 1.f, 0.f };
-        _vec3		vLook = m_vAt - m_vEye;
-        _matrix		matRot;
-
-        D3DXMatrixRotationAxis(&matRot, &vUp, D3DXToRadian(dwMouseMove / 10.f));
-        D3DXVec3TransformNormal(&vLook, &vLook, &matRot);
-        m_vAt = m_vEye + vLook;
-    }*/
+        m_pTransformComp->Rotation(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
+    }
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -208,4 +235,17 @@ CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 void CPlayer::Free()
 {
     SUPER::Free();
+}
+
+void CPlayer::Height_On_Terrain()
+{
+    _vec3		vPos;
+    m_pTransformComp->Get_Info(INFO_POS, &vPos);
+
+    CTerrainTexComponent* pTerrainBufferComp = dynamic_cast<CTerrainTexComponent*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    NULL_CHECK(pTerrainBufferComp);
+
+    _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
+
+    m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.5f, vPos.z);
 }

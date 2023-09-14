@@ -62,6 +62,30 @@
     <ClInclude Include="Header\Light.h">
       <Filter>04. LightMgr</Filter>
     </ClInclude>
+    <ClInclude Include="Header\PhysicsMgr.h">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ColliderComponent.h">
+      <Filter>01. Component\08. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ActorComponent.h">
+      <Filter>01. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\SceneComponent.h">
+      <Filter>01. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PHY_Shape.h">
+      <Filter>01. Component\08. Collider\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\SphereColComp.h" />
+    <ClInclude Include="Header\PHY_Sphere.h">
+      <Filter>01. Component\08. Collider\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\MeshCol.h">
+      <Filter>01. Component\01. VertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PHY_Box.h" />
+    <ClInclude Include="Header\PHY_Capsule.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component.cpp">
@@ -124,6 +148,30 @@
     <ClCompile Include="Code\LightMgr.cpp">
       <Filter>04. LightMgr</Filter>
     </ClCompile>
+    <ClCompile Include="Code\PhysicsMgr.cpp">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ColliderComponent.cpp">
+      <Filter>01. Component\08. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ActorComponent.cpp">
+      <Filter>01. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\SceneComponent.cpp">
+      <Filter>01. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PHY_Shape.cpp">
+      <Filter>01. Component\08. Collider\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\SphereColComp.cpp" />
+    <ClCompile Include="Code\PHY_Sphere.cpp">
+      <Filter>01. Component\08. Collider\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\MeshCol.cpp">
+      <Filter>01. Component\01. VertexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PHY_Box.cpp" />
+    <ClCompile Include="Code\PHY_Capsule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">
@@ -176,6 +224,18 @@
     </Filter>
     <Filter Include="01. Component\07. Calculator">
       <UniqueIdentifier>{23dc5bd6-cd33-43d2-8405-71498475db7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. PhysicsMgr">
+      <UniqueIdentifier>{54cf8133-3766-4c64-b7c8-1f6b9f4db1a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Component\08. Collider">
+      <UniqueIdentifier>{40e01f3f-7ed4-4f53-b8c4-708e1e6fab22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Component\08. Collider\Data">
+      <UniqueIdentifier>{2785e3ef-9b36-4604-98a2-82a01b75c6cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Component\08. Collider\01. SphereColComp">
+      <UniqueIdentifier>{a34ce4cc-9f76-49f9-82a7-77bc32698c4f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

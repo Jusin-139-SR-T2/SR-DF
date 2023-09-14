@@ -67,17 +67,13 @@
       <Filter>01. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Header\ImguiMgr.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>02. ImguiMgr</Filter>
     </ClInclude>
     <ClInclude Include="Header\ImguiWin.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>02. ImguiMgr</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="Header\ImguiWin_Test.h">
-=======
-    <ClInclude Include="ImguiWin_Test.h">
->>>>>>> 61c90d14e5603d67e75cd13b0d2814870fc2016c
-      <Filter>헤더 파일</Filter>
+      <Filter>02. ImguiMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -115,17 +111,13 @@
       <Filter>01. Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Code\ImguiMgr.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>02. ImguiMgr</Filter>
     </ClCompile>
     <ClCompile Include="Code\ImguiWin.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>02. ImguiMgr</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Code\ImguiWin_Test.cpp">
-=======
-    <ClCompile Include="ImguiWin_Test.cpp">
->>>>>>> 61c90d14e5603d67e75cd13b0d2814870fc2016c
-      <Filter>소스 파일</Filter>
+      <Filter>02. ImguiMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

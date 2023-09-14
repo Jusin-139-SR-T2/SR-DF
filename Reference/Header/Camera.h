@@ -29,6 +29,8 @@ protected:
 	_float			m_fFov, m_fAspect, m_fNear, m_fFar;
 	_matrix			m_matView, m_matProj;
 
+	_float			m_fWidth, m_fHeight;
+
 private:
 	_matrix* LookAtLH(_matrix* pmatOut, _vec3* pvEye, _vec3* pvAt, _vec3* pvUp);
 	_matrix* PerspectiveFovLH(_matrix* pmatOut, _float fFov, _float fAspect, _float fNear, _float fFar);

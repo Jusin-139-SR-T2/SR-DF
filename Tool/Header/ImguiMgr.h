@@ -34,6 +34,9 @@ public:
 	void ResetDevice(_uint dwResizeWidth = 0, _uint dwResizeHeight = 0);
 	bool LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 pOutTex, _int* pOutWidth, _int* pOutHeight);
 
+public:
+	GETSET_EX1(LPDIRECT3DDEVICE9, m_pGraphicDev, GraphicDev, GET)
+
 private:		// 접근을 최소화하는 함수, 변수
 	Engine::CGraphicDev*		m_pDeviceClass;
 	Engine::CManagement*		m_pManagementClass;
@@ -51,5 +54,11 @@ private:
 
 private:
 	_unmap<const _tchar*, CImguiWin*>		m_mapImguiWin;					// IMGUI 윈도우 클래스 저장 컨테이너
+
+public:
+	GETSET_EX2(LPDIRECT3DTEXTURE9, m_pEditorTexture, EditorTexture, SET_PTR, GET_PTR)
+
+private:
+	LPDIRECT3DTEXTURE9 m_pEditorTexture = nullptr;
 };
 

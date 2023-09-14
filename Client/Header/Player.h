@@ -11,6 +11,7 @@ class CTexture;
 class CTransform;
 class CCameraComponent;
 class CCalculator;
+class CSphereColComp;
 
 END
 
@@ -39,18 +40,36 @@ private:
 	HRESULT				Add_Component();
 	void				Key_Input(const _float& fTimeDelta);
 	void				Mouse_Move();
+	void				Height_On_Terrain();
 
 public:
 	GETSET_EX2(CRcTex*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTransform*, m_pTransformComp, TransformComponent, GET, SET)
-	GETSET_EX2(CTexture*, m_pTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CTexture*, m_pLeftTextureComp, TextureComponent, GET, SET)
+	//GETSET_EX2(CTexture*, m_pRightTextureComp, TextureComponent, GET, SET)
 	GETSET_EX2(CCalculator*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+	GETSET_EX2(CSphereColComp*, m_pColliderComp, SphereColComponent, GET, SET)
 
 private:
 	CRcTex*				m_pBufferComp = nullptr;
 	CTransform*			m_pTransformComp = nullptr;
-	CTexture*			m_pTextureComp = nullptr;
+	CTexture*			m_pLeftTextureComp = nullptr;
+	CTexture*			m_pRightTextureComp = nullptr;
+	CTexture*			m_pAttackTextureComp = nullptr;
+	CTexture*			m_pAttackSpinTextureComp = nullptr;
 	CCalculator*		m_pCalculatorComp = nullptr;
+	CSphereColComp*		m_pColliderComp = nullptr;
+
+private:
+	_bool		bAttackOn = false;
+	_bool		bFrameOn = false;
+	_bool		bGunOn = false;
+	_bool		bSpinOn = false;
+
+private:
+	_long			dwMouseMove = 0;
+	_float			m_fFrame = 0.f;
+	_float			m_fMaxFrame = 0.f;
 
 public:
 	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)
@@ -58,5 +77,8 @@ public:
 protected:
 	CDynamicCamera*		m_pCamera = nullptr;
 
+protected:
+	_vec3		m_vEye, m_vAt, m_vUp;
+	_matrix		m_matRot;
 };
 

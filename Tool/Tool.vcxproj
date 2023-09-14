@@ -196,14 +196,10 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Header\ImguiWin_Test.h" />
     <ClInclude Include="Header\Logo.h" />
     <ClInclude Include="Header\MainApp.h" />
     <ClInclude Include="Header\ImguiMgr.h" />
-<<<<<<< HEAD
-    <ClInclude Include="Header\ImguiWin_Test.h" />
-=======
-    <ClInclude Include="ImguiWin_Test.h" />
->>>>>>> 61c90d14e5603d67e75cd13b0d2814870fc2016c
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_dx9.h" />
@@ -219,14 +215,10 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClInclude Include="Include\Tool.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\ImguiWin_Test.cpp" />
     <ClCompile Include="Code\MainApp.cpp" />
     <ClCompile Include="Code\Logo.cpp" />
     <ClCompile Include="Code\ImguiMgr.cpp" />
-<<<<<<< HEAD
-    <ClCompile Include="Code\ImguiWin_Test.cpp" />
-=======
-    <ClCompile Include="ImguiWin_Test.cpp" />
->>>>>>> 61c90d14e5603d67e75cd13b0d2814870fc2016c
     <ClCompile Include="Imgui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

@@ -65,4 +65,8 @@ public:
 private:
 	_uint m_dwResizeWidth = 0U;
 	_uint m_dwResizeHeight = 0U;
+
+
+private:
+	LPDIRECT3DTEXTURE9 m_pTexture = nullptr;
 };

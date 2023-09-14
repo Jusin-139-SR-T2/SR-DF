@@ -43,6 +43,7 @@ private:
 	CTransform*					m_pTransformComp = nullptr;
 	CRcTex*						m_pBufferComp = nullptr;
 	CTexture*					m_pTextureComp = nullptr;
+	CTexture* m_pBackTextureComp = nullptr;
 
 };
 
