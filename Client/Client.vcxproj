@@ -34,6 +34,7 @@
     <ClInclude Include="Header\Player.h" />
     <ClInclude Include="Header\Terrain.h" />
     <ClInclude Include="Header\TitleLogo.h" />
+    <ClInclude Include="Header\SkyBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\BackGround.cpp" />
@@ -54,6 +55,7 @@
     <ClCompile Include="Code\Player.cpp" />
     <ClCompile Include="Code\Terrain.cpp" />
     <ClCompile Include="Code\TitleLogo.cpp" />
+    <ClCompile Include="Code\SkyBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

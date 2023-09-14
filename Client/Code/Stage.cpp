@@ -5,6 +5,7 @@
 #include "Export_Utility.h"
 #include "DynamicCamera.h"
 #include "BackGround.h"
+#include "SkyBox.h"
 #include "UI.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -67,6 +68,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 																						&_vec3(0.f, 10.f, -10.f), 
 																						&_vec3(0.f, 0.f, 1.f), 
 																						&_vec3(0.f, 1.f, 0.f))), E_FAIL);
+
+	// SkyBox
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", CSkyBox::Create(m_pGraphicDev)), E_FAIL);
+
 
 	// Terrain
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", CTerrain::Create(m_pGraphicDev)), E_FAIL);

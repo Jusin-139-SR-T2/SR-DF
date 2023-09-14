@@ -7,6 +7,7 @@
 #include "RcTex.h"
 #include "TerrainTexComponent.h"
 #include "CameraComponent.h"
+#include "CubeTexComponent.h"
 
 #include "PHY_Shape.h"
 #include "PHY_Sphere.h"

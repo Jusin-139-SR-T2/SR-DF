@@ -40,6 +40,12 @@
     <Filter Include="02. GameObject\03. Camera">
       <UniqueIdentifier>{0797d297-9d79-482d-a140-a0eeed17df7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\04. SkyBox">
+      <UniqueIdentifier>{a9160d5a-8cce-47e1-9945-51c70300831b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\03. UI">
+      <UniqueIdentifier>{73c6059c-b0b0-48ab-ba48-db6bbc94e26c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -81,11 +87,14 @@
     <ClInclude Include="Header\DynamicCamera.h">
       <Filter>02. GameObject\03. Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Header\TitleLogo.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\SkyBox.h">
+      <Filter>02. GameObject\04. SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>01. Scene\03. UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,11 +131,14 @@
     <ClCompile Include="Code\DynamicCamera.cpp">
       <Filter>02. GameObject\03. Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Code\UI.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Code\TitleLogo.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\SkyBox.cpp">
+      <Filter>02. GameObject\04. SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>01. Scene\03. UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
