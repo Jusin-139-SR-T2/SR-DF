@@ -97,12 +97,14 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	Engine::CLayer*		pLayer = Engine::CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
-	m_mapLayer.insert({ pLayerTag, pLayer });
 
 	Engine::CGameObject*		pGameObject = nullptr;
 
-	// Terrain
+	pGameObject = CUI::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI", CUI::Create(m_pGraphicDev)), E_FAIL);
+	
+	m_mapLayer.insert({ pLayerTag, pLayer });
 	
 	return S_OK;
 }

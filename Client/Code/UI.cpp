@@ -7,11 +7,11 @@
 #include "DynamicCamera.h"
 #include "Calculator.h"
 
-CUI::CUI(LPDIRECT3DDEVICE9 pGraphicDev): Base(pGraphicDev), fHp(100.f)
+CUI::CUI(LPDIRECT3DDEVICE9 pGraphicDev): CGameObject(pGraphicDev), fHp(100.f)
 {
 }
 
-CUI::CUI(const CUI& rhs): Base(rhs)
+CUI::CUI(const CUI& rhs): CGameObject(rhs)
 {
 }
 
@@ -23,26 +23,30 @@ HRESULT CUI::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformComp->m_vScale.x = 1.f;
-	m_pTransformComp->m_vInfo[INFO_POS] = { 0.f, 0.f,  2.f };
+	m_pTransformComp->m_vScale.x = 1.5f;
+	m_pTransformComp->m_vScale.y = 1.5f;
+
+	m_pTransformComp->Set_Pos(-9.3f, -4.6f, 10.f);
 
 	return S_OK;
 }
 
 _int CUI::Update_GameObject(const _float& fTimeDelta)
 {
-	SUPER::Update_GameObject(fTimeDelta);
+	_int iExit = SUPER::Update_GameObject(fTimeDelta);
 
 	Key_Input(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_UI, this);
-	return 0;
+
+	return iExit;
 }
 
 void CUI::LateUpdate_GameObject()
 {
-	
-	SUPER::LateUpdate_GameObject();
+	_vec3 vPos;
+	m_pTransformComp->Get_Info(INFO_POS, &vPos);
+	//__super::Compute_ViewZ(&vPos);
 }
 
 CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -61,12 +65,14 @@ CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CUI::Render_GameObject()
 {
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, m_pTransformComp->Get_WorldMatrix());
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 	m_pTextureComp->Render_Texture(0);
 	m_pBufferComp->Render_Buffer();
 
+	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 

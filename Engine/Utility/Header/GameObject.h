@@ -47,10 +47,14 @@ public:
 	virtual void	Render_GameObject()	PURE;
 
 public:
+	void Compute_ViewZ(const _vec3* pPos);
+
+public:
 	GETSET_EX2(CGameObject*, m_pOwner, Owner, GET, SET)
 
 protected:
 	CGameObject*	m_pOwner = nullptr;
+	_float			m_fViewZ;
 
 };
 
