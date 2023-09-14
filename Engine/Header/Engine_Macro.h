@@ -45,6 +45,21 @@ namespace Engine
 	{if( (_ptr) == 0){MessageBox(NULL, _message, L"System Message",MB_OK); DebugBreak();return _return;}}
 
 
+
+#define FALSE_CHECK( _false)	\
+	NULL_CHECK( _false)
+
+#define FALSE_CHECK_RETURN( _false, _return)	\
+	NULL_CHECK_RETURN( _false, _return)
+
+#define FALSE_CHECK_MSG( _false, _message )	\
+	NULL_CHECK_MSG( _false, _message )
+
+#define FALSE_CHECK( _false, _return, _message )	\
+	NULL_CHECK_RETURN_MSG( _false, _return, _message )
+
+
+
 #define FAILED_CHECK(_hr)	if( ((HRESULT)(_hr)) < 0 )	\
 	{ MessageBoxW(NULL, L"Failed", L"System Error",MB_OK); DebugBreak(); return E_FAIL;}
 

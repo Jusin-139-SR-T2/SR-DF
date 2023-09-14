@@ -50,8 +50,8 @@ CComponent* CTerrainTexComponent::Clone()
 
 void CTerrainTexComponent::Free()
 {
-	//if (!m_bClone)
-		//Safe_Delete_Array(m_pPos);
+	if (!m_bClone)
+		Safe_Delete_Array(m_pPos);
 
 	SUPER::Free();
 }
