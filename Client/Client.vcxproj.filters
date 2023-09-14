@@ -90,6 +90,9 @@
     <ClInclude Include="Header\TitleLogo.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>02. GameObject\01. Unit</Filter>
+    </ClInclude>
     <ClInclude Include="Header\SkyBox.h">
       <Filter>02. GameObject\04. SkyBox</Filter>
     </ClInclude>
@@ -130,6 +133,12 @@
     </ClCompile>
     <ClCompile Include="Code\DynamicCamera.cpp">
       <Filter>02. GameObject\03. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\TitleLogo.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>02. GameObject\01. Unit</Filter>
     </ClCompile>
     <ClCompile Include="Code\TitleLogo.cpp">
       <Filter>소스 파일</Filter>

@@ -4,6 +4,7 @@
 
 #include "TriCol.h"
 #include "RcCol.h"
+#include "MeshCol.h"
 #include "RcTex.h"
 #include "TerrainTexComponent.h"
 #include "CameraComponent.h"
