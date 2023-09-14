@@ -55,11 +55,21 @@ private:
 	CTransform*			m_pTransformComp = nullptr;
 	CTexture*			m_pLeftTextureComp = nullptr;
 	CTexture*			m_pRightTextureComp = nullptr;
+	CTexture*			m_pAttackTextureComp = nullptr;
+	CTexture*			m_pAttackSpinTextureComp = nullptr;
 	CCalculator*		m_pCalculatorComp = nullptr;
 	CSphereColComp*		m_pColliderComp = nullptr;
 
 private:
+	_bool		bAttackOn = false;
+	_bool		bFrameOn = false;
+	_bool		bGunOn = false;
+	_bool		bSpinOn = false;
+
+private:
 	_long			dwMouseMove = 0;
+	_float			m_fFrame = 0.f;
+	_float			m_fMaxFrame = 0.f;
 
 public:
 	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)
@@ -68,7 +78,7 @@ protected:
 	CDynamicCamera*		m_pCamera = nullptr;
 
 protected:
-	_vec3			m_vEye, m_vAt, m_vUp;
+	_vec3		m_vEye, m_vAt, m_vUp;
 	_matrix		m_matRot;
 };
 

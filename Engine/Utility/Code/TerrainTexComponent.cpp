@@ -153,6 +153,7 @@ HRESULT CTerrainTexComponent::Ready_Buffer(const _tchar* pFileName, const _ulong
 	_ulong		dwTriIdx(0);
 	_vec3		vDst, vSrc, vNormal;
 
+	//	Safe_Delete_Array(m_pPos);
 
 	m_pIB->Lock(0, 0, (void**)&pIndex, 0);
 	// 점은 좌우로 129개지만 128개로 줄여 계산

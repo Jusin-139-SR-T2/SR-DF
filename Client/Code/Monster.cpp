@@ -38,7 +38,7 @@ _int CMonster::Update_GameObject(const _float& fTimeDelta)
     if (14 < m_fFrame)
         m_fFrame = 0.f;
 
-
+    Height_On_Terrain();
 
 
     SUPER::Update_GameObject(fTimeDelta);
@@ -196,4 +196,17 @@ void CMonster::Monster_Eyerange()
 void CMonster::Free()
 {
     SUPER::Free();
+}
+
+void CMonster::Height_On_Terrain()
+{
+    _vec3		vPos;
+    m_pTransformComp->Get_Info(INFO_POS, &vPos);
+
+    CTerrainTexComponent* pTerrainBufferComp = dynamic_cast<CTerrainTexComponent*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    NULL_CHECK(pTerrainBufferComp);
+
+    _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
+
+    m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.f, vPos.z);
 }

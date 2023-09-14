@@ -59,8 +59,6 @@ HRESULT CRcTex::Ready_Buffer()
 
 	FAILED_CHECK_RETURN(CVIBuffer::Ready_Buffer(), E_FAIL);
 
-	VTXTEX* pVertex = nullptr;
-
 	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
 
 	pVertex[0].vPosition = { -1.f, 1.f, 0.f };

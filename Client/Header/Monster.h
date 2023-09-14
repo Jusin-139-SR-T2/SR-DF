@@ -85,6 +85,9 @@ private:
 	HRESULT			Add_Component();
 	virtual void	Free();
 
+private:
+	void				Height_On_Terrain();
+
 public:
 	void				Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
 	static CMonster*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
