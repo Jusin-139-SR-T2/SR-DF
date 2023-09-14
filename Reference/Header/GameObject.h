@@ -76,6 +76,7 @@ T* CGameObject::Set_DefaultComponent_FromProto(COMPONENTID eID, const _tchar* pC
 	T* pComponent = dynamic_cast<T*>(CProtoMgr::GetInstance()->Clone_Proto(pProtoTag));
 	NULL_CHECK_RETURN(pComponent, nullptr);
 	bool bSuccess = m_mapComponent[eID].emplace(pComponentTag, pComponent).second;
+	// 보안 코드
 	if (!bSuccess)
 	{
 		Safe_Release(pComponent);
