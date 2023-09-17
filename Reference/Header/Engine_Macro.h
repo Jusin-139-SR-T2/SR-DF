@@ -55,7 +55,7 @@ namespace Engine
 #define FALSE_CHECK_MSG( _false, _message )	\
 	NULL_CHECK_MSG( _false, _message )
 
-#define FALSE_CHECK( _false, _return, _message )	\
+#define FALSE_CHECK_RETURN_MSG( _false, _return, _message )	\
 	NULL_CHECK_RETURN_MSG( _false, _return, _message )
 
 

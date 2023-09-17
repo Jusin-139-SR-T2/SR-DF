@@ -1,25 +1,31 @@
 #pragma once
 
 #include "Management.h"
-#include "TriCol.h"
-#include "RcCol.h"
-#include "MeshCol.h"
-#include "RcTex.h"
-#include "TerrainTexComponent.h"
-#include "CameraComponent.h"
-#include "CubeTexComponent.h"
-#include "PHY_Shape.h"
-#include "PHY_Sphere.h"
-#include "ColliderComponent.h"
-#include "SphereColComp.h"
-#include "Texture.h"
-#include "Transform.h"
+
 #include "ProtoMgr.h"
 #include "Renderer.h"
 #include "PhysicsMgr.h"
 #include "Camera.h"
-#include "Calculator.h"
+
 #include "LightMgr.h"
+#include "TextureMgr.h"
+
+#include "CalculatorComponent.h"
+#include "TriColorComp.h"
+#include "RcColorComp.h"
+#include "MeshColComp.h"
+#include "RcBufferComp.h"
+#include "TerrainBufferComp.h"
+#include "CameraComponent.h"
+#include "CubeBufferComp.h"
+#include "ColliderComponent.h"
+#include "SphereColComp.h"
+#include "TextureComponent.h"
+#include "TransformComponent.h"
+
+#include "PHY_Shape.h"
+#include "PHY_Sphere.h"
+
 
 BEGIN(Engine)
 
