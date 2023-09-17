@@ -29,7 +29,8 @@ public:
 
 private:
 	CRcBufferComp*			m_pBufferComp = nullptr;
-	CTransformComponent*		m_pTransformComp = nullptr;
+	CTransformComponent*	m_pTransformComp = nullptr;
+	CTransformComponent*	m_pPlayerTransformcomp = nullptr;
 	CTextureComponent*		m_pTextureComp = nullptr;
 	CCalculatorComponent*	m_pCalculatorComp = nullptr;
 	CGameObject*	m_pTarget = nullptr;

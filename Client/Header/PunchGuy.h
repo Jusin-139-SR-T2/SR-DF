@@ -24,7 +24,7 @@ private:
 private:
 	CRcTex* m_pBufferComp = nullptr;
 	CTexture* m_pTextureComp = nullptr;
-	CTransform* m_pTransformComp = nullptr;
+	CTransformComponent* m_pTransformComp = nullptr;
 	CGameObject* m_pTarget = nullptr;
 
 public:

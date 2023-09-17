@@ -143,7 +143,7 @@ _bool CMonster::Monster_Capture()
     // 몬스터 시야내 플레이어 있는지 체크하는 함수 
 
     // 플레이어 위치 가져옴 
-    m_pPlayerTransformcomp = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
+    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
     _vec3 vPlayerPos, vMonsterPos, vPlayerLook, vMonsterLook;
 
     // 플레이어의 위치, 바라보는 방향
@@ -165,7 +165,7 @@ _bool CMonster::Monster_Capture()
 
 float CMonster::m_fDistance()
 {
-    m_pPlayerTransformcomp = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
+    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
     _vec3 vPlayerPos, vMonsterPos, vPlayerLook, vMonsterLook;
 
     // 플레이어의 위치

@@ -7,7 +7,7 @@
 
 BEGIN(Engine)
 
-class CTransform;
+class CTransformComponent;
 
 END
 
@@ -31,7 +31,7 @@ private:
 	_bool			bActive = false;
 
 private:
-	CTransform* m_pTransformComp = nullptr;
+	CTransformComponent* m_pTransformComp = nullptr;
 
 public:
 	static CTorch* Create(LPDIRECT3DDEVICE9 pGraphicDev);
