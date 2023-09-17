@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Stage.h"
-
 #include "Export_System.h"
 #include "Export_Utility.h"
+
 #include "DynamicCamera.h"
 #include "BackGround.h"
 #include "SkyBox.h"
@@ -51,6 +51,11 @@ void CStage::Render_Scene()
 
 HRESULT CStage::Ready_Prototype()
 {
+	FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
+
+	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Environment"), E_FAIL);
+	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"GameLogic"), E_FAIL);
+	FAILED_CHECK_RETURN(Ready_Layer_UI(L"UI"), E_FAIL);
 
 	return S_OK;
 }
@@ -71,7 +76,6 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 
 	// SkyBox
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", CSkyBox::Create(m_pGraphicDev)), E_FAIL);
-
 
 	// Terrain
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", CTerrain::Create(m_pGraphicDev)), E_FAIL);
@@ -121,6 +125,23 @@ HRESULT CStage::Ready_Layer_Completed()
 
 	pCam->Set_Target(pObj);
 	pObj->Set_Camera(pCam);
+
+	return S_OK;
+}
+
+HRESULT CStage::Ready_LightInfo()
+{
+	D3DLIGHT9		tLightInfo;
+	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+
+	tLightInfo.Type = D3DLIGHT_DIRECTIONAL;
+
+	tLightInfo.Diffuse = { 1.f, 1.f, 1.f, 1.f };
+	tLightInfo.Specular = { 1.f, 1.f, 1.f, 1.f };
+	tLightInfo.Ambient = { 1.f, 1.f, 1.f, 1.f };
+	tLightInfo.Direction = { 1.f, -1.f, 1.f };
+
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
 
 	return S_OK;
 }

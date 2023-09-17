@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Management.h"
-
 #include "TriCol.h"
 #include "RcCol.h"
 #include "MeshCol.h"
@@ -9,22 +8,18 @@
 #include "TerrainTexComponent.h"
 #include "CameraComponent.h"
 #include "CubeTexComponent.h"
-
 #include "PHY_Shape.h"
 #include "PHY_Sphere.h"
 #include "ColliderComponent.h"
 #include "SphereColComp.h"
-
 #include "Texture.h"
 #include "Transform.h"
-
 #include "ProtoMgr.h"
 #include "Renderer.h"
 #include "PhysicsMgr.h"
-
 #include "Camera.h"
-
 #include "Calculator.h"
+#include "LightMgr.h"
 
 BEGIN(Engine)
 
@@ -50,9 +45,10 @@ inline void		Add_RenderGroup(RENDERID eType, CGameObject* pGameObject);
 inline void		Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 inline void		Clear_RenderGroup();
 
+// LightMgr
+inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,	const D3DLIGHT9 * pLightInfo,	const _uint & iIndex);
 
 // PhysicsMgr
-
 
 
 inline void			Release_Utility();

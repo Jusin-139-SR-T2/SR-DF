@@ -100,7 +100,7 @@ public:
 	MONSTER_INFO		m_MonsterInfo;
 	_float				m_fsuspicious;
 
-	void				Monster_Eyerange();
+	void				Monster_Capture();
 	float  m_fEyetheta = D3DX_PI / 4.f; // 몬스터 시야각 
 
 public: //Get, Set 함수 만들기 

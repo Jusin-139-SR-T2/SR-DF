@@ -188,9 +188,21 @@ void CMonster::state_check(MONSTERSTATE _CurrState , MONSTER_DIRECTION _Directio
     }
 }
 
-void CMonster::Monster_Eyerange()
+void CMonster::Monster_Capture()
 {
-    
+    /*몬스터위치, 플레이어 위치 가져옴
+     
+    CHECK - 1차적으로 둘 사이 거리 몬스터 기준 몇 이상이내여야함  - 여기서 거르기 
+
+
+    A : 몬스터 바라보는 방향벡터
+    B : 몬스터가 플레이어 바라보는 벡터 만들기
+
+    A~B 사이각도 재기 = 내적 = angle
+
+
+    angle이 대충 30도 ? 45도?  사이이면 감지하고 상태머신 변화 돌입 
+    */
 }
 
 void CMonster::Free()

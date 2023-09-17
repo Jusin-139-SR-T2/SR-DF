@@ -46,6 +46,27 @@
     <Filter Include="01. Scene\03. UI">
       <UniqueIdentifier>{73c6059c-b0b0-48ab-ba48-db6bbc94e26c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\05. Torch">
+      <UniqueIdentifier>{e350700e-8895-4112-89d7-93342261724e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Unit\1. Player">
+      <UniqueIdentifier>{bc0ac8bd-4f3c-451a-8bc9-b114015fcac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Unit\2. Monster">
+      <UniqueIdentifier>{ca20878f-440d-4f76-8475-43445d0d468e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. UI">
+      <UniqueIdentifier>{b9a5f89a-3de9-42e7-8bdd-176463a9fffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Unit\2. Monster\1. PunchGuy">
+      <UniqueIdentifier>{87d5e720-2bd3-483a-b7e8-6547cbc4e5de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Unit\2. Monster\2. PipeGuy">
+      <UniqueIdentifier>{b4564e30-93d5-4921-aece-d6c92f134a71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Unit\2. Monster\3. GunGuy">
+      <UniqueIdentifier>{0892c965-3e19-4427-9a57-578fe6b596b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -72,12 +93,6 @@
     <ClInclude Include="Header\Stage.h">
       <Filter>01. Scene\01. Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Player.h">
-      <Filter>02. GameObject\01. Unit</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Monster.h">
-      <Filter>02. GameObject\01. Unit</Filter>
-    </ClInclude>
     <ClInclude Include="Header\BackGround.h">
       <Filter>02. GameObject\02. Background</Filter>
     </ClInclude>
@@ -90,14 +105,23 @@
     <ClInclude Include="Header\TitleLogo.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>02. GameObject\01. Unit</Filter>
-    </ClInclude>
     <ClInclude Include="Header\SkyBox.h">
       <Filter>02. GameObject\04. SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="Header\UI.h">
       <Filter>01. Scene\03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>02. GameObject\06. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Monster.h">
+      <Filter>02. GameObject\01. Unit\2. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Player.h">
+      <Filter>02. GameObject\01. Unit\1. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Torch.h">
+      <Filter>02. GameObject\05. Torch</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,12 +143,6 @@
     <ClCompile Include="Code\Stage.cpp">
       <Filter>01. Scene\01. Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Monster.cpp">
-      <Filter>02. GameObject\01. Unit</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Player.cpp">
-      <Filter>02. GameObject\01. Unit</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Terrain.cpp">
       <Filter>02. GameObject\02. Background</Filter>
     </ClCompile>
@@ -137,9 +155,6 @@
     <ClCompile Include="Code\TitleLogo.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Code\UI.cpp">
-      <Filter>02. GameObject\01. Unit</Filter>
-    </ClCompile>
     <ClCompile Include="Code\TitleLogo.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -148,6 +163,18 @@
     </ClCompile>
     <ClCompile Include="Code\UI.cpp">
       <Filter>01. Scene\03. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>02. GameObject\06. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Monster.cpp">
+      <Filter>02. GameObject\01. Unit\2. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Player.cpp">
+      <Filter>02. GameObject\01. Unit\1. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Torch.cpp">
+      <Filter>02. GameObject\05. Torch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

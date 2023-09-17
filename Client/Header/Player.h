@@ -99,4 +99,3 @@ protected:
 	_vec3		m_vEye, m_vAt, m_vUp;
 	_matrix		m_matRot;
 };
-
