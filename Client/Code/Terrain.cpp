@@ -66,15 +66,18 @@ void CTerrain::LateUpdate_GameObject()
 
 void CTerrain::Render_GameObject()
 {
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
   //  m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
+    SetUp_Material();
     m_pTextureComp->Render_Texture(0);
     m_pBufferComp->Render_Buffer();
 
    // m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 }
 
 HRESULT CTerrain::Add_Component()
@@ -104,6 +107,26 @@ HRESULT CTerrain::Add_Component()
     //m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
     //NULL_CHECK_RETURN(m_pTransformCom = Set_DefaultComponent_FromProto<CTransform>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"));
 #pragma endregion
+
+    return S_OK;
+}
+
+HRESULT CTerrain::SetUp_Material()
+{
+    D3DMATERIAL9			tMtrl;
+    ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+    //ambient + diffuse*intensity +specular
+
+    tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f }; //난반사 - 물체의 색이 가장 밝은색임
+    //tMtrl.Diffuse = { 0.5f, 0.5f, 0.1f, 0.1f };
+    tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f }; //정반사 - 하이라이트 표현 
+    //tMtrl.Specular = { 0.1f, 0.1f, 0.1f, 0.1f }; //정반사
+    tMtrl.Ambient = { 0.1f, 0.1f, 0.1f, 1.f }; //간접조명 - 빛이없더라도 이건 존재한다는 가정하에 들어가는 조명 
+    tMtrl.Emissive = { 0.f, 0.f, 0.f, 0.f }; //자체 발광 
+    tMtrl.Power = 0.f;
+
+    m_pGraphicDev->SetMaterial(&tMtrl);
 
     return S_OK;
 }
