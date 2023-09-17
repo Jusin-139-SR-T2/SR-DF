@@ -228,7 +228,7 @@ void CMonster::Obj_Suspicious(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_iAwareness += fDeltaTime * 1000;
+        m_iAwareness += fDeltaTime * 1000.f;
     }
 
     if (m_tState_Obj.Can_Update())

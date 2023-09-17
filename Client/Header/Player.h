@@ -126,7 +126,7 @@ protected:
 
 	//ºû
 private:
-	HRESULT			SetUp_Material();
+	//HRESULT			SetUp_Material();
 	_bool			bTorch = false;
 
 };
