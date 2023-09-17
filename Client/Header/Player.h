@@ -36,6 +36,22 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
+// 플레이어 상태 머신1
+public:
+	enum class STATE_RIGHTHAND { IDLE, HAND, GUN };
+private:
+	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tState;
+
+	void Idle(float fTimeDelta);
+	void HandAttack(float fTimeDelta);
+	void GunAttack(float fTimeDelta);
+
+// 플레이어 상태 머신2
+public:
+	enum class STATE2 { NONE };
+private:
+	STATE_SET<STATE2, void(CPlayer*, float)> m_tState2;
+
 private:
 	HRESULT				Add_Component();
 	void				Key_Input(const _float& fTimeDelta);
@@ -45,16 +61,18 @@ private:
 public:
 	GETSET_EX2(CRcTex*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTransform*, m_pTransformComp, TransformComponent, GET, SET)
-	GETSET_EX2(CTexture*, m_pLeftTextureComp, TextureComponent, GET, SET)
-	//GETSET_EX2(CTexture*, m_pRightTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CTexture*, m_pLeftHandTextureComp, TextureComponent, GET, SET)
+	//GETSET_EX2(CTexture*, m_pRightHandTextureComp, TextureComponent, GET, SET)
 	GETSET_EX2(CCalculator*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 	GETSET_EX2(CSphereColComp*, m_pColliderComp, SphereColComponent, GET, SET)
 
 private:
 	CRcTex*				m_pBufferComp = nullptr;
 	CTransform*			m_pTransformComp = nullptr;
-	CTexture*			m_pLeftTextureComp = nullptr;
-	CTexture*			m_pRightTextureComp = nullptr;
+
+	vector<CTexture*>	m_vecTexture;
+	CTexture*			m_pLeftHandTextureComp = nullptr;
+	CTexture*			m_pRightHandTextureComp = nullptr;
 	CTexture*			m_pAttackTextureComp = nullptr;
 	CTexture*			m_pAttackSpinTextureComp = nullptr;
 	CCalculator*		m_pCalculatorComp = nullptr;

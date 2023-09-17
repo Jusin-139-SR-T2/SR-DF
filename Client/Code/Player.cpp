@@ -30,6 +30,13 @@ HRESULT CPlayer::Ready_GameObject()
 
     m_pTransformComp->m_vInfo[INFO_POS] = { 15.f, 10.f, 10.f };
 
+    // 초기 상태 세팅 (현재 상태)
+    m_tState.Set_State(STATE_RIGHTHAND::IDLE);
+
+    m_tState.Add_Func(STATE_RIGHTHAND::IDLE, &ThisClass::Idle);
+    m_tState.Add_Func(STATE_RIGHTHAND::HAND, &ThisClass::HandAttack);
+    m_tState.Add_Func(STATE_RIGHTHAND::GUN, &ThisClass::GunAttack);
+
     m_pBufferComp->Set_Vertex(1.7f, 0.f, 1.f);
 
     return S_OK;
@@ -79,14 +86,14 @@ void CPlayer::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     m_pBufferComp->Set_Vertex(-3.5f, -0.7f, 0.f);
-    m_pLeftTextureComp->Render_Texture(0);
+    m_pLeftHandTextureComp->Render_Texture(0);
     m_pBufferComp->Render_Buffer();
 
     m_pBufferComp->Set_Vertex(3.5f, 0.f, 0.f);
 
     if (!bAttackOn)
     {
-        m_pRightTextureComp->Render_Texture(0);
+        m_pRightHandTextureComp->Render_Texture(0);
         m_pBufferComp->Render_Buffer();
     }
     if (bAttackOn)
@@ -118,9 +125,9 @@ HRESULT CPlayer::Add_Component()
     NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CSphereColComp>(ID_STATIC, L"Comp_SphereCollider", L"Proto_SphereColComp"), E_FAIL);
 
     // 플레이어 왼손 텍스처
-    NULL_CHECK_RETURN(m_pLeftTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Comp_TextureLeft", L"Proto_PlayerLeftTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pLeftHandTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Comp_TextureLeftHand", L"Proto_PlayerLeftHandTextureComp"), E_FAIL);
     // 플레이어 오른손 텍스처
-    NULL_CHECK_RETURN(m_pRightTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Comp_TextureRight", L"Proto_PlayerRightTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pRightHandTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Comp_TextureRightHand", L"Proto_PlayerRightHandTextureComp"), E_FAIL);
     // 플레이어 공격 텍스처
     NULL_CHECK_RETURN(m_pAttackTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_TextureAttack", L"Proto_PlayerAttackTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pAttackSpinTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_TextureAttackTest", L"Proto_PlayerAttackTestTextureComp"), E_FAIL);
@@ -247,6 +254,25 @@ void CPlayer::Height_On_Terrain()
     NULL_CHECK(pTerrainBufferComp);
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
-
+                 
     m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.5f, vPos.z);
 }
+
+#pragma region 행동들
+void CPlayer::Idle(float fTimeDelta)
+{
+
+}
+
+// 기본 공격 (주먹)
+void CPlayer::HandAttack(float fTimeDelta)
+{
+
+}
+
+// 권총
+void CPlayer::GunAttack(float fTimeDelta)
+{
+
+}
+#pragma endregion
