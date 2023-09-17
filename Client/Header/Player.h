@@ -6,11 +6,11 @@
 
 BEGIN(Engine)
 
-class CRcTex;
-class CTexture;
-class CTransform;
+class CRcBufferComp;
+class CTextureComponent;
+class CTransformComponent;
 class CCameraComponent;
-class CCalculator;
+class CCalculatorComponent;
 class CSphereColComp;
 
 END
@@ -43,21 +43,21 @@ private:
 	void				Height_On_Terrain();
 
 public:
-	GETSET_EX2(CRcTex*, m_pBufferComp, BufferComponent, GET, SET)
-	GETSET_EX2(CTransform*, m_pTransformComp, TransformComponent, GET, SET)
-	GETSET_EX2(CTexture*, m_pLeftTextureComp, TextureComponent, GET, SET)
-	//GETSET_EX2(CTexture*, m_pRightTextureComp, TextureComponent, GET, SET)
-	GETSET_EX2(CCalculator*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
+	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+	GETSET_EX2(CTextureComponent*, m_pLeftTextureComp, TextureComponent, GET, SET)
+	//GETSET_EX2(CTextureComponent*, m_pRightTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 	GETSET_EX2(CSphereColComp*, m_pColliderComp, SphereColComponent, GET, SET)
 
 private:
-	CRcTex*				m_pBufferComp = nullptr;
-	CTransform*			m_pTransformComp = nullptr;
-	CTexture*			m_pLeftTextureComp = nullptr;
-	CTexture*			m_pRightTextureComp = nullptr;
-	CTexture*			m_pAttackTextureComp = nullptr;
-	CTexture*			m_pAttackSpinTextureComp = nullptr;
-	CCalculator*		m_pCalculatorComp = nullptr;
+	CRcBufferComp*				m_pBufferComp = nullptr;
+	CTransformComponent*			m_pTransformComp = nullptr;
+	CTextureComponent*			m_pLeftTextureComp = nullptr;
+	CTextureComponent*			m_pRightTextureComp = nullptr;
+	CTextureComponent*			m_pAttackTextureComp = nullptr;
+	CTextureComponent*			m_pAttackSpinTextureComp = nullptr;
+	CCalculatorComponent*		m_pCalculatorComp = nullptr;
 	CSphereColComp*		m_pColliderComp = nullptr;
 
 private:

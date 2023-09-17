@@ -86,10 +86,10 @@ void CLogo::Render_Scene()
 HRESULT CLogo::Ready_Prototype()
 {
 	// 프로토타입 인스턴스를 등록한다.
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TransformComp", CTransform::Create(m_pGraphicDev)), E_FAIL);	// 트랜스폼
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RcTexBufferComp", CRcTex::Create(m_pGraphicDev)), E_FAIL);		// 버퍼
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LogoTextureComp", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"Resource/Texture/Scene/LogoShot.png")), E_FAIL);	// 텍스처
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TitleBackTextureComp", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"Resource/Texture/Scene/Title.png")), E_FAIL);	// 텍스처
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TransformComp", CTransformComponent::Create(m_pGraphicDev)), E_FAIL);	// 트랜스폼
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RcTexBufferComp", CRcBufferComp::Create(m_pGraphicDev)), E_FAIL);		// 버퍼
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LogoTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Resource/Texture/Scene/LogoShot.png")), E_FAIL);	// 텍스처
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TitleBackTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Resource/Texture/Scene/Title.png")), E_FAIL);	// 텍스처
 	
 	return S_OK;
 }

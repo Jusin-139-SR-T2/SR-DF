@@ -5,7 +5,7 @@
 #include "Export_Utility.h"
 
 #include "DynamicCamera.h"
-#include "Calculator.h"
+#include "CalculatorComponent.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -120,19 +120,19 @@ void CPlayer::Render_GameObject()
 
 HRESULT CPlayer::Add_Component()
 {
-    NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcTex>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransform>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculator>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
 
     NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CSphereColComp>(ID_STATIC, L"Comp_SphereCollider", L"Proto_SphereColComp"), E_FAIL);
 
     // 플레이어 왼손 텍스처
-    NULL_CHECK_RETURN(m_pLeftTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Comp_TextureLeft", L"Proto_PlayerLeftTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pLeftTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TextureLeft", L"Proto_PlayerLeftTextureComp"), E_FAIL);
     // 플레이어 오른손 텍스처
-    NULL_CHECK_RETURN(m_pRightTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Comp_TextureRight", L"Proto_PlayerRightTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pRightTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TextureRight", L"Proto_PlayerRightTextureComp"), E_FAIL);
     // 플레이어 공격 텍스처
-    NULL_CHECK_RETURN(m_pAttackTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_TextureAttack", L"Proto_PlayerAttackTextureComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pAttackSpinTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_TextureAttackTest", L"Proto_PlayerAttackTestTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pAttackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureAttack", L"Proto_PlayerAttackTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pAttackSpinTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureAttackTest", L"Proto_PlayerAttackTestTextureComp"), E_FAIL);
 
     return S_OK;
 }
@@ -252,7 +252,7 @@ void CPlayer::Height_On_Terrain()
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
-    CTerrainTexComponent* pTerrainBufferComp = dynamic_cast<CTerrainTexComponent*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
     NULL_CHECK(pTerrainBufferComp);
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());

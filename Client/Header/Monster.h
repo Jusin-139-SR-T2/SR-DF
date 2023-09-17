@@ -6,9 +6,9 @@
 
 BEGIN(Engine)
 
-class CRcTex;
-class CTexture;
-class CTransform;
+class CRcBufferComp;
+class CTextureComponent;
+class CTransformComponent;
 
 END
 
@@ -28,11 +28,10 @@ public:
 	virtual void	Render_GameObject() override;
 
 private:
-	CRcTex*			m_pBufferComp = nullptr;
-	CTransform*		m_pTransformComp = nullptr;
-	CTransform*		m_pPlayerTransformcomp = nullptr;
-	CTexture*		m_pTextureComp = nullptr;
-	CCalculator*	m_pCalculatorComp = nullptr;
+	CRcBufferComp*			m_pBufferComp = nullptr;
+	CTransformComponent*		m_pTransformComp = nullptr;
+	CTextureComponent*		m_pTextureComp = nullptr;
+	CCalculatorComponent*	m_pCalculatorComp = nullptr;
 	CGameObject*	m_pTarget = nullptr;
 
 private:
@@ -57,10 +56,10 @@ private:
 //---------------------------------------------------------------
 
 public: //Get, Set 함수 만들기 
-	GETSET_EX2(CRcTex*, m_pBufferComp, BufferComponent, GET, SET)
-	GETSET_EX2(CTexture*, m_pTextureComp, TextureComponent, GET, SET)
-	GETSET_EX2(CTransform*, m_pTransformComp, TransformComponent, GET, SET)
-	GETSET_EX2(CCalculator*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
+	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 
 // 상태머신 셋팅 --------------------------------------------------
 public:

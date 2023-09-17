@@ -3,7 +3,8 @@
 
 #include "Export_System.h"
 #include "Export_Utility.h"
-#include <Transform.h>
+
+#include "TransformComponent.h"
 
 CDynamicCamera::CDynamicCamera(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -66,7 +67,7 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 	// 카메라 시점 플레이어 고정
 	//if (m_pTarget)
 	//{
-	//	CTransform* pTransform = dynamic_cast<CTransform*>(m_pTarget->Get_Component(ID_DYNAMIC, L"Com_Transform"));
+	//	CTransformComponent* pTransform = dynamic_cast<CTransformComponent*>(m_pTarget->Get_Component(ID_DYNAMIC, L"Com_Transform"));
 	//	_vec3 vPos;
 	//	pTransform->Get_Info(INFO_POS, &vPos);
 	//	m_vAt = vPos;
@@ -248,7 +249,7 @@ void CDynamicCamera::Mouse_Fix()
 void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 {
 	// 플레이어 Trans 컴포넌트 받아오기
-	pPlayerTransCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
+	pPlayerTransCom = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
 	//NULL_CHECK_RETURN(pPlayerTransCom, -1); // NULL
 
 	_vec3	vPlayerPos;				// 플레이어 위치
