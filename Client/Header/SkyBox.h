@@ -5,10 +5,10 @@
 
 BEGIN(Engine)
 
-class CCubeTexComponent;
-class CTexture;
-class CTransform;
-class CCalculator;
+class CCubeBufferComp;
+class CTextureComponent;
+class CTransformComponent;
+class CCalculatorComponent;
 
 END
 
@@ -29,10 +29,10 @@ private:
 	HRESULT			Add_Component();
 
 private:
-	CTransform* m_pTransformComp = nullptr;
-	CCalculator* m_pCalculatorComp = nullptr;
-	CTexture* m_pTextureComp = nullptr;
-	CCubeTexComponent* m_pCubeBufferComp = nullptr;
+	CTransformComponent* m_pTransformComp = nullptr;
+	CCalculatorComponent* m_pCalculatorComp = nullptr;
+	CTextureComponent* m_pTextureComp = nullptr;
+	CCubeBufferComp* m_pCubeBufferComp = nullptr;
 
 public:
 	static CSkyBox* Create(LPDIRECT3DDEVICE9 pGraphicDev);

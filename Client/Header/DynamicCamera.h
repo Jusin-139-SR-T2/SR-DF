@@ -59,7 +59,7 @@ private:
 	_matrix		m_matRotY;
 
 private:
-	CTransform* pPlayerTransCom = nullptr;
+	CTransformComponent* pPlayerTransCom = nullptr;
 
 public:
 	GETSET_EX2(CGameObject*, m_pTarget, Target, GET, SET)

@@ -55,9 +55,6 @@
     <Filter Include="02. GameObject\01. Unit\2. Monster">
       <UniqueIdentifier>{ca20878f-440d-4f76-8475-43445d0d468e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. UI">
-      <UniqueIdentifier>{b9a5f89a-3de9-42e7-8bdd-176463a9fffc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. Unit\2. Monster\1. PunchGuy">
       <UniqueIdentifier>{87d5e720-2bd3-483a-b7e8-6547cbc4e5de}</UniqueIdentifier>
     </Filter>
@@ -109,9 +106,6 @@
       <Filter>02. GameObject\04. SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="Header\UI.h">
-      <Filter>01. Scene\03. UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\UI.h">
       <Filter>02. GameObject\06. UI</Filter>
     </ClInclude>
     <ClInclude Include="Header\Monster.h">
@@ -119,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="Header\Player.h">
       <Filter>02. GameObject\01. Unit\1. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>01. Scene\03. UI</Filter>
     </ClInclude>
     <ClInclude Include="Header\Torch.h">
       <Filter>02. GameObject\05. Torch</Filter>
@@ -162,9 +159,6 @@
       <Filter>02. GameObject\04. SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="Code\UI.cpp">
-      <Filter>01. Scene\03. UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\UI.cpp">
       <Filter>02. GameObject\06. UI</Filter>
     </ClCompile>
     <ClCompile Include="Code\Monster.cpp">
@@ -175,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="Code\Torch.cpp">
       <Filter>02. GameObject\05. Torch</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>01. Scene\03. UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

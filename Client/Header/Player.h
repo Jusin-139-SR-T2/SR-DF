@@ -6,11 +6,11 @@
 
 BEGIN(Engine)
 
-class CRcTex;
-class CTexture;
-class CTransform;
+class CRcBufferComp;
+class CTextureComponent;
+class CTransformComponent;
 class CCameraComponent;
-class CCalculator;
+class CCalculatorComponent;
 class CSphereColComp;
 
 END
@@ -38,11 +38,11 @@ public:
 	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)
 
 public:
-	GETSET_EX2(CRcTex*, m_pBufferComp, BufferComponent, GET, SET)
-	GETSET_EX2(CTransform*, m_pTransformComp, TransformComponent, GET, SET)
-	GETSET_EX2(CTexture*, m_pLeftHandTextureComp, LeftHandTextureComponent, GET, SET)
-	GETSET_EX2(CTexture*, m_pRightHandTextureComp, RightHandTextureComponent, GET, SET)
-	GETSET_EX2(CCalculator*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
+	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+	GETSET_EX2(CTextureComponent*, m_pLeftHandTextureComp, LeftHandTextureComponent, GET, SET)
+	GETSET_EX2(CTextureComponent*, m_pRightHandTextureComp, RightHandTextureComponent, GET, SET)
+	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 	GETSET_EX2(CSphereColComp*, m_pColliderComp, SphereColComponent, GET, SET)
 
 
@@ -85,15 +85,15 @@ private:
 	void State_Update(float fTimeDelta);
 
 private:
-	CRcTex*				m_pBufferComp = nullptr;
-	CTransform*			m_pTransformComp = nullptr;
+	CRcBufferComp*				m_pBufferComp = nullptr;
+	CTransformComponent*			m_pTransformComp = nullptr;
 
-	vector<CTexture*>	m_vecTexture;
-	CTexture*			m_pLeftHandTextureComp = nullptr;
-	CTexture*			m_pRightHandTextureComp = nullptr;
-	CTexture*			m_pAttackTextureComp = nullptr;
-	CTexture*			m_pAttackSpinTextureComp = nullptr;
-	CCalculator*		m_pCalculatorComp = nullptr;
+	vector<CTextureComponent*>	m_vecTexture;
+	CTextureComponent*			m_pLeftHandTextureComp = nullptr;
+	CTextureComponent*			m_pRightHandTextureComp = nullptr;
+	CTextureComponent*			m_pAttackTextureComp = nullptr;
+	CTextureComponent*			m_pAttackSpinTextureComp = nullptr;
+	CCalculatorComponent*		m_pCalculatorComp = nullptr;
 	CSphereColComp*		m_pColliderComp = nullptr;
 
 private:
@@ -122,4 +122,11 @@ protected:
 protected:
 	_vec3		m_vEye, m_vAt, m_vUp;
 	_matrix		m_matRot;
+
+
+	//ºû
+private:
+	HRESULT			SetUp_Material();
+	_bool			bTorch = false;
+
 };

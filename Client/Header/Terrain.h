@@ -4,10 +4,10 @@
 
 BEGIN(Engine)
 
-class CRcTex;
-class CTexture;
-class CTransform;
-class CTerrainTexComponent;
+class CRcBufferComp;
+class CTextureComponent;
+class CTransformComponent;
+class CTerrainBufferComp;
 
 END
 
@@ -35,9 +35,9 @@ private:
 	HRESULT			SetUp_Material();
 
 private:
-	CTerrainTexComponent*		m_pBufferComp = nullptr;
-	CTexture*					m_pTextureComp = nullptr;
-	CTransform*					m_pTransformComp = nullptr;
+	CTerrainBufferComp*		m_pBufferComp = nullptr;
+	CTextureComponent*					m_pTextureComp = nullptr;
+	CTransformComponent*					m_pTransformComp = nullptr;
 
 };
 

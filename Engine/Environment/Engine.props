@@ -12,7 +12,7 @@
     <PostBuildEvent>
       <Command>attrib -r "$(SolutionDir)Reference\Header\*.*" /s
 xcopy "$(SolutionDir)Engine\Header\*.*" "$(SolutionDir)Reference\Header\" /y /e
-xcopy "Header\*.*" "$(SolutionDir)Reference\Header\" /y /e
+xcopy "Header\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 xcopy "$(OutDir)$(TargetName).lib" "$(SolutionDir)Reference\Library\Engine\$(Configuration)\$(PlatformTarget)\" /y
 xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y

@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\System\Header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -96,6 +96,11 @@
       <AdditionalDependencies>System.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+%(Command)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -105,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\System\Header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,6 +120,11 @@
       <AdditionalDependencies>System.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+%(Command)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -122,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\System\Header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,6 +140,11 @@
       <AdditionalDependencies>System.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+%(Command)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -139,7 +154,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\System\Header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,71 +164,80 @@
       <AdditionalDependencies>System.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+%(Command)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Export_Utility.h" />
-    <ClInclude Include="Header\ActorComponent.h" />
-    <ClInclude Include="Header\PHY_Shape.h" />
-    <ClInclude Include="Header\ColliderComponent.h" />
-    <ClInclude Include="Header\CubeTexComponent.h" />
-    <ClInclude Include="Header\Calculator.h" />
+    <ClInclude Include="Header\Component\GameObjComponent.h" />
+    <ClInclude Include="Header\Data\PHY_Shape.h" />
+    <ClInclude Include="Header\Component\ColliderComponent.h" />
+    <ClInclude Include="Header\Component\CubeBufferComp.h" />
+    <ClInclude Include="Header\Component\CalculatorComponent.h" />
     <ClInclude Include="Header\Camera.h" />
-    <ClInclude Include="Header\CameraComponent.h" />
+    <ClInclude Include="Header\Component\CameraComponent.h" />
     <ClInclude Include="Header\GameObject.h" />
-    <ClInclude Include="Header\Component.h" />
-    <ClInclude Include="Header\VIBuffer.h" />
-    <ClInclude Include="Header\TriCol.h" />
+    <ClInclude Include="Header\Component\Component.h" />
+    <ClInclude Include="Header\Component\VIBufferComp.h" />
+    <ClInclude Include="Header\Component\TriColorComp.h" />
     <ClInclude Include="Header\Layer.h" />
     <ClInclude Include="Header\Management.h" />
     <ClInclude Include="Header\Scene.h" />
-    <ClInclude Include="Header\RcCol.h" />
+    <ClInclude Include="Header\Component\RcColorComp.h" />
     <ClInclude Include="Header\ProtoMgr.h" />
-    <ClInclude Include="Header\RcTex.h" />
-    <ClInclude Include="Header\Texture.h" />
-    <ClInclude Include="Header\Transform.h" />
+    <ClInclude Include="Header\Component\RcBufferComp.h" />
+    <ClInclude Include="Header\Component\TextureComponent.h" />
+    <ClInclude Include="Header\Component\TransformComponent.h" />
     <ClInclude Include="Header\Renderer.h" />
-    <ClInclude Include="Header\TerrainTexComponent.h" />
+    <ClInclude Include="Header\Component\TerrainBufferComp.h" />
     <ClInclude Include="Header\Light.h" />
     <ClInclude Include="Header\LightMgr.h" />
     <ClInclude Include="Header\PhysicsMgr.h" />
-    <ClInclude Include="Header\PHY_Sphere.h" />
-    <ClInclude Include="Header\SceneComponent.h" />
-    <ClInclude Include="Header\SphereColComp.h" />
-    <ClInclude Include="Header\MeshCol.h" />
-    <ClInclude Include="Header\PHY_Box.h" />
-    <ClInclude Include="Header\PHY_Capsule.h" />
+    <ClInclude Include="Header\Data\PHY_Sphere.h" />
+    <ClInclude Include="Header\Component\SceneComponent.h" />
+    <ClInclude Include="Header\Component\SphereColComp.h" />
+    <ClInclude Include="Header\Component\MeshColComp.h" />
+    <ClInclude Include="Header\Data\PHY_Box.h" />
+    <ClInclude Include="Header\Data\PHY_Capsule.h" />
+    <ClInclude Include="Header\TextureMgr.h" />
+    <ClInclude Include="Header\Data\Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\ActorComponent.cpp" />
-    <ClCompile Include="Code\Calculator.cpp" />
+    <ClCompile Include="Code\Component\GameObjComponent.cpp" />
+    <ClCompile Include="Code\Component\CalculatorComponent.cpp" />
     <ClCompile Include="Code\Camera.cpp" />
-    <ClCompile Include="Code\CameraComponent.cpp" />
-    <ClCompile Include="Code\Component.cpp" />
-    <ClCompile Include="Code\VIBuffer.cpp" />
-    <ClCompile Include="Code\TriCol.cpp" />
+    <ClCompile Include="Code\Component\CameraComponent.cpp" />
+    <ClCompile Include="Code\Component\Component.cpp" />
+    <ClCompile Include="Code\Component\VIBufferComp.cpp" />
+    <ClCompile Include="Code\Component\TriColorComp.cpp" />
     <ClCompile Include="Code\GameObject.cpp" />
     <ClCompile Include="Code\Layer.cpp" />
     <ClCompile Include="Code\Management.cpp" />
     <ClCompile Include="Code\Scene.cpp" />
-    <ClCompile Include="Code\RcCol.cpp" />
+    <ClCompile Include="Code\Component\RcColorComp.cpp" />
     <ClCompile Include="Code\ProtoMgr.cpp" />
-    <ClCompile Include="Code\RcTex.cpp" />
-    <ClCompile Include="Code\Texture.cpp" />
-    <ClCompile Include="Code\Transform.cpp" />
+    <ClCompile Include="Code\Component\RcBufferComp.cpp" />
+    <ClCompile Include="Code\Component\TextureComponent.cpp" />
+    <ClCompile Include="Code\Component\TransformComponent.cpp" />
     <ClCompile Include="Code\Renderer.cpp" />
-    <ClCompile Include="Code\TerrainTexComponent.cpp" />
+    <ClCompile Include="Code\Component\TerrainBufferComp.cpp" />
     <ClCompile Include="Code\Light.cpp" />
     <ClCompile Include="Code\LightMgr.cpp" />
-    <ClCompile Include="Code\CubeTexComponent.cpp" />
-    <ClCompile Include="Code\ColliderComponent.cpp" />
+    <ClCompile Include="Code\Component\CubeBufferComp.cpp" />
+    <ClCompile Include="Code\Component\ColliderComponent.cpp" />
     <ClCompile Include="Code\PhysicsMgr.cpp" />
-    <ClCompile Include="Code\PHY_Shape.cpp" />
-    <ClCompile Include="Code\PHY_Sphere.cpp" />
-    <ClCompile Include="Code\SceneComponent.cpp" />
-    <ClCompile Include="Code\SphereColComp.cpp" />
-    <ClCompile Include="Code\MeshCol.cpp" />
-    <ClCompile Include="Code\PHY_Box.cpp" />
-    <ClCompile Include="Code\PHY_Capsule.cpp" />
+    <ClCompile Include="Code\Data\PHY_Shape.cpp" />
+    <ClCompile Include="Code\Data\PHY_Sphere.cpp" />
+    <ClCompile Include="Code\Component\SceneComponent.cpp" />
+    <ClCompile Include="Code\Component\SphereColComp.cpp" />
+    <ClCompile Include="Code\Component\MeshColComp.cpp" />
+    <ClCompile Include="Code\Data\PHY_Box.cpp" />
+    <ClCompile Include="Code\Data\PHY_Capsule.cpp" />
+    <ClCompile Include="Code\TextureMgr.cpp" />
+    <ClCompile Include="Code\Data\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_Utility.inl" />

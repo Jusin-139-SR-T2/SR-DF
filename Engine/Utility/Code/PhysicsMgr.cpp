@@ -1,6 +1,6 @@
 #include "PhysicsMgr.h"
 
-#include "PHY_Shape.h"
+#include "Data/PHY_Shape.h"
 
 IMPLEMENT_SINGLETON(CPhysicsMgr)
 

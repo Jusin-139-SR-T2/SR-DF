@@ -69,43 +69,41 @@ void CTerrain::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-  //  m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
     SetUp_Material();
     m_pTextureComp->Render_Texture(0);
     m_pBufferComp->Render_Buffer();
 
-   // m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+   m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 }
 
 HRESULT CTerrain::Add_Component()
 {
-    NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CTerrainTexComponent>(ID_STATIC, L"Com_Buffer", L"Proto_TerrainBufferComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_TerrainTextureComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransform>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CTerrainBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_TerrainBufferComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_TerrainTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 
 #pragma region ÄÄÆ÷³ÍÆ®
     //CComponent* pComponent = nullptr;
 
     // ¹öÆÛ ÄÄÆ÷³ÍÆ®
-    /*pComponent = m_pBufferCom = dynamic_cast<CTerrainTexComponent*>(Engine::Clone_Proto(L"Proto_TerrainComp"));
+    /*pComponent = m_pBufferCom = dynamic_cast<CTerrainBufferComp*>(Engine::Clone_Proto(L"Proto_TerrainComp"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });*/
-    //NULL_CHECK_RETURN(m_pBufferCom = Set_DefaultComponent_FromProto<CTerrainTexComponent>(ID_STATIC, L"Com_Buffer", L"Proto_TerrainComp"));
+    //NULL_CHECK_RETURN(m_pBufferCom = Set_DefaultComponent_FromProto<CTerrainBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_TerrainComp"));
 
     //// ÅØ½ºÃ³ ÄÄÆ÷³ÍÆ®
-    //pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_TerrainTexture"));
+    //pComponent = m_pTextureCom = dynamic_cast<CTextureComponent*>(Engine::Clone_Proto(L"Proto_TerrainTexture"));
     //NULL_CHECK_RETURN(pComponent, E_FAIL);
     //m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
-    //NULL_CHECK_RETURN(m_pTextureCom = Set_DefaultComponent_FromProto<CTexture>(ID_STATIC, L"Com_Texture", L"Proto_TerrainTexture"));
+    //NULL_CHECK_RETURN(m_pTextureCom = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_TerrainTexture"));
 
     //// Æ®·£½ºÆû ÄÄÆ÷³ÍÆ®
-    //pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
+    //pComponent = m_pTransformCom = dynamic_cast<CTransformComponent*>(Engine::Clone_Proto(L"Proto_Transform"));
     //NULL_CHECK_RETURN(pComponent, E_FAIL);
     //m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
-    //NULL_CHECK_RETURN(m_pTransformCom = Set_DefaultComponent_FromProto<CTransform>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"));
+    //NULL_CHECK_RETURN(m_pTransformCom = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"));
 #pragma endregion
 
     return S_OK;
