@@ -75,6 +75,12 @@ void CPlayer::LateUpdate_GameObject()
 
 void CPlayer::Render_GameObject()
 {
+    if (bTorch)
+    {
+        m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+        SetUp_Material();
+    }
+
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -103,6 +109,9 @@ void CPlayer::Render_GameObject()
         }
     }
 
+
+    if (bTorch)
+        m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
 
     m_pBufferComp->Set_Vertex(0.f, 0.7f, 0.f);
 
@@ -249,4 +258,22 @@ void CPlayer::Height_On_Terrain()
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
 
     m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.5f, vPos.z);
+}
+
+HRESULT CPlayer::SetUp_Material()
+{
+    D3DMATERIAL9			tMtrl;
+    ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+    //ambient + diffuse*intensity +specular
+
+    tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f }; //난반사 - 물체의 색이 가장 밝은색임
+    tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f }; //정반사 - 하이라이트 표현 
+    tMtrl.Ambient = { 0.1f, 0.1f, 0.1f, 1.f }; //간접조명 - 빛이없더라도 이건 존재한다는 가정하에 들어가는 조명 
+    tMtrl.Emissive = { 0.f, 0.f, 0.f, 0.f }; //자체 발광 
+    tMtrl.Power = 0.f;
+
+    m_pGraphicDev->SetMaterial(&tMtrl);
+
+    return S_OK;
 }

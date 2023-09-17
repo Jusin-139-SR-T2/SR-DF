@@ -7,6 +7,7 @@ BEGIN(Engine)
 class ENGINE_DLL CTexture : public CComponent
 {
 	DERIVED_CLASS(CComponent, CTexture)
+
 private:
 	explicit CTexture();
 	explicit CTexture(LPDIRECT3DDEVICE9 pGraphicDev);

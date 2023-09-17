@@ -40,7 +40,6 @@ void CLight::Free()
 HRESULT CLight::Ready_Light(const D3DLIGHT9* pLightInfo, const _uint& iIndex)
 {
 	memcpy(&m_tLightInfo, pLightInfo, sizeof(D3DLIGHT9));
-
 	m_iIndex = iIndex;
 
 	// 조명 설치

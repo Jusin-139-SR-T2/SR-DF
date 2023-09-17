@@ -1,5 +1,8 @@
 #pragma once
 #include "GameObject.h"
+#include "Export_System.h"
+#include "Export_Utility.h"
+#include "Engine_Macro.h"
 
 BEGIN(Engine)
 
@@ -12,56 +15,6 @@ END
 class CMonster : public Engine::CGameObject
 {
 	DERIVED_CLASS(CGameObject, CMonster)
-
-	enum MONSTER_DIRECTION {
-		EAST, 
-		SOUTH_EAST, 
-		SOUTH,
-		SOUTH_WEST, 
-		WEST,
-		NORTH_WEST,
-		NORTH,
-		NORTH_EAST,
-		DIRECTION_END };
-
-   enum MONSTERSTATE {
-		IDLE_READY,//걷기
-		WALK, 
-		RUN,
-		
-		BASIC_ATTACK, //공격상태
-		HEAVY_ATTACK,
-		DAZED,
-
-		FACE_PUNCH,	//히트상태
-		FALLING,
-		GETUP,
-		HIT,
-
-		TAUNT,	//도발상태
-		STRAFING,
-		INCH,
-		STANDOFF,
-		POOING,		
-		
-		SHOCKED,	//죽은상태
-		CHOPPED,
-		DEAD,
-		THROW_DEAD,
-		HEADLESS,
-		MONSTERSTATE_END };
-
-   typedef struct MONSTER_INFO
-   {
-	   MONSTERSTATE state; //상태
-	   MONSTER_DIRECTION dir; //방향에 따라 다른이미지라서 방향값 
-	   // 상태 2개 더 추가해야함
-
-	   //state = idle, 경계, 포착, 공격, die 로 구성
-	   // 각 state에 맞는 하위 state가 있음 
-	   float m_fCnt; // 해당하는 이미지의 총 갯수
-
-   }MONSTER_INFO;
 
 private:
 	explicit CMonster(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -77,6 +30,7 @@ public:
 private:
 	CRcTex*			m_pBufferComp = nullptr;
 	CTransform*		m_pTransformComp = nullptr;
+	CTransform*		m_pPlayerTransformcomp = nullptr;
 	CTexture*		m_pTextureComp = nullptr;
 	CCalculator*	m_pCalculatorComp = nullptr;
 	CGameObject*	m_pTarget = nullptr;
@@ -87,21 +41,20 @@ private:
 
 private:
 	void				Height_On_Terrain();
+	_float				m_fFrame = 0.f; // 이미지 돌리기위한 프레임변수 
+	_float				m_fsuspicious;
+	float				m_fEyetheta = D3DX_PI / 2.f; // 몬스터 시야각 
 
 public:
 	void				Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
 	static CMonster*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	_matrix				m_matRotAxis;
 
-//---------------------------------------------------------------
-public:
-	_float				m_fFrame = 0.f; // 이미지 돌리기위한 프레임변수 
-	void				state_check(MONSTERSTATE _CurrState, MONSTER_DIRECTION _Direction);
-	MONSTER_INFO		m_MonsterInfo;
-	_float				m_fsuspicious;
+private:
+	_bool				Monster_Capture(); // 몬스터 시야각내에 플레이어가 있는지 체크
+	float					m_fDistance(); // 몬스터와 플레이어 사이의 거리 체크하는 함수 
 
-	void				Monster_Capture();
-	float  m_fEyetheta = D3DX_PI / 4.f; // 몬스터 시야각 
+//---------------------------------------------------------------
 
 public: //Get, Set 함수 만들기 
 	GETSET_EX2(CRcTex*, m_pBufferComp, BufferComponent, GET, SET)
@@ -109,5 +62,55 @@ public: //Get, Set 함수 만들기
 	GETSET_EX2(CTransform*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculator*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 
+// 상태머신 셋팅 --------------------------------------------------
+public:
+	// info 설정 (체, 공, 방x)
+	int m_iHP; // 몬스터 hp 
+	int m_iAttack = 15; // 몬스터 공격력
+	int m_iAwareness = 0; // 의심게이지 숫자 
+	int m_iMaxAwareness = 15; // 
+
+public: 
+	// 목표 상태머신(AI)
+	enum class STATE_OBJ { IDLE, SUSPICIOUS, CHASE, ATTACK, JUMP };
+	// 행동 상태머신
+	enum class STATE_ACT { IDLE, STAND_OFF, SUSPICIOUS, DETECT, WALK, RUN, INCH, JUMP, 
+						  PRE_ATTACK, ATTACK, HEAVY, PARRYING, FALLING, LANDING, DEAD };
+	// 행동키
+	enum class ACTION_KEY { LEFT, RIGHT, UP, DOWN };
+
+private:
+	STATE_SET<STATE_OBJ, void(CMonster*, float)> m_tState_Obj; //AI
+	STATE_SET<STATE_ACT, void(CMonster*, float)> m_tState_Act; // 행동
+	ACTION_SET<ACTION_KEY> m_mapActionKey; //가상 조작키 
+
+#pragma region AI : 판단하는애 
+
+	void Obj_Idle(float fDeltaTime); // idle <-> suspicious
+	void Obj_Suspicious(float fDeltaTime); // idle <-> sus <-> detect
+	void Obj_Chase(float fDeltaTime);
+	void Obj_Attack(float fDeltaTime);
+
+#pragma endregion
+
+#pragma region 행동 : AI 이후 넘어가는곳 
+	void Idle(float fDeltaTime);
+	void Stand_Off(float fDeltaTime);
+	void Suspicious(float fDeltaTime);
+	void Detect(float fDeltaTime);
+
+	void Walk(float fDeltaTime);
+	void Run(float fDeltaTime);
+	void Inch(float fDeltaTime);
+	void Jump(float fDeltaTime);
+	
+	void Prepare_Atk(float fDeltaTime);
+	void Attack(float fDeltaTime);
+	void Heavy_Attack(float fDeltaTime);
+	void Parrying(float fDeltaTime);
+	void Falling(float fDeltaTime);
+	
+	void Dead(float fDeltaTime);
+#pragma endregion
 };
 

@@ -26,10 +26,12 @@ public:
 	virtual void		Render_Scene();
 
 private:
-	HRESULT				Ready_Prototype();
 	HRESULT				Ready_LightInfo();
+	HRESULT				Ready_SpotLightInfo();
+
 	HRESULT				Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);
+	HRESULT				Ready_Layer_Camera(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 
 protected:

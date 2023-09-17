@@ -20,10 +20,12 @@ CStage::~CStage()
 
 HRESULT CStage::Ready_Scene()
 {
-	FAILED_CHECK_RETURN(Ready_Prototype(), E_FAIL);
+	FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
+	FAILED_CHECK_RETURN(Ready_SpotLightInfo(), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"GameLogic"), E_FAIL);
+	FAILED_CHECK_RETURN(Ready_Layer_Camera(L"Camera"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"UI"), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
@@ -49,17 +51,6 @@ void CStage::Render_Scene()
 
 }
 
-HRESULT CStage::Ready_Prototype()
-{
-	FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
-
-	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Environment"), E_FAIL);
-	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"GameLogic"), E_FAIL);
-	FAILED_CHECK_RETURN(Ready_Layer_UI(L"UI"), E_FAIL);
-
-	return S_OK;
-}
-
 HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 {
 	Engine::CLayer*		pLayer = Engine::CLayer::Create();
@@ -68,11 +59,7 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 
 	Engine::CGameObject*		pGameObject = nullptr;
 
-	// DynamicCamera
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", CDynamicCamera::Create(m_pGraphicDev, 
-																						&_vec3(0.f, 10.f, -10.f), 
-																						&_vec3(0.f, 0.f, 1.f), 
-																						&_vec3(0.f, 1.f, 0.f))), E_FAIL);
+	
 
 	// SkyBox
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", CSkyBox::Create(m_pGraphicDev)), E_FAIL);
@@ -101,6 +88,24 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	return S_OK;
 }
 
+HRESULT CStage::Ready_Layer_Camera(const _tchar* pLayerTag)
+{
+	Engine::CLayer* pLayer = Engine::CLayer::Create();
+	NULL_CHECK_RETURN(pLayer, E_FAIL);
+	m_mapLayer.insert({ pLayerTag, pLayer });
+
+	Engine::CGameObject* pGameObject = nullptr;
+
+	// DynamicCamera
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", CDynamicCamera::Create(m_pGraphicDev,
+		&_vec3(0.f, 10.f, -10.f),
+		&_vec3(0.f, 0.f, 1.f),
+		&_vec3(0.f, 1.f, 0.f))), E_FAIL);
+
+
+	return S_OK;
+}
+
 HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	Engine::CLayer*		pLayer = Engine::CLayer::Create();
@@ -120,7 +125,7 @@ HRESULT CStage::Ready_Layer_Completed()
 	CPlayer* pObj = dynamic_cast<CPlayer*>(Get_GameObject(L"GameLogic", L"Player"));
 	NULL_CHECK_RETURN(pObj, E_FAIL);
 
-	CDynamicCamera* pCam = dynamic_cast<CDynamicCamera*>(Get_GameObject(L"Environment", L"DynamicCamera"));
+	CDynamicCamera* pCam = dynamic_cast<CDynamicCamera*>(Get_GameObject(L"Camera", L"DynamicCamera"));
 	NULL_CHECK_RETURN(pCam, E_FAIL);
 
 	pCam->Set_Target(pObj);
@@ -140,8 +145,25 @@ HRESULT CStage::Ready_LightInfo()
 	tLightInfo.Specular = { 1.f, 1.f, 1.f, 1.f };
 	tLightInfo.Ambient = { 1.f, 1.f, 1.f, 1.f };
 	tLightInfo.Direction = { 1.f, -1.f, 1.f };
-
+	
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
+
+	return S_OK;
+}
+
+HRESULT CStage::Ready_SpotLightInfo()
+{
+	D3DLIGHT9		tSpotLightInfo;
+	ZeroMemory(&tSpotLightInfo, sizeof(D3DLIGHT9));
+
+	tSpotLightInfo.Type = D3DLIGHT_SPOT;
+	
+	tSpotLightInfo.Diffuse = { 1.f, 0.f, 0.f, 1.f };  //ºÓÀº»ö Á¶¸í
+	tSpotLightInfo.Specular = { 1.f, 1.f, 1.f, 1.f };
+	tSpotLightInfo.Ambient = { 1.f, 1.f, 1.f, 1.f };
+	tSpotLightInfo.Direction = { 1.f, 0.f, 1.f };
+
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tSpotLightInfo, 1), E_FAIL);
 
 	return S_OK;
 }
