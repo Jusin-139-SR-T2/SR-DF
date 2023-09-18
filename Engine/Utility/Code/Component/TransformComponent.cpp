@@ -137,6 +137,7 @@ const _matrix* CTransformComponent::Compute_LootAtTarget(const _vec3* pTargetPos
 	_matrix		matRot;
 	_vec3		vUp;
 
+
 	return D3DXMatrixRotationAxis(&matRot,
 									&vAxis,
 									acosf(D3DXVec3Dot(D3DXVec3Normalize(&vDir, &vDir),

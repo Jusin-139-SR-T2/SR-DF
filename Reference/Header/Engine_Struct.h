@@ -135,7 +135,8 @@ namespace Engine
 			return !bIsReserved;
 		}
 
-		bool IsOnState(T _eState)
+		//현재 상황이 이거인지 묻는것 A가 A상태임?   ㅇㅇ
+		bool IsOnState(T _eState) 
 		{
 			return (eState == _eState);
 		}

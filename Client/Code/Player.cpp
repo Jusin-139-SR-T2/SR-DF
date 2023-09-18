@@ -29,7 +29,7 @@ HRESULT CPlayer::Ready_GameObject()
     m_pTransformComp->m_vScale.y = 0.4f;
 
     m_pTransformComp->m_vInfo[INFO_POS] = { 15.f, 10.f, 10.f };
-
+    
     m_pBufferComp->Set_Vertex(1.7f, 0.f, 1.f);
 
     return S_OK;
@@ -43,6 +43,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     Mouse_Move();
 
     Height_On_Terrain();
+
     Key_Input(fTimeDelta);
 
     if (bFrameOn)
@@ -165,13 +166,19 @@ void CPlayer::Key_Input(const _float& fTimeDelta)
     // ¿À¸¥ÂÊ
     if (Engine::Get_DIKeyState(DIK_D) & 0x80)
     {
-        m_pTransformComp->Rotation(ROT_Y, D3DXToRadian(90.f * fTimeDelta));
+        _vec3 vRight;
+        m_pTransformComp->Get_Info(INFO_RIGHT, &vRight);
+        D3DXVec3Normalize(&vRight, &vRight);
+        m_pTransformComp->Move_Pos(&vRight, fTimeDelta, 5.f);
     }
 
     // ¿ÞÂÊ
     if (Engine::Get_DIKeyState(DIK_A) & 0x80)
     {
-        m_pTransformComp->Rotation(ROT_Y, D3DXToRadian(-90.f * fTimeDelta));
+        _vec3 vRight;
+        m_pTransformComp->Get_Info(INFO_RIGHT, &vRight);
+        D3DXVec3Normalize(&vRight, &vRight);
+        m_pTransformComp->Move_Pos(&vRight, fTimeDelta, -5.f);
     }
 
     // ±ÇÃÑ

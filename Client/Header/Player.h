@@ -52,7 +52,7 @@ public:
 
 private:
 	CRcBufferComp*				m_pBufferComp = nullptr;
-	CTransformComponent*			m_pTransformComp = nullptr;
+	CTransformComponent*		m_pTransformComp = nullptr;
 	CTextureComponent*			m_pLeftTextureComp = nullptr;
 	CTextureComponent*			m_pRightTextureComp = nullptr;
 	CTextureComponent*			m_pAttackTextureComp = nullptr;
