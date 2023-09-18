@@ -31,6 +31,7 @@ private:
 
 private:
 	CLoading* m_pLoading;
+	CLoading* m_pLoadingTexture;
 
 protected:
 	virtual HRESULT		Ready_Layer_Completed() { return S_OK; }

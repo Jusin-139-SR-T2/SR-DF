@@ -59,7 +59,7 @@ HRESULT CTextureComponent::Ready_Texture(TEXTUREID eType, const _tchar* pPath, c
 	m_vecTexture.reserve(iCnt);
 
 	IDirect3DBaseTexture9* pTexture = nullptr;
-
+	
 	for (_uint i = 0; i < iCnt; ++i)
 	{
 		TCHAR	szFileName[256] = L"";

@@ -100,6 +100,15 @@ _uint CLoading::Loading_For_Stage()
 	return 0;
 }
 
+HRESULT CLoading::Loading_For_Texture()
+{
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/PlayerKick_%d.png", TEX_NORMAL, L"Player", L"Kick", _range<_uint>(0U, 3U)), E_FAIL);
+
+	m_bFinish = true;
+
+	return S_OK;
+}
+
 _uint CLoading::Thread_Main(void * pArg)
 {
 	CLoading*		pLoading = reinterpret_cast<CLoading*>(pArg);
@@ -110,6 +119,9 @@ _uint CLoading::Thread_Main(void * pArg)
 
 	switch (pLoading->Get_LoadingID())
 	{
+	case LOADING_TEXTURE:
+		iFlag = pLoading->Loading_For_Texture();
+		break;
 	case LOADING_STAGE:
 		iFlag = pLoading->Loading_For_Stage();
 		break;

@@ -8,11 +8,7 @@ CTexture::~CTexture()
 {
 }
 
-CTexture* CTexture::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _uint& iIndex)
+CTexture* CTexture::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	return nullptr;
-}
-
-void CTexture::Free()
-{
 }

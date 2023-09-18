@@ -106,7 +106,6 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 	//pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);    // UI 전체 출력 후 다시 원근투영 행렬 적용.
 
 	//pGraphicDev->SetViewport(&m_BackupViewPort);                // UI 전체 출력 후 백업해둔 이전 뷰포트로 되돌림.
-
 }
 
 void CRenderer::Free()
