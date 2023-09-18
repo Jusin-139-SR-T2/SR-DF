@@ -40,6 +40,7 @@ private:
 	void		Mouse_Move();
 	void		Mouse_Fix();
 	void		Camera_State(const _float& fTimeDelta);
+	void		Quaternion_Ver(const _float& fTimeDelta);
 
 private:
 	_float		m_fSpeed = 10.f;
@@ -57,6 +58,11 @@ private:
 	//마우스 무브 좌표
 	_matrix		m_matRotX;
 	_matrix		m_matRotY;
+
+	// 카메라
+	_vec3			m_vRight;		// Right 벡터
+	D3DXQUATERNION	m_quaternion;	// 쿼터니온 변수
+	_vec3			m_vOffset = { 0.f, 3.f, -10.f };	// 플레이어로부터 Offset
 
 private:
 	CTransformComponent* pPlayerTransCom = nullptr;

@@ -141,8 +141,10 @@ xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+      <Command>attrib -r "$(SolutionDir)Reference\Header\*.*" /s
+xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 %(Command)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

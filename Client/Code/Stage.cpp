@@ -59,8 +59,6 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 
 	Engine::CGameObject*		pGameObject = nullptr;
 
-	
-
 	// SkyBox
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", CSkyBox::Create(m_pGraphicDev)), E_FAIL);
 
@@ -141,9 +139,9 @@ HRESULT CStage::Ready_LightInfo()
 
 	tLightInfo.Type = D3DLIGHT_DIRECTIONAL;
 
-	tLightInfo.Diffuse = { 1.f, 1.f, 1.f, 1.f };
-	tLightInfo.Specular = { 1.f, 1.f, 1.f, 1.f };
-	tLightInfo.Ambient = { 1.f, 1.f, 1.f, 1.f };
+	tLightInfo.Diffuse	 = { 1.f, 1.f, 1.f, 1.f };
+	tLightInfo.Specular	 = { 1.f, 1.f, 1.f, 1.f };
+	tLightInfo.Ambient	 = { 1.f, 1.f, 1.f, 1.f };
 	tLightInfo.Direction = { 1.f, -1.f, 1.f };
 	
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
@@ -158,9 +156,9 @@ HRESULT CStage::Ready_SpotLightInfo()
 
 	tSpotLightInfo.Type = D3DLIGHT_SPOT;
 	
-	tSpotLightInfo.Diffuse = { 1.f, 0.f, 0.f, 1.f };  //ºÓÀº»ö Á¶¸í
-	tSpotLightInfo.Specular = { 1.f, 1.f, 1.f, 1.f };
-	tSpotLightInfo.Ambient = { 1.f, 1.f, 1.f, 1.f };
+	tSpotLightInfo.Diffuse	 = { 1.f, 0.f, 0.f, 1.f };  //ºÓÀº»ö Á¶¸í
+	tSpotLightInfo.Specular  = { 1.f, 1.f, 1.f, 1.f };
+	tSpotLightInfo.Ambient	 = { 1.f, 1.f, 1.f, 1.f };
 	tSpotLightInfo.Direction = { 1.f, 0.f, 1.f };
 
 	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tSpotLightInfo, 1), E_FAIL);

@@ -10,10 +10,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <PostBuildEvent>
-      <Command>attrib -r "$(SolutionDir)Reference\Header\*.*" /s
+      <Command>attrib -r "$(SolutionDir)Reference\Header\*.*" /s /d
 xcopy "$(SolutionDir)Engine\Header\*.*" "$(SolutionDir)Reference\Header\" /y /e
 xcopy "Header\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
-attrib +r "$(SolutionDir)Reference\Header\*.*" /s
+attrib +r "$(SolutionDir)Reference\Header\*.*" /s /d
 xcopy "$(OutDir)$(TargetName).lib" "$(SolutionDir)Reference\Library\Engine\$(Configuration)\$(PlatformTarget)\" /y
 xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y
 xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Tool\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y</Command>

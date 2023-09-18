@@ -173,6 +173,12 @@ namespace Engine
 			tState.Set_State(_eState);
 		}
 
+		// + 성희 추가 : 현재 상태값을 반환
+		Key Get_State()
+		{
+			return tState.eState;
+		}
+
 		void Reserve_State(Key _eState)
 		{
 			tState.Reserve_State();
