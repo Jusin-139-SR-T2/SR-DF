@@ -1,35 +1,36 @@
 #pragma once
 
-#include "Component.h"
+#include "Base.h"
+#include "Engine_Define.h"
+#include "TextureMgr.h"
 
 BEGIN(Engine)
 
-class ENGINE_DLL CTexture : public CComponent
+/// <summary>
+/// 텍스처 데이터 저장용 클래스
+/// 추상클래스
+/// </summary>
+class ENGINE_DLL CTexture abstract : public CBase
 {
-	DERIVED_CLASS(CComponent, CTexture)
+	DERIVED_CLASS(CBase, CTexture)
 
-private:
-	explicit CTexture();
+protected:
 	explicit CTexture(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CTexture(const CTexture& rhs);
 	virtual ~CTexture();
 
 public:
-	static CTexture* Create(LPDIRECT3DDEVICE9 pGraphicDev,
-							TEXTUREID eType,
-							_tchar* pPath,
-							const _uint& iCnt = 1);
-	virtual CComponent* Clone();
-
-private:
-	virtual void			Free();
+	static CTexture* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 public:
-	HRESULT		Ready_Texture(TEXTUREID eType, const _tchar* pPath, const _uint& iCnt);
-	void		Render_Texture(const _uint& iIndex = 0);
+	virtual void		Free() PURE;
 
-private:
-	vector<IDirect3DBaseTexture9*>		m_vecTexture;
+public:
+	virtual HRESULT		Ready_Texture(LPDIRECT3DDEVICE9 pGraphicDev) PURE;
+	virtual HRESULT		Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pStateKey = L"", const _range<_uint>& iCntRange = _range<_uint>(0U, 0U)) PURE;
+
+protected:
+	LPDIRECT3DDEVICE9			m_pGraphicDev = nullptr;						// 장치
+	ETEXTURE_COMTYPE			m_eTexCompType = ETEXTURE_COMTYPE::SINGLE;		// 멀티텍스쳐인지 확인하는 용도
 
 };
 

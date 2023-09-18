@@ -61,11 +61,19 @@ void		Clear_RenderGroup()
 
 
 // 조명 매니저 
-HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,
-	const D3DLIGHT9* pLightInfo,
-	const _uint& iIndex)
+HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev, const D3DLIGHT9* pLightInfo, const _uint& iIndex)
 {
 	return CLightMgr::GetInstance()->Ready_Light(pGraphicDev, pLightInfo, iIndex);
+}
+
+// 조명 매니저
+inline HRESULT	Ready_TextureMgr(LPDIRECT3DDEVICE9 pGraphicDev)
+{
+	return CTextureMgr::GetInstance()->Ready_Texture(pGraphicDev);
+}
+inline HRESULT	Ready_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey, const _range<_uint>& iCntRange)
+{
+	return CTextureMgr::GetInstance()->Insert_Texture(pFilePath, eType, pTextureKey, pStateKey, iCntRange);
 }
 
 // 싱글톤 해제 코드
@@ -75,5 +83,6 @@ void			Release_Utility()
 	CRenderer::GetInstance()->DestroyInstance();
 	CProtoMgr::GetInstance()->DestroyInstance();
 	CPhysicsMgr::GetInstance()->DestroyInstance();
+	CTextureMgr::GetInstance()->DestroyInstance();
 	CManagement::GetInstance()->DestroyInstance();
 }

@@ -2,6 +2,7 @@
 #define Engine_Typedef_h__
 
 using std::unordered_map;
+using std::pair;
 
 namespace Engine
 {
@@ -32,6 +33,10 @@ namespace Engine
 #else
 	typedef		_float						_real;
 #endif // _WIN64
+
+	// 추가 정의 타입
+	template <typename T>
+	using _range = pair<T, T>;
 
 	template <typename Key, typename Value>
 	using _unmap = unordered_map<Key, Value>;

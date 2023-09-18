@@ -10,7 +10,7 @@ BEGIN(Engine)
 /// 텍스처 데이터 저장용 클래스
 /// 추상클래스
 /// </summary>
-class CTexture abstract : public CBase
+class ENGINE_DLL CTexture abstract : public CBase
 {
 	DERIVED_CLASS(CBase, CTexture)
 
@@ -25,8 +25,8 @@ public:
 	virtual void		Free() PURE;
 
 public:
-	virtual HRESULT		Ready_Texture() PURE;
-	virtual HRESULT		Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pStateKey = L"", const _uint& iCount = 0) PURE;
+	virtual HRESULT		Ready_Texture(LPDIRECT3DDEVICE9 pGraphicDev) PURE;
+	virtual HRESULT		Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pStateKey = L"", const _range<_uint>& iCntRange = _range<_uint>(0U, 0U)) PURE;
 
 protected:
 	LPDIRECT3DDEVICE9			m_pGraphicDev = nullptr;						// 장치

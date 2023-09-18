@@ -13,7 +13,7 @@ CSingleStateTexture* CSingleStateTexture::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Texture()))
+	if (FAILED(pInstance->Ready_Texture(pGraphicDev)))
 	{
 		Safe_Release(pInstance);
 
@@ -32,17 +32,17 @@ void CSingleStateTexture::Free()
 	}
 }
 
-HRESULT CSingleStateTexture::Ready_Texture()
+HRESULT CSingleStateTexture::Ready_Texture(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-
+	m_pGraphicDev = pGraphicDev;
 
 	return S_OK;
 }
 
-HRESULT CSingleStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pStateKey, const _uint& iCount)
+HRESULT CSingleStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pStateKey, const _range<_uint>& iCntRange)
 {
 	// 스테이트 키에 이미 텍스처 셋이 있으면 처리하지 않는다.
-	if (m_mapTextureState.find(pStateKey)->second == nullptr)
+	if (m_mapTextureState.find(pStateKey) != m_mapTextureState.end())
 		return E_FAIL;
 
 	LPDIRECT3DBASETEXTURE9 pTexture = nullptr;
@@ -69,7 +69,7 @@ HRESULT CSingleStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID e
 	}
 	}
 
-	m_mapTextureState.emplace(pTexture);
+	m_mapTextureState.emplace(pStateKey, pTexture);
 
 	return S_OK;
 }

@@ -15,6 +15,7 @@ CTextureMgr::CTextureMgr()
 
 CTextureMgr::~CTextureMgr()
 {
+	Free();
 }
 
 void CTextureMgr::Free()
@@ -25,21 +26,21 @@ void CTextureMgr::Free()
 	}
 }
 
-HRESULT CTextureMgr::Ready_Texture()
+HRESULT CTextureMgr::Ready_Texture(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	m_pGraphicDev = Get_GraphicDev();
+	m_pGraphicDev = pGraphicDev;
 
 	return S_OK;
 }
 
-HRESULT CTextureMgr::Load_Texture(TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey, const _uint& iCount)
+HRESULT CTextureMgr::Load_Texture(TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey, const _range<_uint>& iCntRange)
 {
 	
 
 	return S_OK;
 }
 
-HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey, const _uint& iCount)
+HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey, const _range<_uint>& iCntRange)
 {
 	CTexture* pTexture;
 	HRESULT hr = S_OK;
@@ -50,7 +51,7 @@ HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, co
 	FALSE_CHECK_RETURN(!file.good(), E_FAIL);
 
 	// 상태키나 텍스처 개수에 따른 분류
-	if (1U >= iCount)
+	if (0U >= iCntRange.second - iCntRange.first)
 	{
 		if (pStateKey != L"")
 			eComType = ETEXTURE_COMTYPE::SINGLE_STATE;
@@ -64,13 +65,13 @@ HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, co
 		else
 			eComType = ETEXTURE_COMTYPE::MULTI;
 	}
-
+	
 	// 텍스처키로 먼저 텍스처가 있는지 찾아본 후 없다면 새로 만들고.
 	// 아니면 기존의 텍스처 객체에 스테이트 키를 추가한다.
-	auto iter = find_if(m_mapTexture.begin(), m_mapTexture.end(), CTag_Finder(pTextureKey));
-
+	auto iter = m_mapTexture.find(pTextureKey);
+	
 	// 텍스처가 없으니 새로만든다.
-	if (iter != m_mapTexture.end())
+	if (iter == m_mapTexture.end())
 	{
 		switch (eComType)
 		{
@@ -78,16 +79,16 @@ HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, co
 			pTexture = CSingleTexture::Create(m_pGraphicDev);
 			break;
 		case ETEXTURE_COMTYPE::SINGLE_STATE:
-			pTexture = CSingleTexture::Create(m_pGraphicDev);
+			pTexture = CSingleStateTexture::Create(m_pGraphicDev);
 			break;
 		case ETEXTURE_COMTYPE::MULTI:
-			pTexture = CSingleTexture::Create(m_pGraphicDev);
+			pTexture = CMultiTexture::Create(m_pGraphicDev);
 			break;
 		case ETEXTURE_COMTYPE::MULTI_STATE:
-			pTexture = CSingleTexture::Create(m_pGraphicDev);
+			pTexture = CMultiStateTexture::Create(m_pGraphicDev);
 			break;
 		}
-		m_mapTexture.emplace(pTexture);
+		m_mapTexture.emplace(pTextureKey, pTexture);
 	}
 	// 텍스처가 있으니 기존에 것에 추가한다.
 	else
@@ -100,7 +101,7 @@ HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, co
 		pTexture = iter->second;
 	}
 
-	FAILED_CHECK_RETURN(hr = pTexture->Insert_Texture(pFilePath, eType, pStateKey, iCount), E_FAIL);
+	FAILED_CHECK_RETURN(hr = pTexture->Insert_Texture(pFilePath, eType, pStateKey, iCntRange), E_FAIL);
 
 	return hr;
 }

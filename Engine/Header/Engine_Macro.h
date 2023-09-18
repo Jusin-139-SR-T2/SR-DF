@@ -67,7 +67,7 @@ namespace Engine
 	{ MessageBoxW(NULL, L"Failed", L"System Error",MB_OK); DebugBreak(); return _return;}
 
 #define FAILED_CHECK_MSG( _hr, _message)	if( ((HRESULT)(_hr)) < 0 )	\
-	{ MessageBoxW(NULL, _message, L"System Message",MB_OK); DebugBreak();return E_FAIL;}
+	{ MessageBoxW(NULL, _message, L"System Message",MB_OK); DebugBreak();}
 
 #define FAILED_CHECK_RETURN_MSG( _hr, _return, _message)	if( ((HRESULT)(_hr)) < 0 )	\
 	{ MessageBoxW(NULL, _message, L"System Message",MB_OK); DebugBreak();return _return;}

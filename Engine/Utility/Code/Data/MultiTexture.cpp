@@ -13,7 +13,7 @@ CMultiTexture* CMultiTexture::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-    if (FAILED(pInstance->Ready_Texture()))
+    if (FAILED(pInstance->Ready_Texture(pGraphicDev)))
     {
         Safe_Release(pInstance);
 
@@ -30,20 +30,21 @@ void CMultiTexture::Free()
 		Safe_Release(indexItem);
 }
 
-HRESULT CMultiTexture::Ready_Texture()
+HRESULT CMultiTexture::Ready_Texture(LPDIRECT3DDEVICE9 pGraphicDev)
 {
+	m_pGraphicDev = pGraphicDev;
 
 	return S_OK;
 }
 
-HRESULT CMultiTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pStateKey, const _uint& iCount)
+HRESULT CMultiTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pStateKey, const _range<_uint>& iCntRange)
 {
 	LPDIRECT3DBASETEXTURE9 pTexture = nullptr;
 
 	TCHAR	szFileName[256] = L"";
 	wsprintf(szFileName, pFilePath, L"");
 
-	for (_uint i = 0; i < iCount; ++i)
+	for (_uint i = 0; i < iCntRange.second; ++i)
 	{
 		TCHAR	szFileName[256] = L"";
 		wsprintf(szFileName, pFilePath, i);

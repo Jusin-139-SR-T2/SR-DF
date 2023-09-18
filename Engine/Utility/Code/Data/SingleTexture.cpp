@@ -13,7 +13,7 @@ CSingleTexture* CSingleTexture::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-    if (FAILED(pInstance->Ready_Texture()))
+    if (FAILED(pInstance->Ready_Texture(pGraphicDev)))
     {
         Safe_Release(pInstance);
 
@@ -29,12 +29,14 @@ void CSingleTexture::Free()
 	Safe_Release(m_pTexture);
 }
 
-HRESULT CSingleTexture::Ready_Texture()
+HRESULT CSingleTexture::Ready_Texture(LPDIRECT3DDEVICE9 pGraphicDev)
 {
+	m_pGraphicDev = pGraphicDev;
+
     return S_OK;
 }
 
-HRESULT CSingleTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pStateKey, const _uint& iCount)
+HRESULT CSingleTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pStateKey, const _range<_uint>& iCntRange)
 {
 	LPDIRECT3DBASETEXTURE9 pTexture = nullptr;
 

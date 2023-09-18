@@ -19,7 +19,7 @@ enum class ETEXTURE_COMTYPE
 /// <summary>
 /// 텍스처를 관리하는 매니저
 /// </summary>
-class CTextureMgr : public CBase
+class ENGINE_DLL CTextureMgr : public CBase
 {
 	DERIVED_CLASS_SINGLETON(CBase, CTextureMgr)
 
@@ -31,9 +31,9 @@ public:
 	virtual void	Free();
 
 public:
-	HRESULT			Ready_Texture();
-	HRESULT			Load_Texture(TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey, const _uint& iCount = 0U);
-	HRESULT			Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey = L"", const _uint& iCount = 0U);
+	HRESULT			Ready_Texture(LPDIRECT3DDEVICE9 pGraphicDev);
+	HRESULT			Load_Texture(TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey, const _range<_uint>& iCntRange = _range<_uint>(0U, 0U));
+	HRESULT			Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey = L"", const _range<_uint>& iCntRange = _range<_uint>(0U, 0U));
 
 private:
 	LPDIRECT3DDEVICE9				m_pGraphicDev = nullptr;

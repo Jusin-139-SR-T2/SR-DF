@@ -9,6 +9,7 @@
 
 #include "LightMgr.h"
 #include "TextureMgr.h"
+#include "PhysicsMgr.h"
 
 #include "CalculatorComponent.h"
 #include "TriColorComp.h"
@@ -56,6 +57,10 @@ inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,	const D3DLIGHT9 * pL
 
 // PhysicsMgr
 
+
+// TextureMgr
+inline HRESULT	Ready_TextureMgr(LPDIRECT3DDEVICE9 pGraphicDev);
+inline HRESULT	Ready_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey = L"", const _range<_uint>& iCntRange = _range<_uint>(0U, 0U));
 
 inline void			Release_Utility();
 
