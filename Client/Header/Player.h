@@ -46,16 +46,18 @@ public:
 	GETSET_EX2(CSphereColComp*, m_pColliderComp, SphereColComponent, GET, SET)
 
 
-public:
-// 플레이어 상태 머신
+public:// 플레이어 상태 값
+	// 플레이어
 	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, DIE };
-	enum class STATE_LEFTHAND { NONE, HAND, GUN };
-	enum class STATE_RIGHTHAND { NONE, HAND, GUN };
+	// 왼손
+	enum class STATE_LEFTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, RIGHTER, RUN_RIHGTER, STEELPIPE };
+	// 오른손
+	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE };
 	
 // TEST
-	enum class OBJECT_TYPE { NONE, GUN, NON_WEAPON, BOTH_HANDS,  };
+	enum class OBJECT_TYPE { NONE, GUN, THOMPSON, STEELPIPE  }; // 테스트(오브젝트)
 // TEST
-private:
+private: // 플레이어의 상태 머신
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
 
 	void Idle(float fTimeDelta);
@@ -65,52 +67,75 @@ private:
 	void Attack(float fTimeDelta);
 	void Die(float fTimeDelta);
 
-private:
+private: // 플레이어의 왼손 상태 머신
 	STATE_SET<STATE_LEFTHAND, void(CPlayer*, float)> m_tLeftHand_State;
 
-	//void	Idle();
-	//void	Attack();
+	void	Left_Hand(float fTimeDelta);
+	void	Left_Gun(float fTimeDelta);
+	void	Left_Thompson(float fTimeDelta);
+	void	Left_Steelpipe(float fTimeDelta);
+	void	Left_Righter(float fTimeDelta);
 
-private:
+private: // 플레이어의 오른손 상태 머신
 	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightHand_State;
 
-private:
-	HRESULT				Add_Component();
-	bool				Keyboard_Input(const _float& fTimeDelta);
-	bool				Attack_Input(const _float& fTimeDelta);
-	void				Mouse_Move();
-	void				Height_On_Terrain();
+	void	Right_Hand(float fTimeDelta);
+	void	Right_Gun(float fTimeDelta);
+	void	Right_Thompson(float fTimeDelta);
+	void	Right_Steelpipe(float fTimeDelta);
 
 private:
-	void State_Update(float fTimeDelta);
+	HRESULT				Add_Component();							// 컴포넌트 추가
+	bool				Keyboard_Input(const _float& fTimeDelta);	// 키보드 입력
+	bool				Attack_Input(const _float& fTimeDelta);		// 공격 입력(마우스)
+	void				Mouse_Move();								// 마우스 움직임
+	void				Height_On_Terrain();						// 지형타기
+	void				Hand_Check();								// 플레이어 손 상태 체크
 
 private:
-	CRcBufferComp*				m_pBufferComp = nullptr;
-	CTransformComponent*			m_pTransformComp = nullptr;
-
-	vector<CTextureComponent*>	m_vecTexture;
-	CTextureComponent*			m_pLeftHandTextureComp = nullptr;
-	CTextureComponent*			m_pRightHandTextureComp = nullptr;
-	CTextureComponent*			m_pAttackTextureComp = nullptr;
-	CTextureComponent*			m_pAttackSpinTextureComp = nullptr;
-	CCalculatorComponent*		m_pCalculatorComp = nullptr;
-	CSphereColComp*		m_pColliderComp = nullptr;
+	void State_Update(float fTimeDelta);	// 상태 업데이트(상태 체크)
 
 private:
-	_bool		bAttackOn = false;
-	_bool		bFrameOn = false;
+	CRcBufferComp*				m_pBufferComp = nullptr;			// Rc버퍼
+	CTransformComponent*		m_pTransformComp = nullptr;			// 이동행렬 버퍼
+
+	// 플레이어 손
+	CTextureComponent*			m_pLeftHandComp = nullptr;			// 왼손 텍스처(담을곳)
+	CTextureComponent*			m_pRightHandComp = nullptr;			// 오른손 텍스처(담을곳)
+
+
+	CTextureComponent*			m_pAttackTextureComp = nullptr;		// 공격(총) 텍스처
+	CTextureComponent*			m_pAttackSpinTextureComp = nullptr;	// 총 회전 텍스처
+	CCalculatorComponent*		m_pCalculatorComp = nullptr;		// 지형 타기 컴포넌트
+	CSphereColComp*				m_pColliderComp = nullptr;			// 구 충돌 콜라이더
+
+	// Test
+	CTextureComponent*			m_pLeftHandTextureComp = nullptr;			// 왼손(이미지) 텍스처
+	CTextureComponent*			m_pRightHandTextureComp = nullptr;			// 오른손(이미지) 텍스처
+	CTextureComponent*			m_pRightSteelPipeTextureComp = nullptr;		// 쇠파이프(이미지) 텍스처
+	CTextureComponent*			m_pLeftZippoTextureComp = nullptr;			// 라이터(이미지) 텍스처
+
+private:
+	_bool		bAttackOn = false;		// 공격
+	_bool		bLeftFrameOn = false;
+	_bool		bRightFrameOn = false;
 	_bool		bGunOn = false;
 	_bool		bSpinOn = false;
 	_bool		bDead = false;
 	_bool		bMove = false;
 	_bool		bMouse_Button = false;
 	_bool		bFootAttack = false;
+	_bool		bRighter = false;
+	_bool		bRunOn = false;
+
+	_float		fSpeed = 5.f;
 
 	OBJECT_TYPE m_eObjectType;
 
 private:
 	_long			dwMouseMove = 0;
-	_float			m_fFrame = 0.f;
+	_float			m_fLeftFrame = 0.f;
+	_float			m_fRightFrame = 0.f;
 	_float			m_fMaxFrame = 0.f;
 
 private:

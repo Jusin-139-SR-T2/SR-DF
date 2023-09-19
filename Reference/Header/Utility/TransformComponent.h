@@ -64,6 +64,11 @@ public:
 		m_vInfo[INFO_POS] = vPos;
 	}
 
+	_vec3		Get_Pos()
+	{
+		return m_vInfo[INFO_POS];
+	}
+
 public:
 	_vec3		m_vInfo[INFO_END];
 	_vec3		m_vScale;
