@@ -71,14 +71,16 @@ namespace Engine
 		}
 		~tagState() {}
 
-		bool	bIsEnter;
-		bool	bIsExit;
-		bool	bIsReserved;
-		T		eState;
-		T		ePrevState;
-		T		eNextState;
+		bool	bIsEnter;	// 진입
+		bool	bIsExit;	// 탈출
+		bool	bIsReserved;// 예약
+		T		eState;		// 현재 상태
+		T		ePrevState; // 이전 상태
+		T		eNextState; // 다음 상태
 
 #pragma region 상태머신 함수
+		
+		// 현재 상태를 바꾸는 함수 (탈출 코드랑 진입 코드를 작동 시킨다.)
 		void Set_State(T _eState)
 		{
 			ePrevState = eState;
@@ -87,6 +89,7 @@ namespace Engine
 			bIsEnter = true;
 		}
 
+		// 상태 전환 예약 함수
 		void Reserve_State(T _eState)
 		{
 			eNextState = _eState;
@@ -108,7 +111,7 @@ namespace Engine
 		// 빠져나갈 때
 		bool IsState_Exit()
 		{
-			// 예약 상태에서는 하나의 
+			// 예약 상태에서는 다음 상태를 Set_State 한다.
 			if (bIsReserved)
 			{
 				Set_State(eNextState);
@@ -135,13 +138,15 @@ namespace Engine
 			return !bIsReserved;
 		}
 
-		//현재 상황이 이거인지 묻는것 A가 A상태임?   ㅇㅇ
-		bool IsOnState(T _eState) 
+		// 현재 상태가 매개변수와 맞는지 체크
+		bool IsOnState(T _eState)
 		{
 			return (eState == _eState);
 		}
 #pragma endregion
 	};
+
+	// 주의사항 : 키값을 문자열로 할거면 스트링으로 사용해야 한다.
 
 	template <typename T>
 	using STATE_INFO = tagState<T>;
@@ -246,6 +251,7 @@ namespace Engine
 			return false;
 		}
 
+		// 특정 포인트(지점)를 넘어가면 반환
 		bool Update(T increase, T point, bool bAutoReset = false)
 		{
 			PrevCur = Cur;
@@ -275,6 +281,7 @@ namespace Engine
 			Cur = T();
 		}
 
+		// 특정 포인트(지점)를 넘어가면 계속 트루
 		bool IsReach(T point)
 		{
 			return (Cur >= point);
@@ -286,16 +293,19 @@ namespace Engine
 			return (Cur >= point - increase * (T)0.5f && Cur < point + increase * (T)0.5f);
 		}
 
+		// 맥스일 경우 계속 트루
 		bool IsMax()
 		{
 			return (Cur >= Max);
 		}
 
+		// 맥스일 경우 한번만 트루
 		bool IsMax_Once()
 		{
 			return (Cur >= Max && PrevCur != Cur);
 		}
 
+		// 퍼센트 값 반환
 		float Get_Percent()
 		{
 			return (static_cast<float>(Cur) / static_cast<float>(Max));
@@ -317,16 +327,26 @@ namespace Engine
 
 		bool bAction;
 
+		/// <summary>
+		/// 값 대입을 보기좋게 만든 것
+		/// </summary>
 		void Act()
 		{
 			bAction = true;
 		}
 
+		/// <summary>
+		/// 값 대입을 보기좋게 만든 것
+		/// </summary>
 		void Update()
 		{
 			bAction = false;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		bool Sync()
 		{
 			if (bAction)

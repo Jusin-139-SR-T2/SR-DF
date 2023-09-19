@@ -67,8 +67,8 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Tile/Tile/22.jpg")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBoxTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_CUBE, L"./Resource/Texture/SkyBox/Test4.dds")), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBoxTextureComp2", CTextureComponent::Create(m_pGraphicDev, TEX_CUBE, L"./Resource/Texture/SkyBox/skybox2.dds")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerLeftTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Player/SprintingHands_Left.png")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerRightTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Player/SprintingHands_Right.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerLeftHandTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Player/SprintingHands_Left.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerRightHandTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Player/SprintingHands_Right.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerAttackTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Player/Gun%d.png", 3)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerAttackTestTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Player/Spin%d.png", 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MonsterTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"./Resource/Texture/Monster/DazedStrip_539x897_%d.png",14)), E_FAIL); //¼ø¼ö °¹¼ö 
@@ -86,6 +86,15 @@ _uint CLoading::Loading_For_Stage()
 	return 0;
 }
 
+HRESULT CLoading::Loading_For_Texture()
+{
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/PlayerKick_%d.png", TEX_NORMAL, L"Player", L"Kick", _range<_uint>(0U, 3U)), E_FAIL);
+
+	m_bFinish = true;
+
+	return S_OK;
+}
+
 _uint CLoading::Thread_Main(void * pArg)
 {
 	CLoading*		pLoading = reinterpret_cast<CLoading*>(pArg);
@@ -96,6 +105,9 @@ _uint CLoading::Thread_Main(void * pArg)
 
 	switch (pLoading->Get_LoadingID())
 	{
+	case LOADING_TEXTURE:
+		iFlag = pLoading->Loading_For_Texture();
+		break;
 	case LOADING_STAGE:
 		iFlag = pLoading->Loading_For_Stage();
 		break;

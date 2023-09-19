@@ -94,8 +94,24 @@
     <ClInclude Include="..\Header\Export_Utility.h">
       <Filter>99. Export</Filter>
     </ClInclude>
-    <ClInclude Include="Header\TextureMgr.h" />
-    <ClInclude Include="Header\Data\Texture.h" />
+    <ClInclude Include="Header\TextureMgr.h">
+      <Filter>06. TextureMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Data\Texture.h">
+      <Filter>06. TextureMgr\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Data\MultiTexture.h">
+      <Filter>06. TextureMgr\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Data\SingleTexture.h">
+      <Filter>06. TextureMgr\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Data\MultiStateTexture.h">
+      <Filter>06. TextureMgr\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Data\SingleStateTexture.h">
+      <Filter>06. TextureMgr\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -188,8 +204,24 @@
     <ClCompile Include="Code\Data\PHY_Capsule.cpp">
       <Filter>01. Component\08. Collider\Data</Filter>
     </ClCompile>
-    <ClCompile Include="Code\TextureMgr.cpp" />
-    <ClCompile Include="Code\Data\Texture.cpp" />
+    <ClCompile Include="Code\TextureMgr.cpp">
+      <Filter>06. TextureMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Data\Texture.cpp">
+      <Filter>06. TextureMgr\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Data\MultiTexture.cpp">
+      <Filter>06. TextureMgr\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Data\MultiStateTexture.cpp">
+      <Filter>06. TextureMgr\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Data\SingleTexture.cpp">
+      <Filter>06. TextureMgr\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Data\SingleStateTexture.cpp">
+      <Filter>06. TextureMgr\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">
@@ -263,6 +295,12 @@
     </Filter>
     <Filter Include="01. Component\GameObjComponent">
       <UniqueIdentifier>{e39c65ab-0b43-4643-912d-01ef2ad0bde3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. TextureMgr">
+      <UniqueIdentifier>{04b69a04-02c1-48aa-a601-4ff86af2de20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. TextureMgr\Data">
+      <UniqueIdentifier>{c7c569ec-e70d-4c55-97e2-aa0fc5d75195}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -97,8 +97,10 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+      <Command>attrib -r "$(SolutionDir)Reference\Header\*.*" /s
+xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 %(Command)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -121,8 +123,10 @@ xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+      <Command>attrib -r "$(SolutionDir)Reference\Header\*.*" /s
+xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 %(Command)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -141,8 +145,10 @@ xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+      <Command>attrib -r "$(SolutionDir)Reference\Header\*.*" /s
+xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 %(Command)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -165,8 +171,10 @@ xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+      <Command>attrib -r "$(SolutionDir)Reference\Header\*.*" /s
+xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 %(Command)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -204,6 +212,10 @@ xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
     <ClInclude Include="Header\Data\PHY_Capsule.h" />
     <ClInclude Include="Header\TextureMgr.h" />
     <ClInclude Include="Header\Data\Texture.h" />
+    <ClInclude Include="Header\Data\MultiStateTexture.h" />
+    <ClInclude Include="Header\Data\MultiTexture.h" />
+    <ClInclude Include="Header\Data\SingleStateTexture.h" />
+    <ClInclude Include="Header\Data\SingleTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\GameObjComponent.cpp" />
@@ -238,6 +250,10 @@ xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
     <ClCompile Include="Code\Data\PHY_Capsule.cpp" />
     <ClCompile Include="Code\TextureMgr.cpp" />
     <ClCompile Include="Code\Data\Texture.cpp" />
+    <ClCompile Include="Code\Data\MultiStateTexture.cpp" />
+    <ClCompile Include="Code\Data\MultiTexture.cpp" />
+    <ClCompile Include="Code\Data\SingleStateTexture.cpp" />
+    <ClCompile Include="Code\Data\SingleTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_Utility.inl" />

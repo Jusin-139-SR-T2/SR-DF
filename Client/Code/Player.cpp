@@ -29,7 +29,21 @@ HRESULT CPlayer::Ready_GameObject()
     m_pTransformComp->m_vScale.y = 0.4f;
 
     m_pTransformComp->m_vInfo[INFO_POS] = { 15.f, 10.f, 10.f };
-    
+
+    // 초기 상태 세팅 (현재 상태)
+    m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+
+    // 플레이어의 상태 추가
+    m_tPlayer_State.Add_Func(STATE_PLAYER::IDLE, &ThisClass::Idle);
+    m_tPlayer_State.Add_Func(STATE_PLAYER::MOVE, &ThisClass::Move);
+    m_tPlayer_State.Add_Func(STATE_PLAYER::RUN, &ThisClass::Run);
+    m_tPlayer_State.Add_Func(STATE_PLAYER::DOWN, &ThisClass::Down);
+    m_tPlayer_State.Add_Func(STATE_PLAYER::ATTACK, &ThisClass::Attack);
+    m_tPlayer_State.Add_Func(STATE_PLAYER::DIE, &ThisClass::Die);
+
+    //Tset
+    m_eObjectType = OBJECT_TYPE::NONE;
+
     m_pBufferComp->Set_Vertex(1.7f, 0.f, 1.f);
 
     return S_OK;
@@ -42,9 +56,10 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     // 플레이어 마우스 무브
     Mouse_Move();
 
-    Height_On_Terrain();
+    State_Update(fTimeDelta);
 
-    Key_Input(fTimeDelta);
+    Height_On_Terrain();
+    //Key_Input(fTimeDelta);
 
     if (bFrameOn)
     {
@@ -79,21 +94,21 @@ void CPlayer::Render_GameObject()
     if (bTorch)
     {
         m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
-        SetUp_Material();
+        //SetUp_Material();
     }
 
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     m_pBufferComp->Set_Vertex(-3.5f, -0.7f, 0.f);
-    m_pLeftTextureComp->Render_Texture(0);
+    m_pLeftHandTextureComp->Render_Texture(0);
     m_pBufferComp->Render_Buffer();
 
     m_pBufferComp->Set_Vertex(3.5f, 0.f, 0.f);
 
     if (!bAttackOn)
     {
-        m_pRightTextureComp->Render_Texture(0);
+        m_pRightHandTextureComp->Render_Texture(0);
         m_pBufferComp->Render_Buffer();
     }
     if (bAttackOn)
@@ -128,9 +143,9 @@ HRESULT CPlayer::Add_Component()
     NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CSphereColComp>(ID_STATIC, L"Comp_SphereCollider", L"Proto_SphereColComp"), E_FAIL);
 
     // 플레이어 왼손 텍스처
-    NULL_CHECK_RETURN(m_pLeftTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TextureLeft", L"Proto_PlayerLeftTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pLeftHandTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TextureLeftHand", L"Proto_PlayerLeftHandTextureComp"), E_FAIL);
     // 플레이어 오른손 텍스처
-    NULL_CHECK_RETURN(m_pRightTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TextureRight", L"Proto_PlayerRightTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pRightHandTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TextureRightHand", L"Proto_PlayerRightHandTextureComp"), E_FAIL);
     // 플레이어 공격 텍스처
     NULL_CHECK_RETURN(m_pAttackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureAttack", L"Proto_PlayerAttackTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pAttackSpinTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureAttackTest", L"Proto_PlayerAttackTestTextureComp"), E_FAIL);
@@ -138,7 +153,7 @@ HRESULT CPlayer::Add_Component()
     return S_OK;
 }
 
-void CPlayer::Key_Input(const _float& fTimeDelta)
+bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
 {
     _vec3	vLook;
 
@@ -154,6 +169,9 @@ void CPlayer::Key_Input(const _float& fTimeDelta)
     {
         D3DXVec3Normalize(&vLook, &vLook);
         m_pTransformComp->Move_Pos(&vLook, fTimeDelta, 5.f);
+
+        bMove = true;
+        return bMove;
     }
 
     // 후진
@@ -161,24 +179,27 @@ void CPlayer::Key_Input(const _float& fTimeDelta)
     {
         D3DXVec3Normalize(&vLook, &vLook);
         m_pTransformComp->Move_Pos(&vLook, fTimeDelta, -5.f);
+
+        bMove = true;
+        return bMove;
     }
 
     // 오른쪽
     if (Engine::Get_DIKeyState(DIK_D) & 0x80)
     {
-        _vec3 vRight;
-        m_pTransformComp->Get_Info(INFO_RIGHT, &vRight);
-        D3DXVec3Normalize(&vRight, &vRight);
-        m_pTransformComp->Move_Pos(&vRight, fTimeDelta, 5.f);
+        m_pTransformComp->Rotation(ROT_Y, D3DXToRadian(90.f * fTimeDelta));
+
+        bMove = true;
+        return bMove;
     }
 
     // 왼쪽
     if (Engine::Get_DIKeyState(DIK_A) & 0x80)
     {
-        _vec3 vRight;
-        m_pTransformComp->Get_Info(INFO_RIGHT, &vRight);
-        D3DXVec3Normalize(&vRight, &vRight);
-        m_pTransformComp->Move_Pos(&vRight, fTimeDelta, -5.f);
+        m_pTransformComp->Rotation(ROT_Y, D3DXToRadian(-90.f * fTimeDelta));
+
+        bMove = true;
+        return bMove;
     }
 
     // 권총
@@ -190,6 +211,7 @@ void CPlayer::Key_Input(const _float& fTimeDelta)
         m_fMaxFrame = 3.f;
     }
 
+    // 
     if (Engine::Get_DIKeyState(DIK_E) & 0x80)
     {
         bAttackOn = true;
@@ -205,17 +227,37 @@ void CPlayer::Key_Input(const _float& fTimeDelta)
         m_fMaxFrame = 4.f;
     }
 
+    return false;
+}
+
+bool CPlayer::Attack_Input(const _float& fTimeDelta)
+{
+    // 발차기
+    if (Engine::Get_DIKeyState(DIK_Q) & 0x80)
+    {
+
+        bFootAttack = true;
+        return bFootAttack;
+    }
+
     // 마우스 좌클릭
     if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
     {
         bFrameOn = true;
+
+        bMouse_Button = true;
+        return bMouse_Button;
     }
 
     // 마우스 우클릭
     if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
     {
-        
+
+        bMouse_Button = true;
+        return bMouse_Button;
     }
+
+    return false;
 }
 
 // 마우스 움직임
@@ -263,24 +305,164 @@ void CPlayer::Height_On_Terrain()
     NULL_CHECK(pTerrainBufferComp);
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
-
+                 
     m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.5f, vPos.z);
 }
 
-HRESULT CPlayer::SetUp_Material()
+void CPlayer::State_Update(float fTimeDelta)
 {
-    D3DMATERIAL9			tMtrl;
-    ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+   
+    // 플레이어가 살아있을 때
+    if (!bDead)
+    {
+        // 플레이어의 상태
+        m_tPlayer_State.Get_StateFunc()(this, fTimeDelta);
 
-    //ambient + diffuse*intensity +specular
+        // 플레이어의 왼손 상태
+        //m_tLeftHand_State.Get_StateFunc()(this, fTimeDelta);
 
-    tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f }; //난반사 - 물체의 색이 가장 밝은색임
-    tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f }; //정반사 - 하이라이트 표현 
-    tMtrl.Ambient = { 0.1f, 0.1f, 0.1f, 1.f }; //간접조명 - 빛이없더라도 이건 존재한다는 가정하에 들어가는 조명 
-    tMtrl.Emissive = { 0.f, 0.f, 0.f, 0.f }; //자체 발광 
-    tMtrl.Power = 0.f;
+        // 플레이어의 오른손 상태
+        //m_tRightHand_State.Get_StateFunc()(this, fTimeDelta);
+    }
+    else
+    {
+        // 플레이어 죽음
+    }
 
-    m_pGraphicDev->SetMaterial(&tMtrl);
-
-    return S_OK;
 }
+
+#pragma region 플레이어의 상태
+void CPlayer::Idle(float fTimeDelta)
+{
+    if (m_tPlayer_State.IsState_Entered())
+    {
+
+    }
+
+    if (m_tPlayer_State.Can_Update())
+    {
+        if (m_eObjectType == OBJECT_TYPE::NONE)
+        {
+            m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
+            m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND);
+        }
+        if (m_eObjectType == OBJECT_TYPE::GUN)
+        {
+            m_tLeftHand_State.Set_State(STATE_LEFTHAND::NONE);
+            m_tRightHand_State.Set_State(STATE_RIGHTHAND::GUN);
+        }
+        if (Attack_Input(fTimeDelta))
+        {
+
+        }
+    }
+
+    if (m_tPlayer_State.IsState_Exit())
+    {
+
+    }
+}
+
+void CPlayer::Move(float fTimeDelta)
+{
+    if (m_tPlayer_State.IsState_Entered())
+    {
+
+    }
+
+    if (m_tPlayer_State.Can_Update())
+    {
+
+    }
+
+    if (m_tPlayer_State.IsState_Exit())
+    {
+
+    }
+}
+
+void CPlayer::Run(float fTimeDelta)
+{
+    if (m_tPlayer_State.IsState_Entered())
+    {
+
+    }
+
+    if (m_tPlayer_State.Can_Update())
+    {
+
+    }
+
+    if (m_tPlayer_State.IsState_Exit())
+    {
+
+    }
+}
+
+void CPlayer::Down(float fTimeDelta)
+{
+    if (m_tPlayer_State.IsState_Entered())
+    {
+
+    }
+
+    if (m_tPlayer_State.Can_Update())
+    {
+
+    }
+
+    if (m_tPlayer_State.IsState_Exit())
+    {
+
+    }
+}
+
+void CPlayer::Attack(float fTimeDelta)
+{
+    if (m_tPlayer_State.IsState_Entered())
+    {
+
+    }
+
+    if (m_tPlayer_State.Can_Update())
+    {
+
+    }
+
+    if (m_tPlayer_State.IsState_Exit())
+    {
+
+    }
+}
+
+void CPlayer::Die(float fTimeDelta)
+{
+    if (m_tPlayer_State.IsState_Entered())
+    {
+
+    }
+
+    if (m_tPlayer_State.Can_Update())
+    {
+
+    }
+
+    if (m_tPlayer_State.IsState_Exit())
+    {
+
+    }
+}
+
+#pragma endregion
+
+#pragma region 플레이어의 왼손 상태
+
+
+
+#pragma endregion
+
+#pragma region 플레이어의 오른손 상태
+
+
+
+#pragma endregion
