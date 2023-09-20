@@ -3,6 +3,7 @@
 CSingleTexture::CSingleTexture(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {
+	m_eTexComType = ETEXTURE_COMTYPE::SINGLE;
 }
 
 CSingleTexture::~CSingleTexture()
@@ -65,4 +66,13 @@ HRESULT CSingleTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType,
 	m_pTexture = pTexture;
 
     return S_OK;
+}
+
+void CSingleTexture::Transfer_Texture(vector<LPDIRECT3DBASETEXTURE9>* pVecTexture)
+{
+	if (m_pTexture == nullptr)
+		return;
+
+	pVecTexture->clear();
+	pVecTexture->push_back(m_pTexture);
 }

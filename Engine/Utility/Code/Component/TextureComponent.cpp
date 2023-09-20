@@ -1,4 +1,6 @@
-#include "Component/TextureComponent.h"
+#include "TextureComponent.h"
+
+#include "TextureMgr.h"
 
 CTextureComponent::CTextureComponent()
 {
@@ -89,4 +91,9 @@ void CTextureComponent::Render_Texture(const _uint& iIndex)
 		return;
 
 	m_pGraphicDev->SetTexture(0, m_vecTexture[iIndex]);
+}
+
+HRESULT CTextureComponent::Receive_Texture(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey)
+{
+	return CTextureMgr::GetInstance()->Transfer_Texture(&m_vecTexture, eID, pTextureKey, pStateKey);
 }

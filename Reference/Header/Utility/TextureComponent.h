@@ -26,9 +26,13 @@ private:
 public:
 	HRESULT		Ready_Texture(TEXTUREID eType, const _tchar* pPath, const _uint& iCnt);
 	void		Render_Texture(const _uint& iIndex = 0);
+	HRESULT		Receive_Texture(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey = L"");
+
+public:
+	GETSET_EX2(vector<LPDIRECT3DBASETEXTURE9>, m_vecTexture, VecTexture, GET_PTR, SET_PTR)
 
 private:
-	vector<IDirect3DBaseTexture9*>		m_vecTexture;
+	vector<LPDIRECT3DBASETEXTURE9>		m_vecTexture;
 
 };
 

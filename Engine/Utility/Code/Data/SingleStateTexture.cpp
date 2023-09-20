@@ -3,6 +3,7 @@
 CSingleStateTexture::CSingleStateTexture(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
 {
+	m_eTexComType = ETEXTURE_COMTYPE::SINGLE_STATE;
 }
 
 CSingleStateTexture::~CSingleStateTexture()
@@ -72,4 +73,18 @@ HRESULT CSingleStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID e
 	m_mapTextureState.emplace(pStateKey, pTexture);
 
 	return S_OK;
+}
+
+void CSingleStateTexture::Transfer_Texture(vector<LPDIRECT3DBASETEXTURE9>* pVecTexture, const _tchar* pStateKey)
+{
+	if (m_mapTextureState.empty())
+		return;
+
+	auto iter = m_mapTextureState.find(pStateKey);
+
+	if (iter == m_mapTextureState.end())
+		return;
+
+	pVecTexture->clear();
+	pVecTexture->push_back(m_mapTextureState[pStateKey]);
 }
