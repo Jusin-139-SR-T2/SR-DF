@@ -244,8 +244,11 @@ HRESULT CPlayer::Add_Component()
     NULL_CHECK_RETURN(m_pAttackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureAttack", L"Proto_PlayerAttackTextureComp"), E_FAIL);
     // 플레이어 총 회전 이미지
     NULL_CHECK_RETURN(m_pAttackSpinTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureAttackTest", L"Proto_PlayerAttackTestTextureComp"), E_FAIL);
-    m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Catch_Mafia");
     
+    // 텍스처 매니저
+    m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Catch_Mafia");
+    m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Broken_Mafia");
+
     return S_OK;
 }
 
