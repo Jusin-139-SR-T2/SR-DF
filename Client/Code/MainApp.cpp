@@ -56,7 +56,7 @@ HRESULT CMainApp::Ready_MainApp()
 int CMainApp::Update_MainApp(const _float& fTimeDelta)
 {
 	// 다이렉트 인풋 업데이트
-	Engine::Update_InputDev();
+	Engine::Update_KeyMgr();
 
 	// 씬 업데이트
 	m_pManagementClass->Update_Scene(fTimeDelta);
@@ -67,6 +67,7 @@ int CMainApp::Update_MainApp(const _float& fTimeDelta)
 void CMainApp::LateUpdate_MainApp()
 {
 	Engine::LateUpdate_Scene();
+	Engine::LateUpdate_KeyMgr();		// 가상키 시스템 업데이트
 }
 
 void CMainApp::Render_MainApp()

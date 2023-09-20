@@ -37,6 +37,7 @@ CLogo* CLogo::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 void CLogo::Free()
 {
 	Safe_Release(m_pLoading);
+	Safe_Release(m_pLoadingTexture);
 
 	SUPER::Free();
 }

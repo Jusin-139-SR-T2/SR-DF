@@ -5,11 +5,11 @@
 #include "ProtoMgr.h"
 #include "Renderer.h"
 #include "PhysicsMgr.h"
-#include "Camera.h"
-
 #include "LightMgr.h"
 #include "TextureMgr.h"
-#include "PhysicsMgr.h"
+#include "KeyMgr.h"
+
+#include "Camera.h"
 
 #include "CalculatorComponent.h"
 #include "TriColorComp.h"
@@ -61,6 +61,19 @@ inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,	const D3DLIGHT9 * pL
 // TextureMgr
 inline HRESULT	Ready_TextureMgr(LPDIRECT3DDEVICE9 pGraphicDev);
 inline HRESULT	Ready_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey = L"", const _range<_uint>& iCntRange = _range<_uint>(0U, 0U));
+
+
+// KeyMgr
+inline HRESULT	Ready_KeyMgr();
+inline void		Update_KeyMgr();
+inline void		LateUpdate_KeyMgr();
+inline bool		IsKey_Pressing(const int& iKey);
+inline bool		IsKey_Pressing(const int&& iKey);
+inline bool		IsKey_Pressed(const int& iKey);
+inline bool		IsKey_Pressed(const int&& iKey);
+inline bool		IsKey_Released(const int& iKey);
+inline bool		IsKey_Released(const int&& iKey);
+
 
 inline void			Release_Utility();
 
