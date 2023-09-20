@@ -100,11 +100,12 @@ _uint CLoading::Loading_For_Stage()
 	return 0;
 }
 
+// 텍스처 매니저 텍스처 추가
 HRESULT CLoading::Loading_For_Texture()
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/PlayerKick_%d.png", TEX_NORMAL, L"Player", L"Kick", _range<_uint>(0U, 3U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Melee_1.png", TEX_NORMAL, L"Player", L"Catch_Mafia"), E_FAIL);
-
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/IdleBroken.png", TEX_NORMAL, L"Player", L"Broken_Mafia"), E_FAIL);
 
 	m_bFinish = true;
 

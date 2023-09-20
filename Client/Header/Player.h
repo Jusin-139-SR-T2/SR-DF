@@ -130,6 +130,7 @@ private:
 
 	_float		fSpeed = 5.f;
 
+	// Test
 	OBJECT_TYPE m_eObjectType;
 
 private:

@@ -47,8 +47,8 @@ HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, co
 	ETEXTURE_COMTYPE eComType;
 
 	// 파일 존재여부 확인, 잘못된 경로가 있다면 오류 반환
-	wifstream file(pFilePath);
-	FALSE_CHECK_RETURN(!file.good(), E_FAIL);
+	//wifstream file(pFilePath);
+	//FALSE_CHECK_RETURN(!file.good(), E_FAIL);
 
 	// 상태키나 텍스처 개수에 따른 분류
 	if (0U >= iCntRange.second - iCntRange.first)
