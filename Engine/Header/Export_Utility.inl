@@ -76,6 +76,48 @@ inline HRESULT	Ready_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tc
 	return CTextureMgr::GetInstance()->Insert_Texture(pFilePath, eType, pTextureKey, pStateKey, iCntRange);
 }
 
+
+
+// 키 매니저
+inline HRESULT	Ready_KeyMgr()
+{
+	return CKeyMgr::GetInstance()->Ready_Key();
+}
+inline void		Update_KeyMgr()
+{
+	return CKeyMgr::GetInstance()->Update_Key();
+}
+inline void		LateUpdate_KeyMgr()
+{
+	return CKeyMgr::GetInstance()->LateUpdate_Key();
+}
+inline bool		IsKey_Pressing(const int& iKey)
+{
+	return CKeyMgr::GetInstance()->Key_Pressing(iKey);
+}
+inline bool		IsKey_Pressing(const int&& iKey)
+{
+	return CKeyMgr::GetInstance()->Key_Pressing(iKey);
+}
+inline bool		IsKey_Pressed(const int& iKey)
+{
+	return CKeyMgr::GetInstance()->Key_Down(iKey);
+}
+inline bool		IsKey_Pressed(const int&& iKey)
+{
+	return CKeyMgr::GetInstance()->Key_Down(iKey);
+}
+inline bool		IsKey_Released(const int& iKey)
+{
+	return CKeyMgr::GetInstance()->Key_Up(iKey);
+}
+inline bool		IsKey_Released(const int&& iKey)
+{
+	return CKeyMgr::GetInstance()->Key_Up(iKey);
+}
+
+
+
 // 싱글톤 해제 코드
 void			Release_Utility()
 {
@@ -84,5 +126,6 @@ void			Release_Utility()
 	CProtoMgr::GetInstance()->DestroyInstance();
 	CPhysicsMgr::GetInstance()->DestroyInstance();
 	CTextureMgr::GetInstance()->DestroyInstance();
+	CKeyMgr::GetInstance()->DestroyInstance();
 	CManagement::GetInstance()->DestroyInstance();
 }

@@ -112,6 +112,9 @@
     <ClInclude Include="Header\Data\SingleStateTexture.h">
       <Filter>06. TextureMgr\Data</Filter>
     </ClInclude>
+    <ClInclude Include="Header\KeyMgr.h">
+      <Filter>07. KeyMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -222,6 +225,9 @@
     <ClCompile Include="Code\Data\SingleStateTexture.cpp">
       <Filter>06. TextureMgr\Data</Filter>
     </ClCompile>
+    <ClCompile Include="Code\KeyMgr.cpp">
+      <Filter>07. KeyMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">
@@ -301,6 +307,9 @@
     </Filter>
     <Filter Include="06. TextureMgr\Data">
       <UniqueIdentifier>{c7c569ec-e70d-4c55-97e2-aa0fc5d75195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. KeyMgr">
+      <UniqueIdentifier>{7b34aab6-bbab-45b8-bbbf-336b89122a44}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

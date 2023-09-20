@@ -216,6 +216,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClInclude Include="Header\Data\MultiTexture.h" />
     <ClInclude Include="Header\Data\SingleStateTexture.h" />
     <ClInclude Include="Header\Data\SingleTexture.h" />
+    <ClInclude Include="Header\KeyMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\GameObjComponent.cpp" />
@@ -254,6 +255,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClCompile Include="Code\Data\MultiTexture.cpp" />
     <ClCompile Include="Code\Data\SingleStateTexture.cpp" />
     <ClCompile Include="Code\Data\SingleTexture.cpp" />
+    <ClCompile Include="Code\KeyMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_Utility.inl" />

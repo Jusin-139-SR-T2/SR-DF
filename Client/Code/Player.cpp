@@ -267,7 +267,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     }
 
     // 전진
-    if (Engine::Get_DIKeyState(DIK_W) & 0x80)
+    if (Engine::IsKey_Pressing(DIK_W))
     {
         D3DXVec3Normalize(&vLook, &vLook);
         m_pTransformComp->Move_Pos(&vLook, fTimeDelta, fSpeed);
@@ -277,7 +277,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     }
 
     // 후진
-    if (Engine::Get_DIKeyState(DIK_S) & 0x80)
+    if (Engine::IsKey_Released(DIK_S))
     {
         D3DXVec3Normalize(&vLook, &vLook);
         m_pTransformComp->Move_Pos(&vLook, fTimeDelta, -fSpeed);

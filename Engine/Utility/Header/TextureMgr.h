@@ -8,7 +8,7 @@ BEGIN(Engine)
 class CTexture;
 
 // 컴객체 텍스처의 타입
-enum class ETEXTURE_COMTYPE
+enum class ETEXTURE_COMTYPE : int
 {
 	SINGLE,
 	SINGLE_STATE,
