@@ -229,7 +229,7 @@ HRESULT CPlayer::Add_Component()
     NULL_CHECK_RETURN(m_pLeftHandComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TextureLeft", L"Proto_PlayerLeftTextureComp"), E_FAIL);
     // 플레이어 오른손 텍스처
     NULL_CHECK_RETURN(m_pRightHandComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TextureRight", L"Proto_PlayerRightTextureComp"), E_FAIL);
-   
+    
 
     // Test (갈아 낄 이미지)
     // 왼손 이미지
@@ -244,7 +244,7 @@ HRESULT CPlayer::Add_Component()
     NULL_CHECK_RETURN(m_pAttackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureAttack", L"Proto_PlayerAttackTextureComp"), E_FAIL);
     // 플레이어 총 회전 이미지
     NULL_CHECK_RETURN(m_pAttackSpinTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureAttackTest", L"Proto_PlayerAttackTestTextureComp"), E_FAIL);
-
+    m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Catch_Mafia");
     
     return S_OK;
 }

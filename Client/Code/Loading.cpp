@@ -103,6 +103,8 @@ _uint CLoading::Loading_For_Stage()
 HRESULT CLoading::Loading_For_Texture()
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/PlayerKick_%d.png", TEX_NORMAL, L"Player", L"Kick", _range<_uint>(0U, 3U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Melee_1.png", TEX_NORMAL, L"Player", L"Catch_Mafia"), E_FAIL);
+
 
 	m_bFinish = true;
 
