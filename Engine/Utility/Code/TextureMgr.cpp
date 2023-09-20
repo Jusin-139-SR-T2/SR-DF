@@ -105,3 +105,39 @@ HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, co
 
 	return hr;
 }
+
+HRESULT CTextureMgr::Transfer_Texture(vector<LPDIRECT3DBASETEXTURE9>* pVecTexture, TEXTUREID eType, const _tchar* pTextureKey, const _tchar* pStateKey)
+{
+	auto iter = m_mapTexture.find(pTextureKey);
+	FALSE_CHECK_RETURN(iter != m_mapTexture.end(), E_FAIL);		// 키 없으면 실패
+
+	CTexture* pTexture = iter->second;
+
+	switch (pTexture->Get_TexComType())
+	{
+	case ETEXTURE_COMTYPE::SINGLE:
+	{
+		CSingleTexture* pSingleTex = dynamic_cast<CSingleTexture*>(pTexture);
+		pSingleTex->Transfer_Texture(pVecTexture);
+		break;
+	}
+	case ETEXTURE_COMTYPE::SINGLE_STATE:
+	{
+		CSingleStateTexture* pSingleTex = dynamic_cast<CSingleStateTexture*>(pTexture);
+		pSingleTex->Transfer_Texture(pVecTexture, pStateKey);
+		break;
+	}
+	case ETEXTURE_COMTYPE::MULTI:
+	{
+		CMultiTexture* pMultiTex = dynamic_cast<CMultiTexture*>(pTexture);
+		pMultiTex->Transfer_Texture(pVecTexture);
+		break;
+	}
+	case ETEXTURE_COMTYPE::MULTI_STATE:
+	{
+		CMultiStateTexture* pMultiTex = dynamic_cast<CMultiStateTexture*>(pTexture);
+		pMultiTex->Transfer_Texture(pVecTexture, pStateKey);
+		break;
+	}
+	}
+}

@@ -3,6 +3,7 @@
 CMultiStateTexture::CMultiStateTexture(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
 {
+	m_eTexComType = ETEXTURE_COMTYPE::MULTI_STATE;
 }
 
 CMultiStateTexture::~CMultiStateTexture()
@@ -94,4 +95,18 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 	}
 
 	return S_OK;
+}
+
+void CMultiStateTexture::Transfer_Texture(vector<LPDIRECT3DBASETEXTURE9>* pVecTexture, const _tchar* pStateKey)
+{
+	if (m_mapMultiState.empty())
+		return;
+
+	auto iter = m_mapMultiState.find(pStateKey);
+
+	if (iter == m_mapMultiState.end())
+		return;
+
+	pVecTexture->reserve(m_mapMultiState[pStateKey].size());
+	(*pVecTexture) = m_mapMultiState[pStateKey];
 }

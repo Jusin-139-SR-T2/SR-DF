@@ -3,6 +3,7 @@
 CMultiTexture::CMultiTexture(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
 {
+	m_eTexComType = ETEXTURE_COMTYPE::MULTI;
 }
 
 CMultiTexture::~CMultiTexture()
@@ -72,4 +73,13 @@ HRESULT CMultiTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, 
 	}
 
 	return S_OK;
+}
+
+void CMultiTexture::Transfer_Texture(vector<LPDIRECT3DBASETEXTURE9>* pVecTexture)
+{
+	if (m_vecMulti.size())
+		return;
+
+	pVecTexture->reserve(m_vecMulti.size());
+	(*pVecTexture) = m_vecMulti;
 }
