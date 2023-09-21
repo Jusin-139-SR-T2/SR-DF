@@ -36,6 +36,7 @@ protected:
 	_vec3 m_vPos;
 	_vec3 m_vLook;
 	_vec3 m_vUp;
+
 	_matrix m_matView;				// 뷰 행렬 저장
 	_matrix m_matProjection;		// 투영 행렬 저장
 

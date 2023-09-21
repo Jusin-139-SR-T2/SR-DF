@@ -62,7 +62,14 @@ private:
 	// 카메라
 	_vec3			m_vRight;		// Right 벡터
 	D3DXQUATERNION	m_quaternion;	// 쿼터니온 변수
-	_vec3			m_vOffset = { 0.f, 3.f, -10.f };	// 플레이어로부터 Offset
+
+	_vec3			m_vOffset = { 0.f, 8.f, -10.f };	// 플레이어로부터 Offset
+	_long			m_dwMouseMove[ROT_END];
+	_float			m_fMaxAngleY;
+	_float			m_fMinAngleY;
+	_float			m_fAngleX;
+	_float			m_fAngleY;
+	_float			m_fRotSpeed = 0.2f;
 
 private:
 	CTransformComponent* pPlayerTransCom = nullptr;

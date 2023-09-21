@@ -135,7 +135,7 @@ HRESULT CTextureMgr::Transfer_Texture(vector<LPDIRECT3DBASETEXTURE9>* pVecTextur
 	}
 	case ETEXTURE_COMTYPE::MULTI_STATE:
 	{
-		CMultiStateTexture* pMultiTex = dynamic_cast<CMultiStateTexture*>(pTexture);
+		CMultiStateTexture* pMultiTex = dynamic_cast<CMultiStateTexture*>(pTexture); //
 		pMultiTex->Transfer_Texture(pVecTexture, pStateKey);
 		break;
 	}
