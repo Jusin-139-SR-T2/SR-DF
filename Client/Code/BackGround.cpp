@@ -33,10 +33,6 @@ CBackGround* CBackGround::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CBackGround::Free()
-{
-	SUPER::Free();
-}
 
 HRESULT CBackGround::Add_Component()
 {
@@ -48,6 +44,7 @@ HRESULT CBackGround::Add_Component()
 	NULL_CHECK_RETURN(m_pBackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TitleTexture", L"Proto_TitleBackTextureComp"), E_FAIL);
 	// 텍스쳐 컴포넌트
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_LogoTexture", L"Proto_LogoTextureComp"), E_FAIL);
+	
 	
 
 	return S_OK;
@@ -100,3 +97,8 @@ void CBackGround::Render_GameObject()
 	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
+void CBackGround::Free()
+{
+	//Engine::CSoundMgr::GetInstance()->Stop_Sound(SOUND_BGM);
+	SUPER::Free();
+}

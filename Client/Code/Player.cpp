@@ -277,7 +277,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     }
 
     // ÈÄÁø
-    if (Engine::IsKey_Released(DIK_S))
+    if (Engine::IsKey_Pressing(DIK_S))
     {
         D3DXVec3Normalize(&vLook, &vLook);
         m_pTransformComp->Move_Pos(&vLook, fTimeDelta, -fSpeed);

@@ -27,19 +27,6 @@ CMainApp* CMainApp::Create()
 	return pInstance;
 }
 
-void CMainApp::Free()
-{
-	// 장치 제거
-	Safe_Release(m_pGraphicDev);
-	Safe_Release(m_pDeviceClass);
-
-	// 루트 매니저 클래스 제거
-	Safe_Release(m_pManagementClass);
-
-	// dll 싱글톤 제거
-	Engine::Release_Utility();
-	Engine::Release_System();
-}
 
 HRESULT CMainApp::Ready_MainApp()
 {
@@ -115,4 +102,18 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	FAILED_CHECK_RETURN(Engine::Ready_TextureMgr(*ppGraphicDev), E_FAIL);
 
 	return S_OK;
+}
+
+void CMainApp::Free()
+{
+	// 장치 제거
+	Safe_Release(m_pGraphicDev);
+	Safe_Release(m_pDeviceClass);
+
+	// 루트 매니저 클래스 제거
+	Safe_Release(m_pManagementClass);
+
+	// dll 싱글톤 제거
+	Engine::Release_Utility();
+	Engine::Release_System();
 }
