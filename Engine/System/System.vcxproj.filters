@@ -81,5 +81,11 @@
     <Filter Include="05. Sound">
       <UniqueIdentifier>{0b94a98c-9e25-4f64-94b6-85fc191bdc40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06. Physics">
+      <UniqueIdentifier>{9b603cfa-32ae-4d38-afd9-3f6ad6df2c28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Physics\01.">
+      <UniqueIdentifier>{dfb98d58-2e08-46d4-9b76-a0133d4ffbc2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
