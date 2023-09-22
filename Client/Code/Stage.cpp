@@ -20,9 +20,6 @@ CStage::~CStage()
 
 HRESULT CStage::Ready_Scene()
 {
-	FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
-	Engine::CSoundMgr::GetInstance()->Play_Sound(L"Music_MysteriousRevelationsShort.wav", SOUND_BGM, 0.75f);
-
 	FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_SpotLightInfo(), E_FAIL);
 

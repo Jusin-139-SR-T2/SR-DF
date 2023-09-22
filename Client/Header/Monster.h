@@ -66,15 +66,19 @@ private:
 	_float		m_fMoveSpeed = 10.f; // 걷는속도
 	_float		m_fWalkSpeed = 3.f;  // 뛰어오는 속도 
 
-	_bool		SpinCheck = true;	 // 플레이어 포착이후 따라가는 bool값 
+	_float		m_fCheck = 0; //Taunt 등 프레임 돌리는횟수 지정
+
+	// 사거리 , 시야각 모음 
 	_float		m_fMonsterFov = 90;		//시야각 - 반각 기준
 	_float		m_fMonsterSightDistance = 12.f; // 몬스터가 포착하는 사거리 
+	_float		m_fRunDistance = 8;
+	_float		m_fWalkDistance = 7;
+	_float		m_fInchDistance = 4;
 
-	_float		m_fCheck = 0; //Taunt 등 프레임 돌리는횟수 지정
 
 public: 
 	// 목표 상태머신(AI)
-	enum class STATE_OBJ { IDLE, SUSPICIOUS, TAUNT, CHASE, ATTACK };
+	enum class STATE_OBJ { IDLE, SUSPICIOUS, TAUNT, CHASE, RUN, WALK, INCHFORWARD, STRAFYING, BASICATTACK, HEAVYATTACK };
 	// 행동 상태머신
 	enum class STATE_ACT { IDLE, CHASE, WALK, RUN, INCH, JUMP, 
 						  PRE_ATTACK, ATTACK, HEAVY, PARRYING, FALLING, LANDING, DEAD };
@@ -86,13 +90,19 @@ private:
 	STATE_SET<STATE_ACT, void(CMonster*, float)> m_tState_Act; // 행동
 	ACTION_SET<ACTION_KEY> m_mapActionKey; //가상 조작키 
 
-#pragma region AI : 판단하는애 
+#pragma region AI 
 
 	void AI_Idle(float fDeltaTime); // idle <-> suspicious
 	void AI_Suspicious(float fDeltaTime); // idle <-> sus <-> detect
 	void AI_Taunt(float fDeltaTime);
 	void AI_Chase(float fDeltaTime);
-	void AI_Attack(float fDeltaTime);
+
+	void AI_Run(float fDeltaTime);
+	void AI_Walk(float fDeltaTime);
+	void AI_InchForward(float fDeltaTime);
+	void AI_Strafying(float fDeltaTime);
+	void AI_BasicAttack(float fDeltaTime);
+	void AI_HeavyAttack(float fDeltaTime);
 
 #pragma endregion
 

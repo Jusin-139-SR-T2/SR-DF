@@ -13,16 +13,20 @@ CMonster::CMonster(const CMonster& rhs)
 
 CMonster::~CMonster()
 {
+    Free();
 }
 
 HRESULT CMonster::Ready_GameObject()
 {
+    srand(_ulong(time(NULL)));
+
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
     
     m_pTransformComp->m_vScale.x = 0.4f;
     m_pTransformComp->m_vInfo[INFO_POS] = { 5.f, 10.f, 25.f };
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
+
     // INFO
     m_iHP = 40;         // 체력
     m_iAttack = 10;     // 공격력
@@ -33,7 +37,14 @@ HRESULT CMonster::Ready_GameObject()
     m_tState_Obj.Add_Func(STATE_OBJ::SUSPICIOUS, &CMonster::AI_Suspicious);
     m_tState_Obj.Add_Func(STATE_OBJ::TAUNT, &CMonster::AI_Taunt);
     m_tState_Obj.Add_Func(STATE_OBJ::CHASE, &CMonster::AI_Chase);
-    m_tState_Obj.Add_Func(STATE_OBJ::ATTACK, &CMonster::AI_Attack);
+
+    m_tState_Obj.Add_Func(STATE_OBJ::RUN, &CMonster::AI_Run);
+    m_tState_Obj.Add_Func(STATE_OBJ::WALK, &CMonster::AI_Walk);
+    m_tState_Obj.Add_Func(STATE_OBJ::INCHFORWARD, &CMonster::AI_InchForward);
+    m_tState_Obj.Add_Func(STATE_OBJ::STRAFYING, &CMonster::AI_Strafying);
+    m_tState_Obj.Add_Func(STATE_OBJ::BASICATTACK, &CMonster::AI_BasicAttack);
+    m_tState_Obj.Add_Func(STATE_OBJ::HEAVYATTACK, &CMonster::AI_HeavyAttack);
+
 #pragma endregion
 
 #pragma region 행동 상태머신 등록 - Acting
@@ -82,7 +93,11 @@ _int CMonster::Update_GameObject(const _float& fTimeDelta)
     {
         m_fFrame = 0.f;
 
-        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
+        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State()
+          || STATE_OBJ::INCHFORWARD == m_tState_Obj.Get_State()
+          || STATE_OBJ::STRAFYING == m_tState_Obj.Get_State()
+          || STATE_OBJ::BASICATTACK == m_tState_Obj.Get_State()
+          || STATE_OBJ::HEAVYATTACK == m_tState_Obj.Get_State() )
             m_fCheck += 1;
     }
 
@@ -292,8 +307,9 @@ void CMonster::AI_Taunt(float fDeltaTime)
     {
         if (3 == m_fCheck)
         {
+            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE); // AI = 추격모드
-            m_tState_Act.Set_State(STATE_ACT::CHASE); // 행동 = 추격행동 
+           // m_tState_Act.Set_State(STATE_ACT::CHASE); // 행동 = 추격행동 - 플레이어 따라다님 
         }
         // 플레이어쪽으로 돌아봐야함 
 
@@ -311,56 +327,37 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
         m_fFrameSpeed = 10.f; //원상복귀 
         m_pTransformComp->m_vScale.x = 0.4f;
     }
-
     if (m_tState_Obj.Can_Update()) // 시야범위 7 
     {
-        if (Monster_Capture()) // 시야각 이내에 위치 + 시야거리 이내 위치 
-        {  
-            // 거리 8 이상 
-            if (8.f < m_fDistance())
+        if (Monster_Capture()) // 전체 사거리 = m_fMonsterSightDistance = 12.f
+        {
+            // 뛰어서 다가옴 : a > 8
+            if (m_fRunDistance < m_fDistance())
             {
-                m_fFrameEnd = 20;
-                m_fFrameSpeed = 10.f;
-                m_pTransformComp->m_vScale.x = 0.5f;
-                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"RunSouth");
-
+                m_tState_Obj.Set_State(STATE_OBJ::RUN);
             }
-
-            // 둘사이 거리 5~8 - 걷기 
-            if (6.f < m_fDistance() && 8.f >= m_fDistance())
+            // 걸어서 다가옴 : 7 < a <= 8 
+            else if (m_fWalkDistance < m_fDistance() && m_fRunDistance >= m_fDistance())
             {
-                m_fFrameEnd = 23;
-                m_fFrameSpeed = 10.f;
-                m_pTransformComp->m_vScale.x = 0.5f;
-                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_South");
-
+                m_tState_Obj.Set_State(STATE_OBJ::WALK);
             }
+            // 무빙 : 5 <= a <= 7
+            else if (m_fInchDistance >= m_fDistance() && m_fWalkDistance >= m_fDistance())
+            {
+                int iCombo = rand() % 2; // 0 or 1
 
-            // 거리가 일정 거리일때 공격모션으로 바뀐다. 
-            if (6.f >= m_fDistance())//
-            {
-                m_fFrameEnd = 5;
-                m_fFrameSpeed = 10.f;
-                m_pTransformComp->m_vScale.x = 0.5f;
-                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"InchForward");
-               
-                /*//CASE2 - INCH의 좌우버전 
-                m_fFrameEnd = 6;
-                m_fFrameSpeed = 10.f;
-                m_pTransformComp->m_vScale.x = 0.5f;
-                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Strafing");
-                */
+                if (1 == iCombo)
+                    m_tState_Obj.Set_State(STATE_OBJ::INCHFORWARD);
+
+                if (2 == iCombo)
+                    m_tState_Obj.Set_State(STATE_OBJ::STRAFYING);
             }
-            
-            if (2.f > m_fDistance())
+            // 공격함
+            else
             {
-                m_fFrameEnd = 5;
-                m_fFrameSpeed = 10.f;
-                m_pTransformComp->m_vScale.x = 0.5f;
-                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"BasicAttack");
+                m_tState_Obj.Set_State(STATE_OBJ::BASICATTACK);
             }
         }
-
         else // 쫒다가도 시야에서 벗어나면 게이지 줄어들어서 SUSPICIOUS로 돌아감 
         {
             m_fAwareness -= fDeltaTime * 4.f;
@@ -373,7 +370,6 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
                 m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
             }
         }
-
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -382,27 +378,146 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
     }
 }
 
-void CMonster::AI_Attack(float fDeltaTime)
+
+void CMonster::AI_Run(float fDeltaTime)
 {
-    if (m_tState_Act.IsState_Entered())
+    if (m_tState_Obj.IsState_Entered())
     {
+        m_fFrameEnd = 20;
+        m_fFrameSpeed = 10.f;
+        m_pTransformComp->m_vScale.x = 0.5f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"RunSouth");
+    }
+    if (m_tState_Obj.Can_Update())
+    {
+        if (m_fRunDistance >= Monster_Capture()) // 전체 사거리 = m_fMonsterSightDistance = 12.f
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            //행동 추가 
+        }
     }
 
-    if (m_tState_Act.Can_Update())
+    if (m_tState_Obj.IsState_Exit())
     {
-        //간이홀짝을 통해 강공격 약공격 누르기 
-        if (1 == int(fDeltaTime) % 2 + 1)
+
+    }
+}
+
+void CMonster::AI_Walk(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameEnd = 23;
+        m_fFrameSpeed = 10.f;
+        m_pTransformComp->m_vScale.x = 0.5f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_South");
+    }
+    if (m_tState_Obj.Can_Update())
+    {
+        if (m_fWalkDistance >= Monster_Capture())
         {
-            int a = 3;
+            // 행동 추가 
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
-        if (2 == int(fDeltaTime) % 2 + 1)
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CMonster::AI_InchForward(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameEnd = 4;
+        m_fFrameSpeed = 10.f;
+        m_pTransformComp->m_vScale.x = 0.4f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"InchForward");
+    }
+    if (m_tState_Obj.Can_Update())
+    {
+        // 행동 추가 
+
+        if (1 == m_fCheck)
         {
-            int b = 3;
+            m_fCheck = 0;
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CMonster::AI_Strafying(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameEnd = 6;
+        m_fFrameSpeed = 10.f;
+        m_pTransformComp->m_vScale.x = 0.5f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Strafing");
+    }
+    if (m_tState_Obj.Can_Update())
+    {
+        if (1 == m_fCheck)
+        {
+            m_fCheck = 0;
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CMonster::AI_BasicAttack(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameEnd = 5;
+        m_fFrameSpeed = 10.f;
+        m_pTransformComp->m_vScale.x = 0.5f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"BasicAttack");
+    }
+    if (m_tState_Obj.Can_Update())
+    {
+        if (1 == m_fCheck)
+        {
+            m_fCheck = 0;
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CMonster::AI_HeavyAttack(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
 
     }
 
-    if (m_tState_Act.IsState_Exit())
+    if (m_tState_Obj.Can_Update())
+    {
+        if (1 == m_fCheck)
+        {
+            m_fCheck = 0;
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
     {
 
     }
