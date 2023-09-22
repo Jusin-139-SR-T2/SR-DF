@@ -52,8 +52,8 @@ void CTextureComponent::Free()
 {
 	SUPER::Free();
 
-	for (size_t i = 0; i < m_vecTexture.size(); ++i)
-		Safe_Release(m_vecTexture[i]);
+	//for (size_t i = 0; i < m_vecTexture.size(); ++i)
+		//Safe_Release(m_vecTexture[i]);
 }
 
 HRESULT CTextureComponent::Ready_Texture(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey)

@@ -37,7 +37,7 @@ CLogo* CLogo::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 void CLogo::Free()
 {
 	Safe_Release(m_pLoading);
-	Safe_Release(m_pLoadingTexture);
+	//Safe_Release(m_pLoadingTexture);
 
 	SUPER::Free();
 }
@@ -55,7 +55,7 @@ HRESULT CLogo::Ready_Scene()
 	NULL_CHECK_RETURN(m_pLoading = CLoading::Create(m_pGraphicDev, CLoading::LOADING_STAGE), E_FAIL);
 
 	// 로딩 쓰레드 생성하기
-	NULL_CHECK_RETURN(m_pLoadingTexture = CLoading::Create(m_pGraphicDev, CLoading::LOADING_TEXTURE), E_FAIL);
+	//NULL_CHECK_RETURN(m_pLoadingTexture = CLoading::Create(m_pGraphicDev, CLoading::LOADING_TEXTURE), E_FAIL);
 
 	return S_OK;
 }
@@ -65,7 +65,7 @@ _int CLogo::Update_Scene(const _float& fTimeDelta)
 	_int	iExit = SUPER::Update_Scene(fTimeDelta);
 
 	// 로딩이 끝났을 때 엔터를 눌러 스테이지 씬으로 진입할 수 있다.
-	if (m_pLoading->Get_Finish() && m_pLoadingTexture->Get_Finish())
+	if (m_pLoading->Get_Finish())
 	{
 		if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 		{
@@ -93,12 +93,14 @@ void CLogo::Render_Scene()
 
 HRESULT CLogo::Ready_Prototype()
 {
-	
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"Resource/Texture/Scene/LogoShot.png", TEX_NORMAL, L"UI", L"Logo"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"Resource/Texture/Scene/Title.png", TEX_NORMAL, L"UI", L"Title"), E_FAIL);
+
 	// 프로토타입 인스턴스를 등록한다.
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TransformComp", CTransformComponent::Create(m_pGraphicDev)), E_FAIL);	// 트랜스폼
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RcTexBufferComp", CRcBufferComp::Create(m_pGraphicDev)), E_FAIL);		// 버퍼
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LogoTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Resource/Texture/Scene/LogoShot.png")), E_FAIL);	// 텍스처
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TitleBackTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Resource/Texture/Scene/Title.png")), E_FAIL);	// 텍스처
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LogoTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"UI", L"Logo")), E_FAIL);	// 텍스처
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TitleBackTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"UI", L"Title")), E_FAIL);	// 텍스처
 	
 	return S_OK;
 }
