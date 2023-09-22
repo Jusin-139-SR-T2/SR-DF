@@ -51,7 +51,7 @@ HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, co
 	//FALSE_CHECK_RETURN(!file.good(), E_FAIL);
 
 	// 상태키나 텍스처 개수에 따른 분류
-	if (0U >= iCntRange.second - iCntRange.first)
+	/*if (0U >= iCntRange.second - iCntRange.first)
 	{
 		if (pStateKey != L"")
 			eComType = ETEXTURE_COMTYPE::SINGLE_STATE;
@@ -64,7 +64,8 @@ HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, co
 			eComType = ETEXTURE_COMTYPE::MULTI_STATE;
 		else
 			eComType = ETEXTURE_COMTYPE::MULTI;
-	}
+	}*/
+	eComType = ETEXTURE_COMTYPE::MULTI_STATE;
 	
 	// 텍스처키로 먼저 텍스처가 있는지 찾아본 후 없다면 새로 만들고.
 	// 아니면 기존의 텍스처 객체에 스테이트 키를 추가한다.

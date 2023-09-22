@@ -1,5 +1,7 @@
 #include "MultiStateTexture.h"
 
+
+
 CMultiStateTexture::CMultiStateTexture(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
 {

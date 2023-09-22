@@ -104,7 +104,7 @@ HRESULT CLoading::Loading_For_Texture()
 	// 오픈 핸드 [오른손이 무언가를 할 때 아무것도 아닌상태] (왼손)
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/OpenHand.png", TEX_NORMAL, L"Player_Single", L"OpenHand"), E_FAIL);
 #pragma endregion
-
+	
 #pragma region 멀티 텍스처
 	// 왼손
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/LeftHand%d.png", TEX_NORMAL, L"Player_Multi", L"Left_Hand", _range<_uint>(0U, 1U)), E_FAIL);
