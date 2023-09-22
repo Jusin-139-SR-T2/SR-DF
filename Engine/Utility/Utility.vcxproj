@@ -184,6 +184,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Export_Utility.h" />
+    <ClInclude Include="Header\AStarMgr.h" />
     <ClInclude Include="Header\Component\GameObjComponent.h" />
     <ClInclude Include="Header\Data\PHY_Shape.h" />
     <ClInclude Include="Header\Component\ColliderComponent.h" />
@@ -226,6 +227,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClInclude Include="Header\Physics\RigidBody.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\AStarMgr.cpp" />
     <ClCompile Include="Code\Component\GameObjComponent.cpp" />
     <ClCompile Include="Code\Component\CalculatorComponent.cpp" />
     <ClCompile Include="Code\Camera.cpp" />

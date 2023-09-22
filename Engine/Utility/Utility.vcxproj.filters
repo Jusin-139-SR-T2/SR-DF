@@ -115,6 +115,9 @@
     <ClInclude Include="Header\KeyMgr.h">
       <Filter>07. KeyMgr</Filter>
     </ClInclude>
+    <ClInclude Include="Header\AStarMgr.h">
+      <Filter>08. AstarMgr</Filter>
+    </ClInclude>
     <ClInclude Include="Header\Physics\RigidBody.h" />
     <ClInclude Include="Header\Physics\PhysicsCore.h" />
     <ClInclude Include="Header\Physics\PhysicsPrecision.h" />
@@ -231,6 +234,9 @@
     <ClCompile Include="Code\KeyMgr.cpp">
       <Filter>07. KeyMgr</Filter>
     </ClCompile>
+    <ClCompile Include="Code\AStarMgr.cpp">
+      <Filter>08. AstarMgr</Filter>
+    </ClCompile>
     <ClCompile Include="Code\Physics\RigidBody.cpp" />
     <ClCompile Include="Code\Physics\PhysicsCore.cpp" />
   </ItemGroup>
@@ -315,6 +321,9 @@
     </Filter>
     <Filter Include="07. KeyMgr">
       <UniqueIdentifier>{7b34aab6-bbab-45b8-bbbf-336b89122a44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. AstarMgr">
+      <UniqueIdentifier>{8a9bd10f-83d1-42af-a5d0-caaa629566eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

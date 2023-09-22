@@ -55,13 +55,16 @@
     <Filter Include="02. GameObject\01. Unit\2. Monster">
       <UniqueIdentifier>{ca20878f-440d-4f76-8475-43445d0d468e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. Unit\2. Monster\1. PunchGuy">
+    <Filter Include="01. Scene\00. Logo\TitleLogo">
+      <UniqueIdentifier>{b7dbd553-426e-4b8a-be54-78c84d2dcda3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Unit\2. Monster\1. Brown">
       <UniqueIdentifier>{87d5e720-2bd3-483a-b7e8-6547cbc4e5de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. Unit\2. Monster\2. PipeGuy">
+    <Filter Include="02. GameObject\01. Unit\2. Monster\2. Gray">
       <UniqueIdentifier>{b4564e30-93d5-4921-aece-d6c92f134a71}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. Unit\2. Monster\3. GunGuy">
+    <Filter Include="02. GameObject\01. Unit\2. Monster\3. Boss">
       <UniqueIdentifier>{0892c965-3e19-4427-9a57-578fe6b596b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -99,14 +102,8 @@
     <ClInclude Include="Header\DynamicCamera.h">
       <Filter>02. GameObject\03. Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Header\TitleLogo.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Header\SkyBox.h">
       <Filter>02. GameObject\04. SkyBox</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>02. GameObject\06. UI</Filter>
     </ClInclude>
     <ClInclude Include="Header\Monster.h">
       <Filter>02. GameObject\01. Unit\2. Monster</Filter>
@@ -119,6 +116,12 @@
     </ClInclude>
     <ClInclude Include="Header\Torch.h">
       <Filter>02. GameObject\05. Torch</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\TitleLogo.h">
+      <Filter>01. Scene\00. Logo\TitleLogo</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>01. Scene\03. UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,14 +155,8 @@
     <ClCompile Include="Code\TitleLogo.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Code\TitleLogo.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Code\SkyBox.cpp">
       <Filter>02. GameObject\04. SkyBox</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\UI.cpp">
-      <Filter>02. GameObject\06. UI</Filter>
     </ClCompile>
     <ClCompile Include="Code\Monster.cpp">
       <Filter>02. GameObject\01. Unit\2. Monster</Filter>
@@ -169,6 +166,12 @@
     </ClCompile>
     <ClCompile Include="Code\Torch.cpp">
       <Filter>02. GameObject\05. Torch</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>01. Scene\03. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\TitleLogo.cpp">
+      <Filter>01. Scene\00. Logo\TitleLogo</Filter>
     </ClCompile>
     <ClCompile Include="Code\UI.cpp">
       <Filter>01. Scene\03. UI</Filter>

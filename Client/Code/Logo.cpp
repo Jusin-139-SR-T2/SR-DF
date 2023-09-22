@@ -44,6 +44,10 @@ void CLogo::Free()
 
 HRESULT CLogo::Ready_Scene()
 {
+	//사운드
+	FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
+	Engine::CSoundMgr::GetInstance()->Play_Sound(L"Ambience_OldTimeyMusic6.mp3", SOUND_BGM, 0.75f);
+
 	FAILED_CHECK_RETURN(Ready_Prototype(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Environment"), E_FAIL);
 
@@ -89,6 +93,7 @@ void CLogo::Render_Scene()
 
 HRESULT CLogo::Ready_Prototype()
 {
+	
 	// 프로토타입 인스턴스를 등록한다.
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TransformComp", CTransformComponent::Create(m_pGraphicDev)), E_FAIL);	// 트랜스폼
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RcTexBufferComp", CRcBufferComp::Create(m_pGraphicDev)), E_FAIL);		// 버퍼
