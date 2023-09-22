@@ -29,12 +29,10 @@ HRESULT CMonster::Ready_GameObject()
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE);
-
     m_tState_Obj.Add_Func(STATE_OBJ::IDLE, &CMonster::AI_Idle);
     m_tState_Obj.Add_Func(STATE_OBJ::SUSPICIOUS, &CMonster::AI_Suspicious);
     m_tState_Obj.Add_Func(STATE_OBJ::TAUNT, &CMonster::AI_Taunt);
     m_tState_Obj.Add_Func(STATE_OBJ::CHASE, &CMonster::AI_Chase);
-
     m_tState_Obj.Add_Func(STATE_OBJ::ATTACK, &CMonster::AI_Attack);
 #pragma endregion
 
@@ -87,6 +85,7 @@ _int CMonster::Update_GameObject(const _float& fTimeDelta)
         if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
             m_fCheck += 1;
     }
+
     //상태머신
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
@@ -316,21 +315,43 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
     if (m_tState_Obj.Can_Update()) // 시야범위 7 
     {
         if (Monster_Capture()) // 시야각 이내에 위치 + 시야거리 이내 위치 
-        {  // 거리가 너무멀다 - 달리기 
-            if (10.f < m_fDistance())
+        {  
+            // 거리 8 이상 
+            if (8.f < m_fDistance())
             {
-                m_mapActionKey[ACTION_KEY::RUN].Act();
+                m_fFrameEnd = 20;
+                m_fFrameSpeed = 10.f;
+                m_pTransformComp->m_vScale.x = 0.5f;
+                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"RunSouth");
+
             }
 
-            // 둘사이 거리 3~7  - 걷기 
-            if (7.f < m_fDistance() && 10.f > m_fDistance())
+            // 둘사이 거리 5~8 - 걷기 
+            if (6.f < m_fDistance() && 8.f >= m_fDistance())
             {
-                m_mapActionKey[ACTION_KEY::WALK].Act();
+                m_fFrameEnd = 23;
+                m_fFrameSpeed = 10.f;
+                m_pTransformComp->m_vScale.x = 0.5f;
+                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_South");
+
             }
 
             // 거리가 일정 거리일때 공격모션으로 바뀐다. 
-            if (7.f > m_fDistance())
+            if (6.f >= m_fDistance())//
             {
+                m_fFrameEnd = 5;
+                m_fFrameSpeed = 10.f;
+                m_pTransformComp->m_vScale.x = 0.5f;
+                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"InchForward");
+            }
+            
+            if (2.f > m_fDistance())
+            {
+                m_fFrameEnd = 5;
+                m_fFrameSpeed = 10.f;
+                m_pTransformComp->m_vScale.x = 0.5f;
+                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"BasicAttack");
+
                 m_tState_Obj.Set_State(STATE_OBJ::ATTACK);
             }
         }
@@ -342,10 +363,10 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
             if (m_fAwareness < 0)
                 m_fAwareness = 0;
 
-            //플레이어가 시야각을 벗어나 인지값이 초기화되면 idle로 back
+            //플레이어가 시야각을 벗어나 인지값이 초기화되면 SUS로 back
             if (0 == m_fAwareness)
             {
-                m_tState_Obj.Set_State(STATE_OBJ::IDLE);
+                m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
             }
         }
 
@@ -361,8 +382,6 @@ void CMonster::AI_Attack(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-        //Set_FrameKey(0, L"NBT_Mettaur_Prepare_Atk");
-       // CAnimationTable::Get_Instance()->Load_AnimData(L"1", Get_FrameList()[0]);
     }
 
     if (m_tState_Act.Can_Update())
@@ -430,25 +449,11 @@ void CMonster::Run(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
 {
     if (m_tState_Act.IsState_Entered())
     {
-
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Taunt");
     }
 
     // 실행
     {
-        _vec3 vPlayerPos, vMonsterPos;
-        m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
 
-        // 위치
-        m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-        m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos);
-
-        _vec3	vDir = vPlayerPos - vMonsterPos; // 몬스터가 보는 목표물 벡터 
-        D3DXVec3Normalize(&vDir, &vDir);
-
-        m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fWalkSpeed);
-
-        // vMonsterPos += vDir * fDeltaTime * m_fWalkSpeed;
 
     }
 
@@ -459,8 +464,6 @@ void CMonster::Run(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
 
     if (m_tState_Act.IsState_Exit())
     {
-
-        //m_tState_Act.Set_State(STATE_ACT::IDLE);
     }
 }
 
@@ -469,24 +472,12 @@ void CMonster::Walk(float fDeltaTime)
     if (m_tState_Act.IsState_Entered())
     {
 
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Taunt");
+    ;
     }
 
     // 실행
     {
-        _vec3 vPlayerPos, vMonsterPos;
-        m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
 
-        // 위치
-        m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-        m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos);
-        
-        _vec3	vDir = vPlayerPos - vMonsterPos; // 몬스터가 보는 목표물 벡터 
-        D3DXVec3Normalize(&vDir, &vDir);
-        
-        m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fWalkSpeed);
-       
-        // vMonsterPos += vDir * fDeltaTime * m_fWalkSpeed;
 
     }
 
@@ -498,7 +489,6 @@ void CMonster::Walk(float fDeltaTime)
     if (m_tState_Act.IsState_Exit())
     {
 
-        //m_tState_Act.Set_State(STATE_ACT::IDLE);
     }
 }
 

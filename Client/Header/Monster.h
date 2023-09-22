@@ -68,13 +68,13 @@ private:
 
 	_bool		SpinCheck = true;	 // 플레이어 포착이후 따라가는 bool값 
 	_float		m_fMonsterFov = 90;		//시야각 - 반각 기준
-	_float		m_fMonsterSightDistance = 5.f; // 몬스터가 포착하는 사거리 
+	_float		m_fMonsterSightDistance = 12.f; // 몬스터가 포착하는 사거리 
 
 	_float		m_fCheck = 0; //Taunt 등 프레임 돌리는횟수 지정
 
 public: 
 	// 목표 상태머신(AI)
-	enum class STATE_OBJ { IDLE, SUSPICIOUS, CHASE, TAUNT, ATTACK, JUMP };
+	enum class STATE_OBJ { IDLE, SUSPICIOUS, TAUNT, CHASE, ATTACK };
 	// 행동 상태머신
 	enum class STATE_ACT { IDLE, CHASE, WALK, RUN, INCH, JUMP, 
 						  PRE_ATTACK, ATTACK, HEAVY, PARRYING, FALLING, LANDING, DEAD };
