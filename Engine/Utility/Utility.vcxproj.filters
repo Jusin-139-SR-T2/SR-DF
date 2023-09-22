@@ -61,9 +61,6 @@
     <ClInclude Include="Header\Light.h">
       <Filter>04. LightMgr</Filter>
     </ClInclude>
-    <ClInclude Include="Header\PhysicsMgr.h">
-      <Filter>05. PhysicsMgr</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Component\ColliderComponent.h">
       <Filter>01. Component\08. Collider</Filter>
     </ClInclude>
@@ -118,9 +115,18 @@
     <ClInclude Include="Header\AStarMgr.h">
       <Filter>08. AstarMgr</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Physics\RigidBody.h" />
-    <ClInclude Include="Header\Physics\PhysicsCore.h" />
-    <ClInclude Include="Header\Physics\PhysicsPrecision.h" />
+    <ClInclude Include="Header\PhysicsMgr.h">
+      <Filter>05. Physics\00. PhysicsMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsCore.h">
+      <Filter>05. Physics\01. PhysicsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\RigidBody.h">
+      <Filter>05. Physics\02. RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsPrecision.h">
+      <Filter>05. Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -183,9 +189,6 @@
     <ClCompile Include="Code\LightMgr.cpp">
       <Filter>04. LightMgr</Filter>
     </ClCompile>
-    <ClCompile Include="Code\PhysicsMgr.cpp">
-      <Filter>05. PhysicsMgr</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Component\ColliderComponent.cpp">
       <Filter>01. Component\08. Collider</Filter>
     </ClCompile>
@@ -237,8 +240,15 @@
     <ClCompile Include="Code\AStarMgr.cpp">
       <Filter>08. AstarMgr</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Physics\RigidBody.cpp" />
-    <ClCompile Include="Code\Physics\PhysicsCore.cpp" />
+    <ClCompile Include="Code\PhysicsMgr.cpp">
+      <Filter>05. Physics\00. PhysicsMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\PhysicsCore.cpp">
+      <Filter>05. Physics\01. PhysicsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\RigidBody.cpp">
+      <Filter>05. Physics\02. RigidBody</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">
@@ -292,9 +302,6 @@
     <Filter Include="01. Component\07. Calculator">
       <UniqueIdentifier>{23dc5bd6-cd33-43d2-8405-71498475db7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. PhysicsMgr">
-      <UniqueIdentifier>{54cf8133-3766-4c64-b7c8-1f6b9f4db1a7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Component\08. Collider">
       <UniqueIdentifier>{40e01f3f-7ed4-4f53-b8c4-708e1e6fab22}</UniqueIdentifier>
     </Filter>
@@ -324,6 +331,18 @@
     </Filter>
     <Filter Include="08. AstarMgr">
       <UniqueIdentifier>{8a9bd10f-83d1-42af-a5d0-caaa629566eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Physics">
+      <UniqueIdentifier>{54cf8133-3766-4c64-b7c8-1f6b9f4db1a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Physics\00. PhysicsMgr">
+      <UniqueIdentifier>{cc386f92-cc96-4e63-82a2-fe306aaeb2c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Physics\01. PhysicsCore">
+      <UniqueIdentifier>{2a34c9e7-111e-4d50-95ff-8b14b1a55d02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Physics\02. RigidBody">
+      <UniqueIdentifier>{5580acae-4bae-4ff6-aab7-7a91b725fe2f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

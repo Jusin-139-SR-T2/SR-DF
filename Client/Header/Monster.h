@@ -52,6 +52,7 @@ public:
 private:
 	_bool		Monster_Capture();  // 몬스터 시야각내에 플레이어가 있는지 체크
 	_float		m_fDistance();		// 몬스터와 플레이어 사이의 거리 체크하는 함수 
+	HRESULT		Chase_Player(const _float& fTimeDelta, _float fSpeed);
 
 	_int		m_iHP;				// 몬스터 hp 
 	_int		m_iAttack = 15;		// 몬스터 공격력
@@ -63,27 +64,30 @@ private:
 	_float		m_fAwareness = 0;	// 의심게이지 숫자 
 	_float		m_fMaxAwareness = 20.f; // 의심게이지 max -> 추격으로 변함 
 	
-	_float		m_fMoveSpeed = 10.f; // 걷는속도
-	_float		m_fWalkSpeed = 3.f;  // 뛰어오는 속도 
+	_float		m_fRunSpeed = 100.f; // 걷는속도
+	_float		m_fWalkSpeed = 30.f;  // 뛰어오는 속도 
+	_float		m_fInchSpeed = 30.f;  // 뛰어오는 속도 
+	_float		m_fStrafyingSpeed = 3.f;  // 뛰어오는 속도 
+	_float		m_fBasicAttackSpeed = 3.f;  // 뛰어오는 속도 
+	_float		m_fHeavAttackSpeed = 3.f;  // 뛰어오는 속도 
 
 	_float		m_fCheck = 0; //Taunt 등 프레임 돌리는횟수 지정
 
 	// 사거리 , 시야각 모음 
 	_float		m_fMonsterFov = 90;		//시야각 - 반각 기준
 	_float		m_fMonsterSightDistance = 12.f; // 몬스터가 포착하는 사거리 
-	_float		m_fRunDistance = 8;
-	_float		m_fWalkDistance = 7;
-	_float		m_fInchDistance = 4;
+	_float		m_fRunDistance = 8.f;
+	_float		m_fWalkDistance = 7.f;
+	_float		m_fInchDistance = 4.f;
 
 
 public: 
 	// 목표 상태머신(AI)
 	enum class STATE_OBJ { IDLE, SUSPICIOUS, TAUNT, CHASE, RUN, WALK, INCHFORWARD, STRAFYING, BASICATTACK, HEAVYATTACK };
 	// 행동 상태머신
-	enum class STATE_ACT { IDLE, CHASE, WALK, RUN, INCH, JUMP, 
-						  PRE_ATTACK, ATTACK, HEAVY, PARRYING, FALLING, LANDING, DEAD };
+	enum class STATE_ACT { IDLE, APPROACH };
 	// 행동키
-	enum class ACTION_KEY { RUN, WALK, INCH, STRAFING, JUMP, BASIC_ATTACK, HEAVY_ATTACK,   };
+	enum class ACTION_KEY { IDLE, RUN, WALK, INCH, STRAFING, JUMP, BASIC_ATTACK, HEAVY_ATTACK,   };
 
 private:
 	STATE_SET<STATE_OBJ, void(CMonster*, float)> m_tState_Obj; //AI
@@ -100,7 +104,7 @@ private:
 	void AI_Run(float fDeltaTime);
 	void AI_Walk(float fDeltaTime);
 	void AI_InchForward(float fDeltaTime);
-	void AI_Strafying(float fDeltaTime);
+	void AI_Strafing(float fDeltaTime);
 	void AI_BasicAttack(float fDeltaTime);
 	void AI_HeavyAttack(float fDeltaTime);
 
@@ -108,20 +112,19 @@ private:
 
 #pragma region 행동 : AI 이후 넘어가는곳 
 	void Idle(float fDeltaTime);
-	void Chase(float fDeltaTime);
+	void Approach(float fDeltaTime);
 
-	void Walk(float fDeltaTime);
-	void Run(float fDeltaTime);
-	void Jump(float fDeltaTime);
+	//void Walk(float fDeltaTime);
+	//void Inch(float fDeltaTime);
 
-	void Inch(float fDeltaTime);
-	void Prepare_Atk(float fDeltaTime);
-	void Attack(float fDeltaTime);
-	void Heavy_Attack(float fDeltaTime);
-	void Parrying(float fDeltaTime);
-	void Falling(float fDeltaTime);
-	
-	void Dead(float fDeltaTime);
+	//void Heavy_Attack(float fDeltaTime);
+	//void Prepare_Atk(float fDeltaTime);
+	//void Attack(float fDeltaTime);
+	//void Parrying(float fDeltaTime);
+	//
+	//void Jump(float fDeltaTime);
+	//void Falling(float fDeltaTime);
+	//void Dead(float fDeltaTime);
 #pragma endregion
 	// 액션키는 CPP쪽에 만들음
 };

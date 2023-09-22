@@ -51,20 +51,19 @@ HRESULT CMonster::Ready_GameObject()
     m_tState_Act.Set_State(STATE_ACT::IDLE);
     // STATE가 ::A 일때 CMonster클래스의 ::B 함수를 수행하는 상태머신 
     m_tState_Act.Add_Func(STATE_ACT::IDLE, &CMonster::Idle);
-    m_tState_Act.Add_Func(STATE_ACT::CHASE, &CMonster::Chase);
+    m_tState_Act.Add_Func(STATE_ACT::APPROACH, &CMonster::Approach);
     
-    m_tState_Act.Add_Func(STATE_ACT::WALK, &CMonster::Walk);
-    m_tState_Act.Add_Func(STATE_ACT::RUN, &CMonster::Run);
-    m_tState_Act.Add_Func(STATE_ACT::INCH, &CMonster::Inch);
-    m_tState_Act.Add_Func(STATE_ACT::JUMP, &CMonster::Jump);
+    //m_tState_Act.Add_Func(STATE_ACT::WALK, &CMonster::Walk);
+    //m_tState_Act.Add_Func(STATE_ACT::RUN, &CMonster::Run);
+    //m_tState_Act.Add_Func(STATE_ACT::INCH, &CMonster::Inch);
+    //m_tState_Act.Add_Func(STATE_ACT::JUMP, &CMonster::Jump);
 
-    m_tState_Act.Add_Func(STATE_ACT::PRE_ATTACK, &CMonster::Prepare_Atk);
-    m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CMonster::Attack);
-    m_tState_Act.Add_Func(STATE_ACT::HEAVY, &CMonster::Heavy_Attack);
-    m_tState_Act.Add_Func(STATE_ACT::PARRYING, &CMonster::Parrying);
-    m_tState_Act.Add_Func(STATE_ACT::FALLING, &CMonster::Falling);
-    
-    m_tState_Act.Add_Func(STATE_ACT::DEAD, &CMonster::Dead);
+    //m_tState_Act.Add_Func(STATE_ACT::PRE_ATTACK, &CMonster::Prepare_Atk);
+    //m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CMonster::Attack);
+    //m_tState_Act.Add_Func(STATE_ACT::HEAVY, &CMonster::Heavy_Attack);
+    //m_tState_Act.Add_Func(STATE_ACT::PARRYING, &CMonster::Parrying);
+    //m_tState_Act.Add_Func(STATE_ACT::FALLING, &CMonster::Falling);
+    //m_tState_Act.Add_Func(STATE_ACT::DEAD, &CMonster::Dead);
 #pragma endregion
 
 #pragma region 액션 키 등록
@@ -94,6 +93,8 @@ _int CMonster::Update_GameObject(const _float& fTimeDelta)
         m_fFrame = 0.f;
 
         if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State()
+          || STATE_OBJ::RUN == m_tState_Obj.Get_State()
+          || STATE_OBJ::WALK == m_tState_Obj.Get_State()
           || STATE_OBJ::INCHFORWARD == m_tState_Obj.Get_State()
           || STATE_OBJ::STRAFYING == m_tState_Obj.Get_State()
           || STATE_OBJ::BASICATTACK == m_tState_Obj.Get_State()
@@ -209,6 +210,13 @@ float CMonster::m_fDistance()
     return fDistance;
 }
 
+HRESULT CMonster::Chase_Player(const _float& fTimeDelta, _float fSpeed)
+{ 
+
+
+    return S_OK;
+}
+
 void CMonster::Free()
 {
     SUPER::Free();
@@ -230,7 +238,6 @@ void CMonster::Height_On_Terrain()
 //------------------ AI ---------------------------
 void CMonster::AI_Idle(float fDeltaTime)
 {
-
     if (m_tState_Obj.IsState_Entered())
     {
         m_fFrameEnd = 1;
@@ -299,7 +306,7 @@ void CMonster::AI_Taunt(float fDeltaTime)
     {
         m_fFrameEnd = 6;
         m_fFrameSpeed = 7.f;
-        m_pTransformComp->m_vScale.x = 0.5f;
+        m_pTransformComp->m_vScale.x = 0.4f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Taunt");
     }
 
@@ -341,8 +348,8 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
             {
                 m_tState_Obj.Set_State(STATE_OBJ::WALK);
             }
-            // 무빙 : 5 <= a <= 7
-            else if (m_fInchDistance >= m_fDistance() && m_fWalkDistance >= m_fDistance())
+            // 무빙 : 4 < a <= 7
+            else if (m_fInchDistance < m_fDistance() && m_fWalkDistance >= m_fDistance())
             {
                 int iCombo = rand() % 2; // 0 or 1
 
@@ -355,7 +362,13 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
             // 공격함
             else
             {
-                m_tState_Obj.Set_State(STATE_OBJ::BASICATTACK);
+                int iCombo = rand() % 2; // 0 or 1
+
+                if (1 == iCombo)
+                    m_tState_Obj.Set_State(STATE_OBJ::BASICATTACK);
+
+                if (2 == iCombo)
+                    m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
             }
         }
         else // 쫒다가도 시야에서 벗어나면 게이지 줄어들어서 SUSPICIOUS로 돌아감 
@@ -378,22 +391,25 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
     }
 }
 
-
 void CMonster::AI_Run(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameEnd = 20;
-        m_fFrameSpeed = 10.f;
+        m_fFrameEnd = 21;
+        m_fFrameSpeed = 12.f;
         m_pTransformComp->m_vScale.x = 0.5f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"RunSouth");
     }
     if (m_tState_Obj.Can_Update())
     {
-        if (m_fRunDistance >= Monster_Capture()) // 전체 사거리 = m_fMonsterSightDistance = 12.f
+        //행동이 IDLE일때 RUN 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::RUN].Act();
+
+        if (1 == m_fCheck && m_fRunDistance >= Monster_Capture()) // 한번 프레임 돌면 
         {
+            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
-            //행동 추가 
         }
     }
 
@@ -407,16 +423,21 @@ void CMonster::AI_Walk(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameEnd = 23;
-        m_fFrameSpeed = 10.f;
+        m_fFrameEnd = 24;
+        m_fFrameSpeed = 12.f;
         m_pTransformComp->m_vScale.x = 0.5f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_South");
     }
     if (m_tState_Obj.Can_Update())
     {
-        if (m_fWalkDistance >= Monster_Capture())
-        {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::WALK].Act();
+
             // 행동 추가 
+        if (1 == m_fCheck && m_fWalkDistance >= Monster_Capture())
+        {
+            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
@@ -440,9 +461,9 @@ void CMonster::AI_InchForward(float fDeltaTime)
     {
         // 행동 추가 
 
-        if (1 == m_fCheck)
+        if (1 == m_fCheck) // 한번 프레임 돌면 
         {
-            m_fCheck = 0;
+            m_fCheck = 0; 
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
@@ -453,7 +474,7 @@ void CMonster::AI_InchForward(float fDeltaTime)
     }
 }
 
-void CMonster::AI_Strafying(float fDeltaTime)
+void CMonster::AI_Strafing(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -463,8 +484,10 @@ void CMonster::AI_Strafying(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Strafing");
     }
     if (m_tState_Obj.Can_Update())
-    {
-        if (1 == m_fCheck)
+    {     
+        // 행동 추가 
+
+        if (1 == m_fCheck) // 한번 프레임 돌면 
         {
             m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
@@ -533,9 +556,11 @@ void CMonster::Idle(float fDeltaTime)
 
     if (m_tState_Act.Can_Update())
     {
-        // 현재 행동이 IDLE이라면, 
-      //  if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
-      //  m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].Act();
+        if (m_mapActionKey[ACTION_KEY::RUN].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::APPROACH);
+
+        if (m_mapActionKey[ACTION_KEY::WALK].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::APPROACH);
     }
 
     if (m_tState_Act.IsState_Exit()) // 가끔 필요할때가 있어서 - 찾아보기 
@@ -544,23 +569,7 @@ void CMonster::Idle(float fDeltaTime)
     }
 }
 
-void CMonster::Chase(float fDeltaTime)
-{
-    if (m_tState_Act.IsState_Entered())
-    {
-    }
-
-    if (m_tState_Act.Can_Update())
-    {
-
-    }
-
-    if (m_tState_Act.IsState_Exit()) // 가끔 필요할때가 있어서 - 찾아보기 
-    {
-    }
-}
-
-void CMonster::Run(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
+void CMonster::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
 {
     if (m_tState_Act.IsState_Entered())
     {
@@ -568,8 +577,49 @@ void CMonster::Run(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
 
     // 실행
     {
+        if (STATE_OBJ::RUN == m_tState_Obj.Get_State())
+        {
+            // 플레이어 위치 가져옴 
+            m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
+            //NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
+            //내위치 
+            m_pTransformComp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Monster", L"Com_Transform"));
+           // NULL_CHECK_RETURN(m_pTransformComp, -1);
 
+            _vec3	vPlayerPos, vMonsterPos, vDir;
+
+            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos); //플레이어 위치 
+            m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos); //플레이어 위치 
+
+            vDir = vPlayerPos - vMonsterPos;
+
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
+
+            m_tState_Act.Set_State(STATE_ACT::IDLE);
+        }
+        if (STATE_OBJ::WALK == m_tState_Obj.Get_State())
+        {
+           /* Chase_Player(fDeltaTime, m_fWalkSpeed);*/
+                // 플레이어 위치 가져옴 
+            m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
+            //NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
+
+            //내위치 
+            m_pTransformComp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Monster", L"Com_Transform"));
+            //NULL_CHECK_RETURN(m_pTransformComp, -1);
+
+            _vec3	vPlayerPos, vMonsterPos, vDir;
+
+            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos); //플레이어 위치 
+            m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos); //플레이어 위치 
+
+            vDir = vPlayerPos - vMonsterPos;
+
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fWalkSpeed);
+            
+            m_tState_Act.Set_State(STATE_ACT::IDLE);
+        }
     }
 
     // 조건
@@ -581,7 +631,7 @@ void CMonster::Run(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
     {
     }
 }
-
+/*
 void CMonster::Walk(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
@@ -606,7 +656,6 @@ void CMonster::Walk(float fDeltaTime)
 
     }
 }
-
 
 void CMonster::Inch(float fDeltaTime)
 {
@@ -660,7 +709,6 @@ void CMonster::Prepare_Atk(float fDeltaTime)
 
     }
 }
-
 
 void CMonster::Attack(float fDeltaTime)
 {
@@ -751,3 +799,4 @@ void CMonster::Dead(float fDeltaTime)
 
     }
 }
+*/
