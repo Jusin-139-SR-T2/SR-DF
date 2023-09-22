@@ -290,7 +290,7 @@ void CMonster::AI_Taunt(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        if (4 == m_fCheck)
+        if (3 == m_fCheck)
         {
             m_tState_Obj.Set_State(STATE_OBJ::CHASE); // AI = 추격모드
             m_tState_Act.Set_State(STATE_ACT::CHASE); // 행동 = 추격행동 
@@ -343,6 +343,13 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
                 m_fFrameSpeed = 10.f;
                 m_pTransformComp->m_vScale.x = 0.5f;
                 m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"InchForward");
+               
+                /*//CASE2 - INCH의 좌우버전 
+                m_fFrameEnd = 6;
+                m_fFrameSpeed = 10.f;
+                m_pTransformComp->m_vScale.x = 0.5f;
+                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Strafing");
+                */
             }
             
             if (2.f > m_fDistance())
@@ -351,20 +358,17 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
                 m_fFrameSpeed = 10.f;
                 m_pTransformComp->m_vScale.x = 0.5f;
                 m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"BasicAttack");
-
-                m_tState_Obj.Set_State(STATE_OBJ::ATTACK);
             }
         }
 
-        else // 쫒다가도 시야에서 벗어나면 게이지 줄어들어서 idle로 돌아감 
+        else // 쫒다가도 시야에서 벗어나면 게이지 줄어들어서 SUSPICIOUS로 돌아감 
         {
-            m_fAwareness -= fDeltaTime * 6.f;
+            m_fAwareness -= fDeltaTime * 4.f;
 
             if (m_fAwareness < 0)
                 m_fAwareness = 0;
-
-            //플레이어가 시야각을 벗어나 인지값이 초기화되면 SUS로 back
-            if (0 == m_fAwareness)
+            
+            if (0 == m_fAwareness) //인지값이 초기화되면 
             {
                 m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
             }
@@ -414,18 +418,14 @@ void CMonster::Idle(float fDeltaTime)
 
     if (m_tState_Act.Can_Update())
     {
-        if (m_mapActionKey[ACTION_KEY::RUN].IsOnAct()) // 눌렀다면 
-            m_tState_Act.Set_State(STATE_ACT::PRE_ATTACK);
-
-        if (m_mapActionKey[ACTION_KEY::WALK].IsOnAct())
-            m_tState_Act.Set_State(STATE_ACT::PRE_ATTACK);
-
-        if (m_mapActionKey[ACTION_KEY::INCH].IsOnAct())
-            m_tState_Act.Set_State(STATE_ACT::PRE_ATTACK);
+        // 현재 행동이 IDLE이라면, 
+      //  if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+      //  m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].Act();
     }
 
     if (m_tState_Act.IsState_Exit()) // 가끔 필요할때가 있어서 - 찾아보기 
     {
+       
     }
 }
 

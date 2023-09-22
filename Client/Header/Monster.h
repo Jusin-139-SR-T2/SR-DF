@@ -113,5 +113,6 @@ private:
 	
 	void Dead(float fDeltaTime);
 #pragma endregion
+	// 액션키는 CPP쪽에 만들음
 };
 
