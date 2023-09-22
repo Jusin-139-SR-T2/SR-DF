@@ -91,6 +91,7 @@ inline void		LateUpdate_KeyMgr()
 {
 	return CKeyMgr::GetInstance()->LateUpdate_Key();
 }
+// 누르고 있는 중
 inline bool		IsKey_Pressing(const int& iKey)
 {
 	return CKeyMgr::GetInstance()->Key_Pressing(iKey);
@@ -99,6 +100,7 @@ inline bool		IsKey_Pressing(const int&& iKey)
 {
 	return CKeyMgr::GetInstance()->Key_Pressing(iKey);
 }
+// 누를 때
 inline bool		IsKey_Pressed(const int& iKey)
 {
 	return CKeyMgr::GetInstance()->Key_Down(iKey);
@@ -107,6 +109,7 @@ inline bool		IsKey_Pressed(const int&& iKey)
 {
 	return CKeyMgr::GetInstance()->Key_Down(iKey);
 }
+// 뗄 때
 inline bool		IsKey_Released(const int& iKey)
 {
 	return CKeyMgr::GetInstance()->Key_Up(iKey);

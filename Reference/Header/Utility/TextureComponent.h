@@ -33,7 +33,7 @@ public:
 
 private:
 	vector<LPDIRECT3DBASETEXTURE9>		m_vecTexture;
-
+	
 };
 
 END
