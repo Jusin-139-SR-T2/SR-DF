@@ -25,45 +25,67 @@ HRESULT CPlayer::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+#pragma region 플레이어 크기 및 위치 설정 (초기 값)
     m_pTransformComp->m_vScale.x = 0.3f;
     m_pTransformComp->m_vScale.y = 0.4f;
 
     m_pTransformComp->m_vInfo[INFO_POS] = { 15.f, 10.f, 10.f };
+#pragma endregion
 
 
-#pragma region 초기 상태 세팅 (현재 상태)
-    // 플레이어
-    m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
-    // 왼손
-    m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
-    // 오른손
-    m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND);;
+#pragma region 초기 상태 세팅 (현재 상태)  
+    m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);           // 플레이어 
+    m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);       // 왼손  
+    m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND);;    // 오른손
 #pragma endregion
 
 
 #pragma region 플레이어의 상태 추가
-    m_tPlayer_State.Add_Func(STATE_PLAYER::IDLE, &ThisClass::Idle);
-    m_tPlayer_State.Add_Func(STATE_PLAYER::MOVE, &ThisClass::Move);
-    m_tPlayer_State.Add_Func(STATE_PLAYER::RUN, &ThisClass::Run);
-    m_tPlayer_State.Add_Func(STATE_PLAYER::DOWN, &ThisClass::Down);
-    m_tPlayer_State.Add_Func(STATE_PLAYER::ATTACK, &ThisClass::Attack);
-    m_tPlayer_State.Add_Func(STATE_PLAYER::DIE, &ThisClass::Die);
+    m_tPlayer_State.Add_Func(STATE_PLAYER::IDLE, &ThisClass::Idle);         // 기본 (정지)
+    m_tPlayer_State.Add_Func(STATE_PLAYER::MOVE, &ThisClass::Move);         // 움직임
+    m_tPlayer_State.Add_Func(STATE_PLAYER::RUN, &ThisClass::Run);           // 달리기
+    m_tPlayer_State.Add_Func(STATE_PLAYER::DOWN, &ThisClass::Down);         // 앉기
+    m_tPlayer_State.Add_Func(STATE_PLAYER::ATTACK, &ThisClass::Attack);     // 공격
+    m_tPlayer_State.Add_Func(STATE_PLAYER::KICK, &ThisClass::Kick);         // 발차기
+    m_tPlayer_State.Add_Func(STATE_PLAYER::DIE, &ThisClass::Die);           // 죽음
 #pragma endregion
+
 
 #pragma region 플레이어의 왼손 상태 추가
-    m_tLeftHand_State.Add_Func(STATE_LEFTHAND::HAND, &ThisClass::Left_Hand);
-    m_tLeftHand_State.Add_Func(STATE_LEFTHAND::RIGHTER, &ThisClass::Left_Righter);
+    m_tLeftHand_State.Add_Func(STATE_LEFTHAND::NONE, &ThisClass::Left_None);                // 왼손 없음
+    m_tLeftHand_State.Add_Func(STATE_LEFTHAND::HAND, &ThisClass::Left_Hand);                // 왼손 주먹
+    m_tLeftHand_State.Add_Func(STATE_LEFTHAND::RUN_RIHGTER, &ThisClass::Left_RunRighter);   // 왼손 라이터 들고 뛰고있음
+    m_tLeftHand_State.Add_Func(STATE_LEFTHAND::OPEN_HAND, &ThisClass::Left_OpenHand);       // 오른손 오브젝트
+    m_tLeftHand_State.Add_Func(STATE_LEFTHAND::RUN_HAND, &ThisClass::Left_RunHand);         // 뛰고있음
+    m_tLeftHand_State.Add_Func(STATE_LEFTHAND::RIGHTER, &ThisClass::Left_Righter);          // 라이터
 #pragma endregion
+
 
 #pragma region 플레이어의 오른손 상태 추가
-    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::HAND, &ThisClass::Right_Hand);
-    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::GUN, &ThisClass::Right_Gun);
-    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::STEELPIPE, &ThisClass::Right_Steelpipe);
+    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::NONE, &ThisClass::Right_None);             // 오른손 없음
+    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::HAND, &ThisClass::Right_Hand);             // 오른손 주먹
+    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::GUN, &ThisClass::Right_Gun);               // 권총
+    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::RUN_HAND, &ThisClass::Right_RunHand);      // 달리기
+    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::THOMPSON, &ThisClass::Right_Thompson);     // 톰슨 기관총
+    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::STEELPIPE, &ThisClass::Right_Steelpipe);   // 쇠파이프
+    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::BEERBOTLE, &ThisClass::Right_BeerBotle);   // 맥주병
+    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::FRYINGPAN, &ThisClass::Right_FryingPan);   // 프라이팬
+    m_tRightHand_State.Add_Func(STATE_RIGHTHAND::KICK, &ThisClass::Right_Kick);             // 발차기
 #pragma endregion
 
-    //Tset
-    m_eObjectType = OBJECT_TYPE::NONE;
 
+    // Tset (오브젝트 받아오는거)
+    m_eObjectType = OBJECT_TYPE::NONE; // 초기상태 : 타입x
+    m_eObjectName = OBJECT_NAME::NONE; // 초기상태 : 이름x
+
+    // 플레이어 상태 (초기값)
+    m_ePlayerState = STATE_PLAYER::NONE;
+
+    // 프레임 상태 (초기값)
+    bLeftFrameOn = true;
+    bRightFrameOn = true;
+
+    // 정점 세팅
     m_pBufferComp->Set_Vertex(1.7f, 0.f, 1.f);
 
     return S_OK;
@@ -86,14 +108,14 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     // 지형 타기
     Height_On_Terrain();
 
-    // 왼손 프레임On
+#pragma region 왼손 프레임On
     if (bLeftFrameOn)
     {
         // 현재 프레임을 시간(프레임)마다 증가시키기
         m_fLeftFrame += 10.f * fTimeDelta;
 
         // 현재 프레임이 최대 프레임에 도달한 경우
-        if (m_fLeftFrame >= m_fMaxFrame)
+        if (m_fLeftFrame >= m_fLeftMaxFrame)
         {
             // 현재 프레임을 0으로 초기화
             m_fLeftFrame = 0;
@@ -107,6 +129,27 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
                 // (현재 프레임) 라이터를 켜져있는 이미지로 고정
                 m_fLeftFrame = 5.f;
             }
+        }
+    }
+#pragma endregion
+
+#pragma region 오른손 프레임On (왼손과 동일)
+    if (bRightFrameOn)
+    {
+        m_fRightFrame += 10.f * fTimeDelta;
+
+        // 플레이어 발차기 중 프레임이 다 돌았을 경우
+        if (m_ePlayerState == STATE_PLAYER::KICK &&
+            m_fRightFrame > m_fRightMaxFrame)
+        {
+            m_ePlayerState = STATE_PLAYER::NONE; // 플레이어 상태 초기화
+            Two_Hand(); // 맨 주먹으로 돌아가기 (나중에 이전상태로 돌아가게 해야함)
+        }
+
+        if (m_fRightFrame >= m_fRightMaxFrame)
+        {
+            m_fRightFrame = 0;
+            bRightFrameOn = false;
 
             // 권총이 회전중이였을 때
             if (bSpinOn)
@@ -118,46 +161,29 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
                 bGunOn = true;
 
                 // 최대 프레임을 권총 기준으로 다시 맞춰놓기
-                m_fMaxFrame = 3.f;
+                m_fLeftMaxFrame = 4.f;
             }
         }
     }
+#pragma endregion
 
-    // 오른손 프레임
-    if (bRightFrameOn)
-    {
-        m_fRightFrame += 10.f * fTimeDelta;
+    // 랜더 그룹 지정, 현재상태 : 알파 테스트
+    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
 
-        if (m_fRightFrame >= m_fMaxFrame)
-        {
-            m_fRightFrame = 0;
-            bRightFrameOn = false;
-
-            if (bSpinOn)
-            {
-                bSpinOn = false;
-                bGunOn = true;
-                m_fMaxFrame = 3.f;
-            }
-        }
-    }
-    
-
- 
-
-
-    Engine::Add_RenderGroup(RENDER_ALPHA, this);
+    // 랜더 그룹 목록
+    //RENDER_PRIORITY, RNEDER_ALPHATEST, RENDER_NONALPHA, RENDER_ALPHA, RENDER_UI, RENDER_END
 
     return 0;
 }
 
 void CPlayer::LateUpdate_GameObject()
-{   
+{
     SUPER::LateUpdate_GameObject();
 }
 
 void CPlayer::Render_GameObject()
 {
+
     // 조명 테스트
     if (bTorch)
     {
@@ -165,30 +191,45 @@ void CPlayer::Render_GameObject()
         //SetUp_Material();
     }
 
+#pragma region 옵션
     // 행렬 적용
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
     // 랜더 상태 옵션
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+#pragma endregion
 
+#pragma region 왼손
     // 왼손 위치 설정
     m_pBufferComp->Set_Vertex(-3.5f, -0.9f, 0.f);
-    m_pLeftHandComp->Render_Texture((_ulong)m_fLeftFrame);  // 왼손 텍스처
-    m_pBufferComp->Render_Buffer();             // 왼손 버퍼
-    
+
+    // 왼손 출력 여부
+    if (bLeftHandOn)
+    {
+        // 왼손 텍스처 출력
+        m_pLeftHandComp->Render_Texture((_ulong)m_fLeftFrame);  // 왼손 텍스처 출력
+        m_pBufferComp->Render_Buffer();             // 왼손 버퍼 
+    }
+
     // (왼손)설정 값 되돌려주기
     m_pBufferComp->Set_Vertex(3.5f, 0.f, 0.f);
+#pragma endregion
 
+#pragma region 오른손
     // 오른손 위치 설정
     m_pBufferComp->Set_Vertex(0.2f, 0.f, 0.f);
-    //if (m_fFrame < m_fMaxFrame) // 현재 프레임이 Max가 아닐 경우
+
+    // 오른손 출력 여부
+    if (bRightHandOn)
     {
-        m_pRightHandComp->Render_Texture((_ulong)m_fRightFrame); // 오른손 텍스처
+        m_pRightHandComp->Render_Texture((_ulong)m_fRightFrame); // 오른손 텍스처 출력
         m_pBufferComp->Render_Buffer();                            // 오른손 버퍼
     }
+
     // (오른손)설정 값 되돌려주기
     m_pBufferComp->Set_Vertex(-0.2f, 0.f, 0.f);
+#pragma endregion
 
-    // 초기 테스트 버전
+#pragma region 초기 테스트 버전
     //if (!bAttackOn)
     //{
     //    m_pRightHandTextureComp->Render_Texture(0);
@@ -207,48 +248,44 @@ void CPlayer::Render_GameObject()
     //        m_pBufferComp->Render_Buffer();
     //    }
     //}
+#pragma endregion
 
-    // 조명 테스트
+#pragma region 조명 테스트
     if (bTorch)
         m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
 
     m_pBufferComp->Set_Vertex(0.f, 0.9f, 0.f);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+#pragma endregion
+
 }
 
 HRESULT CPlayer::Add_Component()
 {
+#pragma region 컴포넌트
+    // 버퍼 컴포넌트
     NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
+    // 행렬 컴포넌트
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
+    // 지형타기 컴포넌트
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
+    // 왼손 컴포넌트
+    NULL_CHECK_RETURN(m_pLeftHandComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureLeftHandTest", L"Proto_PlayerLeftTextureComp"), E_FAIL);
+    // 오른손 컴포넌트
+    NULL_CHECK_RETURN(m_pRightHandComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureRightHandTest", L"Proto_PlayerRightTextureComp"), E_FAIL);
+#pragma endregion
 
-    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CSphereColComp>(ID_STATIC, L"Comp_SphereCollider", L"Proto_SphereColComp"), E_FAIL);
+    // 텍스처 매니저
+    // 왼손                           노말??
+    m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Left_Hand");
+    // 오른손
+    m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Right_Hand");
 
-    // 플레이어 왼손 텍스처
-    NULL_CHECK_RETURN(m_pLeftHandComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TextureLeft", L"Proto_PlayerLeftTextureComp"), E_FAIL);
-    // 플레이어 오른손 텍스처
-    NULL_CHECK_RETURN(m_pRightHandComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TextureRight", L"Proto_PlayerRightTextureComp"), E_FAIL);
-    
-
-    // Test (갈아 낄 이미지)
-    // 왼손 이미지
-    NULL_CHECK_RETURN(m_pLeftHandTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureLeftHandTest", L"Proto_PlayerLeftHandTextureComp"), E_FAIL);
-    // 오른손 이미지
-    NULL_CHECK_RETURN(m_pRightHandTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureRightHandTest", L"Proto_PlayerRightHandTextureComp"), E_FAIL);
-    // 쇠파이프 이미지
-    NULL_CHECK_RETURN(m_pRightSteelPipeTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureRightSteelPipeTest", L"Proto_PlayerRightSteelPipeTextureComp"), E_FAIL);
-    // 라이터 이미지
-    NULL_CHECK_RETURN(m_pLeftZippoTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureLeftZippoTest", L"Proto_PlayerLeftZippoTextureComp"), E_FAIL);
-    // 플레이어 공격 이미지
-    NULL_CHECK_RETURN(m_pAttackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureAttack", L"Proto_PlayerAttackTextureComp"), E_FAIL);
-    // 플레이어 총 회전 이미지
-    NULL_CHECK_RETURN(m_pAttackSpinTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureAttackTest", L"Proto_PlayerAttackTestTextureComp"), E_FAIL);
-    m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Catch_Mafia");
-    
     return S_OK;
 }
 
+// @@@대쉬 작업중@@@
 bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
 {
     _vec3	vLook;
@@ -260,18 +297,31 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
 
     m_pTransformComp->Compute_LootAtTarget(&vInverse);
 
+#pragma region 키입력
     // 뛰기
-    if (Engine::Get_DIKeyState(DIK_LSHIFT) & 0x80)
+    if (Engine::IsKey_Pressing(DIK_LSHIFT))
     {
-        fSpeed = 10.f;
+        // 전진 속도 Up
+        fStraightSpeed = 10.f;
+        // 플레이어 상태 : 달리기
+        m_ePlayerState = STATE_PLAYER::RUN;
+    }
+
+    // 뛰기
+    if (Engine::IsKey_Released(DIK_LSHIFT))
+    {
+        // 전진 속도 복구
+        fStraightSpeed = 5.f;
+        // 플레이어 상태 : 초기화
+        m_ePlayerState = STATE_PLAYER::NONE;
     }
 
     // 전진
     if (Engine::IsKey_Pressing(DIK_W))
     {
         D3DXVec3Normalize(&vLook, &vLook);
-        m_pTransformComp->Move_Pos(&vLook, fTimeDelta, fSpeed);
-        
+        m_pTransformComp->Move_Pos(&vLook, fTimeDelta, fStraightSpeed);
+
         bMove = true;
         //return bMove;
     }
@@ -282,85 +332,126 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         D3DXVec3Normalize(&vLook, &vLook);
         m_pTransformComp->Move_Pos(&vLook, fTimeDelta, -fSpeed);
 
-        bMove = true;
-        //return bMove;
+        // S + Shift 뒷 대쉬
+        if (Engine::IsKey_Pressed(DIK_LSHIFT))
+        {
+            m_pTransformComp->Move_Pos(&vLook, fTimeDelta, -fDash);
+        }
     }
 
     // 오른쪽
-    if (Engine::Get_DIKeyState(DIK_D) & 0x80)
+    if (Engine::IsKey_Pressing(DIK_D))
     {
         _vec3 vRight;
         m_pTransformComp->Get_Info(INFO_RIGHT, &vRight);
         D3DXVec3Normalize(&vRight, &vRight);
-        m_pTransformComp->Move_Pos(&vRight, fTimeDelta, 5.f);
+        m_pTransformComp->Move_Pos(&vRight, fTimeDelta, fSpeed);
 
-        bMove = true;
-        //return bMove;
+        // D + Shift 우측 대쉬
+        if (Engine::IsKey_Pressed(DIK_LSHIFT))
+        {
+            m_pTransformComp->Move_Pos(&vRight, fTimeDelta, fDash);
+        }
     }
 
     // 왼쪽
-    if (Engine::Get_DIKeyState(DIK_A) & 0x80)
+    if (Engine::IsKey_Pressing(DIK_A))
     {
         _vec3 vRight;
         m_pTransformComp->Get_Info(INFO_RIGHT, &vRight);
         D3DXVec3Normalize(&vRight, &vRight);
-        m_pTransformComp->Move_Pos(&-vRight, fTimeDelta, 5.f);
+        m_pTransformComp->Move_Pos(&-vRight, fTimeDelta, fSpeed);
 
-        bMove = true;
-        //return bMove;
-    }
-
-    // 권총
-    if (Engine::Get_DIKeyState(DIK_Q) & 0x80)
-    {
-        //bAttackOn = true;
-        //bGunOn = true;
-        //bSpinOn = false;
-        m_fMaxFrame = 3.f;
-
-        //Test
-        m_eObjectType = OBJECT_TYPE::GUN;
+        // A + Shift 좌측 대쉬
+        if (Engine::IsKey_Pressed(DIK_LSHIFT))
+        {
+            m_pTransformComp->Move_Pos(&-vRight, fTimeDelta, fDash);
+        }
     }
 
     // 손
-    if (Engine::Get_DIKeyState(DIK_E) & 0x80)
+    if (Engine::IsKey_Pressed(DIK_1))
     {
-        //bAttackOn = true;
-       // bGunOn = true;
-
         //Test
-        m_eObjectType = OBJECT_TYPE::NONE;
+        m_eObjectType = OBJECT_TYPE::TWO_HAND;
+        m_eObjectName = OBJECT_NAME::NONE;
+    }
+
+    // 권총
+    if (Engine::IsKey_Pressed(DIK_2))
+    {
+        //Test
+        m_eObjectType = OBJECT_TYPE::RIGHT_OBJECT;
+        m_eObjectName = OBJECT_NAME::GUN;
+    }
+
+    // 톰슨 기관총
+    if (Engine::IsKey_Pressed(DIK_3))
+    {
+        //Test
+        m_eObjectType = OBJECT_TYPE::TWO_OBJECT;
+        m_eObjectName = OBJECT_NAME::THOMPSON;
+    }
+
+    // 쇠파이프
+    if (Engine::IsKey_Pressed(DIK_4))
+    {
+        //Test
+        m_eObjectType = OBJECT_TYPE::RIGHT_OBJECT;
+        m_eObjectName = OBJECT_NAME::STEELPIPE;
+    }
+
+    // 맥주병
+    if (Engine::IsKey_Pressed(DIK_5))
+    {
+        //Test
+        m_eObjectType = OBJECT_TYPE::RIGHT_OBJECT;
+        m_eObjectName = OBJECT_NAME::BEERBOTLE;
+    }
+
+    // 프라이팬
+    if (Engine::IsKey_Pressed(DIK_6))
+    {
+        //Test
+        m_eObjectType = OBJECT_TYPE::RIGHT_OBJECT;
+        m_eObjectName = OBJECT_NAME::FRYINGPAN;
     }
 
     // 스핀 (장전)
-    if (Engine::Get_DIKeyState(DIK_R) & 0x80)
+    if (Engine::IsKey_Pressed(DIK_R) && m_eObjectName == OBJECT_NAME::GUN)
     {
         bRightFrameOn = true;
         bSpinOn = true;
     }
 
-    // 쇠파이프
-    if (Engine::Get_DIKeyState(DIK_4) & 0x80)
+    // 발차기
+    if (Engine::IsKey_Pressed(DIK_Q))
     {
-        //Test
-        m_eObjectType = OBJECT_TYPE::STEELPIPE;
+        m_ePlayerState = STATE_PLAYER::KICK;
+        bRightFrameOn = true;
     }
 
-    // 라이터 (몬스터나옴 : 아마도 키가 한번에 여러번 입력되어서 그런듯)
-    if (Engine::Get_DIKeyState(DIK_V) & 0x80)
+    // 라이터
+    if (Engine::IsKey_Pressed(DIK_V) && m_ePlayerState != STATE_PLAYER::RUN)
     {
         //Test
         if (!bRighter)  // 라이터가 꺼져있을 경우
         {
-            bRighter = true;     // 라이터 켜주기
-            bLeftFrameOn = true; // 프레임 재생
+            bRighter = true;        // 라이터 켜주기
+            bLeftFrameOn = true;    // 프레임 재생
+            m_fLeftMaxFrame = 6.f;  // 최대 프레임 설정
         }
         else // 라이터가 켜져있을 경우
         {
-            bRighter = false; // 임시 방편으로 끄면 해결..
-        }       
+            m_fLeftFrame = 0.f;
+            bRighter = false;
+            bLeftFrameOn = false;
+            //Test
+        }
     }
+#pragma endregion
 
+    // 플레이어 기본 속도
     fSpeed = 5.f;
 
     return false;
@@ -376,22 +467,69 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
     //    return bFootAttack;
     //}
 
+#pragma region 마우스
     // 마우스 좌클릭
     if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
     {
+        bMouse_Button = true;
+
         bRightFrameOn = true;
 
-        bMouse_Button = true;
+        // 주먹 번갈아가며 공격 작업 진행중
+        //// 양손 다 주먹상태일 경우
+        //if (bLeftHandFist && bRightHandFist)
+        //{
+        //    // 양손 프레임 모두 0일경우
+        //    if (m_fRightFrame == 0.f &&
+        //        m_fLeftFrame == 0.f)
+        //    {
+        //        m_fRightFrame++;
+        //    }
+
+        //    // 오른손 프레임이 1보다 클 경우
+        //    if (m_fRightFrame > 1)
+        //    {
+        //        m_fRightFrame--;
+        //        m_fLeftFrame++;
+        //    }
+
+        //    // 왼손 프레임이 1보다 클 경우
+        //    if (m_fLeftFrame > 1)
+        //    {
+        //        m_fLeftFrame--;
+        //        m_fRightFrame++;
+        //    }
+        //}
+
+
+        //// 왼손 주먹상태가 켜져있을 경우
+        //if (bLeftHandFist)
+        //{
+        //    m_fRightFrame = 0.f;
+
+        //    // 오른손 주먹상태가 켜져있을 경우
+        //    if (bRightHandFist)
+        //    {
+        //        bRightHandFist = false; // 오른손을 끔
+        //        m_fRightFrame++;
+        //        m_fLeftFrame--;
+        //        return 0;
+        //    }
+
+        //    m_fLeftFrame++;
+
+        //}
+
         return bMouse_Button;
     }
 
     // 마우스 우클릭
     if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
     {
-
         bMouse_Button = true;
         return bMouse_Button;
     }
+#pragma endregion
 
     return false;
 }
@@ -440,104 +578,218 @@ void CPlayer::Height_On_Terrain()
     NULL_CHECK(pTerrainBufferComp);
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
-                 
+
     m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.5f, vPos.z);
 }
+
+#pragma region 양손 주먹 (기본 상태)
+void CPlayer::Two_Hand()
+{
+    // 최대 프레임 설정
+    //m_fLeftMaxFrame = 2.f;
+    //m_fRightMaxFrame = 2.f;
+
+    // 차징 가능
+    bChargingReady = true;
+
+    // 오른손 주먹
+    m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND);
+
+    // 라이터를 안켰을 경우
+    if (!bRighter)
+        // 왼손 주먹
+        m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
+
+}
+#pragma endregion
+
+#pragma region 양손 오브젝트
+void CPlayer::Two_Object()
+{
+    // 라이터가 켜져있는 상태로 양손 오브젝트에 들어왔을 경우
+    if (bRighter)
+    {
+        // 왼손 현재 프레임 초기화
+        m_fLeftFrame = 0.f;
+        bRighter = false;       // 라이터 끄기
+    }
+
+    bRighterSwitch = false; // 라이터 스위치 정지
+
+    switch (m_eObjectName)
+    {
+        // 톰슨 기관총
+    case CPlayer::OBJECT_NAME::THOMPSON:
+    {
+        // 오른손 톰슨 기관총 (양손)
+        m_tRightHand_State.Set_State(STATE_RIGHTHAND::THOMPSON);
+        // 왼손 없음
+        m_tLeftHand_State.Set_State(STATE_LEFTHAND::NONE);
+        break;
+    }
+    }
+}
+#pragma endregion
+
+#pragma region 한손 오브젝트
+void CPlayer::Right_Object()
+{
+    // 오른손
+    switch (m_eObjectName)
+    {
+        // 권총
+    case CPlayer::OBJECT_NAME::GUN:
+    {
+        // 오른손 권총 (한손)
+        m_tRightHand_State.Set_State(STATE_RIGHTHAND::GUN);
+        // 왼손 없음
+        m_eLeftState = STATE_LEFTHAND::NONE;
+        // 차징 불가
+        bChargingReady = false;
+        break;
+    }
+    // 쇠파이프
+    case CPlayer::OBJECT_NAME::STEELPIPE:
+    {
+        // 오른손 쇠파이프
+        m_tRightHand_State.Set_State(STATE_RIGHTHAND::STEELPIPE);
+        // 왼손 오픈 핸드
+        m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
+        // 차징 가능
+        bChargingReady = false;
+        break;
+    }
+    // 맥주병
+    case CPlayer::OBJECT_NAME::BEERBOTLE:
+    {
+        // 오른손 맥주병
+        m_tRightHand_State.Set_State(STATE_RIGHTHAND::BEERBOTLE);
+        // 왼손 오픈 핸드
+        m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
+        // 차징 불가
+        bChargingReady = false;
+        break;
+    }
+    // 프라이팬
+    case CPlayer::OBJECT_NAME::FRYINGPAN:
+    {
+        // 오른손 프라이팬
+        m_tRightHand_State.Set_State(STATE_RIGHTHAND::FRYINGPAN);
+        // 왼손 오픈 핸드
+        m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
+        // 차징 가능
+        bChargingReady = false;
+        break;
+    }
+    }
+
+    // 왼손
+    if (!bRighter) // 라이터를 안켰을 경우
+    {
+        switch (m_eLeftState) // 현재 왼손 상태
+        {
+        case CPlayer::STATE_LEFTHAND::NONE: // 왼손 없음
+        {
+            m_tLeftHand_State.Set_State(STATE_LEFTHAND::NONE);
+            break;
+        }
+        case CPlayer::STATE_LEFTHAND::HAND: // 왼손 주먹
+        {
+            m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
+            break;
+        }
+        case CPlayer::STATE_LEFTHAND::OPEN_HAND: // 왼손 오픈 핸드
+        {
+            m_tLeftHand_State.Set_State(STATE_LEFTHAND::OPEN_HAND);
+            break;
+        }
+        }
+    }
+    //else // 라이터를 켰을 경우
+    //{
+    //    // 왼손 라이터
+    //    m_tLeftHand_State.Set_State(STATE_LEFTHAND::RIGHTER);
+    //}
+}
+#pragma endregion
 
 // 손 상태 확인
 void CPlayer::Hand_Check()
 {
-    // 플레이어가 안뛰고있을 때
-    if (m_tPlayer_State.Get_State() != STATE_PLAYER::RUN)
+    // 왼손 오른손 출력 On
+    bLeftHandOn = true;
+    bRightHandOn = true;
+
+    // 플레이어가 안뛰고있는 경우
+    if (m_ePlayerState != STATE_PLAYER::RUN)
     {
-        // 라이터를 안 킨 경우
-        if (!bRighter)
-        {
-            // 왼손  (대부분 NONE으로 바껴야함)
-            switch (m_eObjectType)
-            {
-                case CPlayer::OBJECT_TYPE::NONE:
-                {
-                    m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
-                    break;
-                }
-                case CPlayer::OBJECT_TYPE::GUN:
-                {
-                    m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
-                    break;
-                }
-                case CPlayer::OBJECT_TYPE::THOMPSON:
-                {
-                    m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
-                    break;
-                }
-                case CPlayer::OBJECT_TYPE::STEELPIPE:
-                {
-                    m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
-                    break;
-                }
-            }
-        }
-        else
+        if (bRighter) // 플레이어가 라이터를 킨 경우
         {
             // 왼손 라이터
             m_tLeftHand_State.Set_State(STATE_LEFTHAND::RIGHTER);
         }
-        // 오른손
-        switch (m_eObjectType)
+
+#pragma region 오브젝트 타입 체크
+        if (m_ePlayerState != STATE_PLAYER::KICK) // 플레이어가 발차기를 안한 경우
         {
-            case CPlayer::OBJECT_TYPE::NONE:
+            switch (m_eObjectType)
             {
-                m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND);
-                break;
-            }
-            case CPlayer::OBJECT_TYPE::GUN:
-            {
-                m_tRightHand_State.Set_State(STATE_RIGHTHAND::GUN);
-                break;
-            }
-            case CPlayer::OBJECT_TYPE::THOMPSON:
-            {
-                m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND); //
-                break;
-            }
-            case CPlayer::OBJECT_TYPE::STEELPIPE:
-            {
-                m_tRightHand_State.Set_State(STATE_RIGHTHAND::STEELPIPE);
-                break;
+                case CPlayer::OBJECT_TYPE::TWO_HAND:        // 양손 주먹
+                {
+                    Two_Hand();
+                    break;
+                }
+                case CPlayer::OBJECT_TYPE::TWO_OBJECT:      // 양손 오브젝트 (두손 무기)
+                {
+                    Two_Object();
+                    break;
+                }
+                case CPlayer::OBJECT_TYPE::RIGHT_OBJECT:    // 한손 오브젝트 (한손 무기)
+                {
+                    Right_Object();
+                    break;
+                }
             }
         }
+        else if (m_ePlayerState == STATE_PLAYER::KICK) // 플레이어가 발차기를 한 경우
+        {
+            m_tLeftHand_State.Set_State(STATE_LEFTHAND::NONE); // 왼손Off
+            m_tRightHand_State.Set_State(STATE_RIGHTHAND::KICK); // 오른손 발차기
+        }
+#pragma endregion
     }
-    // 플레이어가 뛰고 있는 경우
-    else if (m_tPlayer_State.Get_State() == STATE_PLAYER::RUN)
+#pragma region 플레이어가 뛰고 있는 경우
+    else if (m_ePlayerState == STATE_PLAYER::RUN)
     {
         // 라이터를 켠 채로 뛰는 경우
         if (bRighter)
         {
-            // 왼손 라이터
+            // 왼손 라이터 달리기
             m_tLeftHand_State.Set_State(STATE_LEFTHAND::RUN_RIHGTER);
-            // 오른손 주먹
+            // 오른손 맨손 달리기
             m_tRightHand_State.Set_State(STATE_RIGHTHAND::RUN_HAND);
         }
         // 라이터를 키지 않은 경우
         else
         {
-            // 양손 다 주먹
+            // 양손 다 맨손 달리기
             m_tLeftHand_State.Set_State(STATE_LEFTHAND::RUN_HAND);
             m_tRightHand_State.Set_State(STATE_RIGHTHAND::RUN_HAND);
         }
-        
     }
+#pragma endregion
+
 }
 
 void CPlayer::State_Update(float fTimeDelta)
-{ 
+{
     // 플레이어가 살아있을 때
     if (!bDead)
     {
         // 플레이어의 상태
         m_tPlayer_State.Get_StateFunc()(this, fTimeDelta);
 
+        // 플레이어 손 상태 체크
         Hand_Check();
 
         // 플레이어의 왼손 상태
@@ -562,7 +814,7 @@ void CPlayer::Idle(float fTimeDelta)
 
     if (m_tPlayer_State.Can_Update())
     {
-        
+
     }
 
     if (m_tPlayer_State.IsState_Exit())
@@ -643,6 +895,24 @@ void CPlayer::Attack(float fTimeDelta)
     }
 }
 
+void CPlayer::Kick(float fTimeDelta)
+{
+    if (m_tPlayer_State.IsState_Entered())
+    {
+
+    }
+
+    if (m_tPlayer_State.Can_Update())
+    {
+
+    }
+
+    if (m_tPlayer_State.IsState_Exit())
+    {
+
+    }
+}
+
 void CPlayer::Die(float fTimeDelta)
 {
     if (m_tPlayer_State.IsState_Entered())
@@ -665,11 +935,40 @@ void CPlayer::Die(float fTimeDelta)
 
 #pragma region 플레이어의 왼손 상태
 
+void CPlayer::Left_None(float fTimeDelta)
+{
+    if (m_tLeftHand_State.IsState_Entered())
+    {
+        // 왼손 출력 Off
+        bLeftHandOn = false;
+        // 왼손 현재 프레임 초기화
+        //m_fLeftFrame = 0.f;
+    }
+
+    if (m_tLeftHand_State.Can_Update())
+    {
+
+    }
+
+    if (m_tLeftHand_State.IsState_Exit())
+    {
+
+    }
+
+}
+
 void CPlayer::Left_Hand(float fTimeDelta)
 {
     if (m_tLeftHand_State.IsState_Entered())
     {
-        m_pLeftHandComp = m_pLeftHandTextureComp;
+        // 기본 왼손 출력
+        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Left_Hand");
+        m_fLeftMaxFrame = 2.f;  // 최대 프레임 설정
+        bRighter = false;       // 라이터 Off
+
+        // 주먹 작업 진행중
+        //bLeftFrameOn = false;   // 왼손 프레임 Off
+        //bLeftHandFist = true;   // 왼손 주먹상태On
     }
 
     if (m_tLeftHand_State.Can_Update())
@@ -683,11 +982,12 @@ void CPlayer::Left_Hand(float fTimeDelta)
     }
 }
 
-void CPlayer::Left_Gun(float fTimeDelta)
+// 왼손 달리기 라이터.ver
+void CPlayer::Left_RunRighter(float fTimeDelta)
 {
     if (m_tLeftHand_State.IsState_Entered())
     {
-
+        // 라이터On (최대프레임) 그대로, 툴로 위 아래 움직이게 만들어주기
     }
 
     if (m_tLeftHand_State.Can_Update())
@@ -701,11 +1001,13 @@ void CPlayer::Left_Gun(float fTimeDelta)
     }
 }
 
-void CPlayer::Left_Thompson(float fTimeDelta)
+// 한손 오브젝트일때 왼손 오픈 핸드
+void CPlayer::Left_OpenHand(float fTimeDelta)
 {
     if (m_tLeftHand_State.IsState_Entered())
     {
-
+        // 왼손 오픈 핸드로 변경
+        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Single", L"OpenHand");
     }
 
     if (m_tLeftHand_State.Can_Update())
@@ -719,11 +1021,12 @@ void CPlayer::Left_Thompson(float fTimeDelta)
     }
 }
 
-void CPlayer::Left_Steelpipe(float fTimeDelta)
+void CPlayer::Left_RunHand(float fTimeDelta)
 {
     if (m_tLeftHand_State.IsState_Entered())
     {
-        // 손 없음
+        // 왼손 뛰는 손으로 변경
+        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Single", L"Left_RunHand");
     }
 
     if (m_tLeftHand_State.Can_Update())
@@ -742,18 +1045,24 @@ void CPlayer::Left_Righter(float fTimeDelta)
     if (m_tLeftHand_State.IsState_Entered())
     {
         // 왼손을 라이터로 변경
-        m_pLeftHandComp = m_pLeftZippoTextureComp;
-        m_fMaxFrame = 6.f; // 최대 프레임 지정
+        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Righter");
+        m_fLeftMaxFrame = 6.f; // 최대 프레임 지정
     }
 
     if (m_tLeftHand_State.Can_Update())
     {
         // 현재 프레임이 최대 프레임보다 크거나 같을 경우(애니메이션을 다 돌았을 때)
-        if (m_fLeftFrame >= m_fMaxFrame)
+        if (m_fLeftFrame >= m_fLeftMaxFrame)
         {
             // 프레임 재생 Off
             bLeftFrameOn = false;
-            m_fLeftFrame = m_fMaxFrame - 1.f; //이거 안됨
+            m_fLeftFrame = m_fLeftMaxFrame - 1.f; //이거 안됨
+        }
+
+        if (!bRighter)
+        {
+            // 왼손 주먹
+            m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
         }
     }
 
@@ -767,17 +1076,62 @@ void CPlayer::Left_Righter(float fTimeDelta)
 
 #pragma region 플레이어의 오른손 상태
 
-void CPlayer::Right_Hand(float fTimeDelta)
+void CPlayer::Right_None(float fTimeDelta)
 {
     if (m_tRightHand_State.IsState_Entered())
     {
-        // 오른손 Hand로
-        m_pRightHandComp = m_pRightHandTextureComp;
+        // 오른손 출력 Off
+        bRightHandOn = false;
+        // 오른손 현재 프레임 초기화
+        m_fRightFrame = 0.f;
     }
 
     if (m_tRightHand_State.Can_Update())
     {
-        
+
+    }
+
+    if (m_tRightHand_State.IsState_Exit())
+    {
+
+    }
+}
+
+void CPlayer::Right_Hand(float fTimeDelta)
+{
+    if (m_tRightHand_State.IsState_Entered())
+    {
+        // 기본 오른손 출력
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Right_Hand");
+        m_fRightMaxFrame = 2.f; // 최대 프레임 설정
+
+        // 주먹 작업 진행중
+        //bRightFrameOn = false;   // 오른손 프레임 Off
+        //bRightHandFist = true;  // 오른손 주먹상태On
+    }
+
+    if (m_tRightHand_State.Can_Update())
+    {
+
+    }
+
+    if (m_tRightHand_State.IsState_Exit())
+    {
+
+    }
+}
+
+void CPlayer::Right_RunHand(float fTimeDelta)
+{
+    if (m_tRightHand_State.IsState_Entered())
+    {
+        // 왼손 뛰는 손으로 변경
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Single", L"Right_RunHand");
+    }
+
+    if (m_tRightHand_State.Can_Update())
+    {
+
     }
 
     if (m_tRightHand_State.IsState_Exit())
@@ -790,8 +1144,15 @@ void CPlayer::Right_Gun(float fTimeDelta)
 {
     if (m_tRightHand_State.IsState_Entered())
     {
+        // 오른손 총
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Gun");
+        m_fRightMaxFrame = 5.f; // 최대 프레임 지정
+    }
+
+    if (m_tRightHand_State.Can_Update())
+    {
         // 현재 프레임이 최대 프레임보다 크거나 같을 경우(애니메이션을 다 돌았을 때)
-        if (m_fRightFrame >= m_fMaxFrame)
+        if (m_fRightFrame >= m_fRightMaxFrame)
         {
             // 총 회전 Off
             bSpinOn = false;
@@ -800,21 +1161,16 @@ void CPlayer::Right_Gun(float fTimeDelta)
         if (!bSpinOn)
         {
             // 오른손 총
-            m_pRightHandComp = m_pAttackTextureComp;
-            m_fMaxFrame = 3.f; // 최대 프레임 지정
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Gun");
+            m_fRightMaxFrame = 3.f; // 최대 프레임 지정
         }
         // 총 회전이 켜져있을 경우
         if (bSpinOn)
         {
             // 오른손 총 회전
-            m_pRightHandComp = m_pAttackSpinTextureComp;
-            m_fMaxFrame = 4.f; // 최대 프레임 지정
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Gun_Spin");
+            m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         }
-    }
-
-    if (m_tRightHand_State.Can_Update())
-    {
-
     }
 
     if (m_tRightHand_State.IsState_Exit())
@@ -827,7 +1183,9 @@ void CPlayer::Right_Thompson(float fTimeDelta)
 {
     if (m_tRightHand_State.IsState_Entered())
     {
-
+        // 오른손 톰슨 기관총
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Thompson");
+        m_fRightMaxFrame = 4.f; // 최대 프레임 지정
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -845,7 +1203,69 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
 {
     if (m_tRightHand_State.IsState_Entered())
     {
-        m_pRightHandComp = m_pRightSteelPipeTextureComp;
+        // 오른손 쇠파이프
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Steel_Pipe");
+        m_fRightMaxFrame = 4.f; // 최대 프레임 지정
+    }
+
+    if (m_tRightHand_State.Can_Update())
+    {
+
+    }
+
+    if (m_tRightHand_State.IsState_Exit())
+    {
+
+    }
+}
+
+void CPlayer::Right_BeerBotle(float fTimeDelta)
+{
+    if (m_tRightHand_State.IsState_Entered())
+    {
+        // 오른손 맥주병
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"BeerBottle");
+        m_fRightMaxFrame = 5.f; // 최대 프레임 지정
+    }
+
+    if (m_tRightHand_State.Can_Update())
+    {
+
+    }
+
+    if (m_tRightHand_State.IsState_Exit())
+    {
+
+    }
+}
+
+void CPlayer::Right_FryingPan(float fTimeDelta)
+{
+    if (m_tRightHand_State.IsState_Entered())
+    {
+        // 오른손 프라이팬
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"FryingPan");
+        m_fRightMaxFrame = 5.f; // 최대 프레임 지정
+    }
+
+    if (m_tRightHand_State.Can_Update())
+    {
+
+    }
+
+    if (m_tRightHand_State.IsState_Exit())
+    {
+
+    }
+}
+
+void CPlayer::Right_Kick(float fTimeDelta)
+{
+    if (m_tRightHand_State.IsState_Entered())
+    {
+        // 오른손 발차기
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Kick");
+        m_fRightMaxFrame = 4.f; // 최대 프레임 지정
     }
 
     if (m_tRightHand_State.Can_Update())

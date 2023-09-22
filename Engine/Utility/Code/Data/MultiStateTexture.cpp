@@ -48,14 +48,14 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 		return E_FAIL;
 
 	// 파일 존재여부 확인, 특히 사이즈에 해당하는 카운트 값이 존재하는지 확인, 잘못된 경로가 있다면 오류 반환
-	{
-		TCHAR	szFileName[256] = L"";
-		wsprintf(szFileName, pFilePath, iCntRange.second);
+	//{
+	//	TCHAR	szFileName[256] = L"";
+	//	wsprintf(szFileName, pFilePath, iCntRange.second);
 
-		wifstream file(szFileName);
-		FALSE_CHECK_RETURN(file.good(), E_FAIL);
-		
-	}
+	//	wifstream file(szFileName);
+	//	FALSE_CHECK_RETURN(file.good(), E_FAIL);
+	//	
+	//}
 	
 
 	LPDIRECT3DBASETEXTURE9 pTexture = nullptr;
@@ -107,6 +107,9 @@ void CMultiStateTexture::Transfer_Texture(vector<LPDIRECT3DBASETEXTURE9>* pVecTe
 	if (iter == m_mapMultiState.end())
 		return;
 
-	pVecTexture->reserve(m_mapMultiState[pStateKey].size());
-	(*pVecTexture) = m_mapMultiState[pStateKey];
+	if (m_mapMultiState[pStateKey].size() > pVecTexture->size())
+	{
+		pVecTexture->reserve(m_mapMultiState[pStateKey].size());
+	}
+		(*pVecTexture) = m_mapMultiState[pStateKey];
 }
