@@ -14,17 +14,16 @@ private:
 	virtual ~CTextureComponent();
 
 public:
-	static CTextureComponent* Create(LPDIRECT3DDEVICE9 pGraphicDev,
-										TEXTUREID eType,
-										_tchar* pPath,
-										const _uint& iCnt = 1);
+	static CTextureComponent* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
+										TEXTUREID eID, 
+										const _tchar* pTextureKey, const _tchar* pStateKey = L"");
 	virtual CComponent* Clone();
 
 private:
 	virtual void			Free();
 
 public:
-	HRESULT		Ready_Texture(TEXTUREID eType, const _tchar* pPath, const _uint& iCnt);
+	HRESULT		Ready_Texture(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey = L"");
 	void		Render_Texture(const _uint& iIndex = 0);
 	HRESULT		Receive_Texture(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey = L"");
 

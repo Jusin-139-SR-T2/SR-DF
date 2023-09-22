@@ -29,11 +29,11 @@ CTextureComponent::~CTextureComponent()
 {
 }
 
-CTextureComponent* CTextureComponent::Create(LPDIRECT3DDEVICE9 pGraphicDev, TEXTUREID eType, _tchar* pPath, const _uint& iCnt)
+CTextureComponent* CTextureComponent::Create(LPDIRECT3DDEVICE9 pGraphicDev, TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Texture(eType, pPath, iCnt)))
+	if (FAILED(pInstance->Ready_Texture(eID, pTextureKey, pStateKey)))
 	{
 		Safe_Release(pInstance);
 		MSG_BOX("Texture Create Failed");
@@ -56,32 +56,9 @@ void CTextureComponent::Free()
 		Safe_Release(m_vecTexture[i]);
 }
 
-HRESULT CTextureComponent::Ready_Texture(TEXTUREID eType, const _tchar* pPath, const _uint& iCnt)
+HRESULT CTextureComponent::Ready_Texture(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey)
 {
-	m_vecTexture.reserve(iCnt);
-
-	IDirect3DBaseTexture9* pTexture = nullptr;
-	
-	for (_uint i = 0; i < iCnt; ++i)
-	{
-		TCHAR	szFileName[256] = L"";
-		wsprintf(szFileName, pPath, i);
-
-		switch (eType)
-		{
-		case TEX_NORMAL:
-			FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szFileName, (LPDIRECT3DTEXTURE9*)&pTexture), E_FAIL);
-			break;
-
-		case TEX_CUBE:
-			FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szFileName, (LPDIRECT3DCUBETEXTURE9*)&pTexture), E_FAIL);
-			break;
-		}
-
-		m_vecTexture.push_back(pTexture);
-	}
-
-	return S_OK;
+	return Receive_Texture(eID, pTextureKey, pStateKey);
 }
 
 void CTextureComponent::Render_Texture(const _uint& iIndex)
