@@ -1,0 +1,34 @@
+diff a/Client/Code/Monster.cpp b/Client/Code/Monster.cpp	(rejected hunks)
+@@ -370,8 +370,32 @@
+                 m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
+             }
+         }
++    }
++
++    if (m_tState_Obj.IsState_Exit())
++    {
+ 
+     }
++}
++
++
++void CMonster::AI_Run(float fDeltaTime)
++{
++    if (m_tState_Obj.IsState_Entered())
++    {
++        m_fFrameEnd = 20;
++        m_fFrameSpeed = 10.f;
++        m_pTransformComp->m_vScale.x = 0.5f;
++        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"RunSouth");
++    }
++    if (m_tState_Obj.Can_Update())
++    {
++        if (m_fRunDistance >= Monster_Capture()) // 전체 사거리 = m_fMonsterSightDistance = 12.f
++        {
++            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
++            //행동 추가 
++        }
++    }
+ 
+     if (m_tState_Obj.IsState_Exit())
+     {

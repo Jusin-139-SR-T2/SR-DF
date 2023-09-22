@@ -53,15 +53,12 @@ HRESULT CLoading::Ready_Loading(LOADINGID eID)
 _uint CLoading::Loading_For_Stage()
 {
 	Loading_For_Texture();
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TriColBufferComp", CTriColorComp::Create(m_pGraphicDev)), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MeshColBufferComp", CMeshColComp::Create(m_pGraphicDev)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TriColBufferComp", CTriColorComp::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeBufferComp", CCubeBufferComp::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CalculatorComp", CCalculatorComponent::Create(m_pGraphicDev)), E_FAIL);
-
-	//몬스터 - 기본설정
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MonsterTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Brown_Single", L"Stand_South")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainBufferComp", CTerrainBufferComp::Create(m_pGraphicDev, L"./Resource/Texture/Terrain/Height.bmp", VTXCNTX, VTXCNTZ, VTXITV)), E_FAIL);
 
 	// 콜라이더
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SphereColComp", CSphereColComp::Create(m_pGraphicDev)), E_FAIL);
@@ -74,6 +71,9 @@ _uint CLoading::Loading_For_Stage()
 	// 플레이어 손
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerLeftTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Player_Single", L"Left_RunHand")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerRightTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Player_Single", L"Right_RunHand")), E_FAIL);
+
+	// 몬스터
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MonsterTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Brown_Single", L"Stand_South")), E_FAIL);
 	
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 
@@ -132,43 +132,6 @@ HRESULT CLoading::Loading_For_Texture()
 	// 발차기
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/PlayerKick_%d.png", TEX_NORMAL, L"Player_Multi", L"Kick", _range<_uint>(0U, 3U)), E_FAIL);
 #pragma endregion
-	
-	//// 왼손
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/LeftHand%d.png", TEX_NORMAL, L"Player1", L"Left_Hand", _range<_uint>(0U, 1U)), E_FAIL);
-	//// 오른손
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightHand%d.png", TEX_NORMAL, L"Player2", L"Right_Hand", _range<_uint>(0U, 1U)), E_FAIL);
-	//// 왼손 달리기
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/LeftRunHand.png", TEX_NORMAL, L"Player3", L"Left_RunHand"), E_FAIL);
-	//// 오른손 달리기
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightRunHand.png", TEX_NORMAL, L"Player4", L"Right_RunHand"), E_FAIL);
-	//// 왼손 방어
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/LeftBlockHand.png", TEX_NORMAL, L"Player5", L"Left_BlockHand"), E_FAIL);
-	//// 오른손 방어
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightBlockHand.png", TEX_NORMAL, L"Player6", L"Right_BlockHand"), E_FAIL);
-	//// 오픈 핸드 [오른손이 무언가를 할 때 아무것도 아닌상태] (왼손)
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/OpenHand.png", TEX_NORMAL, L"Player7", L"OpenHand"), E_FAIL);
-	//// 주먹 차징 (오른손)
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightHand_Charging%d.png", TEX_NORMAL, L"Player8", L"Charging", _range<_uint>(0U, 1U)), E_FAIL);
-	//// 쇠파이프
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Steel_Pipe%d.png", TEX_NORMAL, L"Player9", L"Steel_Pipe", _range<_uint>(0U, 2U)), E_FAIL);
-	//// 쇠파이프 차징
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Steel_Pipe_Charging%d.png", TEX_NORMAL, L"Player10", L"Steel_Pipe_Charging", _range<_uint>(0U, 4U)), E_FAIL);
-	//// 프라이팬
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/FryingPan%d.png", TEX_NORMAL, L"Player11", L"FryingPan", _range<_uint>(0U, 4U)), E_FAIL);
-	//// 프라이팬 차징
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/FryingPan_Charging%d.png", TEX_NORMAL, L"Player12", L"FryingPan", _range<_uint>(0U, 3U)), E_FAIL);
-	//// 라이터
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Zippo_%d.png", TEX_NORMAL, L"Player13", L"Righter", _range<_uint>(0U, 5U)), E_FAIL);
-	//// 플레이어 총
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Gun%d.png", TEX_NORMAL, L"Player14", L"Gun", _range<_uint>(0U, 2U)), E_FAIL);
-	//// 플레이어 총 회전
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Spin%d.png", TEX_NORMAL, L"Player15", L"Gun_Spin", _range<_uint>(0U, 3U)), E_FAIL);
-	//// 플레이어 톰슨 기관총
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Thompson%d.png", TEX_NORMAL, L"Player16", L"Thompson", _range<_uint>(0U, 3U)), E_FAIL);
-	//// 맥주병
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/BeerBottle%d.png", TEX_NORMAL, L"Player17", L"BeerBottle", _range<_uint>(0U, 4U)), E_FAIL);
-	//// 발차기
-	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/PlayerKick_%d.png", TEX_NORMAL, L"Player18", L"Kick", _range<_uint>(0U, 3U)), E_FAIL);
 	
 	// Monster Texture - Single
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/Stand/Stand_South.png", TEX_NORMAL, L"Brown_Single", L"Stand_South"), E_FAIL);
