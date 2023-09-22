@@ -22,7 +22,7 @@ void CTextureMgr::Free()
 {
 	for (auto item : m_mapTexture)
 	{
-		item.second->Free();
+		Safe_Release(item.second);
 	}
 }
 
