@@ -113,7 +113,7 @@ HRESULT CLoading::Loading_For_Texture()
 	// ÁÖ¸Ô Â÷Â¡ (¿À¸¥¼Õ)
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightHand_Charging%d.png", TEX_NORMAL, L"Player_Multi", L"Charging", _range<_uint>(0U, 1U)), E_FAIL);
 	// ¼èÆÄÀÌÇÁ
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Steel_Pipe%d.png", TEX_NORMAL, L"Player_Multi", L"Steel_Pipe", _range<_uint>(0U, 3U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Steel_Pipe%d.png", TEX_NORMAL, L"Player_Multi", L"Steel_Pipe", _range<_uint>(0U, 4U)), E_FAIL);
 	// ¼èÆÄÀÌÇÁ Â÷Â¡
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Steel_Pipe_Charging%d.png", TEX_NORMAL, L"Player_Multi", L"Steel_Pipe_Charging", _range<_uint>(0U, 4U)), E_FAIL);
 	// ÇÁ¶óÀÌÆÒ
