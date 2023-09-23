@@ -105,9 +105,6 @@
     <ClInclude Include="Header\SkyBox.h">
       <Filter>02. GameObject\04. SkyBox</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Monster.h">
-      <Filter>02. GameObject\01. Unit\2. Monster</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Player.h">
       <Filter>02. GameObject\01. Unit\1. Player</Filter>
     </ClInclude>
@@ -122,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="Header\UI.h">
       <Filter>01. Scene\03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Monster.h">
+      <Filter>02. GameObject\01. Unit\2. Monster\1. Brown</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -158,9 +158,6 @@
     <ClCompile Include="Code\SkyBox.cpp">
       <Filter>02. GameObject\04. SkyBox</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Monster.cpp">
-      <Filter>02. GameObject\01. Unit\2. Monster</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Player.cpp">
       <Filter>02. GameObject\01. Unit\1. Player</Filter>
     </ClCompile>
@@ -175,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="Code\UI.cpp">
       <Filter>01. Scene\03. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Monster.cpp">
+      <Filter>02. GameObject\01. Unit\2. Monster\1. Brown</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
