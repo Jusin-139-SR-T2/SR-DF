@@ -18,12 +18,12 @@ CBrown::~CBrown()
 
 HRESULT CBrown::Ready_GameObject()
 {
-    srand(_ulong(time(NULL)));
+    srand((_uint)time(NULL));
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
     
     m_pTransformComp->m_vScale.x = 0.4f;
-    m_pTransformComp->m_vInfo[INFO_POS] = { 5.f, 10.f, 25.f };
+    m_pTransformComp->m_vInfo[INFO_POS] = { 5.f, 1.f, 25.f };
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
 
@@ -41,7 +41,7 @@ HRESULT CBrown::Ready_GameObject()
     m_tState_Obj.Add_Func(STATE_OBJ::RUN, &CBrown::AI_Run);
     m_tState_Obj.Add_Func(STATE_OBJ::WALK, &CBrown::AI_Walk);
     m_tState_Obj.Add_Func(STATE_OBJ::INCHFORWARD, &CBrown::AI_InchForward);
-    m_tState_Obj.Add_Func(STATE_OBJ::STRAFYING, &CBrown::AI_Strafing);
+    m_tState_Obj.Add_Func(STATE_OBJ::STRAFING, &CBrown::AI_Strafing);
     m_tState_Obj.Add_Func(STATE_OBJ::BASICATTACK, &CBrown::AI_BasicAttack);
     m_tState_Obj.Add_Func(STATE_OBJ::HEAVYATTACK, &CBrown::AI_HeavyAttack);
 
@@ -52,24 +52,14 @@ HRESULT CBrown::Ready_GameObject()
     // STATE가 ::A 일때 CBrown클래스의 ::B 함수를 수행하는 상태머신 
     m_tState_Act.Add_Func(STATE_ACT::IDLE, &CBrown::Idle);
     m_tState_Act.Add_Func(STATE_ACT::APPROACH, &CBrown::Approach);
+    m_tState_Act.Add_Func(STATE_ACT::MOVING, &CBrown::Moving);
     
-    //m_tState_Act.Add_Func(STATE_ACT::WALK, &CBrown::Walk);
-    //m_tState_Act.Add_Func(STATE_ACT::RUN, &CBrown::Run);
-    //m_tState_Act.Add_Func(STATE_ACT::INCH, &CBrown::Inch);
-    //m_tState_Act.Add_Func(STATE_ACT::JUMP, &CBrown::Jump);
-
-    //m_tState_Act.Add_Func(STATE_ACT::PRE_ATTACK, &CBrown::Prepare_Atk);
-    //m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CBrown::Attack);
-    //m_tState_Act.Add_Func(STATE_ACT::HEAVY, &CBrown::Heavy_Attack);
-    //m_tState_Act.Add_Func(STATE_ACT::PARRYING, &CBrown::Parrying);
-    //m_tState_Act.Add_Func(STATE_ACT::FALLING, &CBrown::Falling);
-    //m_tState_Act.Add_Func(STATE_ACT::DEAD, &CBrown::Dead);
 #pragma endregion
 
 #pragma region 액션 키 등록
     m_mapActionKey.Add_Action(ACTION_KEY::RUN); // 멀때 
     m_mapActionKey.Add_Action(ACTION_KEY::WALK); //중간
-    m_mapActionKey.Add_Action(ACTION_KEY::INCH); //가까울때
+    m_mapActionKey.Add_Action(ACTION_KEY::INCHFORWARD); //가까울때
     m_mapActionKey.Add_Action(ACTION_KEY::STRAFING); // 가까울때
 
     m_mapActionKey.Add_Action(ACTION_KEY::JUMP); // y축에 차이가 있을때 
@@ -86,6 +76,11 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
+    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
+
+    Height_On_Terrain(); // 지형타기 
+    
     m_fFrame += m_fFrameSpeed * fTimeDelta;
 
     if (m_fFrame > m_fFrameEnd)
@@ -96,18 +91,27 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
           || STATE_OBJ::RUN == m_tState_Obj.Get_State()
           || STATE_OBJ::WALK == m_tState_Obj.Get_State()
           || STATE_OBJ::INCHFORWARD == m_tState_Obj.Get_State()
-          || STATE_OBJ::STRAFYING == m_tState_Obj.Get_State()
+          || STATE_OBJ::STRAFING == m_tState_Obj.Get_State()
           || STATE_OBJ::BASICATTACK == m_tState_Obj.Get_State()
           || STATE_OBJ::HEAVYATTACK == m_tState_Obj.Get_State() )
             m_fCheck += 1;
     }
 
+    // ---------- 테스트 빌드 ----------------------
+    
+    if (Engine::IsKey_Pressing(DIK_H))
+    {
+        Moving(fTimeDelta);
+    }
+
+    // ---------- 테스트 빌드 ----------------------
+    
+    
     //상태머신
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
     m_mapActionKey.Update();	// 액션키 초기화
 
-    Height_On_Terrain(); // 지형타기 
 
     Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -192,29 +196,17 @@ _bool CBrown::Monster_Capture() // 몬스터 시야내 플레이어 있는지 체크하는 함수
 
 float CBrown::m_fDistance()
 {
-    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
     _vec3 vPlayerPos, vMonsterPos, vPlayerLook, vMonsterLook;
 
-    // 플레이어의 위치
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-    // 몬스터 위치
-    m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos);
+   m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos);
 
-    // 둘사이 벡터 
     _vec3    vDistance = (vPlayerPos - vMonsterPos);
 
-    // 둘사이 길이 
     float fDistance = D3DXVec3Length(&vDistance);
     
     return fDistance;
-}
-
-HRESULT CBrown::Chase_Player(const _float& fTimeDelta, _float fSpeed)
-{ 
-
-
-    return S_OK;
 }
 
 void CBrown::Free()
@@ -226,7 +218,7 @@ void CBrown::Height_On_Terrain()
 {
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
-
+                
     CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
     NULL_CHECK(pTerrainBufferComp);
 
@@ -269,7 +261,7 @@ void CBrown::AI_Suspicious(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        if (Monster_Capture()) // 시야각 이내에 위치 + 시야거리 이내 위치 
+        if(Monster_Capture()) // 시야각 이내에 위치 + 시야거리 이내 위치 
         {
             m_fAwareness += fDeltaTime * 3.f;
 
@@ -293,7 +285,7 @@ void CBrown::AI_Suspicious(float fDeltaTime)
                 m_tState_Obj.Set_State(STATE_OBJ::IDLE);
             }
         }
-    }
+    };
 
     if (m_tState_Obj.IsState_Exit())
     {
@@ -312,14 +304,11 @@ void CBrown::AI_Taunt(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        if (3 == m_fCheck)
+        if (2 == m_fCheck) // 도발 두번 하고 따라가기 
         {
-            m_fCheck = 0;
+            m_fCheck = 0; //다른데도 쓰니까 0으로 되돌리기 
             m_tState_Obj.Set_State(STATE_OBJ::CHASE); // AI = 추격모드
-           // m_tState_Act.Set_State(STATE_ACT::CHASE); // 행동 = 추격행동 - 플레이어 따라다님 
         }
-        // 플레이어쪽으로 돌아봐야함 
-
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -334,9 +323,9 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
         m_fFrameSpeed = 10.f; //원상복귀 
         m_pTransformComp->m_vScale.x = 0.4f;
     }
-    if (m_tState_Obj.Can_Update()) // 시야범위 7 
+    if (m_tState_Obj.Can_Update())
     {
-        if (Monster_Capture()) // 전체 사거리 = m_fMonsterSightDistance = 12.f
+        if (Monster_Capture()) // 사거리에 포착되는경우 
         {
             // 뛰어서 다가옴 : a > 8
             if (m_fRunDistance < m_fDistance())
@@ -351,13 +340,13 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
             // 무빙 : 4 < a <= 7
             else if (m_fInchDistance < m_fDistance() && m_fWalkDistance >= m_fDistance())
             {
-                int iCombo = rand() % 2; // 0 or 1
+                int iCombo = (rand() % 10) + 1; // 0 or 1
 
-                if (1 == iCombo)
+                if (6 <= iCombo)
                     m_tState_Obj.Set_State(STATE_OBJ::INCHFORWARD);
 
-                if (2 == iCombo)
-                    m_tState_Obj.Set_State(STATE_OBJ::STRAFYING);
+                if (6 > iCombo)
+                    m_tState_Obj.Set_State(STATE_OBJ::STRAFING);
             }
             // 공격함
             else
@@ -406,7 +395,7 @@ void CBrown::AI_Run(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::RUN].Act();
 
-        if (1 == m_fCheck && m_fRunDistance >= Monster_Capture()) // 한번 프레임 돌면 
+        if (1 == m_fCheck) // 한번 프레임 돌면 
         {
             m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
@@ -430,12 +419,12 @@ void CBrown::AI_Walk(float fDeltaTime)
     }
     if (m_tState_Obj.Can_Update())
     {
-        //행동이 IDLE일때 WALK 가상키 누르기 
+        //행동이 IDLE일때 WALK 가상키 누르기 - 다가오기 
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::WALK].Act();
 
-            // 행동 추가 
-        if (1 == m_fCheck && m_fWalkDistance >= Monster_Capture())
+        // 행동 추가 
+        if (1 == m_fCheck)
         {
             m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
@@ -459,11 +448,13 @@ void CBrown::AI_InchForward(float fDeltaTime)
     }
     if (m_tState_Obj.Can_Update())
     {
-        // 행동 추가 
+        //행동이 IDLE일때 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::INCHFORWARD].Act();
 
-        if (1 == m_fCheck) // 한번 프레임 돌면 
+        if (1 == m_fCheck ) // 한번 프레임 돌면 
         {
-            m_fCheck = 0; 
+            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
@@ -485,9 +476,11 @@ void CBrown::AI_Strafing(float fDeltaTime)
     }
     if (m_tState_Obj.Can_Update())
     {     
-        // 행동 추가 
+        //행동이 IDLE일때 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::STRAFING].Act();
 
-        if (1 == m_fCheck) // 한번 프레임 돌면 
+        if (1 == m_fCheck ) // 한번 프레임 돌면 
         {
             m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
@@ -508,9 +501,13 @@ void CBrown::AI_BasicAttack(float fDeltaTime)
         m_fFrameSpeed = 10.f;
         m_pTransformComp->m_vScale.x = 0.5f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"BasicAttack");
+        //m_pTextureComp->
     }
     if (m_tState_Obj.Can_Update())
     {
+        //행동
+
+        // 간격재기
         if (1 == m_fCheck)
         {
             m_fCheck = 0;
@@ -561,6 +558,15 @@ void CBrown::Idle(float fDeltaTime)
 
         if (m_mapActionKey[ACTION_KEY::WALK].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::APPROACH);
+
+
+        if (m_mapActionKey[ACTION_KEY::INCHFORWARD].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::MOVING);
+
+
+        if (m_mapActionKey[ACTION_KEY::STRAFING].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::MOVING);
+
     }
 
     if (m_tState_Act.IsState_Exit()) // 가끔 필요할때가 있어서 - 찾아보기 
@@ -579,224 +585,76 @@ void CBrown::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
     {
         if (STATE_OBJ::RUN == m_tState_Obj.Get_State())
         {
-            // 플레이어 위치 가져옴 
-            m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-            //NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
+            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-            //내위치 
-            m_pTransformComp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Monster", L"Com_Transform"));
-           // NULL_CHECK_RETURN(m_pTransformComp, -1);
-
-            _vec3	vPlayerPos, vMonsterPos, vDir;
-
-            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos); //플레이어 위치 
-            m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos); //플레이어 위치 
-
-            vDir = vPlayerPos - vMonsterPos;
-
+            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
-
-            m_tState_Act.Set_State(STATE_ACT::IDLE);
-        }
-        if (STATE_OBJ::WALK == m_tState_Obj.Get_State())
-        {
-           /* Chase_Player(fDeltaTime, m_fWalkSpeed);*/
-                // 플레이어 위치 가져옴 
-            m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-            //NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
-
-            //내위치 
-            m_pTransformComp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Monster", L"Com_Transform"));
-            //NULL_CHECK_RETURN(m_pTransformComp, -1);
-
-            _vec3	vPlayerPos, vMonsterPos, vDir;
-
-            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos); //플레이어 위치 
-            m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos); //플레이어 위치 
-
-            vDir = vPlayerPos - vMonsterPos;
-
-            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fWalkSpeed);
             
-            m_tState_Act.Set_State(STATE_ACT::IDLE);
         }
-    }
 
+        if (STATE_OBJ::WALK == m_tState_Obj.Get_State())
+        { 
+            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+
+            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fWalkSpeed);
+    
+        }
+
+        m_tState_Act.Set_State(STATE_ACT::IDLE);
+    }
     // 조건
     {
-
     }
 
     if (m_tState_Act.IsState_Exit())
     {
     }
 }
-/*
-void CBrown::Walk(float fDeltaTime)
+void CBrown::Moving(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-
-    ;
     }
 
     // 실행
     {
+        if (STATE_OBJ::INCHFORWARD == m_tState_Obj.Get_State())
+        {
+            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
+            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
 
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fInchSpeed);
+
+        }
+
+        if (STATE_OBJ::STRAFING == m_tState_Obj.Get_State())
+        {
+            _vec3 vRight = { 2 , 0 , 0 };
+            _vec3 vLeft = { -2, 0, 0 };
+
+            int Direct = rand() % 6 + 1; // 0 or 1
+
+            if( 3 < Direct)
+            m_pTransformComp->Move_Pos(&vRight, fDeltaTime, m_fStrafingSpeed);
+
+            if( 3 >= Direct)
+            m_pTransformComp->Move_Pos(&vLeft, fDeltaTime, m_fStrafingSpeed);
+
+        }
+
+        m_tState_Act.Set_State(STATE_ACT::IDLE);
     }
 
     // 조건
     {
-      
-    }
-
-    if (m_tState_Act.IsState_Exit())
-    {
-
-    }
-}
-
-void CBrown::Inch(float fDeltaTime)
-{
-    if (m_tState_Act.IsState_Entered())
-    {
-
-    }
-
-    if (m_tState_Obj.Can_Update())
-    {
 
     }
 
     if (m_tState_Act.IsState_Exit())
     {
-
     }
 }
-
-void CBrown::Jump(float fDeltaTime)
-{
-    if (m_tState_Act.IsState_Entered())
-    {
-
-    }
-
-    if (m_tState_Obj.Can_Update())
-    {
-
-    }
-
-    if (m_tState_Act.IsState_Exit())
-    {
-
-    }
-}
-
-void CBrown::Prepare_Atk(float fDeltaTime)
-{
-    if (m_tState_Act.IsState_Entered())
-    {
-
-    }
-
-    if (m_tState_Obj.Can_Update())
-    {
-
-    }
-    if (m_tState_Act.IsState_Exit())
-    {
-
-    }
-}
-
-void CBrown::Attack(float fDeltaTime)
-{
-    if (m_tState_Act.IsState_Entered())
-    {
-
-    }
-
-    if (m_tState_Obj.Can_Update())
-    {
-
-    }
-
-    if (m_tState_Act.IsState_Exit())
-    {
-
-    }
-}
-
-void CBrown::Heavy_Attack(float fDeltaTime)
-{
-    if (m_tState_Act.IsState_Entered())
-    {
-
-    }
-
-    if (m_tState_Obj.Can_Update())
-    {
-
-    }
-
-    if (m_tState_Act.IsState_Exit())
-    {
-
-    }
-}
-
-void CBrown::Parrying(float fDeltaTime)
-{
-    if (m_tState_Act.IsState_Entered())
-    {
-
-    }
-
-    if (m_tState_Obj.Can_Update())
-    {
-
-    }
-
-    if (m_tState_Act.IsState_Exit())
-    {
-
-    }
-}
-
-void CBrown::Falling(float fDeltaTime)
-{
-    if (m_tState_Act.IsState_Entered())
-    {
-
-    }
-
-    if (m_tState_Obj.Can_Update())
-    {
-
-    }
-
-    if (m_tState_Act.IsState_Exit())
-    {
-
-    }
-}
-
-void CBrown::Dead(float fDeltaTime)
-{
-    if (m_tState_Act.IsState_Entered())
-    {
-
-    }
-
-    if (m_tState_Obj.Can_Update())
-    {
-
-    }
-
-    if (m_tState_Act.IsState_Exit())
-    {
-
-    }
-}
-*/
