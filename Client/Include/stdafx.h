@@ -29,6 +29,7 @@
 #include <fstream>
 #include <process.h>
 #include <iostream>
+#include <ctime>
 
 #ifdef _DEBUG
 

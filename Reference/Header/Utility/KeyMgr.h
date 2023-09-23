@@ -8,6 +8,7 @@
 BEGIN(Engine)
 
 #define MAX_DINPUT_KEY 256
+#define MAX_DINPUT_MOUSE DIM_END
 
 /// <summary>
 /// 키 상태에 대한 구조체
@@ -18,7 +19,7 @@ typedef enum class _EINPUT_KEY_STATE : int
 	NUETRAL,        // 중립
 	PRESSING,       // 누름
 	PRESSED,        // 한번만 눌림
-}EINPUT_KEY_STATE;
+}EINPUT_KEY_STATE, EINPUT_MOUSE_STATE;
 
 /// <summary>
 /// 입력 데이터를 저장하는 구조체
@@ -102,9 +103,15 @@ public:
 	bool		Key_Down(const int& iKey);
 	bool		Key_Up(const int& iKey);
 
+	// 단순키 입력체크 함수
+	bool		Mouse_Pressing(const MOUSEKEYSTATE& iMouse);
+	bool		Mouse_Down(const MOUSEKEYSTATE& iMouse);
+	bool		Mouse_Up(const MOUSEKEYSTATE& iMouse);
+
 private:
 	// 일반적인 입력에 대해 반응하기 위한 용도로 쓰입니다.
 	bool				m_bKeyState[MAX_DINPUT_KEY];
+	bool				m_bMouseState[MAX_DINPUT_MOUSE];
 	// 입력키에 대한 정보를 저장한다.
 	using input_key_map = _unmap<const _tchar*, vector<INPUT_KEY_INFO*>>;
 	input_key_map m_mapInputKeys;

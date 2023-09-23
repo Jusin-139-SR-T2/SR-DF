@@ -19,17 +19,17 @@ public:
 public:
 	_byte	Get_DIKeyState(_ubyte byKeyID)
 	{
-		return m_byKeyState[byKeyID];
+		return (m_byKeyState[byKeyID] & 0x80);
 	}
 
 	_byte	Get_DIMouseState(MOUSEKEYSTATE eMouse)
 	{
-		return m_tMouseState.rgbButtons[eMouse];
+		return (m_tMouseState.rgbButtons[eMouse] & 0x80);
 	}
 
 	_long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
 	{
-		return *(((_long*)&m_tMouseState) + eMouseState);
+		return (*(((_long*)&m_tMouseState) + eMouseState));
 	}
 
 public:

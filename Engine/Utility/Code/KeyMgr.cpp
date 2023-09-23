@@ -82,16 +82,49 @@ void CKeyMgr::LateUpdate_Key()
 	// m_bKeyState에 대해 키 상태를 업데이트 합니다.
 	for (int i = 0; i < MAX_DINPUT_KEY; ++i)
 	{
-		if (m_bKeyState[i] && !(Engine::Get_DIKeyState(i) & 0x80))
+		if (m_bKeyState[i] && !(Engine::Get_DIKeyState(i)))
 			m_bKeyState[i] = !m_bKeyState[i];
-		else if (!m_bKeyState[i] && (Engine::Get_DIKeyState(i) & 0x80))
+		else if (!m_bKeyState[i] && (Engine::Get_DIKeyState(i)))
 			m_bKeyState[i] = !m_bKeyState[i];
+	}
+
+	for (int i = 0; i < MAX_DINPUT_MOUSE; ++i)
+	{
+		if (i <= 2)
+		{
+			if (m_bMouseState[i] && !(Engine::Get_DIMouseState((Engine::MOUSEKEYSTATE)i)))
+				m_bMouseState[i] = !m_bMouseState[i];
+			else if (!m_bMouseState[i] && (Engine::Get_DIMouseState((Engine::MOUSEKEYSTATE)i)))
+				m_bMouseState[i] = !m_bMouseState[i];
+		}
+		else
+		{
+			switch((Engine::MOUSEKEYSTATE)i)
+			{
+			case Engine::DIM_MWU:
+			{
+				if (m_bMouseState[i] && !(Engine::Get_DIMouseMove(DIMS_Z) > 0L))
+					m_bMouseState[i] = !m_bMouseState[i];
+				else if (!m_bMouseState[i] && (Engine::Get_DIMouseMove(DIMS_Z) > 0L))
+					m_bMouseState[i] = !m_bMouseState[i];
+				break;
+			}
+			case Engine::DIM_MWD:
+			{
+				if (m_bMouseState[i] && !(Engine::Get_DIMouseMove(DIMS_Z) < 0L))
+					m_bMouseState[i] = !m_bMouseState[i];
+				else if (!m_bMouseState[i] && (Engine::Get_DIMouseMove(DIMS_Z) < 0L))
+					m_bMouseState[i] = !m_bMouseState[i];
+				break;
+			}
+			}
+		}
 	}
 }
 
 bool CKeyMgr::Key_Pressing(const int& iKey)
 {
-	if (Engine::Get_DIKeyState(iKey) & 0x80)
+	if (Engine::Get_DIKeyState(iKey))
 		return true;
 
 	return false;
@@ -100,7 +133,7 @@ bool CKeyMgr::Key_Pressing(const int& iKey)
 bool CKeyMgr::Key_Down(const int& iKey)
 {
 	// 이전에는 눌린 적이 없고 현재 눌렸을 경우
-	if (!m_bKeyState[iKey] && (Engine::Get_DIKeyState(iKey) & 0x80))
+	if (!m_bKeyState[iKey] && (Engine::Get_DIKeyState(iKey)))
 		return true;
 
 	return false;
@@ -109,9 +142,96 @@ bool CKeyMgr::Key_Down(const int& iKey)
 bool CKeyMgr::Key_Up(const int& iKey)
 {
 	// 이전에는 눌린 적이 있고 현재 눌리지 않았을 경우
-	if (m_bKeyState[iKey] && !(Engine::Get_DIKeyState(iKey) & 0x80))
+	if (m_bKeyState[iKey] && !(Engine::Get_DIKeyState(iKey)))
 	{
 		return true;
+	}
+
+	return false;
+}
+
+bool CKeyMgr::Mouse_Pressing(const MOUSEKEYSTATE& iMouse)
+{
+	if (iMouse >= 0L && iMouse <= DIM_MB)
+	{
+		if (Engine::Get_DIMouseState((Engine::MOUSEKEYSTATE)iMouse))
+			return true;
+	}
+	else if (iMouse >= DIM_MB && iMouse < DIM_END)
+	{
+		switch ((Engine::MOUSEKEYSTATE)iMouse)
+		{
+		case Engine::DIM_MWU:
+		{
+			if ((Engine::Get_DIMouseMove(DIMS_Z) > 0L))
+				return true;
+			break;
+		}
+		case Engine::DIM_MWD:
+		{
+			if ((Engine::Get_DIMouseMove(DIMS_Z) < 0L))
+				return true;
+			break;
+		}
+		}
+	}
+
+	return false;
+}
+
+bool CKeyMgr::Mouse_Down(const MOUSEKEYSTATE& iMouse)
+{
+	if (iMouse >= 0L && iMouse <= DIM_MB)
+	{
+		if (!m_bMouseState[iMouse] && Engine::Get_DIMouseState((Engine::MOUSEKEYSTATE)iMouse))
+			return true;
+	}
+	else if (iMouse >= DIM_MB && iMouse < DIM_END)
+	{
+		switch ((Engine::MOUSEKEYSTATE)iMouse)
+		{
+		case Engine::DIM_MWU:
+		{
+			if (!m_bMouseState[iMouse] && (Engine::Get_DIMouseMove(DIMS_Z) > 0L))
+				return true;
+			break;
+		}
+		case Engine::DIM_MWD:
+		{
+			if (!m_bMouseState[iMouse] && (Engine::Get_DIMouseMove(DIMS_Z) < 0L))
+				return true;
+			break;
+		}
+		}
+	}
+
+	return false;
+}
+
+bool CKeyMgr::Mouse_Up(const MOUSEKEYSTATE& iMouse)
+{
+	if (iMouse >= 0L && iMouse <= DIM_MB)
+	{
+		if (m_bMouseState[iMouse] && !Engine::Get_DIMouseState((Engine::MOUSEKEYSTATE)iMouse))
+			return true;
+	}
+	else if (iMouse >= DIM_MB && iMouse < DIM_END)
+	{
+		switch ((Engine::MOUSEKEYSTATE)iMouse)
+		{
+		case Engine::DIM_MWU:
+		{
+			if (m_bMouseState[iMouse] && !(Engine::Get_DIMouseMove(DIMS_Z) > 0L))
+				return true;
+			break;
+		}
+		case Engine::DIM_MWD:
+		{
+			if (m_bMouseState[iMouse] && !(Engine::Get_DIMouseMove(DIMS_Z) < 0L))
+				return true;
+			break;
+		}
+		}
 	}
 
 	return false;
