@@ -230,7 +230,7 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
     _matrix rotationMatrix;
     D3DXMatrixRotationY(&rotationMatrix, rad);
 
-    m_pTransformComp->Set_WorldMatrix(&(rotationMatrix * matWorld));
+    m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
 
     // case2. 빌보드 구성하기 
     // 빌보드 = 자전의 역 / 자전 역 * 스 * 자 * 이 ->스케일문제 

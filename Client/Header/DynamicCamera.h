@@ -64,12 +64,18 @@ private:
 	D3DXQUATERNION	m_quaternion;	// 쿼터니온 변수
 
 	_vec3			m_vOffset = { 0.f, 8.f, -10.f };	// 플레이어로부터 Offset
+	_vec3			m_vOffsetOne = { 0.f, 0.f, -1.f };	// 1인칭 Offset
+	_float			m_fPlayerRotationY = 0.f;
 	_long			m_dwMouseMove[ROT_END];
 	_float			m_fMaxAngleY;
 	_float			m_fMinAngleY;
 	_float			m_fAngleX;
 	_float			m_fAngleY;
 	_float			m_fRotSpeed = 0.2f;
+
+	// 이전 프레임에서 마우스 이동 값 저장
+	_long m_dwPrevMouseMoveX = 0;
+	_long m_dwPrevMouseMoveY = 0;
 
 private:
 	CTransformComponent* pPlayerTransCom = nullptr;
@@ -80,7 +86,6 @@ public:
 private:
 	CGameObject*	m_pTarget = nullptr;
 	_float			m_fTarget_Distance = 10.f;
-
 
 };
 

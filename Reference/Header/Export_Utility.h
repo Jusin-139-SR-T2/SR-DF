@@ -67,13 +67,20 @@ inline HRESULT	Ready_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tc
 inline HRESULT	Ready_KeyMgr();
 inline void		Update_KeyMgr();
 inline void		LateUpdate_KeyMgr();
+// 키 입력
 inline bool		IsKey_Pressing(const int& iKey);
 inline bool		IsKey_Pressing(const int&& iKey);
 inline bool		IsKey_Pressed(const int& iKey);
 inline bool		IsKey_Pressed(const int&& iKey);
 inline bool		IsKey_Released(const int& iKey);
 inline bool		IsKey_Released(const int&& iKey);
-
+// 마우스 입력
+inline bool		IsMouse_Pressing(const MOUSEKEYSTATE& iMouse);
+inline bool		IsMouse_Pressing(const MOUSEKEYSTATE&& iMouse);
+inline bool		IsMouse_Pressed(const MOUSEKEYSTATE& iMouse);
+inline bool		IsMouse_Pressed(const MOUSEKEYSTATE&& iMouse);
+inline bool		IsMouse_Released(const MOUSEKEYSTATE& iMouse);
+inline bool		IsMouse_Released(const MOUSEKEYSTATE&& iMouse);
 
 inline void			Release_Utility();
 

@@ -118,23 +118,23 @@
     <ClInclude Include="Header\PhysicsMgr.h">
       <Filter>05. Physics\00. PhysicsMgr</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Physics\RigidBody.h">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClInclude>
     <ClInclude Include="Header\Physics\PhysicsCore.h">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsPrecision.h">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsCore.h">
+      <Filter>05. Physics\01. PhysicsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsPrecision.h">
       <Filter>05. Physics\01. PhysicsCore</Filter>
     </ClInclude>
     <ClInclude Include="Header\Physics\RigidBody.h">
       <Filter>05. Physics\02. RigidBody</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Physics\PhysicsPrecision.h">
-      <Filter>05. Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Physics\RigidBody.h">
-      <Filter>05. PhysicsMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Physics\PhysicsCore.h">
-      <Filter>05. PhysicsMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Physics\PhysicsPrecision.h">
-      <Filter>05. PhysicsMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -252,17 +252,17 @@
     <ClCompile Include="Code\PhysicsMgr.cpp">
       <Filter>05. Physics\00. PhysicsMgr</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Physics\RigidBody.cpp">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\PhysicsCore.cpp">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClCompile>
     <ClCompile Include="Code\Physics\PhysicsCore.cpp">
       <Filter>05. Physics\01. PhysicsCore</Filter>
     </ClCompile>
     <ClCompile Include="Code\Physics\RigidBody.cpp">
       <Filter>05. Physics\02. RigidBody</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Physics\RigidBody.cpp">
-      <Filter>05. PhysicsMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Physics\PhysicsCore.cpp">
-      <Filter>05. PhysicsMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

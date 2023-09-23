@@ -323,6 +323,16 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 {
 	// 플레이어 Trans 컴포넌트 받아오기
 	pPlayerTransCom = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
+	//NULL_CHECK_RETURN(pPlayerTransCom, -1); // NULL
+
+	_vec3	vPlayerPos;				// 플레이어 위치
+	_vec3	vPlayerLook;			// 플레이어가 바라보는 곳
+	_vec3	vPlayerForward;			// 플레이어의 이동 방향 벡터
+
+	// 플레이어의 위치, 바라보는 방향을 얻어온다.
+	pPlayerTransCom->Get_Info(INFO_POS, &vPlayerPos);
+	pPlayerTransCom->Get_Info(INFO_LOOK, &vPlayerLook);
+	//pPlayerTransCom->Rotation();
 
 	_vec3 vOffSet = { 0.f, 5.f, -10.f };
 
@@ -341,10 +351,22 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 	// 1인칭
 	if (m_bOne)
 	{
+		// 플레이어의 회전 각도를 라디안으로 변환
+		_float playerRotationY = D3DXToRadian(m_fPlayerRotationY);
+
+		// 플레이어의 이동 벡터 계산
+		vPlayerForward = _vec3(sin(playerRotationY), 0.0f, cos(playerRotationY));
+
+		// 플레이어의 이동 벡터를 사용하여 카메라 위치 갱신
+		m_vEye = vPlayerPos - vPlayerForward * m_vOffsetOne.z + m_vUp * m_vOffsetOne.y;
+
+		// 카메라 시선 위치 계산
+		m_vAt = vPlayerPos + vPlayerLook;
+
 		// 1인칭 모드인 경우 카메라 위치와 시선을 플레이어 위치와 일치시킨다.
 		// 시선은 플레이어의 위치 + 플레이어가 바라보는 방향. 즉 플레이어가 바라보는 방향
-		m_vEye = pPlayerTransCom->m_vInfo[INFO_POS];
-		m_vAt = pPlayerTransCom->m_vInfo[INFO_POS] + pPlayerTransCom->m_vInfo[INFO_LOOK];
+		//m_vEye = pPlayerTransCom->m_vInfo[INFO_POS];
+		//m_vAt = pPlayerTransCom->m_vInfo[INFO_POS] + pPlayerTransCom->m_vInfo[INFO_LOOK];
 	}
 	// 3인칭
 	if (m_bThree)
@@ -369,20 +391,25 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 		m_vEye = pPlayerTransCom->m_vInfo[INFO_POS] + m_vOffset;
 		m_vAt = pPlayerTransCom->m_vInfo[INFO_POS];
 
-
-		if (m_fAngleY > m_fMaxAngleY)
+		// 수평 회전 (Y축 회전)
+		if (dwMouseMoveX != 0)
 		{
-			D3DXQuaternionRotationAxis(&quatPitch, &m_vRight, D3DXToRadian(m_fAngleY - (m_fMaxAngleY - m_fAngleY)));
-			m_quaternion *= quatPitch;
-			D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
-		}
-		if (m_fAngleY < m_fMinAngleY)
-		{
-			D3DXQuaternionRotationAxis(&quatPitch, &m_vRight, D3DXToRadian(m_fAngleY + (m_fAngleY - m_fMinAngleY)));
-			m_quaternion *= quatPitch;
+			D3DXQuaternionRotationAxis(&quatYaw, &m_vUp, D3DXToRadian(static_cast<_float>(dwMouseMoveX) * 1.f));
+			m_quaternion *= quatYaw;
 			D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
 		}
 
+		// 수직 회전 (X축 회전)
+		if (dwMouseMoveY != 0)
+		{
+			D3DXQuaternionRotationAxis(&quatPitch, &m_vRight, D3DXToRadian(static_cast<_float>(dwMouseMoveY) * 1.f));
+			m_quaternion *= quatPitch;
+			D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
+		}
+
+		// 현재 마우스 입력 값을 저장하여 다음 프레임에 사용
+		m_dwPrevMouseMoveX = dwMouseMoveX;
+		m_dwPrevMouseMoveY = dwMouseMoveY;
 
 		// 3인칭 모드인 경우 카메라를 플레이어 기준으로 회전시킨다. (공전)
 		// 우클릭 시 회전 시작
@@ -419,24 +446,14 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 		m_vEye = vPos + pPlayerTransCom->m_vInfo[INFO_POS];
 
 
-		// 카메라와 플레이어의 끼인 각 구하기
-		// 카메라가 플레이어를 바라보는 방향 (목표물 - 시작점)
-		_vec3  vCameraToPlayer = pPlayerTransCom->m_vInfo[INFO_POS] - m_vEye;
-		D3DXVec3Normalize(&vCameraToPlayer, &vCameraToPlayer);   // 정규화
+		//// 카메라와 플레이어의 끼인 각 구하기
+		//// 카메라가 플레이어를 바라보는 방향 (목표물 - 시작점)
+		//_vec3  vCameraToPlayer = pPlayerTransCom->m_vInfo[INFO_POS] - m_vEye;
+		//D3DXVec3Normalize(&vCameraToPlayer, &vCameraToPlayer);   // 정규화
 
-		// 카메라가 플레이어를 바라보는 방향과 플레이어의 Up벡터를 내적해서 둘 사이의 끼인각을 알아낸다(라디안)
-		m_fAngleY = acosf(D3DXVec3Dot(&vCameraToPlayer, &pPlayerTransCom->m_vInfo[INFO_UP]));
-		m_fAngleY = D3DXToDegree(m_fAngleY);
-
-
-		// 카메라와 플레이어의 끼인 각 구하기
-		// 카메라가 플레이어를 바라보는 방향 (목표물 - 시작점)
-		_vec3  vCameraToPlayerX = pPlayerTransCom->m_vInfo[INFO_POS] - m_vEye;
-		D3DXVec3Normalize(&vCameraToPlayerX, &vCameraToPlayerX);   // 정규화
-
-		// 카메라가 플레이어를 바라보는 방향과 플레이어의 RIGHT벡터를 내적해서 둘 사이의 끼인각을 알아낸다(라디안)
-		m_fAngleX = acosf(D3DXVec3Dot(&vCameraToPlayerX, &pPlayerTransCom->m_vInfo[INFO_LOOK]));
-		m_fAngleX = D3DXToDegree(m_fAngleX);
+		//// 카메라가 플레이어를 바라보는 방향과 플레이어의 Up벡터를 내적해서 둘 사이의 끼인각을 알아낸다(라디안)
+		//m_fAngleY = acosf(D3DXVec3Dot(&vCameraToPlayer, &pPlayerTransCom->m_vInfo[INFO_UP]));
+		//m_fAngleY = D3DXToDegree(m_fAngleY);
 
 
 		///////////////////////////////////////////////////////////////////////////////////

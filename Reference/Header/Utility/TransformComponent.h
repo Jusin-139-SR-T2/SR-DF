@@ -51,7 +51,14 @@ public:
 	}
 	_matrix* Get_WorldMatrix() { return &m_matWorld; }
 
-	void		Set_WorldMatrix(const _matrix* pWorld) { m_matWorld = *pWorld; }
+	// + ¼ºÈñ Ãß°¡
+	void	Set_WorldMatrix(_matrix _matWorld)
+	{
+		m_matWorld = _matWorld;
+		//D3DXMatrixMultiply(&m_matWorld, &m_matWorld, &_matWorld);
+	}
+
+	void		Set_WorldMatrixS(const _matrix* pWorld) { m_matWorld = *pWorld; }
 	// Set_Pos
 	void		Set_Pos(const _float& fX,
 		const _float& fY,

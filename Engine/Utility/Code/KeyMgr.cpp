@@ -82,39 +82,44 @@ void CKeyMgr::LateUpdate_Key()
 	// m_bKeyState에 대해 키 상태를 업데이트 합니다.
 	for (int i = 0; i < MAX_DINPUT_KEY; ++i)
 	{
-		if (m_bKeyState[i] && !(Engine::Get_DIKeyState(i) & 0x80))
+		if (m_bKeyState[i] && !(Engine::Get_DIKeyState(i)))
 			m_bKeyState[i] = !m_bKeyState[i];
-		else if (!m_bKeyState[i] && (Engine::Get_DIKeyState(i) & 0x80))
+		else if (!m_bKeyState[i] && (Engine::Get_DIKeyState(i)))
 			m_bKeyState[i] = !m_bKeyState[i];
 	}
-}
 
-bool CKeyMgr::Key_Pressing(const int& iKey)
-{
-	if (Engine::Get_DIKeyState(iKey) & 0x80)
-		return true;
-
-	return false;
-}
-
-bool CKeyMgr::Key_Down(const int& iKey)
-{
-	// 이전에는 눌린 적이 없고 현재 눌렸을 경우
-	if (!m_bKeyState[iKey] && (Engine::Get_DIKeyState(iKey) & 0x80))
-		return true;
-
-	return false;
-}
-
-bool CKeyMgr::Key_Up(const int& iKey)
-{
-	// 이전에는 눌린 적이 있고 현재 눌리지 않았을 경우
-	if (m_bKeyState[iKey] && !(Engine::Get_DIKeyState(iKey) & 0x80))
+	for (int i = 0; i < MAX_DINPUT_MOUSE; ++i)
 	{
-		return true;
+		if (i <= 2)
+		{
+			if (m_bMouseState[i] && !(Engine::Get_DIMouseState((Engine::MOUSEKEYSTATE)i)))
+				m_bMouseState[i] = !m_bMouseState[i];
+			else if (!m_bMouseState[i] && (Engine::Get_DIMouseState((Engine::MOUSEKEYSTATE)i)))
+				m_bMouseState[i] = !m_bMouseState[i];
+		}
+		else
+		{
+			switch((Engine::MOUSEKEYSTATE)i)
+			{
+			case Engine::DIM_MWU:
+			{
+				if (m_bMouseState[i] && !(Engine::Get_DIMouseMove(DIMS_Z) > 0L))
+					m_bMouseState[i] = !m_bMouseState[i];
+				else if (!m_bMouseState[i] && (Engine::Get_DIMouseMove(DIMS_Z) > 0L))
+					m_bMouseState[i] = !m_bMouseState[i];
+				break;
+			}
+			case Engine::DIM_MWD:
+			{
+				if (m_bMouseState[i] && !(Engine::Get_DIMouseMove(DIMS_Z) < 0L))
+					m_bMouseState[i] = !m_bMouseState[i];
+				else if (!m_bMouseState[i] && (Engine::Get_DIMouseMove(DIMS_Z) < 0L))
+					m_bMouseState[i] = !m_bMouseState[i];
+				break;
+			}
+			}
+		}
 	}
-
-	return false;
 }
 
 void CKeyMgr::Add_InputKey(INPUT_KEY_INFO* pInputKey)

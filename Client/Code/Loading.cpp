@@ -95,23 +95,19 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma endregion
 
 #pragma region 싱글 텍스처
-	// 왼손 달리기
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/LeftRunHand.png", TEX_NORMAL, L"Player_Single", L"Left_RunHand"), E_FAIL);
-	// 오른손 달리기
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightRunHand.png", TEX_NORMAL, L"Player_Single", L"Right_RunHand"), E_FAIL);
-	// 왼손 방어
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/LeftBlockHand.png", TEX_NORMAL, L"Player_Single", L"Left_BlockHand"), E_FAIL);
-	// 오른손 방어
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightBlockHand.png", TEX_NORMAL, L"Player_Single", L"Right_BlockHand"), E_FAIL);
+	//// 왼손 달리기
+	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/LeftRunHand.png", TEX_NORMAL, L"Player_Single", L"Left_RunHand"), E_FAIL);
+	//// 오른손 달리기
+	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightRunHand.png", TEX_NORMAL, L"Player_Single", L"Right_RunHand"), E_FAIL);
 	// 오픈 핸드 [오른손이 무언가를 할 때 아무것도 아닌상태] (왼손)
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/OpenHand.png", TEX_NORMAL, L"Player_Single", L"OpenHand"), E_FAIL);
 #pragma endregion
 	
 #pragma region 멀티 텍스처
 	// 왼손
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/LeftHand%d.png", TEX_NORMAL, L"Player_Multi", L"Left_Hand", _range<_uint>(0U, 1U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/LeftHand%d.png", TEX_NORMAL, L"Player_Multi", L"Left_Hand", _range<_uint>(0U, 2U)), E_FAIL);
 	// 오른손
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightHand%d.png", TEX_NORMAL, L"Player_Multi", L"Right_Hand", _range<_uint>(0U, 1U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightHand%d.png", TEX_NORMAL, L"Player_Multi", L"Right_Hand", _range<_uint>(0U, 2U)), E_FAIL);
 	// 주먹 차징 (오른손)
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/RightHand_Charging%d.png", TEX_NORMAL, L"Player_Multi", L"Charging", _range<_uint>(0U, 1U)), E_FAIL);
 	// 쇠파이프
@@ -119,7 +115,7 @@ HRESULT CLoading::Loading_For_Texture()
 	// 쇠파이프 차징
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/Steel_Pipe_Charging%d.png", TEX_NORMAL, L"Player_Multi", L"Steel_Pipe_Charging", _range<_uint>(0U, 4U)), E_FAIL);
 	// 프라이팬
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/FryingPan%d.png", TEX_NORMAL, L"Player_Multi", L"FryingPan", _range<_uint>(0U, 4U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/FryingPan%d.png", TEX_NORMAL, L"Player_Multi", L"FryingPan", _range<_uint>(0U, 5U)), E_FAIL);
 	// 프라이팬 차징
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Player/FryingPan_Charging%d.png", TEX_NORMAL, L"Player_Multi", L"FryingPan_Charging", _range<_uint>(0U, 3U)), E_FAIL);
 	// 라이터
