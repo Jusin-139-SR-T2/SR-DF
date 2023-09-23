@@ -169,9 +169,6 @@ HRESULT CLoading::Loading_For_Texture()
 	// Monster Texture - Boss - Multi
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Boss/Reloading/Reloading_%d.png", TEX_NORMAL, L"Boss_Multi", L"Reloading", _range<_uint>(0U, 17U)), E_FAIL);
 
-
-	m_bFinish = true;
-
 	return S_OK;
 }
 
