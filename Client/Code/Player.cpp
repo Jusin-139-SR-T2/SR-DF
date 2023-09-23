@@ -128,41 +128,43 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
             }
         }
 
-        // 현재 프레임이 최대 프레임에 도달한 경우
-        if (m_fLeftFrame >= m_fLeftMaxFrame)
+        // 라이터 되돌리기가 꺼져있을 경우
+        if (!bBackRighter)
         {
-            // 만약 최대프레임인데 라이터가 켜져있을 경우
-            if (bRighter)
+            // 현재 프레임이 최대 프레임에 도달한 경우
+            if (m_fLeftFrame >= m_fLeftMaxFrame)
             {
-                // (현재 프레임) 라이터를 켜져있는 이미지로 고정
-                m_fLeftFrame = 5.f;
-            }
-            else // 라이터가 안켜져있을 경우
-            {
-                // 현재 상태가 라이터인 경우
-                if (m_eLeftState == STATE_LEFTHAND::RIGHTER)
+                // 만약 최대프레임인데 라이터가 켜져있을 경우
+                if (bRighter)
                 {
-                    if (m_fLeftFrame > 0)
-                    {
-                        m_fLeftFrame--; // 왼손 프레임을 하나씩 내려주기
-                    }
-                    else
-                    {
-                        m_fLeftFrame = 0.f;
-                        // 왼손 프레임 Off
-                        bLeftFrameOn = false;
-                    }
+                    // (현재 프레임) 라이터를 켜져있는 이미지로 고정
+                    m_fLeftFrame = 5.f;
                 }
-                else
+                else // 라이터가 안켜져있을 경우
                 {
-                    // 현재 프레임을 0으로 초기화
-                    m_fLeftFrame = 0;
+                    // 현재 프레임 초기화
+                    m_fLeftFrame = 0.f;
 
                     // 왼손 프레임 Off
                     bLeftFrameOn = false;
                 }
             }
         }
+        else// 라이터 되돌리기On
+        {
+            // 현재 프레임을 시간(프레임)마다 감소시키기
+            m_fLeftFrame--;
+
+            // 왼손 프레임이 0에 도달했을 경우
+            if (m_fLeftFrame <= 0.f)
+            {
+                m_fLeftFrame = 0.f;
+                bRighter = false;
+                bLeftFrameOn = false;
+                bBackRighter = false;
+            }
+        }
+
     }
 #pragma endregion
 
@@ -491,20 +493,17 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     // 라이터
     if (Engine::IsKey_Pressed(DIK_V) && m_ePlayerState != STATE_PLAYER::RUN)
     {
+        bLeftFrameOn = true;    // 프레임 재생
+
         if (!bRighter)  // 라이터가 꺼져있을 경우
         {
             bRighter = true;        // 라이터 켜주기
-            bLeftFrameOn = true;    // 프레임 재생
             m_fLeftMaxFrame = 6.f;  // 최대 프레임 설정
             m_eLeftState = STATE_LEFTHAND::RIGHTER; // 왼손 상태 라이터로
         }
         else // 라이터가 켜져있을 경우
         {
-            //bBackRighter = true;
-            bRighter = false;
-            m_fLeftFrame = 0.f;
-            //bLeftFrameOn = false;
-            //Test
+            bBackRighter = true; // 라이터 되돌리기On
         }
     }
 #pragma endregion
@@ -1166,12 +1165,12 @@ void CPlayer::Left_Righter(float fTimeDelta)
             if (bRighter)
             {
                 // 프레임 재생 Off
-                bLeftFrameOn = false;
-                m_fLeftFrame = m_fLeftMaxFrame - 1.f;
+                //bLeftFrameOn = false;
+                //m_fLeftFrame = m_fLeftMaxFrame - 1.f;
             }
             else // 라이터가 꺼졌을 경우
             {
-                m_fLeftFrame--; // 왼손 프레임 감소
+               // m_fLeftFrame--; // 왼손 프레임 감소
 
                 if (m_fLeftFrame <= 0) // 모두 감소했을 경우
                 {
