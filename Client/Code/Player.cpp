@@ -527,7 +527,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
 
 #pragma region 마우스
     // 마우스 좌클릭
-    if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
+    if (Engine::IsMouse_Pressed(DIM_LB))
     {
         // 주먹 번갈아가며 공격 작업 진행중
         // 양손 다 주먹상태일 경우
@@ -569,7 +569,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
     }
 
     // 마우스 우클릭
-    if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
+    if (Engine::IsMouse_Pressing(DIM_RB))
     {
         // 쉴드 가능 일때
         if (bShield)

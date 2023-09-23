@@ -119,6 +119,34 @@ inline bool		IsKey_Released(const int&& iKey)
 	return CKeyMgr::GetInstance()->Key_Up(iKey);
 }
 
+// 누르고 있는 중
+bool		IsMouse_Pressing(const MOUSEKEYSTATE& iMouse)
+{
+	return CKeyMgr::GetInstance()->Mouse_Pressing(iMouse);
+}
+bool		IsMouse_Pressing(const MOUSEKEYSTATE&& iMouse)
+{
+	return CKeyMgr::GetInstance()->Mouse_Pressing(iMouse);
+}
+// 누를 때
+bool		IsMouse_Pressed(const MOUSEKEYSTATE& iMouse)
+{
+	return CKeyMgr::GetInstance()->Mouse_Down(iMouse);
+}
+bool		IsMouse_Pressed(const MOUSEKEYSTATE&& iMouse)
+{
+	return CKeyMgr::GetInstance()->Mouse_Down(iMouse);
+}
+// 뗄 때
+bool		IsMouse_Released(const MOUSEKEYSTATE& iMouse)
+{
+	return CKeyMgr::GetInstance()->Mouse_Up(iMouse);
+}
+bool		IsMouse_Released(const MOUSEKEYSTATE&& iMouse)
+{
+	return CKeyMgr::GetInstance()->Mouse_Up(iMouse);
+}
+
 
 
 // 싱글톤 해제 코드
