@@ -12,14 +12,14 @@ class CTransformComponent;
 
 END
 
-class CMonster : public Engine::CGameObject
+class CBrown : public Engine::CGameObject
 {
-	DERIVED_CLASS(CGameObject, CMonster)
+	DERIVED_CLASS(CGameObject, CBrown)
 
 private:
-	explicit CMonster(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CMonster(const CMonster& rhs);
-	virtual ~CMonster();
+	explicit CBrown(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CBrown(const CBrown& rhs);
+	virtual ~CBrown();
 
 public:
 	virtual HRESULT Ready_GameObject() override;
@@ -27,7 +27,7 @@ public:
 	virtual void	LateUpdate_GameObject() override;
 	virtual void	Render_GameObject() override;
 
-	static CMonster*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CBrown*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	CRcBufferComp*			m_pBufferComp = nullptr;
@@ -90,8 +90,8 @@ public:
 	enum class ACTION_KEY { IDLE, RUN, WALK, INCH, STRAFING, JUMP, BASIC_ATTACK, HEAVY_ATTACK,   };
 
 private:
-	STATE_SET<STATE_OBJ, void(CMonster*, float)> m_tState_Obj; //AI
-	STATE_SET<STATE_ACT, void(CMonster*, float)> m_tState_Act; // 행동
+	STATE_SET<STATE_OBJ, void(CBrown*, float)> m_tState_Obj; //AI
+	STATE_SET<STATE_ACT, void(CBrown*, float)> m_tState_Act; // 행동
 	ACTION_SET<ACTION_KEY> m_mapActionKey; //가상 조작키 
 
 #pragma region AI 

@@ -1,22 +1,22 @@
 #include "stdafx.h"
-#include "Monster.h"
+#include "Brown.h"
 
-CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
+CBrown::CBrown(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {
 }
 
-CMonster::CMonster(const CMonster& rhs)
+CBrown::CBrown(const CBrown& rhs)
     : Base(rhs)
 {
 }
 
-CMonster::~CMonster()
+CBrown::~CBrown()
 {
     Free();
 }
 
-HRESULT CMonster::Ready_GameObject()
+HRESULT CBrown::Ready_GameObject()
 {
     srand(_ulong(time(NULL)));
 
@@ -33,37 +33,37 @@ HRESULT CMonster::Ready_GameObject()
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE);
-    m_tState_Obj.Add_Func(STATE_OBJ::IDLE, &CMonster::AI_Idle);
-    m_tState_Obj.Add_Func(STATE_OBJ::SUSPICIOUS, &CMonster::AI_Suspicious);
-    m_tState_Obj.Add_Func(STATE_OBJ::TAUNT, &CMonster::AI_Taunt);
-    m_tState_Obj.Add_Func(STATE_OBJ::CHASE, &CMonster::AI_Chase);
+    m_tState_Obj.Add_Func(STATE_OBJ::IDLE, &CBrown::AI_Idle);
+    m_tState_Obj.Add_Func(STATE_OBJ::SUSPICIOUS, &CBrown::AI_Suspicious);
+    m_tState_Obj.Add_Func(STATE_OBJ::TAUNT, &CBrown::AI_Taunt);
+    m_tState_Obj.Add_Func(STATE_OBJ::CHASE, &CBrown::AI_Chase);
 
-    m_tState_Obj.Add_Func(STATE_OBJ::RUN, &CMonster::AI_Run);
-    m_tState_Obj.Add_Func(STATE_OBJ::WALK, &CMonster::AI_Walk);
-    m_tState_Obj.Add_Func(STATE_OBJ::INCHFORWARD, &CMonster::AI_InchForward);
-    m_tState_Obj.Add_Func(STATE_OBJ::STRAFYING, &CMonster::AI_Strafying);
-    m_tState_Obj.Add_Func(STATE_OBJ::BASICATTACK, &CMonster::AI_BasicAttack);
-    m_tState_Obj.Add_Func(STATE_OBJ::HEAVYATTACK, &CMonster::AI_HeavyAttack);
+    m_tState_Obj.Add_Func(STATE_OBJ::RUN, &CBrown::AI_Run);
+    m_tState_Obj.Add_Func(STATE_OBJ::WALK, &CBrown::AI_Walk);
+    m_tState_Obj.Add_Func(STATE_OBJ::INCHFORWARD, &CBrown::AI_InchForward);
+    m_tState_Obj.Add_Func(STATE_OBJ::STRAFYING, &CBrown::AI_Strafing);
+    m_tState_Obj.Add_Func(STATE_OBJ::BASICATTACK, &CBrown::AI_BasicAttack);
+    m_tState_Obj.Add_Func(STATE_OBJ::HEAVYATTACK, &CBrown::AI_HeavyAttack);
 
 #pragma endregion
 
 #pragma region 행동 상태머신 등록 - Acting
     m_tState_Act.Set_State(STATE_ACT::IDLE);
-    // STATE가 ::A 일때 CMonster클래스의 ::B 함수를 수행하는 상태머신 
-    m_tState_Act.Add_Func(STATE_ACT::IDLE, &CMonster::Idle);
-    m_tState_Act.Add_Func(STATE_ACT::APPROACH, &CMonster::Approach);
+    // STATE가 ::A 일때 CBrown클래스의 ::B 함수를 수행하는 상태머신 
+    m_tState_Act.Add_Func(STATE_ACT::IDLE, &CBrown::Idle);
+    m_tState_Act.Add_Func(STATE_ACT::APPROACH, &CBrown::Approach);
     
-    //m_tState_Act.Add_Func(STATE_ACT::WALK, &CMonster::Walk);
-    //m_tState_Act.Add_Func(STATE_ACT::RUN, &CMonster::Run);
-    //m_tState_Act.Add_Func(STATE_ACT::INCH, &CMonster::Inch);
-    //m_tState_Act.Add_Func(STATE_ACT::JUMP, &CMonster::Jump);
+    //m_tState_Act.Add_Func(STATE_ACT::WALK, &CBrown::Walk);
+    //m_tState_Act.Add_Func(STATE_ACT::RUN, &CBrown::Run);
+    //m_tState_Act.Add_Func(STATE_ACT::INCH, &CBrown::Inch);
+    //m_tState_Act.Add_Func(STATE_ACT::JUMP, &CBrown::Jump);
 
-    //m_tState_Act.Add_Func(STATE_ACT::PRE_ATTACK, &CMonster::Prepare_Atk);
-    //m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CMonster::Attack);
-    //m_tState_Act.Add_Func(STATE_ACT::HEAVY, &CMonster::Heavy_Attack);
-    //m_tState_Act.Add_Func(STATE_ACT::PARRYING, &CMonster::Parrying);
-    //m_tState_Act.Add_Func(STATE_ACT::FALLING, &CMonster::Falling);
-    //m_tState_Act.Add_Func(STATE_ACT::DEAD, &CMonster::Dead);
+    //m_tState_Act.Add_Func(STATE_ACT::PRE_ATTACK, &CBrown::Prepare_Atk);
+    //m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CBrown::Attack);
+    //m_tState_Act.Add_Func(STATE_ACT::HEAVY, &CBrown::Heavy_Attack);
+    //m_tState_Act.Add_Func(STATE_ACT::PARRYING, &CBrown::Parrying);
+    //m_tState_Act.Add_Func(STATE_ACT::FALLING, &CBrown::Falling);
+    //m_tState_Act.Add_Func(STATE_ACT::DEAD, &CBrown::Dead);
 #pragma endregion
 
 #pragma region 액션 키 등록
@@ -82,7 +82,7 @@ HRESULT CMonster::Ready_GameObject()
     return S_OK;
 }
 
-_int CMonster::Update_GameObject(const _float& fTimeDelta)
+_int CBrown::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
@@ -114,12 +114,12 @@ _int CMonster::Update_GameObject(const _float& fTimeDelta)
     return 0;
 }
 
-void CMonster::LateUpdate_GameObject()
+void CBrown::LateUpdate_GameObject()
 {
     SUPER::LateUpdate_GameObject();
 }
 
-void CMonster::Render_GameObject()
+void CBrown::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -130,19 +130,19 @@ void CMonster::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CMonster::Add_Component()
+HRESULT CBrown::Add_Component()
 {
     NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
 
     // 몬스터 텍스처
-    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_BrownTextureComp"), E_FAIL);
         
     return S_OK;
 }
 
-CMonster* CMonster::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -157,7 +157,7 @@ CMonster* CMonster::Create(LPDIRECT3DDEVICE9 pGraphicDev)
     return pInstance;
 }
 
-_bool CMonster::Monster_Capture() // 몬스터 시야내 플레이어 있는지 체크하는 함수 
+_bool CBrown::Monster_Capture() // 몬스터 시야내 플레이어 있는지 체크하는 함수 
 {
     // 플레이어 위치 가져옴 
     m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
@@ -190,7 +190,7 @@ _bool CMonster::Monster_Capture() // 몬스터 시야내 플레이어 있는지 체크하는 함수
         return false;
 }
 
-float CMonster::m_fDistance()
+float CBrown::m_fDistance()
 {
     m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
     _vec3 vPlayerPos, vMonsterPos, vPlayerLook, vMonsterLook;
@@ -210,19 +210,19 @@ float CMonster::m_fDistance()
     return fDistance;
 }
 
-HRESULT CMonster::Chase_Player(const _float& fTimeDelta, _float fSpeed)
+HRESULT CBrown::Chase_Player(const _float& fTimeDelta, _float fSpeed)
 { 
 
 
     return S_OK;
 }
 
-void CMonster::Free()
+void CBrown::Free()
 {
     SUPER::Free();
 }
 
-void CMonster::Height_On_Terrain()
+void CBrown::Height_On_Terrain()
 {
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
@@ -236,7 +236,7 @@ void CMonster::Height_On_Terrain()
 }
 
 //------------------ AI ---------------------------
-void CMonster::AI_Idle(float fDeltaTime)
+void CBrown::AI_Idle(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -259,7 +259,7 @@ void CMonster::AI_Idle(float fDeltaTime)
     }
 }
 
-void CMonster::AI_Suspicious(float fDeltaTime)
+void CBrown::AI_Suspicious(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -300,7 +300,7 @@ void CMonster::AI_Suspicious(float fDeltaTime)
     }
 }
 
-void CMonster::AI_Taunt(float fDeltaTime)
+void CBrown::AI_Taunt(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -327,7 +327,7 @@ void CMonster::AI_Taunt(float fDeltaTime)
     }
 }
 
-void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함 
+void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함 
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -391,7 +391,7 @@ void CMonster::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
     }
 }
 
-void CMonster::AI_Run(float fDeltaTime)
+void CBrown::AI_Run(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -419,7 +419,7 @@ void CMonster::AI_Run(float fDeltaTime)
     }
 }
 
-void CMonster::AI_Walk(float fDeltaTime)
+void CBrown::AI_Walk(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -448,7 +448,7 @@ void CMonster::AI_Walk(float fDeltaTime)
     }
 }
 
-void CMonster::AI_InchForward(float fDeltaTime)
+void CBrown::AI_InchForward(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -474,7 +474,7 @@ void CMonster::AI_InchForward(float fDeltaTime)
     }
 }
 
-void CMonster::AI_Strafing(float fDeltaTime)
+void CBrown::AI_Strafing(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -500,7 +500,7 @@ void CMonster::AI_Strafing(float fDeltaTime)
     }
 }
 
-void CMonster::AI_BasicAttack(float fDeltaTime)
+void CBrown::AI_BasicAttack(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -524,7 +524,7 @@ void CMonster::AI_BasicAttack(float fDeltaTime)
     }
 }
 
-void CMonster::AI_HeavyAttack(float fDeltaTime)
+void CBrown::AI_HeavyAttack(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -548,7 +548,7 @@ void CMonster::AI_HeavyAttack(float fDeltaTime)
 
 //------------------ 행동 -------------------------
 
-void CMonster::Idle(float fDeltaTime)
+void CBrown::Idle(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
@@ -569,7 +569,7 @@ void CMonster::Idle(float fDeltaTime)
     }
 }
 
-void CMonster::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
+void CBrown::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
 {
     if (m_tState_Act.IsState_Entered())
     {
@@ -632,7 +632,7 @@ void CMonster::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
     }
 }
 /*
-void CMonster::Walk(float fDeltaTime)
+void CBrown::Walk(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
@@ -657,7 +657,7 @@ void CMonster::Walk(float fDeltaTime)
     }
 }
 
-void CMonster::Inch(float fDeltaTime)
+void CBrown::Inch(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
@@ -675,7 +675,7 @@ void CMonster::Inch(float fDeltaTime)
     }
 }
 
-void CMonster::Jump(float fDeltaTime)
+void CBrown::Jump(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
@@ -693,7 +693,7 @@ void CMonster::Jump(float fDeltaTime)
     }
 }
 
-void CMonster::Prepare_Atk(float fDeltaTime)
+void CBrown::Prepare_Atk(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
@@ -710,25 +710,7 @@ void CMonster::Prepare_Atk(float fDeltaTime)
     }
 }
 
-void CMonster::Attack(float fDeltaTime)
-{
-    if (m_tState_Act.IsState_Entered())
-    {
-
-    }
-
-    if (m_tState_Obj.Can_Update())
-    {
-
-    }
-
-    if (m_tState_Act.IsState_Exit())
-    {
-
-    }
-}
-
-void CMonster::Heavy_Attack(float fDeltaTime)
+void CBrown::Attack(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
@@ -746,7 +728,7 @@ void CMonster::Heavy_Attack(float fDeltaTime)
     }
 }
 
-void CMonster::Parrying(float fDeltaTime)
+void CBrown::Heavy_Attack(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
@@ -764,7 +746,7 @@ void CMonster::Parrying(float fDeltaTime)
     }
 }
 
-void CMonster::Falling(float fDeltaTime)
+void CBrown::Parrying(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
@@ -782,7 +764,25 @@ void CMonster::Falling(float fDeltaTime)
     }
 }
 
-void CMonster::Dead(float fDeltaTime)
+void CBrown::Falling(float fDeltaTime)
+{
+    if (m_tState_Act.IsState_Entered())
+    {
+
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+
+    }
+}
+
+void CBrown::Dead(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {

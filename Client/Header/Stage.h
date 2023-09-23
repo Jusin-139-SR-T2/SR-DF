@@ -3,7 +3,9 @@
 #include "Scene.h"
 
 #include "Player.h"
-#include "Monster.h"
+#include "Brown.h"
+#include "Gray.h"
+#include "Boss.h"
 
 #include "Terrain.h"
 
