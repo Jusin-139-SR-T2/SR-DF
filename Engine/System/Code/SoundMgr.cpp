@@ -1,5 +1,7 @@
 #include "SoundMgr.h"
 
+
+
 IMPLEMENT_SINGLETON(CSoundMgr)
 
 CSoundMgr::CSoundMgr()
@@ -138,37 +140,70 @@ void CSoundMgr::LoadSoundFile(const char* pPath)
 
 	strcpy_s(szCurPath, pPath);
 
+	// 이게 뭐게 ㅋ
+	using sound_tuple = tuple<FMOD_SOUND*, FMOD_RESULT, string, string>;
+	enum ETMP_SOUND : int {
+		TMP_SOUND,
+		TMP_RESULT,
+		TMP_PATH,
+		TMP_FILE_NAME
+	};
+	vector<future<FMOD_RESULT>> vecAsync;
+	vector<sound_tuple> vecSoundData;
+	
 	while (iResult != -1)
 	{
 		strcpy_s(szFullPath, szCurPath);
 
 		// "../Sound/Success.wav"
 		strcat_s(szFullPath, fd.name);
+		sound_tuple tpSound;
 
-		FMOD_SOUND* pSound = nullptr;
+		get<TMP_PATH>(tpSound) = string(szFullPath);
+		get<TMP_FILE_NAME>(tpSound) = string(fd.name);
+		get<TMP_RESULT>(tpSound) = FMOD_OK;
+		get<TMP_SOUND>(tpSound) = nullptr;
 
-		FMOD_RESULT eRes = FMOD_System_CreateSound(m_pSystem, szFullPath, FMOD_DEFAULT, NULL, &pSound);
-
-
-		if (eRes == FMOD_OK)
-		{
-			int iLength = (int)strlen(fd.name) + 1;
-
-			TCHAR* pSoundKey = new TCHAR[iLength];
-			ZeroMemory(pSoundKey, sizeof(TCHAR) * iLength);
-
-			// 아스키 코드 문자열을 유니코드 문자열로 변환시켜주는 함수
-			MultiByteToWideChar(CP_ACP, 0, fd.name, iLength, pSoundKey, iLength);
-
-			m_mapSound.emplace(pSoundKey, pSound);
-		}
+		vecSoundData.push_back(tpSound);
 
 		//_findnext : <io.h>에서 제공하며 다음 위치의 파일을 찾는 함수, 더이상 없다면 -1을 리턴
 		iResult = _findnext(handle, &fd);
 	}
 
+	for (size_t i = 0; i < vecSoundData.size(); i++)
+	{
+		vecAsync.push_back(async(launch::async, &CSoundMgr::LoadSoundFile_Async, this
+									, get<TMP_PATH>(vecSoundData[i]).c_str(), get<TMP_FILE_NAME>(vecSoundData[i]).c_str()
+									, ref(get<TMP_RESULT>(vecSoundData[i])), &get<TMP_SOUND>(vecSoundData[i])));
+	}
+
+	for (size_t i = 0; i < vecSoundData.size(); i++)
+	{
+		vecAsync[i].get();
+
+		if (get<TMP_RESULT>(vecSoundData[i]) == FMOD_OK)
+		{
+			int iLength = (int)strlen(get<TMP_FILE_NAME>(vecSoundData[i]).c_str()) + 1;
+
+			TCHAR* pSoundKey = new TCHAR[iLength];
+			ZeroMemory(pSoundKey, sizeof(TCHAR) * iLength);
+
+			// 아스키 코드 문자열을 유니코드 문자열로 변환시켜주는 함수
+			MultiByteToWideChar(CP_ACP, 0, get<TMP_FILE_NAME>(vecSoundData[i]).c_str(), iLength, pSoundKey, iLength);
+
+			m_mapSound.emplace(pSoundKey, get<TMP_SOUND>(vecSoundData[i]));
+		}
+	}
+
 	FMOD_System_Update(m_pSystem);
 
 	_findclose(handle);
+}
+
+FMOD_RESULT CSoundMgr::LoadSoundFile_Async(const char* pPath, const char* pFileName, FMOD_RESULT& hResult, FMOD_SOUND** pSound)
+{
+	hResult =  FMOD_System_CreateSound(m_pSystem, pPath, FMOD_DEFAULT, NULL, pSound);
+
+	return hResult;
 }
 

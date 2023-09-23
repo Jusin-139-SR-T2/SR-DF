@@ -3,6 +3,9 @@
 #include "Base.h"
 #include "Engine_Define.h"
 
+#include <future>
+#include <thread>
+
 BEGIN(Engine)
 
 class ENGINE_DLL CSoundMgr : public CBase
@@ -34,6 +37,7 @@ public:
 private:
 	// 내부적으로 로드할 사운드 파일 폴더를 지정해 로드하는 함수
 	void LoadSoundFile(const char* pPath);
+	FMOD_RESULT LoadSoundFile_Async(const char* pPath, const char* pFileName, FMOD_RESULT& hResult, FMOD_SOUND** pSound);
 
 	// 사운드 리소스 정보를 갖는 객체 
 	_unmap<const _tchar*, FMOD_SOUND*> m_mapSound;

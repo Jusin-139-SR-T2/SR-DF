@@ -15,6 +15,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <tuple>
 #include <algorithm>
 #include <functional>
 #include <string>
@@ -22,7 +23,7 @@
 #include <ctime>
 #include <fstream>
 #include <iostream>
-#include <string>
+
 
 // 사운드 라이브러리
 #include "fmod.h"

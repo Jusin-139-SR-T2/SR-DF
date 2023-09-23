@@ -41,15 +41,15 @@ void CLogo::Free()
 
 HRESULT CLogo::Ready_Scene()
 {
-	//사운드
-	//FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
-	//Engine::CSoundMgr::GetInstance()->Play_Sound(L"Ambience_OldTimeyMusic6.mp3", SOUND_BGM, 0.75f);
-
 	FAILED_CHECK_RETURN(Ready_Prototype(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Environment"), E_FAIL);
 
 	// 로딩 쓰레드 생성하기
 	NULL_CHECK_RETURN(m_pLoading = CLoading::Create(m_pGraphicDev, CLoading::LOADING_STAGE), E_FAIL);
+
+	//사운드
+	FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
+	Engine::CSoundMgr::GetInstance()->Play_Sound(L"Ambience_OldTimeyMusic6.mp3", SOUND_BGM, 0.75f);
 
 	// 로딩 쓰레드 생성하기
 	//NULL_CHECK_RETURN(m_pLoadingTexture = CLoading::Create(m_pGraphicDev, CLoading::LOADING_TEXTURE), E_FAIL);

@@ -36,6 +36,7 @@ HRESULT CMainApp::Ready_MainApp()
 	// 장치에서 샘플러를 사용할 수 있게 설정하는 옵션 (안티 앨리어싱)
 	m_pGraphicDev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	m_pGraphicDev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	m_pGraphicDev->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 
 	return S_OK;
 }
