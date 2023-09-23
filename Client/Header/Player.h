@@ -14,7 +14,7 @@ class CCalculatorComponent;
 class CSphereColComp;
 
 END
-// 7시 지호==============================================
+
 class CDynamicCamera;
 
 class CPlayer : public Engine::CGameObject
@@ -39,7 +39,7 @@ public:
 	// =============================상태 추가==============================
 	virtual HRESULT		Ready_GameObject() override;
 	// ====================================================================
-
+private:
 	// ============================손 상태 체크============================
 	void				Hand_Check();
 	// ====================================================================
@@ -85,6 +85,8 @@ public:// 플레이어 상태 값
 	enum class OBJECT_TYPE { NONE, TWO_HAND, TWO_OBJECT, RIGHT_OBJECT }; // 테스트(오브젝트)
 	enum class OBJECT_NAME { NONE, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN };
 // TEST
+	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향
+
 private: // 플레이어의 상태 머신
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
 
@@ -125,6 +127,7 @@ private: // 함수
 	bool				Attack_Input(const _float& fTimeDelta);		// 공격 입력(마우스)
 	void				Mouse_Move();								// 마우스 움직임
 	void				Height_On_Terrain();						// 지형타기
+	void				Dash(const _float& fTimeDelta);
 	//void				Hand_Check();								// 플레이어 손 상태 체크
 	
 	//// ==============================양손 주먹=============================
@@ -164,17 +167,31 @@ private: // 스위치
 	_bool		bLeftHandOn = true;		// 왼손 출력 On/Off
 	_bool		bRightHandOn = true;	// 오른손 출력 On/Off
 
-	// 주먹 공격 작업용 변수 (테스트중)
-	_bool		bLeftHandFist = false;	// 왼손 주먹상태
-	_bool		bRightHandFist = false; // 오른손 주먹상태
+	// 주먹 공격
+	_bool		bLeftHandFist = true;	// 왼손 주먹상태
+	_bool		bRightHandFist = true; // 오른손 주먹상태
+	_bool		bLeftPunch = false;		// 왼주먹 On/Off
+	_bool		bRightPunch = true;		// 오른주먹 On/Off
 
+	// 방어
+	_bool		bShieldOn = true;		// 방어 On/Off
+	_bool		bShield = true;			// 방어 가능 여부
+
+	// 플레이어 행동 여부
 	_bool		bChargingReady = true;	// 차징 가능 여부
-	_bool		bDead = false;			// 플레이어 사망 여부
-	_bool		bMove = false;			// 플레이어가 움직이는지 여부
-	_bool		bMouse_Button = false;	// 마우스 클릭 여부
 	_bool		bFootAttack = false;	// 발차기 여부
 	_bool		bRunOn = false;			// 플레이어가 뛰는지 여부
+	_bool		bDashOn = false;		// 플레이어 대쉬 여부
+	_bool		bDead = false;			// 플레이어 사망 여부
+	//_bool		bMove = false;			// 플레이어가 움직이는지 여부
+	//_bool		bMouse_Button = false;	// 마우스 클릭 여부
 
+	// Test
+	_bool		bBackRighter = false;
+
+private:
+	_float		fRightFrameSpeed = 10.f;// 오른손 프레임 속도
+	_float		fLeftFrameSpeed = 10.f;	// 왼손 프레임 속도
 	_float		fStraightSpeed = 5.f;	// 플레이어 전진 속도
 	_float		fSpeed = 5.f;			// 플레이어 속도
 	_float		fDash = 20.f;			// 플레이어 대쉬
@@ -187,6 +204,8 @@ private: // 스위치
 	OBJECT_TYPE m_eObjectType;	// 오브젝트 타입
 	OBJECT_NAME m_eObjectName;	// 오브젝트 이름
 
+	// 대쉬 방향
+	DASHDIR m_eDashDir;
 
 private:
 	_long			dwMouseMove = 0;		// 마우스 무브

@@ -4,9 +4,6 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-#include <Player.h>
-#include <Monster.h>
-#include <Terrain.h>
 #include <Stage.h>
 #include <DynamicCamera.h>
 #include <TitleLogo.h>
@@ -45,8 +42,8 @@ void CLogo::Free()
 HRESULT CLogo::Ready_Scene()
 {
 	//»ç¿îµå
-	FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
-	Engine::CSoundMgr::GetInstance()->Play_Sound(L"Ambience_OldTimeyMusic6.mp3", SOUND_BGM, 0.75f);
+	//FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
+	//Engine::CSoundMgr::GetInstance()->Play_Sound(L"Ambience_OldTimeyMusic6.mp3", SOUND_BGM, 0.75f);
 
 	FAILED_CHECK_RETURN(Ready_Prototype(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Environment"), E_FAIL);

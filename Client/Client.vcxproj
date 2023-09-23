@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Boss.h" />
+    <ClInclude Include="Header\Gray.h" />
     <ClInclude Include="Header\DynamicCamera.h" />
     <ClInclude Include="Header\BackGround.h" />
     <ClInclude Include="Header\Loading.h" />
@@ -30,7 +32,7 @@
     <ClInclude Include="Include\stdafx.h" />
     <ClInclude Include="Include\targetver.h" />
     <ClInclude Include="Header\Logo.h" />
-    <ClInclude Include="Header\Monster.h" />
+    <ClInclude Include="Header\Brown.h" />
     <ClInclude Include="Header\Player.h" />
     <ClInclude Include="Header\Terrain.h" />
     <ClInclude Include="Header\TitleLogo.h" />
@@ -38,12 +40,14 @@
     <ClInclude Include="Header\Torch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Boss.cpp" />
     <ClCompile Include="Code\BackGround.cpp" />
     <ClCompile Include="Code\Loading.cpp" />
     <ClCompile Include="Code\MainApp.cpp" />
     <ClCompile Include="Code\Stage.cpp" />
     <ClCompile Include="Code\DynamicCamera.cpp" />
     <ClCompile Include="Code\UI.cpp" />
+    <ClCompile Include="Code\Gray.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -52,7 +56,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Code\Logo.cpp" />
-    <ClCompile Include="Code\Monster.cpp" />
+    <ClCompile Include="Code\Brown.cpp" />
     <ClCompile Include="Code\Player.cpp" />
     <ClCompile Include="Code\Terrain.cpp" />
     <ClCompile Include="Code\TitleLogo.cpp" />
