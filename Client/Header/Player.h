@@ -60,6 +60,14 @@ private:
 	bool				Keyboard_Input(const _float& fTimeDelta);	// 키보드 입력
 	// ====================================================================
 
+	// ============================== 프레임 ==============================
+	void				FrameManage(const _float& fTimeDelta);	// 프레임 관리
+	// ====================================================================
+
+	// =============================== 차징 ===============================
+	void				Charge(const _float& fTimeDelta);	// 차징
+	// ====================================================================
+
 
 public: // Camera
 	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)
@@ -75,7 +83,7 @@ public: // Get_Set
 
 public:// 플레이어 상태 값
 	// 플레이어
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, KICK, DIE };
+	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, DIE };
 	// 왼손
 	enum class STATE_LEFTHAND { NONE, HAND, OPEN_HAND, RUN_HAND, RIGHTER, RUN_RIHGTER };
 	// 오른손
@@ -169,7 +177,7 @@ private: // 스위치
 
 	// 주먹 공격
 	_bool		bLeftHandFist = true;	// 왼손 주먹상태
-	_bool		bRightHandFist = true; // 오른손 주먹상태
+	_bool		bRightHandFist = true;	// 오른손 주먹상태
 	_bool		bLeftPunch = false;		// 왼주먹 On/Off
 	_bool		bRightPunch = true;		// 오른주먹 On/Off
 
@@ -179,6 +187,7 @@ private: // 스위치
 
 	// 플레이어 행동 여부
 	_bool		bChargingReady = true;	// 차징 가능 여부
+	_bool		bChargeAttack = false;
 	_bool		bFootAttack = false;	// 발차기 여부
 	_bool		bRunOn = false;			// 플레이어가 뛰는지 여부
 	_bool		bDashOn = false;		// 플레이어 대쉬 여부
@@ -195,6 +204,8 @@ private:
 	_float		fStraightSpeed = 5.f;	// 플레이어 전진 속도
 	_float		fSpeed = 5.f;			// 플레이어 속도
 	_float		fDash = 20.f;			// 플레이어 대쉬
+	_float		fFullChage = 0.f;		// 풀차징 프레임
+	_float		fChageTime = 0.f;		// 차징 전환 시간
 
 	// 플레이어 상태
 	STATE_PLAYER	m_ePlayerState;	// 플레이어
@@ -229,6 +240,14 @@ private: //빛
 	//HRESULT			SetUp_Material();
 	_bool			bTorch = false;
 
+
+private: // 쿼터니언
+		_long dwMouseMoveX;
+		_long dwMouseMoveY;
+
+		D3DXQUATERNION	m_quaternion;	// 쿼터니온 변수
+
+		_vec3 m_vUp, m_vLook, m_vRight;
 };
 
 /*	현재 키 설명
