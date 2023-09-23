@@ -51,6 +51,7 @@ public:
 	}
 	_matrix* Get_WorldMatrix() { return &m_matWorld; }
 
+	void		Set_WorldMatrix(const _matrix* pWorld) { m_matWorld = *pWorld; }
 	// Set_Pos
 	void		Set_Pos(const _float& fX,
 		const _float& fY,

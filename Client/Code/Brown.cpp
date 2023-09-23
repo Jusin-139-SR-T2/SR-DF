@@ -22,7 +22,7 @@ HRESULT CBrown::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
     
-    m_pTransformComp->m_vScale.x = 0.4f;
+    m_pTransformComp->m_vScale.x = 0.4;
     m_pTransformComp->m_vInfo[INFO_POS] = { 5.f, 1.f, 25.f };
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
@@ -37,6 +37,7 @@ HRESULT CBrown::Ready_GameObject()
     m_tState_Obj.Add_Func(STATE_OBJ::SUSPICIOUS, &CBrown::AI_Suspicious);
     m_tState_Obj.Add_Func(STATE_OBJ::TAUNT, &CBrown::AI_Taunt);
     m_tState_Obj.Add_Func(STATE_OBJ::CHASE, &CBrown::AI_Chase);
+    m_tState_Obj.Add_Func(STATE_OBJ::REST, &CBrown::AI_Rest);
 
     m_tState_Obj.Add_Func(STATE_OBJ::RUN, &CBrown::AI_Run);
     m_tState_Obj.Add_Func(STATE_OBJ::WALK, &CBrown::AI_Walk);
@@ -53,6 +54,7 @@ HRESULT CBrown::Ready_GameObject()
     m_tState_Act.Add_Func(STATE_ACT::IDLE, &CBrown::Idle);
     m_tState_Act.Add_Func(STATE_ACT::APPROACH, &CBrown::Approach);
     m_tState_Act.Add_Func(STATE_ACT::MOVING, &CBrown::Moving);
+    m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CBrown::Attack);
     
 #pragma endregion
 
@@ -80,7 +82,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
     Height_On_Terrain(); // 지형타기 
-    
     m_fFrame += m_fFrameSpeed * fTimeDelta;
 
     if (m_fFrame > m_fFrameEnd)
@@ -88,12 +89,13 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         m_fFrame = 0.f;
 
         if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State()
+          || STATE_OBJ::REST == m_tState_Obj.Get_State()
           || STATE_OBJ::RUN == m_tState_Obj.Get_State()
           || STATE_OBJ::WALK == m_tState_Obj.Get_State()
           || STATE_OBJ::INCHFORWARD == m_tState_Obj.Get_State()
           || STATE_OBJ::STRAFING == m_tState_Obj.Get_State()
           || STATE_OBJ::BASICATTACK == m_tState_Obj.Get_State()
-          || STATE_OBJ::HEAVYATTACK == m_tState_Obj.Get_State() )
+          || STATE_OBJ::HEAVYATTACK == m_tState_Obj.Get_State())
             m_fCheck += 1;
     }
 
@@ -101,17 +103,17 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     
     if (Engine::IsKey_Pressing(DIK_H))
     {
-        Moving(fTimeDelta);
+        //Moving(fTimeDelta);
     }
 
+    FaceTurn(fTimeDelta);
     // ---------- 테스트 빌드 ----------------------
-    
-    
     //상태머신
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
     m_mapActionKey.Update();	// 액션키 초기화
 
+    //EnterStrafing();
 
     Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -164,7 +166,6 @@ CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 _bool CBrown::Monster_Capture() // 몬스터 시야내 플레이어 있는지 체크하는 함수 
 {
     // 플레이어 위치 가져옴 
-    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
     _vec3 vPlayerPos, vMonsterPos, vPlayerLook, vMonsterLook;
 
     // 플레이어의 위치, 바라보는 방향
@@ -209,6 +210,49 @@ float CBrown::m_fDistance()
     return fDistance;
 }
 
+void CBrown::FaceTurn(const _float& fTimeDelta)
+{
+    //case1. 회전행렬 만들기 
+    _matrix		matWorld, matView, matBill, matScale, matChangeScale;
+
+   matWorld = *m_pTransformComp->Get_WorldMatrix();
+
+    m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+
+    _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+
+    D3DXVec3Normalize(&vDir, &vDir);
+
+    _float rad = atan2f(vDir.x, vDir.z);
+
+    // 회전행렬 생성
+    _matrix rotationMatrix;
+    D3DXMatrixRotationY(&rotationMatrix, rad);
+
+    m_pTransformComp->Set_WorldMatrix(&(rotationMatrix * matWorld));
+
+    // case2. 빌보드 구성하기 
+    // 빌보드 = 자전의 역 / 자전 역 * 스 * 자 * 이 ->스케일문제 
+    //_matrix		matWorld, matView, matBill;
+
+    //matWorld = *m_pTransformComp->Get_WorldMatrix();
+
+    //m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+    //D3DXMatrixIdentity(&matBill);
+
+    //matBill._11 = matView._11;
+    //matBill._13 = matView._13;
+    //matBill._31 = matView._31;
+    //matBill._33 = matView._33;
+
+    //D3DXMatrixInverse(&matBill, 0, &matBill);
+
+    //m_pTransformComp->Set_WorldMatrix(&(matBill * matWorld));
+}
+
+
+
 void CBrown::Free()
 {
     SUPER::Free();
@@ -232,8 +276,9 @@ void CBrown::AI_Idle(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameEnd = 1;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -255,8 +300,8 @@ void CBrown::AI_Suspicious(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameEnd = 1;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Suspicious");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
@@ -296,10 +341,9 @@ void CBrown::AI_Taunt(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameEnd = 6;
         m_fFrameSpeed = 7.f;
-        m_pTransformComp->m_vScale.x = 0.4f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Taunt");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
@@ -321,7 +365,6 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
     if (m_tState_Obj.IsState_Entered())
     {
         m_fFrameSpeed = 10.f; //원상복귀 
-        m_pTransformComp->m_vScale.x = 0.4f;
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -340,7 +383,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
             // 무빙 : 4 < a <= 7
             else if (m_fInchDistance < m_fDistance() && m_fWalkDistance >= m_fDistance())
             {
-                int iCombo = (rand() % 10) + 1; // 0 or 1
+                int iCombo = (rand() % 10) + 1; 
 
                 if (6 <= iCombo)
                     m_tState_Obj.Set_State(STATE_OBJ::INCHFORWARD);
@@ -351,12 +394,12 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
             // 공격함
             else
             {
-                int iCombo = rand() % 2; // 0 or 1
+                int iCombo = (rand() % 10) + 1; 
 
-                if (1 == iCombo)
+                if (6 <= iCombo)
                     m_tState_Obj.Set_State(STATE_OBJ::BASICATTACK);
 
-                if (2 == iCombo)
+                if (6 > iCombo)
                     m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
             }
         }
@@ -380,21 +423,16 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
     }
 }
 
-void CBrown::AI_Run(float fDeltaTime)
+void CBrown::AI_Rest(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameEnd = 21;
-        m_fFrameSpeed = 12.f;
-        m_pTransformComp->m_vScale.x = 0.5f;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"RunSouth");
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Rest");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
     if (m_tState_Obj.Can_Update())
     {
-        //행동이 IDLE일때 RUN 가상키 누르기 
-        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
-            m_mapActionKey[ACTION_KEY::RUN].Act();
-
         if (1 == m_fCheck) // 한번 프레임 돌면 
         {
             m_fCheck = 0;
@@ -408,14 +446,40 @@ void CBrown::AI_Run(float fDeltaTime)
     }
 }
 
+void CBrown::AI_Run(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 11.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"RunSouth");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+    if (m_tState_Obj.Can_Update())
+    {
+        //행동이 IDLE일때 RUN 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::RUN].Act();
+
+        if (1 == m_fCheck) // 한번 프레임 돌면 
+        {
+            m_fCheck = 0;
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
 void CBrown::AI_Walk(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameEnd = 24;
         m_fFrameSpeed = 12.f;
-        m_pTransformComp->m_vScale.x = 0.5f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_South");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -427,7 +491,7 @@ void CBrown::AI_Walk(float fDeltaTime)
         if (1 == m_fCheck)
         {
             m_fCheck = 0;
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
 
@@ -441,10 +505,9 @@ void CBrown::AI_InchForward(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameEnd = 4;
-        m_fFrameSpeed = 10.f;
-        m_pTransformComp->m_vScale.x = 0.4f;
+        m_fFrameSpeed = 8.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"InchForward");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -469,10 +532,9 @@ void CBrown::AI_Strafing(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameEnd = 6;
-        m_fFrameSpeed = 10.f;
-        m_pTransformComp->m_vScale.x = 0.5f;
+        m_fFrameSpeed = 8.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Strafing");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
     if (m_tState_Obj.Can_Update())
     {     
@@ -497,21 +559,20 @@ void CBrown::AI_BasicAttack(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameEnd = 5;
-        m_fFrameSpeed = 10.f;
-        m_pTransformComp->m_vScale.x = 0.5f;
+        m_fFrameSpeed = 8.5f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"BasicAttack");
-        //m_pTextureComp->
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
     if (m_tState_Obj.Can_Update())
     {
-        //행동
+        //행동이 IDLE일때 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::BASIC_ATTACK].Act();
 
-        // 간격재기
-        if (1 == m_fCheck)
+        if (1 == m_fCheck) // 한번 프레임 돌면 
         {
             m_fCheck = 0;
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
 
@@ -525,15 +586,21 @@ void CBrown::AI_HeavyAttack(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-
+        m_fFrameSpeed = 8.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"HeavyAttack");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
     {
-        if (1 == m_fCheck)
+        //행동이 IDLE일때 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].Act();
+
+        if (1 == m_fCheck) // 한번 프레임 돌면 
         {
             m_fCheck = 0;
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
 
@@ -566,6 +633,13 @@ void CBrown::Idle(float fDeltaTime)
 
         if (m_mapActionKey[ACTION_KEY::STRAFING].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::MOVING);
+
+        if (m_mapActionKey[ACTION_KEY::BASIC_ATTACK].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::ATTACK);
+
+
+        if (m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::ATTACK);
 
     }
 
@@ -623,27 +697,56 @@ void CBrown::Moving(float fDeltaTime)
     {
         if (STATE_OBJ::INCHFORWARD == m_tState_Obj.Get_State())
         {
+           // m_bStrafing = true;
+
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
             vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
 
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fInchSpeed);
 
+
         }
 
         if (STATE_OBJ::STRAFING == m_tState_Obj.Get_State())
         {
-            _vec3 vRight = { 2 , 0 , 0 };
-            _vec3 vLeft = { -2, 0, 0 };
+           _vec3 MoveDir;
+           MoveDir = m_pTransformComp->m_vInfo[INFO_RIGHT];
 
-            int Direct = rand() % 6 + 1; // 0 or 1
+           m_pTransformComp->Move_Pos(&MoveDir, fDeltaTime, m_fStrafingSpeed);
 
-            if( 3 < Direct)
-            m_pTransformComp->Move_Pos(&vRight, fDeltaTime, m_fStrafingSpeed);
+        }
 
-            if( 3 >= Direct)
-            m_pTransformComp->Move_Pos(&vLeft, fDeltaTime, m_fStrafingSpeed);
+        m_tState_Act.Set_State(STATE_ACT::IDLE);
+    }
 
+    // 조건
+    {
+
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+    }
+}
+
+void CBrown::Attack(float fDeltaTime)
+{
+    if (m_tState_Act.IsState_Entered())
+    {
+    }
+
+    // 실행
+    {
+        if (STATE_OBJ::BASICATTACK == m_tState_Obj.Get_State())
+        {
+            // 충돌체 만들어서 기본공격 수행
+
+        }
+
+        if (STATE_OBJ::HEAVYATTACK == m_tState_Obj.Get_State())
+        {
+            // 충돌체 만들어서 공격 수행
         }
 
         m_tState_Act.Set_State(STATE_ACT::IDLE);
