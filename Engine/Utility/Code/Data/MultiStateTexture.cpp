@@ -1,5 +1,8 @@
 #include "MultiStateTexture.h"
 
+#include <future>
+#include <thread>
+
 
 
 CMultiStateTexture::CMultiStateTexture(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -60,40 +63,56 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 	//}
 	
 
-	LPDIRECT3DBASETEXTURE9 pTexture = nullptr;
+	vector<LPDIRECT3DBASETEXTURE9> vecTexture;
+	vector<future<HRESULT>> vecAsync;
+	vector<wstring> vecPath;
+
+	// 초기세팅, 안전 검사후 예약
+	vecPath.resize(iCntRange.second - iCntRange.first + 1U);
+	vecTexture.resize(iCntRange.second - iCntRange.first + 1U);
+	m_mapMultiState[pStateKey].reserve(iCntRange.second + 1U);
+	m_mapMultiState.emplace(pStateKey, vector<LPDIRECT3DBASETEXTURE9>());
 
 	for (_uint i = 0; i <= iCntRange.second; ++i)
 	{
 		TCHAR	szFileName[256] = L"";
 		wsprintf(szFileName, pFilePath, i);
+		vecPath[i] = szFileName;
+	}
 
-		switch (eType)
-		{
-		case TEX_NORMAL:
-		{
-			FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szFileName, (LPDIRECT3DTEXTURE9*)&pTexture), E_FAIL);
-			break;
-		}
-		case TEX_CUBE:
-		{
-			FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szFileName, (LPDIRECT3DCUBETEXTURE9*)&pTexture), E_FAIL);
-			break;
-		}
-		case TEX_VOLUME:
-		{
-			FAILED_CHECK_RETURN(D3DXCreateVolumeTextureFromFile(m_pGraphicDev, szFileName, (LPDIRECT3DVOLUMETEXTURE9*)&pTexture), E_FAIL);
-			break;
-		}
-		}
+	for (_uint i = 0; i <= iCntRange.second; ++i)
+	{
+		vecAsync.push_back(async(launch::async, &CMultiStateTexture::Insert_TextureAsync, this, vecPath[i].c_str(), eType, ref(vecTexture), i));
+	}
 
-		// 초기세팅, 안전 검사후 예약
-		if (i == 0U)
-		{
-			m_mapMultiState[pStateKey].reserve(iCntRange.second + 1U);
-			m_mapMultiState.emplace(pStateKey, vector<LPDIRECT3DBASETEXTURE9>());
-		}
+	for (_uint i = 0; i <= iCntRange.second; ++i)
+	{
+		vecAsync[i].get();
+		m_mapMultiState[pStateKey].push_back(vecTexture[i]);
+	}
 
-		m_mapMultiState[pStateKey].push_back(pTexture);
+	return S_OK;
+}
+
+HRESULT CMultiStateTexture::Insert_TextureAsync(const _tchar* pFilePath, TEXTUREID eType, vector<LPDIRECT3DBASETEXTURE9>& vecTexture, _uint iIndex)
+{
+	switch (eType)
+	{
+	case TEX_NORMAL:
+	{
+		FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, pFilePath, (LPDIRECT3DTEXTURE9*)&vecTexture[iIndex]), E_FAIL);
+		break;
+	}
+	case TEX_CUBE:
+	{
+		FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, pFilePath, (LPDIRECT3DCUBETEXTURE9*)&vecTexture[iIndex]), E_FAIL);
+		break;
+	}
+	case TEX_VOLUME:
+	{
+		FAILED_CHECK_RETURN(D3DXCreateVolumeTextureFromFile(m_pGraphicDev, pFilePath, (LPDIRECT3DVOLUMETEXTURE9*)&vecTexture[iIndex]), E_FAIL);
+		break;
+	}
 	}
 
 	return S_OK;

@@ -118,9 +118,15 @@
     <ClInclude Include="Header\AStarMgr.h">
       <Filter>08. AstarMgr</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Physics\RigidBody.h" />
-    <ClInclude Include="Header\Physics\PhysicsCore.h" />
-    <ClInclude Include="Header\Physics\PhysicsPrecision.h" />
+    <ClInclude Include="Header\Physics\RigidBody.h">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsCore.h">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsPrecision.h">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -237,8 +243,12 @@
     <ClCompile Include="Code\AStarMgr.cpp">
       <Filter>08. AstarMgr</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Physics\RigidBody.cpp" />
-    <ClCompile Include="Code\Physics\PhysicsCore.cpp" />
+    <ClCompile Include="Code\Physics\RigidBody.cpp">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\PhysicsCore.cpp">
+      <Filter>05. PhysicsMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">

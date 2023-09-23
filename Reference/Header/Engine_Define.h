@@ -31,8 +31,6 @@
 #include "fmod_studio.h"
 #include "fmod_studio.hpp"
 
-#include "boost/coroutine2/coroutine.hpp"
-
 #include <io.h>
 #include "fmod_common.h"
 
