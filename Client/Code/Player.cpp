@@ -75,8 +75,8 @@ HRESULT CPlayer::Ready_GameObject()
 
 
     // Tset (오브젝트 받아오는거)
-    m_eObjectType = OBJECT_TYPE::NONE; // 초기상태 : 타입x
-    m_eObjectName = OBJECT_NAME::NONE; // 초기상태 : 이름x
+    m_eObjectType = OBJECT_TYPE::TWO_HAND; // 초기상태 : 양손 주먹
+    m_eObjectName = OBJECT_NAME::NONE; // 초기상태 : 없음
 
     // 플레이어 상태 (초기값)
     m_ePlayerState = STATE_PLAYER::NONE;
@@ -108,26 +108,59 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     // 지형 타기
     Height_On_Terrain();
 
+    // 대쉬
+    Dash(fTimeDelta);
+
 #pragma region 왼손 프레임On
     if (bLeftFrameOn)
     {
         // 현재 프레임을 시간(프레임)마다 증가시키기
-        m_fLeftFrame += 10.f * fTimeDelta;
+        m_fLeftFrame += fLeftFrameSpeed * fTimeDelta;
+
+        // 양손이 주먹 상태 일경우
+        if (bLeftHandFist && bRightHandFist)
+        {
+            // 왼손 프레임이 오른손 프레임보다 클 경우
+            if (m_fLeftFrame > m_fLeftMaxFrame)
+            {
+                bLeftPunch = false;  // 왼손 주먹 Off
+                bRightPunch = true;    // 오른손 주먹 On
+            }
+        }
 
         // 현재 프레임이 최대 프레임에 도달한 경우
         if (m_fLeftFrame >= m_fLeftMaxFrame)
         {
-            // 현재 프레임을 0으로 초기화
-            m_fLeftFrame = 0;
-
-            // 왼손 프레임 Off
-            bLeftFrameOn = false;
-
             // 만약 최대프레임인데 라이터가 켜져있을 경우
             if (bRighter)
             {
                 // (현재 프레임) 라이터를 켜져있는 이미지로 고정
                 m_fLeftFrame = 5.f;
+            }
+            else // 라이터가 안켜져있을 경우
+            {
+                // 현재 상태가 라이터인 경우
+                if (m_eLeftState == STATE_LEFTHAND::RIGHTER)
+                {
+                    if (m_fLeftFrame > 0)
+                    {
+                        m_fLeftFrame--; // 왼손 프레임을 하나씩 내려주기
+                    }
+                    else
+                    {
+                        m_fLeftFrame = 0.f;
+                        // 왼손 프레임 Off
+                        bLeftFrameOn = false;
+                    }
+                }
+                else
+                {
+                    // 현재 프레임을 0으로 초기화
+                    m_fLeftFrame = 0;
+
+                    // 왼손 프레임 Off
+                    bLeftFrameOn = false;
+                }
             }
         }
     }
@@ -136,32 +169,53 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 #pragma region 오른손 프레임On (왼손과 동일)
     if (bRightFrameOn)
     {
-        m_fRightFrame += 10.f * fTimeDelta;
-
-        // 플레이어 발차기 중 프레임이 다 돌았을 경우
-        if (m_ePlayerState == STATE_PLAYER::KICK &&
-            m_fRightFrame > m_fRightMaxFrame)
+        // 쉴드를 했을 경우
+        if (bShieldOn)
         {
-            m_ePlayerState = STATE_PLAYER::NONE; // 플레이어 상태 초기화
-            Two_Hand(); // 맨 주먹으로 돌아가기 (나중에 이전상태로 돌아가게 해야함)
+            m_fRightFrame = m_fRightMaxFrame; // 쉴드 모션
         }
-
-        if (m_fRightFrame >= m_fRightMaxFrame)
+        else // 쉴드를 안했을 경우
         {
-            m_fRightFrame = 0;
-            bRightFrameOn = false;
+            // 오른손 프레임 증가
+            m_fRightFrame += fRightFrameSpeed * fTimeDelta;
 
-            // 권총이 회전중이였을 때
-            if (bSpinOn)
+            // 플레이어 발차기 중 프레임이 다 돌았을 경우
+            if (m_ePlayerState == STATE_PLAYER::KICK &&
+                m_fRightFrame > m_fRightMaxFrame)
             {
-                // 회전 Off
-                bSpinOn = false;
+                m_ePlayerState = STATE_PLAYER::NONE; // 플레이어 상태 초기화
+                Two_Hand(); // 맨 주먹으로 돌아가기 (나중에 이전상태로 돌아가게 해야함)
+            }
 
-                // 권총으로 다시 돌아가기
-                bGunOn = true;
+            // 오른손 프레임이 최대 프레임에 도달했을 경우
+            if (m_fRightFrame >= m_fRightMaxFrame)
+            {
+                // 양손이 주먹 상태 일경우
+                if (bLeftHandFist && bRightHandFist)
+                {
+                    // 오른손 프레임이 왼손 프레임보다 클 경우
+                    if (m_fRightFrame > m_fRightMaxFrame)
+                    {
+                        bRightPunch = false;  // 오른손 주먹 Off
+                        bLeftPunch = true;    // 왼손 주먹 On
+                    }
+                }
 
-                // 최대 프레임을 권총 기준으로 다시 맞춰놓기
-                m_fLeftMaxFrame = 4.f;
+                m_fRightFrame = 0;
+                bRightFrameOn = false;
+
+                // 권총이 회전중이였을 때
+                if (bSpinOn)
+                {
+                    // 회전 Off
+                    bSpinOn = false;
+
+                    // 권총으로 다시 돌아가기
+                    bGunOn = true;
+
+                    // 최대 프레임을 권총 기준으로 다시 맞춰놓기
+                    m_fRightMaxFrame = 4.f;
+                }
             }
         }
     }
@@ -285,7 +339,6 @@ HRESULT CPlayer::Add_Component()
     return S_OK;
 }
 
-// @@@대쉬 작업중@@@
 bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
 {
     _vec3	vLook;
@@ -298,32 +351,29 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     m_pTransformComp->Compute_LootAtTarget(&vInverse);
 
 #pragma region 키입력
-    // 뛰기
-    if (Engine::IsKey_Pressing(DIK_LSHIFT))
+    // 전진
+    if (Engine::IsKey_Pressing(DIK_W))
     {
-        // 전진 속도 Up
-        fStraightSpeed = 10.f;
-        // 플레이어 상태 : 달리기
-        m_ePlayerState = STATE_PLAYER::RUN;
+        // 뛰기
+        if (Engine::IsKey_Pressing(DIK_LSHIFT))
+        {
+            // 전진 속도 Up
+            fStraightSpeed = 10.f;
+            // 플레이어 상태 : 달리기
+            m_ePlayerState = STATE_PLAYER::RUN;
+        }
+
+        D3DXVec3Normalize(&vLook, &vLook);
+        m_pTransformComp->Move_Pos(&vLook, fTimeDelta, fStraightSpeed);
+        // 전진 속도 복구
+        fStraightSpeed = 5.f;
     }
 
     // 뛰기
     if (Engine::IsKey_Released(DIK_LSHIFT))
     {
-        // 전진 속도 복구
-        fStraightSpeed = 5.f;
         // 플레이어 상태 : 초기화
         m_ePlayerState = STATE_PLAYER::NONE;
-    }
-
-    // 전진
-    if (Engine::IsKey_Pressing(DIK_W))
-    {
-        D3DXVec3Normalize(&vLook, &vLook);
-        m_pTransformComp->Move_Pos(&vLook, fTimeDelta, fStraightSpeed);
-
-        bMove = true;
-        //return bMove;
     }
 
     // 후진
@@ -335,7 +385,9 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         // S + Shift 뒷 대쉬
         if (Engine::IsKey_Pressed(DIK_LSHIFT))
         {
-            m_pTransformComp->Move_Pos(&vLook, fTimeDelta, -fDash);
+            fDash = 20.f;       // 대쉬 값 설정
+            bDashOn = true;     // 대쉬 On/Off
+            m_eDashDir = DOWN;  // 대쉬 방향
         }
     }
 
@@ -347,10 +399,13 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         D3DXVec3Normalize(&vRight, &vRight);
         m_pTransformComp->Move_Pos(&vRight, fTimeDelta, fSpeed);
 
+        // fSpeed = 5.f , fDash = 20.f
         // D + Shift 우측 대쉬
         if (Engine::IsKey_Pressed(DIK_LSHIFT))
         {
-            m_pTransformComp->Move_Pos(&vRight, fTimeDelta, fDash);
+            fDash = 20.f;       // 대쉬 값 설정
+            bDashOn = true;     // 대쉬 On/Off
+            m_eDashDir = RIGHT; // 대쉬 방향
         }
     }
 
@@ -365,7 +420,9 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         // A + Shift 좌측 대쉬
         if (Engine::IsKey_Pressed(DIK_LSHIFT))
         {
-            m_pTransformComp->Move_Pos(&-vRight, fTimeDelta, fDash);
+            fDash = 20.f;       // 대쉬 값 설정
+            bDashOn = true;     // 대쉬 On/Off
+            m_eDashDir = LEFT;  // 대쉬 방향
         }
     }
 
@@ -434,18 +491,19 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     // 라이터
     if (Engine::IsKey_Pressed(DIK_V) && m_ePlayerState != STATE_PLAYER::RUN)
     {
-        //Test
         if (!bRighter)  // 라이터가 꺼져있을 경우
         {
             bRighter = true;        // 라이터 켜주기
             bLeftFrameOn = true;    // 프레임 재생
             m_fLeftMaxFrame = 6.f;  // 최대 프레임 설정
+            m_eLeftState = STATE_LEFTHAND::RIGHTER; // 왼손 상태 라이터로
         }
         else // 라이터가 켜져있을 경우
         {
-            m_fLeftFrame = 0.f;
+            //bBackRighter = true;
             bRighter = false;
-            bLeftFrameOn = false;
+            m_fLeftFrame = 0.f;
+            //bLeftFrameOn = false;
             //Test
         }
     }
@@ -471,36 +529,25 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
     // 마우스 좌클릭
     if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
     {
-        bMouse_Button = true;
-
-        bRightFrameOn = true;
-
         // 주먹 번갈아가며 공격 작업 진행중
-        //// 양손 다 주먹상태일 경우
-        //if (bLeftHandFist && bRightHandFist)
-        //{
-        //    // 양손 프레임 모두 0일경우
-        //    if (m_fRightFrame == 0.f &&
-        //        m_fLeftFrame == 0.f)
-        //    {
-        //        m_fRightFrame++;
-        //    }
+        // 양손 다 주먹상태일 경우
+        // 왼손 오른손 프레임이 둘다 꺼져있을 경우
 
-        //    // 오른손 프레임이 1보다 클 경우
-        //    if (m_fRightFrame > 1)
-        //    {
-        //        m_fRightFrame--;
-        //        m_fLeftFrame++;
-        //    }
-
-        //    // 왼손 프레임이 1보다 클 경우
-        //    if (m_fLeftFrame > 1)
-        //    {
-        //        m_fLeftFrame--;
-        //        m_fRightFrame++;
-        //    }
-        //}
-
+        if (bLeftHandFist && bRightHandFist)
+        {
+            if (bLeftPunch)
+            {
+                bLeftFrameOn = true;
+            }
+            if (bRightPunch)
+            {
+                bRightFrameOn = true;
+            }  
+        }
+        else
+        {
+            bRightFrameOn = true;
+        }
 
         //// 왼손 주먹상태가 켜져있을 경우
         //if (bLeftHandFist)
@@ -519,15 +566,28 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
         //    m_fLeftFrame++;
 
         //}
-
-        return bMouse_Button;
     }
 
     // 마우스 우클릭
     if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
     {
-        bMouse_Button = true;
-        return bMouse_Button;
+        // 쉴드 가능 일때
+        if (bShield)
+        {
+            // 현재 프레임이 0일 때
+            if (m_fRightFrame == 0)
+            {
+                // 쉴드On
+                bShieldOn = true;
+                // 오른손 프레임On
+                bRightFrameOn = true;
+            }
+        }
+    }
+    else
+    {
+        // 쉴드Off
+        bShieldOn = false;
     }
 #pragma endregion
 
@@ -582,6 +642,48 @@ void CPlayer::Height_On_Terrain()
     m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.5f, vPos.z);
 }
 
+void CPlayer::Dash(const _float& fTimeDelta)
+{
+    _vec3	vLook;
+
+    m_pTransformComp->Get_Info(INFO_LOOK, &vLook);
+    vLook = { vLook.x, 0.f, vLook.z };
+
+    _vec3 vRight;
+    m_pTransformComp->Get_Info(INFO_RIGHT, &vRight);
+    D3DXVec3Normalize(&vRight, &vRight);
+
+    // 대쉬 여부
+    if (bDashOn)
+    {
+        // 대쉬 속도가 스피드보다 빠를 경우만 작동
+        if (fDash > fSpeed)
+        {
+            // 대쉬 방향 및 이동
+            switch (m_eDashDir)
+            {
+            case CPlayer::LEFT:
+                m_pTransformComp->Move_Pos(&-vRight, fTimeDelta, fDash);
+                break;
+            case CPlayer::RIGHT:
+                m_pTransformComp->Move_Pos(&vRight, fTimeDelta, fDash);
+                break;
+            case CPlayer::DOWN:
+                m_pTransformComp->Move_Pos(&vLook, fTimeDelta, -fDash);
+                break;
+            }
+
+            fDash--; // 대쉬 속도 감소
+        }
+        else // 대쉬 속도가 스피드와 같으면
+        {
+            bDashOn = false; // 대쉬 정지
+        }
+    }
+
+    
+}
+
 #pragma region 양손 주먹 (기본 상태)
 void CPlayer::Two_Hand()
 {
@@ -594,11 +696,15 @@ void CPlayer::Two_Hand()
 
     // 오른손 주먹
     m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND);
+    bRightHandFist = true; // 오른손 주먹 상태On
 
     // 라이터를 안켰을 경우
     if (!bRighter)
+    {
         // 왼손 주먹
         m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
+        bLeftHandFist = true; // 왼손 주먹 상태On
+    }
 
 }
 #pragma endregion
@@ -606,6 +712,10 @@ void CPlayer::Two_Hand()
 #pragma region 양손 오브젝트
 void CPlayer::Two_Object()
 {
+    // 양손 주먹 상태Off
+    bRightHandFist = false;
+    bLeftHandFist = false;
+
     // 라이터가 켜져있는 상태로 양손 오브젝트에 들어왔을 경우
     if (bRighter)
     {
@@ -634,6 +744,10 @@ void CPlayer::Two_Object()
 #pragma region 한손 오브젝트
 void CPlayer::Right_Object()
 {
+    // 양손 주먹 상태Off
+    bRightHandFist = false;
+    bLeftHandFist = false;
+
     // 오른손
     switch (m_eObjectName)
     {
@@ -705,11 +819,6 @@ void CPlayer::Right_Object()
         }
         }
     }
-    //else // 라이터를 켰을 경우
-    //{
-    //    // 왼손 라이터
-    //    m_tLeftHand_State.Set_State(STATE_LEFTHAND::RIGHTER);
-    //}
 }
 #pragma endregion
 
@@ -1054,15 +1163,22 @@ void CPlayer::Left_Righter(float fTimeDelta)
         // 현재 프레임이 최대 프레임보다 크거나 같을 경우(애니메이션을 다 돌았을 때)
         if (m_fLeftFrame >= m_fLeftMaxFrame)
         {
-            // 프레임 재생 Off
-            bLeftFrameOn = false;
-            m_fLeftFrame = m_fLeftMaxFrame - 1.f; //이거 안됨
-        }
+            if (bRighter)
+            {
+                // 프레임 재생 Off
+                bLeftFrameOn = false;
+                m_fLeftFrame = m_fLeftMaxFrame - 1.f;
+            }
+            else // 라이터가 꺼졌을 경우
+            {
+                m_fLeftFrame--; // 왼손 프레임 감소
 
-        if (!bRighter)
-        {
-            // 왼손 주먹
-            m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
+                if (m_fLeftFrame <= 0) // 모두 감소했을 경우
+                {
+                    // 왼손 주먹
+                    m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);
+                }
+            }
         }
     }
 
@@ -1082,6 +1198,7 @@ void CPlayer::Right_None(float fTimeDelta)
     {
         // 오른손 출력 Off
         bRightHandOn = false;
+        bShield = false; // 방어 불가
         // 오른손 현재 프레임 초기화
         m_fRightFrame = 0.f;
     }
@@ -1104,6 +1221,8 @@ void CPlayer::Right_Hand(float fTimeDelta)
         // 기본 오른손 출력
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Right_Hand");
         m_fRightMaxFrame = 2.f; // 최대 프레임 설정
+        fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
+        bShield = true;         // 방어 가능
 
         // 주먹 작업 진행중
         //bRightFrameOn = false;   // 오른손 프레임 Off
@@ -1125,8 +1244,9 @@ void CPlayer::Right_RunHand(float fTimeDelta)
 {
     if (m_tRightHand_State.IsState_Entered())
     {
-        // 왼손 뛰는 손으로 변경
+        // 오른손 뛰는 손으로 변경
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Single", L"Right_RunHand");
+        bShield = false; // 방어 불가
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -1147,6 +1267,8 @@ void CPlayer::Right_Gun(float fTimeDelta)
         // 오른손 총
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Gun");
         m_fRightMaxFrame = 5.f; // 최대 프레임 지정
+        fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
+        bShield = false;        // 방어 불가
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -1186,6 +1308,8 @@ void CPlayer::Right_Thompson(float fTimeDelta)
         // 오른손 톰슨 기관총
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Thompson");
         m_fRightMaxFrame = 4.f; // 최대 프레임 지정
+        fRightFrameSpeed = 35.f;// 프레임 속도 지정 (공격 속도)
+        bShield = false;        // 방어 불가
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -1206,6 +1330,8 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
         // 오른손 쇠파이프
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Steel_Pipe");
         m_fRightMaxFrame = 4.f; // 최대 프레임 지정
+        fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
+        bShield = true;         // 방어 가능
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -1226,6 +1352,8 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
         // 오른손 맥주병
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"BeerBottle");
         m_fRightMaxFrame = 5.f; // 최대 프레임 지정
+        fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
+        bShield = false;        // 방어 불가
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -1246,6 +1374,8 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
         // 오른손 프라이팬
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"FryingPan");
         m_fRightMaxFrame = 5.f; // 최대 프레임 지정
+        fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
+        bShield = true;         // 방어 가능
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -1266,6 +1396,8 @@ void CPlayer::Right_Kick(float fTimeDelta)
         // 오른손 발차기
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Kick");
         m_fRightMaxFrame = 4.f; // 최대 프레임 지정
+        fRightFrameSpeed = 7.f; // 프레임 속도 지정 (공격 속도)
+        bShield = false;        // 방어 불가
     }
 
     if (m_tRightHand_State.Can_Update())
