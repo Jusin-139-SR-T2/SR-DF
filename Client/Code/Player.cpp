@@ -531,7 +531,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
         // 주먹 번갈아가며 공격 작업 진행중
         // 양손 다 주먹상태일 경우
         // 왼손 오른손 프레임이 둘다 꺼져있을 경우
-
+        Engine::Play_Sound(L"RockmanEXE", L"falzar.wav", SOUND_PLAYER, 0.9f);   // 테스트로 넣어놓음
         if (bLeftHandFist && bRightHandFist)
         {
             if (bLeftPunch)
