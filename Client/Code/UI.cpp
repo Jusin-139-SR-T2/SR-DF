@@ -5,13 +5,13 @@
 #include "Export_Utility.h"
 
 #include "DynamicCamera.h"
-#include "CalculatorComponent.h"
 
 CUI::CUI(LPDIRECT3DDEVICE9 pGraphicDev): CGameObject(pGraphicDev), fHp(100.f)
 {
 }
 
-CUI::CUI(const CUI& rhs): CGameObject(rhs)
+CUI::CUI(const CUI& rhs)
+	: CGameObject(rhs)
 {
 }
 
@@ -23,10 +23,10 @@ HRESULT CUI::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformComp->m_vScale.x = 1.5f;
-	m_pTransformComp->m_vScale.y = 1.5f;
+	m_pTransformComp->m_vScale.x = WINCX;
+	m_pTransformComp->m_vScale.y = WINCY;
 
-	m_pTransformComp->Set_Pos(-9.3f, -4.6f, 10.f);
+	m_pTransformComp->Set_Pos(-200.f, 0.f, 0.f);
 
 	return S_OK;
 }
@@ -44,9 +44,7 @@ _int CUI::Update_GameObject(const _float& fTimeDelta)
 
 void CUI::LateUpdate_GameObject()
 {
-	_vec3 vPos;
-	m_pTransformComp->Get_Info(INFO_POS, &vPos);
-	//__super::Compute_ViewZ(&vPos);
+	
 }
 
 CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -67,12 +65,12 @@ void CUI::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 	m_pTextureComp->Render_Texture(0);
 	m_pBufferComp->Render_Buffer();
 
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	//m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -86,16 +84,13 @@ HRESULT CUI::Add_Component()
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_UITextureComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-
+	
 	return S_OK;
 }
 
 void CUI::Key_Input(const _float& fTimeDelta)
 {
 	//추후에 1,2,3번으로 인벤토리 바꾸는 것
-
-
 	if (Engine::Get_DIKeyState(DIK_Z) & 0x80)
 	{
 		fHp -= 1.f;
