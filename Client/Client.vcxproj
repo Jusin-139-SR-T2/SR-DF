@@ -38,6 +38,7 @@
     <ClInclude Include="Header\TitleLogo.h" />
     <ClInclude Include="Header\SkyBox.h" />
     <ClInclude Include="Header\Torch.h" />
+    <ClInclude Include="Header\Observe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Boss.cpp" />
@@ -62,6 +63,7 @@
     <ClCompile Include="Code\TitleLogo.cpp" />
     <ClCompile Include="Code\SkyBox.cpp" />
     <ClCompile Include="Code\Torch.cpp" />
+    <ClCompile Include="Code\Observe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

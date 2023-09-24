@@ -290,7 +290,8 @@ void CBrown::AI_Idle(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_iPreHP = m_iHP; // 상태체크용 hp저장 
-        //GunState = Get_Player()->Get_PlayerGunState();
+  
+
     }
 
     if (m_tState_Obj.Can_Update())

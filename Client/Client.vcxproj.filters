@@ -67,6 +67,9 @@
     <Filter Include="02. GameObject\01. Unit\2. Monster\1. Brown">
       <UniqueIdentifier>{87d5e720-2bd3-483a-b7e8-6547cbc4e5de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. Unit\3. Observer">
+      <UniqueIdentifier>{5df87e8e-e025-480d-a666-568b962d64c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -129,6 +132,9 @@
     <ClInclude Include="Header\Brown.h">
       <Filter>02. GameObject\01. Unit\2. Monster\1. Brown</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Observe.h">
+      <Filter>02. GameObject\01. Unit\3. Observer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -158,9 +164,6 @@
     <ClCompile Include="Code\DynamicCamera.cpp">
       <Filter>02. GameObject\03. Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Code\TitleLogo.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Code\SkyBox.cpp">
       <Filter>02. GameObject\04. SkyBox</Filter>
     </ClCompile>
@@ -187,6 +190,12 @@
     </ClCompile>
     <ClCompile Include="Code\Brown.cpp">
       <Filter>02. GameObject\01. Unit\2. Monster\1. Brown</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Observe.cpp">
+      <Filter>02. GameObject\01. Unit\3. Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\TitleLogo.cpp">
+      <Filter>01. Scene\00. Logo\TitleLogo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

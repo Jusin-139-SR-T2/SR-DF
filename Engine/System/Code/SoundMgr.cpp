@@ -51,6 +51,9 @@ HRESULT CSoundMgr::Ready_Sound()
 
 	// 실제 사운드 폴더 찾아 로드
 	LoadSoundFile(L"FallenAces", "./Resource/Sound/FallenAces/bgm/");
+	LoadSoundFile(L"FallenAces", "./Resource/Sound/FallenAces/sfx/");
+	LoadSoundFile(L"FallenAces", "./Resource/Sound/FallenAces/announce/");
+	LoadSoundFile(L"FallenAces", "./Resource/Sound/FallenAces/talk/");
 	LoadSoundFile(L"RockmanEXE", "./Resource/Sound/RockmanEXE/sfx/");
 
 	return S_OK;
