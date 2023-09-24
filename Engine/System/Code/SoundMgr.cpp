@@ -1,6 +1,7 @@
 #include "SoundMgr.h"
 
-
+#include <future>
+#include <thread>
 
 IMPLEMENT_SINGLETON(CSoundMgr)
 
@@ -16,10 +17,13 @@ CSoundMgr::~CSoundMgr()
 
 void CSoundMgr::Free()
 {
-	for (auto& Mypair : m_mapSound)
+	for (auto& pairSoundCtn : m_mapSound)
 	{
-		delete[] Mypair.first;
-		FMOD_Sound_Release(Mypair.second);
+		for (auto& pairSound : pairSoundCtn.second->Get_MapSound())
+		{
+			FMOD_Sound_Release(pairSound.second);
+		}
+		pairSoundCtn.second->Free();
 	}
 	m_mapSound.clear();
 
@@ -46,24 +50,24 @@ HRESULT CSoundMgr::Ready_Sound()
 	result = FMOD_System_GetMasterChannelGroup(m_pSystem, &m_pMasterChanelGroup);
 
 	// 실제 사운드 폴더 찾아 로드
-	LoadSoundFile("./Resource/Sound/bgm/");
-	LoadSoundFile("./Resource/Sound/sfx/");
+	LoadSoundFile(L"FallenAces", "./Resource/Sound/FallenAces/bgm/");
+	LoadSoundFile(L"RockmanEXE", "./Resource/Sound/RockmanEXE/sfx/");
 
 	return S_OK;
 }
 
-void CSoundMgr::Play_Sound(TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+void CSoundMgr::Play_Sound(_tchar* pCategoryKey, _tchar* pSoundKey, CHANNELID eID, float fVolume)
 {
-	_unmap<const _tchar*, FMOD_SOUND*>::iterator iter;
-
-	// iter = find_if(m_mapSound.begin(), m_mapSound.end(), CTag_Finder(pSoundKey));
-	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)->bool {
-		return !lstrcmp(pSoundKey, iter.first);
-		});
-
-	if (iter == m_mapSound.end())
+	// 카테고리 키
+	auto iterCate = m_mapSound.find(pCategoryKey);
+	if (iterCate == m_mapSound.end())
 		return;
 
+	// 사운드 키
+	auto iter = iterCate->second->Get_MapSound().find(pSoundKey);
+
+
+	// 여기부터 사운드 플레이
 	FMOD_BOOL bPlay = FALSE;
 
 	if (FMOD_Channel_IsPlaying(m_pChannelArr[eID], &bPlay))
@@ -81,18 +85,18 @@ void CSoundMgr::Play_Sound(TCHAR* pSoundKey, CHANNELID eID, float fVolume)
 	FMOD_System_Update(m_pSystem);
 }
 
-void CSoundMgr::Play_BGM(TCHAR* pSoundKey, float fVolume)
+void CSoundMgr::Play_BGM(_tchar* pCategoryKey, _tchar* pSoundKey, float fVolume)
 {
-	_unmap<const _tchar*, FMOD_SOUND*>::iterator iter;
-
-	// iter = find_if(m_mapSound.begin(), m_mapSound.end(), CTag_Finder(pSoundKey));
-	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)->bool {
-		return !lstrcmp(pSoundKey, iter.first);
-		});
-
-	if (iter == m_mapSound.end())
+	// 카테고리 키
+	auto iterCate = m_mapSound.find(pCategoryKey);
+	if (iterCate == m_mapSound.end())
 		return;
 
+	// 사운드 키
+	auto iter = iterCate->second->Get_MapSound().find(pSoundKey);
+
+
+	// 여기부터 사운드 플레이
 	CSoundMgr::GetInstance()->Stop_Sound(SOUND_BGM);
 	FMOD_System_PlaySound(m_pSystem, iter->second, m_pChannelGroup[BGM_GROUP], FALSE, &m_pChannelArr[SOUND_BGM]);
 	FMOD_Channel_SetMode(m_pChannelArr[SOUND_BGM], FMOD_LOOP_NORMAL);
@@ -118,8 +122,17 @@ void CSoundMgr::SetChannelVolume(CHANNELID eID, float fVolume)
 	FMOD_System_Update(m_pSystem);
 }
 
-void CSoundMgr::LoadSoundFile(const char* pPath)
+void CSoundMgr::LoadSoundFile(_tchar* pCategoryKey, const char* pPath)
 {
+	// 여기는 카테고리 키 만들기, 없으면 키를 만들고 컨테이너를 만들어 준다.
+	auto iter = m_mapSound.find(pCategoryKey);
+	if (iter == m_mapSound.end())
+	{
+		m_mapSound.emplace(pCategoryKey, FSoundData::Create());
+	}
+
+
+	// 여기부터 파일 로드부
 	char sText[128] = "";
 	strcpy_s(sText, pPath);
 	strcat_s(sText, "*.*");
@@ -148,9 +161,12 @@ void CSoundMgr::LoadSoundFile(const char* pPath)
 		TMP_PATH,
 		TMP_FILE_NAME
 	};
+
+	// 비동기 처리는 쓰레드를 사용하기 때문에 모든 데이터를 별도의 컨테이너에 저장하고 처리해줍니다.
 	vector<future<FMOD_RESULT>> vecAsync;
 	vector<sound_tuple> vecSoundData;
 	
+	// 데이터 입력부
 	while (iResult != -1)
 	{
 		strcpy_s(szFullPath, szCurPath);
@@ -159,6 +175,7 @@ void CSoundMgr::LoadSoundFile(const char* pPath)
 		strcat_s(szFullPath, fd.name);
 		sound_tuple tpSound;
 
+		// 쓰레드에 넘겨줄 데이터를 입력
 		get<TMP_PATH>(tpSound) = string(szFullPath);
 		get<TMP_FILE_NAME>(tpSound) = string(fd.name);
 		get<TMP_RESULT>(tpSound) = FMOD_OK;
@@ -170,6 +187,7 @@ void CSoundMgr::LoadSoundFile(const char* pPath)
 		iResult = _findnext(handle, &fd);
 	}
 
+	// 쓰레드 실행
 	for (size_t i = 0; i < vecSoundData.size(); i++)
 	{
 		vecAsync.push_back(async(launch::async, &CSoundMgr::LoadSoundFile_Async, this
@@ -177,6 +195,7 @@ void CSoundMgr::LoadSoundFile(const char* pPath)
 									, ref(get<TMP_RESULT>(vecSoundData[i])), &get<TMP_SOUND>(vecSoundData[i])));
 	}
 
+	// 결과 받아오기
 	for (size_t i = 0; i < vecSoundData.size(); i++)
 	{
 		vecAsync[i].get();
@@ -185,16 +204,19 @@ void CSoundMgr::LoadSoundFile(const char* pPath)
 		{
 			int iLength = (int)strlen(get<TMP_FILE_NAME>(vecSoundData[i]).c_str()) + 1;
 
-			TCHAR* pSoundKey = new TCHAR[iLength];
-			ZeroMemory(pSoundKey, sizeof(TCHAR) * iLength);
+			_tchar* pSoundKey = new _tchar[iLength];
+			ZeroMemory(pSoundKey, sizeof(_tchar) * iLength);
 
 			// 아스키 코드 문자열을 유니코드 문자열로 변환시켜주는 함수
 			MultiByteToWideChar(CP_ACP, 0, get<TMP_FILE_NAME>(vecSoundData[i]).c_str(), iLength, pSoundKey, iLength);
 
-			m_mapSound.emplace(pSoundKey, get<TMP_SOUND>(vecSoundData[i]));
+			m_mapSound[pCategoryKey]->Get_MapSound().emplace(pSoundKey, get<TMP_SOUND>(vecSoundData[i]));
+
+			Safe_Delete_Array(pSoundKey);
 		}
 	}
 
+	// FMOD 업데이트
 	FMOD_System_Update(m_pSystem);
 
 	_findclose(handle);
