@@ -22,14 +22,13 @@ HRESULT CBrown::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
     
-    m_pTransformComp->m_vScale.x = 0.4;
+    m_pTransformComp->m_vScale.x = 0.4f;
     m_pTransformComp->m_vInfo[INFO_POS] = { 5.f, 1.f, 25.f };
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
 
     // INFO
-    m_iHP = 40;         // 체력
-    m_iAttack = 10;     // 공격력
+    m_iHP = 100;         // 체력
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE);
@@ -41,10 +40,20 @@ HRESULT CBrown::Ready_GameObject()
 
     m_tState_Obj.Add_Func(STATE_OBJ::RUN, &CBrown::AI_Run);
     m_tState_Obj.Add_Func(STATE_OBJ::WALK, &CBrown::AI_Walk);
-    m_tState_Obj.Add_Func(STATE_OBJ::INCHFORWARD, &CBrown::AI_InchForward);
     m_tState_Obj.Add_Func(STATE_OBJ::STRAFING, &CBrown::AI_Strafing);
+    m_tState_Obj.Add_Func(STATE_OBJ::INCHFORWARD, &CBrown::AI_InchForward);
     m_tState_Obj.Add_Func(STATE_OBJ::BASICATTACK, &CBrown::AI_BasicAttack);
     m_tState_Obj.Add_Func(STATE_OBJ::HEAVYATTACK, &CBrown::AI_HeavyAttack);
+    m_tState_Obj.Add_Func(STATE_OBJ::JUMP, &CBrown::AI_Jump);
+
+    m_tState_Obj.Add_Func(STATE_OBJ::HIT, &CBrown::AI_Hit);
+    m_tState_Obj.Add_Func(STATE_OBJ::FACEPUNCH, &CBrown::AI_FacePunch);
+    m_tState_Obj.Add_Func(STATE_OBJ::FALLING, &CBrown::AI_HitByPitchedBall);
+
+    m_tState_Obj.Add_Func(STATE_OBJ::DAZED, &CBrown::AI_Dazed);
+    m_tState_Obj.Add_Func(STATE_OBJ::CHOPPED, &CBrown::AI_Chopped);
+    m_tState_Obj.Add_Func(STATE_OBJ::HEADLESS, &CBrown::AI_Headless);
+    m_tState_Obj.Add_Func(STATE_OBJ::DEATH, &CBrown::AI_Death);
 
 #pragma endregion
 
@@ -71,6 +80,9 @@ HRESULT CBrown::Ready_GameObject()
 
 #pragma endregion
 
+   // m_pPlayer = dynamic_cast<CTextureComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_TextureRightHandTest"));
+   // NULL_CHECK_RETURN(m_pPlayer, -1);
+
     return S_OK;
 }
 
@@ -82,37 +94,38 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
     Height_On_Terrain(); // 지형타기 
+
     m_fFrame += m_fFrameSpeed * fTimeDelta;
 
-    if (m_fFrame > m_fFrameEnd)
-    {
-        m_fFrame = 0.f;
-
-        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State()
-          || STATE_OBJ::REST == m_tState_Obj.Get_State()
-          || STATE_OBJ::RUN == m_tState_Obj.Get_State()
-          || STATE_OBJ::WALK == m_tState_Obj.Get_State()
-          || STATE_OBJ::INCHFORWARD == m_tState_Obj.Get_State()
-          || STATE_OBJ::STRAFING == m_tState_Obj.Get_State()
-          || STATE_OBJ::BASICATTACK == m_tState_Obj.Get_State()
-          || STATE_OBJ::HEAVYATTACK == m_tState_Obj.Get_State())
-            m_fCheck += 1;
-    }
-
     // ---------- 테스트 빌드 ----------------------
-    
+
     if (Engine::IsKey_Pressing(DIK_H))
     {
-        //Moving(fTimeDelta);
+        m_iHP = 0; //즉사 기믹 확인용 
     }
 
-    FaceTurn(fTimeDelta);
+    if (Engine::IsKey_Pressing(DIK_K))
+    {
+        m_iHP = 50; // 피격 기믹 확인용 
+    }
+
+
+
     // ---------- 테스트 빌드 ----------------------
+    FaceTurn(fTimeDelta);
+
     //상태머신
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
     m_mapActionKey.Update();	// 액션키 초기화
 
+    if (m_fFrame > m_fFrameEnd)
+    {
+        m_fFrame = 0.f;
+   
+        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
+            m_fCheck += 1;
+    }
     //EnterStrafing();
 
     Engine::Add_RenderGroup(RENDER_ALPHA, this);
@@ -251,8 +264,6 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
     //m_pTransformComp->Set_WorldMatrix(&(matBill * matWorld));
 }
 
-
-
 void CBrown::Free()
 {
     SUPER::Free();
@@ -278,7 +289,8 @@ void CBrown::AI_Idle(float fDeltaTime)
     {
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-
+        m_iPreHP = m_iHP; // 상태체크용 hp저장 
+        //GunState = Get_Player()->Get_PlayerGunState();
     }
 
     if (m_tState_Obj.Can_Update())
@@ -288,6 +300,22 @@ void CBrown::AI_Idle(float fDeltaTime)
         {
             m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
         }
+        
+        // 한번에 뒤에서 백어탭 기습했을경우 
+        if (0 == m_iHP) 
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::CHOPPED);
+        }
+        
+        if( m_iHP != m_iMaxHP )
+        {
+          //CPlayer::STATE_RIGHTHAND::NONE ;
+          m_tState_Obj.Set_State(STATE_OBJ::HIT);
+        }
+
+        // 플레이어가 총으로 쏘았을 때
+        // Get_Player()->Get_m_pRightHandComp()->Get_VecTexture()->front()
+        // Get_Player()->Get_PlayerGunState()
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -306,6 +334,9 @@ void CBrown::AI_Suspicious(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
+        if(m_iPreHP != m_iHP)
+            m_tState_Obj.Set_State(STATE_OBJ::HIT);
+
         if(Monster_Capture()) // 시야각 이내에 위치 + 시야거리 이내 위치 
         {
             m_fAwareness += fDeltaTime * 3.f;
@@ -351,8 +382,10 @@ void CBrown::AI_Taunt(float fDeltaTime)
         if (2 == m_fCheck) // 도발 두번 하고 따라가기 
         {
             m_fCheck = 0; //다른데도 쓰니까 0으로 되돌리기 
+            m_iPreHP = m_iHP; // 피격없으면 pre로 이전hp 저장 
             m_tState_Obj.Set_State(STATE_OBJ::CHASE); // AI = 추격모드
         }
+
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -370,6 +403,16 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
     {
         if (Monster_Capture()) // 사거리에 포착되는경우 
         {
+            // 시야거리에 의한 상태머신보다 피격/죽음이 더 빠름  
+
+            // --------피격상태 상태머신 -----------
+            if (m_iPreHP != m_iHP)
+                m_tState_Obj.Set_State(STATE_OBJ::HIT);
+
+            if (0 == m_iHP)
+                m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+
+            // --------거리비교 상태머신 -----------
             // 뛰어서 다가옴 : a > 8
             if (m_fRunDistance < m_fDistance())
             {
@@ -415,6 +458,9 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
                 m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
             }
         }
+
+       
+
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -433,9 +479,8 @@ void CBrown::AI_Rest(float fDeltaTime)
     }
     if (m_tState_Obj.Can_Update())
     {
-        if (1 == m_fCheck) // 한번 프레임 돌면 
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
@@ -460,9 +505,8 @@ void CBrown::AI_Run(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::RUN].Act();
 
-        if (1 == m_fCheck) // 한번 프레임 돌면 
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
@@ -488,9 +532,8 @@ void CBrown::AI_Walk(float fDeltaTime)
             m_mapActionKey[ACTION_KEY::WALK].Act();
 
         // 행동 추가 
-        if (1 == m_fCheck)
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
@@ -515,9 +558,8 @@ void CBrown::AI_InchForward(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::INCHFORWARD].Act();
 
-        if (1 == m_fCheck ) // 한번 프레임 돌면 
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
@@ -532,7 +574,7 @@ void CBrown::AI_Strafing(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 8.f;
+        m_fFrameSpeed = 11.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Strafing");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -542,9 +584,8 @@ void CBrown::AI_Strafing(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::STRAFING].Act();
 
-        if (1 == m_fCheck ) // 한번 프레임 돌면 
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
@@ -569,9 +610,8 @@ void CBrown::AI_BasicAttack(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::BASIC_ATTACK].Act();
 
-        if (1 == m_fCheck) // 한번 프레임 돌면 
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
@@ -597,11 +637,216 @@ void CBrown::AI_HeavyAttack(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].Act();
 
-        if (1 == m_fCheck) // 한번 프레임 돌면 
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CBrown::AI_Jump(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Jump");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }  
+}
+
+void CBrown::AI_Hit(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Hit");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::REST); 
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CBrown::AI_FacePunch(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"FacePunch");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        // 공격상태         
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CBrown::AI_HitByPitchedBall(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 0.1f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"CrotchHit");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        // 플레이어 앉은상태 + 공격상태 
+        m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CBrown::AI_Dazed(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_iPreHP = m_iHP;
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Jump");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+
+    }
+
+    if (m_tState_Obj.Can_Update())
+    { 
+        //충돌체 만들어서 HP깎기 (공격하면) 
+        
+        // 히트 있을때 
+        if (0 == m_iHP)
+        {
+            if (m_fFrame > m_fFrameEnd)
+            {
+                m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+            }
+        }
+
+        //아무런 히트가 없음 
+        if(m_iPreHP == m_iHP) 
+        {
+            if (m_fFrame > m_fFrameEnd)
+            {
+                m_tState_Obj.Set_State(STATE_OBJ::REST);
+            }
+        }
+
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CBrown::AI_Chopped(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Chopped");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        DeadSpin = false;
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        if(!Dead) //수정필요 
+        m_pTransformComp->Rotation(ROT_X, fDeltaTime*0.75f);
+        
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_fFrame = m_fFrameEnd -1;
+            Dead = true;
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CBrown::AI_Headless(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Headless");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        if (!Dead) //수정필요 
+            m_pTransformComp->Rotation(ROT_X, fDeltaTime * 0.75f);
+
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_fFrame = m_fFrameEnd - 1;
+            Dead = true;
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+    }
+}
+
+void CBrown::AI_Death(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Death");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        m_tState_Obj.Set_State(STATE_OBJ::CHASE);
     }
 
     if (m_tState_Obj.IsState_Exit())

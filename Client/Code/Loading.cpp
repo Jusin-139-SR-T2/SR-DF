@@ -135,6 +135,7 @@ HRESULT CLoading::Loading_For_Texture()
 	// Monster Texture - Brown - Single
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/Stand/Stand_South.png", TEX_NORMAL, L"Brown_Single", L"Stand_South"), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/Single/Suspicious.png", TEX_NORMAL, L"Brown_Single", L"Suspicious"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/Single/CrotchHit.png", TEX_NORMAL, L"Brown_Single", L"CrotchHit"), E_FAIL);
 
 	// Monster Texture - Brown - Multi
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/BasicAttack/BasicAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"BasicAttack", _range<_uint>(0U, 4U)), E_FAIL);

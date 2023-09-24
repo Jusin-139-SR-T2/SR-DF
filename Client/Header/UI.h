@@ -56,7 +56,7 @@ private:
 
 public:
 	void		Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
-	_matrix m_matRotAxis;
+	_matrix		m_matRotAxis;
 
 public:
 	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)

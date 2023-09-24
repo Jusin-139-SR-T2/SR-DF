@@ -56,7 +56,10 @@ private:
 	void		FaceTurn(const _float& fTimeDelta);
 	// 변수 ----------
 	_float		m_fCheck = 0;		//Taunt 등 프레임 돌리는횟수 지정
-	_int		m_iHP;				// 몬스터 hp 
+	_int		m_iHP;				// 몬스터 현재 hp 
+	_int		m_iPreHP;			// 이전 HP 저장용도 
+	_int		m_iDazedHP = 25;	// 몬스터 기절하는 hp
+	_int		m_iMaxHP = 100;		// 몬스터 최대 hp 
 	_int		m_iAttack = 15;		// 몬스터 공격력
 
 	_float		m_fFrame = 0.f;		// 이미지 돌리기위한 프레임변수 
@@ -79,24 +82,25 @@ private:
 	_float		m_fMonsterSightDistance = 13.f; // 몬스터가 포착하는 사거리 
 	_float		m_fRunDistance = 8.f; // 사거리 ~ Run 사이 =  run
 	_float		m_fWalkDistance = 7.5f; // run~walk 사이 = walk
-	_float		m_fInchDistance = 2.f; // inch ~ walk 사이 = inch/strafy & 0 ~inch = attack 
+	_float		m_fInchDistance = 3.f; // inch ~ walk 사이 = inch/strafy & 0 ~inch = attack 
 
 	// 위치 조절 
 	_vec3	vPlayerPos, vDir;
 
 	//스위치 on/off 
-	//_bool	m_bStrafing = true;
-	//_bool	MovingStart = false;
-
-
+	_bool Dead = false;
+	_bool DeadSpin = true;
 
 public: 
 	// 목표 상태머신(AI)
-	enum class STATE_OBJ { IDLE, SUSPICIOUS, TAUNT, CHASE, REST, 
-		RUN, WALK, INCHFORWARD, STRAFING, BASICATTACK, HEAVYATTACK 
-		};
+	enum class STATE_OBJ { IDLE, SUSPICIOUS, TAUNT, CHASE, REST,  // intro 
+		RUN, WALK, INCHFORWARD, STRAFING, BASICATTACK, HEAVYATTACK, JUMP,// 거리재는부분
+		HIT, FACEPUNCH,CROTCHHIT,					// 피격판정 
+		DAZED, FALLING, CHOPPED, DEATH, HEADLESS};  // 죽을때
+
 	// 행동 상태머신
 	enum class STATE_ACT { IDLE, APPROACH , MOVING, ATTACK};
+
 	// 행동키
 	enum class ACTION_KEY { IDLE, RUN, WALK, INCHFORWARD, STRAFING, JUMP, BASIC_ATTACK, HEAVY_ATTACK,  };
 
@@ -113,21 +117,30 @@ private:
 	void AI_Chase(float fDeltaTime);
 	void AI_Rest(float fDeltaTime);
 
-
 	void AI_Run(float fDeltaTime);
 	void AI_Walk(float fDeltaTime);
 	void AI_InchForward(float fDeltaTime);
 	void AI_Strafing(float fDeltaTime);
 	void AI_BasicAttack(float fDeltaTime);
 	void AI_HeavyAttack(float fDeltaTime);
+	void AI_Jump(float fDeltaTime);
+
+	void AI_Hit(float fDeltaTime);
+	void AI_FacePunch(float fDeltaTime);
+	void AI_HitByPitchedBall(float fDeltaTime);
+
+	void AI_Dazed(float fDeltaTime);
+	void AI_Chopped(float fDeltaTime);
+	void AI_Headless(float fDeltaTime);
+	void AI_Death(float fDeltaTime);
 
 #pragma endregion
 
 #pragma region 행동 : AI 이후 넘어가는곳 
 	void Idle(float fDeltaTime);
-	void Approach(float fDeltaTime);
-	void Moving(float fDeltaTime);
-	void Attack(float fDeltaTime);
+	void Approach(float fDeltaTime); // AI_Run + AI_Walk
+	void Moving(float fDeltaTime);   // AI_InchForward + AI_Strafing
+	void Attack(float fDeltaTime);   // AI_BasicAttack + AI_HeavyAttack
 #pragma endregion
 	// 액션키는 CPP쪽에 만들음
 };
