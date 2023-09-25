@@ -16,18 +16,19 @@ class FForceRegistry
 protected:
     struct FForceRegistration
     {
-        FRigidBody* body;
-        FForceGenerator* fg;
+        FRigidBody* pBody;
+        FForceGenerator* pFGen;
     };
     typedef vector<FForceRegistration> Registry;
-    Registry registrations;
+    Registry vecRegistrations;
 
 public:
-    void Add(FRigidBody* body, FForceGenerator* fg);
-    void Remove(FRigidBody* body, FForceGenerator* fg);
+    void Add(FRigidBody* pBody, FForceGenerator* pFGen);
+    void Remove(FRigidBody* pBody, FForceGenerator* pFGen);
     void Clear();
-    void Update_Forces(Real duration);
+    void Update_Forces(const Real fDuration);
 };
+
 
 /// <summary>
 /// 각종 힘을 발생시키는 클래스의 원형

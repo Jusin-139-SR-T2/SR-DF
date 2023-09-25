@@ -230,6 +230,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClInclude Include="Header\Data\SingleTexture.h" />
     <ClInclude Include="Header\KeyMgr.h" />
     <ClInclude Include="Header\Physics\RigidBody.h" />
+    <ClInclude Include="Header\Physics\PhysicsMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AStarMgr.cpp" />
@@ -277,6 +278,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClCompile Include="Code\Physics\Contact.cpp" />
     <ClCompile Include="Code\Physics\ForceGenerator.cpp" />
     <ClCompile Include="Code\Physics\ContactGen_Joint.cpp" />
+    <ClCompile Include="Code\Physics\PhysicsMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_Utility.inl" />

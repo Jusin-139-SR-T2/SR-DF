@@ -139,6 +139,7 @@
     <ClInclude Include="Header\Physics\Contact.h" />
     <ClInclude Include="Header\Physics\ForceGenerator.h" />
     <ClInclude Include="Header\Physics\ContactGen_Joint.h" />
+    <ClInclude Include="Header\Physics\PhysicsMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -272,6 +273,7 @@
     <ClCompile Include="Code\Physics\Contact.cpp" />
     <ClCompile Include="Code\Physics\ForceGenerator.cpp" />
     <ClCompile Include="Code\Physics\ContactGen_Joint.cpp" />
+    <ClCompile Include="Code\Physics\PhysicsMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">

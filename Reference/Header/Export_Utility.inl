@@ -77,6 +77,21 @@ inline HRESULT	Ready_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tc
 }
 
 
+// 물리 매니저
+HRESULT		Ready_Physics(const _uint iMaxPhysicsWorld3D)
+{
+	return CPhysicsMgr::GetInstance()->Ready_Physics(iMaxPhysicsWorld3D);
+}
+void		StartFrame_Physics()
+{
+	CPhysicsMgr::GetInstance()->StartFrame_Physics();
+}
+_int		Update_Physics(const Real& fTimeDelta)
+{
+	return CPhysicsMgr::GetInstance()->Update_Physics(fTimeDelta);
+}
+
+
 
 // 키 매니저
 inline HRESULT	Ready_KeyMgr()

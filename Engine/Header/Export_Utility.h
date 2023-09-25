@@ -5,6 +5,7 @@
 #include "ProtoMgr.h"
 #include "Renderer.h"
 #include "LightMgr.h"
+#include "PhysicsMgr.h"
 #include "TextureMgr.h"
 #include "KeyMgr.h"
 
@@ -52,10 +53,12 @@ inline void		Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 inline void		Clear_RenderGroup();
 
 // LightMgr
-inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,	const D3DLIGHT9 * pLightInfo,	const _uint & iIndex);
+inline HRESULT		Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,	const D3DLIGHT9 * pLightInfo,	const _uint & iIndex);
 
 // PhysicsMgr
-
+inline HRESULT		Ready_Physics(const _uint iMaxPhysicsWorld3D);
+inline void			StartFrame_Physics();
+inline _int			Update_Physics(const Real& fTimeDelta);
 
 // TextureMgr
 inline HRESULT	Ready_TextureMgr(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -81,7 +84,7 @@ inline bool		IsMouse_Pressed(const MOUSEKEYSTATE&& iMouse);
 inline bool		IsMouse_Released(const MOUSEKEYSTATE& iMouse);
 inline bool		IsMouse_Released(const MOUSEKEYSTATE&& iMouse);
 
-inline void			Release_Utility();
+inline void		Release_Utility();
 
 #include "Export_Utility.inl"
 
