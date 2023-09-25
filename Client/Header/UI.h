@@ -57,6 +57,7 @@ public:
 	_matrix		m_matRotAxis;
 
 private: 
+	_float				m_fX, m_fY, m_fSizeX, m_fSizeY;
 	float fHp;
 };
 

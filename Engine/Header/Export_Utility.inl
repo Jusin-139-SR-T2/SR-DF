@@ -155,7 +155,6 @@ void			Release_Utility()
 	CLightMgr::GetInstance()->DestroyInstance();
 	CRenderer::GetInstance()->DestroyInstance();
 	CProtoMgr::GetInstance()->DestroyInstance();
-	CPhysicsMgr::GetInstance()->DestroyInstance();
 	CTextureMgr::GetInstance()->DestroyInstance();
 	CKeyMgr::GetInstance()->DestroyInstance();
 	CManagement::GetInstance()->DestroyInstance();

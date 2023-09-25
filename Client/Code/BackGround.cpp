@@ -57,7 +57,7 @@ HRESULT CBackGround::Ready_GameObject()
 	m_pTransformComp->m_vScale.x = WINCX;
 	m_pTransformComp->m_vScale.y = WINCY;
 
-	//m_pTransformComp->Set_Pos(0.f, 0.f, 0.f);
+	m_pTransformComp->Set_Pos(0.f, 0.f, 0.f);
 
 	return S_OK;
 }
@@ -94,7 +94,6 @@ void CBackGround::Render_GameObject()
 	m_pBufferComp->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	
 	
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

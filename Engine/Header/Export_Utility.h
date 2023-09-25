@@ -4,7 +4,6 @@
 
 #include "ProtoMgr.h"
 #include "Renderer.h"
-#include "PhysicsMgr.h"
 #include "LightMgr.h"
 #include "TextureMgr.h"
 #include "KeyMgr.h"

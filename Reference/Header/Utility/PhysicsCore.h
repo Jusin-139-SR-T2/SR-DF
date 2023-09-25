@@ -613,20 +613,20 @@ public:
 /// <summary>
 /// 3x3 행렬
 /// </summary>
-class Matrix3
+class FMatrix3
 {
 public:
-    Matrix3()
+    FMatrix3()
     {
         data[0] = data[1] = data[2] = data[3] = data[4] = data[5] =
             data[6] = data[7] = data[8] = 0;
     }
-    Matrix3(const FVector3& compOne, const FVector3& compTwo,
+    FMatrix3(const FVector3& compOne, const FVector3& compTwo,
         const FVector3& compThree)
     {
         Set_Components(compOne, compTwo, compThree);
     }
-    Matrix3(Real c0, Real c1, Real c2, Real c3, Real c4, Real c5,
+    FMatrix3(Real c0, Real c1, Real c2, Real c3, Real c4, Real c5,
         Real c6, Real c7, Real c8)
     {
         data[0] = c0; data[1] = c1; data[2] = c2;
@@ -742,7 +742,7 @@ public:
     /// Input으로 들어온 행렬을 기준으로 역행렬 구하기
     /// </summary>
     /// <param name="m">Input 행렬</param>
-    void Set_Inverse(const Matrix3& m)
+    void Set_Inverse(const FMatrix3& m)
     {
         Real t4 = m.data[0] * m.data[4];
         Real t6 = m.data[0] * m.data[5];
@@ -774,9 +774,9 @@ public:
     /// 역행렬
     /// </summary>
     /// <returns>역행렬</returns>
-    Matrix3 Inverse() const
+    FMatrix3 Inverse() const
     {
-        Matrix3 result;
+        FMatrix3 result;
         result.Set_Inverse(*this);
         return result;
     }
@@ -793,7 +793,7 @@ public:
     /// 행렬 반전
     /// </summary>
     /// <param name="m"></param>
-    void Set_Transpose(const Matrix3& m)
+    void Set_Transpose(const FMatrix3& m)
     {
         data[0] = m.data[0];
         data[1] = m.data[3];
@@ -810,9 +810,9 @@ public:
     /// 행렬 변환
     /// </summary>
     /// <returns>변환된 행렬</returns>
-    Matrix3 Transpose() const
+    FMatrix3 Transpose() const
     {
-        Matrix3 result;
+        FMatrix3 result;
         result.Set_Transpose(*this);
         return result;
     }
@@ -822,9 +822,9 @@ public:
     /// </summary>
     /// <param name="o"></param>
     /// <returns></returns>
-    Matrix3 operator*(const Matrix3& o) const
+    FMatrix3 operator*(const FMatrix3& o) const
     {
-        return Matrix3(
+        return FMatrix3(
             data[0] * o.data[0] + data[1] * o.data[3] + data[2] * o.data[6],
             data[0] * o.data[1] + data[1] * o.data[4] + data[2] * o.data[7],
             data[0] * o.data[2] + data[1] * o.data[5] + data[2] * o.data[8],
@@ -843,7 +843,7 @@ public:
     /// 행렬곱
     /// </summary>
     /// <param name="o"></param>
-    void operator*=(const Matrix3& o)
+    void operator*=(const FMatrix3& o)
     {
         Real t1;
         Real t2;
@@ -886,7 +886,7 @@ public:
     /// 
     /// </summary>
     /// <param name="o"></param>
-    void operator+=(const Matrix3& o)
+    void operator+=(const FMatrix3& o)
     {
         data[0] += o.data[0]; data[1] += o.data[1]; data[2] += o.data[2];
         data[3] += o.data[3]; data[4] += o.data[4]; data[5] += o.data[5];
@@ -917,9 +917,9 @@ public:
     /// <param name="b"></param>
     /// <param name="prop"></param>
     /// <returns></returns>
-    static Matrix3 LinearInterpolate(const Matrix3& a, const Matrix3& b, Real prop)
+    static FMatrix3 LinearInterpolate(const FMatrix3& a, const FMatrix3& b, Real prop)
     {
-        Matrix3 result;
+        FMatrix3 result;
         for (unsigned i = 0; i < 9; i++) {
             result.data[i] = a.data[i] * (1 - prop) + b.data[i] * prop;
         }

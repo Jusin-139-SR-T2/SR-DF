@@ -2,7 +2,8 @@
 
 #include "SceneComponent.h"
 
-#include "PhysicsMgr.h"
+#include "PhysicsWorld3D.h"
+#include "PHY_Shape.h"
 
 BEGIN(Engine)
 

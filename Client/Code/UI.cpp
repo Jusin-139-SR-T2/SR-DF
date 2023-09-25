@@ -23,10 +23,17 @@ HRESULT CUI::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformComp->m_vScale.x = WINCX;
-	m_pTransformComp->m_vScale.y = WINCY;
+	m_fSizeX = 300.0f;
+	m_fSizeY = 200.f;
 
-	m_pTransformComp->Set_Pos(-200.f, 0.f, 0.f);
+	m_fX = 100.f;
+	m_fY = 0.f;
+
+	m_pTransformComp->m_vScale.x = m_fSizeX;
+	m_pTransformComp->m_vScale.y = m_fSizeY;
+
+	m_pTransformComp->m_vInfo[INFO_POS].x = m_fX;
+	m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY;
 
 	return S_OK;
 }

@@ -12,7 +12,7 @@ class FPHY_Shape;
 /// </summary>
 class ENGINE_DLL CPhysicsMgr : public CBase
 {
-	DERIVED_CLASS_SINGLETON(CBase, CPhysicsMgr)
+	DERIVED_CLASS(CBase, CPhysicsMgr)
 
 private:
 	explicit CPhysicsMgr();

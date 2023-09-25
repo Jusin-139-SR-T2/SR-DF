@@ -14,10 +14,10 @@ CRenderer::CRenderer()
 		UiViewPort.Width = WINCX;
 		UiViewPort.Height = WINCY;
 		UiViewPort.MinZ = 0;
-		UiViewPort.MaxZ = 0;
+		UiViewPort.MaxZ = 100;
 		m_vecViewport.push_back(UiViewPort);
 	}
-	D3DXMatrixOrthoLH(&m_matOrtho, WINCX, WINCY, 0.f, 0.f);
+	D3DXMatrixOrthoLH(&m_matOrtho, WINCX, WINCY, 0.f, 100.f);
 
 }
 
@@ -109,9 +109,9 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matOrtho);					// 직교투영 행렬 적용.
 	pGraphicDev->SetViewport(&m_vecViewport[0]);								// 뷰포트 설정.
 
-	//pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);    // Z버퍼 OFF
+	//pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);					// Z버퍼 OFF
 
-	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE); // 알파렌더링 ON
+	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);					// 알파렌더링 ON
 
 	pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -120,9 +120,9 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 	for (auto& iter : m_RenderGroup[RENDER_UI])
 		iter->Render_GameObject();
 
-	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE); // 알파렌더링 OFF
+	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);					// 알파렌더링 OFF
 
-	//pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);      // Z버퍼 ON
+	//pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);					// Z버퍼 ON
 }
 
 void CRenderer::Free()
