@@ -64,6 +64,11 @@ public:
 protected:
 	CDynamicCamera* m_pCamera = nullptr;
 
+	//Test
+	_matrix		m_ViewMatrix, m_ProjMatrix;
+private:
+	_float	m_fX, m_fY, m_fSizeXT, m_fSizeY;
+
 private: 
 	float fHp;
 };

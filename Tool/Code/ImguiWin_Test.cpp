@@ -58,16 +58,16 @@ _int CImguiWin_Test::Update_ImguiWin(const _float& fTimeDelta)
     pGraphicDev->CreateTexture(WINCX, WINCY, 0, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_pTexture, NULL);
     m_pTexture->GetSurfaceLevel(0, &m_pRenderTargetSurface);*/
     
-    m_pTexture = *CImguiMgr::GetInstance()->Get_EditorTexture();
+    //m_pTexture = *CImguiMgr::GetInstance()->Get_EditorTexture();
 
     ImGui::Begin(u8"응애 머신");
 
-    if (m_pTexture)
+    /*if (m_pTexture)
     {
         ImGui::Image((void*)m_pTexture, ImVec2(WINCX, WINCY));
         m_pTexture->Release();
         m_pTexture = nullptr;
-    }
+    }*/
 
     ImGui::End();
         

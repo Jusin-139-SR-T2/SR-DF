@@ -83,7 +83,7 @@ public: // Get_Set
 
 public:// 플레이어 상태 값
 	// 플레이어
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, DIE };
+	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY,  DIE };
 	// 왼손
 	enum class STATE_LEFTHAND { NONE, HAND, OPEN_HAND, RUN_HAND, RIGHTER, RUN_RIHGTER };
 	// 오른손
@@ -104,6 +104,7 @@ private: // 플레이어의 상태 머신
 	void Down(float fTimeDelta);
 	void Attack(float fTimeDelta);
 	void Kick(float fTimeDelta);
+	void Throw_Away(float fTimeDelta);
 	void Die(float fTimeDelta);
 
 private: // 플레이어의 왼손 상태 머신
@@ -187,7 +188,7 @@ private: // 스위치
 
 	// 플레이어 행동 여부
 	_bool		bChargingReady = true;	// 차징 가능 여부
-	_bool		bChargeAttack = false;
+	_bool		bChargeAttack = false;	// 일반 공격에서 차징 공격으로 변경
 	_bool		bFootAttack = false;	// 발차기 여부
 	_bool		bRunOn = false;			// 플레이어가 뛰는지 여부
 	_bool		bDashOn = false;		// 플레이어 대쉬 여부
@@ -199,13 +200,17 @@ private: // 스위치
 	_bool		bBackRighter = false;
 
 private:
-	_float		fRightFrameSpeed = 10.f;// 오른손 프레임 속도
-	_float		fLeftFrameSpeed = 10.f;	// 왼손 프레임 속도
-	_float		fStraightSpeed = 5.f;	// 플레이어 전진 속도
-	_float		fSpeed = 5.f;			// 플레이어 속도
-	_float		fDash = 20.f;			// 플레이어 대쉬
-	_float		fFullChage = 0.f;		// 풀차징 프레임
-	_float		fChageTime = 0.f;		// 차징 전환 시간
+	_float		fRightFrameSpeed = 10.f;	// 오른손 프레임 속도
+	_float		fLeftFrameSpeed = 10.f;		// 왼손 프레임 속도
+	_float		fStraightSpeed = 5.f;		// 플레이어 전진 속도
+	_float		fSpeed = 5.f;				// 플레이어 속도
+	_float		fDash = 20.f;				// 플레이어 대쉬
+	_float		fFullChage = 0.f;			// 풀차징 프레임
+	_float		fChageTime = 0.f;			// 차징 전환 시간
+	_float		fFullChargeTime = 7.f;		// 풀자징 시간
+	_float		fTextureChangeTime = 0.f;	// 텍스처 변경 시간
+	_float		fCurChangeTime = 5.f;		// 현재 변경 시간
+	_float		fMaxChangeTime = 3.f;		// 변경될 최대 시간
 
 	// 플레이어 상태
 	STATE_PLAYER	m_ePlayerState;	// 플레이어
@@ -232,9 +237,15 @@ private:
 
 protected:
 	CDynamicCamera*		m_pCamera = nullptr;
+	_vec3	m_vCameraAt;
+	_vec3	m_vPlayerLook;
+	_float	fDot;
+	_vec3	vLook = { 0.f, 0.f, 1.f };
+	_vec3	m_vPlayerPos;
 
 protected:
 	_matrix		m_matRot;
+	_matrix		m_ViewMatrix, m_ProjMatrix;
 
 private: //빛
 	//HRESULT			SetUp_Material();
@@ -247,7 +258,9 @@ private: // 쿼터니언
 
 		D3DXQUATERNION	m_quaternion;	// 쿼터니온 변수
 
-		_vec3 m_vUp, m_vLook, m_vRight;
+private:
+	_float	m_fX, m_fY, m_fSizeX, m_fSizeY;
+
 };
 
 /*	현재 키 설명
@@ -269,7 +282,7 @@ A : 좌회전
 D : 우회전
 
 W + LShift : 달리기
-A, S, D + LShift : 대쉬(작업중)
+A, S, D + LShift : 대쉬
 
 -플레이어 기능-
 Q : 발차기
@@ -285,8 +298,9 @@ R : 권총 회전(권총 상태일때만 가능)
 6 : 프라이팬
 
 -공격-
-MouseLB : 공격
-
+MouseLB 1클릭 : 단일 공격
+MouseLB 꾹 누르기 : 차징 공격 (차징 공격이 가능한 상태만)
+MouseRB : 가드 (가드가 가능한 상태만)
 ========================================
 
 */

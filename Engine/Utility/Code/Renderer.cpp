@@ -24,7 +24,7 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev)
 {
 	// 렌더처리를 하는 종류에 따라 따로 모아서 처리한다.
 	Render_Priority(pGraphicDev);
-	Render_AlphaTest(pGraphicDev);
+	Render_AlphaTest(pGraphicDev); // + 성희 추가
 	Render_NonAlpha(pGraphicDev);
 	Render_Alpha(pGraphicDev);
 	Render_UI(pGraphicDev);
@@ -48,6 +48,7 @@ void CRenderer::Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev)
 		iter->Render_GameObject();
 }
 
+// + 성희 추가
 void CRenderer::Render_AlphaTest(LPDIRECT3DDEVICE9& pGraphicDev)
 {
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
@@ -82,8 +83,8 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9& pGraphicDev)
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 {
-	D3DVIEWPORT9 m_BackupViewPort;
-	pGraphicDev->GetViewport(&m_BackupViewPort); // 현재 뷰 포트 백업
+	//D3DVIEWPORT9 m_BackupViewPort;
+	//pGraphicDev->GetViewport(&m_BackupViewPort); // 현재 뷰 포트 백업
 
 	// UI용 새로운 뷰 포트 생성 및 적용
 	D3DVIEWPORT9 UiViewPort;

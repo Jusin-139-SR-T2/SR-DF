@@ -23,12 +23,33 @@ HRESULT CUI::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformComp->m_vScale.x = 1.5f;
-	m_pTransformComp->m_vScale.y = 1.5f;
+	/* 직교투영행렬을 만든다. */
+	D3DXMatrixOrthoLH(&m_ProjMatrix, WINCX, WINCY, 0.0f, 100.0f);
 
-	m_pTransformComp->Set_Pos(-9.3f, -4.6f, 10.f);
+	//m_pTransformComp->m_vScale.x = 1.5f;
+	//m_pTransformComp->m_vScale.y = 1.5f;
 
-	return S_OK;
+	//사이즈 : 200
+	m_fSizeXT = 100;
+	m_fSizeY = 300;
+
+	//위치 : 100 = 200 / 2
+	m_fX = m_fSizeXT * 0.f;
+	m_fY = m_fSizeY * 0.5f;
+
+	D3DXMatrixIdentity(&m_ViewMatrix);
+
+	//				  사이즈 100 =	200 / 2
+	m_pTransformComp->m_vScale.x = m_fSizeXT * 0.5f;
+	m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
+
+	// 위치 잡아주는 계산		위치 -300 = 100	 - 400
+	m_pTransformComp->m_vInfo[INFO_POS].x = 0;
+	m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;
+
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
+	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
+	return S_OK; 
 }
 
 _int CUI::Update_GameObject(const _float& fTimeDelta)
@@ -44,8 +65,8 @@ _int CUI::Update_GameObject(const _float& fTimeDelta)
 
 void CUI::LateUpdate_GameObject()
 {
-	_vec3 vPos;
-	m_pTransformComp->Get_Info(INFO_POS, &vPos);
+	//_vec3 vPos;
+	//m_pTransformComp->Get_Info(INFO_POS, &vPos);
 	//__super::Compute_ViewZ(&vPos);
 }
 
@@ -68,6 +89,14 @@ void CUI::Render_GameObject()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+
+	// 직교
+	_matrix matTest;
+	m_pGraphicDev->GetTransform(D3DTS_WORLD, &matTest);
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matTest);
+	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matTest);
+	// 직교
+	float test = m_pTransformComp->m_vInfo[INFO_POS].x;
 
 	m_pTextureComp->Render_Texture(0);
 	m_pBufferComp->Render_Buffer();
