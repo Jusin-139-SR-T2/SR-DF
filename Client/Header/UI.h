@@ -8,13 +8,8 @@ BEGIN(Engine)
 class CRcBufferComp;
 class CTextureComponent;
 class CTransformComponent;
-class CCameraComponent;
-class CCalculatorComponent;
 
 END
-
-class CDynamicCamera;
-class CPlayer;
 
 class CUI : public Engine::CGameObject
 {
@@ -38,38 +33,19 @@ public:
 
 private:
 	HRESULT Add_Component();
-	void Key_Input(const _float& fTimeDelta);
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
-	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
 	CTransformComponent* m_pTransformComp = nullptr;
 	CTextureComponent* m_pTextureComp = nullptr;
-	CCalculatorComponent* m_pCalculatorComp = nullptr;
 
-	CGameObject* m_pTarget = nullptr;
-
-public:
-	void		Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
-	_matrix m_matRotAxis;
-
-public:
-	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)
-	
-protected:
-	CDynamicCamera* m_pCamera = nullptr;
-
-	//Test
-	_matrix		m_ViewMatrix, m_ProjMatrix;
 private:
-	_float	m_fX, m_fY, m_fSizeXT, m_fSizeY;
-
-private: 
-	float fHp;
+	_float				m_fX, m_fY, m_fSizeX, m_fSizeY;
+	_matrix				m_ViewMatrix, m_ProjMatrix;
 };
 

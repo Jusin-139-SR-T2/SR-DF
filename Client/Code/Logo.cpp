@@ -49,7 +49,7 @@ HRESULT CLogo::Ready_Scene()
 
 	//사운드
 	FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
-	Engine::CSoundMgr::GetInstance()->Play_Sound(L"Ambience_OldTimeyMusic6.mp3", SOUND_BGM, 0.75f);
+	Engine::Play_BGM(L"FallenAces", L"Ambience_OldTimeyMusic6.mp3", 0.75f);
 
 	// 로딩 쓰레드 생성하기
 	//NULL_CHECK_RETURN(m_pLoadingTexture = CLoading::Create(m_pGraphicDev, CLoading::LOADING_TEXTURE), E_FAIL);

@@ -284,7 +284,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     vLook = { vLook.x, 0.f, vLook.z };
 
     _vec3 vInverse = (-m_pCamera->Get_At());
-
+    
     m_pTransformComp->Compute_LootAtTarget(&vInverse);
 
 #pragma region е╟ют╥б

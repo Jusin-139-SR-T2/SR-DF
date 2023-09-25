@@ -3,10 +3,36 @@
 #include "Base.h"
 #include "Engine_Define.h"
 
-#include <future>
-#include <thread>
-
 BEGIN(Engine)
+
+class ENGINE_DLL FSoundData
+{
+	THIS_CLASS(FSoundData)
+private:
+	FSoundData() {}
+	~FSoundData() {}
+
+public:
+	static FSoundData* Create()
+	{
+		ThisClass* pInstance = new ThisClass;
+
+		return pInstance;
+	}
+	void Free()
+	{
+		mapSound.clear();
+
+		delete this;
+	}
+
+public:
+	using map_sound = _unmap<wstring, FMOD_SOUND*>;
+	GETSET_EX1(map_sound, mapSound, MapSound, GET_REF)
+
+private:
+	map_sound mapSound;
+};
 
 class ENGINE_DLL CSoundMgr : public CBase
 {
@@ -24,9 +50,9 @@ public:
 
 public:
 	// 사운드 재생
-	void Play_Sound(TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+	void Play_Sound(_tchar* pCategoryKey, _tchar* pSoundKey, CHANNELID eID, float fVolume);
 	// 브금 재생
-	void Play_BGM(TCHAR* pSoundKey, float fVolume);
+	void Play_BGM(_tchar* pCategoryKey, _tchar* pSoundKey, float fVolume);
 	// 사운드 정지
 	void Stop_Sound(CHANNELID eID);
 	// 모든 사운드 정지
@@ -36,11 +62,11 @@ public:
 
 private:
 	// 내부적으로 로드할 사운드 파일 폴더를 지정해 로드하는 함수
-	void LoadSoundFile(const char* pPath);
+	void LoadSoundFile(_tchar* pCategoryKey, const char* pPath);
 	FMOD_RESULT LoadSoundFile_Async(const char* pPath, const char* pFileName, FMOD_RESULT& hResult, FMOD_SOUND** pSound);
 
 	// 사운드 리소스 정보를 갖는 객체 
-	_unmap<const _tchar*, FMOD_SOUND*> m_mapSound;
+	_unmap<wstring, FSoundData*> m_mapSound;
 
 	// FMOD_CHANNEL : 재생하고 있는 사운드를 관리할 객체 
 	FMOD_CHANNEL*		m_pChannelArr[MAXCHANNEL];

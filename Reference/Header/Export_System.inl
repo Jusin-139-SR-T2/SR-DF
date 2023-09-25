@@ -129,7 +129,18 @@ HRESULT	Ready_SoundDev()
 	return CSoundMgr::GetInstance()->Ready_Sound();
 }
 
+void	Play_Sound(const _tchar* pCategoryKey, const _tchar* pSoundKey, CHANNELID eChannel, _float fVolume)
+{
+	Engine::CSoundMgr::GetInstance()->Play_Sound(const_cast<_tchar*>(pCategoryKey), 
+													const_cast<_tchar*>(pSoundKey), 
+													eChannel, fVolume);
+}
 
+void	Play_BGM(const _tchar* pCategoryKey, const _tchar* pSoundKey, _float fVolume)
+{
+	Engine::CSoundMgr::GetInstance()->Play_BGM(const_cast<_tchar*>(pCategoryKey),
+													const_cast<_tchar*>(pSoundKey), fVolume);
+}
 
 void	Release_System()
 {

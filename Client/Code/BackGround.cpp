@@ -95,6 +95,5 @@ void CBackGround::Render_GameObject()
 
 void CBackGround::Free()
 {
-	//Engine::CSoundMgr::GetInstance()->Stop_Sound(SOUND_BGM);
 	SUPER::Free();
 }
