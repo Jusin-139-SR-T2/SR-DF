@@ -22,7 +22,6 @@ HRESULT CBrown::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
     
-    m_pTransformComp->m_vScale.x = 0.4f;
     m_pTransformComp->m_vInfo[INFO_POS] = { 5.f, 1.f, 25.f };
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
@@ -101,14 +100,13 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         m_iHP = 0; //즉사 기믹 확인용 
     }
 
-    if (Engine::IsKey_Pressing(DIK_K))
+    if (Engine::IsKey_Pressing(DIK_J))
     {
         m_iHP = 50; // 피격 기믹 확인용 
     }
 
     // --------------------------------------------
 
-    FaceTurn(fTimeDelta);
 
     //상태머신
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
@@ -122,6 +120,8 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
             m_fCheck += 1;
     }
+
+    FaceTurn(fTimeDelta);
 
     Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -219,42 +219,44 @@ float CBrown::m_fDistance()
 void CBrown::FaceTurn(const _float& fTimeDelta)
 {
     //case1. 회전행렬 만들기 
-    _matrix		matWorld, matView, matBill, matScale, matChangeScale;
+   // _matrix		matWorld, matView, matBill, matScale, matChangeScale;
 
-   matWorld = *m_pTransformComp->Get_WorldMatrix();
+   //matWorld = *m_pTransformComp->Get_WorldMatrix();
 
-    m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+   // m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+   // _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
 
-    _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+   // _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
 
-    D3DXVec3Normalize(&vDir, &vDir);
+   // D3DXVec3Normalize(&vDir, &vDir);
 
-    _float rad = atan2f(vDir.x, vDir.z);
+   // _float rad = atan2f(vDir.x, vDir.z);
 
-    // 회전행렬 생성
-    _matrix rotationMatrix;
-    D3DXMatrixRotationY(&rotationMatrix, rad);
+   // // 회전행렬 생성
+   // _matrix rotationMatrix;
+   // D3DXMatrixRotationY(&rotationMatrix, rad);
 
-    m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
+   // m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
 
     // case2. 빌보드 구성하기 
-    // 빌보드 = 자전의 역 / 자전 역 * 스 * 자 * 이 ->스케일문제 
-    //_matrix		matWorld, matView, matBill;
+     //빌보드 = 자전의 역 / 자전 역 * 스 * 자 * 이 ->스케일문제 = 나중에 넣으면되잖? 
+    _matrix		matWorld, matView, matBill;
 
-    //matWorld = *m_pTransformComp->Get_WorldMatrix();
+    matWorld = *m_pTransformComp->Get_WorldMatrix();
 
-    //m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-    //D3DXMatrixIdentity(&matBill);
+    m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+    D3DXMatrixIdentity(&matBill);
 
-    //matBill._11 = matView._11;
-    //matBill._13 = matView._13;
-    //matBill._31 = matView._31;
-    //matBill._33 = matView._33;
+    matBill._11 = matView._11;
+    matBill._13 = matView._13;
+    matBill._31 = matView._31;
+    matBill._33 = matView._33;
 
-    //D3DXMatrixInverse(&matBill, 0, &matBill);
+    D3DXMatrixInverse(&matBill, 0, &matBill);
 
-    //m_pTransformComp->Set_WorldMatrix(&(matBill * matWorld));
+    m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
+
+    m_pTransformComp->m_vScale.x = 0.4f;
 }
 
 void CBrown::Free()

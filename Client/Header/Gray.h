@@ -53,11 +53,11 @@ public:
 
 	// 상태머신 셋팅 --------------------------------------------------
 private:
-	// 함수 ----------
-	_bool		Monster_Capture();					// 몬스터 시야각내에 플레이어가 있는지 체크
-	_float		m_fDistance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
+	// 함수 ----------					
+	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
+	_float		Calc_Distance();					// 몬스터와 플레이어 사이의 거리 체크하는 함수 
 	void		FaceTurn(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
-
+	
 	// 변수 ----------
 	_float		m_fCheck = 0;						//Taunt 등 프레임 돌리는횟수 지정
 	_int		m_iHP;								// 몬스터 현재 hp 
@@ -72,6 +72,8 @@ private:
 
 	_float		m_fAwareness = 0;					// 의심게이지 숫자 
 	_float		m_fMaxAwareness = 10.f;				// 의심게이지 max -> 추격으로 변함 
+	_float		m_fConsider = 10.f;					// 플레이어 놓친뒤에 주변정찰 게이지 
+	_float		m_fMaxConsider = 10.f;				// 플레이어 놓친뒤에 주변정찰 게이지 
 
 	// 속도조절 
 	_float		m_fRunSpeed = 2.0f;					// 뛰어오는 속도
@@ -97,11 +99,11 @@ private:
 public:
 	// 목표 상태머신(AI)
 	enum class STATE_OBJ { 
-		IDLE,	REST, CHASE,
-		YOUDIE, TAUNT,  SIDEWALK,   KEEPEYE,  RUN,         WALK, 
-		THROW,  ATTACK, UPRIGHTRUN, FRIGHTEN, HEAVYATTACK, BLOCK,
-		CROTCHHIT, FACEPUNCH, FALLING, DAZED, CHOPPED,
-		HEADSHOT, HEADLESS, DEATH };
+		IDLE,		SUSPICIOUS,     REST,		CHASE,	  RECONNAISSANCE,
+		YOUDIE,		TAUNT,			SIDEWALK,   KEEPEYE,  RUN,				 WALK, 
+		THROW,		ATTACK,			UPRIGHTRUN, FRIGHTEN, HEAVYATTACK,		 BLOCK,
+		CROTCHHIT,  FACEPUNCH,		FALLING,	DAZED,	  CHOPPED,
+		HEADSHOT,	HEADLESS,		DEATH };
 
 	// 행동 상태머신
 	enum class STATE_ACT { IDLE, APPROACH };
@@ -117,14 +119,17 @@ private:
 #pragma region AI 
 
 	void AI_Idle(float fDeltaTime); // 처음 서있는 용도 
-	void AI_Rest(float fDeltaTime); // idle ready상태 - 중간중간 넣기용 
+	void AI_Suspicious(float fDeltaTime); // 견제값 추가용 
 	void AI_Taunt(float fDeltaTime); //도발
 	void AI_YouDie(float fDeltaTime); //도발
+	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 
+	void AI_Chase(float fDeltaTime); //  거리비교 움직임 시작
 	void AI_Run(float fDeltaTime); //빠르게 달려오기
 	void AI_Walk(float fDeltaTime); //일반적인 걷기 
 	void AI_KeepEye(float fDeltaTime); //플레이어 주시한채로 백스탭밟기 느리게 
 	void AI_SideWalk(float fDeltaTime); //플레이어 주시한채로 옆으로 걸음 - 조금 빠르게 walk 
-	void AI_Chase(float fDeltaTime); //파이프 던짐 
+	void AI_Rest(float fDeltaTime); // idle ready상태 - 중간중간 넣기용 
+
 
 	void AI_Throw(float fDeltaTime); //파이프 던짐 
 	void AI_Attack(float fDeltaTime); // 파이프 들고 대각선으로 걍 떄리는거
@@ -145,7 +150,7 @@ private:
 #pragma endregion
 
 #pragma region 행동 : AI 이후 넘어가는곳 
-	//void Idle(float fDeltaTime);
+	void Idle(float fDeltaTime);
 	//void Approach(float fDeltaTime);
 
 	//void Walk(float fDeltaTime);

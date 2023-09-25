@@ -36,7 +36,7 @@ HRESULT CBoss::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformComp->m_vScale.x = 0.4f;
+    m_pTransformComp->m_vScale.x = 0.4f; //юс╫ц©К
     m_pTransformComp->m_vInfo[INFO_POS] = { 15.f, 10.f, 25.f };
     m_fFrame = 0;
     m_fFrameEnd = 0;
