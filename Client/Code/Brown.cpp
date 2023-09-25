@@ -80,9 +80,6 @@ HRESULT CBrown::Ready_GameObject()
 
 #pragma endregion
 
-   // m_pPlayer = dynamic_cast<CTextureComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_TextureRightHandTest"));
-   // NULL_CHECK_RETURN(m_pPlayer, -1);
-
     return S_OK;
 }
 
@@ -109,9 +106,8 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         m_iHP = 50; // 피격 기믹 확인용 
     }
 
+    // --------------------------------------------
 
-
-    // ---------- 테스트 빌드 ----------------------
     FaceTurn(fTimeDelta);
 
     //상태머신
@@ -126,7 +122,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
             m_fCheck += 1;
     }
-    //EnterStrafing();
 
     Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -154,8 +149,6 @@ HRESULT CBrown::Add_Component()
     NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-
-    // 몬스터 텍스처
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_BrownTextureComp"), E_FAIL);
         
     return S_OK;
@@ -459,14 +452,10 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
                 m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
             }
         }
-
-       
-
     }
 
     if (m_tState_Obj.IsState_Exit())
     {
-
     }
 }
 
@@ -474,7 +463,7 @@ void CBrown::AI_Rest(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 10.f;
+        m_fFrameSpeed = 12.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Rest");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }

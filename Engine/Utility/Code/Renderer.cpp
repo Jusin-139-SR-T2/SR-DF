@@ -82,24 +82,24 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9& pGraphicDev)
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 {
-	D3DVIEWPORT9 m_BackupViewPort;
-	pGraphicDev->GetViewport(&m_BackupViewPort); // 현재 뷰 포트 백업
+	//D3DVIEWPORT9 m_BackupViewPort;
+	//pGraphicDev->GetViewport(&m_BackupViewPort); // 현재 뷰 포트 백업
 
-	// UI용 새로운 뷰 포트 생성 및 적용
-	D3DVIEWPORT9 UiViewPort;
-	UiViewPort.X = 0;
-	UiViewPort.Y = 0;
-	UiViewPort.Width = WINCX;
-	UiViewPort.Height = WINCY;
-	UiViewPort.MinZ = 0;
-	UiViewPort.MaxZ = 0;
-	pGraphicDev->SetViewport(&UiViewPort);
+	//// UI용 새로운 뷰 포트 생성 및 적용
+	//D3DVIEWPORT9 UiViewPort;
+	//UiViewPort.X = 0;
+	//UiViewPort.Y = 0;
+	//UiViewPort.Width = WINCX;
+	//UiViewPort.Height = WINCY;
+	//UiViewPort.MinZ = 0;
+	//UiViewPort.MaxZ = 0;
+	//pGraphicDev->SetViewport(&UiViewPort);
 
 	_matrix matView;
 	pGraphicDev->SetTransform(D3DTS_VIEW, D3DXMatrixIdentity(&matView)); // 항등행렬로 적용된 뷰 행렬 초기화.
 
 	_matrix   m_matProj;
-	D3DXMatrixOrthoLH(&m_matProj, WINCX, WINCY, UiViewPort.MinZ, UiViewPort.MaxZ);
+	D3DXMatrixOrthoLH(&m_matProj, WINCX, WINCY,0, 0);
 	//D3DXMatrixOrthoOffCenterLH(&m_matProj, 0, WINCX, 0, WINCY, -1.f, 1.f);
 	//pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);   // 직교투영 행렬 적용.
 

@@ -9,13 +9,13 @@
 #include "Export_Utility.h"
 #include "Engine_Macro.h"
 
-class   CMarket:
+class   CTrading:
     public CGameObject
 {
 private:
-    explicit CMarket();
-    explicit CMarket(const CMarket& rhs);
-    virtual ~CMarket();
+    explicit CTrading(LPDIRECT3DDEVICE9 pGraphicDev);
+    explicit CTrading(const CTrading& rhs);
+    virtual ~CTrading();
 
 public:
     virtual HRESULT Ready_GameObject() override;
@@ -35,9 +35,7 @@ private:
     CGray* m_pGray = nullptr;
     CBoss* m_pBoss = nullptr;
 
-
 // Get, Set ÇÔ¼ö ---------------------------------------------------------
-
 public:
     GETSET_EX2(CPlayer*, m_pPlayer, Player, GET, SET)
     GETSET_EX2(CBrown*, m_pBrown, Brown, GET, SET)
