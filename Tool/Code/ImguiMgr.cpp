@@ -9,6 +9,7 @@
 
 #include "ImguiWin.h"
 #include "ImguiWin_Test.h"
+#include "ImguiAnimationTool.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
@@ -72,7 +73,10 @@ HRESULT CImguiMgr::Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* 
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX9_Init(m_pGraphicDev);
 
-	m_mapImguiWin.emplace(L"Test",  CImguiWin_Test::Create());
+	//m_mapImguiWin.emplace(L"Test",  CImguiWin_Test::Create());
+
+	// + 성희 : 테스트 클래스 추가
+	m_mapImguiWin.emplace(L"Test AnimationTool", CImguiAnimationTool::Create());
 
 	return S_OK;
 }
@@ -122,36 +126,36 @@ HRESULT CImguiMgr::Update_Imgui(const _float& fTimeDelta)
 	}
 
 	// 소영 - 만들어본윈도우
-	if (m_bShow_MapWindow)
-		ImGui::ShowDemoWindow(&m_bShow_MapWindow);
+	//if (m_bShow_MapWindow)
+	//	ImGui::ShowDemoWindow(&m_bShow_MapWindow);
 
-	{
-		ImGui::Begin("Map Tool", &m_bShow_MapWindow, ImGuiWindowFlags_MenuBar);
-		if (ImGui::BeginMenuBar())
-		{
-			if (ImGui::BeginMenu("File")) // 위에 메뉴바
-			{
-				if (ImGui::MenuItem("Open..", "Ctrl+O"))
-				{ /* Do stuff */
-					int a = 0;
-				}
-				if (ImGui::MenuItem("Save", "Ctrl+S"))
-				{ /* Do stuff */
-					int a = 0;
-				}
-				if (ImGui::MenuItem("Close", "Ctrl+W"))
-				{// my_tool_active = false;
-					int a = 0;
-				}
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenuBar();
-		}
-		ImGui::Text(u8"오로지 텍스트만 입력"); // 한국어 붙일때는 u8"내용"
-		ImGui::Text(u8"한글가능");
+	//{
+	//	ImGui::Begin("Map Tool", &m_bShow_MapWindow, ImGuiWindowFlags_MenuBar);
+	//	if (ImGui::BeginMenuBar())
+	//	{
+	//		if (ImGui::BeginMenu("File")) // 위에 메뉴바
+	//		{
+	//			if (ImGui::MenuItem("Open..", "Ctrl+O"))
+	//			{ /* Do stuff */
+	//				int a = 0;
+	//			}
+	//			if (ImGui::MenuItem("Save", "Ctrl+S"))
+	//			{ /* Do stuff */
+	//				int a = 0;
+	//			}
+	//			if (ImGui::MenuItem("Close", "Ctrl+W"))
+	//			{// my_tool_active = false;
+	//				int a = 0;
+	//			}
+	//			ImGui::EndMenu();
+	//		}
+	//		ImGui::EndMenuBar();
+	//	}
+	//	ImGui::Text(u8"오로지 텍스트만 입력"); // 한국어 붙일때는 u8"내용"
+	//	ImGui::Text(u8"한글가능");
 
-		ImGui::End();
-	}
+	//	ImGui::End();
+	//}
 	/*if (!ImGui::Begin("Window"))
 	{
 		ImGui::End();

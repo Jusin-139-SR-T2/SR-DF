@@ -59,6 +59,24 @@ HRESULT CBackGround::Ready_GameObject()
 
 	m_pTransformComp->Set_Pos(0.f, 0.f, 0.f);
 
+	D3DXMatrixIdentity(&m_ViewMatrix);
+
+	/* 직교투영행렬을 만든다. */
+	D3DXMatrixOrthoLH(&m_ProjMatrix, WINCX, WINCY, 0.0f, 100.0f);
+
+	m_fSizeX = WINCX;
+	m_fSizeY = WINCY;
+
+	m_fX = m_fSizeX * 0.5f; // 중점위치 
+	m_fY = m_fSizeY * 0.5f;
+
+	m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f; // 이미지 크기 
+	m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
+
+	m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX * 0.5f;
+	m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;
+
+
 	return S_OK;
 }
 
