@@ -85,6 +85,8 @@ void CUI::Render_GameObject()
 	m_pTextureComp->Render_Texture(0);
 	m_pBufferComp->Render_Buffer();
 
+	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

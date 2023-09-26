@@ -97,7 +97,10 @@ void CBackGround::LateUpdate_GameObject()
 void CBackGround::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
+	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
+	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	
 
 	m_pBackTextureComp->Render_Texture(0);
 	m_pBufferComp->Render_Buffer();
