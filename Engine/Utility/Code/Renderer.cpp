@@ -85,15 +85,15 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 	//D3DVIEWPORT9 m_BackupViewPort;
 	//pGraphicDev->GetViewport(&m_BackupViewPort); // 현재 뷰 포트 백업
 
-	//// UI용 새로운 뷰 포트 생성 및 적용
-	//D3DVIEWPORT9 UiViewPort;
-	//UiViewPort.X = 0;
-	//UiViewPort.Y = 0;
-	//UiViewPort.Width = WINCX;
-	//UiViewPort.Height = WINCY;
-	//UiViewPort.MinZ = 0;
-	//UiViewPort.MaxZ = 0;
-	//pGraphicDev->SetViewport(&UiViewPort);
+	// UI용 새로운 뷰 포트 생성 및 적용
+	D3DVIEWPORT9 UiViewPort;
+	UiViewPort.X = 0;
+	UiViewPort.Y = 0;
+	UiViewPort.Width = WINCX;
+	UiViewPort.Height = WINCY;
+	UiViewPort.MinZ = 0;
+	UiViewPort.MaxZ = 0;
+	pGraphicDev->SetViewport(&UiViewPort);
 
 	_matrix matView;
 	pGraphicDev->SetTransform(D3DTS_VIEW, D3DXMatrixIdentity(&matView)); // 항등행렬로 적용된 뷰 행렬 초기화.

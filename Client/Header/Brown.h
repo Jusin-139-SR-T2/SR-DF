@@ -84,10 +84,10 @@ private:
 
 	// 사거리 , 시야각
 	_float		m_fMonsterFov = 90;					//시야각 - 반각 기준
-	_float		m_fMonsterSightDistance = 13.f;		// 몬스터가 포착하는 사거리 
-	_float		m_fRunDistance = 8.f;				// 사거리 ~ Run 사이 =  run
-	_float		m_fWalkDistance = 7.5f;				// run~walk 사이 = walk
-	_float		m_fInchDistance = 3.f;				// inch ~ walk 사이 = inch/strafy & 0 ~inch = attack 
+	_float		m_fMonsterSightDistance = 12.f;		// 몬스터가 포착하는 사거리 
+	_float		m_fRunDistance = 7.f;				// 사거리 ~ Run 사이 =  run
+	_float		m_fWalkDistance = 6.5f;				// run~walk 사이 = walk
+	_float		m_fInchDistance = 1.5f;				// inch ~ walk 사이 = inch/strafy & 0 ~inch = attack 
 
 	// 위치 조절 
 	_vec3		vPlayerPos;							// 플레이어 위치 벡터

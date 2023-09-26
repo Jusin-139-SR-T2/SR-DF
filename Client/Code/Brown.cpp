@@ -107,7 +107,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 
     // --------------------------------------------
 
-
     //상태머신
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
@@ -121,11 +120,30 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
             m_fCheck += 1;
     }
 
-    FaceTurn(fTimeDelta);
+   // FaceTurn(fTimeDelta);
+    _matrix		matWorld, matView, matBill;
+
+    matWorld = *m_pTransformComp->Get_WorldMatrix();
+
+    m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+    D3DXMatrixIdentity(&matBill);
+
+    matBill._11 = matView._11;
+    matBill._13 = matView._13;
+    matBill._31 = matView._31;
+    matBill._33 = matView._33;
+
+    D3DXMatrixInverse(&matBill, 0, &matBill);
+
+    m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
+
+    m_pTransformComp->m_vScale.x = 0.4f;
 
     Engine::Add_RenderGroup(RENDER_ALPHA, this);
+    
+    //????? 하나라도 RENDER_ALPHA에 들어가야 빌보드 적용됨 ??? //RNEDER_ALPHATEST 
 
-    return 0;
+    return S_OK;
 }
 
 void CBrown::LateUpdate_GameObject()
@@ -239,7 +257,7 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
    // m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
 
     // case2. 빌보드 구성하기 
-     //빌보드 = 자전의 역 / 자전 역 * 스 * 자 * 이 ->스케일문제 = 나중에 넣으면되잖? 
+
     _matrix		matWorld, matView, matBill;
 
     matWorld = *m_pTransformComp->Get_WorldMatrix();
@@ -285,8 +303,6 @@ void CBrown::AI_Idle(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_iPreHP = m_iHP; // 상태체크용 hp저장 
-  
-
     }
 
     if (m_tState_Obj.Can_Update())
@@ -393,10 +409,13 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
 {
     if (m_tState_Obj.IsState_Entered())
     {
+        m_pTransformComp->m_vScale.x = 0.5f;
         m_fFrameSpeed = 10.f; //원상복귀 
     }
     if (m_tState_Obj.Can_Update())
     {
+        _float CurDistance = m_fDistance();
+
         if (Monster_Capture()) // 사거리에 포착되는경우 
         {
             // 시야거리에 의한 상태머신보다 피격/죽음이 더 빠름  
@@ -410,17 +429,17 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
 
             // --------거리비교 상태머신 -----------
             // 뛰어서 다가옴 : a > 8
-            if (m_fRunDistance < m_fDistance())
+            if (m_fRunDistance < CurDistance)
             {
                 m_tState_Obj.Set_State(STATE_OBJ::RUN);
             }
             // 걸어서 다가옴 : 7 < a <= 8 
-            else if (m_fWalkDistance < m_fDistance() && m_fRunDistance >= m_fDistance())
+            else if (m_fWalkDistance < CurDistance && m_fRunDistance >= CurDistance)
             {
                 m_tState_Obj.Set_State(STATE_OBJ::WALK);
             }
             // 무빙 : 4 < a <= 7
-            else if (m_fInchDistance < m_fDistance() && m_fWalkDistance >= m_fDistance())
+            else if (m_fInchDistance < CurDistance && m_fWalkDistance >= CurDistance)
             {
                 int iCombo = (rand() % 10) + 1; 
 
@@ -540,7 +559,8 @@ void CBrown::AI_InchForward(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 8.f;
+        m_pTransformComp->m_vScale.x = 0.4f;
+        m_fFrameSpeed = 9.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"InchForward");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }

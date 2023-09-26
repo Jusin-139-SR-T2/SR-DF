@@ -36,7 +36,6 @@ HRESULT CGray::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformComp->m_vScale.x = 0.4f;
     m_pTransformComp->m_vInfo[INFO_POS] = { 10.f, 10.f, 25.f };
     m_fFrame = 0;
     m_fFrameEnd = 0;
@@ -68,16 +67,16 @@ HRESULT CGray::Ready_GameObject()
     m_tState_Obj.Add_Func(STATE_OBJ::HEAVYATTACK, &CGray::AI_HeavyAttack);
     m_tState_Obj.Add_Func(STATE_OBJ::ATTACK, &CGray::AI_Attack);
 
-    m_tState_Obj.Add_Func(STATE_OBJ::BLOCK, &CGray::AI_Block);
-    m_tState_Obj.Add_Func(STATE_OBJ::CROTCHHIT, &CGray::AI_CrotchHit);
-    m_tState_Obj.Add_Func(STATE_OBJ::HEADSHOT, &CGray::AI_HeadShot);
-    m_tState_Obj.Add_Func(STATE_OBJ::HEADLESS, &CGray::AI_Headless);
-    m_tState_Obj.Add_Func(STATE_OBJ::DEATH, &CGray::AI_Death);
+    //m_tState_Obj.Add_Func(STATE_OBJ::BLOCK, &CGray::AI_Block);
+    //m_tState_Obj.Add_Func(STATE_OBJ::CROTCHHIT, &CGray::AI_CrotchHit);
+    //m_tState_Obj.Add_Func(STATE_OBJ::HEADSHOT, &CGray::AI_HeadShot);
+    //m_tState_Obj.Add_Func(STATE_OBJ::HEADLESS, &CGray::AI_Headless);
+    //m_tState_Obj.Add_Func(STATE_OBJ::DEATH, &CGray::AI_Death);
 
-    m_tState_Obj.Add_Func(STATE_OBJ::DAZED, &CGray::AI_Dazed);
-    m_tState_Obj.Add_Func(STATE_OBJ::CHOPPED, &CGray::AI_Chopped);
-    m_tState_Obj.Add_Func(STATE_OBJ::HEADLESS, &CGray::AI_Headless);
-    m_tState_Obj.Add_Func(STATE_OBJ::DEATH, &CGray::AI_Death);
+    //m_tState_Obj.Add_Func(STATE_OBJ::DAZED, &CGray::AI_Dazed);
+    //m_tState_Obj.Add_Func(STATE_OBJ::CHOPPED, &CGray::AI_Chopped);
+    //m_tState_Obj.Add_Func(STATE_OBJ::HEADLESS, &CGray::AI_Headless);
+    //m_tState_Obj.Add_Func(STATE_OBJ::DEATH, &CGray::AI_Death);
 
 #pragma endregion
 
@@ -85,21 +84,26 @@ HRESULT CGray::Ready_GameObject()
     m_tState_Act.Set_State(STATE_ACT::IDLE);
 
     m_tState_Act.Add_Func(STATE_ACT::IDLE, &CGray::Idle);
-//    m_tState_Act.Add_Func(STATE_ACT::APPROACH, &CGray::Approach);
-//    m_tState_Act.Add_Func(STATE_ACT::MOVING, &CGray::Moving);
-//    m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CGray::Attack);
+    m_tState_Act.Add_Func(STATE_ACT::APPROACH, &CGray::Approach);
+    m_tState_Act.Add_Func(STATE_ACT::SUDDENATTACK, &CGray::SuddenAttack);
+    m_tState_Act.Add_Func(STATE_ACT::SIDEMOVING, &CGray::SideMoving);
+    m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CGray::Attack);
 
 #pragma endregion
+
 #pragma region 액션 키 등록
     m_mapActionKey.Add_Action(ACTION_KEY::RUN); // 멀때 
-//    m_mapActionKey.Add_Action(ACTION_KEY::WALK); //중간
-//    m_mapActionKey.Add_Action(ACTION_KEY::INCHFORWARD); //가까울때
-//    m_mapActionKey.Add_Action(ACTION_KEY::STRAFING); // 가까울때
-//
-//    m_mapActionKey.Add_Action(ACTION_KEY::JUMP); // y축에 차이가 있을때 
-//
-//    m_mapActionKey.Add_Action(ACTION_KEY::BASIC_ATTACK);
-//    m_mapActionKey.Add_Action(ACTION_KEY::HEAVY_ATTACK);
+    m_mapActionKey.Add_Action(ACTION_KEY::WALK); //중간
+    m_mapActionKey.Add_Action(ACTION_KEY::RUN); //가까울때
+
+    m_mapActionKey.Add_Action(ACTION_KEY::KEEPEYE); // 가까울때
+    m_mapActionKey.Add_Action(ACTION_KEY::SIDEWALK); // y축에 차이가 있을때 
+
+    m_mapActionKey.Add_Action(ACTION_KEY::UPRIGHT); // 멀때 
+    m_mapActionKey.Add_Action(ACTION_KEY::FRIGHTEN); //중간
+
+    m_mapActionKey.Add_Action(ACTION_KEY::BASIC_ATTACK);
+    m_mapActionKey.Add_Action(ACTION_KEY::HEAVY_ATTACK);
 
 #pragma endregion
 
@@ -116,6 +120,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     Height_On_Terrain(); // 지형타기 
 
     m_fFrame += m_fFrameSpeed * fTimeDelta;
+
 
     // ---------- 테스트 빌드 ----------------------
 
@@ -140,15 +145,16 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     {
         m_fFrame = 0.f;
 
-        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
+        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State() || 
+            STATE_OBJ::YOUDIE == m_tState_Obj.Get_State())
             m_fCheck += 1;
     }
 
     FaceTurn(fTimeDelta);
 
-    Engine::Add_RenderGroup(RENDER_ALPHA, this);
+    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
 
-    return 0;
+    return S_OK;
 }
 
 void CGray::LateUpdate_GameObject()
@@ -198,8 +204,10 @@ void CGray::Free()
 }
 
 void CGray::FaceTurn(const _float& fTimeDelta)
-{ // case2. 빌보드 구성하기 
+{ 
+    // case2. 빌보드 구성하기 
      //빌보드 = 자전의 역 / 자전 역 * 스 * 자 * 이 ->스케일문제 = 나중에 넣으면되잖? 
+
     _matrix		matWorld, matView, matBill;
 
     matWorld = *m_pTransformComp->Get_WorldMatrix();
@@ -213,6 +221,10 @@ void CGray::FaceTurn(const _float& fTimeDelta)
     matBill._33 = matView._33;
 
     D3DXMatrixInverse(&matBill, 0, &matBill);
+
+    // 주의 사항
+
+    // 빌(자전의 역행렬) * 월드(스 * 자 * 이)
 
     m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 
@@ -270,8 +282,6 @@ void CGray::AI_Idle(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Single", L"Idle");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_iPreHP = m_iHP; // 상태체크용 hp저장 
-
-
     }
 
     if (m_tState_Obj.Can_Update())
@@ -300,21 +310,34 @@ void CGray::AI_Suspicious(float fDeltaTime)
     {
         if (Detect_Player()) // 시야각 이내에 위치 + 시야거리 이내 위치 
         {
-            m_fAwareness += fDeltaTime * 5.f;
+            m_fAwareness += fDeltaTime * 4.f;
 
             // 2. 인지값이 MAX가 되면 플레이어 추격 시작 
             if (m_fMaxAwareness <= m_fAwareness)
             {
                 m_fAwareness = m_fMaxAwareness; // 추후 감소를 위해 최대값으로 고정 
 
-                int iCombo = (rand() % 10) + 1; // 1~10 
-
-                if (6 <= iCombo) // 6~10
+               // int iCombo = (rand() % 10) + 1; // 1~10 
+               //
+               // if (6 <= iCombo) // 6~10
                     m_tState_Obj.Set_State(STATE_OBJ::YOUDIE);
+               //
+               // if (6 > iCombo) // 1~5
+               //     m_tState_Obj.Set_State(STATE_OBJ::TAUNT);
 
-                if (6 > iCombo) // 1~5
-                    m_tState_Obj.Set_State(STATE_OBJ::TAUNT);
+            }
+        }
+        else // 범위밖은 감소
+        {
+            m_fAwareness -= fDeltaTime * 6.f;
 
+            if (m_fAwareness < 0)
+                m_fAwareness = 0;
+
+            //플레이어가 시야각을 벗어나 인지값이 초기화되면 idle로 back
+            if (0 == m_fAwareness)
+            {
+                m_tState_Obj.Set_State(STATE_OBJ::IDLE);
             }
         }
     }
@@ -338,7 +361,12 @@ void CGray::AI_Taunt(float fDeltaTime)
         // 조건 - 플레이어가 시야각으로 들어오면 
         if (Detect_Player())
         {
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            if (2 == m_fCheck) // 도발 두번 하고 따라가기 
+            {
+                m_fCheck = 0; //다른데도 쓰니까 0으로 되돌리기 
+                m_iPreHP = m_iHP; // 피격없으면 pre로 이전hp 저장 
+                m_tState_Obj.Set_State(STATE_OBJ::CHASE); // AI = 추격모드
+            }
         }
     }
 
@@ -352,19 +380,23 @@ void CGray::AI_YouDie(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
+        m_fFrameSpeed = 7.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"YouDie");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        m_pTransformComp->m_vScale.x = 0.9f;
     }
 
     if (m_tState_Obj.Can_Update())
     {
         // 조건 - 플레이어가 시야각으로 들어오면 
-        if (Detect_Player())
+
+        if (m_fFrame > m_fFrameEnd ) // 도발 두번 하고 따라가기 
         {
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            m_fCheck = 0; //다른데도 쓰니까 0으로 되돌리기 
+            m_iPreHP = m_iHP; // 피격없으면 pre로 이전hp 저장 
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE); // AI = 추격모드
         }
     }
-
 
     if (m_tState_Obj.IsState_Exit())
     {
@@ -376,11 +408,37 @@ void CGray::AI_Reconnaissance(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        // 플레이어 놓치면 계속 주변돌아보면서 체크하는곳 
+        // 플레이어 놓치면 계속 주변돌아보면서 체크하는곳
+        // 주변 체크용으로 리소스 추가해야함 
+        /*   
+        while (count < NUMBER) 
+        {
+        isSame = 0;
+        tmp = rand() % m_fFrameEnd + 1;
+
+        for (int i = 0; i < count; i++) 
+        { //중복검사
+            if (tmp == save[i])//중복이 있을때
+            { 
+                isSame = 1;
+                break;
+            }
+        }
+        if (isSame == 0)  //중복없음
+        { 
+            save[count] = tmp;
+            count++;
+        }*/
     }
     if (m_tState_Obj.Can_Update())
     {
-        m_fConsider -= fDeltaTime * 1.f;
+        m_fConsider -= fDeltaTime * 2.f;
+
+        if (Detect_Player())
+        {
+            m_fAwareness += fDeltaTime * 4.f; // 이전보다 더 빠르게 증가할것 
+            m_tState_Obj.Set_State(STATE_OBJ::YOUDIE);
+        }
 
         if (m_fConsider < 0)
             m_fConsider = 0;
@@ -402,27 +460,31 @@ void CGray::AI_Chase(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"YouDie");
+        m_fFrameSpeed = 8.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Rest");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
     {
         // --------거리비교 상태머신 -----------
-                    // 뛰어서 다가옴 : a > 8
+                   
         if (Detect_Player())
         {
-            if (m_fRunDistance < Calc_Distance())
+            _float CurDistance = Calc_Distance();
+
+            // 뛰어서 다가옴 : 8 < a <= 13
+            if (m_fRunDistance < CurDistance)
             {
                 m_tState_Obj.Set_State(STATE_OBJ::RUN);
             }
-            // 걸어서 다가옴 : 7 < a <= 8 
-            else if (m_fWalkDistance < Calc_Distance() && m_fRunDistance >= Calc_Distance())
+            // 걸어서 다가옴 : 7.5 < a <= 8 
+            else if (m_fWalkDistance < CurDistance && m_fRunDistance >= CurDistance)
             {
                 m_tState_Obj.Set_State(STATE_OBJ::WALK);
             }
-            // 무빙 : 4 < a <= 7
-            else if (m_fInchDistance < Calc_Distance() && m_fWalkDistance >= Calc_Distance())
+            // 주시하면서 경계 : 6 < a <= 7.5
+            else if (m_fEyesOnYouDistance < CurDistance && m_fWalkDistance >= CurDistance)
             {
                 int iCombo = (rand() % 10) + 1;
 
@@ -432,32 +494,65 @@ void CGray::AI_Chase(float fDeltaTime)
                 if (6 > iCombo)
                     m_tState_Obj.Set_State(STATE_OBJ::SIDEWALK);
             }
-            else    // 공격함
+            //대충 공격하러 옴 : 3 < a <=6
+            else if (m_fCloseToYouDistance < CurDistance && m_fEyesOnYouDistance >= CurDistance)
             {
                 int iCombo = (rand() % 15) + 1;
 
-                if (11 <= iCombo)
+                if (4 > iCombo)                         // 20프로 1~3
                     m_tState_Obj.Set_State(STATE_OBJ::THROW);
-
-                if (11 > iCombo)
-                    m_tState_Obj.Set_State(STATE_OBJ::ATTACK);
-                if (6 > iCombo)
-                    m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
+                else if ( 10 > iCombo && 4 <= iCombo)   // 40프로  4 ~ 9
+                    m_tState_Obj.Set_State(STATE_OBJ::UPRIGHTRUN);
+                else                                    // 40프로 10~15
+                    m_tState_Obj.Set_State(STATE_OBJ::FRIGHTEN);
             }
+            else  // 공격함
+            {
+                int iCombo = (rand() % 10) + 1;
+
+                if (6 > iCombo)
+                    m_tState_Obj.Set_State(STATE_OBJ::ATTACK);
+                else
+                m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
+            }
+
+        }
+        else // 쫒다가도 시야에서 벗어나면 게이지 줄어들어서 SUSPICIOUS로 돌아감 
+        {
+            m_fAwareness -= fDeltaTime * 4.f;
+
+            if (m_fAwareness < 0)
+                m_fAwareness = 0;
+
+            if (0 == m_fAwareness) //인지값이 초기화되면 
+            {
+                m_tState_Obj.Set_State(STATE_OBJ::RECONNAISSANCE);
+            }
+
         }
     }
-    else // 쫒다가도 시야에서 벗어나면 게이지 줄어들어서 SUSPICIOUS로 돌아감 
+     
+    if (m_tState_Obj.IsState_Exit())
     {
-        m_fAwareness -= fDeltaTime * 4.f;
 
-        if (m_fAwareness < 0)
-            m_fAwareness = 0;
+    }
+}
 
-        if (0 == m_fAwareness) //인지값이 초기화되면 
+void CGray::AI_Rest(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Rest");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_tState_Obj.Set_State(STATE_OBJ::RECONNAISSANCE);
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
-
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -470,16 +565,21 @@ void CGray::AI_Run(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"YouDie");
+        m_fFrameSpeed = 14.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Run");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
     {
+        //행동이 IDLE일때 RUN 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::RUN].Act();
+
         // 조건 - 플레이어가 시야각으로 들어오면 
-        if (Detect_Player())
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
 
@@ -494,16 +594,21 @@ void CGray::AI_Walk(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"YouDie");
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Walk");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
     {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::WALK].Act();
+
         // 조건 - 플레이어가 시야각으로 들어오면 
-        if (Detect_Player())
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
 
@@ -518,19 +623,23 @@ void CGray::AI_KeepEye(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"YouDie");
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"KeepEye");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
     {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::KEEPEYE].Act();
+
         // 조건 - 플레이어가 시야각으로 들어오면 
-        if (Detect_Player())
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
-
 
     if (m_tState_Obj.IsState_Exit())
     {
@@ -540,22 +649,24 @@ void CGray::AI_KeepEye(float fDeltaTime)
 
 void CGray::AI_SideWalk(float fDeltaTime)
 {
-}
-
-void CGray::AI_Rest(float fDeltaTime)
-{
     if (m_tState_Obj.IsState_Entered())
     {
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
+        m_fFrameSpeed = 9.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"SideWalk");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-        m_iPreHP = m_iHP; // 상태체크용 hp저장 
     }
 
     if (m_tState_Obj.Can_Update())
     {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::SIDEWALK].Act();
 
-         m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
-        
+        // 조건 - 플레이어가 시야각으로 들어오면 
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
+        }
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -566,24 +677,143 @@ void CGray::AI_Rest(float fDeltaTime)
 
 void CGray::AI_Throw(float fDeltaTime)
 {
-}
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Throw");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
 
-void CGray::AI_Attack(float fDeltaTime)
-{
+    if (m_tState_Obj.Can_Update())
+    {
+        // 충돌체는 프레임에 맞게 해야해서 여기서 만들예정 
+
+
+        // 조건 - 플레이어가 시야각으로 들어오면 
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
 }
 
 void CGray::AI_UpRightRun(float fDeltaTime)
 {
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"UpRightRun");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::UPRIGHT].Act();
+
+        // 조건 - 플레이어가 시야각으로 들어오면 
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::ATTACK);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
 }
 
 void CGray::AI_Frighten(float fDeltaTime)
 {
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 12.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Frighten");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::FRIGHTEN].Act();
+
+        // 조건 - 플레이어가 시야각으로 들어오면 
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::ATTACK);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+
+void CGray::AI_Attack(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Attack");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::BASIC_ATTACK].Act();
+
+        // 조건 - 플레이어가 시야각으로 들어오면 
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
 }
 
 void CGray::AI_HeavyAttack(float fDeltaTime)
 {
-}
+    if (m_tState_Obj.IsState_Entered())
+    {
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"HeavyAttack");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
 
+    if (m_tState_Obj.Can_Update())
+    {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].Act();
+
+        // 조건 - 플레이어가 시야각으로 들어오면 
+        if (m_fFrame > m_fFrameEnd)
+        {
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+
+    }
+}
+/*
 void CGray::AI_Block(float fDeltaTime)
 {
 }
@@ -619,7 +849,194 @@ void CGray::AI_Headless(float fDeltaTime)
 void CGray::AI_Death(float fDeltaTime)
 {
 }
+*/
 
+// --------------------- 행동 ---------------------------
 void CGray::Idle(float fDeltaTime)
 {
+    if (m_tState_Act.IsState_Entered())
+    {
+    }
+
+    if (m_tState_Act.Can_Update())
+    {
+        // 일반 다가오는파트 
+        if (m_mapActionKey[ACTION_KEY::RUN].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::APPROACH);
+
+        if (m_mapActionKey[ACTION_KEY::WALK].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::APPROACH);
+
+        // 주시하며 경계하는 파트 
+        if (m_mapActionKey[ACTION_KEY::KEEPEYE].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::SIDEMOVING);
+
+        if (m_mapActionKey[ACTION_KEY::SIDEWALK].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::SIDEMOVING);
+
+        // 갑작스래 다가오는파트 
+        if (m_mapActionKey[ACTION_KEY::UPRIGHT].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::SUDDENATTACK);
+
+        if (m_mapActionKey[ACTION_KEY::FRIGHTEN].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::SUDDENATTACK);
+
+        // 공격파트 
+        if (m_mapActionKey[ACTION_KEY::BASIC_ATTACK].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::ATTACK);
+
+        if (m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::ATTACK);
+
+    }
+
+    if (m_tState_Act.IsState_Exit()) // 가끔 필요할때가 있어서 - 찾아보기 
+    {
+
+    }
+}
+
+void CGray::Approach(float fDeltaTime)
+{
+    if (m_tState_Act.IsState_Entered())
+    {
+    }
+
+    // 실행
+    {
+        if (STATE_OBJ::RUN == m_tState_Obj.Get_State())
+        {
+            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+
+            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
+
+        }
+
+        if (STATE_OBJ::WALK == m_tState_Obj.Get_State())
+        {
+            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+
+            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fWalkSpeed);
+
+        }
+
+        m_tState_Act.Set_State(STATE_ACT::IDLE);
+    }
+    // 조건
+    {
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+    }
+}
+
+void CGray::SideMoving(float fDeltaTime)
+{
+    if (m_tState_Act.IsState_Entered())
+    {
+    }
+
+    // 실행
+    {
+        _vec3 Right = m_pTransformComp->m_vInfo[INFO_RIGHT];
+        D3DXVec3Normalize(&Right, &Right);
+        
+        if (STATE_OBJ::KEEPEYE == m_tState_Obj.Get_State())
+        {
+            m_pTransformComp->Move_Pos(&Right, fDeltaTime, m_fKeepEyeSpeed);
+        }
+
+        if (STATE_OBJ::SIDEWALK == m_tState_Obj.Get_State())
+        {
+            m_pTransformComp->Move_Pos(&Right, fDeltaTime, m_fSideWalkSpeed);
+        }
+
+        m_tState_Act.Set_State(STATE_ACT::IDLE);
+    }
+    // 조건
+    {
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+    }
+}
+
+void CGray::SuddenAttack(float fDeltaTime)
+{
+    if (m_tState_Act.IsState_Entered())
+    {
+    }
+
+    // 실행
+    {
+        if (STATE_OBJ::UPRIGHTRUN == m_tState_Obj.Get_State())
+        {
+            // m_bStrafing = true;
+
+            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+
+            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fUprightSpeed);
+        }
+
+        if (STATE_OBJ::FRIGHTEN == m_tState_Obj.Get_State())
+        {
+            //점프 
+            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+
+            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
+        }
+
+        m_tState_Act.Set_State(STATE_ACT::IDLE);
+    }
+
+    // 조건
+    {
+
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+    }
+}
+
+void CGray::Attack(float fDeltaTime)
+{
+    if (m_tState_Act.IsState_Entered())
+    {
+    }
+
+    // 실행
+    {
+        if (STATE_OBJ::ATTACK == m_tState_Obj.Get_State())
+        {
+            // 충돌체 만들어서 기본공격 수행
+
+        }
+
+        if (STATE_OBJ::HEAVYATTACK == m_tState_Obj.Get_State())
+        {
+            // 충돌체 만들어서 공격 수행
+        }
+
+        m_tState_Act.Set_State(STATE_ACT::IDLE);
+    }
+
+    // 조건
+    {
+
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+    }
 }
