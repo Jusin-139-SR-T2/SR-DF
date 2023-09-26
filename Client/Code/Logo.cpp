@@ -109,12 +109,12 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 	Engine::CLayer* pLayer = nullptr;
 	FAILED_CHECK_RETURN(Add_Layer(pLayerTag, pLayer = Engine::CLayer::Create()), E_FAIL);
 
-	/*FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", CDynamicCamera::Create(m_pGraphicDev,
-		&_vec3(0.f, 0.f, -1.f),
-		&_vec3(0.f, 0.f, 1.f),
-		&_vec3(0.f, 1.f, 0.f))), E_FAIL);*/
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", CDynamicCamera::Create(m_pGraphicDev,
+	//	&_vec3(0.f, 0.f, -1.f),
+	//	&_vec3(0.f, 0.f, 1.f),
+	//	&_vec3(0.f, 1.f, 0.f))), E_FAIL);
 
-		// 硅版积己
+	// 硅版积己
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Logo", CTitleLogo::Create(m_pGraphicDev)), E_FAIL);
 
 	// 硅版积己

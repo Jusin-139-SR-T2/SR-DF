@@ -45,5 +45,9 @@ private:
 	CTextureComponent*				m_pTextureComp = nullptr;
 	CTextureComponent*				m_pBackTextureComp = nullptr;
 
+	_matrix		m_ViewMatrix, m_ProjMatrix;
+private:
+	_float	m_fX, m_fY, m_fSizeX, m_fSizeY;
+
 };
 

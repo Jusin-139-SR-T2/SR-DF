@@ -54,7 +54,7 @@ public:
 	// + ¼ºÈñ Ãß°¡
 	void	Set_WorldMatrix(_matrix _matWorld)
 	{
-		m_matWorld = _matWorld;
+		//m_matWorld = _matWorld;
 		//D3DXMatrixMultiply(&m_matWorld, &m_matWorld, &_matWorld);
 	}
 

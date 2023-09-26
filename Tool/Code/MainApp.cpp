@@ -57,7 +57,7 @@ void CMainApp::Render_MainApp()
 		// [오브젝트 렌더] 렌더러에 요청해서 그려야할 오브젝트들을 그린다.
 		Engine::Render_Scene(m_pGraphicDev);
 
-		LPDIRECT3DSURFACE9 pBackBuffer = NULL;
+		/*LPDIRECT3DSURFACE9 pBackBuffer = NULL;
 		LPDIRECT3DSURFACE9 pSurface = NULL;
 
 		m_pGraphicDev->CreateTexture(WINCX, WINCY, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_pTexture, NULL);
@@ -69,7 +69,7 @@ void CMainApp::Render_MainApp()
 
 
 		pSurface->Release();
-		pBackBuffer->Release();
+		pBackBuffer->Release();*/
 		//m_pTexture->Release();
 
 

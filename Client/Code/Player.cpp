@@ -24,14 +24,51 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+    D3DXMatrixIdentity(&m_ViewMatrix);
+    /* 직교투영행렬을 만든다. */
+    D3DXMatrixOrthoLH(&m_ProjMatrix, WINCX, WINCY, 0.0f, 100.0f);
+
+    
+    m_fSizeX = 400.0f;
+    m_fSizeY = 300.0f;
+
+#pragma region 직교 세팅
+
+    D3DXMatrixIdentity(&m_ViewMatrix);
+
+    //사이즈 : 200
+    m_fSizeX = 400;
+    m_fSizeY = 300;
+
+    ////위치 : 100 = 200 / 2
+    //m_fX = m_fSizeX * 0.f; 
+    //m_fY = m_fSizeY * 0.5f;
+
+
+    ////				  사이즈 100 =	200 / 2
+    //m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f;
+    //m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
+
+    //// 위치 잡아주는 계산		위치 -300 = 100	 - 400
+    //m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX * 0.5f;
+    //m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;
+
+    //m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX * 0.5f;
+    //m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;
+#pragma endregion
 
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
-    m_pTransformComp->m_vScale.x = 0.3f;
-    m_pTransformComp->m_vScale.y = 0.4f;
+    //m_pTransformComp->m_vScale.x = 0.3f;
+    //m_pTransformComp->m_vScale.y = 0.4f;
+
+    m_fX = m_fSizeX * 0.5f;
+    m_fY = m_fSizeY * 0.5f;
+
+    m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f;
+    m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
 
     m_pTransformComp->m_vInfo[INFO_POS] = { 15.f, 10.f, 10.f };
 #pragma endregion
-
 
 #pragma region 초기 상태 세팅 (현재 상태)  
     m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);           // 플레이어 
@@ -115,7 +152,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     FrameManage(fTimeDelta);
 
     // 랜더 그룹 지정, 현재상태 : 알파 테스트
-    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
+    Engine::Add_RenderGroup(RENDER_UI, this);
 
     // 랜더 그룹 목록
     //RENDER_PRIORITY, RNEDER_ALPHATEST, RENDER_NONALPHA, RENDER_ALPHA, RENDER_UI, RENDER_END
@@ -130,7 +167,6 @@ void CPlayer::LateUpdate_GameObject()
 
 void CPlayer::Render_GameObject()
 {
-
     // 조명 테스트
     if (bTorch)
     {
@@ -141,8 +177,17 @@ void CPlayer::Render_GameObject()
 #pragma region 옵션
     // 행렬 적용
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
+    
+
+    
     // 랜더 상태 옵션
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+    // 직교
+    m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
+    m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
+    // 직교
+
 #pragma endregion
 
 #pragma region 왼손
@@ -205,7 +250,6 @@ void CPlayer::Render_GameObject()
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 #pragma endregion
-
 }
 
 HRESULT CPlayer::Add_Component()
@@ -224,7 +268,7 @@ HRESULT CPlayer::Add_Component()
 #pragma endregion
 
     // 텍스처 매니저
-    // 왼손                           노말??
+    // 왼손
     m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Left_Hand");
     // 오른손
     m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Right_Hand");
@@ -397,6 +441,14 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
             bBackRighter = true; // 라이터 되돌리기On
         }
     }
+
+    // 오브젝트 버리기 (오브젝트가 있을 경우만 실행가능)
+    if (Engine::IsKey_Pressed(DIK_F) && m_eObjectName != OBJECT_NAME::NONE)
+    {
+        // 플레이어 상태 오브젝트 버리는 중
+        m_ePlayerState = STATE_PLAYER::THROW_AWAY;
+        bRightFrameOn = true;
+    }
 #pragma endregion
 
     // 플레이어 기본 속도
@@ -503,40 +555,55 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
             // 오른손 프레임이 최대 프레임에 도달했을 경우
             if (m_fRightFrame >= m_fRightMaxFrame)
             {
-                // 양손이 주먹 상태 일경우
-                if (bLeftHandFist && bRightHandFist)
+                // 만약 최대프레임인데 버리는 중일 경우
+                if (m_ePlayerState == STATE_PLAYER::THROW_AWAY)
                 {
-                    // 오른손 프레임이 왼손 프레임보다 클 경우
-                    if (m_fRightFrame > m_fRightMaxFrame)
+                    // (현재 프레임) 오른손을 Throw 이미지로 고정
+                    m_fRightFrame = m_fRightMaxFrame;
+
+                    // 시간마다 텍스처 변경 시간을 채워준다.
+                    fTextureChangeTime += fCurChangeTime * fTimeDelta;
+                }
+                else // 버리는 중이 아닐 경우
+                {
+                    // 플레이어 상태가 차징일 경우
+                    if (m_ePlayerState == STATE_PLAYER::CHARGING)
                     {
-                        bRightPunch = false;  // 오른손 주먹 Off
-                        bLeftPunch = true;    // 왼손 주먹 On
+                        m_ePlayerState = STATE_PLAYER::NONE; // 플레이어 상태 : 초기화
+                        fChageTime = 0.f; // 차징 시간 초기화
+                    }
+                    else
+                    {
+                        // 양손이 주먹 상태 일경우
+                        if (bLeftHandFist && bRightHandFist)
+                        {
+                            // 오른손 프레임이 왼손 프레임보다 클 경우
+                            if (m_fRightFrame > m_fRightMaxFrame)
+                            {
+                                bRightPunch = false;  // 오른손 주먹 Off
+                                bLeftPunch = true;    // 왼손 주먹 On
+                            }
+                        }
+                    }
+
+                    // 오른손 프레임 초기화
+                    m_fRightFrame = 0;
+                    bRightFrameOn = false; // 오른손 프레임Off
+
+                    // 권총이 회전중이였을 때
+                    if (bSpinOn)
+                    {
+                        // 회전 Off
+                        bSpinOn = false;
+
+                        // 권총으로 다시 돌아가기
+                        bGunOn = true;
+
+                        // 최대 프레임을 권총 기준으로 다시 맞춰놓기
+                        m_fRightMaxFrame = 4.f;
                     }
                 }
-                
-                // 플레이어 상태가 차징일 경우
-                if (m_ePlayerState == STATE_PLAYER::CHARGING)
-                {
-                    m_ePlayerState = STATE_PLAYER::NONE; // 플레이어 상태 : 초기화
-                    fChageTime = 0.f; // 차징 시간 초기화
-                }
 
-                // 오른손 프레임 초기화
-                m_fRightFrame = 0;
-                bRightFrameOn = false; // 오른손 프레임Off
-
-                // 권총이 회전중이였을 때
-                if (bSpinOn)
-                {
-                    // 회전 Off
-                    bSpinOn = false;
-
-                    // 권총으로 다시 돌아가기
-                    bGunOn = true;
-
-                    // 최대 프레임을 권총 기준으로 다시 맞춰놓기
-                    m_fRightMaxFrame = 4.f;
-                }
             }
         }
     }
@@ -545,17 +612,25 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
 
 void CPlayer::Charge(const _float& fTimeDelta)
 {
+    if (m_eObjectName == OBJECT_NAME::THOMPSON)
+    {
+        fChageTime = fFullChargeTime;
+    }
     // 차징 전환 시간 누적
     fChageTime += 10.f * fTimeDelta;
 
     // 시간 초과시 차징모드
-    if (fChageTime >= 5.f)
+    if (fChageTime >= fFullChargeTime)
     {
+
         switch (m_eObjectName)
         {
         case CPlayer::OBJECT_NAME::NONE:
         {
-
+            m_ePlayerState = STATE_PLAYER::CHARGING; // 플레이어 상태 : 차징
+            fFullChage = 0.f;       // 풀차징 프레임
+            bChargeAttack = true;   // 차징공격On
+            bRightFrameOn = true;   // 오른손 프레임On
             break;
         }
         case CPlayer::OBJECT_NAME::GUN:
@@ -566,7 +641,6 @@ void CPlayer::Charge(const _float& fTimeDelta)
         case CPlayer::OBJECT_NAME::THOMPSON:
         {
             bRightFrameOn = true;
-            fChageTime = 0.f;
             break;
         }
         case CPlayer::OBJECT_NAME::STEELPIPE: // 쇠파이프
@@ -606,68 +680,41 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
 
 #pragma region 마우스
 
-    // 마우스 좌클릭 (누를 때)
-    if (Engine::IsMouse_Pressed(DIM_LB))
-    {
-        // 양손 다 주먹상태일 경우
-        if (bLeftHandFist && bRightHandFist)
-        {
-            if (bLeftPunch)
-            {
-                bLeftFrameOn = true;
-            }
-            if (bRightPunch)
-            {
-                bRightFrameOn = true;
-            }  
-        }
-        else // 나머지
-        {
-            bRightFrameOn = true;
-        }
-    }
-
     // 마우스 좌클릭 (누르고 있을 때)
     if (Engine::IsMouse_Pressing(DIM_LB))
     {
         Charge(fTimeDelta);
     }
 
+    // 차징이 안켜졌을 때
+    if (!bChargeAttack)
+    {
+        // 마우스 좌클릭 (누를 때)
+        if (Engine::IsMouse_Pressed(DIM_LB))
+        {
+            // 양손 다 주먹상태일 경우
+            if (bLeftHandFist && bRightHandFist)
+            {
+                if (bLeftPunch)
+                {
+                    bLeftFrameOn = true;
+                }
+                if (bRightPunch)
+                {
+                    bRightFrameOn = true;
+                }  
+            }
+            else // 나머지
+            {
+                bRightFrameOn = true;
+            }
+        }
+    }
+
     // 마우스 좌클릭 (뗄 때)
     if (Engine::IsMouse_Released(DIM_LB))
     {
-        switch (m_eObjectName)
-        {
-        case CPlayer::OBJECT_NAME::NONE:
-        {
-
-            break;
-        }
-        case CPlayer::OBJECT_NAME::GUN:
-        {
-
-            break;
-        }
-        case CPlayer::OBJECT_NAME::THOMPSON:
-        {
-            break;
-        }
-        case CPlayer::OBJECT_NAME::STEELPIPE:
-        {
-            bChargeAttack = false;  // 차징공격Off
-            break;
-        }
-        case CPlayer::OBJECT_NAME::BEERBOTLE:
-        {
-
-            break;
-        }
-        case CPlayer::OBJECT_NAME::FRYINGPAN:
-        {
-            bChargeAttack = false;  // 차징공격Off
-            break;
-        }
-        }
+        bChargeAttack = false;  // 차징공격Off
     }
 
     // 마우스 우클릭
@@ -703,19 +750,72 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
 // 마우스 움직임
 void CPlayer::Mouse_Move()
 {
-    // 마우스로 플레이어 회전
-    // 상, 하
-    if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
+#pragma region 1인칭
+    if (m_pCamera->Get_One())
     {
-        m_pTransformComp->Rotation(ROT_X, D3DXToRadian(dwMouseMove / 10.f));
+        ////마우스로 플레이어 회전
+        ////상, 하
+        //if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
+        //{
+        //    m_pTransformComp->Rotation(ROT_X, D3DXToRadian(dwMouseMove / 10.f));
+        //}
+        //// 좌, 우
+        //if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
+        //{
+        //    m_pTransformComp->Rotation(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
+        //}
     }
-    // 좌, 우
-    if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
-    {
-        m_pTransformComp->Rotation(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
-    }
+#pragma endregion
 
-#pragma region 쿼터니언 회전
+#pragma region 3인칭 쿼터니언
+    if (m_pCamera->Get_Three())
+    {
+        _vec3   CameraToPlayer;
+
+        m_pTransformComp->Get_Info(INFO_POS, &m_vPlayerPos);
+
+        CameraToPlayer = m_vPlayerPos - m_pCamera->Get_Eye();
+
+        // 카메라가 바라보는 At
+        //m_vCameraAt = m_pCamera->Get_At();
+
+        // 플레이어가 바라보는 Look
+        //m_pTransformComp->Get_Info(INFO_LOOK, &m_vPlayerLook);
+
+        // 카메라와 플레이어가 바라보는 높이를 똑같이 맞춰준다.
+        CameraToPlayer.y = 0.f;
+        //m_vPlayerLook.y = 0.f;
+
+        // 카메라와 플레이어 벡터를 정규화
+        D3DXVec3Normalize(&CameraToPlayer, &CameraToPlayer);
+        D3DXVec3Normalize(&vLook, &vLook);
+
+        float fAngle;
+
+
+        if (CameraToPlayer.x > 0)
+        {
+            // 내적을 이용해 둘 사이 끼인각을 구해준다.
+            fDot = D3DXVec3Dot(&CameraToPlayer, &vLook);
+            // 두 벡터 사이의 각도 계산 (라디안)
+            fAngle = acosf(fDot);
+        }
+        else
+        {
+            //vLook = vLook * -1;
+            // 내적을 이용해 둘 사이 끼인각을 구해준다.
+            fDot = D3DXVec3Dot(&CameraToPlayer, &(vLook * -1));
+            // 두 벡터 사이의 각도 계산 (라디안)
+            fAngle = acosf(fDot);
+
+            fAngle = fAngle + 3.141592;
+        }
+
+        m_pTransformComp->m_vAngle.y = fAngle;
+    }
+#pragma endregion
+
+#pragma region 1인칭 쿼터니언 회전 (폐기)
     //dwMouseMoveX = Engine::Get_DIMouseMove(DIMS_X);
     //dwMouseMoveY = Engine::Get_DIMouseMove(DIMS_Y);
 
@@ -848,7 +948,7 @@ void CPlayer::Two_Hand()
    
     bChargingReady = true; // 차징 가능
     m_eObjectName = OBJECT_NAME::NONE; // 오브젝트 없음
-
+    
     // 오른손 주먹
     m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND);
     bRightHandFist = true; // 오른손 주먹 상태On
@@ -987,6 +1087,14 @@ void CPlayer::Hand_Check()
     // 플레이어가 안뛰고있는 경우
     if (m_ePlayerState != STATE_PLAYER::RUN)
     {
+        // 플레이어가 오브젝트를 버리고있을 경우
+        if (m_ePlayerState == STATE_PLAYER::THROW_AWAY)
+        {
+            // 오브젝트 초기화 (삭제)
+            m_eObjectType = OBJECT_TYPE::NONE;
+            m_eObjectName = OBJECT_NAME::NONE;
+        }
+
         if (bRighter) // 플레이어가 라이터를 킨 경우
         {
             // 왼손 라이터
@@ -996,6 +1104,13 @@ void CPlayer::Hand_Check()
 #pragma region 오브젝트 타입 체크
         if (m_ePlayerState != STATE_PLAYER::KICK) // 플레이어가 발차기를 안한 경우
         {
+            // 오브젝트가 NONE일 경우
+            if (m_eObjectType == OBJECT_TYPE::NONE ||
+                m_eObjectName == OBJECT_NAME::NONE)
+            {
+                m_eObjectType = OBJECT_TYPE::TWO_HAND; // 맨손
+            }
+
             switch (m_eObjectType)
             {
                 case CPlayer::OBJECT_TYPE::TWO_HAND:        // 양손 주먹
@@ -1177,6 +1292,24 @@ void CPlayer::Kick(float fTimeDelta)
     }
 }
 
+void CPlayer::Throw_Away(float fTimeDelta)
+{
+    if (m_tPlayer_State.IsState_Entered())
+    {
+
+    }
+
+    if (m_tPlayer_State.Can_Update())
+    {
+
+    }
+
+    if (m_tPlayer_State.IsState_Exit())
+    {
+
+    }
+}
+
 void CPlayer::Die(float fTimeDelta)
 {
     if (m_tPlayer_State.IsState_Entered())
@@ -1237,7 +1370,11 @@ void CPlayer::Left_Hand(float fTimeDelta)
 
     if (m_tLeftHand_State.Can_Update())
     {
-
+        // 플레이어가 버리는 중 일경우
+        if (m_ePlayerState == STATE_PLAYER::THROW_AWAY)
+        {
+            bLeftHandOn = false; // 왼손Off
+        }
     }
 
     if (m_tLeftHand_State.IsState_Exit())
@@ -1326,8 +1463,6 @@ void CPlayer::Left_Righter(float fTimeDelta)
             }
             else // 라이터가 꺼졌을 경우
             {
-               // m_fLeftFrame--; // 왼손 프레임 감소
-
                 if (m_fLeftFrame <= 0) // 모두 감소했을 경우
                 {
                     // 왼손 주먹
@@ -1386,7 +1521,32 @@ void CPlayer::Right_Hand(float fTimeDelta)
 
     if (m_tRightHand_State.Can_Update())
     {
+        // 플레이어가 차징 상태일 경우
+        if (m_ePlayerState == STATE_PLAYER::CHARGING)
+        {
+            // 차징 텍스처로 변경
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"RightHand_Charging");
+            m_fRightMaxFrame = 2.f;  // 최대 프레임 지정
+            fRightFrameSpeed = 5.f;  // 프레임 속도 지정 (공격 속도)
+            bShield = false;         // 방어 불가능
+        }
+        // 플레이어가 버리는 중 일경우
+        if (m_ePlayerState == STATE_PLAYER::THROW_AWAY)
+        {
+            // 버리는 텍스처로 변경
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"UnderThrow_RightHand");
+            m_fRightMaxFrame = 0.f;  // 최대 프레임 지정
+            fRightFrameSpeed = 4.f;  // 프레임 속도 지정 (공격 속도)
+            bShield = false;         // 방어 불가능
+        }
 
+        // 현재 텍스처 변경 시간이 최대 변경시간 보다 크거나 같을 경우(변경하고 싶은 시간이 됐을 때)
+        if (fTextureChangeTime >= fMaxChangeTime)
+        {
+            // 플레이어 상태 초기화
+            m_ePlayerState = STATE_PLAYER::NONE;
+            fTextureChangeTime = 0.f; // 텍스처 변경시간 초기화
+        }
     }
 
     if (m_tRightHand_State.IsState_Exit())

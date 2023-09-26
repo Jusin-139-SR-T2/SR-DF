@@ -47,14 +47,6 @@ private:
 	_bool		m_bFix = false;
 	_bool		m_bCheck = false;
 
-	//3인칭 스위치
-	_bool		m_Change = false;
-	_bool		m_bOne = false;
-
-	//1인칭 스위치
-	_bool		m_Change2 = false;
-	_bool		m_bThree = false;
-
 	//마우스 무브 좌표
 	_matrix		m_matRotX;
 	_matrix		m_matRotY;
@@ -63,7 +55,7 @@ private:
 	_vec3			m_vRight;		// Right 벡터
 	D3DXQUATERNION	m_quaternion;	// 쿼터니온 변수
 
-	_vec3			m_vOffset = { 0.f, 8.f, -10.f };	// 플레이어로부터 Offset
+	_vec3			m_vOffset = { 0.f, 5.f, -8.f };	// 플레이어로부터 Offset
 	_vec3			m_vOffsetOne = { 0.f, 0.f, -1.f };	// 1인칭 Offset
 	_float			m_fPlayerRotationY = 0.f;
 	_long			m_dwMouseMove[ROT_END];

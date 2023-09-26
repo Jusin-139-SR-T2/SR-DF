@@ -61,10 +61,10 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 	Check_KeyInput(fTimeDelta);
 
 	// 기존 카메라
-	Camera_State(fTimeDelta);
+	//Camera_State(fTimeDelta);
 
 	// 쿼터니온 적용 카메라
-	//Quaternion_Ver(fTimeDelta);
+	Quaternion_Ver(fTimeDelta);
 
 	if (false == m_bFix)
 	{
@@ -323,7 +323,6 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 {
 	// 플레이어 Trans 컴포넌트 받아오기
 	pPlayerTransCom = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-	//NULL_CHECK_RETURN(pPlayerTransCom, -1); // NULL
 
 	_vec3	vPlayerPos;				// 플레이어 위치
 	_vec3	vPlayerLook;			// 플레이어가 바라보는 곳
@@ -351,30 +350,54 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 	// 1인칭
 	if (m_bOne)
 	{
-		// 플레이어의 회전 각도를 라디안으로 변환
-		_float playerRotationY = D3DXToRadian(m_fPlayerRotationY);
+		// 마우스로 이동하는 동작
+		_matrix		matCamWorld;
+		D3DXMatrixInverse(&matCamWorld, 0, &m_matView);
 
-		// 플레이어의 이동 벡터 계산
-		vPlayerForward = _vec3(sin(playerRotationY), 0.0f, cos(playerRotationY));
+		if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
+		{
+			_vec3	vRight;
+			memcpy(&vRight, &matCamWorld.m[0][0], sizeof(_vec3));
+			_vec3		vLook = m_vAt - m_vEye;
+			_matrix		matRot;
+
+			D3DXMatrixRotationAxis(&matRot, &vRight, D3DXToRadian(dwMouseMove / 10.f));
+			D3DXVec3TransformNormal(&vLook, &vLook, &matRot);
+			m_vAt = m_vEye + vLook;
+		}
+
+		if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
+		{
+			_vec3	vUp = { 0.f, 1.f, 0.f };
+			_vec3		vLook = m_vAt - m_vEye;
+			_matrix		matRot;
+
+			D3DXMatrixRotationAxis(&matRot, &vUp, D3DXToRadian(dwMouseMove / 10.f));
+			D3DXVec3TransformNormal(&vLook, &vLook, &matRot);
+			m_vAt = m_vEye + vLook;
+		}
 
 		// 플레이어의 이동 벡터를 사용하여 카메라 위치 갱신
-		m_vEye = vPlayerPos - vPlayerForward * m_vOffsetOne.z + m_vUp * m_vOffsetOne.y;
+		m_vEye = vPlayerPos;
 
-		// 카메라 시선 위치 계산
-		m_vAt = vPlayerPos + vPlayerLook;
+		//// 카메라 시선 위치 계산
+		//m_vAt = vPlayerPos + vPlayerLook;
 
 		// 1인칭 모드인 경우 카메라 위치와 시선을 플레이어 위치와 일치시킨다.
 		// 시선은 플레이어의 위치 + 플레이어가 바라보는 방향. 즉 플레이어가 바라보는 방향
 		//m_vEye = pPlayerTransCom->m_vInfo[INFO_POS];
 		//m_vAt = pPlayerTransCom->m_vInfo[INFO_POS] + pPlayerTransCom->m_vInfo[INFO_LOOK];
 	}
-	// 3인칭
+	// 3인칭 (3인칭 모드인 경우 카메라를 플레이어 기준으로 회전시킨다. [공전])
 	if (m_bThree)
 	{
+		// 카메라의 Look 벡터 선언
 		_vec3 vLook = { 0.f, 0.f, 0.f };
 
-		D3DXQUATERNION quatPitch, quatYaw, quatRoll;
+		// 쿼터니언 회전을 위한 Yaw, Pitch, Roll 선언
+		D3DXQUATERNION quatYaw, quatPitch, quatRoll;
 
+		// 마우스 움직임을 위한 변수 선언 및 가져오기
 		_long dwMouseMove = 0;
 		m_dwMouseMove[ROT_X] = Engine::Get_DIMouseMove(DIMS_X);
 		m_dwMouseMove[ROT_Y] = Engine::Get_DIMouseMove(DIMS_Y);
@@ -385,25 +408,35 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 		//m_vLook와 월드의 up벡터(0,1,0)를 외적하여 Right벡터를 구한다.
 		D3DXVec3Cross(&m_vRight, &m_vUp, &vLook);
 
+		// 앵글값 제한을 위한 최소, 최대 값 설정
 		m_fMaxAngleY = 150.f;
 		m_fMinAngleY = 90.f;
 
+		// 카메라 위치는 플레이어 Pos + 떨어질 거리
 		m_vEye = pPlayerTransCom->m_vInfo[INFO_POS] + m_vOffset;
+
+		// 바라보는 대상은 플레이어
 		m_vAt = pPlayerTransCom->m_vInfo[INFO_POS];
 
 		// 수평 회전 (Y축 회전)
 		if (dwMouseMoveX != 0)
 		{
+			// 쿼터니언 회전 적용
 			D3DXQuaternionRotationAxis(&quatYaw, &m_vUp, D3DXToRadian(static_cast<_float>(dwMouseMoveX) * 1.f));
+			// 쿼터니언 곱 해주기
 			m_quaternion *= quatYaw;
+			// 쿼터니언 정규화
 			D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
 		}
 
 		// 수직 회전 (X축 회전)
 		if (dwMouseMoveY != 0)
 		{
+			// 쿼터니언 회전 적용
 			D3DXQuaternionRotationAxis(&quatPitch, &m_vRight, D3DXToRadian(static_cast<_float>(dwMouseMoveY) * 1.f));
+			// 쿼터니언 곱 해주기
 			m_quaternion *= quatPitch;
+			// 쿼터니언 정규화
 			D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
 		}
 
@@ -411,30 +444,31 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 		m_dwPrevMouseMoveX = dwMouseMoveX;
 		m_dwPrevMouseMoveY = dwMouseMoveY;
 
-		// 3인칭 모드인 경우 카메라를 플레이어 기준으로 회전시킨다. (공전)
-		// 우클릭 시 회전 시작
-		if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
-		{
-			_float fNewAngle = m_fAngleY + (m_dwMouseMove[ROT_Y] * m_fRotSpeed);
+// 현재 마우스 무브로 회전해서 사용안함
+#pragma region 우클릭 회전
+		//if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
+		//{
+		//	_float fNewAngle = m_fAngleY + (m_dwMouseMove[ROT_Y] * m_fRotSpeed);
 
-			if (fNewAngle < m_fMaxAngleY && fNewAngle > m_fMinAngleY)
-			{
-				if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
-				{
-					D3DXQuaternionRotationAxis(&quatPitch, &m_vRight, D3DXToRadian(m_dwMouseMove[ROT_Y] * m_fRotSpeed));
-					m_quaternion *= quatPitch;
-					D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
-				}
-			}
+		//	if (fNewAngle < m_fMaxAngleY && fNewAngle > m_fMinAngleY)
+		//	{
+		//		if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
+		//		{
+		//			D3DXQuaternionRotationAxis(&quatPitch, &m_vRight, D3DXToRadian(m_dwMouseMove[ROT_Y] * m_fRotSpeed));
+		//			m_quaternion *= quatPitch;
+		//			D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
+		//		}
+		//	}
 
-			// 가로 회전 (Y축 회전)
-			if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
-			{
-				D3DXQuaternionRotationAxis(&quatYaw, &m_vUp, D3DXToRadian(m_dwMouseMove[ROT_X] * m_fRotSpeed));
-				m_quaternion *= quatYaw;
-				D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
-			}
-		}
+		//	// 가로 회전 (Y축 회전)
+		//	if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
+		//	{
+		//		D3DXQuaternionRotationAxis(&quatYaw, &m_vUp, D3DXToRadian(m_dwMouseMove[ROT_X] * m_fRotSpeed));
+		//		m_quaternion *= quatYaw;
+		//		D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
+		//	}
+		//}
+#pragma endregion
 
 		_matrix matRotation; // 회전 행렬을 만들기 위한 행렬
 		D3DXMatrixRotationQuaternion(&matRotation, &m_quaternion); // 쿼터니언을 회전 행렬로 변환
@@ -445,122 +479,5 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 
 		m_vEye = vPos + pPlayerTransCom->m_vInfo[INFO_POS];
 
-
-		//// 카메라와 플레이어의 끼인 각 구하기
-		//// 카메라가 플레이어를 바라보는 방향 (목표물 - 시작점)
-		//_vec3  vCameraToPlayer = pPlayerTransCom->m_vInfo[INFO_POS] - m_vEye;
-		//D3DXVec3Normalize(&vCameraToPlayer, &vCameraToPlayer);   // 정규화
-
-		//// 카메라가 플레이어를 바라보는 방향과 플레이어의 Up벡터를 내적해서 둘 사이의 끼인각을 알아낸다(라디안)
-		//m_fAngleY = acosf(D3DXVec3Dot(&vCameraToPlayer, &pPlayerTransCom->m_vInfo[INFO_UP]));
-		//m_fAngleY = D3DXToDegree(m_fAngleY);
-
-
-		///////////////////////////////////////////////////////////////////////////////////
-		//// 마우스 입력을 사용하여 카메라 회전
-		//if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
-		//{
-		//	_long dwMouseMoveX = Engine::Get_DIMouseMove(DIMS_X);
-		//	_long dwMouseMoveY = Engine::Get_DIMouseMove(DIMS_Y);
-
-		//	// 마우스 입력에 따라 쿼터니언을 회전하기
-		//	D3DXQuaternionRotationAxis(&quatYaw, &m_vUp, D3DXToRadian(static_cast<_float>(dwMouseMoveY)));
-		//	D3DXQuaternionRotationAxis(&quatPitch, &m_vRight, D3DXToRadian(static_cast<_float>(dwMouseMoveX)));
-
-		//	// 두 쿼터니언을 곱하여 회전값을 합치기
-		//	D3DXQuaternionMultiply(&m_quaternion, &quatYaw, &quatPitch);
-		//	D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
-		//}
-
-		//// 회전된 쿼터니언을 이용하여 카메라가 바라볼곳(방향)과 위치 구해주기
-		//_matrix matRotation;
-		//D3DXMatrixRotationQuaternion(&matRotation, &m_quaternion);
-
-		//// 카메라의 방향 벡터를 회전시키기
-		//_vec3 vDir = m_vEye - m_vAt;
-		//D3DXVec3TransformCoord(&vDir, &vDir, &matRotation);
-
-		//// 카메라의 위치를 재설정해주기
-		//m_vEye = m_vAt + vDir;
-
-		//// 월드 좌표에서 카메라의 업 벡터를 구해주기
-		//_vec3 vCameraUp;
-		//D3DXVec3Cross(&vCameraUp, &m_vRight, &vDir);
-		//D3DXVec3Normalize(&vCameraUp, &vCameraUp);
-
-		//_vec3 vPos = m_vEye - pPlayerTransCom->m_vInfo[INFO_POS];
-
-		////D3DXVec3TransformCoord(&vPos, &vPos, &matRotation);
-
-		//m_vEye = pPlayerTransCom->m_vInfo[INFO_POS] + vPos;
-
-		//m_vAt = pPlayerTransCom->m_vInfo[INFO_POS];
-
-		//// 월드 좌표와 카메라의 업 벡터를 내적하여 카메라의 고정된 업 벡터를 생성해주기
-		//_vec3 vWorldUp = { 0.f, 1.f, 0.f };
-		//_float fDot = D3DXVec3Dot(&vWorldUp, &vCameraUp);
-		//_float fAngle = acosf(fDot);
-
-		//
-
-		//// 내적한 결과가 양수일 때만 움직일 수 있도록 제한하기
-		//if (fAngle >= 0.f)
-		//{
-		//	// 카메라의 위치 업데이트
-		//	m_vEye = vDir + pPlayerTransCom->m_vInfo[INFO_POS];
-		//}
 	}
 }
-	// 기존
-//	// 플레이어 위치에서 살짝 뒤에 카메라 설치
-//	m_vEye = pPlayerTransCom->m_vInfo[INFO_POS] + m_vOffset;
-//	// 플레이어를 바라보기
-//	m_vAt = pPlayerTransCom->m_vInfo[INFO_POS];
-//
-//	// 카메라 업 벡터
-//	_vec3 vCameraUp;
-//	D3DXVec3Cross(&vCameraUp, &m_vRight, &m_vAt);
-//	D3DXVec3Normalize(&vCameraUp, &vCameraUp);
-//
-//	// 월드 좌표랑 카메라의 업 벡터로 내적 (항상 수직)
-//	// 내적한 결과가 양수일 때만 움직일 수 있도록 제한
-//	_vec3 vWorldUp = { 0.f, 1.f, 0.f };
-//	_float fDot = D3DXVec3Dot(&vWorldUp, &vCameraUp);
-//	_float fAngle = acosf(fDot);
-//
-//	// 3인칭 모드인 경우 카메라를 플레이어 기준으로 회전시킨다. (공전)
-//	if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
-//	{
-//		if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
-//		{
-//			D3DXQuaternionRotationAxis(&quatYaw, &m_vUp, dwMouseMove);
-//			m_quaternion *= quatYaw;
-//			D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
-//		}
-//	}
-//
-//	_matrix matRotation; // 회전 행렬을 만들기 위한 행렬
-//	D3DXMatrixRotationQuaternion(&matRotation, &m_quaternion); // 쿼터니언을 회전 행렬로 변환
-//
-//	_vec3 vDir = m_vEye - pPlayerTransCom->m_vInfo[INFO_POS];
-//	D3DXVec3TransformCoord(&vDir, &vDir, &matRotation);
-//
-//	m_vEye = vDir + pPlayerTransCom->m_vInfo[INFO_POS];
-//
-//	//// 회전 각도 막기
-//	//_vec3 vUpOffset = pPlayerTransCom->m_vInfo[INFO_POS];
-//
-//	//_vec3 vCameraDir = pPlayerTransCom->m_vInfo[INFO_POS] - m_vEye;
-//	//_float fLength = D3DXVec3Length(&vCameraDir);
-//
-//	////vUpOffset.z = 0.f;
-//
-//	//vUpOffset.y += 5.f;
-//	//vUpOffset.x = m_vEye.x;
-//	//vUpOffset.z = m_vEye.z;
-//
-//	//if (m_vEye.y >= vUpOffset.y )
-//	//{
-//	//	m_vEye = vUpOffset;
-//	//}
-//}

@@ -24,6 +24,11 @@ public:
 	GETSET_EX2(_vec3, m_vAt, At, GET, SET)
 	GETSET_EX2(_vec3, m_vUp, Up, GET, SET)
 
+	GETSET_EX2(_bool, m_bOne, One, GET, SET)
+	GETSET_EX2(_bool, m_bThree, Three, GET, SET)
+	GETSET_EX2(_bool, m_Change, Change, GET, SET)
+	GETSET_EX2(_bool, m_Change2, Change2, GET, SET)
+
 protected:
 	_vec3			m_vEye, m_vAt, m_vUp;
 	_float			m_fFov, m_fAspect, m_fNear, m_fFar;
@@ -31,9 +36,14 @@ protected:
 
 	_float			m_fWidth, m_fHeight;
 
-private:
-	_matrix* LookAtLH(_matrix* pmatOut, _vec3* pvEye, _vec3* pvAt, _vec3* pvUp);
-	_matrix* PerspectiveFovLH(_matrix* pmatOut, _float fFov, _float fAspect, _float fNear, _float fFar);
+	// + ¼ºÈñ Ãß°¡
+	//1ÀÎÄª ½ºÀ§Ä¡
+	_bool		m_Change = false;
+	_bool		m_bOne = false;
+
+	//3ÀÎÄª ½ºÀ§Ä¡
+	_bool		m_Change2 = false;
+	_bool		m_bThree = false;
 
 };
 

@@ -24,7 +24,7 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev)
 {
 	// 렌더처리를 하는 종류에 따라 따로 모아서 처리한다.
 	Render_Priority(pGraphicDev);
-	Render_AlphaTest(pGraphicDev);
+	Render_AlphaTest(pGraphicDev); // + 성희 추가
 	Render_NonAlpha(pGraphicDev);
 	Render_Alpha(pGraphicDev);
 	Render_UI(pGraphicDev);
@@ -48,6 +48,7 @@ void CRenderer::Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev)
 		iter->Render_GameObject();
 }
 
+// + 성희 추가
 void CRenderer::Render_AlphaTest(LPDIRECT3DDEVICE9& pGraphicDev)
 {
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
