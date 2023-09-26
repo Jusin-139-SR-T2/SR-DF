@@ -62,6 +62,8 @@ _int CTextureComponent::Update_Component(const _float& fTimeDelta)
 {
 	SUPER::Update_Component(fTimeDelta);
 
+	Readjust_Transform();
+
 	return 0;
 }
 

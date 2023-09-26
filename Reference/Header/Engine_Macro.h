@@ -118,7 +118,6 @@ namespace Engine
 #define PUBLIC		public:		// public:
 // 눈에 잘 띄게 매크로로 만든 예약어
 #define OVERRIDE	override	// override
-#define ABSTRACT	abstract	// abstract
 
 // getset 매크로
 // 일반 Set 함수

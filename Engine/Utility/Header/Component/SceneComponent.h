@@ -8,7 +8,7 @@ BEGIN(Engine)
 /// ActorComponent에서 좌표계를 쓸 수 있도록 기능이 추가된 컴포넌트이다.
 /// TransformComponent와는 별개
 /// </summary>
-class ENGINE_DLL CSceneComponent ABSTRACT : public CGameObjComponent
+class ENGINE_DLL CSceneComponent abstract : public CGameObjComponent
 {
 	DERIVED_CLASS(CGameObjComponent, CSceneComponent)
 
