@@ -31,14 +31,6 @@ CLogo* CLogo::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CLogo::Free()
-{
-	Safe_Release(m_pLoading);
-	//Safe_Release(m_pLoadingTexture);
-
-	SUPER::Free();
-}
-
 HRESULT CLogo::Ready_Scene()
 {
 	FAILED_CHECK_RETURN(Ready_Prototype(), E_FAIL);
@@ -125,5 +117,11 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 	return S_OK;
 }
 
+void CLogo::Free()
+{
+	Safe_Release(m_pLoading);
+	//Safe_Release(m_pLoadingTexture);
 
+	SUPER::Free();
+}
 

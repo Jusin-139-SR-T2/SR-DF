@@ -28,17 +28,17 @@ HRESULT CPlayer::Ready_GameObject()
     /* 직교투영행렬을 만든다. */
     D3DXMatrixOrthoLH(&m_ProjMatrix, WINCX, WINCY, 0.0f, 100.0f);
 
-    
-    m_fSizeX = 400.0f;
-    m_fSizeY = 300.0f;
+
+    //m_fSizeX = 400.0f;
+    //m_fSizeY = 300.0f;
 
 #pragma region 직교 세팅
 
     D3DXMatrixIdentity(&m_ViewMatrix);
 
     //사이즈 : 200
-    m_fSizeX = 400;
-    m_fSizeY = 300;
+    m_fSizeX = 500;
+    m_fSizeY = 500;
 
     ////위치 : 100 = 200 / 2
     //m_fX = m_fSizeX * 0.f; 
@@ -123,7 +123,7 @@ HRESULT CPlayer::Ready_GameObject()
     bRightFrameOn = true;
 
     // 정점 세팅
-    m_pBufferComp->Set_Vertex(1.7f, 0.f, 1.f);
+    //m_pBufferComp->Set_Vertex(1.7f, 0.f, 1.f);
 
     return S_OK;
 }
@@ -177,9 +177,9 @@ void CPlayer::Render_GameObject()
 #pragma region 옵션
     // 행렬 적용
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
-    
 
-    
+
+
     // 랜더 상태 옵션
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -246,8 +246,8 @@ void CPlayer::Render_GameObject()
 #pragma endregion
 
 #pragma region 조명 테스트
-    //if (bTorch)
-       // m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
+    if (bTorch)
+        m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
 
     //m_pBufferComp->Set_Vertex(0.f, 0.9f, 0.f);
 
@@ -287,7 +287,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     vLook = { vLook.x, 0.f, vLook.z };
 
     _vec3 vInverse = (-m_pCamera->Get_At());
-    
+
     m_pTransformComp->Compute_LootAtTarget(&vInverse);
 
 #pragma region 키입력
@@ -705,7 +705,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                 if (bRightPunch)
                 {
                     bRightFrameOn = true;
-                }  
+                }
             }
             else // 나머지
             {
@@ -736,7 +736,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
 
                 // 왼손이 주먹일 경우
                 if (bLeftHandFist)
-                bLeftFrameOn = true; // 왼손 프레임On
+                    bLeftFrameOn = true; // 왼손 프레임On
             }
         }
     }
@@ -756,6 +756,8 @@ void CPlayer::Mouse_Move()
 #pragma region 1인칭
     if (m_pCamera->Get_One())
     {
+        //m_pTransformComp->Rotation(ROT_X, m_pCamera->Get_At());
+
         ////마우스로 플레이어 회전
         ////상, 하
         //if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
@@ -811,7 +813,7 @@ void CPlayer::Mouse_Move()
             // 두 벡터 사이의 각도 계산 (라디안)
             fAngle = acosf(fDot);
 
-            fAngle = fAngle + 3.141592;
+            fAngle = fAngle + 3.141592f;
         }
 
         m_pTransformComp->m_vAngle.y = fAngle;
@@ -939,7 +941,7 @@ void CPlayer::Dash(const _float& fTimeDelta)
         }
     }
 
-    
+
 }
 
 #pragma region 양손 주먹 (기본 상태)
@@ -948,10 +950,10 @@ void CPlayer::Two_Hand()
     // 최대 프레임 설정
     //m_fLeftMaxFrame = 2.f;
     //m_fRightMaxFrame = 2.f;
-   
+
     bChargingReady = true; // 차징 가능
     m_eObjectName = OBJECT_NAME::NONE; // 오브젝트 없음
-    
+
     // 오른손 주먹
     m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND);
     bRightHandFist = true; // 오른손 주먹 상태On
@@ -1116,21 +1118,21 @@ void CPlayer::Hand_Check()
 
             switch (m_eObjectType)
             {
-                case CPlayer::OBJECT_TYPE::TWO_HAND:        // 양손 주먹
-                {
-                    Two_Hand();
-                    break;
-                }
-                case CPlayer::OBJECT_TYPE::TWO_OBJECT:      // 양손 오브젝트 (두손 무기)
-                {
-                    Two_Object();
-                    break;
-                }
-                case CPlayer::OBJECT_TYPE::RIGHT_OBJECT:    // 한손 오브젝트 (한손 무기)
-                {
-                    Right_Object();
-                    break;
-                }
+            case CPlayer::OBJECT_TYPE::TWO_HAND:        // 양손 주먹
+            {
+                Two_Hand();
+                break;
+            }
+            case CPlayer::OBJECT_TYPE::TWO_OBJECT:      // 양손 오브젝트 (두손 무기)
+            {
+                Two_Object();
+                break;
+            }
+            case CPlayer::OBJECT_TYPE::RIGHT_OBJECT:    // 한손 오브젝트 (한손 무기)
+            {
+                Right_Object();
+                break;
+            }
             }
         }
         else if (m_ePlayerState == STATE_PLAYER::KICK) // 플레이어가 발차기를 한 경우

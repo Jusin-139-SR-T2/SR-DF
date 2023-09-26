@@ -114,16 +114,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
-    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
-
-    Height_On_Terrain(); // 지형타기 
-
-    m_fFrame += m_fFrameSpeed * fTimeDelta;
-
-
-    // ---------- 테스트 빌드 ----------------------
-
+    // ---------- 테스트 빌드 ---------------------
     if (Engine::IsKey_Pressing(DIK_K))
     {
         m_iHP = 0; //즉사 기믹 확인용 
@@ -133,10 +124,17 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     {
         m_iHP = 50; // 피격 기믹 확인용 
     }
-
     // --------------------------------------------
 
-    //상태머신
+    Height_On_Terrain(); // 지형타기 
+
+    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
+
+
+    // 상태머신-------------------------------------
+    m_fFrame += m_fFrameSpeed * fTimeDelta;
+
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
     m_mapActionKey.Update();	// 액션키 초기화
@@ -150,6 +148,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
             m_fCheck += 1;
     }
 
+    // 빌보드 --------------------------------------
     FaceTurn(fTimeDelta);
 
     Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
@@ -203,6 +202,7 @@ void CGray::Free()
     SUPER::Free();
 }
 
+#pragma region 상태머신 부속파트 
 void CGray::FaceTurn(const _float& fTimeDelta)
 { 
     // case2. 빌보드 구성하기 
@@ -228,7 +228,7 @@ void CGray::FaceTurn(const _float& fTimeDelta)
 
     m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 
-    m_pTransformComp->m_vScale.x = 0.4f;
+    m_pTransformComp->m_vScale.y = 1.9f;
 }
 
 _bool CGray::Detect_Player()
@@ -275,6 +275,10 @@ _float CGray::Calc_Distance()
     return fDistance;
 }
 
+#pragma endregion
+
+
+#pragma region 목표(AI) 상태머신 부분 
 void CGray::AI_Idle(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
@@ -310,7 +314,7 @@ void CGray::AI_Suspicious(float fDeltaTime)
     {
         if (Detect_Player()) // 시야각 이내에 위치 + 시야거리 이내 위치 
         {
-            m_fAwareness += fDeltaTime * 4.f;
+            m_fAwareness += fDeltaTime * 3.f;
 
             // 2. 인지값이 MAX가 되면 플레이어 추격 시작 
             if (m_fMaxAwareness <= m_fAwareness)
@@ -851,7 +855,10 @@ void CGray::AI_Death(float fDeltaTime)
 }
 */
 
-// --------------------- 행동 ---------------------------
+#pragma endregion
+
+
+#pragma region 행동 상태머신 부분 
 void CGray::Idle(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
@@ -1040,3 +1047,6 @@ void CGray::Attack(float fDeltaTime)
     {
     }
 }
+
+
+#pragma endregion

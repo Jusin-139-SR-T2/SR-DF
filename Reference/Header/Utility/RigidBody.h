@@ -354,7 +354,7 @@ public:
             bIsAwake = true;
 
             // Add a bit of motion to avoid it falling asleep immediately.
-            fMotion = fSleepEpsilon * 2.0f;
+            //fMotion = fSleepEpsilon * 2.0f;
         }
         else {
             bIsAwake = false;

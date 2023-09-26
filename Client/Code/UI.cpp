@@ -6,7 +6,7 @@
 
 #include "DynamicCamera.h"
 
-CUI::CUI(LPDIRECT3DDEVICE9 pGraphicDev): CGameObject(pGraphicDev), m_fHp(100.f)
+CUI::CUI(LPDIRECT3DDEVICE9 pGraphicDev) : CGameObject(pGraphicDev), m_fHp(100.f)
 {
 }
 
@@ -27,19 +27,19 @@ HRESULT CUI::Ready_GameObject()
 
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_fSizeX = 128;
-	m_fSizeY = 128;
+	m_fSizeX = 400.f;
+	m_fSizeY = 300.f;
 
-	m_fX = m_fSizeX * 0.5f; // 중점위치 
-	m_fY = m_fSizeY * 0.5f;
+	m_fX = m_fSizeX * 0.5f - 100.f; // 중점위치 
+	m_fY = m_fSizeY * 0.5f + 375.f;
 
 	m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f; // 이미지 크기 
 	m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
-				   
+
 	m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX * 0.5f;
 	m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;
 
-	D3DXMatrixOrthoLH(&m_ProjMatrix, WINCX, WINCY, 0.0f, 100.0f);
+	D3DXMatrixOrthoLH(&m_ProjMatrix, WINCX, WINCY, 0.0f, 1.0f);
 	return S_OK;
 }
 
@@ -72,6 +72,12 @@ CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CUI::Render_GameObject()
 {
+
+	_matrix* Tmp = m_pTransformComp->Get_WorldMatrix();
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, Tmp);
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
+	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -93,7 +99,7 @@ HRESULT CUI::Add_Component()
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_UITextureComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-	
+
 	return S_OK;
 }
 
