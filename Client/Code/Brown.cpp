@@ -137,10 +137,11 @@ void CBrown::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-
+   // m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
     m_pTextureComp->Render_Texture(_ulong(m_fFrame));
     m_pBufferComp->Render_Buffer();
 
+    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -224,7 +225,7 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
    //matWorld = *m_pTransformComp->Get_WorldMatrix();
 
    // m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+  //  _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
 
    // _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
 
@@ -255,7 +256,7 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
 
     m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 
-    m_pTransformComp->m_vScale.x = 0.4f;
+    m_pTransformComp->m_vScale.y = 1.9f;
 }
 
 void CBrown::Free()
@@ -273,7 +274,7 @@ void CBrown::Height_On_Terrain()
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
 
-    m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.f, vPos.z);
+    m_pTransformComp->Set_Pos(vPos.x, fHeight+1.f, vPos.z);
 }
 
 //------------------ AI ---------------------------
@@ -390,7 +391,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_pTransformComp->m_vScale.x = 0.5f;
+       // m_pTransformComp->m_vScale.x = 0.5f;
         m_fFrameSpeed = 10.f; //원상복귀 
     }
     if (m_tState_Obj.Can_Update())
@@ -540,7 +541,7 @@ void CBrown::AI_InchForward(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_pTransformComp->m_vScale.x = 0.4f;
+       // m_pTransformComp->m_vScale.x = 0.4f;
         m_fFrameSpeed = 9.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"InchForward");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());

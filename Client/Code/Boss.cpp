@@ -198,7 +198,7 @@ void CBoss::FaceTurn(const _float& fTimeDelta)
 
     m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 
-    m_pTransformComp->m_vScale.x = 0.3f;
+    m_pTransformComp->m_vScale.y = 1.9f;
 }
 
 _bool CBoss::Detect_Player()
