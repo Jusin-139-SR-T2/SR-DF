@@ -57,11 +57,11 @@ HRESULT CBackGround::Ready_GameObject()
 	m_fSizeX = WINCX;
 	m_fSizeY = WINCY;
 
-	m_fX = m_fSizeX; // 중점위치 
-	m_fY = m_fSizeY;
+	m_fX = m_fSizeX * 0.5f; // 중점위치 
+	m_fY = m_fSizeY * 0.5f;
 
-	m_pTransformComp->Set_Pos({ m_fX - WINCX, -m_fY + WINCY, 0.f }); // 이미지 위치
-	m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });         // 이미지 크기
+	m_pTransformComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+	m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 
 
 	return S_OK;

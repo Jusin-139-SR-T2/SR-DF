@@ -27,24 +27,24 @@ HRESULT CPlayer::Ready_GameObject()
 
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
     // 왼손
-    m_fX = 0; // 중점위치 
-    m_fY = 0;
+    m_fSizeX = 300;
+    m_fSizeY = 300;
 
-    m_fSizeX = 200;
-    m_fSizeY = 200;
+    m_fX = m_fSizeX * 0.5f; // 중점위치 
+    m_fY = m_fSizeY * 0.5f + 400;
 
-    m_pLeftHandComp->Set_Pos({ m_fX - WINCX, -m_fY + WINCY, 0.f }); // 이미지 위치
-    m_pLeftHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f});         // 이미지 크기
+    m_pLeftHandComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+    m_pLeftHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 
     // 오른손
-    m_fX = 0; // 중점위치 
-    m_fY = 0;
+    m_fSizeX = 300;
+    m_fSizeY = 300;
 
-    m_fSizeX = 200;
-    m_fSizeY = 200;
+    m_fX = m_fSizeX * 0.5f + 600; // 중점위치 
+    m_fY = m_fSizeY * 0.5f + 400;
 
-    m_pRightHandComp->Set_Pos({ m_fX - WINCX, -m_fY + WINCY, 0.f }); // 이미지 위치
-    m_pRightHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });         // 이미지 크기 
+    m_pRightHandComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+    m_pRightHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 #pragma endregion
 
 #pragma region 초기 상태 세팅 (현재 상태)  
