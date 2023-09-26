@@ -123,7 +123,7 @@ HRESULT CPlayer::Ready_GameObject()
     bRightFrameOn = true;
 
     // 정점 세팅
-    m_pBufferComp->Set_Vertex(1.7f, 0.f, 1.f);
+    //m_pBufferComp->Set_Vertex(1.7f, 0.f, 1.f);
 
     return S_OK;
 }
@@ -191,34 +191,34 @@ void CPlayer::Render_GameObject()
 #pragma endregion
 
 #pragma region 왼손
-    // 왼손 위치 설정
-    m_pBufferComp->Set_Vertex(-3.5f, -0.9f, 0.f);
-
-    // 왼손 출력 여부
-    if (bLeftHandOn)
-    {
-        // 왼손 텍스처 출력
-        m_pLeftHandComp->Render_Texture((_ulong)m_fLeftFrame);  // 왼손 텍스처 출력
-        m_pBufferComp->Render_Buffer();             // 왼손 버퍼 
-    }
-
-    // (왼손)설정 값 되돌려주기
-    m_pBufferComp->Set_Vertex(3.5f, 0.f, 0.f);
-#pragma endregion
-
-#pragma region 오른손
-    // 오른손 위치 설정
-    m_pBufferComp->Set_Vertex(0.2f, 0.f, 0.f);
-
-    // 오른손 출력 여부
-    if (bRightHandOn)
-    {
-        m_pRightHandComp->Render_Texture((_ulong)m_fRightFrame); // 오른손 텍스처 출력
-        m_pBufferComp->Render_Buffer();                            // 오른손 버퍼
-    }
-
-    // (오른손)설정 값 되돌려주기
-    m_pBufferComp->Set_Vertex(-0.2f, 0.f, 0.f);
+//    // 왼손 위치 설정
+//    m_pBufferComp->Set_Vertex(-3.5f, -0.9f, 0.f);
+//
+//    // 왼손 출력 여부
+//    if (bLeftHandOn)
+//    {
+//        // 왼손 텍스처 출력
+//        m_pLeftHandComp->Render_Texture((_ulong)m_fLeftFrame);  // 왼손 텍스처 출력
+//        m_pBufferComp->Render_Buffer();             // 왼손 버퍼 
+//    }
+//
+//    // (왼손)설정 값 되돌려주기
+//    m_pBufferComp->Set_Vertex(3.5f, 0.f, 0.f);
+//#pragma endregion
+//
+//#pragma region 오른손
+//    // 오른손 위치 설정
+//    m_pBufferComp->Set_Vertex(0.2f, 0.f, 0.f);
+//
+//    // 오른손 출력 여부
+//    if (bRightHandOn)
+//    {
+//        m_pRightHandComp->Render_Texture((_ulong)m_fRightFrame); // 오른손 텍스처 출력
+//        m_pBufferComp->Render_Buffer();                            // 오른손 버퍼
+//    }
+//
+//    // (오른손)설정 값 되돌려주기
+//    m_pBufferComp->Set_Vertex(-0.2f, 0.f, 0.f);
 #pragma endregion
 
 #pragma region 초기 테스트 버전
@@ -246,7 +246,7 @@ void CPlayer::Render_GameObject()
     if (bTorch)
         m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
 
-    m_pBufferComp->Set_Vertex(0.f, 0.9f, 0.f);
+    //m_pBufferComp->Set_Vertex(0.f, 0.9f, 0.f);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 #pragma endregion
