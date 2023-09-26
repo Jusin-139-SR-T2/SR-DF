@@ -6,7 +6,7 @@
 
 #include "DynamicCamera.h"
 
-CUI::CUI(LPDIRECT3DDEVICE9 pGraphicDev): CGameObject(pGraphicDev), fHp(100.f)
+CUI::CUI(LPDIRECT3DDEVICE9 pGraphicDev): CGameObject(pGraphicDev), m_fHp(100.f)
 {
 }
 
@@ -102,10 +102,10 @@ void CUI::Key_Input(const _float& fTimeDelta)
 	//추후에 1,2,3번으로 인벤토리 바꾸는 것
 	if (Engine::Get_DIKeyState(DIK_Z) & 0x80)
 	{
-		fHp -= 1.f;
+		m_fHp -= 1.f;
 	}
 	if (Engine::Get_DIKeyState(DIK_X) & 0x80)
 	{
-		fHp += 1.f;
+		m_fHp += 1.f;
 	}
 }

@@ -34,6 +34,8 @@ public:
 private:
 	HRESULT Add_Component();
 
+	void Key_Input(const _float& fTimeDelta);
+
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
