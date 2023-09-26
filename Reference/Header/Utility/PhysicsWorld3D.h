@@ -36,7 +36,7 @@ public:
 private:
 	_bool						m_bCalculateIterations;			// 계산 반복
 
-	list<FRigidBody*>			m_BodyList;						// 충돌체 리스트
+	list<FRigidBody*>			m_listBody;						// 충돌체 리스트
 
 	FContactResolver			m_ContactResolver;				// 접촉 해결자
 	list<FContactGenerator*>	m_ConGenList;					// 접촉 발생기 리스트

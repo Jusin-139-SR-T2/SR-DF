@@ -12,7 +12,7 @@ BEGIN(Engine)
 /// <summary>
 /// 접촉 보고서
 /// </summary>
-class FContact
+class ENGINE_DLL FContact
 {
 	THIS_CLASS(FContact)
 
@@ -33,7 +33,7 @@ public:
 /// <summary>
 /// 접촉 해결
 /// </summary>
-class FContactResolver
+class ENGINE_DLL FContactResolver
 {
 	THIS_CLASS(FContactResolver)
 
@@ -116,7 +116,7 @@ protected:
 /// 특수한 충돌에 쓰이는 추상 클래스
 /// 접촉에 대해 발생시킨다.
 /// </summary>
-class FContactGenerator abstract
+class ENGINE_DLL FContactGenerator abstract
 {
 	THIS_CLASS(FContactGenerator)
 

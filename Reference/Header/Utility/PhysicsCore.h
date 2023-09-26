@@ -13,7 +13,7 @@ Real Get_SleepEpsilon();
 /// <summary>
 /// 3차원 벡터
 /// </summary>
-class FVector3
+class ENGINE_DLL FVector3
 {
 public:
     FVector3() : x(0), y(0), z(0) {}
@@ -270,7 +270,7 @@ public:
 /// <summary>
 /// 쿼터니온
 /// </summary>
-class FQuaternion
+class ENGINE_DLL FQuaternion
 {
 public:
     FQuaternion() : r(1), i(0), j(0), k(0) {}
@@ -344,7 +344,7 @@ public:
 /// <summary>
 /// 3x4 행렬
 /// </summary>
-class FMatrix3x4
+class ENGINE_DLL FMatrix3x4
 {
     FMatrix3x4()
     {
@@ -613,7 +613,7 @@ public:
 /// <summary>
 /// 3x3 행렬
 /// </summary>
-class FMatrix3
+class ENGINE_DLL FMatrix3
 {
 public:
     FMatrix3()

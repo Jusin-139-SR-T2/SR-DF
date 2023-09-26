@@ -54,8 +54,8 @@ public:		// 충돌체 저장용 포인터
 protected:
 	FCollisionPrimitive* m_pCollisionShape = nullptr;			// 충돌체 저장 포인터
 
-public:
-
+protected:
+	function<void()>	m_fnTest;
 
 protected:
 	// 충돌이 발생할 때 불러오는 함수. 충돌이 발생하면 연결된 함수로 다시 신호를 보내줍니다.

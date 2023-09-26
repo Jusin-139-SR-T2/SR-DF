@@ -11,7 +11,7 @@ BEGIN(Engine)
 /// 기하학적인 모양을 가지는 클래스
 /// 실제 충돌처리 이 클래스를 기반으로 한 파생 클래스를 통해 진행한다.
 /// </summary>
-class FCollisionPrimitive
+class ENGINE_DLL FCollisionPrimitive
 {
 	THIS_CLASS(FCollisionPrimitive)
 public:
@@ -29,13 +29,17 @@ public:
 
 protected:
 	FMatrix3x4	matTransform;		// 트랜스 폼 행렬
+
+
+protected:
+	function<void()>	fnEventHandler;
 };
 
 
 /// <summary>
 /// 구체
 /// </summary>
-class FCollisionSphere : public FCollisionPrimitive
+class ENGINE_DLL FCollisionSphere : public FCollisionPrimitive
 {
 	DERIVED_CLASS(FCollisionPrimitive, FCollisionSphere)
 
@@ -47,7 +51,7 @@ public:
 /// <summary>
 /// 박스
 /// </summary>
-class FCollisionBox : public FCollisionPrimitive
+class ENGINE_DLL FCollisionBox : public FCollisionPrimitive
 {
 	DERIVED_CLASS(FCollisionPrimitive, FCollisionBox)
 
@@ -59,7 +63,7 @@ public:
 /// <summary>
 /// 캡슐
 /// </summary>
-class FCollisionCapsule : public FCollisionPrimitive
+class ENGINE_DLL FCollisionCapsule : public FCollisionPrimitive
 {
 	DERIVED_CLASS(FCollisionPrimitive, FCollisionCapsule)
 
@@ -74,7 +78,7 @@ public:
 /// 평면
 /// 평면은 강체 정보를 가지지 않는다.
 /// </summary>
-class FCollisionPlane
+class ENGINE_DLL FCollisionPlane
 {
 	THIS_CLASS(FCollisionPlane)
 

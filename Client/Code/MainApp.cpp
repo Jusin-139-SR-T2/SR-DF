@@ -102,6 +102,9 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	// TextureMgr
 	FAILED_CHECK_RETURN(Engine::Ready_TextureMgr(*ppGraphicDev), E_FAIL);
 
+	// PhysicsMgr
+	FAILED_CHECK_RETURN(Engine::Ready_PhysicsMgr(1), E_FAIL);
+
 	return S_OK;
 }
 

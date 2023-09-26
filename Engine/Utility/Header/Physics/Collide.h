@@ -15,7 +15,7 @@ BEGIN(Engine)
 /// 각종 기하학적 모형들의 충돌테스트 클래스
 /// static 클래스, CollsionData를 생성합니다.
 /// </summary>
-class FIntersectTests
+class ENGINE_DLL FIntersectTests
 {
 	THIS_CLASS(FIntersectTests)
 
@@ -27,7 +27,7 @@ public:
 
 	// 박스 충돌
 	static bool BoxAndBox(const FCollisionBox& srcBox, const FCollisionBox& dstBox);
-	static bool BoxAndSphere(const FCollisionBox& srcBox, const FCollisionSphere& dstSphere) { SphereAndBox(dstSphere, srcBox); }
+	static bool BoxAndSphere(const FCollisionBox& srcBox, const FCollisionSphere& dstSphere);// { return SphereAndBox(dstSphere, srcBox); }
 	static bool BoxAndPlane(const FCollisionBox& srcBox, const FCollisionPlane& dstPlane);
 
 	// 캡슐 충돌
@@ -40,7 +40,7 @@ public:
 /// <summary>
 /// 충돌에 대한 정보를 저장합니다.
 /// </summary>
-struct FCollisionData
+struct ENGINE_DLL FCollisionData
 {
 	THIS_CLASS(FCollisionData)
 
@@ -87,7 +87,7 @@ public:
 /// 충돌에 대해 감지하는 클래스
 /// IntersectTests와 다르게 충돌에 대해 
 /// </summary>
-class FCollisionDetector
+class ENGINE_DLL FCollisionDetector
 {
 	THIS_CLASS(FCollisionDetector)
 
@@ -99,7 +99,7 @@ public:
 
 	// 박스 충돌
 	static bool BoxAndBox(const FCollisionBox& srcBox, const FCollisionBox& dstBox);
-	static bool BoxAndSphere(const FCollisionBox& srcBox, const FCollisionSphere& dstSphere) { SphereAndBox(dstSphere, srcBox); }
+	static bool BoxAndSphere(const FCollisionBox& srcBox, const FCollisionSphere& dstSphere);// { return SphereAndBox(dstSphere, srcBox); }
 	static bool BoxAndPlane(const FCollisionBox& srcBox, const FCollisionPlane& dstPlane);
 
 	// 캡슐 충돌

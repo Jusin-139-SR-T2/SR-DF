@@ -78,15 +78,15 @@ inline HRESULT	Ready_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tc
 
 
 // 물리 매니저
-HRESULT		Ready_Physics(const _uint iMaxPhysicsWorld3D)
+HRESULT		Ready_PhysicsMgr(const _uint iMaxPhysicsWorld3D)
 {
 	return CPhysicsMgr::GetInstance()->Ready_Physics(iMaxPhysicsWorld3D);
 }
-void		StartFrame_Physics()
+void		StartFrame_PhysicsMgr()
 {
 	CPhysicsMgr::GetInstance()->StartFrame_Physics();
 }
-_int		Update_Physics(const Real& fTimeDelta)
+_int		Update_PhysicsMgr(const Real& fTimeDelta)
 {
 	return CPhysicsMgr::GetInstance()->Update_Physics(fTimeDelta);
 }

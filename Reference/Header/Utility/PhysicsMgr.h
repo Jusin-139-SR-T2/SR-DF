@@ -11,7 +11,7 @@ BEGIN(Engine)
 /// <summary>
 /// 물리 세계를 관리하는 클래스
 /// </summary>
-class CPhysicsMgr : public CBase
+class ENGINE_DLL CPhysicsMgr : public CBase
 {
 	DERIVED_CLASS_SINGLETON(CBase, CPhysicsMgr)
 

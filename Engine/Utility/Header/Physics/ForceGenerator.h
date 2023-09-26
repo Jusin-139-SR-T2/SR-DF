@@ -11,7 +11,7 @@ class FForceGenerator;
 /// <summary>
 /// 힘 등록기
 /// </summary>
-class FForceRegistry
+class ENGINE_DLL FForceRegistry
 {
 protected:
     struct FForceRegistration
@@ -33,7 +33,7 @@ public:
 /// <summary>
 /// 각종 힘을 발생시키는 클래스의 원형
 /// </summary>
-class FForceGenerator abstract
+class ENGINE_DLL FForceGenerator abstract
 {
 	THIS_CLASS(FForceGenerator)
 
@@ -46,7 +46,7 @@ public:
 /// <summary>
 /// 중력 힘 발생기
 /// </summary>
-class FForce_Gravity
+class ENGINE_DLL FForce_Gravity
 {
 	THIS_CLASS(FForce_Gravity)
 
@@ -63,7 +63,7 @@ public:
 /// <summary>
 /// 스프링 힘 발생기
 /// </summary>
-class FForce_Spring
+class ENGINE_DLL FForce_Spring
 {
 	THIS_CLASS(FForce_Spring)
 

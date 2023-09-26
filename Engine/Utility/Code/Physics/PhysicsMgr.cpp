@@ -27,7 +27,7 @@ HRESULT CPhysicsMgr::Ready_Physics(const _uint iMaxPhysicsWorld3D)
 
 	for (_uint i = 0; i < m_vecWorld3D.capacity(); i++)
 	{
-		m_vecWorld3D.push_back(CPhysicsWorld3D::Create(1000, 1000)->Get_ByRef<CPhysicsWorld3D>());
+		m_vecWorld3D.push_back(CPhysicsWorld3D::Create(1000, 1000));
 	}
 
 	return S_OK;

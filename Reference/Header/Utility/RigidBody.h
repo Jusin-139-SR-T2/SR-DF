@@ -27,7 +27,7 @@ enum class ERIGID_BODY_TYPE
 /// Vector 클래스를 FloatVector, Integer, DoubleVector와 구분하기 위해 붙였다고 하는데...그렇다고 한다.
 /// 멤버 변수 규칙은 m_를 붙이지 않습니다.
 /// </summary>
-class FRigidBody
+class ENGINE_DLL FRigidBody
 {
 	THIS_CLASS(FRigidBody)
 

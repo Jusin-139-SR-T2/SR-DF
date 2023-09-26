@@ -56,9 +56,9 @@ inline void		Clear_RenderGroup();
 inline HRESULT		Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,	const D3DLIGHT9 * pLightInfo,	const _uint & iIndex);
 
 // PhysicsMgr
-inline HRESULT		Ready_Physics(const _uint iMaxPhysicsWorld3D);
-inline void			StartFrame_Physics();
-inline _int			Update_Physics(const Real& fTimeDelta);
+inline HRESULT		Ready_PhysicsMgr(const _uint iMaxPhysicsWorld3D);
+inline void			StartFrame_PhysicsMgr();
+inline _int			Update_PhysicsMgr(const Real& fTimeDelta);
 
 // TextureMgr
 inline HRESULT	Ready_TextureMgr(LPDIRECT3DDEVICE9 pGraphicDev);
