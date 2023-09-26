@@ -186,13 +186,16 @@ void CPlayer::Render_GameObject()
     // 직교
     m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
     m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
-    // 직교
 
 #pragma endregion
 
 #pragma region 왼손
     // 왼손 위치 설정
-    m_pBufferComp->Set_Vertex(-3.5f, -0.9f, 0.f);
+    //m_pBufferComp->Set_Vertex(-3.5f, -0.9f, 0.f);
+    /*m_pLeftHandComp->Set_Pos({ -200.f, -100.f, 0.f });
+    m_pLeftHandComp->Readjust_Transform();
+    m_pLeftHandComp->Set_TransformToWorld(*m_pTransformComp->Get_WorldMatrix());
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_pLeftHandComp->Get_Transform());*/
 
     // 왼손 출력 여부
     if (bLeftHandOn)
@@ -203,12 +206,12 @@ void CPlayer::Render_GameObject()
     }
 
     // (왼손)설정 값 되돌려주기
-    m_pBufferComp->Set_Vertex(3.5f, 0.f, 0.f);
+    //m_pBufferComp->Set_Vertex(3.5f, 0.f, 0.f);
 #pragma endregion
 
 #pragma region 오른손
     // 오른손 위치 설정
-    m_pBufferComp->Set_Vertex(0.2f, 0.f, 0.f);
+    //m_pBufferComp->Set_Vertex(0.2f, 0.f, 0.f);
 
     // 오른손 출력 여부
     if (bRightHandOn)
@@ -218,7 +221,7 @@ void CPlayer::Render_GameObject()
     }
 
     // (오른손)설정 값 되돌려주기
-    m_pBufferComp->Set_Vertex(-0.2f, 0.f, 0.f);
+    //m_pBufferComp->Set_Vertex(-0.2f, 0.f, 0.f);
 #pragma endregion
 
 #pragma region 초기 테스트 버전
@@ -243,10 +246,10 @@ void CPlayer::Render_GameObject()
 #pragma endregion
 
 #pragma region 조명 테스트
-    if (bTorch)
-        m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
+    //if (bTorch)
+       // m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
 
-    m_pBufferComp->Set_Vertex(0.f, 0.9f, 0.f);
+    //m_pBufferComp->Set_Vertex(0.f, 0.9f, 0.f);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 #pragma endregion

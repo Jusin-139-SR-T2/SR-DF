@@ -64,3 +64,16 @@ void CMeshColComp::Free()
 {
 	SUPER::Free();
 }
+
+HRESULT CMeshColComp::Ready_Component()
+{
+	return E_NOTIMPL;
+}
+
+void CMeshColComp::LateUpdate_Component()
+{
+}
+
+void CMeshColComp::Render_Component()
+{
+}

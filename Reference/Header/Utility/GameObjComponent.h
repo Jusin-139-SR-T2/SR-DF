@@ -9,7 +9,7 @@ BEGIN(Engine)
 /// 현재는 정착되기 전이라 직접적으로 게임오브젝트에서 쓰이지 않고 CComponent를 쓴다.
 /// 추후 추가적인 기능을 제공하기 위해 다형성을 위한 구조를 만들어보려 임시로 나누었다.
 /// </summary>
-class ENGINE_DLL CGameObjComponent : public CComponent
+class ENGINE_DLL CGameObjComponent abstract : public CComponent
 {
 	DERIVED_CLASS(CComponent, CGameObjComponent)
 

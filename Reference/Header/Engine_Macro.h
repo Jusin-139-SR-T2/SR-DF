@@ -112,6 +112,13 @@ namespace Engine
 					DERIVED_CLASS(BASENAME, THISCLASS)	\
 					DECLARE_SINGLETON(THISCLASS)
 
+// 특수한 함수 앞에 별도로 붙이기 위한 용도
+#define PRIVATE		private:	// private:
+#define PROTECTED	protected:	// protected:
+#define PUBLIC		public:		// public:
+// 눈에 잘 띄게 매크로로 만든 예약어
+#define OVERRIDE	override	// override
+#define ABSTRACT	abstract	// abstract
 
 // getset 매크로
 // 일반 Set 함수
@@ -279,6 +286,11 @@ namespace Engine
 			ARG9##(TYPE, MVALUE, NAME)	\
 			ARG10##(TYPE, MVALUE, NAME)
 #pragma endregion
+
+
+
+
+
 
 }
 

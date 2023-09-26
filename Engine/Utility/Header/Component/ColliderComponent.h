@@ -53,6 +53,10 @@ protected:
 	using pair_collider = pair<CColliderComponent*, _bool>;
 	// 충돌 발생시 충돌한 객체를 가리키기 위한 리스트, Collide를 통해 매 프레임 조절됩니다.
 	list<pair_collider> m_listColliderObject;
+
+	// CSceneComponent을(를) 통해 상속됨
+	virtual HRESULT Ready_Component() override;
+	virtual void Render_Component() override;
 };
 
 END

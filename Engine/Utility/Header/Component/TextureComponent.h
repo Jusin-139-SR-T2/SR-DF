@@ -26,11 +26,11 @@ private:
 	virtual void				Free();
 
 public:
-	PRIVATE virtual		HRESULT Ready_Component() override {}
+	PRIVATE virtual		HRESULT Ready_Component() OVERRIDE { return S_OK; }
 	PUBLIC	virtual		HRESULT Ready_Component(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey = L"");
-	PUBLIC	virtual		_int	Update_Component(const _float& fTimeDelta);
-	PUBLIC	virtual		void	LateUpdate_Component() override;
-	PRIVATE virtual		void	Render_Component() override {}
+	PUBLIC	virtual		_int	Update_Component(const _float& fTimeDelta) OVERRIDE;
+	PUBLIC	virtual		void	LateUpdate_Component() OVERRIDE;
+	PRIVATE virtual		void	Render_Component() OVERRIDE {}
 	PUBLIC	virtual		void	Render_Component(const _uint& iIndex = 0);
 
 public:
