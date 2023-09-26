@@ -37,7 +37,7 @@ CBackGround* CBackGround::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 HRESULT CBackGround::Add_Component()
 {
 	// 트랜스폼 컴포넌트
-	//NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
+	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 	// 버퍼
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	// 텍스쳐 컴포넌트
@@ -53,6 +53,24 @@ HRESULT CBackGround::Add_Component()
 HRESULT CBackGround::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	D3DXMatrixIdentity(&m_ViewMatrix);
+
+	/* 직교투영행렬을 만든다. */
+	D3DXMatrixOrthoLH(&m_ProjMatrix, WINCX, WINCY, 0.0f, 100.0f);
+
+	m_fSizeX = WINCX;
+	m_fSizeY = WINCY;
+
+	m_fX = m_fSizeX * 0.5f; // 중점위치 
+	m_fY = m_fSizeY * 0.5f;
+
+	m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f; // 이미지 크기 
+	m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
+
+	m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX * 0.5f;
+	m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;
+
 
 	return S_OK;
 }
@@ -73,8 +91,11 @@ void CBackGround::LateUpdate_GameObject()
 
 void CBackGround::Render_GameObject()
 {
-	//m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
+	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
 	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	
 
 	m_pBackTextureComp->Render_Texture(0);
 	m_pBufferComp->Render_Buffer();

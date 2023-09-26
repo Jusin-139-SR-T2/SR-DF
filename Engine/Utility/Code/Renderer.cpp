@@ -96,11 +96,11 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 	//UiViewPort.MaxZ = 0;
 	//pGraphicDev->SetViewport(&UiViewPort);
 
-	_matrix matView;
-	pGraphicDev->SetTransform(D3DTS_VIEW, D3DXMatrixIdentity(&matView)); // 항등행렬로 적용된 뷰 행렬 초기화.
+	//_matrix matView;
+	//pGraphicDev->SetTransform(D3DTS_VIEW, D3DXMatrixIdentity(&matView)); // 항등행렬로 적용된 뷰 행렬 초기화.
 
-	_matrix   m_matProj;
-	D3DXMatrixOrthoLH(&m_matProj, WINCX, WINCY,0, 0);
+	//_matrix   m_matProj;
+	//D3DXMatrixOrthoLH(&m_matProj, WINCX, WINCY,0, 0);
 	//D3DXMatrixOrthoOffCenterLH(&m_matProj, 0, WINCX, 0, WINCY, -1.f, 1.f);
 	//pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);   // 직교투영 행렬 적용.
 

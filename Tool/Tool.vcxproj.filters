@@ -22,6 +22,12 @@
     <Filter Include="02. ImguiMgr">
       <UniqueIdentifier>{238b928c-0cde-4bd0-840f-46385734c26b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. ImguiMgr\AnimationTool">
+      <UniqueIdentifier>{47f4c625-8be4-454b-8864-15bc31ba8028}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. ImguiMgr\AnimationTool\PlayerTexture">
+      <UniqueIdentifier>{0e50d04c-cd0c-4087-b546-42c19e63c79f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\framework.h">
@@ -75,6 +81,12 @@
     <ClInclude Include="Header\ImguiWin_Test.h">
       <Filter>02. ImguiMgr</Filter>
     </ClInclude>
+    <ClInclude Include="Header\ImguiAnimationTool.h">
+      <Filter>02. ImguiMgr\AnimationTool</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\MyTexture.h">
+      <Filter>02. ImguiMgr\AnimationTool\PlayerTexture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\framework.cpp">
@@ -118,6 +130,12 @@
     </ClCompile>
     <ClCompile Include="Code\ImguiWin_Test.cpp">
       <Filter>02. ImguiMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ImguiAnimationTool.cpp">
+      <Filter>02. ImguiMgr\AnimationTool</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\MyTexture.cpp">
+      <Filter>02. ImguiMgr\AnimationTool\PlayerTexture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -26,7 +26,7 @@ HRESULT CMainApp::Ready_MainApp()
 	FAILED_CHECK_RETURN(Ready_Scene(m_pGraphicDev, &m_pManagementClass), E_FAIL);
 
 	FAILED_CHECK_RETURN(CImguiMgr::GetInstance()->Ready_Imgui(&m_pDeviceClass, &m_pGraphicDev), E_FAIL);
-
+	
 	return S_OK;
 }
 
@@ -190,7 +190,7 @@ bool CMainApp::LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 p
 
 	D3DLOCKED_RECT lockedRect;
 	HRESULT hr = texture->LockRect(0, &lockedRect, NULL, 0);
-
+	
 	if (SUCCEEDED(hr))
 	{
 		texture->UnlockRect(0);
