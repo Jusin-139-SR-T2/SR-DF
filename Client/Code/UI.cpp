@@ -21,25 +21,17 @@ CUI::~CUI()
 
 HRESULT CUI::Ready_GameObject()
 {
-	D3DXMatrixIdentity(&m_ViewMatrix);
-
-	/* 직교투영행렬을 만든다. */
-
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_fSizeX = 400.f;
 	m_fSizeY = 300.f;
 
-	m_fX = m_fSizeX * 0.5f - 100.f; // 중점위치 
-	m_fY = m_fSizeY * 0.5f + 375.f;
+	m_fX = m_fSizeX; // 중점위치 
+	m_fY = m_fSizeY;
 
-	m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f; // 이미지 크기 
-	m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
+	m_pTransformComp->Set_Pos({ m_fX - WINCX, -m_fY + WINCY, 0.f }); // 이미지 위치
+	m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });         // 이미지 크기
 
-	m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX * 0.5f;
-	m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;
-
-	D3DXMatrixOrthoLH(&m_ProjMatrix, WINCX, WINCY, 0.0f, 1.0f);
 	return S_OK;
 }
 
@@ -72,13 +64,6 @@ CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CUI::Render_GameObject()
 {
-
-	_matrix* Tmp = m_pTransformComp->Get_WorldMatrix();
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, Tmp);
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
-
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 

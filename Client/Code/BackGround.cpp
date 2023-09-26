@@ -54,18 +54,14 @@ HRESULT CBackGround::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	//m_pTransformComp->Set_Pos(0.f, 0.f, 0.f);
 	m_fSizeX = WINCX;
 	m_fSizeY = WINCY;
 
 	m_fX = m_fSizeX; // 중점위치 
 	m_fY = m_fSizeY;
 
-	m_pTransformComp->m_vScale.x = m_fSizeX; // 이미지 크기 
-	m_pTransformComp->m_vScale.y = m_fSizeY;
-
-	m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX;
-	m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY;
+	m_pTransformComp->Set_Pos({ m_fX - WINCX, -m_fY + WINCY, 0.f }); // 이미지 위치
+	m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });         // 이미지 크기
 
 
 	return S_OK;
@@ -90,7 +86,7 @@ void CBackGround::Render_GameObject()
 	// 텍스처의 트랜스폼을 월드 행렬, DYNAMIC으로 설정시 수동으로 해줄 필요가 없음
 	m_pBackTextureComp->Readjust_Transform();	
 	// 텍스처 행렬 * 부모(게임오브젝트)의 행렬
-	m_pBackTextureComp->Set_TransformToWorld(*m_pTransformComp->Get_WorldMatrix());
+	m_pBackTextureComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
 	// 위의 두개만 쓰면 텍스처 행렬과 부모 행렬을 별개로 두고 계산할 수 있음.
 
 	// 이제부터 Render_Texture 함수 안에서 자동으로 텍스처의 행렬이 디바이스에 들어간다.(SetTransform(D3DTS_WORLD, 텍스처 행렬))
@@ -98,8 +94,7 @@ void CBackGround::Render_GameObject()
 	m_pBufferComp->Render_Buffer();
 
 	// 이건 부모 행렬을 텍스처 행렬에 그대로 쓰는 방법, 텍스처 별개의 행렬이 필요없을 때 사용
-	m_pTextureComp->Set_Transform(*m_pTransformComp->Get_WorldMatrix());
-
+	m_pTextureComp->Set_Transform(m_pTransformComp->Get_Transform());
 
 	// m_pBackTextureComp에 적용한 것과 m_pTextureComp에 적용한 것. 두개다 백그라운드에서 동일한 위치, 크기로 설정되므로 유효함.
 

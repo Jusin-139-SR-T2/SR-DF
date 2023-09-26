@@ -45,7 +45,7 @@ HRESULT CTerrain::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformComp->m_vScale.x = 1.f;
+    m_pTransformComp->Set_ScaleX(1.f);
 
     return S_OK;
 }
@@ -67,7 +67,7 @@ void CTerrain::LateUpdate_GameObject()
 void CTerrain::Render_GameObject()
 {
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
-    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     SetUp_Material();

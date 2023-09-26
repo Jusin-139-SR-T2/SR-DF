@@ -245,7 +245,7 @@ protected:
 
 protected:
 	_matrix		m_matRot;
-	_matrix		m_ViewMatrix, m_ProjMatrix;
+	_matrix		m_ViewMatrix, m_ProjMatrix;	// 요거 차후 제거 예정, 직교, 뷰포트가 렌더러에 종속적으로 바뀜
 
 private: //빛
 	//HRESULT			SetUp_Material();

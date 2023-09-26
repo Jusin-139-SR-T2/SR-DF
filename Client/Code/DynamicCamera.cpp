@@ -274,8 +274,8 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	pPlayerTransCom->Get_Info(INFO_LOOK, &vPlayerLook);
 
 	// 플레이어의 회전한 각도를 얻어온다.
-	float fX = pPlayerTransCom->m_vAngle.x;
-	float fY = pPlayerTransCom->m_vAngle.y;
+	float fX = pPlayerTransCom->Get_Rotation().x;
+	float fY = pPlayerTransCom->Get_Rotation().y;
 
 	// 플레이어 회전각도를 행렬로 곱해준다.
 	D3DXMatrixRotationX(&matPlayerRotX, fX);
@@ -343,7 +343,7 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 
 	// 카메라의 Right벡터 구하기
 	// vForward = 목표물 - 카메라
-	_vec3 vForward = pPlayerTransCom->m_vInfo[INFO_POS] - m_vEye;
+	_vec3 vForward = pPlayerTransCom->Get_Pos() - m_vEye;
 	//vForward와 월드의 up벡터(0,1,0)를 외적하여 Right벡터를 구한다.
 	D3DXVec3Cross(&m_vRight, &m_vUp, &vForward);
 
@@ -404,7 +404,7 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 
 
 		// 카메라의 Right벡터 구하기
-		vLook = pPlayerTransCom->m_vInfo[INFO_POS] - m_vEye;      // m_vLook = 목표물 - 카메라
+		vLook = pPlayerTransCom->Get_Pos() - m_vEye;      // m_vLook = 목표물 - 카메라
 		//m_vLook와 월드의 up벡터(0,1,0)를 외적하여 Right벡터를 구한다.
 		D3DXVec3Cross(&m_vRight, &m_vUp, &vLook);
 
@@ -413,10 +413,10 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 		m_fMinAngleY = 90.f;
 
 		// 카메라 위치는 플레이어 Pos + 떨어질 거리
-		m_vEye = pPlayerTransCom->m_vInfo[INFO_POS] + m_vOffset;
+		m_vEye = pPlayerTransCom->Get_Pos() + m_vOffset;
 
 		// 바라보는 대상은 플레이어
-		m_vAt = pPlayerTransCom->m_vInfo[INFO_POS];
+		m_vAt = pPlayerTransCom->Get_Pos();
 
 		// 수평 회전 (Y축 회전)
 		if (dwMouseMoveX != 0)
@@ -473,11 +473,11 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 		_matrix matRotation; // 회전 행렬을 만들기 위한 행렬
 		D3DXMatrixRotationQuaternion(&matRotation, &m_quaternion); // 쿼터니언을 회전 행렬로 변환
 
-		_vec3 vPos = m_vEye - pPlayerTransCom->m_vInfo[INFO_POS];
+		_vec3 vPos = m_vEye - pPlayerTransCom->Get_Pos();
 		// 결과 값을 저장할 벡터 주소, 행렬과 곱하기를 할 위치 벡터 주소, 행렬 주소;
 		D3DXVec3TransformCoord(&vPos, &vPos, &matRotation);      // 위치벡터 
 
-		m_vEye = vPos + pPlayerTransCom->m_vInfo[INFO_POS];
+		m_vEye = vPos + pPlayerTransCom->Get_Pos();
 
 	}
 }

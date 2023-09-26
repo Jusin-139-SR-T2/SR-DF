@@ -36,7 +36,7 @@ HRESULT CGray::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformComp->m_vInfo[INFO_POS] = { 10.f, 10.f, 25.f };
+    m_pTransformComp->Set_Pos({ 10.f, 10.f, 25.f });
     m_fFrame = 0;
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
@@ -163,7 +163,7 @@ void CGray::LateUpdate_GameObject()
 
 void CGray::Render_GameObject()
 {
-    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     m_pTextureComp->Render_Texture(_ulong(m_fFrame));
@@ -210,7 +210,7 @@ void CGray::FaceTurn(const _float& fTimeDelta)
 
     _matrix		matWorld, matView, matBill;
 
-    matWorld = *m_pTransformComp->Get_WorldMatrix();
+    matWorld = *m_pTransformComp->Get_Transform();
 
     m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
     D3DXMatrixIdentity(&matBill);
@@ -228,7 +228,7 @@ void CGray::FaceTurn(const _float& fTimeDelta)
 
     m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 
-    m_pTransformComp->m_vScale.y = 1.9f;
+    m_pTransformComp->Set_ScaleY(1.9f);
 }
 
 _bool CGray::Detect_Player()
@@ -387,7 +387,7 @@ void CGray::AI_YouDie(float fDeltaTime)
         m_fFrameSpeed = 7.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"YouDie");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-        m_pTransformComp->m_vScale.x = 0.9f;
+        m_pTransformComp->Set_ScaleX(0.9f);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -915,8 +915,8 @@ void CGray::Approach(float fDeltaTime)
         {
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+            vDir = vPlayerPos - m_pTransformComp->Get_Pos();
+            m_pTransformComp->Set_Look(vDir);
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
 
         }
@@ -925,8 +925,8 @@ void CGray::Approach(float fDeltaTime)
         {
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+            vDir = vPlayerPos - m_pTransformComp->Get_Pos();
+            m_pTransformComp->Set_Look(vDir);
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fWalkSpeed);
 
         }
@@ -950,7 +950,7 @@ void CGray::SideMoving(float fDeltaTime)
 
     // 실행
     {
-        _vec3 Right = m_pTransformComp->m_vInfo[INFO_RIGHT];
+        _vec3 Right = m_pTransformComp->Get_Right();
         D3DXVec3Normalize(&Right, &Right);
         
         if (STATE_OBJ::KEEPEYE == m_tState_Obj.Get_State())
@@ -988,7 +988,7 @@ void CGray::SuddenAttack(float fDeltaTime)
 
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+            vDir = vPlayerPos - m_pTransformComp->Get_Pos();
 
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fUprightSpeed);
         }
@@ -998,7 +998,7 @@ void CGray::SuddenAttack(float fDeltaTime)
             //점프 
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+            vDir = vPlayerPos - m_pTransformComp->Get_Pos();
 
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
         }

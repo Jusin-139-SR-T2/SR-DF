@@ -57,7 +57,7 @@ HRESULT CSkyBox::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformComp->m_vScale = { 4.f, 4.f, 4.f }; 
+	m_pTransformComp->Set_Scale({4.f, 4.f, 4.f});
 	// 여기서 사이즈 조절해서 큐브자체 크기 키우면됨 
 	// 3.f 확인결과 terrain보다 위로 큐브가 뜸 
 
@@ -83,7 +83,7 @@ void CSkyBox::LateUpdate_GameObject()
 }
 void CSkyBox::Render_GameObject()
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 

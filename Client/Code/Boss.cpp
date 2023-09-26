@@ -36,7 +36,7 @@ HRESULT CBoss::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformComp->m_vInfo[INFO_POS] = { 15.f, 10.f, 25.f };
+    m_pTransformComp->Set_Pos({ 15.f, 10.f, 25.f });
     m_fFrame = 0;
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
@@ -138,7 +138,7 @@ void CBoss::LateUpdate_GameObject()
 
 void CBoss::Render_GameObject()
 {
-    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     m_pTextureComp->Render_Texture(_ulong(m_fFrame));
@@ -184,7 +184,7 @@ void CBoss::FaceTurn(const _float& fTimeDelta)
      //빌보드 = 자전의 역 / 자전 역 * 스 * 자 * 이 ->스케일문제 = 나중에 넣으면되잖? 
     _matrix		matWorld, matView, matBill;
 
-    matWorld = *m_pTransformComp->Get_WorldMatrix();
+    matWorld = *m_pTransformComp->Get_Transform();
 
     m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
     D3DXMatrixIdentity(&matBill);
@@ -198,7 +198,7 @@ void CBoss::FaceTurn(const _float& fTimeDelta)
 
     m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 
-    m_pTransformComp->m_vScale.y = 1.9f;
+    m_pTransformComp->Set_ScaleY(1.9f);
 }
 
 _bool CBoss::Detect_Player()
@@ -504,7 +504,7 @@ void CBoss::AI_Side_Ready(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_pTransformComp->m_vScale.x = 1.1f;
+        m_pTransformComp->Set_Scale({1.1f, 1.0f, 1.0f});
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"SideReady");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -726,8 +726,8 @@ void CBoss::Approaching(float fDeltaTime)
         {
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+            vDir = vPlayerPos - m_pTransformComp->Get_Pos();
+            m_pTransformComp->Set_Look(vDir);
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
 
         }
@@ -736,8 +736,8 @@ void CBoss::Approaching(float fDeltaTime)
         {
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+            vDir = vPlayerPos - m_pTransformComp->Get_Pos();
+            m_pTransformComp->Set_Look(vDir);
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fWalkSpeed);
 
         }
@@ -758,7 +758,7 @@ void CBoss::Rolling(float fDeltaTime)
 
     if (m_tState_Act.Can_Update())
     {
-        _vec3 Right = m_pTransformComp->m_vInfo[INFO_RIGHT];
+        _vec3 Right = m_pTransformComp->Get_Right();
         D3DXVec3Normalize(&Right, &Right);
         m_pTransformComp->Move_Pos(&Right, fDeltaTime, m_fRollingSpeed);
 
