@@ -33,7 +33,7 @@ CTextureComponent* CTextureComponent::Create(LPDIRECT3DDEVICE9 pGraphicDev, TEXT
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Texture(eID, pTextureKey, pStateKey)))
+	if (FAILED(pInstance->Ready_Component(eID, pTextureKey, pStateKey)))
 	{
 		Safe_Release(pInstance);
 		MSG_BOX("Texture Create Failed");
@@ -51,18 +51,34 @@ CComponent* CTextureComponent::Clone()
 void CTextureComponent::Free()
 {
 	SUPER::Free();
-
-	//for (size_t i = 0; i < m_vecTexture.size(); ++i)
-		//Safe_Release(m_vecTexture[i]);
 }
 
-HRESULT CTextureComponent::Ready_Texture(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey)
+HRESULT CTextureComponent::Ready_Component(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey)
 {
 	return Receive_Texture(eID, pTextureKey, pStateKey);
 }
 
+_int CTextureComponent::Update_Component(const _float& fTimeDelta)
+{
+	SUPER::Update_Component(fTimeDelta);
+
+	return 0;
+}
+
+void CTextureComponent::LateUpdate_Component()
+{
+}
+
+void CTextureComponent::Render_Component(const _uint& iIndex)
+{
+	Render_Texture(iIndex);
+}
+
 void CTextureComponent::Render_Texture(const _uint& iIndex)
 {
+	// 텍스처의 월드 트랜스폼으로 출력
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matTransform);
+
 	// 인덱스 오버플로우 막기
 	if (m_vecTexture.size() <= iIndex)
 		return;

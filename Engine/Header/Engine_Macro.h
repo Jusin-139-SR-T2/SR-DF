@@ -280,6 +280,14 @@ namespace Engine
 			ARG10##(TYPE, MVALUE, NAME)
 #pragma endregion
 
+
+
+#define PRIVATE private:
+#define PROTECTED protected:
+#define PUBLIC public:
+
+
+
 }
 
 
