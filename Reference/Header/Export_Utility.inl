@@ -77,6 +77,21 @@ inline HRESULT	Ready_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tc
 }
 
 
+// 물리 매니저
+HRESULT		Ready_PhysicsMgr(const _uint iMaxPhysicsWorld3D)
+{
+	return CPhysicsMgr::GetInstance()->Ready_Physics(iMaxPhysicsWorld3D);
+}
+void		StartFrame_PhysicsMgr()
+{
+	CPhysicsMgr::GetInstance()->StartFrame_Physics();
+}
+_int		Update_PhysicsMgr(const Real& fTimeDelta)
+{
+	return CPhysicsMgr::GetInstance()->Update_Physics(fTimeDelta);
+}
+
+
 
 // 키 매니저
 inline HRESULT	Ready_KeyMgr()
@@ -150,7 +165,7 @@ bool		IsMouse_Released(const MOUSEKEYSTATE&& iMouse)
 
 
 // 싱글톤 해제 코드
-void			Release_Utility()
+void		Release_Utility()
 {
 	CLightMgr::GetInstance()->DestroyInstance();
 	CRenderer::GetInstance()->DestroyInstance();

@@ -141,4 +141,6 @@ HRESULT CTextureMgr::Transfer_Texture(vector<LPDIRECT3DBASETEXTURE9>* pVecTextur
 		break;
 	}
 	}
+
+	return S_OK;
 }

@@ -184,6 +184,11 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Export_Utility.h" />
+    <ClInclude Include="Header\Physics\ContactGen_Joint.h" />
+    <ClInclude Include="Header\Physics\ForceGenerator.h" />
+    <ClInclude Include="Header\Physics\Collide.h" />
+    <ClInclude Include="Header\Physics\CollisionPrimitive.h" />
+    <ClInclude Include="Header\Physics\Contact.h" />
     <ClInclude Include="Header\AStarMgr.h" />
     <ClInclude Include="Header\Component\GameObjComponent.h" />
     <ClInclude Include="Header\Data\PHY_Shape.h" />
@@ -210,7 +215,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClInclude Include="Header\Component\TerrainBufferComp.h" />
     <ClInclude Include="Header\Light.h" />
     <ClInclude Include="Header\LightMgr.h" />
-    <ClInclude Include="Header\PhysicsMgr.h" />
+    <ClInclude Include="Header\Physics\PhysicsWorld3D.h" />
     <ClInclude Include="Header\Data\PHY_Sphere.h" />
     <ClInclude Include="Header\Component\SceneComponent.h" />
     <ClInclude Include="Header\Component\SphereColComp.h" />
@@ -225,6 +230,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClInclude Include="Header\Data\SingleTexture.h" />
     <ClInclude Include="Header\KeyMgr.h" />
     <ClInclude Include="Header\Physics\RigidBody.h" />
+    <ClInclude Include="Header\Physics\PhysicsMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AStarMgr.cpp" />
@@ -251,7 +257,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClCompile Include="Code\LightMgr.cpp" />
     <ClCompile Include="Code\Component\CubeBufferComp.cpp" />
     <ClCompile Include="Code\Component\ColliderComponent.cpp" />
-    <ClCompile Include="Code\PhysicsMgr.cpp" />
+    <ClCompile Include="Code\Physics\PhysicsWorld3D.cpp" />
     <ClCompile Include="Code\Data\PHY_Shape.cpp" />
     <ClCompile Include="Code\Data\PHY_Sphere.cpp" />
     <ClCompile Include="Code\Component\SceneComponent.cpp" />
@@ -267,6 +273,12 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClCompile Include="Code\Data\SingleTexture.cpp" />
     <ClCompile Include="Code\KeyMgr.cpp" />
     <ClCompile Include="Code\Physics\RigidBody.cpp" />
+    <ClCompile Include="Code\Physics\Collide.cpp" />
+    <ClCompile Include="Code\Physics\CollisionPrimitive.cpp" />
+    <ClCompile Include="Code\Physics\Contact.cpp" />
+    <ClCompile Include="Code\Physics\ForceGenerator.cpp" />
+    <ClCompile Include="Code\Physics\ContactGen_Joint.cpp" />
+    <ClCompile Include="Code\Physics\PhysicsMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_Utility.inl" />

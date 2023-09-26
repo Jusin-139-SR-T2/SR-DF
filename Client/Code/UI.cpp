@@ -4,8 +4,9 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CUI::CUI(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+#include "DynamicCamera.h"
+
+CUI::CUI(LPDIRECT3DDEVICE9 pGraphicDev): CGameObject(pGraphicDev), fHp(100.f)
 {
 }
 
@@ -29,8 +30,8 @@ HRESULT CUI::Ready_GameObject()
 	m_fSizeX = 128;
 	m_fSizeY = 128;
 
-	m_fX = m_fSizeX * 0.5f - 109  ; // 중점위치 
-	m_fY = m_fSizeY * 0.5f + 472;
+	m_fX = m_fSizeX * 0.5f; // 중점위치 
+	m_fY = m_fSizeY * 0.5f;
 
 	m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f; // 이미지 크기 
 	m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
@@ -53,7 +54,6 @@ _int CUI::Update_GameObject(const _float& fTimeDelta)
 
 void CUI::LateUpdate_GameObject()
 {
-
 }
 
 CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -73,14 +73,12 @@ CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 void CUI::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
-	
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+
 	m_pTextureComp->Render_Texture(0);
 	m_pBufferComp->Render_Buffer();
-	
+
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -97,4 +95,17 @@ HRESULT CUI::Add_Component()
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 	
 	return S_OK;
+}
+
+void CUI::Key_Input(const _float& fTimeDelta)
+{
+	//추후에 1,2,3번으로 인벤토리 바꾸는 것
+	if (Engine::Get_DIKeyState(DIK_Z) & 0x80)
+	{
+		fHp -= 1.f;
+	}
+	if (Engine::Get_DIKeyState(DIK_X) & 0x80)
+	{
+		fHp += 1.f;
+	}
 }
