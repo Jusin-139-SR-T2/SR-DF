@@ -74,6 +74,8 @@ private:
 
 public:
 	GETSET_EX2(CGameObject*, m_pTarget, Target, GET, SET)
+	GETSET_EX2(_vec3, m_vAt, CameraAt, GET, SET)
+		
 
 private:
 	CGameObject*	m_pTarget = nullptr;

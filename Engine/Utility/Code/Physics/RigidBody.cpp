@@ -62,7 +62,7 @@ void FRigidBody::Integrate(const Real& fDuration)
 		fMotion = (fBias * fMotion) + ((1 - fBias) * fCurrentMotion);
 
 		// 오차와 계산해서 깨울지 재울지 결정
-		if (fMotion < fSleepEpsilon) { Set_Awake(false); }
-		else if (fMotion > 10 * fSleepEpsilon) { fMotion = 10 * fSleepEpsilon; }
+		//if (fMotion < fSleepEpsilon) { Set_Awake(false); }
+		//else if (fMotion > 10 * fSleepEpsilon) { fMotion = 10 * fSleepEpsilon; }
 	}
 }

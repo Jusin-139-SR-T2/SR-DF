@@ -9,6 +9,7 @@ class unorded_map;
 
 namespace Engine
 {
+
 	typedef struct tagVertexColor
 	{
 		_vec3		vPosition;		

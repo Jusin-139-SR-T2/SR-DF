@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-extern Real fSleepEpsilon;		// 슬립조건 오차범위
+//extern Real fSleepEpsilon;		// 슬립조건 오차범위
 
 void Set_SleepEpsilon(Real value);
 Real Get_SleepEpsilon();

@@ -49,8 +49,7 @@ public:
 	{
 		memcpy(pInfo, &m_matWorld.m[eType][0], sizeof(_vec3));
 	}
-	_matrix* Get_WorldMatrix() {
-		return &m_matWorld; }
+	_matrix* Get_WorldMatrix() { return &m_matWorld; }
 
 	// + ¼ºÈñ Ãß°¡
 	void	Set_WorldMatrix(_matrix _matWorld)

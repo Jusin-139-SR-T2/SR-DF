@@ -63,6 +63,14 @@ HRESULT CImguiAnimationTool::Ready_ImguiWin()
     return S_OK;
 }
 
+//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+//bool show_demo_window = true;
+//bool show_another_window = false;
+
+//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our windows open/close state
+//ImGui::Checkbox("Another Window", &show_another_window);
+
 _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
 {
     /*if (m_pTexture != nullptr)
@@ -77,22 +85,88 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
 
         //m_pTexture = *CImguiMgr::GetInstance()->Get_EditorTexture();
 
+
+
 #pragma region 테스트1
-        static float fSlider1 = 0.0f;
+
         static int counter = 0;
-        ImGui::Text(u8"슬라이더");                           // Display some text (you can use a format string too)
-        ImGui::SliderFloat(u8"값", &fSlider1, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
-        //ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-        //ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our windows open/close state
-        //ImGui::Checkbox("Another Window", &show_another_window);
-
-        if (ImGui::Button(u8"숫자 증가 버튼"))      // Buttons return true when clicked (NB: most widgets return true when edited/activated)
-            counter++;
-        ImGui::SameLine();
-        ImGui::Text(u8"숫자 = %d", counter);
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+        if (ImGui::Button(u8"이미지 로드 버튼")) // @@@@@ 문제 2. 이미지 로드 시간이 비정상적이게 길다. (폴더 많이 있으면 더 길어짐) @@@@@
+        {
+            LoadImg(L"../Client/Resource");
+        }
+
+        // 위치(Pos) 조정
+        ImGui::Text(u8"위치 조절");
+        ImGui::SliderFloat("x", &m_AniInfo.m_vInfo[INFO_POS].x, 0.0f, 300.0f);
+        ImGui::SliderFloat("y", &m_AniInfo.m_vInfo[INFO_POS].y, 0.0f, 300.0f);
+        ImGui::SliderFloat("z", &m_AniInfo.m_vInfo[INFO_POS].z, 0.0f, 300.0f);
+
+        // 회전(Rot) 조정 Test
+        ImGui::Text(u8"회전 조절");
+        ImGui::SliderFloat("Rot", &m_fX, 0.0f, 300.0f);
+
+        if (ImGui::Button(u8"프레임 추가 버튼"))      // 프레임 추가 버튼
+        m_vecAnimationInfo.push_back(m_AniInfo);    // 프레임을 애니메이션 정보 벡터에 추가
+
+        ImGui::SameLine(); // 같은 라인
+        ImGui::Text(u8"생성된 프레임 = Frame_%d", m_vecAnimationInfo.size());
+
+#pragma region LisBox 1번
+        // 리스트 상자에 표시할 항목 목록
+        std::vector<const char*> frameNames;
+        for (int i = 0; i < m_vecAnimationInfo.size(); i++) {
+            // "Frame_%d" 형식의 문자열을 생성하여 벡터에 추가
+            frameNames.push_back(("Frame_" + std::to_string(i)).c_str());
+        }
+
+        // ListBox를 생성하고 항목을 표시
+        if (ImGui::ListBox("Frames", &selectedItemIndex, frameNames.data(), frameNames.size())) 
+        {
+            // 선택한 항목에 대한 작업을 수행
+            if (selectedItemIndex >= 0 && selectedItemIndex < m_vecAnimationInfo.size()) {
+                // selectedItemIndex를 사용하여 선택한 프레임에 대한 작업을 수행
+
+            }
+        }
+#pragma endregion
+
+#pragma region LisBox 2번
+        //for (const auto& objKey : uniqueObj)
+        //{
+        //    for (const auto& stateKey : m_MapFile[objKey])
+        //    {
+        //        // 텍스처를 ImGui 텍스처로 변환
+        //        LPDIRECT3DTEXTURE9 pTexture = m_MapTexture[std::make_pair(objKey, stateKey)];
+        //        if (pTexture)
+        //        {
+        //            ImTextureID textureID = reinterpret_cast<ImTextureID>(pTexture);
+        //            items[itemIndex] = stateKey.c_str();
+        //            if (ImGui::ListBox(items[itemIndex], &selectedItemIndex, itemIndex))
+        //            {
+        //                // ListBox에서 아이템을 선택했을 때 수행할 작업 추가
+        //                // selectedTextureIndex에는 선택한 아이템의 인덱스가 포함됩니다.
+        //            }
+        //            itemIndex++;
+        //        }
+        //    }
+        //}
+#pragma endregion
+
+        ImGui::InputText("FrameName", "FrameName", IM_ARRAYSIZE("EEEEEEEEEEEE"));
+
+        if (ImGui::Button(u8"저장 버튼"))
+        {
+
+        }
+
+        if (ImGui::Button(u8"불러오기 버튼"))
+        {
+
+        }
+
 #pragma endregion
 
 #pragma region 테스트2
@@ -107,6 +181,7 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
         ImGui::SliderFloat("float", &fSlider2, 0.0f, 1.0f);
 #pragma endregion
 
+
 #pragma region 테스트3
         _bool   my_tool_active;
         // Create a window called "My First Tool", with a menu bar.
@@ -116,11 +191,12 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
         if (ImGui::BeginMenuBar()) // 메뉴바 목록
         {
             // 메뉴바를 눌렀을 때 목록
-            if (ImGui::BeginMenu(u8"파일")) // 메뉴바 1번
+            if (ImGui::BeginMenu(u8"파일")) // 메뉴바 1번 @@@@@ 문제 1. 파일을 누르면 불러오기, 저장, 닫기가 다 실행됨 @@@@@
             {
                 // 버튼별 기능 구현
                 if (ImGui::MenuItem(u8"불러오기", "Ctrl+O")) { /* Do stuff */ }
                 {
+                   
                     // 불러오기 작성
                     // Open 함수를 통해 이미지 불러오기
                     //std::string imagePath = OpenImageFileDialog();
@@ -358,35 +434,218 @@ std::wstring CImguiAnimationTool::ConvertToWideString(const std::string& ansiStr
     return wideString;
 }
 
-// 파일 불러오기
-HRESULT CImguiAnimationTool::OpenImageFileDialog(const _tchar* folderPath, LPDIRECT3DDEVICE9 pGraphicDev)
+//// 파일 불러오기
+//HRESULT CImguiAnimationTool::OpenImageFileDialog(const _tchar* folderPath, LPDIRECT3DDEVICE9 pGraphicDev)
+//{
+//    //파일 및 디렉토리 정보를 저장하기 위한 구조체
+//    WIN32_FIND_DATA findData;
+//
+//    //floderPath의 값을 wFolderPath에 저장 (폴더 경로를 유니코드문자열로 처리)
+//    wstring wfolderPath = (wstring)folderPath + L"\\*.*";
+//
+//    // 폴더 경로 저장 및 핸들 반환
+//    HANDLE hFind = FindFirstFileW(wfolderPath.c_str(), &findData);
+//
+//    if (hFind != INVALID_HANDLE_VALUE)
+//    {
+//        //폴더 내의 모든 파일과 디렉토리를 검색 FindNextFile함수를 사용해서 다음파일 또는 디렉토리를 찾는다
+//        do
+//        {
+//            //  파일의 속성 정보가 입력된다. (디렉토리인지 파일인지 등)
+//            if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+//            {
+//                // 디렉토리인 경우, "."(현재 디렉토리)와 ".."(상위 디렉토리)를 제외
+//                if (lstrcmp(findData.cFileName, L".") != 0 && lstrcmp(findData.cFileName, L"..") != 0)
+//                {
+//                    // 하위 폴더의 경로 생성
+//                    wstring subFolderPath = (wstring)folderPath + L"\\" + findData.cFileName;
+//                    
+//                    // 재귀 호출로 하위 디렉토리 검사
+//                    //ReadImgPath(subFolderPath.c_str(), pGraphicDev); 수정필요
+//
+//                }
+//            }
+//            else
+//            {
+//                // 파일인 경우, 이미지 파일인지 확인하고 로드
+//                wstring filePath = (wstring)folderPath + L"\\" + findData.cFileName;
+//
+//                // 파일 확장자 확인
+//                if (wcsstr(findData.cFileName, L".png") || wcsstr(findData.cFileName, L".jpg") ||
+//                    wcsstr(findData.cFileName, L".bmp") || wcsstr(findData.cFileName, L".tga"))
+//                {
+//                    IDirect3DBaseTexture9* pTexture = nullptr;
+//                    if (SUCCEEDED(D3DXCreateTextureFromFile(Engine::Get_GraphicDev(), filePath.c_str(), (LPDIRECT3DTEXTURE9*)&pTexture)))
+//                    {
+//                        // 최종 키값 szKey
+//                        const _tchar* szKey = findData.cFileName;
+//                        CMyTexture* pMyTexture = nullptr;
+//
+//                        // 키값을 넘겨 파일을 찾아본다.
+//                        if (!FindUI(szKey)) // 있을 경우
+//                        {
+//                            // szKey를 복사하여 동적으로 할당
+//                            _tchar* copiedKey = new _tchar[_tcslen(szKey) + 1];
+//                            _tcscpy_s(copiedKey, _tcslen(szKey) + 1, szKey);
+//
+//                            // 복사본 생성
+//                            Engine::Ready_Proto(L"Proto_UITex", CUITex::Create(pGraphicDev));
+//                            Engine::Ready_Proto(L"Proto_BaseUI", CTexture::Create(pGraphicDev, TEX_NORMAL, L"../Bin/Resource/Texture/UI/all wheels.png"));
+//
+//                            // 첫번째 인자 값의 경로에서, 두번째 인자값 문자열을 찾아준다.
+//                            if (wcsstr(findData.cFileName, L"HP")) // 찾은 경우
+//                            {
+//                                // 찾은 녀석의 타입으로 Create
+//                                pMyUI = CMyUI::Create(pGraphicDev, pTexture, UI_TYPE::HP);
+//
+//                            }
+//                            else
+//                            {
+//                                // BASIC 타입의 텍스처 Create
+//                                pMyUI = CMyTexture::Create(pGraphicDev, pTexture, UI_TYPE::BASIC);
+//                            }
+//
+//
+//                            // 동적으로 할당한 copiedKey를 맵에 넣어야 합니다.
+//                            m_mapLoadUI1.emplace(copiedKey, pMyUI);
+//                        }
+//
+//
+//                    }
+//                }
+//            }
+//        } while (FindNextFile(hFind, &findData)); // 다음
+//
+//        FindClose(hFind); // 파일 핸들을 닫음
+//
+//    }
+//
+//    return S_OK;
+//}
+
+// dat파일로 정보 저장하기
+//HRESULT CImguiAnimationTool::SaveData(const _tchar* mapTag)
+//{
+//    // dat파일 이름
+//    wstring m_strText = L"UIData.dat";
+//
+//    // 저장할 녀석의 정보를 담을 변수
+//    OPENFILENAME    open;
+//
+//    // 저장할 녀석의 경로
+//    TCHAR   lpstrFile[MAX_PATH] = L"";
+//
+//    // 저장할 녀석의 타입
+//    static TCHAR filter[] = L"*.dat";
+//
+//    // 저장할 녀석의 정보를 담아준다.
+//    ZeroMemory(&open, sizeof(OPENFILENAME));
+//    open.lStructSize = sizeof(OPENFILENAME);
+//    open.lpstrFilter = filter;
+//    open.lpstrFile = lpstrFile;
+//    open.nMaxFile = 2562;
+//    open.lpstrInitialDir = L"";
+//
+//    // 지정된 모듈이 포함된 파일의 정규화된 경로를 검색
+//    GetModuleFileName(NULL, lpstrFile, MAX_PATH);
+//    //C:\Users\wnqj4\Desktop\SR_Project\Client\Bin\Client.exe
+//
+//    PathRemoveFileSpec(lpstrFile);
+//    //C:\Users\wnqj4\Desktop\SR_Project\Client\Bin
+//
+//    lstrcat(lpstrFile, L"\\Data\\UI");
+//    //C:\Users\wnqj4\Desktop\SR_Project\Client\Bin\Data\UI
+//
+//    //basic_string<TCHAR> converted(m_strText.begin(), m_strText.end());
+//    const _tchar* aa = m_strText.c_str();
+//
+//    wcscat_s(lpstrFile, L"\\");
+//    wcscat_s(lpstrFile, aa);
+//
+//
+//    if (GetSaveFileName(&open) != 0) {
+//
+//        SaveUI(m_strText, lpstrFile);
+//
+//
+//        MSG_BOX("저장 완료");
+//        return S_OK;
+//    }
+//}
+
+// 경로마다 실제 값을 저장해준다.
+//void CImguiAnimationTool::SaveUI(wstring wstrFileName, wstring wstrFilePath)
+//{
+//    FILE* op = NULL;
+//    //lpstrFile
+//
+//    _wfopen_s(&op, wstrFileName.c_str(), L"w");
+//
+//    if (op == NULL)
+//        return;
+//
+//    //        fwprintf(op, L"#KEY             TEXTURE                  SIZE(X,Y,Z)                   POS(X,Y,Z)\n");
+//
+//    for (const auto& iter : m_mapChoiceUI)
+//    {
+//
+//        wstring wstrkey = iter.first;
+//        _vec3                  vSize = iter.second->Get_Info()->vSize;
+//        _vec3                  vPos = iter.second->Get_Info()->vPos;
+//                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+//
+//        fwprintf(op, L"%s,%f,%f,%f,%f,%f,%f\n", wstrkey.c_str(), vSize.x, vSize.y, vSize.z, vPos.x, vPos.y, vPos.z);
+//    }
+//
+//    if (op == NULL)
+//    {
+//        MSG_BOX("op 널이다~");
+//    }
+//
+//    fclose(op);
+//}
+
+//// 찾기
+//CMyTexture* CImguiAnimationTool::FindUI(const _tchar* szKey)
+//{
+//    auto iter = find_if(m_mapLoadUI1.begin(), m_mapLoadUI1.end(), CTag_Finder(szKey));
+//
+//    if (iter == m_mapLoadUI1.end())
+//        return nullptr;
+//
+//    return iter->second;
+//}
+
+// 이미지 로드
+void CImguiAnimationTool::LoadImg(const _tchar* folderPath)
 {
-    //파일 및 디렉토리 정보를 저장하기 위한 구조체
+    // 찾은 이미지 데이터를 받을 변수
     WIN32_FIND_DATA findData;
 
-    //floderPath의 값을 wFolderPath에 저장 (폴더 경로를 유니코드문자열로 처리)
-    wstring wfolderPath = (wstring)folderPath + L"\\*.*";
+    // 폴더 경로
+    wstring wfolderPath = (wstring)folderPath + L"/*.*";
 
     // 폴더 경로 저장 및 핸들 반환
-    HANDLE hFind = FindFirstFileW(wfolderPath.c_str(), &findData);
+    HANDLE hFind = FindFirstFile(wfolderPath.c_str(), &findData);
 
+    // 핸들이 있을 경우
     if (hFind != INVALID_HANDLE_VALUE)
     {
-        //폴더 내의 모든 파일과 디렉토리를 검색 FindNextFile함수를 사용해서 다음파일 또는 디렉토리를 찾는다
+        // 하위 디렉토리
+        vector<wstring> subDirectories;
+        // 이미지 파일
+        vector<wstring> imageFiles;
         do
         {
             //  파일의 속성 정보가 입력된다. (디렉토리인지 파일인지 등)
             if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             {
-                // 디렉토리인 경우, "."(현재 디렉토리)와 ".."(상위 디렉토리)를 제외
                 if (lstrcmp(findData.cFileName, L".") != 0 && lstrcmp(findData.cFileName, L"..") != 0)
                 {
-                    // 하위 폴더의 경로 생성
-                    wstring subFolderPath = (wstring)folderPath + L"\\" + findData.cFileName;
-                    
-                    // 재귀 호출로 하위 디렉토리 검사
-                    //ReadImgPath(subFolderPath.c_str(), pGraphicDev); 수정필요
-
+                    // 폴더 경로 = 경로 + / + 파일명
+                    wstring subFolderPath = (wstring)folderPath + L"/" + findData.cFileName;
+                    subDirectories.push_back(subFolderPath);
+                    LoadImg(subFolderPath.c_str());
                 }
             }
             else
@@ -395,147 +654,99 @@ HRESULT CImguiAnimationTool::OpenImageFileDialog(const _tchar* folderPath, LPDIR
                 wstring filePath = (wstring)folderPath + L"\\" + findData.cFileName;
 
                 // 파일 확장자 확인
-                if (wcsstr(findData.cFileName, L".png") || wcsstr(findData.cFileName, L".jpg") ||
-                    wcsstr(findData.cFileName, L".bmp") || wcsstr(findData.cFileName, L".tga"))
+                if (wcsstr(findData.cFileName, L".png")|| wcsstr(findData.cFileName, L".bmp"))/*|| wcsstr(findData.cFileName, L".jpg") ||
+                    wcsstr(findData.cFileName, L".bmp") || wcsstr(findData.cFileName, L".tga") ||
+                    wcsstr(findData.cFileName, L".dds"))*/
                 {
-                    IDirect3DBaseTexture9* pTexture = nullptr;
-                    if (SUCCEEDED(D3DXCreateTextureFromFile(Engine::Get_GraphicDev(), filePath.c_str(), (LPDIRECT3DTEXTURE9*)&pTexture)))
+                    // IDirect3DBaseTexture9 인터페이스의 메서드를 사용하여 큐브 및 볼륨 텍스처를 포함한 텍스처 리소스를 조작.
+                    IDirect3DBaseTexture9* pBaseTexture = nullptr;
+
+                    // D3DXCreateTextureFromFile(디바이스, 파일경로, 베이스 텍스처) 파일에서 텍스처를 만드는 함수.
+                    if (SUCCEEDED(D3DXCreateTextureFromFile(Engine::Get_GraphicDev(), filePath.c_str(), (LPDIRECT3DTEXTURE9*)&pBaseTexture)))
                     {
-                        // 최종 키값 szKey
-                        const _tchar* szKey = findData.cFileName;
-                        CMyTexture* pMyTexture = nullptr;
+                        LPDIRECT3DTEXTURE9 pTexture = static_cast<LPDIRECT3DTEXTURE9>(pBaseTexture);
+                        wstring filePathStr = filePath;
 
-                        // 키값을 넘겨 파일을 찾아본다.
-                        if (!FindUI(szKey)) // 있을 경우
+                        Replace(filePathStr, L"\\", L"/");
+
+                        size_t pos = filePathStr.find_last_of(L"/");
+                        wstring ObjKey, StateKey;
+                        if (pos != wstring::npos)
                         {
-                            // szKey를 복사하여 동적으로 할당
-                            _tchar* copiedKey = new _tchar[_tcslen(szKey) + 1];
-                            _tcscpy_s(copiedKey, _tcslen(szKey) + 1, szKey);
-
-                            // 복사본 생성
-                            Engine::Ready_Proto(L"Proto_UITex", CUITex::Create(pGraphicDev));
-                            Engine::Ready_Proto(L"Proto_BaseUI", CTexture::Create(pGraphicDev, TEX_NORMAL, L"../Bin/Resource/Texture/UI/all wheels.png"));
-
-                            // 첫번째 인자 값의 경로에서, 두번째 인자값 문자열을 찾아준다.
-                            if (wcsstr(findData.cFileName, L"HP")) // 찾은 경우
-                            {
-                                // 찾은 녀석의 타입으로 Create
-                                pMyUI = CMyUI::Create(pGraphicDev, pTexture, UI_TYPE::HP);
-
-                            }
-                            else
-                            {
-                                // BASIC 타입의 텍스처 Create
-                                pMyUI = CMyTexture::Create(pGraphicDev, pTexture, UI_TYPE::BASIC);
-                            }
-
-
-                            // 동적으로 할당한 copiedKey를 맵에 넣어야 합니다.
-                            m_mapLoadUI1.emplace(copiedKey, pMyUI);
+                            ObjKey = filePathStr.substr(filePathStr.find_last_of(L"/", pos - 1) + 1, pos - (filePathStr.find_last_of(L"/", pos - 1) + 1));
+                            StateKey = filePathStr.substr(pos + 1);
                         }
-
-
+                        if (find(uniqueObj.begin(), uniqueObj.end(), ObjKey) == uniqueObj.end())
+                        {
+                            uniqueObj.push_back(ObjKey);
+                        }
+                        if (find(uniqueState.begin(), uniqueState.end(), StateKey) == uniqueState.end())
+                        {
+                            uniqueState.push_back(StateKey);
+                            m_MapTexture[make_pair(ObjKey, StateKey)] = pTexture;
+                        }
+                        m_MapFile[ObjKey].push_back(StateKey);
                     }
                 }
             }
-        } while (FindNextFile(hFind, &findData)); // 다음
+        } while (FindNextFile(hFind, &findData));
 
-        FindClose(hFind); // 파일 핸들을 닫음
-
+        FindClose(hFind);
     }
-
-    return S_OK;
-}
-
-// dat파일로 정보 저장하기
-HRESULT CImguiAnimationTool::SaveData(const _tchar* mapTag)
-{
-    // dat파일 이름
-    wstring m_strText = L"UIData.dat";
-
-    // 저장할 녀석의 정보를 담을 변수
-    OPENFILENAME    open;
-
-    // 저장할 녀석의 경로
-    TCHAR   lpstrFile[MAX_PATH] = L"";
-
-    // 저장할 녀석의 타입
-    static TCHAR filter[] = L"*.dat";
-
-    // 저장할 녀석의 정보를 담아준다.
-    ZeroMemory(&open, sizeof(OPENFILENAME));
-    open.lStructSize = sizeof(OPENFILENAME);
-    open.lpstrFilter = filter;
-    open.lpstrFile = lpstrFile;
-    open.nMaxFile = 2562;
-    open.lpstrInitialDir = L"";
-
-    // 지정된 모듈이 포함된 파일의 정규화된 경로를 검색
-    GetModuleFileName(NULL, lpstrFile, MAX_PATH);
-    //C:\Users\wnqj4\Desktop\SR_Project\Client\Bin\Client.exe
-
-    PathRemoveFileSpec(lpstrFile);
-    //C:\Users\wnqj4\Desktop\SR_Project\Client\Bin
-
-    lstrcat(lpstrFile, L"\\Data\\UI");
-    //C:\Users\wnqj4\Desktop\SR_Project\Client\Bin\Data\UI
-
-    //basic_string<TCHAR> converted(m_strText.begin(), m_strText.end());
-    const _tchar* aa = m_strText.c_str();
-
-    wcscat_s(lpstrFile, L"\\");
-    wcscat_s(lpstrFile, aa);
-
-
-    if (GetSaveFileName(&open) != 0) {
-
-        SaveUI(m_strText, lpstrFile);
-
-
-        MSG_BOX("저장 완료");
-        return S_OK;
-    }
-}
-
-// 경로마다 실제 값을 저장해준다.
-void CImguiAnimationTool::SaveUI(wstring wstrFileName, wstring wstrFilePath)
-{
-    FILE* op = NULL;
-    //lpstrFile
-
-    _wfopen_s(&op, wstrFileName.c_str(), L"w");
-
-    if (op == NULL)
-        return;
-
-    //        fwprintf(op, L"#KEY             TEXTURE                  SIZE(X,Y,Z)                   POS(X,Y,Z)\n");
-
-    for (const auto& iter : m_mapChoiceUI)
-    {
-
-        wstring wstrkey = iter.first;
-        _vec3                  vSize = iter.second->Get_Info()->vSize;
-        _vec3                  vPos = iter.second->Get_Info()->vPos;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-
-        fwprintf(op, L"%s,%f,%f,%f,%f,%f,%f\n", wstrkey.c_str(), vSize.x, vSize.y, vSize.z, vPos.x, vPos.y, vPos.z);
-    }
-
-    if (op == NULL)
-    {
-        MSG_BOX("op 널이다~");
-    }
-
-    fclose(op);
 }
 
 // 찾기
-CMyTexture* CImguiAnimationTool::FindUI(const _tchar* szKey)
+void CImguiAnimationTool::Replace(wstring& strCurrentDirectory, wstring strSearch, wstring strReplace)
 {
-    auto iter = find_if(m_mapLoadUI1.begin(), m_mapLoadUI1.end(), CTag_Finder(szKey));
+    wstring temp = strCurrentDirectory;
 
-    if (iter == m_mapLoadUI1.end())
-        return nullptr;
+    size_t start_pos = 0;
+    while ((start_pos = temp.find(strSearch, start_pos)) != wstring::npos)
+    {
+        temp.replace(start_pos, strSearch.length(), strReplace);
+        start_pos += strReplace.length();
+    }
+    strCurrentDirectory = temp;
+}
 
-    return iter->second;
+char* CImguiAnimationTool::ConverWStringtoC(const wstring& wstr)
+{
+    int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, NULL, 0, NULL, NULL);
+    char* result = new char[size_needed];
+    WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, result, size_needed, NULL, NULL);
+    return result;
+}
+
+wchar_t* CImguiAnimationTool::ConverCtoWC2(char* str)
+{
+    _tchar* pStr;
+    int strSize = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, NULL);
+    pStr = new WCHAR[strSize];
+    MultiByteToWideChar(CP_ACP, 0, str, strlen(str) + 1, pStr, strSize);
+
+    return pStr;
+}
+
+char* CImguiAnimationTool::ConverWCtoC(wchar_t* str)
+{
+    char* pStr;
+    int strSize = WideCharToMultiByte(CP_ACP, 0, str, -1, NULL, 0, NULL, NULL);
+    pStr = new char[strSize];
+    WideCharToMultiByte(CP_ACP, 0, str, -1, pStr, strSize, 0, 0);
+    return pStr;
+}
+
+string CImguiAnimationTool::WstringToUTF8(const wstring& wstr)
+{
+    int utf8Length = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, nullptr, 0, nullptr, nullptr);
+    if (utf8Length == 0)
+    {
+
+        return string();
+    }
+
+    string utf8Str(utf8Length + 1, 0);
+    WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, &utf8Str[0], utf8Length + 1, nullptr, nullptr);
+
+    return utf8Str;
 }

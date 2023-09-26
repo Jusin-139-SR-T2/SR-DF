@@ -57,7 +57,7 @@ HRESULT CBackGround::Ready_GameObject()
 	m_pTransformComp->m_vScale.x = WINCX;
 	m_pTransformComp->m_vScale.y = WINCY;
 
-	m_pTransformComp->Set_Pos(0.f, 0.f, 0.f);
+	//m_pTransformComp->Set_Pos(0.f, 0.f, 0.f);
 
 	D3DXMatrixIdentity(&m_ViewMatrix);
 
@@ -70,8 +70,8 @@ HRESULT CBackGround::Ready_GameObject()
 	m_fX = m_fSizeX * 0.5f; // 중점위치 
 	m_fY = m_fSizeY * 0.5f;
 
-	m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f; // 이미지 크기 
-	m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
+	m_pTransformComp->m_vScale.x = m_fSizeX; // 이미지 크기 
+	m_pTransformComp->m_vScale.y = m_fSizeY;
 
 	m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX * 0.5f;
 	m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;

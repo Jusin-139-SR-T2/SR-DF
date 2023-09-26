@@ -19,7 +19,7 @@ public:
 
 	VTXTEX* Get_Vertex() { return pVertex; }
 
-	void Set_Vertex(_float _fX, _float _fY, _float _fZ) 
+	void Set_Vertex(_float _fX, _float _fY, _float _fZ) // 수정 필요
 	{
 		m_pVB->Lock(0, 0, (void**)&pVertex, 0);
 
