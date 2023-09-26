@@ -1,5 +1,6 @@
 #include "PhysicsWorld3D.h"
 
+#include "Collide.h"
 
 CPhysicsWorld3D::CPhysicsWorld3D()
 {
@@ -40,7 +41,7 @@ HRESULT CPhysicsWorld3D::Ready_Physics(_uint iMaxContacts, _uint iIterations)
 void CPhysicsWorld3D::StartFrame_Physics()
 {
 	// 힘 제거, 완료
-	for (auto iter = m_BodyList.begin(); iter != m_BodyList.end(); ++iter)
+	for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
 	{
 		(*iter)->Clear_Accumulators();
 		(*iter)->CalculateDerivedData();
@@ -50,7 +51,7 @@ void CPhysicsWorld3D::StartFrame_Physics()
 _int CPhysicsWorld3D::Update_Physics(const Real& fTimeDelta)
 {
 	// 힘 더하기
-	for (auto iter = m_BodyList.begin(); iter != m_BodyList.end(); ++iter)
+	for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
 	{
 		(*iter)->Integrate(fTimeDelta);
 	}
@@ -72,14 +73,26 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 	_uint iLimit = m_iMaxContacts;
 	FContact* pNextContact = m_pContacts;
 
-	for (auto iter = m_ConGenList.begin(); iter != m_ConGenList.end(); ++iter)
-	{
-		_uint iUsed = (*iter)->Add_Contact(pNextContact, iLimit);
-		iLimit -= iUsed;
-		pNextContact += iUsed;
+	// 충돌발생
+	//for (auto iter = m_ConGenList.begin(); iter != m_ConGenList.end(); ++iter)
+	//{
+	//	_uint iUsed = (*iter)->Add_Contact(pNextContact, iLimit);
+	//	iLimit -= iUsed;
+	//	pNextContact += iUsed;
 
-		// 리미트를 초과하면 더 이상 접촉처리를 하지 않는다.
-		if (iLimit <= 0) break;
+	//	// 리미트를 초과하면 더 이상 접촉처리를 하지 않는다.
+	//	if (iLimit <= 0) break;
+	//}
+
+	// 충돌 최적화, 추후 추가 예정
+	// 계획은 충돌객체를 트리로 만들어 부딪힐 것 같은 객체에 대해 처리하는 것.
+	// 여기서 발생시킨 충돌에 대한 것은 엔진에서 발생하는 
+
+
+	// 여기 구조를 좀 어떻게 하면 될 것 같다.
+	for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
+	{
+		//FCollisionDetector::SphereAndSphere()
 	}
 
 	// 사용된 접촉 수를 반환

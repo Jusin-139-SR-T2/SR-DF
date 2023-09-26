@@ -17,6 +17,7 @@ void FRigidBody::CalculateDerivedData()
 void FRigidBody::Integrate(const Real& fDuration)
 {
 	if (!bIsAwake) return;
+	if (!(eBodyType == ERIGID_BODY_TYPE::DYNAMIC)) return;		// 다이나믹이 아니면 여기서 힘을 부과하지 않음.
 
 	// 선형 가속 합을 가속에 더하기
 	vLastFrameAcceleration = vAcceleration;

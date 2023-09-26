@@ -44,12 +44,12 @@ void CSphereColComp::Free()
 {
 	SUPER::Free();
 
-	Safe_Release(m_pShape);
+	//Safe_Release(m_pShape);
 }
 
 HRESULT CSphereColComp::Ready_Collider()
 {
-	m_pShape = FPHY_Sphere::Create()->Get_ByRef<FPHY_Sphere>();
+	//m_pShape = FPHY_Sphere::Create()->Get_ByRef<FPHY_Sphere>();
 
 	return S_OK;
 }

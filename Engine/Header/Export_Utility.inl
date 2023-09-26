@@ -165,7 +165,7 @@ bool		IsMouse_Released(const MOUSEKEYSTATE&& iMouse)
 
 
 // ½Ì±ÛÅæ ÇØÁ¦ ÄÚµå
-void			Release_Utility()
+void		Release_Utility()
 {
 	CLightMgr::GetInstance()->DestroyInstance();
 	CRenderer::GetInstance()->DestroyInstance();

@@ -29,6 +29,10 @@ public:
 
 protected:
 	FMatrix3x4	matTransform;		// 트랜스 폼 행렬
+
+
+protected:
+	function<void()>	fnEventHandler;
 };
 
 
