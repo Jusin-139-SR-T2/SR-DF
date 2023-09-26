@@ -51,7 +51,6 @@ public:
 
 	// 상태머신 셋팅 --------------------------------------------------
 private:
-private:
 	// 함수 ----------
 	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
 	_float		Calc_Distance();					// 몬스터와 플레이어 사이의 거리 체크하는 함수 
@@ -64,35 +63,39 @@ private:
 	_int		m_iDazedHP = 25;					// 몬스터 기절하는 hp
 	_int		m_iMaxHP = 100;						// 몬스터 최대 hp 
 	_int		m_iAttack = 15;						// 몬스터 공격력
+	_int		m_iBulletCnt = 5;					// 보스몬스터 총알 갯수 
 
 	_float		m_fFrame = 0.f;						// 이미지 돌리기위한 프레임변수 
 	_float		m_fFrameEnd;						// 이미지마다 변수 넣어줘야함 
 	_float		m_fFrameSpeed;						// 프레임 돌리는 속도
 
+	// 몬스터 인식 관련 
 	_float		m_fAwareness = 0;					// 의심게이지 숫자 
-	_float		m_fMaxAwareness = 10.f;				// 의심게이지 max -> 추격으로 변함 
+	_float		m_fMaxAwareness = 7.f;				// 의심게이지 max -> 추격으로 변함 
 	_float		m_fConsider = 10.f;					// 플레이어 놓친뒤에 주변정찰 게이지 
 	_float		m_fMaxConsider = 10.f;				// 플레이어 놓친뒤에 주변정찰 게이지 
 
 	// 속도조절 
-	_float		m_fRunSpeed = 2.0f;					// 뛰어오는 속도
-	_float		m_fWalkSpeed = 1.0f;				// 걷는속도
-	_float		m_fKeepEyeSpeed = 2.f;				// 옆으로 무빙하는  속도 
-	_float		m_fSideWalkSpeed = 3.f;				// 옆으로 무빙하는  속도 
+	_float		m_fRunSpeed = 3.0f;					// 뛰어오는 속도
+	_float		m_fWalkSpeed = 2.0f;				// 걷는속도
+	_float		m_fRollingSpeed = 3.5f;				// 옆으로 무빙하는  속도 
 
-	_float		m_fUprightSpeed = 2.5f;				// 파이프들고 달려오는 속도 
-	_float		m_fThrowSpeed = 4.f;				// 투사체 스피드 
+	// 시간조절용 
+	_float		m_MaxTime = 20.f; 
+	_float		m_ShortTime = 9.f;
+	_float		m_ChaseTime = 0.f;
+	_float		m_PreAttackTime = 0.f;
+	_float		m_SideAttackTime = 0.f;
 
-	_float		m_fBasicAttackSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
-	_float		m_fHeavAttackSpeed = 4.f;			// 강공격때 뛰어오는 속도 
 
 	// 사거리 , 시야각
-	_float		m_fMonsterFov = 90;					//시야각 - 반각 기준
-	_float		m_fMonsterSightDistance = 13.f;		// 몬스터가 포착하는 사거리 
+	_float		m_fMonsterFov = 70;					//시야각 - 반각 기준
+	_float		m_fMonsterSightDistance = 10.f;		// 몬스터가 포착하는 사거리 
+
 	_float		m_fRunDistance = 8.f;				// 사거리 ~ Run 사이 =  run
-	_float		m_fWalkDistance = 7.5f;				// run~walk 사이 = walk
+	_float		m_fWalkDistance = 7.f;				// run~walk 사이 = walk
 	_float		m_fEyesOnYouDistance = 6.f;			// Eyes ~ Walk = 옆으로 무빙 
-	_float		m_fCloseToYouDistance = 3.f;		// Close ~ Eyes = 
+	_float		m_fCloseAttackDistance = 2.f;		// Close ~ Eyes = 
 
 	// 위치 조절 
 	_vec3		vPlayerPos;							// 플레이어 위치 벡터
@@ -101,15 +104,19 @@ private:
 	//스위치 on/off 
 
 public:
+	// 시야는 좁게, 반응은 느리게, 의심게이지는 빠르게, 
+
 	// 목표 상태머신(AI)
 	enum class STATE_OBJ { 
-		IDLE, SUSPICIOUS, TEST };
+	IDLE, SUSPICIOUS, RELOADING, CHASE, BACKIDLE,
+	PRE_ATTACK, SIDE_READY,
+	WALK, RUN, ROLL, CLOSEATTACK, SHOOTING};
 
 	// 행동 상태머신
-	enum class STATE_ACT { IDLE, APPROACH };
+	enum class STATE_ACT { IDLE, APPROACHING, ROLLING, CLOSEATTACKING, SHOOTING };
 
 	// 행동키
-	enum class ACTION_KEY { IDLE };
+	enum class ACTION_KEY { IDLE, WALK, RUN, ROLL, CLOSE_ATTACK, SHOOTING };
 
 private:
 	STATE_SET<STATE_OBJ, void(CBoss*, float)> m_tState_Obj; //AI
@@ -119,34 +126,28 @@ private:
 #pragma region AI 
 
 	void AI_Idle(float fDeltaTime); // idle <-> suspicious
-	void AI_Suspicious(float fDeltaTime); // idle <-> sus <-> detect
-	//void AI_Taunt(float fDeltaTime);
-	//void AI_Chase(float fDeltaTime);
+	void AI_Suspicious(float fDeltaTime);
+	void AI_Reloading(float fDeltaTime); // idle <-> sus <-> detect
+	void AI_BackIdle(float fDeltaTime);
+	void AI_Chase(float fDeltaTime);
 
-	//void AI_Run(float fDeltaTime);
-	//void AI_Walk(float fDeltaTime);
-	//void AI_InchForward(float fDeltaTime);
-	//void AI_Strafing(float fDeltaTime);
-	//void AI_BasicAttack(float fDeltaTime);
-	//void AI_HeavyAttack(float fDeltaTime);
+	void AI_Pre_Attack(float fDeltaTime);
+	void AI_Side_Ready(float fDeltaTime);
+	void AI_Walk(float fDeltaTime);
+	void AI_Run(float fDeltaTime);
+	void AI_Roll(float fDeltaTime);
+	void AI_CloseAttack(float fDeltaTime);
+	void AI_Shooting(float fDeltaTime);
 
 #pragma endregion
 
 #pragma region 행동 : AI 이후 넘어가는곳 
 	void Idle(float fDeltaTime);
-	void Approach(float fDeltaTime);
+	void Approaching(float fDeltaTime);
+	void Rolling(float fDeltaTime);
+	void CloseAttacking(float fDeltaTime);
+	void Shooting(float fDeltaTime);
 
-	//void Walk(float fDeltaTime);
-	//void Inch(float fDeltaTime);
-
-	//void Heavy_Attack(float fDeltaTime);
-	//void Prepare_Atk(float fDeltaTime);
-	//void Attack(float fDeltaTime);
-	//void Parrying(float fDeltaTime);
-	//
-	//void Jump(float fDeltaTime);
-	//void Falling(float fDeltaTime);
-	//void Dead(float fDeltaTime);
 #pragma endregion
 	// 액션키는 CPP쪽에 만들음
 };

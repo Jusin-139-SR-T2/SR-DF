@@ -809,7 +809,7 @@ void CPlayer::Mouse_Move()
             // 두 벡터 사이의 각도 계산 (라디안)
             fAngle = acosf(fDot);
 
-            fAngle = fAngle + 3.141592;
+            fAngle = fAngle + 3.141592f;
         }
 
         m_pTransformComp->m_vAngle.y = fAngle;

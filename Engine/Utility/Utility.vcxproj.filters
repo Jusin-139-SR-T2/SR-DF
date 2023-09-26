@@ -115,18 +115,6 @@
     <ClInclude Include="Header\AStarMgr.h">
       <Filter>08. AstarMgr</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Physics\PhysicsWorld3D.h">
-      <Filter>05. Physics\00. PhysicsMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Physics\PhysicsCore.h">
-      <Filter>05. Physics\01. PhysicsCore</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Physics\PhysicsPrecision.h">
-      <Filter>05. Physics\01. PhysicsCore</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Physics\RigidBody.h">
-      <Filter>05. Physics\02. RigidBody</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Physics\PhysicsCore.h" />
     <ClInclude Include="Header\Physics\PhysicsPrecision.h" />
     <ClInclude Include="Header\Physics\RigidBody.h" />
@@ -136,10 +124,30 @@
     <ClInclude Include="Header\Physics\Collide.h">
       <Filter>05. Physics\03. Collsion\CollideTest</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Physics\Contact.h" />
-    <ClInclude Include="Header\Physics\ForceGenerator.h" />
-    <ClInclude Include="Header\Physics\ContactGen_Joint.h" />
-    <ClInclude Include="Header\Physics\PhysicsMgr.h" />
+    <ClInclude Include="Header\Physics\RigidBody.h">
+      <Filter>05. Physics\02. RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsWorld3D.h">
+      <Filter>05. Physics\00. PhysicsWorld3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsCore.h">
+      <Filter>05. Physics\01. PhysicsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsMgr.h">
+      <Filter>05. Physics\00. PhysicsMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsPrecision.h">
+      <Filter>05. Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\ForceGenerator.h">
+      <Filter>05. Physics\05. ForceGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\ContactGen_Joint.h">
+      <Filter>05. Physics\04. Contact\ContactGen_Joint</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\Contact.h">
+      <Filter>05. Physics\04. Contact</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -253,15 +261,6 @@
     <ClCompile Include="Code\AStarMgr.cpp">
       <Filter>08. AstarMgr</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Physics\PhysicsWorld3D.cpp">
-      <Filter>05. Physics\00. PhysicsMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Physics\PhysicsCore.cpp">
-      <Filter>05. Physics\01. PhysicsCore</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Physics\RigidBody.cpp">
-      <Filter>05. Physics\02. RigidBody</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Physics\PhysicsCore.cpp" />
     <ClCompile Include="Code\Physics\RigidBody.cpp" />
     <ClCompile Include="Code\Physics\CollisionPrimitive.cpp">
@@ -270,10 +269,27 @@
     <ClCompile Include="Code\Physics\Collide.cpp">
       <Filter>05. Physics\03. Collsion\CollideTest</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Physics\Contact.cpp" />
-    <ClCompile Include="Code\Physics\ForceGenerator.cpp" />
-    <ClCompile Include="Code\Physics\ContactGen_Joint.cpp" />
-    <ClCompile Include="Code\Physics\PhysicsMgr.cpp" />
+    <ClCompile Include="Code\Physics\RigidBody.cpp">
+      <Filter>05. Physics\02. RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\PhysicsWorld3D.cpp">
+      <Filter>05. Physics\00. PhysicsWorld3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\PhysicsCore.cpp">
+      <Filter>05. Physics\01. PhysicsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\PhysicsMgr.cpp">
+      <Filter>05. Physics\00. PhysicsMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\ForceGenerator.cpp">
+      <Filter>05. Physics\05. ForceGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\ContactGen_Joint.cpp">
+      <Filter>05. Physics\04. Contact\ContactGen_Joint</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\Contact.cpp">
+      <Filter>05. Physics\04. Contact</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">
@@ -377,6 +393,15 @@
     </Filter>
     <Filter Include="05. Physics\04. Contact">
       <UniqueIdentifier>{ef10bc60-1fef-4cc8-8a0a-8748b05f63c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Physics\00. PhysicsWorld3D">
+      <UniqueIdentifier>{be0a5832-6978-429f-a421-a5e08b0c8865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Physics\05. ForceGenerator">
+      <UniqueIdentifier>{3bdc0e5c-636b-4bbb-bb85-a79be1ec622c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Physics\04. Contact\ContactGen_Joint">
+      <UniqueIdentifier>{5d2b6d2e-f797-4250-ab32-8d7d551c5887}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
