@@ -91,7 +91,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 
     Height_On_Terrain(); // 지형타기 
 
-    m_fFrame += m_fFrameSpeed * fTimeDelta;
 
     // ---------- 테스트 빌드 ----------------------
 
@@ -105,9 +104,10 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         m_iHP = 50; // 피격 기믹 확인용 
     }
 
-    // --------------------------------------------
+    // 상태머신-------------------------------------
 
-    //상태머신
+    m_fFrame += m_fFrameSpeed * fTimeDelta;
+
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
     m_mapActionKey.Update();	// 액션키 초기화
@@ -120,29 +120,11 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
             m_fCheck += 1;
     }
 
-   // FaceTurn(fTimeDelta);
-    _matrix		matWorld, matView, matBill;
+    // 빌보드 --------------------------------------
+    FaceTurn(fTimeDelta);
 
-    matWorld = *m_pTransformComp->Get_WorldMatrix();
-
-    m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-    D3DXMatrixIdentity(&matBill);
-
-    matBill._11 = matView._11;
-    matBill._13 = matView._13;
-    matBill._31 = matView._31;
-    matBill._33 = matView._33;
-
-    D3DXMatrixInverse(&matBill, 0, &matBill);
-
-    m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
-
-    m_pTransformComp->m_vScale.x = 0.4f;
-
-    Engine::Add_RenderGroup(RENDER_ALPHA, this);
+    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
     
-    //????? 하나라도 RENDER_ALPHA에 들어가야 빌보드 적용됨 ??? //RNEDER_ALPHATEST 
-
     return S_OK;
 }
 
@@ -242,7 +224,7 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
    //matWorld = *m_pTransformComp->Get_WorldMatrix();
 
    // m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-   // _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
 
    // _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
 
@@ -257,7 +239,6 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
    // m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
 
     // case2. 빌보드 구성하기 
-
     _matrix		matWorld, matView, matBill;
 
     matWorld = *m_pTransformComp->Get_WorldMatrix();

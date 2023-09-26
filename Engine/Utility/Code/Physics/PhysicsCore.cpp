@@ -11,14 +11,15 @@ const FVector3 FVector3::X = FVector3(0, 1, 0);
 const FVector3 FVector3::Y = FVector3(1, 0, 0);
 const FVector3 FVector3::Z = FVector3(0, 0, 1);
 
-Real Engine::fSleepEpsilon = static_cast<Real>(0.3);
+//Real Engine::fSleepEpsilon = static_cast<Real>(0.3);
 
 void Set_SleepEpsilon(Real value)
 {
-    fSleepEpsilon = value;
+    //fSleepEpsilon = value;
 }
 
 Real Get_SleepEpsilon()
 {
-    return fSleepEpsilon;
+   // return fSleepEpsilon;
+    return 0;
 }

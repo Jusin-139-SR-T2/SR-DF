@@ -68,8 +68,9 @@ private:
 	_float		m_fFrameEnd;						// 이미지마다 변수 넣어줘야함 
 	_float		m_fFrameSpeed;						// 프레임 돌리는 속도
 
+	// 몬스터 인식 관련 
 	_float		m_fAwareness = 0;					// 의심게이지 숫자 
-	_float		m_fMaxAwareness = 10.f;				// 의심게이지 max -> 추격으로 변함 
+	_float		m_fMaxAwareness = 8.f;				// 의심게이지 max -> 추격으로 변함 
 	_float		m_fConsider = 10.f;					// 플레이어 놓친뒤에 주변정찰 게이지 
 	_float		m_fMaxConsider = 10.f;				// 플레이어 놓친뒤에 주변정찰 게이지 
 
@@ -86,12 +87,12 @@ private:
 	_float		m_fHeavAttackSpeed = 4.f;			// 강공격때 뛰어오는 속도 
 
 	// 사거리 , 시야각
-	_float		m_fMonsterFov = 90;					//시야각 - 반각 기준
+	_float		m_fMonsterFov = 80;					//시야각 - 반각 기준
 	_float		m_fMonsterSightDistance = 13.f;		// 몬스터가 포착하는 사거리 
 	_float		m_fRunDistance = 8.f;				// 사거리 ~ Run 사이 =  run
 	_float		m_fWalkDistance = 7.5f;				// run~walk 사이 = walk
 	_float		m_fEyesOnYouDistance = 6.f;			// Eyes ~ Walk = 옆으로 무빙 
-	_float		m_fCloseToYouDistance = 3.f;		// Close ~ Eyes = 
+	_float		m_fCloseToYouDistance = 2.f;		// Close ~ Eyes = 
 
 	// 위치 조절 
 	_vec3		vPlayerPos;							// 플레이어 위치 벡터

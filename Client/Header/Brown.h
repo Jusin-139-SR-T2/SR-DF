@@ -71,6 +71,7 @@ private:
 	_float		m_fFrameEnd;						// 이미지마다 변수 넣어줘야함 
 	_float		m_fFrameSpeed;						// 프레임 돌리는 속도
 
+	// 몬스터 인식 관련 
 	_float		m_fAwareness = 0;					// 의심게이지 숫자 
 	_float		m_fMaxAwareness = 10.f;				// 의심게이지 max -> 추격으로 변함 
 

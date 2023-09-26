@@ -30,8 +30,8 @@ HRESULT CUI::Ready_GameObject()
 	m_fSizeX = 128;
 	m_fSizeY = 128;
 
-	m_fX = m_fSizeX * 0.5f; // 중점위치 
-	m_fY = m_fSizeY * 0.5f;
+	m_fX = m_fSizeX * 0.5f - 110; // 중점위치 
+	m_fY = m_fSizeY * 0.5f + 472;
 
 	m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f; // 이미지 크기 
 	m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
