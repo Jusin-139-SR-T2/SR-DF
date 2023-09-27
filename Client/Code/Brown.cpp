@@ -849,6 +849,59 @@ void CBrown::AI_Death(float fDeltaTime)
     }
 }
 
+void CBrown::AI_Reconnaissance(float fDeltaTime)
+{
+    //if (m_tState_Obj.IsState_Entered())
+    //{
+    //}
+    //if (m_tState_Obj.Can_Update())
+    //{
+    //    m_fConsider -= fDeltaTime * 2.f;
+
+    //    if (Detect_Player())
+    //    {
+    //        m_fAwareness += fDeltaTime * 4.f; // 이전보다 더 빠르게 증가할것 
+    //        m_tState_Obj.Set_State(STATE_OBJ::TAUNT);
+    //    }
+
+    //    if (m_fConsider < 0)
+    //        m_fConsider = 0;
+
+    //    if (0 == m_fConsider) //인지값이 초기화되면 
+    //    {
+    //        m_fConsider = m_fMaxConsider; // 다시 할수있으니 값 복구 
+    //        m_tState_Obj.Set_State(STATE_OBJ::GOHOME);
+    //    }
+    //}
+
+    //if (m_tState_Obj.IsState_Exit())
+    //{
+
+    //}
+}
+
+void CBrown::AI_GoHome(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::GOHOME].Act();
+
+        // 조건 - 처음 위치로 돌아갈때까지 
+        m_bGoHome = true;
+        m_tState_Obj.Set_State(STATE_OBJ::WALK);
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+    }
+}
+
 //------------------ 행동 -------------------------
 
 void CBrown::Idle(float fDeltaTime)
@@ -999,4 +1052,8 @@ void CBrown::Attack(float fDeltaTime)
     if (m_tState_Act.IsState_Exit())
     {
     }
+}
+
+void CBrown::GoHome(float fDeltaTime)
+{
 }
