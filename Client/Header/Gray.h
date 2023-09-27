@@ -97,8 +97,10 @@ private:
 	// 위치 조절 
 	_vec3		vPlayerPos;							// 플레이어 위치 벡터
 	_vec3		vDir;								// 몬스터가 플레이어 바라보는 벡터  
-
+	_vec3		vPatrolPointZero;
+	
 	//스위치 on/off 
+	_bool		m_bGoHome = false;
 
 public:
 	// 목표 상태머신(AI)
@@ -107,18 +109,18 @@ public:
 		YOUDIE,		TAUNT,			SIDEWALK,   KEEPEYE,  RUN,				 WALK, 
 		THROW,		ATTACK,			UPRIGHTRUN, FRIGHTEN, HEAVYATTACK,		 BLOCK,
 		CROTCHHIT,  FACEPUNCH,		FALLING,	DAZED,	  CHOPPED,
-		HEADSHOT,	HEADLESS,		DEATH };
+		HEADSHOT,	HEADLESS,		DEATH, 
+		GOHOME};
 
 	// 행동 상태머신
-	enum class STATE_ACT { IDLE, APPROACH, SUDDENATTACK, SIDEMOVING, ATTACK };
+	enum class STATE_ACT { IDLE, APPROACH, SUDDENATTACK, SIDEMOVING, ATTACK,
+						   GOHOME};
 
 	// 행동키
 	enum class ACTION_KEY {
-		IDLE, 
-		RUN, WALK, 
-		KEEPEYE, SIDEWALK, 
-		UPRIGHT, FRIGHTEN,
-		BASIC_ATTACK, HEAVY_ATTACK, 
+		IDLE, RUN, WALK, KEEPEYE, SIDEWALK, 
+		UPRIGHT, FRIGHTEN, BASIC_ATTACK, HEAVY_ATTACK, 
+		GOHOME
 	};
 
 private:
@@ -133,7 +135,6 @@ private:
 	void AI_Suspicious(float fDeltaTime); // 견제값 추가용 
 	void AI_Taunt(float fDeltaTime); //도발
 	void AI_YouDie(float fDeltaTime); //도발
-	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 
 	void AI_Chase(float fDeltaTime); //  거리비교 움직임 시작
 	void AI_Rest(float fDeltaTime); // idle ready상태 - 중간중간 넣기용 
 
@@ -148,6 +149,8 @@ private:
 	void AI_Attack(float fDeltaTime); // 파이프 들고 대각선으로 걍 떄리는거
 	void AI_HeavyAttack(float fDeltaTime); //강공격 - 옆으로 스매시
 
+	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 
+	void AI_GoHome(float fDeltaTime); // 파이프 들고 대각선으로 걍 떄리는거
 	//void AI_Block(float fDeltaTime); //플레이어가 공격하면 막기함
 
 	//void AI_CrotchHit( float fDeltaTime); // 앉기 + 피격
@@ -167,6 +170,7 @@ private:
 	void SuddenAttack(float fDeltaTime);
 	void SideMoving(float fDeltaTime);
 	void Attack(float fDeltaTime);
+	void GoHome(float fDeltaTime);
 
 	//void Walk(float fDeltaTime);
 	//void Inch(float fDeltaTime);

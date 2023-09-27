@@ -961,7 +961,7 @@ void CPlayer::Dash(const _float& fTimeDelta)
 
         }
 
-        if (fDownDash == 0.f)
+        if (fDownDash <= 0.f)
         {
             bDashChange = false;
             bDashOn = false; // 대쉬 정지

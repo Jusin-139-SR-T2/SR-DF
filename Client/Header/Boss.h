@@ -89,8 +89,8 @@ private:
 
 
 	// 사거리 , 시야각
-	_float		m_fMonsterFov = 70;					//시야각 - 반각 기준
-	_float		m_fMonsterSightDistance = 10.f;		// 몬스터가 포착하는 사거리 
+	_float		m_fMonsterFov = 90;					//시야각 - 반각 기준
+	_float		m_fMonsterSightDistance = 13.f;		// 몬스터가 포착하는 사거리 
 
 	_float		m_fRunDistance = 8.f;				// 사거리 ~ Run 사이 =  run
 	_float		m_fWalkDistance = 7.f;				// run~walk 사이 = walk

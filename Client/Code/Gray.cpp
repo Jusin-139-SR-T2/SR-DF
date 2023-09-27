@@ -36,7 +36,7 @@ HRESULT CGray::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformComp->m_vInfo[INFO_POS] = { 10.f, 10.f, 25.f };
+    m_pTransformComp->m_vInfo[INFO_POS] = vPatrolPointZero = { 10.f, 1.f, 25.f };
     m_fFrame = 0;
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
@@ -67,6 +67,9 @@ HRESULT CGray::Ready_GameObject()
     m_tState_Obj.Add_Func(STATE_OBJ::HEAVYATTACK, &CGray::AI_HeavyAttack);
     m_tState_Obj.Add_Func(STATE_OBJ::ATTACK, &CGray::AI_Attack);
 
+    m_tState_Obj.Add_Func(STATE_OBJ::RECONNAISSANCE, &CGray::AI_Reconnaissance);
+    m_tState_Obj.Add_Func(STATE_OBJ::GOHOME, &CGray::AI_GoHome);
+
     //m_tState_Obj.Add_Func(STATE_OBJ::BLOCK, &CGray::AI_Block);
     //m_tState_Obj.Add_Func(STATE_OBJ::CROTCHHIT, &CGray::AI_CrotchHit);
     //m_tState_Obj.Add_Func(STATE_OBJ::HEADSHOT, &CGray::AI_HeadShot);
@@ -88,6 +91,7 @@ HRESULT CGray::Ready_GameObject()
     m_tState_Act.Add_Func(STATE_ACT::SUDDENATTACK, &CGray::SuddenAttack);
     m_tState_Act.Add_Func(STATE_ACT::SIDEMOVING, &CGray::SideMoving);
     m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CGray::Attack);
+    m_tState_Act.Add_Func(STATE_ACT::GOHOME, &CGray::GoHome);
 
 #pragma endregion
 
@@ -104,6 +108,8 @@ HRESULT CGray::Ready_GameObject()
 
     m_mapActionKey.Add_Action(ACTION_KEY::BASIC_ATTACK);
     m_mapActionKey.Add_Action(ACTION_KEY::HEAVY_ATTACK);
+
+    m_mapActionKey.Add_Action(ACTION_KEY::GOHOME);
 
 #pragma endregion
 
@@ -450,13 +456,35 @@ void CGray::AI_Reconnaissance(float fDeltaTime)
         if (0 == m_fConsider) //인지값이 초기화되면 
         {
             m_fConsider = m_fMaxConsider; // 다시 할수있으니 값 복구 
-            m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
+            m_tState_Obj.Set_State(STATE_OBJ::GOHOME);
         }
     }
 
     if (m_tState_Obj.IsState_Exit())
     {
 
+    }
+}
+
+void CGray::AI_GoHome(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::GOHOME].Act();
+
+        // 조건 - 처음 위치로 돌아갈때까지 
+        m_bGoHome = true;
+        m_tState_Obj.Set_State(STATE_OBJ::WALK);
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
     }
 }
 
@@ -598,24 +626,52 @@ void CGray::AI_Walk(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 10.f;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Walk");
-        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        if (FALSE == m_bGoHome)
+        {
+            m_fFrameSpeed = 10.f;
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Walk");
+            m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        }
     }
 
     if (m_tState_Obj.Can_Update())
     {
-        //행동이 IDLE일때 WALK 가상키 누르기 
-        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
-            m_mapActionKey[ACTION_KEY::WALK].Act();
-
-        // 조건 - 플레이어가 시야각으로 들어오면 
-        if (m_fFrame > m_fFrameEnd)
+        if (TRUE == m_bGoHome)
         {
-            m_tState_Obj.Set_State(STATE_OBJ::REST);
+            // 플레이어가 바라보는 몬스터 : 플레이어 - 몬스터 
+            _vec3 vDirect = m_pPlayerTransformcomp->m_vInfo[INFO_POS] - m_pTransformComp->m_vInfo[INFO_POS];
+            
+            if (vDirect.z >= 0) // 패트롤 가는곳이 플레이어 기준 +z면 등보이며 걸어가기 
+            {
+                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"WalkNorth");
+                m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+            }
+            else if (vDirect.z < 0) // 몬패트롤 가는곳이 플레이어 기준 -z면 그냥 걸어가기 
+            {
+                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Walk");
+                m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+            }
+
+            _float fDistance = D3DXVec3Length(&vDirect);
+
+            if (2.f >= fDistance)
+            {
+                m_bGoHome = false;
+                m_tState_Obj.Set_State(STATE_OBJ::IDLE);
+            }
+        }
+        else if (FALSE == m_bGoHome)
+        {
+            if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+                m_mapActionKey[ACTION_KEY::WALK].Act();
+
+            // 조건 - 플레이어가 시야각으로 들어오면 
+            if (m_fFrame > m_fFrameEnd)
+            {
+                m_tState_Obj.Set_State(STATE_OBJ::REST);
+            }
         }
     }
-
 
     if (m_tState_Obj.IsState_Exit())
     {
@@ -874,14 +930,14 @@ void CGray::Idle(float fDeltaTime)
         if (m_mapActionKey[ACTION_KEY::WALK].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::APPROACH);
 
-        // 주시하며 경계하는 파트 
+        // 주시하며 경계
         if (m_mapActionKey[ACTION_KEY::KEEPEYE].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::SIDEMOVING);
 
         if (m_mapActionKey[ACTION_KEY::SIDEWALK].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::SIDEMOVING);
 
-        // 갑작스래 다가오는파트 
+        // 
         if (m_mapActionKey[ACTION_KEY::UPRIGHT].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::SUDDENATTACK);
 
@@ -895,6 +951,9 @@ void CGray::Idle(float fDeltaTime)
         if (m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::ATTACK);
 
+        // 패트롤파트 
+        if (m_mapActionKey[ACTION_KEY::GOHOME].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::GOHOME);
     }
 
     if (m_tState_Act.IsState_Exit()) // 가끔 필요할때가 있어서 - 찾아보기 
@@ -911,25 +970,18 @@ void CGray::Approach(float fDeltaTime)
 
     // 실행
     {
+        m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+
+        vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+        //D3DXVec3Normalize(&vDir, &vDir);
+        
+        m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+        
         if (STATE_OBJ::RUN == m_tState_Obj.Get_State())
-        {
-            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
-
-        }
-
+        
         if (STATE_OBJ::WALK == m_tState_Obj.Get_State())
-        {
-            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fWalkSpeed);
-
-        }
 
         m_tState_Act.Set_State(STATE_ACT::IDLE);
     }
@@ -982,27 +1034,16 @@ void CGray::SuddenAttack(float fDeltaTime)
 
     // 실행
     {
+        m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+
+        vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+
         if (STATE_OBJ::UPRIGHTRUN == m_tState_Obj.Get_State())
-        {
-            // m_bStrafing = true;
-
-            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fUprightSpeed);
-        }
-
+       
         if (STATE_OBJ::FRIGHTEN == m_tState_Obj.Get_State())
-        {
-            //점프 
-            m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
-        }
-
+        
         m_tState_Act.Set_State(STATE_ACT::IDLE);
     }
 
@@ -1036,6 +1077,38 @@ void CGray::Attack(float fDeltaTime)
         }
 
         m_tState_Act.Set_State(STATE_ACT::IDLE);
+    }
+
+    // 조건
+    {
+
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+    }
+}
+
+void CGray::GoHome(float fDeltaTime)
+{
+    if (m_tState_Act.IsState_Entered())
+    {
+    }
+
+    // 실행
+    {
+        // 몬스터 - zero 바라보는 벡터 생성
+        _vec3 vDirect = vPatrolPointZero - m_pTransformComp->m_vInfo[INFO_POS];
+        
+        _float fDistance = D3DXVec3Length(&vDirect);
+        
+        D3DXVec3Normalize(&vDirect, &vDirect);
+
+        if(2.f >= fDistance)
+            m_tState_Act.Set_State(STATE_ACT::IDLE);
+        else
+            m_pTransformComp->Move_Pos(&vDirect, fDeltaTime, m_fSideWalkSpeed);
+        
     }
 
     // 조건
