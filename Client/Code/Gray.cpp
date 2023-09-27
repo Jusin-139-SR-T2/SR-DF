@@ -930,14 +930,14 @@ void CGray::Idle(float fDeltaTime)
         if (m_mapActionKey[ACTION_KEY::WALK].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::APPROACH);
 
-        // 주시하며 경계하는 파트 
+        // 주시하며 경계
         if (m_mapActionKey[ACTION_KEY::KEEPEYE].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::SIDEMOVING);
 
         if (m_mapActionKey[ACTION_KEY::SIDEWALK].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::SIDEMOVING);
 
-        // 갑작스래 다가오는파트 
+        // 
         if (m_mapActionKey[ACTION_KEY::UPRIGHT].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::SUDDENATTACK);
 
@@ -973,7 +973,7 @@ void CGray::Approach(float fDeltaTime)
         m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
         vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-        D3DXVec3Normalize(&vDir, &vDir);
+        //D3DXVec3Normalize(&vDir, &vDir);
         
         m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
         

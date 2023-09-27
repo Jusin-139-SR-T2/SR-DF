@@ -386,18 +386,18 @@ void CBoss::AI_Chase(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        m_ChaseTime += fDeltaTime * 10.f;
+        m_ChaseTime += fDeltaTime * 14.f;
         
         _float CurDistance = Calc_Distance();
 
         if (m_fCloseAttackDistance >= CurDistance 
-            && m_ShortTime <= m_ChaseTime) // 근접공격이 최 우선시됨 
+            && m_ShortTime <= m_ChaseTime) // 근접공격이 최 우선시됨 - 거리 매우 가까울때만 
         {
             m_ChaseTime = 0.f;
             m_tState_Obj.Set_State(STATE_OBJ::PRE_ATTACK);
         }
        
-        if (m_MaxTime <= m_ChaseTime)
+        if (m_MaxTime <= m_ChaseTime) // stop시간 지나면 
         {
             m_ChaseTime = 0.f;
 
@@ -704,12 +704,10 @@ void CBoss::Idle(float fDeltaTime)
         // 총알 쏘는파트 
         if (m_mapActionKey[ACTION_KEY::SHOOTING].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::SHOOTING);
-
     }
 
     if (m_tState_Act.IsState_Exit())
     {
-
     }
 }
 
