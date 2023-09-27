@@ -22,6 +22,7 @@ HRESULT CBrown::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
     
+    m_pTransformComp->Set_Scale({ 200.f, 100.f, 1.f });
     m_pTransformComp->Set_Pos({ 5.f, 1.f, 25.f });
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
@@ -123,7 +124,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     // ºôº¸µå --------------------------------------
     FaceTurn(fTimeDelta);
 
-    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
+    Engine::Add_RenderGroup(RENDER_UI, this);
     
     return S_OK;
 }
