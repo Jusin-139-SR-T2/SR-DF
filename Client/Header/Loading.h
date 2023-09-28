@@ -34,6 +34,7 @@ public:
 	// 비동기 로드 함수
 	void				Load_TextureAsync(const _tchar* pfilePath, TEXTUREID eID, const _tchar* pGroupName, const _tchar* pTextureName, const _range<_uint>& iCntRange = _range<_uint>(0U, 0U));
 	void				Load_Texture(const _tchar* pfilePath, TEXTUREID eID, const _tchar* pGroupName, const _tchar* pTextureName, const _range<_uint>& iCntRange = _range<_uint>(0U, 0U), _bool bAsync = true);
+	void				Wait_LoadTextureAsync();
 
 public:
 	static _uint	CALLBACK Thread_Main(void* pArg);

@@ -1,8 +1,5 @@
 #include "SoundMgr.h"
 
-#include <future>
-#include <thread>
-
 IMPLEMENT_SINGLETON(CSoundMgr)
 
 CSoundMgr::CSoundMgr()
@@ -50,11 +47,12 @@ HRESULT CSoundMgr::Ready_Sound()
 	result = FMOD_System_GetMasterChannelGroup(m_pSystem, &m_pMasterChanelGroup);
 
 	// 실제 사운드 폴더 찾아 로드
-	LoadSoundFile(L"FallenAces", "./Resource/Sound/FallenAces/bgm/");
-	LoadSoundFile(L"FallenAces", "./Resource/Sound/FallenAces/sfx/");
-	LoadSoundFile(L"FallenAces", "./Resource/Sound/FallenAces/announce/");
-	LoadSoundFile(L"FallenAces", "./Resource/Sound/FallenAces/talk/");
-	LoadSoundFile(L"RockmanEXE", "./Resource/Sound/RockmanEXE/sfx/");
+	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/bgm/");
+	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/sfx/");
+	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/announce/");
+	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/talk/");
+	LoadSoundFile_GroupAsync(L"RockmanEXE", "./Resource/Sound/RockmanEXE/sfx/");
+	Wait_GroupAsync();
 
 	return S_OK;
 }
@@ -127,13 +125,15 @@ void CSoundMgr::SetChannelVolume(CHANNELID eID, float fVolume)
 
 void CSoundMgr::LoadSoundFile(_tchar* pCategoryKey, const char* pPath)
 {
+	// m_mapSound 보호
+	m_mtxSound.lock();
 	// 여기는 카테고리 키 만들기, 없으면 키를 만들고 컨테이너를 만들어 준다.
 	auto iter = m_mapSound.find(pCategoryKey);
 	if (iter == m_mapSound.end())
 	{
 		m_mapSound.emplace(pCategoryKey, FSoundData::Create());
 	}
-
+	m_mtxSound.unlock();
 
 	// 여기부터 파일 로드부
 	char sText[128] = "";
@@ -223,6 +223,20 @@ void CSoundMgr::LoadSoundFile(_tchar* pCategoryKey, const char* pPath)
 	FMOD_System_Update(m_pSystem);
 
 	_findclose(handle);
+}
+
+void CSoundMgr::LoadSoundFile_GroupAsync(_tchar* pGroupKey, const char* pPath)
+{
+	m_vecAsyncSoundGroup.push_back(async(launch::async, &CSoundMgr::LoadSoundFile, this, pGroupKey, pPath));
+}
+
+void CSoundMgr::Wait_GroupAsync()
+{
+	for (_uint i = 0; i < m_vecAsyncSoundGroup.size(); i++)
+	{
+		m_vecAsyncSoundGroup[i].get();
+	}
+	m_vecAsyncSoundGroup.clear();
 }
 
 FMOD_RESULT CSoundMgr::LoadSoundFile_Async(const char* pPath, const char* pFileName, FMOD_RESULT& hResult, FMOD_SOUND** pSound)

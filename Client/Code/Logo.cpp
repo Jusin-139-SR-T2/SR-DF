@@ -33,11 +33,12 @@ CLogo* CLogo::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 HRESULT CLogo::Ready_Scene()
 {
+	g_bLockEsc = true;
+	m_bInitFrame = true;
+
 	FAILED_CHECK_RETURN(Ready_Texture(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Prototype(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Environment"), E_FAIL);
-
-	m_bInitFrame = true;
 
 	return S_OK;
 }
@@ -70,6 +71,8 @@ _int CLogo::Update_Scene(const _float& fTimeDelta)
 	// 로딩이 끝났을 때 엔터를 눌러 스테이지 씬으로 진입할 수 있다.
 	if (!m_bInitFrame && m_pLoading->Get_Finish())
 	{
+		g_bLockEsc = false;
+
 		if (Engine::IsKey_Pressed(DIK_RETURN))
 		{
 			CScene* pScene = CStage::Create(m_pGraphicDev);

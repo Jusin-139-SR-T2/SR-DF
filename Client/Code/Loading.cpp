@@ -246,10 +246,7 @@ HRESULT CLoading::Loading_For_Texture()
 
 #pragma endregion
 
-	for (_uint i = 0; i < m_vecAsyncTexture.size(); i++)
-	{
-		m_vecAsyncTexture[i].get();
-	}
+	Wait_LoadTextureAsync();
 
 	return S_OK;
 }
@@ -265,6 +262,15 @@ void CLoading::Load_Texture(const _tchar* pfilePath, TEXTUREID eID, const _tchar
 		m_vecAsyncTexture.push_back(async(launch::async, &CLoading::Load_TextureAsync, this, pfilePath, eID, pGroupName, pTextureName, iCntRange));
 	else
 		Engine::Ready_Texture(pfilePath, eID, pGroupName, pTextureName, iCntRange);
+}
+
+void CLoading::Wait_LoadTextureAsync()
+{
+	for (_uint i = 0; i < m_vecAsyncTexture.size(); i++)
+	{
+		m_vecAsyncTexture[i].get();
+	}
+	m_vecAsyncTexture.clear();
 }
 
 _uint CLoading::Thread_Main(void * pArg)
