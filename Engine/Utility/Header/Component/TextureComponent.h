@@ -1,12 +1,15 @@
 #pragma once
 
-#include "Component.h"
+#include "SceneComponent.h"
+
+
 
 BEGIN(Engine)
 
-class ENGINE_DLL CTextureComponent : public CComponent
+class ENGINE_DLL CTextureComponent : public CSceneComponent
 {
-	DERIVED_CLASS(CComponent, CTextureComponent)
+	DERIVED_CLASS(CSceneComponent, CTextureComponent)
+
 private:
 	explicit CTextureComponent();
 	explicit CTextureComponent(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -14,17 +17,24 @@ private:
 	virtual ~CTextureComponent();
 
 public:
-	static CTextureComponent* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
-										TEXTUREID eID, 
-										const _tchar* pTextureKey, const _tchar* pStateKey = L"");
-	virtual CComponent* Clone();
+	static CTextureComponent*	Create(LPDIRECT3DDEVICE9 pGraphicDev, 
+											TEXTUREID eID, 
+											const _tchar* pTextureKey, const _tchar* pStateKey = L"");
+	virtual CComponent*			Clone();
 
 private:
-	virtual void			Free();
+	virtual void				Free();
 
 public:
-	HRESULT		Ready_Texture(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey = L"");
-	void		Render_Texture(const _uint& iIndex = 0);
+	PRIVATE virtual		HRESULT Ready_Component() OVERRIDE { return S_OK; }
+	PUBLIC	virtual		HRESULT Ready_Component(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey = L"");
+	PUBLIC	virtual		_int	Update_Component(const _float& fTimeDelta) OVERRIDE;
+	PUBLIC	virtual		void	LateUpdate_Component() OVERRIDE;
+	PRIVATE virtual		void	Render_Component() OVERRIDE {}
+	PUBLIC	virtual		void	Render_Component(const _uint& iIndex = 0, _bool bLocalTransform = false);
+
+public:
+	void		Render_Texture(const _uint& iIndex = 0, _bool bLocalTransform = false);
 	HRESULT		Receive_Texture(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey = L"");
 
 public:
@@ -32,7 +42,7 @@ public:
 
 private:
 	vector<LPDIRECT3DBASETEXTURE9>		m_vecTexture;
-	
+
 };
 
 END

@@ -24,6 +24,11 @@ public:
 
 private:
 	virtual void Free();
+
+	// CVIBufferComp을(를) 통해 상속됨
+	virtual HRESULT Ready_Component() override;
+	virtual void LateUpdate_Component() override;
+	virtual void Render_Component() override;
 };
 
 END

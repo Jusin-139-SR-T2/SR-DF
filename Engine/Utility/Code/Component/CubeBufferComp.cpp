@@ -22,7 +22,7 @@ CCubeBufferComp* CCubeBufferComp::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Buffer()))
+	if (FAILED(pInstance->Ready_Component()))
 	{
 		Safe_Release(pInstance);
 		MSG_BOX("CCubeBufferComp Create Failed");
@@ -42,8 +42,7 @@ void CCubeBufferComp::Free(void)
 	SUPER::Free();
 }
 
-
-HRESULT CCubeBufferComp::Ready_Buffer(void)
+HRESULT CCubeBufferComp::Ready_Component()
 {
 	m_dwFVF = FVF_CUBE;
 	m_dwVtxCnt = 8;
@@ -160,8 +159,13 @@ HRESULT CCubeBufferComp::Ready_Buffer(void)
 	return S_OK;
 }
 
-void CCubeBufferComp::Render_Buffer(void)
+void CCubeBufferComp::LateUpdate_Component()
 {
-	SUPER::Render_Buffer();
 }
 
+void CCubeBufferComp::Render_Component()
+{
+	SUPER::Render_Buffer();
+
+
+}

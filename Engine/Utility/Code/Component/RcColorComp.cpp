@@ -144,3 +144,16 @@ void CRcColorComp::Free()
 {
 	SUPER::Free();
 }
+
+HRESULT CRcColorComp::Ready_Component()
+{
+	return E_NOTIMPL;
+}
+
+void CRcColorComp::LateUpdate_Component()
+{
+}
+
+void CRcColorComp::Render_Component()
+{
+}

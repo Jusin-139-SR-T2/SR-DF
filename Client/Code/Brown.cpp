@@ -22,7 +22,8 @@ HRESULT CBrown::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
     
-    m_pTransformComp->m_vInfo[INFO_POS] = { 5.f, 1.f, 25.f };
+    //m_pTransformComp->Set_Scale({ 200.f, 100.f, 1.f });
+    m_pTransformComp->Set_Pos({ 5.f, 1.f, 25.f });
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
 
@@ -111,7 +112,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 
     // 빌보드 --------------------------------------
 
-    FaceTurn(fTimeDelta);
+    //FaceTurn(fTimeDelta);
     
     // --------------------------------------------
 
@@ -132,7 +133,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 
     // --------------------------------------------
 
-    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
+    Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
     return S_OK;
 }
@@ -144,7 +145,10 @@ void CBrown::LateUpdate_GameObject()
 
 void CBrown::Render_GameObject()
 {
-    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
+    DWORD dwTest;
+    m_pGraphicDev->GetRenderState(D3DRS_ZWRITEENABLE, &dwTest);
+    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
    // m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
     m_pTextureComp->Render_Texture(_ulong(m_fFrame));
@@ -217,7 +221,7 @@ float CBrown::m_fDistance()
 
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-   m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos);
+    m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos);
 
     _vec3    vDistance = (vPlayerPos - vMonsterPos);
 
@@ -231,12 +235,12 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
     //case1. 회전행렬 만들기 
     _matrix		matWorld, matView, matBill, matScale, matChangeScale;
 
-   matWorld = *m_pTransformComp->Get_WorldMatrix();
+   matWorld = *m_pTransformComp->Get_Transform();
 
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+    _vec3 Pos = m_pTransformComp->Get_Pos();
 
-    _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+    _vec3 vDir = vPlayerPos - m_pTransformComp->Get_Pos();
 
     D3DXVec3Normalize(&vDir, &vDir);
 
@@ -251,7 +255,7 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
     // case2. 빌보드 구성하기 
     /*_matrix		matWorld, matView, matBill;
 
-    matWorld = *m_pTransformComp->Get_WorldMatrix();
+    matWorld = *m_pTransformComp->Get_Transform();
 
     m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
     D3DXMatrixIdentity(&matBill);
@@ -265,7 +269,7 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
 
     m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));*/
 
-    m_pTransformComp->m_vScale.y = 1.9f;
+    m_pTransformComp->Set_ScaleY(1.9f);
 }
 
 HRESULT CBrown::Get_PlayerPos(const _float& fTimeDelta)
@@ -821,7 +825,7 @@ void CBrown::AI_Chopped(float fDeltaTime)
     if (m_tState_Obj.Can_Update())
     {
         if(!Dead) //수정필요 
-        m_pTransformComp->Rotation(ROT_X, fDeltaTime*0.75f);
+        m_pTransformComp->Rotate(ROT_X, fDeltaTime*0.75f);
         
         if (m_fFrame > m_fFrameEnd)
         {
@@ -848,7 +852,7 @@ void CBrown::AI_Headless(float fDeltaTime)
     if (m_tState_Obj.Can_Update())
     {
         if (!Dead) //수정필요 
-            m_pTransformComp->Rotation(ROT_X, fDeltaTime * 0.75f);
+            m_pTransformComp->Rotate(ROT_X, fDeltaTime * 0.75f);
 
         if (m_fFrame > m_fFrameEnd)
         {
@@ -987,8 +991,8 @@ void CBrown::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
         {
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+            vDir = vPlayerPos - m_pTransformComp->Get_Pos();
+            m_pTransformComp->Set_Look(vDir);
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
             
         }
@@ -997,8 +1001,8 @@ void CBrown::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
         { 
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
-            m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+            vDir = vPlayerPos - m_pTransformComp->Get_Pos();
+            m_pTransformComp->Set_Look(vDir);
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fWalkSpeed);
     
         }
@@ -1027,7 +1031,7 @@ void CBrown::Moving(float fDeltaTime)
 
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-            vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+            vDir = vPlayerPos - m_pTransformComp->Get_Pos();
 
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fInchSpeed);
 
@@ -1037,7 +1041,7 @@ void CBrown::Moving(float fDeltaTime)
         if (STATE_OBJ::STRAFING == m_tState_Obj.Get_State())
         {
            _vec3 MoveDir;
-           MoveDir = m_pTransformComp->m_vInfo[INFO_RIGHT];
+           MoveDir = m_pTransformComp->Get_Right();
 
            m_pTransformComp->Move_Pos(&MoveDir, fDeltaTime, m_fStrafingSpeed);
 

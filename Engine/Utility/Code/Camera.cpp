@@ -25,18 +25,12 @@ HRESULT CCamera::Ready_GameObject()
 {
 	// 뷰 행렬을 만들어 장치에게 넘겨 놓는다.
 	D3DXMatrixLookAtLH(&m_matView, &m_vEye, &m_vAt, &m_vUp);
-	//LookAtLH(&m_matView, &m_vEye, &m_vAt, &m_vUp);
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 
 	// 투영 변환 행렬은 한번 만들어주면 다시 안만들어 주어도 된다.
 	// 다만 옵션이 바뀌면 만들어 주어야 한다.
 	D3DXMatrixPerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
-	//PerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
-
-
-	//D3DVIEWPORT9 viewData = { 100, 100, 1280, 1000, 0.f, 1.f };
-	//m_pGraphicDev->SetViewport(&viewData);
 
 	return S_OK;
 }
@@ -44,7 +38,6 @@ HRESULT CCamera::Ready_GameObject()
 _int CCamera::Update_GameObject(const _float& fTimeDelta)
 {
 	// 뷰 행렬은 카메라가 매 프레임마다 움직이기 때문에 매번 만들어 주어야한다.
-	//LookAtLH(&m_matView, &m_vEye, &m_vAt, &m_vUp);
 	D3DXMatrixLookAtLH(&m_matView, &m_vEye, &m_vAt, &m_vUp);
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 
@@ -73,7 +66,6 @@ _int CCamera::Update_GameObject(const _float& fTimeDelta)
 	}*/
 
 	D3DXMatrixPerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
-	//D3DXMatrixOrthoLH(&m_matProj, m_fWidth, m_fHeight, 0.001f, 1000.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
 
 	return 0;

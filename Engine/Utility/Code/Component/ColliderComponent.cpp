@@ -102,3 +102,12 @@ void CColliderComponent::CollisionExited()
         }
     }
 }
+
+HRESULT CColliderComponent::Ready_Component()
+{
+    return E_NOTIMPL;
+}
+
+void CColliderComponent::Render_Component()
+{
+}

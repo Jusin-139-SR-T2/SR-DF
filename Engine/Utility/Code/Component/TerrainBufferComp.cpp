@@ -266,3 +266,16 @@ HRESULT CTerrainBufferComp::Load_HeightMap(const _tchar* pFileName)
 	return S_OK;
 }
 
+HRESULT CTerrainBufferComp::Ready_Component()
+{
+	return E_NOTIMPL;
+}
+
+void CTerrainBufferComp::LateUpdate_Component()
+{
+}
+
+void CTerrainBufferComp::Render_Component()
+{
+}
+

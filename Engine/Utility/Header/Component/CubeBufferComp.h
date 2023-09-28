@@ -14,8 +14,9 @@ private:
 	virtual ~CCubeBufferComp();
 
 public:
-	virtual HRESULT		Ready_Buffer();
-	virtual void		Render_Buffer();
+	virtual HRESULT		Ready_Component() override;
+	virtual void		LateUpdate_Component() override;
+	virtual void		Render_Component() override;
 
 public:
 	static CCubeBufferComp* Create(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -23,6 +24,9 @@ public:
 
 private:
 	virtual void Free();
+
+	
+	
 };
 
 END

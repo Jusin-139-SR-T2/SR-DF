@@ -24,50 +24,27 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-    D3DXMatrixIdentity(&m_ViewMatrix);
-    /* 직교투영행렬을 만든다. */
-    D3DXMatrixOrthoLH(&m_ProjMatrix, WINCX, WINCY, 0.0f, 100.0f);
-
-
-    //m_fSizeX = 400.0f;
-    //m_fSizeY = 300.0f;
-
-#pragma region 직교 세팅
-
-    D3DXMatrixIdentity(&m_ViewMatrix);
-
-    //사이즈 : 200
-    m_fSizeX = 500;
-    m_fSizeY = 500;
-
-    ////위치 : 100 = 200 / 2
-    //m_fX = m_fSizeX * 0.f; 
-    //m_fY = m_fSizeY * 0.5f;
-
-
-    ////				  사이즈 100 =	200 / 2
-    //m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f;
-    //m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
-
-    //// 위치 잡아주는 계산		위치 -300 = 100	 - 400
-    //m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX * 0.5f;
-    //m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;
-
-    //m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX * 0.5f;
-    //m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;
-#pragma endregion
 
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
-    //m_pTransformComp->m_vScale.x = 0.3f;
-    //m_pTransformComp->m_vScale.y = 0.4f;
+    // 왼손
+    m_fSizeX = 300;
+    m_fSizeY = 300;
 
-    m_fX = m_fSizeX * 0.5f;
-    m_fY = m_fSizeY * 0.5f;
+    m_fX = m_fSizeX * 0.5f; // 중점위치 
+    m_fY = m_fSizeY * 0.5f + 400;
 
-    m_pTransformComp->m_vScale.x = m_fSizeX * 0.5f;
-    m_pTransformComp->m_vScale.y = m_fSizeY * 0.5f;
+    m_pLeftHandComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+    m_pLeftHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 
-    m_pTransformComp->m_vInfo[INFO_POS] = { 15.f, 10.f, 10.f };
+    // 오른손
+    m_fSizeX = 300;
+    m_fSizeY = 300;
+
+    m_fX = m_fSizeX * 0.5f + 600; // 중점위치 
+    m_fY = m_fSizeY * 0.5f + 400;
+
+    m_pRightHandComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+    m_pRightHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 #pragma endregion
 
 #pragma region 초기 상태 세팅 (현재 상태)  
@@ -122,9 +99,6 @@ HRESULT CPlayer::Ready_GameObject()
     bLeftFrameOn = true;
     bRightFrameOn = true;
 
-    // 정점 세팅
-    //m_pBufferComp->Set_Vertex(1.7f, 0.f, 1.f);
-
     return S_OK;
 }
 
@@ -176,49 +150,37 @@ void CPlayer::Render_GameObject()
 
 #pragma region 옵션
     // 행렬 적용
-    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
-
-
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 
     // 랜더 상태 옵션
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-
-    // 직교
-    m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
-    m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
-    // 직교
-
 #pragma endregion
 
 #pragma region 왼손
-    // (왼손) 위치 설정
-    m_pBufferComp->Set_Vertex(-0.5f, -1.f, 0.f);
+    // 왼손 위치 설정
+    m_pLeftHandComp->Readjust_Transform();
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pLeftHandComp->Get_Transform());
 
     // 왼손 출력 여부
     if (bLeftHandOn)
     {
         // 왼손 텍스처 출력
-        m_pLeftHandComp->Render_Texture((_ulong)m_fLeftFrame);  // 왼손 텍스처 출력
-        m_pBufferComp->Render_Buffer();             // 왼손 버퍼 
+        m_pLeftHandComp->Render_Texture((_ulong)m_fLeftFrame, true);  // 왼손 텍스처 출력
+        m_pBufferComp->Render_Buffer();                         // 왼손 버퍼 
     }
-
-    // (왼손)설정 값 되돌려주기
-    m_pBufferComp->Set_Vertex(0.5f, 0.f, 0.f);
 #pragma endregion
 
 #pragma region 오른손
-    // (오른손) 위치 설정
-    m_pBufferComp->Set_Vertex(1.f, 0.f, 0.f);
+    // 오른손 위치 설정
+    m_pRightHandComp->Readjust_Transform();
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pRightHandComp->Get_Transform());
 
     // 오른손 출력 여부
     if (bRightHandOn)
     {
-        m_pRightHandComp->Render_Texture((_ulong)m_fRightFrame); // 오른손 텍스처 출력
-        m_pBufferComp->Render_Buffer();                            // 오른손 버퍼
+        m_pRightHandComp->Render_Texture((_ulong)m_fRightFrame, true);    // 오른손 텍스처 출력
+        m_pBufferComp->Render_Buffer();                             // 오른손 버퍼
     }
-
-    // (오른손)설정 값 되돌려주기
-    m_pBufferComp->Set_Vertex(-1.f, 1.f, 0.f);
 #pragma endregion
 
 #pragma region 초기 테스트 버전
@@ -244,8 +206,7 @@ void CPlayer::Render_GameObject()
 
 #pragma region 조명 테스트
     if (bTorch)
-        m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
-
+        m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 #pragma endregion
@@ -815,7 +776,7 @@ void CPlayer::Mouse_Move()
             fAngle = fAngle + 3.141592f;
         }
 
-        m_pTransformComp->m_vAngle.y = fAngle;
+        m_pTransformComp->Set_ScaleY(fAngle);
     }
 #pragma endregion
 
