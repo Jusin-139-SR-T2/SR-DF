@@ -54,27 +54,14 @@ HRESULT CBackGround::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformComp->m_vScale.x = WINCX;
-	m_pTransformComp->m_vScale.y = WINCY;
-
-	//m_pTransformComp->Set_Pos(0.f, 0.f, 0.f);
-
-	D3DXMatrixIdentity(&m_ViewMatrix);
-
-	/* 직교투영행렬을 만든다. */
-	D3DXMatrixOrthoLH(&m_ProjMatrix, WINCX, WINCY, 0.0f, 100.0f);
-
 	m_fSizeX = WINCX;
 	m_fSizeY = WINCY;
 
 	m_fX = m_fSizeX * 0.5f; // 중점위치 
 	m_fY = m_fSizeY * 0.5f;
 
-	m_pTransformComp->m_vScale.x = m_fSizeX; // 이미지 크기 
-	m_pTransformComp->m_vScale.y = m_fSizeY;
-
-	m_pTransformComp->m_vInfo[INFO_POS].x = m_fX - WINCX * 0.5f;
-	m_pTransformComp->m_vInfo[INFO_POS].y = -m_fY + WINCY * 0.5f;
+	m_pTransformComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+	m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 
 
 	return S_OK;
@@ -96,27 +83,27 @@ void CBackGround::LateUpdate_GameObject()
 
 void CBackGround::Render_GameObject()
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
-	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	
+	// 텍스처의 트랜스폼을 월드 행렬, DYNAMIC으로 설정시 수동으로 해줄 필요가 없음
+	m_pBackTextureComp->Readjust_Transform();	
+	// 텍스처 행렬 * 부모(게임오브젝트)의 행렬
+	m_pBackTextureComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
+	// 위의 두개만 쓰면 텍스처 행렬과 부모 행렬을 별개로 두고 계산할 수 있음.
 
-	m_pBackTextureComp->Render_Texture(0);
+	// 이제부터 Render_Texture 함수 안에서 자동으로 텍스처의 행렬이 디바이스에 들어간다.(SetTransform(D3DTS_WORLD, 텍스처 행렬))
+	m_pBackTextureComp->Render_Texture(0, true);
 	m_pBufferComp->Render_Buffer();
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	// 이건 부모 행렬을 텍스처 행렬에 그대로 쓰는 방법, 텍스처 별개의 행렬이 필요없을 때 사용
+	m_pTextureComp->Set_Transform(m_pTransformComp->Get_Transform());
 
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	// m_pBackTextureComp에 적용한 것과 m_pTextureComp에 적용한 것. 두개다 백그라운드에서 동일한 위치, 크기로 설정되므로 유효함.
 
-	m_pTextureComp->Render_Texture(0);
+	// Set_Transform : 단순 행렬 덮어쓰기
+	// Readjust_Transform : 텍스처의 로컬 좌표, 회전, 크기를 텍스처의 월드 행렬(트랜스폼)에 적용한다.
+	// Set_TransformToWorld : 텍스처 월드 행렬 * 부모 행렬, 행렬곱임
+
+	m_pTextureComp->Render_Texture(0, true);
 	m_pBufferComp->Render_Buffer();
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 void CBackGround::Free()

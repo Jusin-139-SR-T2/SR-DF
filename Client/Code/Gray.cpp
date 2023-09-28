@@ -36,7 +36,8 @@ HRESULT CGray::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformComp->m_vInfo[INFO_POS] = vPatrolPointZero = { 10.f, 1.f, 25.f };
+    m_pTransformComp->Set_Scale({ 200.f, 100.f, 1.f });
+    m_pTransformComp->Set_Pos({ 10.f, 10.f, 25.f });
     m_fFrame = 0;
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
@@ -169,7 +170,7 @@ void CGray::LateUpdate_GameObject()
 
 void CGray::Render_GameObject()
 {
-    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     m_pTextureComp->Render_Texture(_ulong(m_fFrame));
@@ -214,12 +215,12 @@ void CGray::FaceTurn(const _float& fTimeDelta)
     //case1. 회전행렬 만들기 
     _matrix		matWorld, matView, matBill, matScale, matChangeScale;
 
-    matWorld = *m_pTransformComp->Get_WorldMatrix();
+    matWorld = *m_pTransformComp->Get_Transform();
 
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+    _vec3 Pos = m_pTransformComp->Get_Pos();
 
-    _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+    _vec3 vDir = vPlayerPos - m_pTransformComp->Get_Pos();
 
     D3DXVec3Normalize(&vDir, &vDir);
 
@@ -248,7 +249,7 @@ void CGray::FaceTurn(const _float& fTimeDelta)
 
     m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));*/
 
-    m_pTransformComp->m_vScale.y = 1.9f;
+    m_pTransformComp->Set_ScaleY(1.9f);
 }
 
 _bool CGray::Detect_Player()
@@ -408,7 +409,7 @@ void CGray::AI_YouDie(float fDeltaTime)
         m_fFrameSpeed = 7.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"YouDie");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-        m_pTransformComp->m_vScale.x = 0.9f;
+        m_pTransformComp->Set_ScaleX(0.9f);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -634,7 +635,7 @@ void CGray::AI_Walk(float fDeltaTime)
         if (TRUE == m_bGoHome)
         {
             // 플레이어가 바라보는 몬스터 : 플레이어 - 몬스터 
-            _vec3 vDirect = m_pPlayerTransformcomp->m_vInfo[INFO_POS] - m_pTransformComp->m_vInfo[INFO_POS];
+            _vec3 vDirect = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
             
             if (vDirect.z >= 0) // 패트롤 가는곳이 플레이어 기준 +z면 등보이며 걸어가기 
             {
@@ -967,10 +968,10 @@ void CGray::Approach(float fDeltaTime)
     {
         m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-        vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+        vDir = vPlayerPos - m_pTransformComp->Get_Pos();
         //D3DXVec3Normalize(&vDir, &vDir);
         
-        m_pTransformComp->m_vInfo[INFO_LOOK] = vDir;
+        m_pTransformComp->Set_Look(vDir);
         
         if (STATE_OBJ::RUN == m_tState_Obj.Get_State())
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
@@ -997,7 +998,7 @@ void CGray::SideMoving(float fDeltaTime)
 
     // 실행
     {
-        _vec3 Right = m_pTransformComp->m_vInfo[INFO_RIGHT];
+        _vec3 Right = m_pTransformComp->Get_Right();
         D3DXVec3Normalize(&Right, &Right);
         
         if (STATE_OBJ::KEEPEYE == m_tState_Obj.Get_State())
@@ -1031,7 +1032,7 @@ void CGray::SuddenAttack(float fDeltaTime)
     {
         m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-        vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+            vDir = vPlayerPos - m_pTransformComp->Get_Pos();
 
         if (STATE_OBJ::UPRIGHTRUN == m_tState_Obj.Get_State())
             m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fUprightSpeed);
@@ -1093,7 +1094,7 @@ void CGray::GoHome(float fDeltaTime)
     // 실행
     {
         // 몬스터 - zero 바라보는 벡터 생성
-        _vec3 vDirect = vPatrolPointZero - m_pTransformComp->m_vInfo[INFO_POS];
+        _vec3 vDirect = vPatrolPointZero - m_pTransformComp->Get_Pos();
         
         _float fDistance = D3DXVec3Length(&vDirect);
         

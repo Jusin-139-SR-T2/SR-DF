@@ -99,3 +99,16 @@ void CRcBufferComp::Render_Buffer()
 	SUPER::Render_Buffer();
 }
 
+HRESULT CRcBufferComp::Ready_Component()
+{
+	return E_NOTIMPL;
+}
+
+void CRcBufferComp::LateUpdate_Component()
+{
+}
+
+void CRcBufferComp::Render_Component()
+{
+}
+

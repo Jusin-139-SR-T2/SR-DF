@@ -91,3 +91,16 @@ void CTriColorComp::Free()
 {
 	SUPER::Free();
 }
+
+HRESULT CTriColorComp::Ready_Component()
+{
+	return E_NOTIMPL;
+}
+
+void CTriColorComp::LateUpdate_Component()
+{
+}
+
+void CTriColorComp::Render_Component()
+{
+}

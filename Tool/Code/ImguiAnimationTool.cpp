@@ -42,6 +42,7 @@ void CImguiAnimationTool::Free()
         m_pRenderTargetSurface->Release();
 }
 
+// 이미지 추가 함수
 void CImguiAnimationTool::AddImage(const std::string& imagePath)
 {
 
@@ -86,6 +87,8 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
         //m_pTexture = *CImguiMgr::GetInstance()->Get_EditorTexture();
 
 
+        // ImGui에서 텍스처를 표시할 이미지 크기 (예: 200x200 픽셀)
+        const ImVec2 imageSize(200.0f, 200.0f);
 
 #pragma region 테스트1
 
@@ -93,20 +96,44 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-        if (ImGui::Button(u8"이미지 로드 버튼")) // @@@@@ 문제 2. 이미지 로드 시간이 비정상적이게 길다. (폴더 많이 있으면 더 길어짐) @@@@@
+        if (ImGui::Button(u8"이미지 로드 버튼 (임시)")) // @@@@@ 문제 2. 이미지 로드 시간이 비정상적이게 길다. (폴더 많이 있으면 더 길어짐) @@@@@
         {
             LoadImg(L"../Client/Resource");
         }
 
-        // 위치(Pos) 조정
-        ImGui::Text(u8"위치 조절");
-        ImGui::SliderFloat("x", &m_AniInfo.m_vInfo[INFO_POS].x, 0.0f, 300.0f);
-        ImGui::SliderFloat("y", &m_AniInfo.m_vInfo[INFO_POS].y, 0.0f, 300.0f);
-        ImGui::SliderFloat("z", &m_AniInfo.m_vInfo[INFO_POS].z, 0.0f, 300.0f);
+#pragma region 값 설정
+        // 위치(Pos) 조정 (슬라이더)
+        //ImGui::Text(u8"위치 조절");
+        //ImGui::SliderFloat("x", &m_AniInfo.m_vInfo[INFO_POS].x, 0.0f, 300.0f);
+        //// 값 버튼 조절
+        //ImGui::PushItemWidth(50.0f); // 슬라이더의 너비를 100.0f로 설정
+        //ImGui::SameLine(); // 같은 라인
+        //ImGui::InputFloat("x", &m_AniInfo.m_vInfo[INFO_POS].x, 1.f, 300.f);
+        //ImGui::PopItemWidth(); // 스타일 변경을 원래대로 복원
 
-        // 회전(Rot) 조정 Test
-        ImGui::Text(u8"회전 조절");
-        ImGui::SliderFloat("Rot", &m_fX, 0.0f, 300.0f);
+        //ImGui::SliderFloat("y", &m_AniInfo.m_vInfo[INFO_POS].y, 0.0f, 300.0f);
+        //// 값 버튼 조절
+        //ImGui::PushItemWidth(50.0f); // 슬라이더의 너비를 100.0f로 설정
+        //ImGui::SameLine(); // 같은 라인
+        //ImGui::InputFloat("y", &m_AniInfo.m_vInfo[INFO_POS].y, 1.f, 300.f);
+        //ImGui::PopItemWidth(); // 스타일 변경을 원래대로 복원
+
+        //ImGui::SliderFloat("z", &m_AniInfo.m_vInfo[INFO_POS].z, 0.0f, 300.0f);
+        //// 값 버튼 조절
+        //ImGui::PushItemWidth(50.0f); // 슬라이더의 너비를 100.0f로 설정
+        //ImGui::SameLine(); // 같은 라인
+        //ImGui::InputFloat("z", &m_AniInfo.m_vInfo[INFO_POS].z, 1.f, 300.f);
+        //ImGui::PopItemWidth(); // 스타일 변경을 원래대로 복원
+
+        // 열 레이아웃 설정
+        ImGui::Columns(2); 
+        //ImGui::NextColumn();
+
+        
+        ImGui::Columns(1);
+        // 열 레이아웃을 해제
+
+#pragma endregion
 
         if (ImGui::Button(u8"프레임 추가 버튼"))      // 프레임 추가 버튼
         m_vecAnimationInfo.push_back(m_AniInfo);    // 프레임을 애니메이션 정보 벡터에 추가
@@ -126,11 +153,13 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
         if (ImGui::ListBox("Frames", &selectedItemIndex, frameNames.data(), frameNames.size())) 
         {
             // 선택한 항목에 대한 작업을 수행
-            if (selectedItemIndex >= 0 && selectedItemIndex < m_vecAnimationInfo.size()) {
+            if (selectedItemIndex >= 0 && selectedItemIndex < frameNames.size()) {
                 // selectedItemIndex를 사용하여 선택한 프레임에 대한 작업을 수행
-
+                //RenderSelectedFrameTexture(selectedItemIndex);
             }
         }
+
+
 #pragma endregion
 
 #pragma region LisBox 2번
@@ -418,22 +447,6 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
 //    return imagePath;
 //}
 
-// 문자열 타입 변환
-std::wstring CImguiAnimationTool::ConvertToWideString(const std::string& ansiString)
-{
-    int wideStrLen = MultiByteToWideChar(CP_ACP, 0, ansiString.c_str(), -1, nullptr, 0);
-    if (wideStrLen == 0)
-    {
-        // 변환 실패 처리
-        return L"Fail";
-    }
-
-    std::wstring wideString(wideStrLen, L'\0');
-    MultiByteToWideChar(CP_ACP, 0, ansiString.c_str(), -1, &wideString[0], wideStrLen);
-
-    return wideString;
-}
-
 //// 파일 불러오기
 //HRESULT CImguiAnimationTool::OpenImageFileDialog(const _tchar* folderPath, LPDIRECT3DDEVICE9 pGraphicDev)
 //{
@@ -616,6 +629,14 @@ std::wstring CImguiAnimationTool::ConvertToWideString(const std::string& ansiStr
 //    return iter->second;
 //}
 
+
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기부터 보세요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기부터 보세요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기부터 보세요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기부터 보세요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기부터 보세요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 // 이미지 로드
 void CImguiAnimationTool::LoadImg(const _tchar* folderPath)
 {
@@ -654,21 +675,24 @@ void CImguiAnimationTool::LoadImg(const _tchar* folderPath)
                 wstring filePath = (wstring)folderPath + L"\\" + findData.cFileName;
 
                 // 파일 확장자 확인
-                if (wcsstr(findData.cFileName, L".png")|| wcsstr(findData.cFileName, L".bmp"))/*|| wcsstr(findData.cFileName, L".jpg") ||
+                if (wcsstr(findData.cFileName, L".png") || wcsstr(findData.cFileName, L".jpg") ||
                     wcsstr(findData.cFileName, L".bmp") || wcsstr(findData.cFileName, L".tga") ||
-                    wcsstr(findData.cFileName, L".dds"))*/
+                    wcsstr(findData.cFileName, L".dds"))
                 {
                     // IDirect3DBaseTexture9 인터페이스의 메서드를 사용하여 큐브 및 볼륨 텍스처를 포함한 텍스처 리소스를 조작.
                     IDirect3DBaseTexture9* pBaseTexture = nullptr;
 
                     // D3DXCreateTextureFromFile(디바이스, 파일경로, 베이스 텍스처) 파일에서 텍스처를 만드는 함수.
+                    // 이미지 파일인 경우, 텍스처 로드 및 관리
                     if (SUCCEEDED(D3DXCreateTextureFromFile(Engine::Get_GraphicDev(), filePath.c_str(), (LPDIRECT3DTEXTURE9*)&pBaseTexture)))
                     {
                         LPDIRECT3DTEXTURE9 pTexture = static_cast<LPDIRECT3DTEXTURE9>(pBaseTexture);
                         wstring filePathStr = filePath;
 
+                        // 파일 경로를 슬래시(/)로 통일
                         Replace(filePathStr, L"\\", L"/");
 
+                        // 파일 경로에서 객체 키와 상태 키를 추출
                         size_t pos = filePathStr.find_last_of(L"/");
                         wstring ObjKey, StateKey;
                         if (pos != wstring::npos)
@@ -676,15 +700,18 @@ void CImguiAnimationTool::LoadImg(const _tchar* folderPath)
                             ObjKey = filePathStr.substr(filePathStr.find_last_of(L"/", pos - 1) + 1, pos - (filePathStr.find_last_of(L"/", pos - 1) + 1));
                             StateKey = filePathStr.substr(pos + 1);
                         }
+                        // 객체 키가 uniqueObj 벡터에 없을 경우 추가
                         if (find(uniqueObj.begin(), uniqueObj.end(), ObjKey) == uniqueObj.end())
                         {
                             uniqueObj.push_back(ObjKey);
                         }
+                        // 상태 키가 uniqueState 벡터에 없을 경우 추가
                         if (find(uniqueState.begin(), uniqueState.end(), StateKey) == uniqueState.end())
                         {
                             uniqueState.push_back(StateKey);
                             m_MapTexture[make_pair(ObjKey, StateKey)] = pTexture;
                         }
+                        // 객체 키에 해당하는 파일 목록에 상태 키 추가
                         m_MapFile[ObjKey].push_back(StateKey);
                     }
                 }
@@ -709,6 +736,7 @@ void CImguiAnimationTool::Replace(wstring& strCurrentDirectory, wstring strSearc
     strCurrentDirectory = temp;
 }
 
+#pragma region 문자열 변환 함수들
 char* CImguiAnimationTool::ConverWStringtoC(const wstring& wstr)
 {
     int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, NULL, 0, NULL, NULL);
@@ -749,4 +777,309 @@ string CImguiAnimationTool::WstringToUTF8(const wstring& wstr)
     WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, &utf8Str[0], utf8Length + 1, nullptr, nullptr);
 
     return utf8Str;
+}
+#pragma endregion
+
+// 오브젝트 설정 및 관리
+void CImguiAnimationTool::ObjectSetting()
+{
+    // 객체 유형 저장
+    const char* Object[] = { u8"Human" ,u8"Quadrupedal",u8"Item" };
+
+    // 객체 유형을 선택할 콤보 박스 [선택한 변수의 현재 인덱스]
+    ImGui::Combo(u8"Object", &m_iObjectCreatIndex, Object, IM_ARRAYSIZE(Object));
+
+    // 불러오기 버튼
+    if (ImGui::Button(u8"Load")) 
+    {
+        
+        switch (m_iObjectCreatIndex)
+        {
+            case 1: // 주먹
+            {
+                /*
+                if (Engine::CManagement::GetInstance()->Get_GameLogic_Objects(HUMAN_DEMO).empty()) {
+
+                    // 생성
+                    Engine::CGameObject* pGameObject = nullptr; // 오브젝트를 담을 그릇
+                    pGameObject = CHumanDemo::Create(m_pGraphicDev); // ex : CHumanDemo 클래스 Create(장치); 로 생성
+                    Engine::CManagement::GetInstance()->Add_GameLogic_Object(OBJECTTYPE::NONE, pGameObject);
+                    m_mapObject.insert({ OBJECTKEY::KEY_NONE ,pGameObject }); // 맵 컨테이너에 키값, 오브젝트 추가
+                }
+                else {
+                    //MSG_BOX("이미 존재합니다");
+                }
+                */
+                break;
+            }
+            case 2: // 권총
+            {
+                /*
+                if (Engine::CManagement::GetInstance()->Get_GameLogic_Objects(HUMAN_DEMO).empty()) {
+
+                    Engine::CGameObject* pGameObject = nullptr;
+                    pGameObject = CHumanDemo::Create(m_pGraphicDev);
+                    Engine::CManagement::GetInstance()->Add_GameLogic_Object(OBJECTTYPE::RIGHT_OBJECT, pGameObject);
+                    m_mapObject.insert({ OBJECTKEY::KEY_GUN ,pGameObject }); // 맵 컨테이너에 키값, 오브젝트 추가
+                }
+                else {
+                    //MSG_BOX("이미 존재합니다");
+                }
+                */
+                break;
+            }
+            case 3: // 톰슨 기관총
+            {
+                    /*
+                if (Engine::CManagement::GetInstance()->Get_GameLogic_Objects(WEAPON).empty()) {
+                    LoadObjectData();
+
+                    _matrix test;
+                    D3DXMatrixIdentity(&test);
+
+                    Engine::CGameObject* pGameObject = nullptr;
+                    pGameObject = CItemDemo::Create(m_pGraphicDev, ITEM_USE);
+                    Engine::CManagement::GetInstance()->Add_GameLogic_Object(OBJECTTYPE::TWO_OBJECT, pGameObject);
+                    m_mapObject.insert({ OBJECTKEY::KEY_THOMPSON ,pGameObject }); // 맵 컨테이너에 키값, 오브젝트 추가
+
+                }
+                else {
+                    //MSG_BOX("이미 존재합니다");
+                }
+                    */
+                break;
+            }
+            case 4: // 쇠파이프
+            {
+
+                break;
+            }
+            case 5: // 맥주병
+            {
+
+                break;
+            }
+            case 6: // 프라이팬
+            {
+
+                break;
+            }
+        }
+
+    }
+
+    // 삭제 버튼
+    if (ImGui::Button(u8"Delete")) {
+
+        OBJ_NAME selectedObjType;
+
+        switch (m_iObjectCreatIndex)
+        {
+        case 0:
+            selectedObjType = OBJ_NAME::NONE;
+            break;
+        case 1:
+            selectedObjType = OBJ_NAME::GUN;
+            break;
+        case 2:
+            selectedObjType = OBJ_NAME::THOMPSON;
+
+            break;
+        case 3:
+            selectedObjType = OBJ_NAME::THOMPSON;
+
+            break;
+        case 4:
+            selectedObjType = OBJ_NAME::STEELPIPE;
+
+            break;
+        case 5:
+            selectedObjType = OBJ_NAME::BEERBOTLE;
+
+            break;
+        case 6:
+            selectedObjType = OBJ_NAME::FRYINGPAN;
+
+            break;
+        default:
+            break;
+        }
+
+        /*
+        if (Engine::CManagement::GetInstance()->Get_GameLogic_Objects(selectedObjType).size() != 0)
+        {
+            // 매니지먼트에서 셋 데드로 죽인 후, 오브젝트 맵 컨테이너에 원하는 인덱스 번째 녀석을 삭제
+            Engine::CManagement::GetInstance()->Get_GameLogic_Objects(selectedObjType).front()->Set_Dead();
+            m_mapObject.erase((OBJECTKEY)m_iObjectCreatIndex);
+        }
+        else {
+            //MSG_BOX("아니야");
+        }
+        */
+
+    }
+
+    // ?    게임로직 오브젝트의 타입.size 가 비어있지 않을 경우
+    //if (Engine::CManagement::GetInstance()->Get_GameLogic_Objects(WEAPON).size() != 0) 
+    {
+        /*ImGui::InputFloat(u8"ScaleX", &m_ItemTotal->vScale.x, 1.0f, 100.f, "%.1f");
+        ImGui::InputFloat(u8"ScaleY", &m_ItemTotal->vScale.y, 1.0f, 100.f, "%.1f");
+        ImGui::InputFloat(u8"ScaleZ", &m_ItemTotal->vScale.z, 1.0f, 100.f, "%.1f");*/
+        ImGui::InputFloat3("Scale", m_AniInfo.m_vScale); // 크기 설정
+
+        /*ImGui::InputFloat(u8"RotX", &m_ItemTotal->vStartRotation.x, 5.0f, 100.f, "%.1f");
+        ImGui::InputFloat(u8"RotY", &m_ItemTotal->vStartRotation.y, 5.0f, 100.f, "%.1f");
+        ImGui::InputFloat(u8"RotZ", &m_ItemTotal->vStartRotation.z, 5.0f, 100.f, "%.1f");*/
+        ImGui::InputFloat3("Rot", m_AniInfo.m_vRot); // 회전 설정
+
+        /*ImGui::InputFloat(u8"PosX", &m_ItemTotal->vStartPosition.x, 1.0f, 100.f, "%.1f");
+        ImGui::InputFloat(u8"PosY", &m_ItemTotal->vStartPosition.y, 1.0f, 100.f, "%.1f");
+        ImGui::InputFloat(u8"PosZ", &m_ItemTotal->vStartPosition.z, 1.0f, 100.f, "%.1f");*/
+        ImGui::InputFloat3("Pos", m_AniInfo.m_vPos); // 위치 설정
+
+
+        //const char* Parts3[] = { u8"Total" ,u8"Head",u8"Body",u8"LeftArm",u8"RightArm",u8"LeftLeg",u8"RightLeg" };
+        //static int PartsIndex3 = 0;
+        //ImGui::Combo(u8"Parts", &PartsIndex3, Parts3, IM_ARRAYSIZE(Parts3));
+        //m_AniInfo.m_eObjectType = (PARTS)PartsIndex3;
+
+        // 객체 정보 저장
+        if (ImGui::Button(u8"InfoSave")) {
+            SaveObjectInformationData();
+        }
+
+        // 객체 정보 불러오기
+        if (ImGui::Button(u8"InfoLoad")) {
+
+            LoadObjectInforamtionData();
+        }
+    }
+}
+
+// 데이터 저장
+void CImguiAnimationTool::SaveObjectInformationData()
+{
+    OPENFILENAME    open;
+    TCHAR   lpstrFile[MAX_PATH] = L"";
+    static TCHAR filter[] = L"*.dat";
+
+    ZeroMemory(&open, sizeof(OPENFILENAME));
+    open.lStructSize = sizeof(OPENFILENAME);
+    open.lpstrFilter = filter;
+    open.lpstrFile = lpstrFile;
+    open.nMaxFile = 100;
+    open.lpstrInitialDir = L"";
+
+    GetModuleFileName(NULL, lpstrFile, MAX_PATH);
+    //C:\Users\\Desktop\SR_TeamMine\Client\Bin\Client.exe
+    PathRemoveFileSpec(lpstrFile);
+    PathRemoveFileSpec(lpstrFile);
+    PathRemoveFileSpec(lpstrFile);
+    //C:\Users\\Desktop\SR_TeamMine\Client\Bin
+    lstrcat(lpstrFile, L"\\Data\\ObjectTotalInfo");
+    //C:\Users\\Desktop\SR_TeamMine\Client\Bin\Data\Animation
+    /*basic_string<TCHAR> converted(m_strItemTotalText.begin(), m_strItemTotalText.end());
+    const _tchar* aa = converted.c_str();*/
+
+    wcscat_s(lpstrFile, L"\\");
+    wcscat_s(lpstrFile, L"TOTALINFO_");
+    //wcscat_s(lpstrFile, aa);
+    wcscat_s(lpstrFile, L".dat");
+
+    if (GetSaveFileName(&open) != 0) {
+
+        HANDLE hFile = CreateFile(lpstrFile, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
+        if (INVALID_HANDLE_VALUE == hFile)
+            return;
+
+        DWORD   dwByte = 0;
+
+
+        /*for (auto& iter : m_vecItemPartsSave) {
+            WriteFile(hFile, iter, sizeof(PARTSITEMINFO), &dwByte, nullptr);
+        }*/
+        
+        WriteFile(hFile, &m_AniInfo, sizeof(MYANIMATIONINFO), &dwByte, nullptr);
+
+        CloseHandle(hFile);
+    }
+}
+
+// 데이터 로드
+void CImguiAnimationTool::LoadObjectInforamtionData()
+{
+    OPENFILENAME    open;
+    TCHAR   lpstrFile[MAX_PATH] = L"";
+    static TCHAR filter[] = L"*.*\*.dat";
+
+    ZeroMemory(&open, sizeof(OPENFILENAME));
+    open.lStructSize = sizeof(OPENFILENAME);
+    open.lpstrFilter = filter;
+    open.lpstrFile = lpstrFile;
+    open.nMaxFile = 100;
+    open.lpstrInitialDir = L"";
+
+    GetModuleFileName(NULL, lpstrFile, MAX_PATH);
+    //C:\Users\조우택\Desktop\SR_TeamMine\Client\Bin\Client.exe
+    PathRemoveFileSpec(lpstrFile);
+    //C:\Users\조우택\Desktop\SR_TeamMine\Client\Bin
+    PathRemoveFileSpec(lpstrFile);
+    PathRemoveFileSpec(lpstrFile);
+    lstrcat(lpstrFile, L"\\Data\\ObjectTotalInfo\\data");
+    //C:\Users\조우택\Desktop\SR_TeamMine\Client\Bin\Data\Animation
+
+    if (GetOpenFileName(&open) != 0) {
+
+        HANDLE hFile = CreateFile(lpstrFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+        if (INVALID_HANDLE_VALUE == hFile)
+            return;
+
+        DWORD   dwByte = 0;
+        DWORD   dwStrByte = 0;
+
+        //TOTALITEMINFO* pItemPartsInfo = new TOTALITEMINFO;
+
+        ReadFile(hFile, &m_AniInfo, sizeof(MYANIMATIONINFO), &dwByte, nullptr);
+
+        CloseHandle(hFile);
+    }
+}
+
+// 파일 경로에서 파일 이름을 제거하는 함수
+void CImguiAnimationTool::PathRemoveFileSpec(TCHAR* path)
+{
+    if (path == nullptr || *path == '\0')
+        return;
+
+    size_t len = wcslen(path);
+    if (len == 0)
+        return;
+
+    // 경로의 뒷부분부터 검사하여 '\' 문자를 찾아 제거합니다.
+    for (size_t i = len - 1; i > 0; --i)
+    {
+        if (path[i] == '\\')
+        {
+            path[i] = '\0';
+            break;
+        }
+    }
+}
+
+// 문자열 타입 변환
+std::wstring CImguiAnimationTool::ConvertToWideString(const std::string& ansiString)
+{
+    int wideStrLen = MultiByteToWideChar(CP_ACP, 0, ansiString.c_str(), -1, nullptr, 0);
+    if (wideStrLen == 0)
+    {
+        // 변환 실패 처리
+        return L"Fail";
+    }
+
+    std::wstring wideString(wideStrLen, L'\0');
+    MultiByteToWideChar(CP_ACP, 0, ansiString.c_str(), -1, &wideString[0], wideStrLen);
+
+    return wideString;
 }
