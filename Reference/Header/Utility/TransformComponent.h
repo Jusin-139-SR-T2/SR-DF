@@ -59,6 +59,12 @@ public:
 	{
 		m_vInfo[INFO_POS] = { fX, fY, fZ };
 	}
+	void		Set_MovePos(const _float& fTimeDelta, const _vec3& fSpeed)
+	{
+		m_vInfo[INFO_POS] += { fSpeed.x* fTimeDelta,
+			fSpeed.y* fTimeDelta,
+			fSpeed.z* fTimeDelta };
+	}
 
 public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
 	GETSET_EX2(_vec3, m_vInfo[INFO_RIGHT], Right, GET_C_REF, SET_C)

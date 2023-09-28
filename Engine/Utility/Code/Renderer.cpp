@@ -76,6 +76,10 @@ void CRenderer::Render_AlphaTest(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 200);
 
+	_matrix matView, matProjection;
+	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProjection);
+
 	for (auto& iter : m_RenderGroup[RNEDER_ALPHATEST])
 		iter->Render_GameObject();
 
@@ -95,8 +99,6 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	pGraphicDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-
-	
 
 
 	for (auto& iter : m_RenderGroup[RENDER_ALPHA])

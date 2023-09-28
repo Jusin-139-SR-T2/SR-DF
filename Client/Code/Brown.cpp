@@ -221,7 +221,7 @@ float CBrown::m_fDistance()
 
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
-   m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos);
+    m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos);
 
     _vec3    vDistance = (vPlayerPos - vMonsterPos);
 
@@ -235,12 +235,12 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
     //case1. 회전행렬 만들기 
     _matrix		matWorld, matView, matBill, matScale, matChangeScale;
 
-   matWorld = *m_pTransformComp->Get_WorldMatrix();
+   matWorld = *m_pTransformComp->Get_Transform();
 
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+    _vec3 Pos = m_pTransformComp->Get_Pos();
 
-    _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+    _vec3 vDir = vPlayerPos - m_pTransformComp->Get_Pos();
 
     D3DXVec3Normalize(&vDir, &vDir);
 

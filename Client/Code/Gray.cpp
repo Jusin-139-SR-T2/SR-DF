@@ -215,12 +215,12 @@ void CGray::FaceTurn(const _float& fTimeDelta)
     //case1. 회전행렬 만들기 
     _matrix		matWorld, matView, matBill, matScale, matChangeScale;
 
-    matWorld = *m_pTransformComp->Get_WorldMatrix();
+    matWorld = *m_pTransformComp->Get_Transform();
 
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+    _vec3 Pos = m_pTransformComp->Get_Pos();
 
-    _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+    _vec3 vDir = vPlayerPos - m_pTransformComp->Get_Pos();
 
     D3DXVec3Normalize(&vDir, &vDir);
 
@@ -637,7 +637,7 @@ void CGray::AI_Walk(float fDeltaTime)
         if (TRUE == m_bGoHome)
         {
             // 플레이어가 바라보는 몬스터 : 플레이어 - 몬스터 
-            _vec3 vDirect = m_pPlayerTransformcomp->m_vInfo[INFO_POS] - m_pTransformComp->m_vInfo[INFO_POS];
+            _vec3 vDirect = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
             
             if (vDirect.z >= 0) // 패트롤 가는곳이 플레이어 기준 +z면 등보이며 걸어가기 
             {
@@ -1096,7 +1096,7 @@ void CGray::GoHome(float fDeltaTime)
     // 실행
     {
         // 몬스터 - zero 바라보는 벡터 생성
-        _vec3 vDirect = vPatrolPointZero - m_pTransformComp->m_vInfo[INFO_POS];
+        _vec3 vDirect = vPatrolPointZero - m_pTransformComp->Get_Pos();
         
         _float fDistance = D3DXVec3Length(&vDirect);
         
