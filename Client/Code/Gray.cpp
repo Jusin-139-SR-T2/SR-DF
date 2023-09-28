@@ -211,10 +211,28 @@ void CGray::Free()
 #pragma region 상태머신 부속파트 
 void CGray::FaceTurn(const _float& fTimeDelta)
 { 
-    // case2. 빌보드 구성하기 
-     //빌보드 = 자전의 역 / 자전 역 * 스 * 자 * 이 ->스케일문제 = 나중에 넣으면되잖? 
+    //case1. 회전행렬 만들기 
+    _matrix		matWorld, matView, matBill, matScale, matChangeScale;
 
-    _matrix		matWorld, matView, matBill;
+    matWorld = *m_pTransformComp->Get_WorldMatrix();
+
+    m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+
+    _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+
+    D3DXVec3Normalize(&vDir, &vDir);
+
+    _float rad = atan2f(vDir.x, vDir.z);
+
+    // 회전행렬 생성
+    _matrix rotationMatrix;
+    D3DXMatrixRotationY(&rotationMatrix, rad);
+
+    m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
+
+    // case2. 빌보드 구성하기 
+    /*_matrix		matWorld, matView, matBill;
 
     matWorld = *m_pTransformComp->Get_WorldMatrix();
 
@@ -228,11 +246,7 @@ void CGray::FaceTurn(const _float& fTimeDelta)
 
     D3DXMatrixInverse(&matBill, 0, &matBill);
 
-    // 주의 사항
-
-    // 빌(자전의 역행렬) * 월드(스 * 자 * 이)
-
-    m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
+    m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));*/
 
     m_pTransformComp->m_vScale.y = 1.9f;
 }
@@ -345,8 +359,9 @@ void CGray::AI_Suspicious(float fDeltaTime)
                 m_fAwareness = 0;
 
             //플레이어가 시야각을 벗어나 인지값이 초기화되면 idle로 back
-            if (0 == m_fAwareness)
+            if (0 >= m_fAwareness)
             {
+                m_fAwareness = 0.f;
                 m_tState_Obj.Set_State(STATE_OBJ::IDLE);
             }
         }
@@ -418,47 +433,29 @@ void CGray::AI_Reconnaissance(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        // 플레이어 놓치면 계속 주변돌아보면서 체크하는곳
-        // 주변 체크용으로 리소스 추가해야함 
-        /*   
-        while (count < NUMBER) 
-        {
-        isSame = 0;
-        tmp = rand() % m_fFrameEnd + 1;
 
-        for (int i = 0; i < count; i++) 
-        { //중복검사
-            if (tmp == save[i])//중복이 있을때
-            { 
-                isSame = 1;
-                break;
-            }
-        }
-        if (isSame == 0)  //중복없음
-        { 
-            save[count] = tmp;
-            count++;
-        }*/
     }
     if (m_tState_Obj.Can_Update())
     {
-        m_fConsider -= fDeltaTime * 2.f;
+        m_fConsider -= fDeltaTime * 3.f;
 
         if (Detect_Player())
         {
             m_fAwareness += fDeltaTime * 4.f; // 이전보다 더 빠르게 증가할것 
-            m_tState_Obj.Set_State(STATE_OBJ::YOUDIE);
+            if (m_fAwareness >= m_fMaxAwareness)
+            {
+                m_fAwareness = m_fMaxAwareness;
+                m_tState_Obj.Set_State(STATE_OBJ::YOUDIE);
+            }
         }
 
-        if (m_fConsider < 0)
-            m_fConsider = 0;
-
-        if (0 == m_fConsider) //인지값이 초기화되면 
+        if (0 >= m_fConsider)
         {
-            m_fConsider = m_fMaxConsider; // 다시 할수있으니 값 복구 
-            m_tState_Obj.Set_State(STATE_OBJ::GOHOME);
+            m_fConsider = 10.f; // 다시 초기 셋팅으로 
+            m_tState_Obj.Set_State(STATE_OBJ::IDLE);
         }
     }
+
 
     if (m_tState_Obj.IsState_Exit())
     {

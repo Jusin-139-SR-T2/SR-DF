@@ -757,8 +757,8 @@ void CPlayer::Mouse_Move()
     {
         //m_pTransformComp->Rotation(ROT_X, m_pCamera->Get_At());
 
-        ////마우스로 플레이어 회전
-        ////상, 하
+        //마우스로 플레이어 회전
+        //상, 하
         //if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
         //{
         //    m_pTransformComp->Rotation(ROT_X, D3DXToRadian(dwMouseMove / 10.f));

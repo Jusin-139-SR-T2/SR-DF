@@ -44,7 +44,7 @@ private:
 	HRESULT				Add_Component();
 	virtual void		Free();
 
-// Get, Set 함수 만들기 ---------------------------------------------------------------
+	// Get, Set 함수 만들기 --------------------------------------------------
 public: 
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
@@ -52,14 +52,18 @@ public:
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 	GETSET_EX2(CPlayer*, m_pPlayer, Player, GET, SET)
 
-// 상태머신 셋팅 --------------------------------------------------
+	// 상태머신 셋팅 ---------------------------------------------------------
 private:
-	// 함수 ----------
-	_bool		Monster_Capture();					// 몬스터 시야각내에 플레이어가 있는지 체크
+	// 함수 -----------------------------------------------------------------
+	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
 	_float		m_fDistance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
 	void		FaceTurn(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
+	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
+	//TestBoard -------------------------------------------------------------
+	void		Monster_Jump(const _float& fTimeDelta); // 
+	_bool		m_bJump = false;
 
-	// 변수 ----------
+	// 변수 -----------------------------------------------------------------
 	_float		m_fCheck = 0;						//Taunt 등 프레임 돌리는횟수 지정
 	_int		m_iHP;								// 몬스터 현재 hp 
 	_int		m_iPreHP;							// 이전 HP 저장용도 
@@ -101,6 +105,7 @@ private:
 	_bool DeadSpin = true;
 	_bool m_bGoHome = false;
 
+	// 상태머신 enum --------------------------------------------------
 public: 
 	// 목표 상태머신(AI)
 	enum class STATE_OBJ {

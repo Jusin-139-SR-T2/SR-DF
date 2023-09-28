@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\BlackBoardMgr.h" />
+    <ClInclude Include="Header\Object.h" />
     <ClInclude Include="Header\Boss.h" />
     <ClInclude Include="Header\Gray.h" />
     <ClInclude Include="Header\DynamicCamera.h" />
@@ -38,9 +40,11 @@
     <ClInclude Include="Header\TitleLogo.h" />
     <ClInclude Include="Header\SkyBox.h" />
     <ClInclude Include="Header\Torch.h" />
-    <ClInclude Include="Header\Trading.h" />
+    <ClInclude Include="Header\BlackBoard.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\BlackBoardMgr.cpp" />
+    <ClCompile Include="Code\Object.cpp" />
     <ClCompile Include="Code\Boss.cpp" />
     <ClCompile Include="Code\BackGround.cpp" />
     <ClCompile Include="Code\Loading.cpp" />
@@ -63,7 +67,7 @@
     <ClCompile Include="Code\TitleLogo.cpp" />
     <ClCompile Include="Code\SkyBox.cpp" />
     <ClCompile Include="Code\Torch.cpp" />
-    <ClCompile Include="Code\Trading.cpp" />
+    <ClCompile Include="Code\BlackBoard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />
