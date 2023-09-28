@@ -181,6 +181,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_CREATE:
+    {
+        // 눈뽕 방지
+        RECT rect;
+        GetClientRect(g_hWnd, &rect);
+        HDC hdc = GetDC(g_hWnd);
+        HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0));
+        FillRect(hdc, &rect, brush);
+        DeleteObject(brush);
+        ReleaseDC(g_hWnd, hdc);
+
+        break;
+    }
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -200,6 +213,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다.
+
+            RECT rect;
+            GetClientRect(g_hWnd, &rect);
+            HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0));
+            FillRect(hdc, &rect, brush);
+            DeleteObject(brush);
+
             EndPaint(hWnd, &ps);
         }
         break;
