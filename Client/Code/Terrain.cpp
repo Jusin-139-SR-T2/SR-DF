@@ -66,8 +66,9 @@ void CTerrain::LateUpdate_GameObject()
 
 void CTerrain::Render_GameObject()
 {
-    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
+
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     SetUp_Material();

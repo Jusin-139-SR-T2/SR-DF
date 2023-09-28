@@ -71,6 +71,9 @@ void CRenderer::Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev)
 // + 성희 추가
 void CRenderer::Render_AlphaTest(LPDIRECT3DDEVICE9& pGraphicDev)
 {
+	DWORD dwTest;
+	pGraphicDev->GetRenderState(D3DRS_ALPHABLENDENABLE, &dwTest);
+
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
@@ -96,7 +99,6 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	pGraphicDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 
-
 	for (auto& iter : m_RenderGroup[RENDER_ALPHA])
 		iter->Render_GameObject();
 
@@ -105,10 +107,6 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9& pGraphicDev)
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 {
-	_matrix matView, matProjection;
-	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-	pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProjection);
-
 	_matrix matIdentity;
 	pGraphicDev->SetTransform(D3DTS_VIEW, D3DXMatrixIdentity(&matIdentity));	// 항등행렬로 적용된 뷰 행렬 초기화.
 	pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matOrtho);					// 직교투영 행렬 적용.
@@ -132,10 +130,6 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);						// Z버퍼 ON
-
-
-	pGraphicDev->SetTransform(D3DTS_VIEW, &matView);	// 항등행렬로 적용된 뷰 행렬 초기화.
-	pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProjection);					// 직교투영 행렬 적용.
 }
 
 void CRenderer::Free()

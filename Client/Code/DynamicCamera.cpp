@@ -91,7 +91,7 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 	_matrix		matCamWorld;
 	D3DXMatrixInverse(&matCamWorld, nullptr, &m_matView);
 
-	if (Engine::Get_DIKeyState(DIK_UP) & 0x80)
+	if (Engine::IsKey_Pressing(DIK_UP))
 	{
 		_vec3	vLook;
 		memcpy(&vLook, &matCamWorld.m[2][0], sizeof(_vec3));
@@ -102,7 +102,7 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 		m_vAt += vLength;
 	}
 
-	if (Engine::Get_DIKeyState(DIK_DOWN) & 0x80)
+	if (Engine::IsKey_Pressing(DIK_DOWN))
 	{
 		_vec3	vLook;
 		memcpy(&vLook, &matCamWorld.m[2][0], sizeof(_vec3));
@@ -113,7 +113,7 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 		m_vAt -= vLength;
 	}
 
-	if (Engine::Get_DIKeyState(DIK_LEFT) & 0x80)
+	if (Engine::IsKey_Pressing(DIK_LEFT))
 	{
 		_vec3	vRight;
 		memcpy(&vRight, &matCamWorld.m[0][0], sizeof(_vec3));
@@ -124,7 +124,7 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 		m_vAt -= vLength;
 	}
 
-	if (Engine::Get_DIKeyState(DIK_RIGHT) & 0x80)
+	if (Engine::IsKey_Pressing(DIK_RIGHT))
 	{
 		_vec3	vRight;
 		memcpy(&vRight, &matCamWorld.m[0][0], sizeof(_vec3));
@@ -158,7 +158,7 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 	//}
 
 	// 1ÀÎÄª
-	if (Engine::Get_DIKeyState(DIK_F1) & 0x80)
+	if (Engine::IsKey_Pressed(DIK_F1))
 	{
 		if (m_bThree)
 			m_bThree = false;
@@ -170,7 +170,7 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 	}
 
 	// 3ÀÎÄª
-	if (Engine::Get_DIKeyState(DIK_F2) & 0x80)
+	if (Engine::IsKey_Pressed(DIK_F2))
 	{
 		if (m_bOne)
 			m_bOne = false;
@@ -182,7 +182,7 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 	}
 
 	// ÀÚÀ¯ ½ÃÁ¡
-	if (Engine::Get_DIKeyState(DIK_F3) & 0x80)
+	if (Engine::IsKey_Pressed(DIK_F3))
 	{
 		if (m_bOne)
 			m_bOne = false;
@@ -194,7 +194,7 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 	}
 
 	// ÅÜ Å°¸¦ ´­·¯ ¸¶¿ì½º Fix¸¦ Ä×´Ù ²°´Ù ÇÔ
-	if (Engine::Get_DIKeyState(DIK_TAB) & 0x80)
+	if (Engine::IsKey_Pressed(DIK_TAB))
 	{
 		if (m_bCheck)
 			return;

@@ -23,14 +23,14 @@ HRESULT CUI::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_fSizeX = WINCX;
-	m_fSizeY = WINCY;
+	m_fSizeX = 200;
+	m_fSizeY = 140;
 
 	m_fX = m_fSizeX * 0.5f; // 중점위치 
-	m_fY = m_fSizeY * 0.5f;
+	m_fY = m_fSizeY * 0.5f + WINCY - m_fSizeY;
 
-	m_pTransformComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
-	m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
+	m_pTextureComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+	m_pTextureComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });							// 이미지 크기
 
 	return S_OK;
 }
@@ -64,6 +64,7 @@ CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CUI::Render_GameObject()
 {
+	m_pTextureComp->Readjust_Transform();
 	m_pTextureComp->Render_Texture(0, true);
 	m_pBufferComp->Render_Buffer();
 }
