@@ -45,7 +45,7 @@ HRESULT CObject::Ready_GameObject()
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 
-	m_pTransformComp->m_vInfo[INFO_POS] = { 20.f, 1.f, 25.f };
+	m_pTransformComp->Set_Pos({20.f, 1.f, 25.f});
 
 	return S_OK;
 }
@@ -76,7 +76,8 @@ void CObject::LateUpdate_GameObject()
 
 void CObject::Render_GameObject()
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_WorldMatrix());
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	//m_pTextureComp->Render_Texture(_ulong(m_fFrame)); // 오브젝트가 프레임쓸일 있으면 이걸로 
