@@ -550,11 +550,9 @@ void CGray::AI_Chase(float fDeltaTime)
         {
             m_fAwareness -= fDeltaTime * 4.f;
 
-            if (m_fAwareness < 0)
-                m_fAwareness = 0;
-
-            if (0 == m_fAwareness) //인지값이 초기화되면 
+            if (0 >= m_fAwareness) //인지값이 초기화되면 
             {
+                m_fAwareness = 0.f;
                 m_tState_Obj.Set_State(STATE_OBJ::RECONNAISSANCE);
             }
 

@@ -158,8 +158,8 @@ HRESULT CBrown::Add_Component()
 {
     NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_BrownTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
         
     return S_OK;
 }
@@ -274,6 +274,8 @@ HRESULT CBrown::Get_PlayerPos(const _float& fTimeDelta)
     NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+
+    return S_OK;
 }
 
 void CBrown::Monster_Jump(const _float& fTimeDelta)
@@ -379,12 +381,9 @@ void CBrown::AI_Suspicious(float fDeltaTime)
         {
             m_fAwareness -= fDeltaTime * 6.f;
 
-            if (m_fAwareness < 0)
-                m_fAwareness = 0;
-         
-            //플레이어가 시야각을 벗어나 인지값이 초기화되면 idle로 back
-            if (0 == m_fAwareness)
+            if (0 >= m_fAwareness)
             {
+                m_fAwareness = 0.f;
                 m_tState_Obj.Set_State(STATE_OBJ::IDLE);
             }
         }
@@ -480,11 +479,9 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
         {
             m_fAwareness -= fDeltaTime * 4.f;
 
-            if (m_fAwareness < 0)
-                m_fAwareness = 0;
-            
-            if (0 == m_fAwareness) //인지값이 초기화되면 
+            if (0 >= m_fAwareness) //인지값이 초기화되면 
             {
+                m_fAwareness = 0.f;
                 m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
             }
         }

@@ -381,8 +381,11 @@ void CBoss::AI_BackIdle(float fDeltaTime)
         {
             m_fAwareness += fDeltaTime * 4.f; // 이전보다 더 빠르게 증가할것 
 
-            if(m_fMaxAwareness == m_fAwareness)
+            if (m_fMaxAwareness <= m_fAwareness)
+            {
+                m_fAwareness = m_fMaxAwareness;
                 m_tState_Obj.Set_State(STATE_OBJ::RELOADING);
+            }
         }
 
         if (0 >= m_fConsider)

@@ -77,6 +77,10 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GrayTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Gray_Single", L"CrotchHit")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BossTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Boss_Single", L"CrotchHit")), E_FAIL);
 	
+	// 오브젝트 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Food", L"Cola")), E_FAIL);
+
+
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 
@@ -193,7 +197,6 @@ HRESULT CLoading::Loading_For_Texture()
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Gray/Run/Run_%d.png", TEX_NORMAL, L"Gray_Multi", L"Run", _range<_uint>(0U, 21U)), E_FAIL);
 #pragma endregion
 
-
 #pragma region Boss Monster
 	// Monster Texture - Boss - Single
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Boss/Single/Pre_Attack.png", TEX_NORMAL, L"Boss_Single", L"Pre_Attack"), E_FAIL);
@@ -218,6 +221,29 @@ HRESULT CLoading::Loading_For_Texture()
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Boss/Roll/Roll_%d.png", TEX_NORMAL, L"Boss_Multi", L"Roll", _range<_uint>(0U, 19U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Boss/Walk/Walk_%d.png", TEX_NORMAL, L"Boss_Multi", L"Walk", _range<_uint>(0U, 28U)), E_FAIL);
 #pragma endregion
+
+#pragma region Object 
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Food_Cola.png", TEX_NORMAL, L"Food", L"Cola"), E_FAIL);
+	
+
+
+#pragma endregion
+
+#pragma region Object - Inventory : 직교투영 해야함 
+
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Inventory/Apple.png", TEX_NORMAL, L"Inventory", L"Apple"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Inventory/Banana.png", TEX_NORMAL, L"Inventory", L"Banana"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Inventory/Bottle.png", TEX_NORMAL, L"Inventory", L"Bottle"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Inventory/Cola.png", TEX_NORMAL, L"Inventory", L"Cola"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Inventory/FryingPan.png", TEX_NORMAL, L"Inventory", L"FryingPan"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Inventory/MedKit.png", TEX_NORMAL, L"Inventory", L"MedKit"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Inventory/Pipe.png", TEX_NORMAL, L"Inventory", L"Pipe"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Inventory/Revolver.png", TEX_NORMAL, L"Inventory", L"Revolver"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Inventory/TommyGun.png", TEX_NORMAL, L"Inventory", L"TommyGun"), E_FAIL);
+
+#pragma endregion
+
+
 	return S_OK;
 }
 
