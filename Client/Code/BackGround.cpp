@@ -90,7 +90,7 @@ void CBackGround::Render_GameObject()
 	// 위의 두개만 쓰면 텍스처 행렬과 부모 행렬을 별개로 두고 계산할 수 있음.
 
 	// 이제부터 Render_Texture 함수 안에서 자동으로 텍스처의 행렬이 디바이스에 들어간다.(SetTransform(D3DTS_WORLD, 텍스처 행렬))
-	m_pBackTextureComp->Render_Texture(0);
+	m_pBackTextureComp->Render_Texture(0, true);
 	m_pBufferComp->Render_Buffer();
 
 	// 이건 부모 행렬을 텍스처 행렬에 그대로 쓰는 방법, 텍스처 별개의 행렬이 필요없을 때 사용
@@ -102,7 +102,7 @@ void CBackGround::Render_GameObject()
 	// Readjust_Transform : 텍스처의 로컬 좌표, 회전, 크기를 텍스처의 월드 행렬(트랜스폼)에 적용한다.
 	// Set_TransformToWorld : 텍스처 월드 행렬 * 부모 행렬, 행렬곱임
 
-	m_pTextureComp->Render_Texture(0);
+	m_pTextureComp->Render_Texture(0, true);
 	m_pBufferComp->Render_Buffer();
 }
 

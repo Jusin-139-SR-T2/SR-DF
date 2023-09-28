@@ -71,15 +71,16 @@ void CTextureComponent::LateUpdate_Component()
 {
 }
 
-void CTextureComponent::Render_Component(const _uint& iIndex)
+void CTextureComponent::Render_Component(const _uint& iIndex, _bool bLocalTransform)
 {
-	Render_Texture(iIndex);
+	Render_Texture(iIndex, bLocalTransform);
 }
 
-void CTextureComponent::Render_Texture(const _uint& iIndex)
+void CTextureComponent::Render_Texture(const _uint& iIndex, _bool bLocalTransform)
 {
 	// 텍스처의 월드 트랜스폼으로 출력
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matTransform);
+	if (bLocalTransform)
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matTransform);
 
 	// 인덱스 오버플로우 막기
 	if (m_vecTexture.size() <= iIndex)

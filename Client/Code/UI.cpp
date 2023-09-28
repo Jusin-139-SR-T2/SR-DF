@@ -64,7 +64,7 @@ CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CUI::Render_GameObject()
 {
-	m_pTextureComp->Render_Texture(0);
+	m_pTextureComp->Render_Texture(0, true);
 	m_pBufferComp->Render_Buffer();
 }
 

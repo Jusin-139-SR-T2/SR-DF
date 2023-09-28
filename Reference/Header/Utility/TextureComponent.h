@@ -31,10 +31,10 @@ public:
 	PUBLIC	virtual		_int	Update_Component(const _float& fTimeDelta) OVERRIDE;
 	PUBLIC	virtual		void	LateUpdate_Component() OVERRIDE;
 	PRIVATE virtual		void	Render_Component() OVERRIDE {}
-	PUBLIC	virtual		void	Render_Component(const _uint& iIndex = 0);
+	PUBLIC	virtual		void	Render_Component(const _uint& iIndex = 0, _bool bLocalTransform = false);
 
 public:
-	void		Render_Texture(const _uint& iIndex = 0);
+	void		Render_Texture(const _uint& iIndex = 0, _bool bLocalTransform = false);
 	HRESULT		Receive_Texture(TEXTUREID eID, const _tchar* pTextureKey, const _tchar* pStateKey = L"");
 
 public:

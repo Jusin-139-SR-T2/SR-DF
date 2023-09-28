@@ -165,7 +165,7 @@ void CPlayer::Render_GameObject()
     if (bLeftHandOn)
     {
         // 왼손 텍스처 출력
-        m_pLeftHandComp->Render_Texture((_ulong)m_fLeftFrame);  // 왼손 텍스처 출력
+        m_pLeftHandComp->Render_Texture((_ulong)m_fLeftFrame, true);  // 왼손 텍스처 출력
         m_pBufferComp->Render_Buffer();                         // 왼손 버퍼 
     }
 #pragma endregion
@@ -178,7 +178,7 @@ void CPlayer::Render_GameObject()
     // 오른손 출력 여부
     if (bRightHandOn)
     {
-        m_pRightHandComp->Render_Texture((_ulong)m_fRightFrame);    // 오른손 텍스처 출력
+        m_pRightHandComp->Render_Texture((_ulong)m_fRightFrame, true);    // 오른손 텍스처 출력
         m_pBufferComp->Render_Buffer();                             // 오른손 버퍼
     }
 #pragma endregion
