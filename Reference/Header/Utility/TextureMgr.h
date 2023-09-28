@@ -3,6 +3,8 @@
 #include "Base.h"
 #include "Engine_Define.h"
 
+#include <mutex>
+
 BEGIN(Engine)
 
 class CTexture;
@@ -39,6 +41,7 @@ public:
 private:
 	LPDIRECT3DDEVICE9				m_pGraphicDev = nullptr;
 	_unmap<wstring, CTexture*>		m_mapTexture;
+	mutex							m_mapMutex;				// 텍스처 객체 제조시 동기화
 
 };
 
