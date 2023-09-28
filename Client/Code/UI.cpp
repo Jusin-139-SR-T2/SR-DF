@@ -23,14 +23,14 @@ HRESULT CUI::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_fSizeX = 400.f;
-	m_fSizeY = 300.f;
+	m_fSizeX = WINCX;
+	m_fSizeY = WINCY;
 
-	m_fX = m_fSizeX; // 중점위치 
-	m_fY = m_fSizeY;
+	m_fX = m_fSizeX * 0.5f; // 중점위치 
+	m_fY = m_fSizeY * 0.5f;
 
-	m_pTransformComp->Set_Pos({ m_fX - WINCX, -m_fY + WINCY, 0.f }); // 이미지 위치
-	m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });         // 이미지 크기
+	m_pTransformComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+	m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 
 	return S_OK;
 }
@@ -64,14 +64,8 @@ CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CUI::Render_GameObject()
 {
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-
 	m_pTextureComp->Render_Texture(0);
 	m_pBufferComp->Render_Buffer();
-
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 void CUI::Free()

@@ -104,6 +104,10 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9& pGraphicDev)
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 {
+	_matrix matView, matProjection;
+	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProjection);
+
 	_matrix matIdentity;
 	pGraphicDev->SetTransform(D3DTS_VIEW, D3DXMatrixIdentity(&matIdentity));	// 항등행렬로 적용된 뷰 행렬 초기화.
 	pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matOrtho);					// 직교투영 행렬 적용.
@@ -127,6 +131,10 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);						// Z버퍼 ON
+
+
+	pGraphicDev->SetTransform(D3DTS_VIEW, &matView);	// 항등행렬로 적용된 뷰 행렬 초기화.
+	pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProjection);					// 직교투영 행렬 적용.
 }
 
 void CRenderer::Free()
