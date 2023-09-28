@@ -48,7 +48,7 @@ HRESULT CDynamicCamera::Ready_GameObject(const _vec3* pEye, const _vec3* pAt, co
 
 	FAILED_CHECK_RETURN(CCamera::Ready_GameObject(), E_FAIL);
 
-	//ShowCursor(false);
+	ShowCursor(false);
 
 	return S_OK;
 }
@@ -135,27 +135,27 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 		m_vAt += vLength;
 	}
 
-	if (Engine::Get_DIKeyState(DIK_Q) & 0x80)
-	{
-		_vec3	vUp;
-		memcpy(&vUp, &matCamWorld.m[1][0], sizeof(_vec3));
+	//if (Engine::Get_DIKeyState(DIK_Q) & 0x80)
+	//{
+	//	_vec3	vUp;
+	//	memcpy(&vUp, &matCamWorld.m[1][0], sizeof(_vec3));
 
-		_vec3	vLength = *D3DXVec3Normalize(&vUp, &vUp) * m_fSpeed * fTimeDelta;
+	//	_vec3	vLength = *D3DXVec3Normalize(&vUp, &vUp) * m_fSpeed * fTimeDelta;
 
-		m_vEye -= vLength;
-		m_vAt -= vLength;
-	}
+	//	m_vEye -= vLength;
+	//	m_vAt -= vLength;
+	//}
 
-	if (Engine::Get_DIKeyState(DIK_E) & 0x80)
-	{
-		_vec3	vUp;
-		memcpy(&vUp, &matCamWorld.m[1][0], sizeof(_vec3));
+	//if (Engine::Get_DIKeyState(DIK_E) & 0x80)
+	//{
+	//	_vec3	vUp;
+	//	memcpy(&vUp, &matCamWorld.m[1][0], sizeof(_vec3));
 
-		_vec3	vLength = *D3DXVec3Normalize(&vUp, &vUp) * m_fSpeed * fTimeDelta;
+	//	_vec3	vLength = *D3DXVec3Normalize(&vUp, &vUp) * m_fSpeed * fTimeDelta;
 
-		m_vEye += vLength;
-		m_vAt += vLength;
-	}
+	//	m_vEye += vLength;
+	//	m_vAt += vLength;
+	//}
 
 	// 1ÀÎÄª
 	if (Engine::Get_DIKeyState(DIK_F1) & 0x80)

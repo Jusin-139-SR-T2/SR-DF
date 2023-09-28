@@ -44,7 +44,7 @@ private:
 	HRESULT				Add_Component();
 	virtual void		Free();
 
-// Get, Set 함수 만들기 ---------------------------------------------------------------
+	// Get, Set 함수 만들기 --------------------------------------------------
 public: 
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
@@ -52,14 +52,18 @@ public:
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 	GETSET_EX2(CPlayer*, m_pPlayer, Player, GET, SET)
 
-// 상태머신 셋팅 --------------------------------------------------
+	// 상태머신 셋팅 ---------------------------------------------------------
 private:
-	// 함수 ----------
-	_bool		Monster_Capture();					// 몬스터 시야각내에 플레이어가 있는지 체크
+	// 함수 -----------------------------------------------------------------
+	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
 	_float		m_fDistance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
 	void		FaceTurn(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
+	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
+	//TestBoard -------------------------------------------------------------
+	void		Monster_Jump(const _float& fTimeDelta); // 
+	_bool		m_bJump = false;
 
-	// 변수 ----------
+	// 변수 -----------------------------------------------------------------
 	_float		m_fCheck = 0;						//Taunt 등 프레임 돌리는횟수 지정
 	_int		m_iHP;								// 몬스터 현재 hp 
 	_int		m_iPreHP;							// 이전 HP 저장용도 
@@ -74,6 +78,8 @@ private:
 	// 몬스터 인식 관련 
 	_float		m_fAwareness = 0;					// 의심게이지 숫자 
 	_float		m_fMaxAwareness = 10.f;				// 의심게이지 max -> 추격으로 변함 
+	_float		m_fConsider = 10.f;					// 플레이어 놓친뒤에 주변정찰 게이지 
+	_float		m_fMaxConsider = 10.f;				// 플레이어 놓친뒤에 주변정찰 게이지 
 
 	// 속도조절 
 	_float		m_fRunSpeed = 2.0f;					// 뛰어오는 속도
@@ -97,19 +103,27 @@ private:
 	//스위치 on/off 
 	_bool Dead = false;
 	_bool DeadSpin = true;
+	_bool m_bGoHome = false;
 
+	// 상태머신 enum --------------------------------------------------
 public: 
 	// 목표 상태머신(AI)
-	enum class STATE_OBJ { IDLE, SUSPICIOUS, TAUNT, CHASE, REST,			// intro 
+	enum class STATE_OBJ {
+		IDLE, SUSPICIOUS, TAUNT, CHASE, REST,			// intro 
 		RUN, WALK, INCHFORWARD, STRAFING, BASICATTACK, HEAVYATTACK, JUMP,	// 거리재는부분
-		HIT, FACEPUNCH,CROTCHHIT,											// 피격판정 
-		DAZED, FALLING, CHOPPED, DEATH, HEADLESS};							// 죽을때
+		HIT, FACEPUNCH, CROTCHHIT,											// 피격판정 
+		DAZED, FALLING, CHOPPED, DEATH, HEADLESS,							// 죽을때
+		RECONNAISSANCE, GOHOME
+	};
 
 	// 행동 상태머신
-	enum class STATE_ACT { IDLE, APPROACH , MOVING, ATTACK};
+	enum class STATE_ACT {
+		IDLE, APPROACH, MOVING, ATTACK, GOHOME
+	};
 
 	// 행동키
-	enum class ACTION_KEY { IDLE, RUN, WALK, INCHFORWARD, STRAFING, JUMP, BASIC_ATTACK, HEAVY_ATTACK,  };
+	enum class ACTION_KEY { IDLE, RUN, WALK, INCHFORWARD, STRAFING, JUMP, 
+		BASIC_ATTACK, HEAVY_ATTACK, GOHOME };
 
 private:
 	STATE_SET<STATE_OBJ, void(CBrown*, float)> m_tState_Obj;				//AI
@@ -141,6 +155,9 @@ private:
 	void AI_Headless(float fDeltaTime);
 	void AI_Death(float fDeltaTime);
 
+	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 
+	void AI_GoHome(float fDeltaTime);		 // 정찰마치고 원위치 복귀중 
+
 #pragma endregion
 
 #pragma region 행동 : AI 이후 넘어가는곳 
@@ -148,6 +165,7 @@ private:
 	void Approach(float fDeltaTime);		// AI_Run + AI_Walk
 	void Moving(float fDeltaTime);			// AI_InchForward + AI_Strafing
 	void Attack(float fDeltaTime);			// AI_BasicAttack + AI_HeavyAttack
+	void GoHome(float fDeltaTime);			// Gohome
 #pragma endregion
 };
 

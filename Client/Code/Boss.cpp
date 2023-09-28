@@ -62,6 +62,8 @@ HRESULT CBoss::Ready_GameObject()
     m_tState_Obj.Add_Func(STATE_OBJ::CLOSEATTACK, &CBoss::AI_CloseAttack);
     m_tState_Obj.Add_Func(STATE_OBJ::SHOOTING, &CBoss::AI_Shooting);
 
+    m_tState_Obj.Add_Func(STATE_OBJ::GOHOME, &CBoss::AI_GoHome);
+
 #pragma endregion
 
 #pragma region 행동 상태머신 등록 - Acting
@@ -72,6 +74,7 @@ HRESULT CBoss::Ready_GameObject()
     m_tState_Act.Add_Func(STATE_ACT::ROLLING, &CBoss::Rolling);
     m_tState_Act.Add_Func(STATE_ACT::CLOSEATTACKING, &CBoss::CloseAttacking);
     m_tState_Act.Add_Func(STATE_ACT::SHOOTING, &CBoss::Shooting);
+    m_tState_Act.Add_Func(STATE_ACT::GOHOME, &CBoss::GoHome);
 
 #pragma endregion
 
@@ -181,9 +184,28 @@ void CBoss::Free()
 #pragma region 상태머신 부속파트 
 void CBoss::FaceTurn(const _float& fTimeDelta)
 {
+    //case1. 회전행렬 만들기 
+    _matrix		matWorld, matView, matBill, matScale, matChangeScale;
+
+    matWorld = *m_pTransformComp->Get_WorldMatrix();
+
+    m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+
+    _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+
+    D3DXVec3Normalize(&vDir, &vDir);
+
+    _float rad = atan2f(vDir.x, vDir.z);
+
+    // 회전행렬 생성
+    _matrix rotationMatrix;
+    D3DXMatrixRotationY(&rotationMatrix, rad);
+
+    m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
+
     // case2. 빌보드 구성하기 
-     //빌보드 = 자전의 역 / 자전 역 * 스 * 자 * 이 ->스케일문제 = 나중에 넣으면되잖? 
-    _matrix		matWorld, matView, matBill;
+    /*_matrix		matWorld, matView, matBill;
 
     matWorld = *m_pTransformComp->Get_Transform();
 
@@ -197,7 +219,7 @@ void CBoss::FaceTurn(const _float& fTimeDelta)
 
     D3DXMatrixInverse(&matBill, 0, &matBill);
 
-    m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
+    m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));*/
 
     m_pTransformComp->Set_ScaleY(1.9f);
 }
@@ -301,8 +323,9 @@ void CBoss::AI_Suspicious(float fDeltaTime)
                 m_fAwareness = 0;
 
             //플레이어가 시야각을 벗어나 인지값이 초기화되면 idle로 back
-            if (0 == m_fAwareness)
+            if (0 >= m_fAwareness)
             {
+                m_fAwareness = 0.f;
                 m_tState_Obj.Set_State(STATE_OBJ::IDLE);
             }
         }
@@ -353,6 +376,8 @@ void CBoss::AI_BackIdle(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
+        m_fConsider -= fDeltaTime * 4.f;
+        
         if (Detect_Player())
         {
             m_fAwareness += fDeltaTime * 4.f; // 이전보다 더 빠르게 증가할것 
@@ -360,15 +385,11 @@ void CBoss::AI_BackIdle(float fDeltaTime)
             if(m_fMaxAwareness == m_fAwareness)
                 m_tState_Obj.Set_State(STATE_OBJ::RELOADING);
         }
-        else
-        {
-            m_fConsider -= fDeltaTime * 2.f;
 
-            if (0 == m_fConsider)
-            {
-                m_fConsider = 10.f; // 다시 초기 셋팅으로 
-                m_tState_Obj.Set_State(STATE_OBJ::IDLE);
-            }
+        if (0 >= m_fConsider)
+        {
+            m_fConsider = 10.f; // 다시 초기 셋팅으로 
+            m_tState_Obj.Set_State(STATE_OBJ::IDLE);
         }
     }
 
@@ -387,18 +408,18 @@ void CBoss::AI_Chase(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        m_ChaseTime += fDeltaTime * 10.f;
+        m_ChaseTime += fDeltaTime * 14.f;
         
         _float CurDistance = Calc_Distance();
 
         if (m_fCloseAttackDistance >= CurDistance 
-            && m_ShortTime <= m_ChaseTime) // 근접공격이 최 우선시됨 
+            && m_ShortTime <= m_ChaseTime) // 근접공격이 최 우선시됨 - 거리 매우 가까울때만 
         {
             m_ChaseTime = 0.f;
             m_tState_Obj.Set_State(STATE_OBJ::PRE_ATTACK);
         }
        
-        if (m_MaxTime <= m_ChaseTime)
+        if (m_MaxTime <= m_ChaseTime) // stop시간 지나면 
         {
             m_ChaseTime = 0.f;
 
@@ -428,8 +449,9 @@ void CBoss::AI_Chase(float fDeltaTime)
             {
                 m_fAwareness -= fDeltaTime * 6.f;
 
-                if (0 == m_fAwareness)
+                if (0 >= m_fAwareness)
                 {
+                    m_fAwareness = 0;
                     m_tState_Obj.Set_State(STATE_OBJ::BACKIDLE);
                 }
             }
@@ -470,11 +492,11 @@ void CBoss::AI_Pre_Attack(float fDeltaTime)
             {
                 int iCombo = (rand() % 10) + 1;
 
-                if (0 == m_iBulletCnt && 6 > iCombo) // 1 ~ 5
+                if (0 >= m_iBulletCnt && 6 > iCombo) // 1 ~ 5
                 {
                     m_tState_Obj.Set_State(STATE_OBJ::WALK);
                 }
-                else if (0 == m_iBulletCnt && 6 <= iCombo) // 6 ~ 10 
+                else if (0 >= m_iBulletCnt && 6 <= iCombo) // 6 ~ 10 
                 {
                     m_tState_Obj.Set_State(STATE_OBJ::RUN);
                 }
@@ -487,8 +509,9 @@ void CBoss::AI_Pre_Attack(float fDeltaTime)
             {
                 m_fAwareness -= fDeltaTime * 6.f;
 
-                if (0 == m_fAwareness)
+                if (0 >= m_fAwareness)
                 {
+                    m_fAwareness = 0;
                     m_tState_Obj.Set_State(STATE_OBJ::BACKIDLE);
                 }
             }
@@ -526,8 +549,9 @@ void CBoss::AI_Side_Ready(float fDeltaTime)
             {
                 m_fAwareness -= fDeltaTime * 6.f;
 
-                if (0 == m_fAwareness)
+                if (0 >= m_fAwareness)
                 {
+                    m_fAwareness = 0.f;
                     m_tState_Obj.Set_State(STATE_OBJ::BACKIDLE);
                 }
             }
@@ -543,21 +567,50 @@ void CBoss::AI_Walk(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 14.f;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Walk");
-        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        if (!m_bGoHome)
+        {
+            m_fFrameSpeed = 14.f;
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Walk");
+            m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        }
     }
-
     if (m_tState_Obj.Can_Update())
     {
-        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
-            m_mapActionKey[ACTION_KEY::WALK].Act();
+        if (TRUE == m_bGoHome)
+        {  
+            // // 플레이어가 바라보는 몬스터 : 플레이어 - 몬스터 
+            _vec3 vDirect = m_pPlayerTransformcomp->m_vInfo[INFO_POS] - m_pTransformComp->m_vInfo[INFO_POS];
 
-        // 조건 - 플레이어가 시야각으로 들어오면 
-        if (m_fCheck == 2)
+            if (vDirect.z >= 0) // 패트롤 가는곳이 플레이어 기준 +z면 등보이며 걸어가기 
+            {
+                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"WalkNorth");
+                m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+            }
+            else if (vDirect.z < 0) // 몬패트롤 가는곳이 플레이어 기준 -z면 그냥 걸어가기 
+            {
+                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Walk");
+                m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+            }
+
+            _float fDistance = D3DXVec3Length(&vDirect);
+
+            if (2.f >= fDistance)
+            {
+                m_bGoHome = false;
+                m_tState_Obj.Set_State(STATE_OBJ::IDLE);
+            }
+        }
+        if (FALSE == m_bGoHome)
         {
-            m_fCheck = 0;
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+                m_mapActionKey[ACTION_KEY::WALK].Act();
+
+            // 조건 - 플레이어가 시야각으로 들어오면 
+            if (m_fCheck == 2)
+            {
+                m_fCheck = 0;
+                m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            }
         }
     }
 
@@ -652,7 +705,7 @@ void CBoss::AI_Shooting(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 13.f;
+        m_fFrameSpeed = 16.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Shooting");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -665,9 +718,30 @@ void CBoss::AI_Shooting(float fDeltaTime)
         if (4 <= m_fCheck)
         {
             m_fCheck = 0;
-            m_iBulletCnt -= 1;
+            m_iBulletCnt -= 1; // 장전수 감소 
             m_tState_Obj.Set_State(STATE_OBJ::RELOADING);
         }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+    }
+}
+
+void CBoss::AI_GoHome(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::GOHOME].Act();
+
+        // 조건 - 처음 위치로 돌아갈때까지 
+        m_bGoHome = true;
+        m_tState_Obj.Set_State(STATE_OBJ::WALK);
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -705,12 +779,10 @@ void CBoss::Idle(float fDeltaTime)
         // 총알 쏘는파트 
         if (m_mapActionKey[ACTION_KEY::SHOOTING].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::SHOOTING);
-
     }
 
     if (m_tState_Act.IsState_Exit())
     {
-
     }
 }
 
@@ -791,6 +863,24 @@ void CBoss::CloseAttacking(float fDeltaTime)
 }
 
 void CBoss::Shooting(float fDeltaTime)
+{
+    if (m_tState_Act.IsState_Entered())
+    {
+    }
+
+    if (m_tState_Act.Can_Update())
+    {
+
+        m_tState_Act.Set_State(STATE_ACT::IDLE);
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+
+    }
+}
+
+void CBoss::GoHome(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {

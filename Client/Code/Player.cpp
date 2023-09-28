@@ -282,6 +282,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         // S + Shift 뒷 대쉬
         if (Engine::IsKey_Pressed(DIK_LSHIFT))
         {
+            fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
             fDash = 20.f;       // 대쉬 값 설정
             bDashOn = true;     // 대쉬 On/Off
             m_eDashDir = DOWN;  // 대쉬 방향
@@ -300,6 +301,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         // D + Shift 우측 대쉬
         if (Engine::IsKey_Pressed(DIK_LSHIFT))
         {
+            fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
             fDash = 20.f;       // 대쉬 값 설정
             bDashOn = true;     // 대쉬 On/Off
             m_eDashDir = RIGHT; // 대쉬 방향
@@ -317,6 +319,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         // A + Shift 좌측 대쉬
         if (Engine::IsKey_Pressed(DIK_LSHIFT))
         {
+            fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
             fDash = 20.f;       // 대쉬 값 설정
             bDashOn = true;     // 대쉬 On/Off
             m_eDashDir = LEFT;  // 대쉬 방향
@@ -715,8 +718,8 @@ void CPlayer::Mouse_Move()
     {
         //m_pTransformComp->Rotation(ROT_X, m_pCamera->Get_At());
 
-        ////마우스로 플레이어 회전
-        ////상, 하
+        //마우스로 플레이어 회전
+        //상, 하
         //if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
         //{
         //    m_pTransformComp->Rotation(ROT_X, D3DXToRadian(dwMouseMove / 10.f));
@@ -870,9 +873,32 @@ void CPlayer::Dash(const _float& fTimeDelta)
     m_pTransformComp->Get_Info(INFO_RIGHT, &vRight);
     D3DXVec3Normalize(&vRight, &vRight);
 
+    _vec3 vPos;
+    m_pTransformComp->Get_Info(INFO_POS, &vPos);
+
+    _vec3 vSpeed = { 0.f, -fDownDash, 0.f };
+
     // 대쉬 여부
     if (bDashOn)
     {
+        // 대쉬 높이 최대치
+        if (fDownDash >= 40.f)
+        {
+            bDashChange = true; // 감소 시작
+        }
+
+        if (bDashChange)
+        {
+            fDownDash--; // 다운 수치 감소
+        }
+        else
+        {
+            fDownDash++; // 다운 수치 증가
+        }
+
+        // 대쉬 높이
+        m_pTransformComp->Set_MovePos(fTimeDelta, vSpeed);
+
         // 대쉬 속도가 스피드보다 빠를 경우만 작동
         if (fDash > fSpeed)
         {
@@ -889,15 +915,19 @@ void CPlayer::Dash(const _float& fTimeDelta)
                 m_pTransformComp->Move_Pos(&vLook, fTimeDelta, -fDash);
                 break;
             }
-
             fDash--; // 대쉬 속도 감소
         }
         else // 대쉬 속도가 스피드와 같으면
         {
+
+        }
+
+        if (fDownDash <= 0.f)
+        {
+            bDashChange = false;
             bDashOn = false; // 대쉬 정지
         }
     }
-
 
 }
 

@@ -86,28 +86,17 @@ HRESULT CBrown::Ready_GameObject()
 _int CBrown::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
-
-    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
-
-    Height_On_Terrain(); // 지형타기 
-
-
-    // ---------- 테스트 빌드 ----------------------
-
-    if (Engine::IsKey_Pressing(DIK_H))
-    {
-        m_iHP = 0; //즉사 기믹 확인용 
-    }
-
-    if (Engine::IsKey_Pressing(DIK_J))
-    {
-        m_iHP = 50; // 피격 기믹 확인용 
-    }
+    
+    // 위치값 가져오기 
+    Get_PlayerPos(fTimeDelta);
+    
+    // 지형타기 
+    Height_On_Terrain(); 
 
     // 상태머신-------------------------------------
 
     m_fFrame += m_fFrameSpeed * fTimeDelta;
+
 
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
@@ -122,10 +111,30 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     }
 
     // 빌보드 --------------------------------------
-    FaceTurn(fTimeDelta);
 
-    Engine::Add_RenderGroup(RENDER_UI, this);
+    FaceTurn(fTimeDelta);
     
+    // --------------------------------------------
+
+    
+    // ---------- 테스트 빌드 ----------------------
+
+    Monster_Jump(fTimeDelta);
+   
+    if (Engine::IsKey_Pressing(DIK_H))
+    {
+        m_iHP = 0; //즉사 기믹 확인용 
+    }
+
+    if (Engine::IsKey_Pressing(DIK_J))
+    {
+        m_iHP = 50; // 피격 기믹 확인용 
+    }
+
+    // --------------------------------------------
+
+    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
+
     return S_OK;
 }
 
@@ -174,7 +183,7 @@ CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev)
     return pInstance;
 }
 
-_bool CBrown::Monster_Capture() // 몬스터 시야내 플레이어 있는지 체크하는 함수 
+_bool CBrown::Detect_Player() // 몬스터 시야내 플레이어 있는지 체크하는 함수 
 {
     // 플레이어 위치 가져옴 
     _vec3 vPlayerPos, vMonsterPos, vPlayerLook, vMonsterLook;
@@ -224,27 +233,27 @@ float CBrown::m_fDistance()
 void CBrown::FaceTurn(const _float& fTimeDelta)
 {
     //case1. 회전행렬 만들기 
-   // _matrix		matWorld, matView, matBill, matScale, matChangeScale;
+    _matrix		matWorld, matView, matBill, matScale, matChangeScale;
 
-   //matWorld = *m_pTransformComp->Get_WorldMatrix();
+   matWorld = *m_pTransformComp->Get_WorldMatrix();
 
-   // m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-  //  _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
+    m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+    _vec3 Pos = m_pTransformComp->m_vInfo[INFO_POS];
 
-   // _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
+    _vec3 vDir = vPlayerPos - m_pTransformComp->m_vInfo[INFO_POS];
 
-   // D3DXVec3Normalize(&vDir, &vDir);
+    D3DXVec3Normalize(&vDir, &vDir);
 
-   // _float rad = atan2f(vDir.x, vDir.z);
+    _float rad = atan2f(vDir.x, vDir.z);
 
-   // // 회전행렬 생성
-   // _matrix rotationMatrix;
-   // D3DXMatrixRotationY(&rotationMatrix, rad);
+    // 회전행렬 생성
+    _matrix rotationMatrix;
+    D3DXMatrixRotationY(&rotationMatrix, rad);
 
-   // m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
+    m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
 
     // case2. 빌보드 구성하기 
-    _matrix		matWorld, matView, matBill;
+    /*_matrix		matWorld, matView, matBill;
 
     matWorld = *m_pTransformComp->Get_Transform();
 
@@ -258,9 +267,33 @@ void CBrown::FaceTurn(const _float& fTimeDelta)
 
     D3DXMatrixInverse(&matBill, 0, &matBill);
 
-    m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
+    m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));*/
 
     m_pTransformComp->Set_ScaleY(1.9f);
+}
+
+HRESULT CBrown::Get_PlayerPos(const _float& fTimeDelta)
+{
+    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
+
+    m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
+}
+
+void CBrown::Monster_Jump(const _float& fTimeDelta)
+{
+    if (Engine::IsKey_Pressed(DIK_SPACE))
+    {
+        m_bJump = true;
+    }
+
+    if (m_bJump)
+    {
+        _vec3 jump = { 0.f, 50.f , 0.f };
+
+        m_pTransformComp->Move_Pos(&jump, fTimeDelta, -5.f);
+       // m_pTransformComp->Move_Pos(&Gravity, fTimeDelta, 0.01f);
+    }
 }
 
 void CBrown::Free()
@@ -294,7 +327,7 @@ void CBrown::AI_Idle(float fDeltaTime)
     if (m_tState_Obj.Can_Update())
     {
         // 조건 - 플레이어가 시야각으로 들어오면 
-        if (Monster_Capture())
+        if (Detect_Player())
         {
             m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
         }
@@ -335,7 +368,7 @@ void CBrown::AI_Suspicious(float fDeltaTime)
         if(m_iPreHP != m_iHP)
             m_tState_Obj.Set_State(STATE_OBJ::HIT);
 
-        if(Monster_Capture()) // 시야각 이내에 위치 + 시야거리 이내 위치 
+        if(Detect_Player()) // 시야각 이내에 위치 + 시야거리 이내 위치 
         {
             m_fAwareness += fDeltaTime * 3.f;
 
@@ -402,7 +435,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
     {
         _float CurDistance = m_fDistance();
 
-        if (Monster_Capture()) // 사거리에 포착되는경우 
+        if (Detect_Player()) // 사거리에 포착되는경우 
         {
             // 시야거리에 의한 상태머신보다 피격/죽음이 더 빠름  
 
@@ -853,6 +886,60 @@ void CBrown::AI_Death(float fDeltaTime)
     }
 }
 
+void CBrown::AI_Reconnaissance(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        m_fConsider -= fDeltaTime * 3.f;
+
+        if (Detect_Player())
+        {
+            m_fAwareness += fDeltaTime * 4.f; // 이전보다 더 빠르게 증가할것 
+            if (m_fAwareness >= m_fMaxAwareness)
+            {
+                m_fAwareness = m_fMaxAwareness;
+                m_tState_Obj.Set_State(STATE_OBJ::TAUNT);
+            }
+        }
+
+        if (0 >= m_fConsider)
+        {
+            m_fConsider = 10.f; // 다시 초기 셋팅으로 
+            m_tState_Obj.Set_State(STATE_OBJ::IDLE);
+        }
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+    }
+}
+
+void CBrown::AI_GoHome(float fDeltaTime)
+{
+    if (m_tState_Obj.IsState_Entered())
+    {
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::GOHOME].Act();
+
+        // 조건 - 처음 위치로 돌아갈때까지 
+        m_bGoHome = true;
+        m_tState_Obj.Set_State(STATE_OBJ::WALK);
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+    }
+}
+
 //------------------ 행동 -------------------------
 
 void CBrown::Idle(float fDeltaTime)
@@ -1003,4 +1090,8 @@ void CBrown::Attack(float fDeltaTime)
     if (m_tState_Act.IsState_Exit())
     {
     }
+}
+
+void CBrown::GoHome(float fDeltaTime)
+{
 }

@@ -176,6 +176,10 @@ private: // 스위치
 	_bool		bLeftHandOn = true;		// 왼손 출력 On/Off
 	_bool		bRightHandOn = true;	// 오른손 출력 On/Off
 
+	// 대쉬
+	_bool		bDashOn = false;		// 플레이어 대쉬 여부
+	_bool		bDashChange = false;	// 대쉬 증감 On/Off
+
 	// 주먹 공격
 	_bool		bLeftHandFist = true;	// 왼손 주먹상태
 	_bool		bRightHandFist = true;	// 오른손 주먹상태
@@ -191,7 +195,6 @@ private: // 스위치
 	_bool		bChargeAttack = false;	// 일반 공격에서 차징 공격으로 변경
 	_bool		bFootAttack = false;	// 발차기 여부
 	_bool		bRunOn = false;			// 플레이어가 뛰는지 여부
-	_bool		bDashOn = false;		// 플레이어 대쉬 여부
 	_bool		bDead = false;			// 플레이어 사망 여부
 	//_bool		bMove = false;			// 플레이어가 움직이는지 여부
 	//_bool		bMouse_Button = false;	// 마우스 클릭 여부
@@ -205,6 +208,7 @@ private:
 	_float		fStraightSpeed = 5.f;		// 플레이어 전진 속도
 	_float		fSpeed = 5.f;				// 플레이어 속도
 	_float		fDash = 20.f;				// 플레이어 대쉬
+	_float		fDownDash = 0.f;			// 플레이어 대쉬할때 높이
 	_float		fFullChage = 0.f;			// 풀차징 프레임
 	_float		fChageTime = 0.f;			// 차징 전환 시간
 	_float		fFullChargeTime = 7.f;		// 풀자징 시간

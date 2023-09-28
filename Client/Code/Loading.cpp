@@ -146,6 +146,7 @@ HRESULT CLoading::Loading_For_Texture()
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/InchForward/InchForward_%d.png", TEX_NORMAL, L"Brown_Multi", L"InchForward", _range<_uint>(0U, 5U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/HeavyAttack/HeavyAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"HeavyAttack", _range<_uint>(0U, 6U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/Chopped/KarateChopped_%d.png", TEX_NORMAL, L"Brown_Multi", L"Chopped", _range<_uint>(0U, 17U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/WalkNorth/WalkNorth_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_North", _range<_uint>(0U, 31U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/FacePunch/FacePunch_%d.png", TEX_NORMAL, L"Brown_Multi", L"FacePunch", _range<_uint>(0U, 7U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/Run/South/RunSouth_%d.png", TEX_NORMAL, L"Brown_Multi", L"RunSouth", _range<_uint>(0U, 20U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Brown/Headless/Headless_%d.png", TEX_NORMAL, L"Brown_Multi", L"Headless", _range<_uint>(0U, 15U)), E_FAIL);
@@ -171,6 +172,7 @@ HRESULT CLoading::Loading_For_Texture()
 	// Monster Texture - Gray - Multi : 21EA
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Gray/HeavyAttack/HeavyAttack_%d.png", TEX_NORMAL, L"Gray_Multi", L"HeavyAttack", _range<_uint>(0U, 13U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Gray/UpRightRun/UpRightRun_%d.png", TEX_NORMAL, L"Gray_Multi", L"UpRightRun", _range<_uint>(0U, 4U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Gray/WalkNorth/WalkNorth_%d.png", TEX_NORMAL, L"Gray_Multi", L"WalkNorth", _range<_uint>(0U, 22U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Gray/FacePunch/FacePunch_%d.png", TEX_NORMAL, L"Gray_Multi", L"FacePunch", _range<_uint>(0U, 7U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Gray/HeadShot/HeadShot_%d.png", TEX_NORMAL, L"Gray_Multi", L"HeadShot", _range<_uint>(0U, 19U)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Monster/Gray/Frighten/Frighten_%d.png", TEX_NORMAL, L"Gray_Multi", L"Frighten", _range<_uint>(0U, 18U)), E_FAIL);
