@@ -145,9 +145,6 @@ void CBrown::LateUpdate_GameObject()
 
 void CBrown::Render_GameObject()
 {
-    DWORD dwTest;
-    m_pGraphicDev->GetRenderState(D3DRS_ZWRITEENABLE, &dwTest);
-    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
    // m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
