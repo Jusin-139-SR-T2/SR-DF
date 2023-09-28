@@ -85,28 +85,6 @@ HRESULT CTerrain::Add_Component()
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_TerrainTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 
-#pragma region 컴포넌트
-    //CComponent* pComponent = nullptr;
-
-    // 버퍼 컴포넌트
-    /*pComponent = m_pBufferCom = dynamic_cast<CTerrainBufferComp*>(Engine::Clone_Proto(L"Proto_TerrainComp"));
-    NULL_CHECK_RETURN(pComponent, E_FAIL);
-    m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });*/
-    //NULL_CHECK_RETURN(m_pBufferCom = Set_DefaultComponent_FromProto<CTerrainBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_TerrainComp"));
-
-    //// 텍스처 컴포넌트
-    //pComponent = m_pTextureCom = dynamic_cast<CTextureComponent*>(Engine::Clone_Proto(L"Proto_TerrainTexture"));
-    //NULL_CHECK_RETURN(pComponent, E_FAIL);
-    //m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
-    //NULL_CHECK_RETURN(m_pTextureCom = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_TerrainTexture"));
-
-    //// 트랜스폼 컴포넌트
-    //pComponent = m_pTransformCom = dynamic_cast<CTransformComponent*>(Engine::Clone_Proto(L"Proto_Transform"));
-    //NULL_CHECK_RETURN(pComponent, E_FAIL);
-    //m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
-    //NULL_CHECK_RETURN(m_pTransformCom = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"));
-#pragma endregion
-
     return S_OK;
 }
 

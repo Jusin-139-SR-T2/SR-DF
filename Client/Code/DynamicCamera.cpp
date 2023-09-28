@@ -61,10 +61,10 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 	Check_KeyInput(fTimeDelta);
 
 	// 기존 카메라
-	//Camera_State(fTimeDelta);
+	Camera_State(fTimeDelta);
 
 	// 쿼터니온 적용 카메라
-	Quaternion_Ver(fTimeDelta);
+	//Quaternion_Ver(fTimeDelta);
 
 	if (false == m_bFix)
 	{

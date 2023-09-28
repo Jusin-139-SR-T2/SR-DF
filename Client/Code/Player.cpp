@@ -246,7 +246,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
 
     _vec3 vInverse = (-m_pCamera->Get_At());
 
-    //m_pTransformComp->Compute_LootAtTarget(&vInverse);
+    m_pTransformComp->Compute_LootAtTarget(&vInverse);
 
 #pragma region 키입력
     // 전진
@@ -723,12 +723,12 @@ void CPlayer::Mouse_Move()
         //상, 하
         if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
         {
-            m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
+            m_pTransformComp->Rotate(ROT_X, D3DXToRadian(dwMouseMove / 10.f));
         }
         // 좌, 우
         if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
         {
-            m_pTransformComp->Rotate(ROT_X, D3DXToRadian(dwMouseMove / 10.f));
+            m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
         }
     }
 #pragma endregion

@@ -8,13 +8,7 @@ CRenderer::CRenderer()
 	m_vecViewport.reserve(VIEWPORT_COUNT);
 	for (size_t i = 0; i < VIEWPORT_COUNT; i++)
 	{
-		D3DVIEWPORT9 UiViewPort;
-		UiViewPort.X = 0;
-		UiViewPort.Y = 0;
-		UiViewPort.Width = WINCX;
-		UiViewPort.Height = WINCY;
-		UiViewPort.MinZ = 0;
-		UiViewPort.MaxZ = 100;
+		D3DVIEWPORT9 UiViewPort({ 0, 0, WINCX, WINCY, 0.f, 1.f });
 		m_vecViewport.push_back(UiViewPort);
 	}
 	D3DXMatrixOrthoLH(&m_matOrtho, WINCX, WINCY, 0.f, 100.f);
@@ -111,7 +105,7 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetTransform(D3DTS_VIEW, D3DXMatrixIdentity(&matIdentity));	// 항등행렬로 적용된 뷰 행렬 초기화.
 	pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matOrtho);					// 직교투영 행렬 적용.
 	pGraphicDev->SetViewport(&m_vecViewport[0]);								// 뷰포트 설정.
-
+	
 	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);						// Z버퍼 OFF
 
 	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
