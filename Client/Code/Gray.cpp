@@ -156,7 +156,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     }
 
     // ºôº¸µå --------------------------------------
-    //FaceTurn(fTimeDelta);
+    FaceTurn(fTimeDelta);
 
     Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
 

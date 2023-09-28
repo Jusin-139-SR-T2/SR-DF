@@ -112,7 +112,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 
     // ºôº¸µå --------------------------------------
 
-    //FaceTurn(fTimeDelta);
+    FaceTurn(fTimeDelta);
     
     // --------------------------------------------
 

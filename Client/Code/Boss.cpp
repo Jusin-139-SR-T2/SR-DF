@@ -127,7 +127,7 @@ _int CBoss::Update_GameObject(const _float& fTimeDelta)
     }
 
     // ºôº¸µå --------------------------------------
-   // FaceTurn(fTimeDelta);
+    FaceTurn(fTimeDelta);
 
     // Renderer -----------------------------------
     Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
