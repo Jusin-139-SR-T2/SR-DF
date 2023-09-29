@@ -88,7 +88,10 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 	for (_uint i = 0; i <= iCntRange.second; ++i)
 	{
 		vecAsync[i].get();
+
+		CTextureMgr::GetInstance()->Get_Mutex()->lock();
 		m_mapMultiState[pStateKey].push_back(vecTexture[i]);
+		CTextureMgr::GetInstance()->Get_Mutex()->unlock();
 	}
 
 	return S_OK;
@@ -96,6 +99,11 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 
 HRESULT CMultiStateTexture::Insert_TextureAsync(const _tchar* pFilePath, TEXTUREID eType, vector<LPDIRECT3DBASETEXTURE9>& vecTexture, _uint iIndex)
 {
+	CTextureMgr::GetInstance()->Get_Mutex()->lock();
+	OutputDebugString(pFilePath);
+	OutputDebugString(L"\n");
+	CTextureMgr::GetInstance()->Get_Mutex()->unlock();
+
 	switch (eType)
 	{
 	case TEX_NORMAL:
