@@ -52,10 +52,6 @@ _int CLogo::Update_Scene(const _float& fTimeDelta)
 	{
 		if (m_bInitFrame)
 		{
-			//사운드 로드하기
-			FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
-			Engine::Play_BGM(L"FallenAces", L"Ambience_OldTimeyMusic6.mp3", 0.75f);
-
 			// 로딩 쓰레드 생성하기
 			m_pLoading = CLoading::Create(m_pGraphicDev, CLoading::LOADING_STAGE);
 			if (m_pLoading == nullptr)
@@ -65,6 +61,10 @@ _int CLogo::Update_Scene(const _float& fTimeDelta)
 				m_hrLoading = S_OK;
 				m_bInitFrame = false;
 			}
+
+			//사운드 로드하기
+			FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
+			Engine::Play_BGM(L"FallenAces", L"Ambience_OldTimeyMusic6.mp3", 0.75f);
 		}
 	}
 

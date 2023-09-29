@@ -203,6 +203,7 @@ void CSoundMgr::LoadSoundFile(_tchar* pCategoryKey, const char* pPath)
 	{
 		vecAsync[i].get();
 
+		m_mtxSound.lock();
 		if (get<TMP_RESULT>(vecSoundData[i]) == FMOD_OK)
 		{
 			int iLength = (int)strlen(get<TMP_FILE_NAME>(vecSoundData[i]).c_str()) + 1;
@@ -217,6 +218,7 @@ void CSoundMgr::LoadSoundFile(_tchar* pCategoryKey, const char* pPath)
 
 			Safe_Delete_Array(pSoundKey);
 		}
+		m_mtxSound.unlock();
 	}
 
 	// FMOD 업데이트
