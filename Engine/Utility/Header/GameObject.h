@@ -7,6 +7,12 @@
 
 BEGIN(Engine)
 
+enum class EPRIORITY_TYPE : _uint
+{
+	UPDATE = 0U, LATE, RENDER, SIZE
+};
+using EPRIORITY = EPRIORITY_TYPE;
+
 /// <summary>
 /// 게임에서 움직이는 모든 오브젝트에 대한 베이스 클래스
 /// </summary>
@@ -55,6 +61,19 @@ public:
 protected:
 	CGameObject*	m_pOwner = nullptr;
 	_float			m_fViewZ;
+
+public:		// 우선도 관련 GETSET 함수
+	GETSET_EX2(_float, m_fPriority[static_cast<_uint>(EPRIORITY::UPDATE)], PriorityUpdate, GET, SET)
+	GETSET_EX2(_float, m_fPriority[static_cast<_uint>(EPRIORITY::LATE)], PriorityLate, GET, SET)
+	GETSET_EX2(_float, m_fPriority[static_cast<_uint>(EPRIORITY::RENDER)], PriorityRender, GET, SET)
+
+	GETSET_EX2(_bool, m_bUsePriority[static_cast<_uint>(EPRIORITY::UPDATE)], UsePriorityUpdate, GET, SET)
+	GETSET_EX2(_bool, m_bUsePriority[static_cast<_uint>(EPRIORITY::LATE)], UsePriorityLate, GET, SET)
+	GETSET_EX2(_bool, m_bUsePriority[static_cast<_uint>(EPRIORITY::RENDER)], UsePriorityRender, GET, SET)
+		
+protected:
+	_float			m_fPriority[static_cast<_uint>(EPRIORITY::SIZE)];			// 우선도
+	_bool			m_bUsePriority[static_cast<_uint>(EPRIORITY::SIZE)];		// 우선도 사용 여부, 객체 단위
 
 };
 

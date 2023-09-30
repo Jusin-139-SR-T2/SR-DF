@@ -72,15 +72,34 @@ void CMainApp::Render_MainApp()
 		pBackBuffer->Release();*/
 		//m_pTexture->Release();
 
+		//LPDIRECT3DSURFACE9 pSurface = NULL;
+		//D3DSURFACE_DESC desc;
+
+		/*m_pGraphicDev->CreateRenderTarget(m_pDeviceClass->Get_D3DPP()->BackBufferWidth, 
+			m_pDeviceClass->Get_D3DPP()->BackBufferHeight, 
+			D3DFMT_X8R8G8B8, D3DMULTISAMPLE_NONE, 0, TRUE, &pSurface, NULL);*/
+
+		//m_pGraphicDev->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pSurface);
+
+		//pSurface->GetDesc(&desc);
+
+		/*m_pGraphicDev->SetRenderTarget(0, pSurface);
+		pSurface->GetDesc(&desc);*/
+
+		//pSurface->Release();
 
 		// [IMGUI 렌더]
 		CImguiMgr::GetInstance()->Render_Imgui();
 	}
 
+	// 추가 뷰포트 렌더
+	CImguiMgr::GetInstance()->Render_AdditionImgui();
+
 	// [렌더 종료] 스왑 체인을 하여 백버퍼를 앞으로 불러들이고 종료시킨다.
 	result = Engine::Render_End();
 	
-	CImguiMgr::GetInstance()->Render_AdditionImgui(result);
+	// 핸들을 잃었을 때 실행시키는 코드
+	CImguiMgr::GetInstance()->Render_LossHandle(result);
 }
 
 HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement** ppManagement)
@@ -100,7 +119,7 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 
 HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 {
-	FAILED_CHECK_RETURN(Engine::Ready_GraphicDev(&m_pDeviceClass, g_hWnd, MODE_WIN), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_GraphicDev(&m_pDeviceClass, g_hWnd, MODE_WIN, m_dwResizeWidth, m_dwResizeHeight), E_FAIL);
 	m_pDeviceClass->AddRef();
 
 	(*ppGraphicDev) = m_pDeviceClass->Get_GraphicDev();

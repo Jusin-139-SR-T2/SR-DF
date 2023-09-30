@@ -10,6 +10,8 @@
 #include "ImguiWin.h"
 #include "ImguiWin_Test.h"
 #include "ImguiAnimationTool.h"
+#include "ImguiWin_TextureTool.h"
+#include "ImguiWin_DockingSpace.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
@@ -37,8 +39,7 @@ void CImguiMgr::Free()
 HRESULT CImguiMgr::Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* ppGraphicDev)
 {
 	// 이미 설정된 장치값을 받아 설정
-	m_pDeviceClass = (*ppGraphicClass);
-	m_pDeviceClass->AddRef();
+	m_pDeviceClass = (*ppGraphicClass)->Get_ByRef<CGraphicDev>();
 	m_pGraphicDev = (*ppGraphicDev);
 	m_pGraphicDev->AddRef();
 
@@ -46,6 +47,7 @@ HRESULT CImguiMgr::Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	m_pIO = &ImGui::GetIO(); (void)m_pIO;
+	//m_pIO->DisplaySize = {1280, 720};
 	m_pIO->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	m_pIO->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	m_pIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
@@ -73,10 +75,14 @@ HRESULT CImguiMgr::Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* 
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX9_Init(m_pGraphicDev);
 
-	//m_mapImguiWin.emplace(L"Test",  CImguiWin_Test::Create());
+	
+
+	m_mapImguiWin.emplace(L"Test",  CImguiWin_Test::Create());
+	m_mapImguiWin.emplace(L"TextureTool", CImguiWin_TextureTool::Create());
+	m_mapImguiWin.emplace(L"DockingSpace", CImguiWin_DockingSpace::Create());
 
 	// + 성희 : 테스트 클래스 추가
-	m_mapImguiWin.emplace(L"Test AnimationTool", CImguiAnimationTool::Create());
+	//m_mapImguiWin.emplace(L"Test AnimationTool", CImguiAnimationTool::Create());
 
 	return S_OK;
 }
@@ -97,6 +103,7 @@ HRESULT CImguiMgr::Update_Imgui(const _float& fTimeDelta)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+	
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	if (m_bShow_DemoWindow)
 		ImGui::ShowDemoWindow(&m_bShow_DemoWindow);
@@ -124,6 +131,8 @@ HRESULT CImguiMgr::Update_Imgui(const _float& fTimeDelta)
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / m_pIO->Framerate, m_pIO->Framerate);
 		ImGui::End();
 	}
+
+	
 
 	// 소영 - 만들어본윈도우
 	//if (m_bShow_MapWindow)
@@ -205,7 +214,7 @@ HRESULT CImguiMgr::Render_Imgui()
 	return S_OK;
 }
 
-HRESULT CImguiMgr::Render_AdditionImgui(HRESULT dwDeviceState)
+HRESULT CImguiMgr::Render_AdditionImgui()
 {
 	// Update and Render additional Platform Windows
 	if (m_pIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -214,9 +223,15 @@ HRESULT CImguiMgr::Render_AdditionImgui(HRESULT dwDeviceState)
 		ImGui::RenderPlatformWindowsDefault();
 	}
 
+	return S_OK;
+}
+
+HRESULT CImguiMgr::Render_LossHandle(HRESULT dwDeviceState)
+{
 	// 핸들을 잃으면 디바이스를 초기화한다.
 	if (dwDeviceState == D3DERR_DEVICELOST && m_pGraphicDev->TestCooperativeLevel() == D3DERR_DEVICENOTRESET)
 		ResetDevice();
+
 
 	return S_OK;
 }
@@ -239,4 +254,16 @@ void CImguiMgr::ResetDevice(_uint dwResizeWidth, _uint dwResizeHeight)
 bool CImguiMgr::LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 pOutTex, _int* pOutWidth, _int* pOutHeight)
 {
 	return false;
+}
+
+void CImguiMgr::HelpMarkerEx(const char* marker, const char* desc)
+{
+	ImGui::TextDisabled(marker);
+	if (ImGui::BeginItemTooltip())
+	{
+		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		ImGui::TextUnformatted(desc);
+		ImGui::PopTextWrapPos();
+		ImGui::EndTooltip();
+	}
 }

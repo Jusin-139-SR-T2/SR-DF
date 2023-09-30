@@ -44,6 +44,7 @@ namespace Engine
 		return dwRefCnt;
 	}
 
+	
 
 	// Functor
 	class CTag_Finder

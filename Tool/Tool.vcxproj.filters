@@ -28,6 +28,12 @@
     <Filter Include="02. ImguiMgr\AnimationTool\PlayerTexture">
       <UniqueIdentifier>{0e50d04c-cd0c-4087-b546-42c19e63c79f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. ImguiMgr\TextureTool">
+      <UniqueIdentifier>{5ba0be83-e419-48f0-b69b-f213285778f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. ImguiMgr\MapTool">
+      <UniqueIdentifier>{225a3427-3821-4b96-92b3-25e1684aeae5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\framework.h">
@@ -87,6 +93,15 @@
     <ClInclude Include="Header\MyTexture.h">
       <Filter>02. ImguiMgr\AnimationTool\PlayerTexture</Filter>
     </ClInclude>
+    <ClInclude Include="Header\ImguiWin_TextureTool.h">
+      <Filter>02. ImguiMgr\TextureTool</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiWin_DockingSpace.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiWin_MapTool.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\framework.cpp">
@@ -136,6 +151,15 @@
     </ClCompile>
     <ClCompile Include="Code\MyTexture.cpp">
       <Filter>02. ImguiMgr\AnimationTool\PlayerTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ImguiWin_TextureTool.cpp">
+      <Filter>02. ImguiMgr\TextureTool</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiWin_DockingSpace.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiWin_MapTool.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
