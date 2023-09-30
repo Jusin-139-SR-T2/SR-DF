@@ -36,7 +36,7 @@ HRESULT CGray::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-   // m_pTransformComp->Set_Scale({ 200.f, 100.f, 1.f });
+    m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
     m_pTransformComp->Set_Pos({ 10.f, 10.f, 25.f });
     m_fFrame = 0;
     m_fFrameEnd = 0;

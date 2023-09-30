@@ -3,6 +3,10 @@
 #include "Base.h"
 #include "Engine_Define.h"
 
+#include <mutex>
+#include <future>
+#include <thread>
+
 BEGIN(Engine)
 
 class ENGINE_DLL FSoundData
@@ -63,10 +67,17 @@ public:
 private:
 	// 내부적으로 로드할 사운드 파일 폴더를 지정해 로드하는 함수
 	void LoadSoundFile(_tchar* pCategoryKey, const char* pPath);
+	// 사운드 파일을 그룹 단위로 비동기 로드할 때 쓰이는 함수
+	void LoadSoundFile_GroupAsync(_tchar* pGroupKey, const char* pPath);
+	// 비동기 처리를 기다리는 함수
+	void Wait_GroupAsync();
+	// 사운드 파일 단일로 비동기 로드할 때 쓰이는 함수ㅈ
 	FMOD_RESULT LoadSoundFile_Async(const char* pPath, const char* pFileName, FMOD_RESULT& hResult, FMOD_SOUND** pSound);
 
 	// 사운드 리소스 정보를 갖는 객체 
-	_unmap<wstring, FSoundData*> m_mapSound;
+	_unmap<wstring, FSoundData*>	m_mapSound;
+	mutex							m_mtxSound;
+	vector<future<void>>			m_vecAsyncSoundGroup;
 
 	// FMOD_CHANNEL : 재생하고 있는 사운드를 관리할 객체 
 	FMOD_CHANNEL*		m_pChannelArr[MAXCHANNEL];

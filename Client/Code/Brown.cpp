@@ -22,7 +22,7 @@ HRESULT CBrown::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
     
-    //m_pTransformComp->Set_Scale({ 200.f, 100.f, 1.f });
+    m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
     m_pTransformComp->Set_Pos({ 5.f, 1.f, 25.f });
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
@@ -133,7 +133,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 
     // --------------------------------------------
 
-    Engine::Add_RenderGroup(RENDER_ALPHA, this);
+    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
 
     return S_OK;
 }
@@ -145,15 +145,13 @@ void CBrown::LateUpdate_GameObject()
 
 void CBrown::Render_GameObject()
 {
-    DWORD dwTest;
-    m_pGraphicDev->GetRenderState(D3DRS_ZWRITEENABLE, &dwTest);
-    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
    // m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
     m_pTextureComp->Render_Texture(_ulong(m_fFrame));
     m_pBufferComp->Render_Buffer();
-
+    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

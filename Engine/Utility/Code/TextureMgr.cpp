@@ -45,6 +45,7 @@ HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, co
 	CTexture* pTexture;
 	HRESULT hr = S_OK;
 	ETEXTURE_COMTYPE eComType;
+	eComType = ETEXTURE_COMTYPE::MULTI_STATE;
 
 	// 파일 존재여부 확인, 잘못된 경로가 있다면 오류 반환
 	//wifstream file(pFilePath);
@@ -65,41 +66,47 @@ HRESULT CTextureMgr::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, co
 		else
 			eComType = ETEXTURE_COMTYPE::MULTI;
 	}*/
-	eComType = ETEXTURE_COMTYPE::MULTI_STATE;
-	
+
+
 	// 텍스처키로 먼저 텍스처가 있는지 찾아본 후 없다면 새로 만들고.
 	// 아니면 기존의 텍스처 객체에 스테이트 키를 추가한다.
-	auto iter = m_mapTexture.find(pTextureKey);
-	
-	// 텍스처가 없으니 새로만든다.
-	if (iter == m_mapTexture.end())
-	{
-		switch (eComType)
-		{
-		case ETEXTURE_COMTYPE::SINGLE:
-			pTexture = CSingleTexture::Create(m_pGraphicDev);
-			break;
-		case ETEXTURE_COMTYPE::SINGLE_STATE:
-			pTexture = CSingleStateTexture::Create(m_pGraphicDev);
-			break;
-		case ETEXTURE_COMTYPE::MULTI:
-			pTexture = CMultiTexture::Create(m_pGraphicDev);
-			break;
-		case ETEXTURE_COMTYPE::MULTI_STATE:
-			pTexture = CMultiStateTexture::Create(m_pGraphicDev);
-			break;
-		}
-		m_mapTexture.emplace(pTextureKey, pTexture);
-	}
-	// 텍스처가 있으니 기존에 것에 추가한다.
-	else
-	{
-		// 스테이트 키가 없는 종류는 중복되면 처리하지 않는다.
-		// 최초 로드된 텍스처 셋만 인정한다.
-		if (eComType == ETEXTURE_COMTYPE::SINGLE || eComType == ETEXTURE_COMTYPE::MULTI)
-			return E_FAIL;
 
-		pTexture = iter->second;
+	// 뮤텍스를 통해 m_mapTexture에 객체를 제조하는 것에 대해 보호한다.
+	{
+		lock_guard<mutex> lock(m_mapMutex);			// 이 코드블록만 보호한다.
+
+		auto iter = m_mapTexture.find(pTextureKey);
+
+		// 텍스처가 없으니 새로만든다.
+		if (iter == m_mapTexture.end())
+		{
+			switch (eComType)
+			{
+			case ETEXTURE_COMTYPE::SINGLE:
+				pTexture = CSingleTexture::Create(m_pGraphicDev);
+				break;
+			case ETEXTURE_COMTYPE::SINGLE_STATE:
+				pTexture = CSingleStateTexture::Create(m_pGraphicDev);
+				break;
+			case ETEXTURE_COMTYPE::MULTI:
+				pTexture = CMultiTexture::Create(m_pGraphicDev);
+				break;
+			case ETEXTURE_COMTYPE::MULTI_STATE:
+				pTexture = CMultiStateTexture::Create(m_pGraphicDev);
+				break;
+			}
+			m_mapTexture.emplace(pTextureKey, pTexture);
+		}
+		// 텍스처가 있으니 기존에 것에 추가한다.
+		else
+		{
+			// 스테이트 키가 없는 종류는 중복되면 처리하지 않는다.
+			// 최초 로드된 텍스처 셋만 인정한다.
+			if (eComType == ETEXTURE_COMTYPE::SINGLE || eComType == ETEXTURE_COMTYPE::MULTI)
+				return E_FAIL;
+
+			pTexture = iter->second;
+		}
 	}
 
 	FAILED_CHECK_RETURN(hr = pTexture->Insert_Texture(pFilePath, eType, pStateKey, iCntRange), E_FAIL);

@@ -62,17 +62,15 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 	//	
 	//}
 	
-
+	vector<wstring> vecPath;
 	vector<LPDIRECT3DBASETEXTURE9> vecTexture;
 	vector<future<HRESULT>> vecAsync;
-	vector<wstring> vecPath;
 
 	// 초기세팅, 안전 검사후 예약
-	vecPath.resize(iCntRange.second - iCntRange.first + 1U);
 	vecTexture.resize(iCntRange.second - iCntRange.first + 1U);
-	m_mapMultiState[pStateKey].reserve(iCntRange.second + 1U);
-	m_mapMultiState.emplace(pStateKey, vector<LPDIRECT3DBASETEXTURE9>());
-
+	vecPath.resize(iCntRange.second - iCntRange.first + 1U);
+	vecAsync.reserve(iCntRange.second + 1U);
+	
 	for (_uint i = 0; i <= iCntRange.second; ++i)
 	{
 		TCHAR	szFileName[256] = L"";
@@ -88,19 +86,27 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 	for (_uint i = 0; i <= iCntRange.second; ++i)
 	{
 		vecAsync[i].get();
-		m_mapMultiState[pStateKey].push_back(vecTexture[i]);
 	}
+	vecAsync.clear();
+
+	m_mapMultiState.emplace(pStateKey, vecTexture);
 
 	return S_OK;
 }
 
 HRESULT CMultiStateTexture::Insert_TextureAsync(const _tchar* pFilePath, TEXTUREID eType, vector<LPDIRECT3DBASETEXTURE9>& vecTexture, _uint iIndex)
 {
+	CTextureMgr::GetInstance()->Get_Mutex()->lock();
+	OutputDebugString(pFilePath);
+	OutputDebugString(L"\n");
+	CTextureMgr::GetInstance()->Get_Mutex()->unlock();
+
 	switch (eType)
 	{
 	case TEX_NORMAL:
 	{
-		FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, pFilePath, (LPDIRECT3DTEXTURE9*)&vecTexture[iIndex]), E_FAIL);
+		//FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, pFilePath, (LPDIRECT3DTEXTURE9*)&vecTexture[iIndex]), E_FAIL);
+		FAILED_CHECK_RETURN(D3DXCreateTextureFromFileEx(m_pGraphicDev, pFilePath, D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0, D3DFMT_DXT3, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, nullptr, nullptr, (LPDIRECT3DTEXTURE9*)&vecTexture[iIndex]), E_FAIL);
 		break;
 	}
 	case TEX_CUBE:
@@ -132,5 +138,5 @@ void CMultiStateTexture::Transfer_Texture(vector<LPDIRECT3DBASETEXTURE9>* pVecTe
 	{
 		pVecTexture->reserve(m_mapMultiState[pStateKey].size());
 	}
-		(*pVecTexture) = m_mapMultiState[pStateKey];
+	(*pVecTexture) = m_mapMultiState[pStateKey];
 }

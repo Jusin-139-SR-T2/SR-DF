@@ -77,5 +77,6 @@ using namespace Engine;
 
 extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
+extern _bool g_bLockEsc;		// 비정상 종료를 막기위한 플래그
 
 #endif // Engine_Define_h__

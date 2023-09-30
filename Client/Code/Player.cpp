@@ -26,24 +26,25 @@ HRESULT CPlayer::Ready_GameObject()
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
+    m_pTransformComp->Set_Pos({10.f, 0.f, 10.f});
+
     // 왼손
     m_fSizeX = 300;
     m_fSizeY = 300;
 
-    m_fX = m_fSizeX * 0.5f; // 중점위치 
-    m_fY = m_fSizeY * 0.5f + 400;
+    m_fX = -200.f; // 중점위치 
+    m_fY = -280.f;
 
-    m_pLeftHandComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+    m_pLeftHandComp->Set_Pos({ m_fX, m_fY, 0.f });	// 이미지 위치
     m_pLeftHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 
     // 오른손
     m_fSizeX = 300;
     m_fSizeY = 300;
 
-    m_fX = m_fSizeX * 0.5f + 600; // 중점위치 
-    m_fY = m_fSizeY * 0.5f + 400;
+    m_fX = -m_fX; // 중점위치
 
-    m_pRightHandComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+    m_pRightHandComp->Set_Pos({ m_fX, m_fY, 0.f });	// 이미지 위치
     m_pRightHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 #pragma endregion
 
@@ -716,19 +717,19 @@ void CPlayer::Mouse_Move()
 #pragma region 1인칭
     if (m_pCamera->Get_One())
     {
-        //m_pTransformComp->Rotation(ROT_X, m_pCamera->Get_At());
+        //m_pTransformComp->Rotate(ROT_X, m_pCamera->Get_At());
 
         //마우스로 플레이어 회전
         //상, 하
-        //if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
-        //{
-        //    m_pTransformComp->Rotation(ROT_X, D3DXToRadian(dwMouseMove / 10.f));
-        //}
-        //// 좌, 우
-        //if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
-        //{
-        //    m_pTransformComp->Rotation(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
-        //}
+        if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_Y))
+        {
+            m_pTransformComp->Rotate(ROT_X, D3DXToRadian(dwMouseMove / 10.f));
+        }
+        // 좌, 우
+        if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
+        {
+            m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
+        }
     }
 #pragma endregion
 

@@ -8,10 +8,11 @@
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
-HINSTANCE g_hInst;                                // 현재 인스턴스입니다.
+HINSTANCE g_hInst;                              // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
-HWND	g_hWnd;
+HWND	g_hWnd;                                 // 윈도우 창 변수입니다.
+_bool   g_bLockEsc;                             // 비정상적인 종료를 막기위한 락입니다.
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -62,7 +63,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
-			if (WM_QUIT == msg.message)
+			if (WM_QUIT == msg.message && !g_bLockEsc)
 				break;
 
 			if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
@@ -181,6 +182,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_CREATE:
+    {
+        // 눈뽕 방지
+        RECT rect;
+        GetClientRect(g_hWnd, &rect);
+        HDC hdc = GetDC(g_hWnd);
+        HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0));
+        FillRect(hdc, &rect, brush);
+        DeleteObject(brush);
+        ReleaseDC(g_hWnd, hdc);
+
+        g_bLockEsc = false;
+
+        break;
+    }
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -188,7 +204,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             switch (wmId)
             {        
             case IDM_EXIT:
-                DestroyWindow(hWnd);
+                if (!g_bLockEsc)
+                    DestroyWindow(hWnd);
                 break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
@@ -200,6 +217,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다.
+
+            RECT rect;
+            GetClientRect(g_hWnd, &rect);
+            HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0));
+            FillRect(hdc, &rect, brush);
+            DeleteObject(brush);
+
             EndPaint(hWnd, &ps);
         }
         break;

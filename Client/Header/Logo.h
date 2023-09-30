@@ -24,14 +24,17 @@ public:
 	virtual void		Render_Scene();
 
 private:
+	HRESULT				Ready_Texture();
 	HRESULT				Ready_Prototype();
 	HRESULT				Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag) { return S_OK; }
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag) { return S_OK; }
 
 private:
-	CLoading* m_pLoading;
-	CLoading* m_pLoadingTexture;
+	DELAY<float>		m_fSkipStartFrame = DELAY<float>(0.1f);
+	_bool				m_bInitFrame;
+	CLoading*			m_pLoading;
+	HRESULT				m_hrLoading;
 
 protected:
 	virtual HRESULT		Ready_Layer_Completed() { return S_OK; }
