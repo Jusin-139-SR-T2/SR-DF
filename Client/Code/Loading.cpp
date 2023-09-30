@@ -226,7 +226,15 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma endregion
 
 #pragma region Object 
-	Load_Texture(L"./Resource/Texture/Item/Food_Cola.png", TEX_NORMAL, L"Food", L"Cola");
+	Load_Texture(L"./Resource/Texture/Item/Food/BananaPeel.png", TEX_NORMAL, L"Food", L"BananaPeel");
+	Load_Texture(L"./Resource/Texture/Item/Food/EatenApple.png", TEX_NORMAL, L"Food", L"EatenApple");
+	Load_Texture(L"./Resource/Texture/Item/Food/Medkit.png", TEX_NORMAL, L"Food", L"Medkit");
+	Load_Texture(L"./Resource/Texture/Item/Food/Banana.png", TEX_NORMAL, L"Food", L"Banana");
+	Load_Texture(L"./Resource/Texture/Item/Food/Apple.png", TEX_NORMAL, L"Food", L"Apple");
+	Load_Texture(L"./Resource/Texture/Item/Food/Cola.png", TEX_NORMAL, L"Food", L"Cola");
+
+	//Load_Texture(L"./Resource/Texture/Item/.png", TEX_NORMAL, L"Food", L"Cola");
+
 	
 
 

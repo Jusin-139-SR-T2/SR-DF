@@ -85,7 +85,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev)), E_FAIL);
 
 	// Object
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Object", CObject::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"Medkit")), E_FAIL);
+
 
 
 	return S_OK;
