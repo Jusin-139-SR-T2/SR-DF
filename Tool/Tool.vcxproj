@@ -215,6 +215,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClInclude Include="Include\Resource.h" />
     <ClInclude Include="Include\targetver.h" />
     <ClInclude Include="Include\Tool.h" />
+    <ClInclude Include="Header\PlayerAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\ImguiAnimationTool.cpp" />
@@ -243,6 +244,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Include\Tool.cpp" />
+    <ClCompile Include="Code\PlayerAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Include\Tool.rc" />

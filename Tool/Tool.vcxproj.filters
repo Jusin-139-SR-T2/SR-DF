@@ -28,6 +28,12 @@
     <Filter Include="02. ImguiMgr\AnimationTool\PlayerTexture">
       <UniqueIdentifier>{0e50d04c-cd0c-4087-b546-42c19e63c79f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. ImguiMgr\AnimationTool\00. MainTool">
+      <UniqueIdentifier>{5ebf88ea-c036-4c38-ad87-fb3f11fe6fea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. ImguiMgr\AnimationTool\01. PlayerAnimation">
+      <UniqueIdentifier>{d0da7613-0c88-45e3-9916-775caff4b08f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\framework.h">
@@ -81,11 +87,14 @@
     <ClInclude Include="Header\ImguiWin_Test.h">
       <Filter>02. ImguiMgr</Filter>
     </ClInclude>
-    <ClInclude Include="Header\ImguiAnimationTool.h">
-      <Filter>02. ImguiMgr\AnimationTool</Filter>
-    </ClInclude>
     <ClInclude Include="Header\MyTexture.h">
       <Filter>02. ImguiMgr\AnimationTool\PlayerTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PlayerAnimation.h">
+      <Filter>02. ImguiMgr\AnimationTool\01. PlayerAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ImguiAnimationTool.h">
+      <Filter>02. ImguiMgr\AnimationTool\00. MainTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -131,11 +140,14 @@
     <ClCompile Include="Code\ImguiWin_Test.cpp">
       <Filter>02. ImguiMgr</Filter>
     </ClCompile>
-    <ClCompile Include="Code\ImguiAnimationTool.cpp">
-      <Filter>02. ImguiMgr\AnimationTool</Filter>
-    </ClCompile>
     <ClCompile Include="Code\MyTexture.cpp">
       <Filter>02. ImguiMgr\AnimationTool\PlayerTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerAnimation.cpp">
+      <Filter>02. ImguiMgr\AnimationTool\01. PlayerAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ImguiAnimationTool.cpp">
+      <Filter>02. ImguiMgr\AnimationTool\00. MainTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
