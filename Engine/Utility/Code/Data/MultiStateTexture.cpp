@@ -97,6 +97,7 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 HRESULT CMultiStateTexture::Insert_TextureAsync(const _tchar* pFilePath, TEXTUREID eType, vector<LPDIRECT3DBASETEXTURE9>& vecTexture, _uint iIndex)
 {
 	CTextureMgr::GetInstance()->Get_Mutex()->lock();
+	OutputDebugString(L"LoadTexture : ");
 	OutputDebugString(pFilePath);
 	OutputDebugString(L"\n");
 	CTextureMgr::GetInstance()->Get_Mutex()->unlock();

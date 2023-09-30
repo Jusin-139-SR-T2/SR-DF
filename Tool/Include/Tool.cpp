@@ -235,18 +235,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // 디바이스 초기화가 되었을 때
         if (Engine::Get_DeviceAvailable() == S_OK)
         {
-            RECT srcRect = { 0, 0, (LONG)g_ResizeWidth, (LONG)g_ResizeHeight };
+            //RECT srcRect = { 0, 0, (LONG)g_ResizeWidth, (LONG)g_ResizeHeight };
 
-            // 메인 앱에서 디바이스 패러미터 초기화를 진행
-            // if (nullptr != g_pMainApp)
-                //g_pMainApp->ResetDevice(g_ResizeWidth, g_ResizeHeight);
+            //// 메인 앱에서 디바이스 패러미터 초기화를 진행
+            //if (nullptr != g_pMainApp)
+            //    g_pMainApp->ResetDevice(g_ResizeWidth, g_ResizeHeight);
 
-            /*ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-            D3DXCOLOR clear_col_dx = D3DCOLOR_RGBA((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f));
-            Get_GraphicDev()->Clear(0, NULL, D3DCLEAR_TARGET, clear_col_dx, 1.f, 0);*/
+            //ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+            //D3DXCOLOR clear_col_dx = D3DCOLOR_RGBA((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f));
+            //Get_GraphicDev()->Clear(0, NULL, D3DCLEAR_TARGET, clear_col_dx, 1.f, 0);
 
-            // 버퍼 뒤집기 진행
-            Get_GraphicDev()->Present(&srcRect, NULL, NULL, NULL);
+            //// 버퍼 뒤집기 진행
+            //Get_GraphicDev()->Present(&srcRect, NULL, NULL, NULL);
         }
         break;
     }
