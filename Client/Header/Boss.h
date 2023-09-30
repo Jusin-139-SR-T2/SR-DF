@@ -81,8 +81,8 @@ private:
 	_float		m_fRollingSpeed = 3.5f;				// 옆으로 무빙하는  속도 
 
 	// 시간조절용 
-	_float		m_MaxTime = 20.f; 
-	_float		m_ShortTime = 9.f;
+	_float		m_MaxTime = 12.f; 
+	_float		m_ShortTime = 4.f;
 	_float		m_ChaseTime = 0.f;
 	_float		m_PreAttackTime = 0.f;
 	_float		m_SideAttackTime = 0.f;
@@ -92,9 +92,8 @@ private:
 	_float		m_fMonsterFov = 90;					//시야각 - 반각 기준
 	_float		m_fMonsterSightDistance = 13.f;		// 몬스터가 포착하는 사거리 
 
-	_float		m_fRunDistance = 8.f;				// 사거리 ~ Run 사이 =  run
+	_float		m_fRunDistance = 8.f;				// 사거리 ~ Run 사이 =  13~8 사이에 위치 
 	_float		m_fWalkDistance = 7.f;				// run~walk 사이 = walk
-	_float		m_fEyesOnYouDistance = 6.f;			// Eyes ~ Walk = 옆으로 무빙 
 	_float		m_fCloseAttackDistance = 2.f;		// Close ~ Eyes = 
 
 	// 위치 조절 

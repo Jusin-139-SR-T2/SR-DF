@@ -4,7 +4,7 @@
 #include "Gray.h"
 #include "Brown.h"
 #include "Boss.h"
-#include "Object.h"
+//#include "Object.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"

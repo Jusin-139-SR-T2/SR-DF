@@ -151,7 +151,10 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
         m_fFrame = 0.f;
 
         if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State() || 
-            STATE_OBJ::YOUDIE == m_tState_Obj.Get_State())
+            STATE_OBJ::YOUDIE == m_tState_Obj.Get_State() ||
+            STATE_OBJ::KEEPEYE == m_tState_Obj.Get_State() ||
+            STATE_OBJ::SIDEWALK == m_tState_Obj.Get_State() 
+            )
             m_fCheck += 1;
     }
 
@@ -593,7 +596,7 @@ void CGray::AI_Run(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 14.f;
+        m_fFrameSpeed = 16.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Run");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -714,14 +717,16 @@ void CGray::AI_SideWalk(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        //행동이 IDLE일때 WALK 가상키 누르기 
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::SIDEWALK].Act();
 
-        // 조건 - 플레이어가 시야각으로 들어오면 
-        if (m_fFrame > m_fFrameEnd)
+        if (2 == m_fCheck)
         {
-            m_tState_Obj.Set_State(STATE_OBJ::REST);
+            if (m_fFrame > m_fFrameEnd)
+            {
+                m_fCheck = 0.f;
+                m_tState_Obj.Set_State(STATE_OBJ::REST);
+            }
         }
     }
 
@@ -742,10 +747,8 @@ void CGray::AI_Throw(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        // 충돌체는 프레임에 맞게 해야해서 여기서 만들예정 
+        // 충돌체는 여기서 가상키 누르고 state에서 할예정 
 
-
-        // 조건 - 플레이어가 시야각으로 들어오면 
         if (m_fFrame > m_fFrameEnd)
         {
             m_tState_Obj.Set_State(STATE_OBJ::REST);
@@ -762,18 +765,16 @@ void CGray::AI_UpRightRun(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 10.f;
+        m_fFrameSpeed = 13.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"UpRightRun");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
     {
-        //행동이 IDLE일때 WALK 가상키 누르기 
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::UPRIGHT].Act();
 
-        // 조건 - 플레이어가 시야각으로 들어오면 
         if (m_fFrame > m_fFrameEnd)
         {
             m_tState_Obj.Set_State(STATE_OBJ::ATTACK);
@@ -797,11 +798,9 @@ void CGray::AI_Frighten(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        //행동이 IDLE일때 WALK 가상키 누르기 
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::FRIGHTEN].Act();
 
-        // 조건 - 플레이어가 시야각으로 들어오면 
         if (m_fFrame > m_fFrameEnd)
         {
             m_tState_Obj.Set_State(STATE_OBJ::ATTACK);
@@ -825,11 +824,9 @@ void CGray::AI_Attack(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        //행동이 IDLE일때 WALK 가상키 누르기 
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::BASIC_ATTACK].Act();
 
-        // 조건 - 플레이어가 시야각으로 들어오면 
         if (m_fFrame > m_fFrameEnd)
         {
             m_tState_Obj.Set_State(STATE_OBJ::REST);
@@ -853,11 +850,9 @@ void CGray::AI_HeavyAttack(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        //행동이 IDLE일때 WALK 가상키 누르기 
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].Act();
 
-        // 조건 - 플레이어가 시야각으로 들어오면 
         if (m_fFrame > m_fFrameEnd)
         {
             m_tState_Obj.Set_State(STATE_OBJ::REST);
