@@ -19,8 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\AceFood.h" />
+    <ClInclude Include="Header\AceObjectFactory.h" />
+    <ClInclude Include="Header\AceWeapon.h" />
     <ClInclude Include="Header\BlackBoardMgr.h" />
-    <ClInclude Include="Header\Object.h" />
     <ClInclude Include="Header\Boss.h" />
     <ClInclude Include="Header\Gray.h" />
     <ClInclude Include="Header\DynamicCamera.h" />
@@ -43,8 +45,10 @@
     <ClInclude Include="Header\BlackBoard.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\AceFood.cpp" />
+    <ClCompile Include="Code\AceObjectFactory.cpp" />
+    <ClCompile Include="Code\AceWeapon.cpp" />
     <ClCompile Include="Code\BlackBoardMgr.cpp" />
-    <ClCompile Include="Code\Object.cpp" />
     <ClCompile Include="Code\Boss.cpp" />
     <ClCompile Include="Code\BackGround.cpp" />
     <ClCompile Include="Code\Loading.cpp" />

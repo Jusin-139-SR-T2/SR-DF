@@ -226,23 +226,49 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma endregion
 
 #pragma region Object 
-	Load_Texture(L"./Resource/Texture/Item/Food_Cola.png", TEX_NORMAL, L"Food", L"Cola");
-	
+	// Object - Food
+	Load_Texture(L"./Resource/Texture/Item/Food/BananaPeel.png", TEX_NORMAL, L"Food", L"BananaPeel");
+	Load_Texture(L"./Resource/Texture/Item/Food/EatenApple.png", TEX_NORMAL, L"Food", L"EatenApple");
+	Load_Texture(L"./Resource/Texture/Item/Food/Medkit.png", TEX_NORMAL, L"Food", L"Medkit");
+	Load_Texture(L"./Resource/Texture/Item/Food/Banana.png", TEX_NORMAL, L"Food", L"Banana");
+	Load_Texture(L"./Resource/Texture/Item/Food/Apple.png", TEX_NORMAL, L"Food", L"Apple");
+	Load_Texture(L"./Resource/Texture/Item/Food/Cola.png", TEX_NORMAL, L"Food", L"Cola");
 
+	// Object - Weapon
+	Load_Texture(L"./Resource/Texture/Item/Weapon/BrokenFryingPan.png", TEX_NORMAL, L"Weapon", L"BrokenFryingPan");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/BrokenTommyGun.png", TEX_NORMAL, L"Weapon", L"BrokenTommyGun");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/CrackedBottle.png", TEX_NORMAL, L"Weapon", L"CrackedBottle");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/BrokenBottle.png", TEX_NORMAL, L"Weapon", L"BrokenBottle");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/BrokenPistol.png", TEX_NORMAL, L"Weapon", L"BrokenPistol");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/GasCanister.png", TEX_NORMAL, L"Weapon", L"GasCanister");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/BrokenPipe.png", TEX_NORMAL, L"Weapon", L"BrokenPipe");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/FryingPan.png", TEX_NORMAL, L"Weapon", L"FryingPan");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/TommyGun.png", TEX_NORMAL, L"Weapon", L"TommyGun");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/LeadPipe.png", TEX_NORMAL, L"Weapon", L"LeadPipe");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/WallPipe.png", TEX_NORMAL, L"Weapon", L"WallPipe");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/Pistol.png", TEX_NORMAL, L"Weapon", L"Pistol");
+
+	//Object - Throw (진행중)
+	Load_Texture(L"./Resource/Texture/Item/Throw/UmbrellaStand.png", TEX_NORMAL, L"Throw", L"UmbrellaStand");
+	Load_Texture(L"./Resource/Texture/Item/Throw/TumblerGlass.png", TEX_NORMAL, L"Throw", L"TumblerGlass");
+	Load_Texture(L"./Resource/Texture/Item/Throw/WoodenBarrel.png", TEX_NORMAL, L"Throw", L"WoodenBarrel");
+	Load_Texture(L"./Resource/Texture/Item/Throw/WoodenStool.png", TEX_NORMAL, L"Throw", L"WoodenStool");
+	Load_Texture(L"./Resource/Texture/Item/Throw/CoatHanger.png", TEX_NORMAL, L"Throw", L"CoatHanger");
+	Load_Texture(L"./Resource/Texture/Item/Throw/Microphone.png", TEX_NORMAL, L"Throw", L"Microphone");
 
 #pragma endregion
 
 #pragma region Object - Inventory : 직교투영 해야함 
 
-	Load_Texture(L"./Resource/Texture/Item/Inventory/Apple.png", TEX_NORMAL, L"Inventory", L"Apple");
-	Load_Texture(L"./Resource/Texture/Item/Inventory/Banana.png", TEX_NORMAL, L"Inventory", L"Banana");
-	Load_Texture(L"./Resource/Texture/Item/Inventory/Bottle.png", TEX_NORMAL, L"Inventory", L"Bottle");
-	Load_Texture(L"./Resource/Texture/Item/Inventory/Cola.png", TEX_NORMAL, L"Inventory", L"Cola");
 	Load_Texture(L"./Resource/Texture/Item/Inventory/FryingPan.png", TEX_NORMAL, L"Inventory", L"FryingPan");
-	Load_Texture(L"./Resource/Texture/Item/Inventory/MedKit.png", TEX_NORMAL, L"Inventory", L"MedKit");
-	Load_Texture(L"./Resource/Texture/Item/Inventory/Pipe.png", TEX_NORMAL, L"Inventory", L"Pipe");
 	Load_Texture(L"./Resource/Texture/Item/Inventory/Revolver.png", TEX_NORMAL, L"Inventory", L"Revolver");
 	Load_Texture(L"./Resource/Texture/Item/Inventory/TommyGun.png", TEX_NORMAL, L"Inventory", L"TommyGun");
+	Load_Texture(L"./Resource/Texture/Item/Inventory/Bottle.png", TEX_NORMAL, L"Inventory", L"Bottle");
+	Load_Texture(L"./Resource/Texture/Item/Inventory/Banana.png", TEX_NORMAL, L"Inventory", L"Banana");
+	Load_Texture(L"./Resource/Texture/Item/Inventory/MedKit.png", TEX_NORMAL, L"Inventory", L"MedKit");
+	Load_Texture(L"./Resource/Texture/Item/Inventory/Apple.png", TEX_NORMAL, L"Inventory", L"Apple");
+	Load_Texture(L"./Resource/Texture/Item/Inventory/Pipe.png", TEX_NORMAL, L"Inventory", L"Pipe");
+	Load_Texture(L"./Resource/Texture/Item/Inventory/Cola.png", TEX_NORMAL, L"Inventory", L"Cola");
 
 #pragma endregion
 

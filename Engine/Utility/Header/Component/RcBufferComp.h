@@ -16,6 +16,7 @@ private:
 public:
 	static CRcBufferComp*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual CComponent* Clone();
+	const _vec3* Get_VtxPos() const { return m_pVertexPos; } //RcBuffer Picking¿ë 
 
 	VTXTEX* Get_Vertex() { return pVertex; }
 
@@ -44,6 +45,7 @@ public:
 
 private:
 	VTXTEX* pVertex = nullptr;
+	_vec3* m_pVertexPos;
 
 	_float fX;
 	_float fY;

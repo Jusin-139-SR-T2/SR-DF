@@ -59,9 +59,6 @@ private:
 	_float		m_fDistance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
 	void		FaceTurn(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
-	//TestBoard -------------------------------------------------------------
-	void		Monster_Jump(const _float& fTimeDelta); // 
-	_bool		m_bJump = false;
 
 	// 변수 -----------------------------------------------------------------
 	_float		m_fCheck = 0;						//Taunt 등 프레임 돌리는횟수 지정

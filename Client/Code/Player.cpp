@@ -130,7 +130,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     Engine::Add_RenderGroup(RENDER_UI, this);
 
     // 랜더 그룹 목록
-    //RENDER_PRIORITY, RNEDER_ALPHATEST, RENDER_NONALPHA, RENDER_ALPHA, RENDER_UI, RENDER_END
+    //RENDER_PRIORITY, RENDER_ALPHATEST, RENDER_NONALPHA, RENDER_ALPHA, RENDER_UI, RENDER_END
 
     return 0;
 }
@@ -413,6 +413,12 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         m_ePlayerState = STATE_PLAYER::THROW_AWAY;
         bRightFrameOn = true;
     }
+
+    // 오브젝트 상호작용 // 소영 추가 
+    /*if (Engine::IsKey_Pressed(DIK_E) && Picking_On_Object())
+    {
+        int a = 0;
+    }*/
 #pragma endregion
 
     // 플레이어 기본 속도
@@ -630,6 +636,21 @@ void CPlayer::Charge(const _float& fTimeDelta)
         }
         }
     }
+}
+
+_bool CPlayer::Picking_On_Object()
+{
+    CRcBufferComp* pObjectBufferCom = dynamic_cast<CRcBufferComp*>(Engine::Get_Component(ID_STATIC, L"GameLogic", L"Food1", L"Proto_RcTexBufferComp"));
+    NULL_CHECK_RETURN(pObjectBufferCom, _vec3());
+    CTransformComponent* pObjectTransCom = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Food1", L"Proto_TransformComp"));
+    NULL_CHECK_RETURN(pObjectTransCom, _vec3());
+
+    _vec3 PickingPos = m_pCalculatorComp->Picking_On_Object(g_hWnd, pObjectBufferCom, pObjectTransCom);
+    
+    if (PickingPos)
+        return true;
+    else
+        return false;
 }
 
 bool CPlayer::Attack_Input(const _float& fTimeDelta)

@@ -130,7 +130,7 @@ _int CBoss::Update_GameObject(const _float& fTimeDelta)
     FaceTurn(fTimeDelta);
 
     // Renderer -----------------------------------
-    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
+    Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
     return S_OK;
 }
@@ -144,10 +144,12 @@ void CBoss::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
     m_pTextureComp->Render_Texture(_ulong(m_fFrame));
     m_pBufferComp->Render_Buffer();
 
+    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -412,53 +414,50 @@ void CBoss::AI_Chase(float fDeltaTime)
     if (m_tState_Obj.Can_Update())
     {
         m_ChaseTime += fDeltaTime * 14.f;
-        
+
         _float CurDistance = Calc_Distance();
 
-        if (m_fCloseAttackDistance >= CurDistance 
-            && m_ShortTime <= m_ChaseTime) // 근접공격이 최 우선시됨 - 거리 매우 가까울때만 
+        if (m_fCloseAttackDistance >= CurDistance) // 근접공격이 최 우선시됨 - 거리 매우 가까울때만 
         {
             m_ChaseTime = 0.f;
             m_tState_Obj.Set_State(STATE_OBJ::PRE_ATTACK);
         }
-       
-        if (m_MaxTime <= m_ChaseTime) // stop시간 지나면 
-        {
-            m_ChaseTime = 0.f;
 
-            if (Detect_Player())
+        if (Detect_Player())
+        {
+            if (0 < m_iBulletCnt)
             {
-                // 휴식시간 있으면 좋음 - 물리 SLEEP 구현 대기중 
-                if (m_fRunDistance < CurDistance)
+                if (m_fRunDistance < CurDistance) // 현재 거리가 8 이상일때 
                 {
                     m_tState_Obj.Set_State(STATE_OBJ::RUN);
-                }
-                else if (m_fWalkDistance < CurDistance && m_fRunDistance >= CurDistance)
-                {
-                    m_tState_Obj.Set_State(STATE_OBJ::WALK);
                 }
                 else
                 {
                     int iCombo = (rand() % 10) + 1;
 
-                    if (8 <= iCombo && (0 != m_iBulletCnt)) // 무조건 총쏘는거라서 총알있어야만함 
-                        m_tState_Obj.Set_State(STATE_OBJ::SIDE_READY);
+                    if (7 <= iCombo) // 무조건 총쏘는거라서 총알있어야만함 40%
+                        m_tState_Obj.Set_State(STATE_OBJ::SIDE_READY); // -> Roll -> Shooting
 
-                    if (8 > iCombo) // 70% 
-                        m_tState_Obj.Set_State(STATE_OBJ::PRE_ATTACK);
+                    if (7 > iCombo) // 60% 
+                        m_tState_Obj.Set_State(STATE_OBJ::PRE_ATTACK); // Run -> Shooting
                 }
             }
-            else
+            else//총알 없음 
             {
-                m_fAwareness -= fDeltaTime * 6.f;
-
-                if (0 >= m_fAwareness)
-                {
-                    m_fAwareness = 0;
-                    m_tState_Obj.Set_State(STATE_OBJ::BACKIDLE);
-                }
+                m_tState_Obj.Set_State(STATE_OBJ::PRE_ATTACK); // Run -> Shooting
             }
         }
+        else
+        {
+            m_fAwareness -= fDeltaTime * 6.f;
+
+            if (0 >= m_fAwareness)
+            {
+                m_fAwareness = 0;
+                m_tState_Obj.Set_State(STATE_OBJ::BACKIDLE);
+            }
+        }
+
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -538,7 +537,7 @@ void CBoss::AI_Side_Ready(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        m_SideAttackTime += fDeltaTime * 11.f;
+        m_SideAttackTime += fDeltaTime * 12.f;
 
         if (m_MaxTime <= m_SideAttackTime)
         {
@@ -626,25 +625,18 @@ void CBoss::AI_Run(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 11.f;
+        m_fFrameSpeed = 10.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Run");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
     {
-        _float CurDistance = Calc_Distance();
-
-        if (m_fWalkDistance <= CurDistance)
-            m_tState_Obj.Set_State(STATE_OBJ::WALK);
-
-
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::RUN].Act();
 
-        if (m_fCheck == 3)
+        if (m_fFrame > m_fFrameEnd)
         {
-            m_fCheck = 0;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
@@ -695,6 +687,7 @@ void CBoss::AI_CloseAttack(float fDeltaTime)
 
         if (m_fFrame > m_fFrameEnd)
         {
+
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
@@ -801,14 +794,29 @@ void CBoss::Approaching(float fDeltaTime)
         if (STATE_OBJ::RUN == m_tState_Obj.Get_State())
         {
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-
             vDir = vPlayerPos - m_pTransformComp->Get_Pos();
+            _float DirDistance = D3DXVec3Length(&vDir);
             m_pTransformComp->Set_Look(vDir);
-            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
 
+            if (m_iBulletCnt == 0) // 총알다씀 -> 접근
+            {
+                m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
+            }
+            else if (0 < m_iBulletCnt ) //총알 있음
+            {
+                if (DirDistance >= m_fRunDistance) // 먼경우 
+                {
+                    m_pTransformComp->Move_Pos(&vDir, fDeltaTime, m_fRunSpeed);
+                }
+                if (DirDistance < m_fRunDistance) // 가까운경우 
+                {
+                    m_tState_Act.Set_State(STATE_ACT::SHOOTING);
+                }
+            }
         }
 
-        if (STATE_OBJ::WALK == m_tState_Obj.Get_State())
+        if (STATE_OBJ::WALK == m_tState_Obj.Get_State()
+            && m_iBulletCnt == 0 )
         {
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 

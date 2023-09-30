@@ -6,7 +6,7 @@
 #include "Brown.h"
 #include "Gray.h"
 #include "Boss.h"
-#include "Object.h"
+#include "AceObjectFactory.h"
 
 #include "Terrain.h"
 

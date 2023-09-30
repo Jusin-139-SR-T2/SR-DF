@@ -4,6 +4,9 @@
 
 #include "Engine_Macro.h"
 
+//임시용
+#include "AceFood.h" 
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -67,7 +70,11 @@ private:
 	// =============================== 차징 ===============================
 	void				Charge(const _float& fTimeDelta);	// 차징
 	// ====================================================================
-
+	
+	// =============================== 피킹 =============================== // 소영 추가 
+	//_vec3				Picking_On_Object();	// 오브젝트 마우스 피킹 
+	_bool Picking_On_Object();
+	// ====================================================================
 
 public: // Camera
 	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)
@@ -89,11 +96,12 @@ public:// 플레이어 상태 값
 	// 오른손
 	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
 	
-// TEST
+	// TEST
 	enum class OBJECT_TYPE { NONE, TWO_HAND, TWO_OBJECT, RIGHT_OBJECT }; // 테스트(오브젝트)
 	enum class OBJECT_NAME { NONE, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN };
-// TEST
-	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향
+
+	// TEST
+	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향 
 
 private: // 플레이어의 상태 머신
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;

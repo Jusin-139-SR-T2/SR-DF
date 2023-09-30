@@ -1,0 +1,35 @@
+#include "stdafx.h"
+#include "AceObjectFactory.h"
+
+#include "AceFood.h"
+#include "AceWeapon.h"
+
+Engine::CGameObject* CAceObjectFactory::Create(LPDIRECT3DDEVICE9 pGraphicDev, OBJECT_CLASS objClass, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
+{
+    Engine::CGameObject* pInstance = nullptr;
+
+    switch (objClass)
+    {
+    case CAceObjectFactory::OBJECT_CLASS::FOOD:
+        pInstance = CAceFood::Create(pGraphicDev, pObjTag, _fx, _fy, _fz);
+        return pInstance;
+
+    case CAceObjectFactory::OBJECT_CLASS::WEAPON:
+        pInstance = CAceWeapon::Create(pGraphicDev, pObjTag, _fx, _fy, _fz);
+        return pInstance;
+
+    case CAceObjectFactory::OBJECT_CLASS::DISPLAY:
+        break;
+
+    case CAceObjectFactory::OBJECT_CLASS::INTERACTION:
+        break;
+
+    case CAceObjectFactory::OBJECT_CLASS::KEY:
+        break;
+
+    case CAceObjectFactory::OBJECT_CLASS::THROW_WEAPON:
+        break;
+    }
+
+    return pInstance;
+}

@@ -25,7 +25,7 @@ HRESULT CBrown::Ready_GameObject()
     m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
     m_pTransformComp->Set_Pos({ 5.f, 1.f, 25.f });
     m_fFrameEnd = 0;
-    m_fFrameSpeed = 10.f;
+    m_fFrameSpeed = 8.f;
 
     // INFO
     m_iHP = 100;         // 체력
@@ -118,9 +118,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 
     
     // ---------- 테스트 빌드 ----------------------
-
-    Monster_Jump(fTimeDelta);
-   
+    // 현재 피격 테스트중 
     if (Engine::IsKey_Pressing(DIK_H))
     {
         m_iHP = 0; //즉사 기믹 확인용 
@@ -133,7 +131,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 
     // --------------------------------------------
 
-    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
+    Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
     return S_OK;
 }
@@ -148,11 +146,11 @@ void CBrown::Render_GameObject()
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-   // m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
     m_pTextureComp->Render_Texture(_ulong(m_fFrame));
     m_pBufferComp->Render_Buffer();
+
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -278,22 +276,6 @@ HRESULT CBrown::Get_PlayerPos(const _float& fTimeDelta)
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
     return S_OK;
-}
-
-void CBrown::Monster_Jump(const _float& fTimeDelta)
-{
-    if (Engine::IsKey_Pressed(DIK_SPACE))
-    {
-        m_bJump = true;
-    }
-
-    if (m_bJump)
-    {
-        _vec3 jump = { 0.f, 50.f , 0.f };
-
-        m_pTransformComp->Move_Pos(&jump, fTimeDelta, -5.f);
-       // m_pTransformComp->Move_Pos(&Gravity, fTimeDelta, 0.01f);
-    }
 }
 
 void CBrown::Free()
@@ -574,7 +556,7 @@ void CBrown::AI_InchForward(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
        // m_pTransformComp->m_vScale.x = 0.4f;
-        m_fFrameSpeed = 9.f;
+        m_fFrameSpeed = 5.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"InchForward");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -679,7 +661,7 @@ void CBrown::AI_Jump(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 10.f;
+        m_fFrameSpeed = 8.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Jump");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -702,7 +684,7 @@ void CBrown::AI_Hit(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 10.f;
+        m_fFrameSpeed = 8.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Hit");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -725,7 +707,7 @@ void CBrown::AI_FacePunch(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_fFrameSpeed = 10.f;
+        m_fFrameSpeed = 8.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"FacePunch");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
