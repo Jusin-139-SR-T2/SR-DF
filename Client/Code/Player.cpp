@@ -129,7 +129,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     Engine::Add_RenderGroup(RENDER_UI, this);
 
     // 랜더 그룹 목록
-    //RENDER_PRIORITY, RNEDER_ALPHATEST, RENDER_NONALPHA, RENDER_ALPHA, RENDER_UI, RENDER_END
+    //RENDER_PRIORITY, RENDER_ALPHATEST, RENDER_NONALPHA, RENDER_ALPHA, RENDER_UI, RENDER_END
 
     return 0;
 }

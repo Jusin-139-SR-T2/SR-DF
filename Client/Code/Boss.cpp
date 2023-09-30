@@ -130,7 +130,7 @@ _int CBoss::Update_GameObject(const _float& fTimeDelta)
     FaceTurn(fTimeDelta);
 
     // Renderer -----------------------------------
-    Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
+    Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
     return S_OK;
 }

@@ -65,7 +65,7 @@ _int CObject::Update_GameObject(const _float& fTimeDelta)
 	// ----------------------------------------
 
 
-	Engine::Add_RenderGroup(RNEDER_ALPHATEST, this);
+	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 	return S_OK;
 }
 

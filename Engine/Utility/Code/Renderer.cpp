@@ -80,7 +80,7 @@ void CRenderer::Render_AlphaTest(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 	pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProjection);
 
-	for (auto& iter : m_RenderGroup[RNEDER_ALPHATEST])
+	for (auto& iter : m_RenderGroup[RENDER_ALPHATEST])
 		iter->Render_GameObject();
 
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);

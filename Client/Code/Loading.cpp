@@ -223,7 +223,10 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma endregion
 
 #pragma region Object 
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Food_Cola.png", TEX_NORMAL, L"Food", L"Cola"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Food/Cola.png", TEX_NORMAL, L"Food", L"Cola"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Food/Apple.png", TEX_NORMAL, L"Food", L"Apple"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Food/Banana.png", TEX_NORMAL, L"Food", L"Banana"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"./Resource/Texture/Item/Food/BananaPeel.png", TEX_NORMAL, L"Food", L"BananaPeel"), E_FAIL);
 	
 
 
