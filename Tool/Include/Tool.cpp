@@ -7,6 +7,8 @@
 #include "Tool.h"
 #include "MainApp.h"
 
+#include <dwmapi.h>
+
 #ifndef _CRTDBG_MAP_ALLOC
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
@@ -135,17 +137,19 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
+    wcex.style          = CS_CLASSDC;
     wcex.lpfnWndProc    = WndProc;
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_TOOL));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
+    wcex.hbrBackground  = (HBRUSH)(CreateSolidBrush(RGB(28, 28, 28)));
     wcex.lpszMenuName   = NULL;
     wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.hIconSm        = NULL;
+
+    //DeleteObject(wcex.hbrBackground);
 
     return RegisterClassExW(&wcex);
 }
@@ -168,8 +172,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);
+   // WS_POPUP : 타이틀바 없애기
+   HWND hWnd = CreateWindowEx(0, szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+      CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -209,10 +214,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+    case WM_CREATE:
+    {
+        COLORREF DARK_COLOR = 0x00505050;
+        BOOL SET_CAPTION_COLOR = SUCCEEDED(DwmSetWindowAttribute(
+            hWnd, DWMWINDOWATTRIBUTE::DWMWA_CAPTION_COLOR,
+            &DARK_COLOR, sizeof(DARK_COLOR)));
+        break;
+    }
     case WM_SIZE:
     {
         if (wParam == SIZE_MINIMIZED)
             return 0;
+
         g_ResizeWidth = (UINT)LOWORD(lParam); // Queue resize
         g_ResizeHeight = (UINT)HIWORD(lParam);
 
@@ -222,59 +236,40 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         int clientWidth = clientRect.right - clientRect.left;
         int clientHeight = clientRect.bottom - clientRect.top;
 
-        HDC hdc = GetDC(hWnd); // 윈도우의 DC 얻기
+        //HDC hdc = GetDC(hWnd); // 윈도우의 DC 얻기
 
-        // 빨간색으로 채우기 (255, 0, 0은 각각 R, G, B를 나타냄)
-        ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-        HBRUSH redBrush = CreateSolidBrush(RGB((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f)));
-        FillRect(hdc, &clientRect, redBrush);
-        DeleteObject(redBrush);
+        //// 빨간색으로 채우기 (255, 0, 0은 각각 R, G, B를 나타냄)
+        //ImVec4 clear_color = ImVec4(0.11f, 0.11f, 0.11f, 1.00f);
+        //HBRUSH redBrush = CreateSolidBrush(RGB((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f)));
+        //FillRect(hdc, &clientRect, redBrush);
+        //DeleteObject(redBrush);
 
-        ReleaseDC(hWnd, hdc); // DC 반환
+        ////::SetWindowPos(hWnd, nullptr, clientRect.left, clientRect.top, clientWidth, clientHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+        //ReleaseDC(hWnd, hdc); // DC 반환
 
         // 디바이스 초기화가 되었을 때
         if (Engine::Get_DeviceAvailable() == S_OK)
         {
-            RECT srcRect = { 0, 0, (LONG)g_ResizeWidth, (LONG)g_ResizeHeight };
-
-            // 메인 앱에서 디바이스 패러미터 초기화를 진행
-            // if (nullptr != g_pMainApp)
-                //g_pMainApp->ResetDevice(g_ResizeWidth, g_ResizeHeight);
-
-            /*ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+            ImVec4 clear_color = ImVec4(0.11f, 0.11f, 0.11f, 1.00f);
             D3DXCOLOR clear_col_dx = D3DCOLOR_RGBA((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f));
-            Get_GraphicDev()->Clear(0, NULL, D3DCLEAR_TARGET, clear_col_dx, 1.f, 0);*/
+            
+            LPDIRECT3DSURFACE9 pSurface = NULL;
 
-            // 버퍼 뒤집기 진행
-            Get_GraphicDev()->Present(&srcRect, NULL, NULL, NULL);
+            Get_GraphicDev()->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pSurface);
+
+            Get_GraphicDev()->Clear(0, NULL, D3DCLEAR_TARGET, clear_col_dx, 1.f, 0);
+
+            Get_GraphicDev()->StretchRect(pSurface, NULL, NULL, NULL, D3DTEXF_NONE);
+
+            pSurface->Release();
         }
         break;
     }
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // 메뉴 선택을 구문 분석합니다:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
-    case WM_PAINT:
-        {
-            ValidateRect(g_hWnd, NULL);
-            //PAINTSTRUCT ps;
-            // HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-            //EndPaint(hWnd, &ps);
-        }
+        
+    case WM_SYSCOMMAND:
+        if ((wParam & 0xfff0) == SC_KEYMENU) // Disable ALT application menu
+            return 0;
         break;
     case WM_KEYDOWN:
         switch (wParam)
@@ -299,7 +294,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     default:
         return ::DefWindowProc(hWnd, message, wParam, lParam);
     }
-    return 0;
+    return ::DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 // 정보 대화 상자의 메시지 처리기입니다.

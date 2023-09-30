@@ -27,7 +27,8 @@ public:
 	HRESULT Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* ppGraphicDev);
 	HRESULT Update_Imgui(const _float& fTimeDelta);
 	HRESULT Render_Imgui();
-	HRESULT Render_AdditionImgui(HRESULT dwDeviceState);
+	HRESULT Render_AdditionImgui();
+	HRESULT Render_LossHandle(HRESULT dwDeviceState);
 
 public:
 	// 디바이스의 매개변수에 창 사이즈를 바꿔 초기화를 다시해줍니다.
@@ -60,5 +61,10 @@ public:
 
 private:
 	LPDIRECT3DTEXTURE9 m_pEditorTexture = nullptr;
+
+public:
+	void HelpMarker(const char* desc) { HelpMarkerEx("(?)", desc); }
+	void HelpMarkerEx(const char* marker, const char* desc);
+	
 };
 

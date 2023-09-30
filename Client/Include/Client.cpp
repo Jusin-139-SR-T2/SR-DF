@@ -5,6 +5,8 @@
 #include "Client.h"
 #include "MainApp.h"
 
+#include <dwmapi.h>
+
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
@@ -150,10 +152,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+   /*HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, 
 	  rc.right - rc.left, 
-	  rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);
+	  rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);*/
+
+   DEVMODE devmode = {};
+   EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &devmode);
+   HWND hWnd = CreateWindowEx(WS_EX_APPWINDOW, szWindowClass, szTitle, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+       0, 0, devmode.dmPelsWidth, devmode.dmPelsHeight, nullptr, nullptr, hInstance, nullptr);
+
+   // 테두리 없애기
+   //SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~WS_CAPTION & ~WS_THICKFRAME & ~WS_MINIMIZEBOX & ~WS_MAXIMIZEBOX);
 
    if (!hWnd)
    {
@@ -194,6 +204,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         ReleaseDC(g_hWnd, hdc);
 
         g_bLockEsc = false;
+
+        // 검은색 타이틀바
+        COLORREF DARK_COLOR = 0x00505050;
+        BOOL SET_CAPTION_COLOR = SUCCEEDED(DwmSetWindowAttribute(
+            hWnd, DWMWINDOWATTRIBUTE::DWMWA_CAPTION_COLOR,
+            &DARK_COLOR, sizeof(DARK_COLOR)));
 
         break;
     }
