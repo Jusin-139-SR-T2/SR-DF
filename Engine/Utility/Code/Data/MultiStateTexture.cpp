@@ -62,17 +62,15 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 	//	
 	//}
 	
-
+	vector<wstring> vecPath;
 	vector<LPDIRECT3DBASETEXTURE9> vecTexture;
 	vector<future<HRESULT>> vecAsync;
-	vector<wstring> vecPath;
 
 	// 초기세팅, 안전 검사후 예약
-	vecPath.resize(iCntRange.second - iCntRange.first + 1U);
 	vecTexture.resize(iCntRange.second - iCntRange.first + 1U);
-	m_mapMultiState[pStateKey].reserve(iCntRange.second + 1U);
-	m_mapMultiState.emplace(pStateKey, vector<LPDIRECT3DBASETEXTURE9>());
-
+	vecPath.resize(iCntRange.second - iCntRange.first + 1U);
+	vecAsync.reserve(iCntRange.second + 1U);
+	
 	for (_uint i = 0; i <= iCntRange.second; ++i)
 	{
 		TCHAR	szFileName[256] = L"";
@@ -88,11 +86,10 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 	for (_uint i = 0; i <= iCntRange.second; ++i)
 	{
 		vecAsync[i].get();
-
-		CTextureMgr::GetInstance()->Get_Mutex()->lock();
-		m_mapMultiState[pStateKey].push_back(vecTexture[i]);
-		CTextureMgr::GetInstance()->Get_Mutex()->unlock();
 	}
+	vecAsync.clear();
+
+	m_mapMultiState.emplace(pStateKey, vecTexture);
 
 	return S_OK;
 }
