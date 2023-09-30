@@ -4,6 +4,9 @@
 
 #include "Engine_Macro.h"
 
+//임시용
+#include "AceFood.h" 
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -67,7 +70,11 @@ private:
 	// =============================== 차징 ===============================
 	void				Charge(const _float& fTimeDelta);	// 차징
 	// ====================================================================
-
+	
+	// =============================== 피킹 =============================== // 소영 추가 
+	//_vec3				Picking_On_Object();	// 오브젝트 마우스 피킹 
+	_bool Picking_On_Object();
+	// ====================================================================
 
 public: // Camera
 	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)

@@ -9,14 +9,6 @@ class CAceObjectFactory : public Engine::CGameObject
 public:
 enum class OBJECT_CLASS { FOOD, WEAPON, DISPLAY, INTERACTION, KEY, THROW_WEAPON, OBJECT_CLASSEND };
 
-
-	
-
-private:
-	explicit CAceObjectFactory(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CAceObjectFactory(const CAceObjectFactory& rhs);
-	virtual ~CAceObjectFactory();
-
 public:
-	static Engine::CGameObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, OBJECT_CLASS objClass, const _tchar* pObjTag);
+	static Engine::CGameObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, OBJECT_CLASS objClass, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
 };

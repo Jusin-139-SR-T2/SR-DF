@@ -2,6 +2,7 @@
 #include "AceObjectFactory.h"
 #include "GameObject.h"
 
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -11,12 +12,11 @@ class CCalculatorComponent;
 
 END
 
-enum class FOOD_NAME { APPLE, EATENAPPLE, BANANA, BANANAPEEL, COLA, MEDIKIT, FOOD_END };
-
 class CAceFood : public Engine::CGameObject
 {
 	DERIVED_CLASS(CGameObject, CAceFood)
 
+enum class FOOD_NAME { APPLE, EATENAPPLE, BANANA, BANANAPEEL, COLA, MEDIKIT, FOOD_END };
 
 private:
 	explicit CAceFood(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -28,20 +28,29 @@ public:
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
-	static CAceFood*	Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag);
+	static CAceFood*	Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
 
-private:
+private: 
 	virtual void		Free();
-	HRESULT				Add_Component();
-	void				Height_On_Terrain();
+
+	HRESULT				Add_Component(); // 컴포넌트 추가 
 	HRESULT				BillBoard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
-	void				FoodName(const _tchar* pObjTag);
-	FOOD_NAME			m_pReceiveName;
+	void				Height_On_Terrain(); // 지형타기 
+	void				FoodName(const _tchar* pObjTag); // TCHAR를 ENUM에 맞게 고치기 
 
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
 	CTextureComponent* m_pTextureComp = nullptr;
 	CTransformComponent* m_pTransformComp = nullptr;
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
+
+private:// 함수
+	void				Change_Texture(FOOD_NAME eCurName);
+	void				Eat_Food(FOOD_NAME eCurName);
+
+private: //변수
+	FOOD_NAME			m_pCurName;
+	_bool				m_bEat = false;  //blackboard 연동해서 플레이어 E상호작용 OR 피킹 여부 확인
+	_bool				m_bDead = false;  // 죽는거 생기면 그걸로 변경 
 };
 

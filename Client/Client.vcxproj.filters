@@ -73,13 +73,13 @@
     <Filter Include="02. GameObject\96. BlackBoardMgr\00. BlackBoard">
       <UniqueIdentifier>{607f2415-f271-4a94-b809-d62fe68ca80a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. AceObjectMgr">
+    <Filter Include="02. GameObject\02. AceObjectFactory">
       <UniqueIdentifier>{5e61b933-9702-4f06-a920-205389efb9c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. AceObjectMgr\00. AceFood">
+    <Filter Include="02. GameObject\02. AceObjectFactory\00. AceFood">
       <UniqueIdentifier>{8b0db644-e262-44d7-b6a1-4b79dd271bf1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. AceObjectMgr\01. AceWeapon">
+    <Filter Include="02. GameObject\02. AceObjectFactory\01. AceWeapon">
       <UniqueIdentifier>{54cb2c41-b362-4f49-a71b-ee5222bd28c0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -150,14 +150,14 @@
     <ClInclude Include="Header\BlackBoardMgr.h">
       <Filter>02. GameObject\96. BlackBoardMgr</Filter>
     </ClInclude>
-    <ClInclude Include="AceObjectFactory.h">
-      <Filter>02. GameObject\02. AceObjectMgr</Filter>
+    <ClInclude Include="Header\AceFood.h">
+      <Filter>02. GameObject\02. AceObjectFactory\00. AceFood</Filter>
     </ClInclude>
-    <ClInclude Include="AceFood.h">
-      <Filter>02. GameObject\02. AceObjectMgr\00. AceFood</Filter>
+    <ClInclude Include="Header\AceObjectFactory.h">
+      <Filter>02. GameObject\02. AceObjectFactory</Filter>
     </ClInclude>
-    <ClInclude Include="AceWeapon.h">
-      <Filter>02. GameObject\02. AceObjectMgr\01. AceWeapon</Filter>
+    <ClInclude Include="Header\AceWeapon.h">
+      <Filter>02. GameObject\02. AceObjectFactory\01. AceWeapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -224,14 +224,14 @@
     <ClCompile Include="Code\BlackBoardMgr.cpp">
       <Filter>02. GameObject\96. BlackBoardMgr</Filter>
     </ClCompile>
-    <ClCompile Include="AceObjectFactory.cpp">
-      <Filter>02. GameObject\02. AceObjectMgr</Filter>
+    <ClCompile Include="Code\AceFood.cpp">
+      <Filter>02. GameObject\02. AceObjectFactory\00. AceFood</Filter>
     </ClCompile>
-    <ClCompile Include="AceFood.cpp">
-      <Filter>02. GameObject\02. AceObjectMgr\00. AceFood</Filter>
+    <ClCompile Include="Code\AceObjectFactory.cpp">
+      <Filter>02. GameObject\02. AceObjectFactory</Filter>
     </ClCompile>
-    <ClCompile Include="AceWeapon.cpp">
-      <Filter>02. GameObject\02. AceObjectMgr\01. AceWeapon</Filter>
+    <ClCompile Include="Code\AceWeapon.cpp">
+      <Filter>02. GameObject\02. AceObjectFactory\01. AceWeapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

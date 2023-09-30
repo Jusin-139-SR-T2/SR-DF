@@ -43,6 +43,9 @@ CComponent* CRcBufferComp::Clone()
 
 void CRcBufferComp::Free()
 {
+	if (false == m_bClone)
+		Safe_Delete_Array(m_pVertexPos);
+
 	SUPER::Free();
 }
 
@@ -57,20 +60,22 @@ HRESULT CRcBufferComp::Ready_Buffer()
 	m_dwIdxSize = sizeof(INDEX32);
 	m_IdxFmt = D3DFMT_INDEX32;
 
+	m_pVertexPos = new _vec3[m_dwVtxCnt];
+
 	FAILED_CHECK_RETURN(CVIBufferComp::Ready_Buffer(), E_FAIL);
 
 	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
 
-	pVertex[0].vPosition = { -0.5f, 0.5f, 0.f };
+	pVertex[0].vPosition = m_pVertexPos[0] = { -0.5f, 0.5f, 0.f };
 	pVertex[0].vTexUV = { 0.f, 0.f };
 
-	pVertex[1].vPosition = { 0.5f, 0.5f, 0.f };
+	pVertex[1].vPosition = m_pVertexPos[1] = { 0.5f, 0.5f, 0.f };
 	pVertex[1].vTexUV = { 1.f, 0.f };
 
-	pVertex[2].vPosition = { 0.5f, -0.5f, 0.f };
+	pVertex[2].vPosition = m_pVertexPos[2] = { 0.5f, -0.5f, 0.f };
 	pVertex[2].vTexUV = { 1.f, 1.f };
 
-	pVertex[3].vPosition = { -0.5f, -0.5f, 0.f };
+	pVertex[3].vPosition = m_pVertexPos[3] = { -0.5f, -0.5f, 0.f };
 	pVertex[3].vTexUV = { 0.f, 1.f };
 
 	m_pVB->Unlock();

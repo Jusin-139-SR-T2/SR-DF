@@ -18,7 +18,7 @@ CAceWeapon::~CAceWeapon()
 {
 }
 
-CAceWeapon* CAceWeapon::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag)
+CAceWeapon* CAceWeapon::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
     if (FAILED(pInstance->Ready_GameObject()))
@@ -29,6 +29,7 @@ CAceWeapon* CAceWeapon::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObj
         return nullptr;
     }
 
+    pInstance->m_pTransformComp->Set_Pos({ _fx, _fy, _fz }); //초기위치 여기서 잡아줌 
     pInstance->WeaponName(pObjTag);
     return pInstance;
 }
@@ -36,8 +37,6 @@ CAceWeapon* CAceWeapon::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObj
 HRESULT CAceWeapon::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
-    m_pTransformComp->Set_Pos({ 25.f, 1.f, 25.f });
 
     return S_OK;
 }
@@ -49,10 +48,13 @@ _int CAceWeapon::Update_GameObject(const _float& fTimeDelta)
     // 지형타기 
     Height_On_Terrain();
 
-    // 빌보드 --------------------------------------
+    // 빌보드 
     BillBoard(fTimeDelta);
 
+    // 변수에 저장된 enum과 hp로 texture 결정 
+    Change_Texture(m_pReceiveName);
 
+    // Renderer 등록 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
     return S_OK;
@@ -81,6 +83,7 @@ void CAceWeapon::Free()
     __super::Free();
 }
 
+//------------------------------------------------------------------
 HRESULT CAceWeapon::Add_Component()
 {
     NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
@@ -101,14 +104,13 @@ void CAceWeapon::Height_On_Terrain()
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
 
-    m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.f, vPos.z);
+    m_pTransformComp->Set_Pos(vPos.x, fHeight + 0.5f, vPos.z);
 }
 
 HRESULT CAceWeapon::BillBoard(const _float& fTimeDelta)
 {
-    //case1. 회전행렬 만들기 
     _matrix		matWorld;
-    _vec3 vPlayerPos;
+    _vec3       vPlayerPos;
 
     matWorld = *m_pTransformComp->Get_Transform();
 
@@ -130,57 +132,120 @@ HRESULT CAceWeapon::BillBoard(const _float& fTimeDelta)
 
     m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
 
-    // case2. 빌보드 구성하기 
-    //_matrix		matWorld, matView, matBill;
-
-    //matWorld = *m_pTransformComp->Get_Transform();
-
-    //m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-    //D3DXMatrixIdentity(&matBill);
-
-    //matBill._11 = matView._11;
-    //matBill._13 = matView._13;
-    //matBill._31 = matView._31;
-    //matBill._33 = matView._33;
-
-    //D3DXMatrixInverse(&matBill, 0, &matBill);
-
-    //m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
-
-   // m_pTransformComp->Set_ScaleY(1.9f);
-
     return S_OK;
 }
 
 void CAceWeapon::WeaponName(const _tchar* pObjTag)
 {
     if (_tcscmp(pObjTag, _T("BOTTLE")) == 0)
-    {
-        m_pReceiveName = WEAPON_NAME::BOTTLE;
-        //m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Apple");
-    }
+        m_pReceiveName = CAceWeapon::WEAPON_NAME::BOTTLE;
     else if (_tcscmp(pObjTag, _T("PIPE")) == 0)
-    {
-        m_pReceiveName = WEAPON_NAME::PIPE;
-    }
+        m_pReceiveName = CAceWeapon::WEAPON_NAME::PIPE;
     else if (_tcscmp(pObjTag, _T("FRYINGPAN")) == 0)
-    {
-        m_pReceiveName = WEAPON_NAME::FRYINGPAN;
-    }
+        m_pReceiveName = CAceWeapon::WEAPON_NAME::FRYINGPAN;
     else if (_tcscmp(pObjTag, _T("PISTOL")) == 0)
-    {
-        m_pReceiveName = WEAPON_NAME::PISTOL;
-    }
+        m_pReceiveName = CAceWeapon::WEAPON_NAME::PISTOL;
     else if (_tcscmp(pObjTag, _T("TOMMYGUN")) == 0)
-    {
-        m_pReceiveName = WEAPON_NAME::TOMMYGUN;
-    }
+        m_pReceiveName = CAceWeapon::WEAPON_NAME::TOMMYGUN;
     else if (_tcscmp(pObjTag, _T("GASCANISTER")) == 0)
-    {
-        m_pReceiveName = WEAPON_NAME::GASCANISTER;
-    }
+        m_pReceiveName = CAceWeapon::WEAPON_NAME::GASCANISTER;
     else
-    {
-        m_pReceiveName = WEAPON_NAME::WEAPON_END;
-    }
+        m_pReceiveName = CAceWeapon::WEAPON_NAME::WEAPON_END;
 }
+
+void CAceWeapon::Change_Texture(WEAPON_NAME eReceiveName)
+{
+    switch (eReceiveName)
+    {
+    case CAceWeapon::WEAPON_NAME::BOTTLE:
+        if (m_fMaxHP == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"Bottle");
+            break;
+        }
+        else if (m_fCrackedHp == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"CrackedBottle");
+            break;
+        }
+        else
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenBottle");
+            break;
+        }
+        break;
+
+    case CAceWeapon::WEAPON_NAME::PIPE:
+        if (m_fMaxHP == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"LeadPipe");
+            break;
+        }
+        else if (m_fBrokenHp == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenPipe");
+            break;
+        }
+        break;
+
+    case CAceWeapon::WEAPON_NAME::WALLPIPE:
+        if (m_fMaxHP == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"WallPipe");
+            break;
+        }
+        else if (m_fBrokenHp == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenPipe");
+            break;
+        }
+        break;
+
+    case CAceWeapon::WEAPON_NAME::FRYINGPAN:
+        if (m_fMaxHP == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"FryingPan");
+            break;
+        }
+        else if (m_fBrokenHp == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenFryingPan");
+            break;
+        }
+        break;
+
+    case CAceWeapon::WEAPON_NAME::PISTOL:
+        if (m_fMaxHP == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"Pistol");
+            break;
+        }
+        else if (m_fBrokenHp == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenPistol");
+            break;
+        }
+        break;
+
+    case CAceWeapon::WEAPON_NAME::TOMMYGUN:
+        if (m_fMaxHP == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"TommyGun");
+            break;
+        }
+        else if (m_fBrokenHp == m_fHp)
+        {
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenTommyGun");
+            break;
+        }
+        break;
+
+    case CAceWeapon::WEAPON_NAME::GASCANISTER:
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"GasCanister");
+        break;
+    }
+
+}
+
+//------------------------------------------------------------------
+

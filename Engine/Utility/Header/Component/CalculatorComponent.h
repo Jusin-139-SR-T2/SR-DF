@@ -4,6 +4,9 @@
 
 BEGIN(Engine)
 
+class CRcBufferComp;
+class CTransformComponent;
+
 /// <summary>
 /// GameObject에 붙일 수 있는 컴포넌트
 /// 바로 아래 지형에 대해 높이를 계산 할 수 있는 컴포넌트
@@ -28,6 +31,9 @@ public:
 										const _ulong& dwCntX = VTXCNTX, const _ulong& dwCntZ = VTXCNTZ,
 										const _ulong& dwVtxItv = 1);
 
+	_vec3		Picking_On_Object(HWND hWnd,
+		CRcBufferComp* pRcBufferComp,
+		CTransformComponent* pTransformComp);
 };
 
 END
