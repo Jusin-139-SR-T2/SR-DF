@@ -41,6 +41,24 @@ enum OBJECTKEY
 	KEY_FRYINGPAN
 };
 
+// 키프레임 구조체
+struct Keyframe 
+{
+	char name[64];			// 키프레임 이름 (표시용)
+
+	float time;				// 키프레임의 시간 (0.0f ~ 1.0f 범위)
+	float value;			// 애니메이션 값 (크기, 회전, 이동 등)
+	float color[3];			// 키프레임 색상 (R, G, B)
+	float size;				// 크기 애니메이션에 필요한 멤버
+	float rotation;			// 회전 애니메이션에 필요한 멤버
+	float translation[2];	// 이동 애니메이션에 필요한 멤버
+
+	bool isEaseIn;			// Ease In 설정 (True 또는 False)
+	bool isEaseOut;			// Ease Out 설정 (True 또는 False)
+
+	int type;				// 애니메이션 타입 (0: 크기, 1: 회전, 2: 이동)
+};
+
 // 애니메이션 Info 구조체
 typedef struct tagMyInfoAnimation
 {
@@ -99,6 +117,20 @@ public:
 	void Replace(wstring& strCurrentDirectory, wstring strSearch, wstring strReplace);
 
 	//void RenderSelectedFrameTexture(const int selectedItemIndex);
+	
+	void RenderTimeline(); // 애니메이션 타임라인
+
+	float EvaluateAnimationAtTime(float time); // 애니메이션 시간
+
+	// 애니메이션의 시작과 끝을 부드럽게 표현하기 위한 함수
+	float ImEaseInQuad(float start, float end, float t);
+	float ImEaseOutQuad(float start, float end, float t);
+
+	// 미리보기 애니메이션 렌더링 함수
+	void RenderPreviewAnimation(float value);
+
+	// 선형 보간 함수
+	float Lerp(float a, float b, float t);
 
 public:
 	// 오브젝트 설정 및 관리 함수
@@ -112,6 +144,19 @@ public:
 
 	// 파일명 제거 함수
 	void PathRemoveFileSpec(TCHAR* path);
+
+
+	//test
+	//ImVec4 ImLerp(const ImVec4& a, const ImVec4& b, float t);
+	
+	// 토글 버튼
+	void ToggleButton(const char* str_id, bool* v);
+
+	// 애니메이션 저장
+	void SaveAnimationToFile(const char* fileName);
+
+	// 애니메이션 불러오기
+	void LoadAnimationFromFile(const char* fileName);
 
 public:
 	virtual HRESULT Ready_ImguiWin() override;
@@ -144,6 +189,7 @@ private:
 	// 텍스처를 담을 맵
 	map<pair<wstring, wstring>, LPDIRECT3DTEXTURE9> m_MapTexture;
 
+	//map<OBJECTKEY, Engine::CGameObject*> m_mapObject;
 
 	//OBJ_TYPE m_eObjectType;
 	//OBJ_NAME m_eObjName;
@@ -155,11 +201,36 @@ private: // 멤버 변수
 	float m_fY = 0.0f;
 	float m_fZ = 0.0f;
 
+	bool my_tool_active;
+	float my_color[4];
+
 	const char* items[100]; // ListBox에 추가할 아이템 배열
 	int itemIndex = 0;
 
+	float g_animationTime = 0.f;
+	int g_currentFrame = 0;
+
 	int	m_iObjectCreatIndex = -1;
 	int selectedItemIndex = -1; // 선택된 항목 인덱스, 기본값 -1은 아무 항목도 선택되지 않음을 나타냅니다.
+
+	bool	m_bTest;
+
+	// 애니메이션 타임 라인
+	std::vector<Keyframe> timeline;
+
+	// 애니메이션 타임라인
+	float currentTime = 0.0f;
+	bool isDraggingTimeline = false;
+	bool isPlaying = false;
+	float playbackSpeed = 1.0f;
+
+	// 키프레임 드래그
+	bool	isDraggingKeyframe = false;
+	int		draggingKeyframeIndex = 0;
+
+	// 애니메이션 재생
+	int animationFrame = 0;
+	float playbackTime = 0.f;
 
 	// @@@@@@엔진의 멤버가 아니라그래서 주석걸어뒀음@@@@@@@
 	//std::map<OBJECTKEY, Engine::CGameObject*> m_mapObject; // 객체를 저장하는 맵
