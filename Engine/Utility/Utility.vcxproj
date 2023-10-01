@@ -218,7 +218,6 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClInclude Include="Header\Physics\PhysicsWorld3D.h" />
     <ClInclude Include="Header\Data\PHY_Sphere.h" />
     <ClInclude Include="Header\Component\SceneComponent.h" />
-    <ClInclude Include="Header\Component\SphereColComp.h" />
     <ClInclude Include="Header\Component\MeshColComp.h" />
     <ClInclude Include="Header\Data\PHY_Box.h" />
     <ClInclude Include="Header\Data\PHY_Capsule.h" />
@@ -261,7 +260,6 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClCompile Include="Code\Data\PHY_Shape.cpp" />
     <ClCompile Include="Code\Data\PHY_Sphere.cpp" />
     <ClCompile Include="Code\Component\SceneComponent.cpp" />
-    <ClCompile Include="Code\Component\SphereColComp.cpp" />
     <ClCompile Include="Code\Component\MeshColComp.cpp" />
     <ClCompile Include="Code\Data\PHY_Box.cpp" />
     <ClCompile Include="Code\Data\PHY_Capsule.cpp" />

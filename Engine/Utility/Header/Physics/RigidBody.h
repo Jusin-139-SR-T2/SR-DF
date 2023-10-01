@@ -31,6 +31,11 @@ class ENGINE_DLL FRigidBody
 {
 	THIS_CLASS(FRigidBody)
 
+public:
+    FRigidBody() {}
+    ~FRigidBody() {}
+
+
 private: // internal static
     static inline void _CheckInverseInertiaTensor(const FMatrix3& iitWorld)
     {

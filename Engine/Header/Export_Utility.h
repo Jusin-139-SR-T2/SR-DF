@@ -20,7 +20,6 @@
 #include "CameraComponent.h"
 #include "CubeBufferComp.h"
 #include "ColliderComponent.h"
-#include "SphereColComp.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
 

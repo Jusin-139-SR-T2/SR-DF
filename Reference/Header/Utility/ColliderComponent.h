@@ -22,14 +22,16 @@ protected:
 	virtual ~CColliderComponent();
 
 public:
-	static	CComponent*			Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static	CComponent*			Create(LPDIRECT3DDEVICE9 pGraphicDev, ECOLLISION eType);
 	virtual CComponent*			Clone();
 	virtual void				Free();
 
 public:
-	virtual HRESULT	Ready_Collider();
+	PRIVATE virtual HRESULT Ready_Component() { return S_OK; }
+	PUBLIC	virtual HRESULT Ready_Component(LPDIRECT3DDEVICE9 pGraphicDev, ECOLLISION eType);
 	virtual _int	Update_Component(const _float& fTimeDelta);
 	virtual void	LateUpdate_Component() {}
+	virtual void	Render_Component() {}
 
 public:		// 충돌체 저장용 포인터
 	GETSET_EX2(FCollisionPrimitive*, m_pCollisionShape, Shape, GET, SET)
@@ -37,8 +39,29 @@ public:		// 충돌체 저장용 포인터
 protected:
 	FCollisionPrimitive* m_pCollisionShape = nullptr;			// 충돌체 저장 포인터
 
+public:			// 이벤트 함수
+	template <typename Func,
+				typename std::enable_if<std::is_member_function_pointer<Func>::value &&
+				std::is_same<typename std::remove_pointer<typename std::remove_reference<Func>::type>::type,
+				void(CGameObject*)>::value, int>::type = 0>
+	HRESULT	Set_Collide_Event(Func fn);
+
+	template <typename Func,
+				typename std::enable_if<std::is_member_function_pointer<Func>::value &&
+				std::is_same<typename std::remove_pointer<typename std::remove_reference<Func>::type>::type,
+				void(CGameObject*)>::value, int>::type = 0>
+	HRESULT	Set_CollisionEntered_Event(Func fn);
+
+	template <typename Func,
+				typename std::enable_if<std::is_member_function_pointer<Func>::value &&
+				std::is_same<typename std::remove_pointer<typename std::remove_reference<Func>::type>::type,
+				void(CGameObject*)>::value, int>::type = 0>
+	HRESULT	Set_CollisionExited_Event(Func fn);
+
 protected:
-	function<void()>	m_fnTest;
+	function<void(CGameObject*)>		m_fnCollide;
+	function<void(CGameObject*)>		m_fnCollisionEntered;
+	function<void(CGameObject*)>		m_fnCollisionExited;
 
 protected:
 	// 충돌이 발생할 때 불러오는 함수. 충돌이 발생하면 연결된 함수로 다시 신호를 보내줍니다.
@@ -53,10 +76,44 @@ protected:
 	using pair_collider = pair<CColliderComponent*, _bool>;
 	// 충돌 발생시 충돌한 객체를 가리키기 위한 리스트, Collide를 통해 매 프레임 조절됩니다.
 	list<pair_collider> m_listColliderObject;
-
-	// CSceneComponent을(를) 통해 상속됨
-	virtual HRESULT Ready_Component() override;
-	virtual void Render_Component() override;
+	
 };
 
 END
+
+
+
+
+
+template<typename Func,
+			typename std::enable_if<std::is_member_function_pointer<Func>::value&&
+			std::is_same<typename std::remove_pointer<typename std::remove_reference<Func>::type>::type,
+			void(CGameObject*)>::value, int>::type>
+inline HRESULT CColliderComponent::Set_Collide_Event(Func fn)
+{
+	m_fnCollide = [this, fn](CGameObject* pDst) { (this->*fn)(pDst); };
+
+	return S_OK;
+}
+
+template<typename Func,
+			typename std::enable_if<std::is_member_function_pointer<Func>::value&&
+			std::is_same<typename std::remove_pointer<typename std::remove_reference<Func>::type>::type,
+			void(CGameObject*)>::value, int>::type>
+inline HRESULT CColliderComponent::Set_CollisionEntered_Event(Func fn)
+{
+	m_fnCollisionEntered = [this, fn](CGameObject* pDst) { (this->*fn)(pDst); };
+
+	return S_OK;
+}
+
+template<typename Func,
+			typename std::enable_if<std::is_member_function_pointer<Func>::value&&
+			std::is_same<typename std::remove_pointer<typename std::remove_reference<Func>::type>::type,
+			void(CGameObject*)>::value, int>::type>
+inline HRESULT CColliderComponent::Set_CollisionExited_Event(Func fn)
+{
+	m_fnCollisionExited = [this, fn](CGameObject* pDst) { (this->*fn)(pDst); };
+
+	return S_OK;
+}
