@@ -77,12 +77,12 @@ HRESULT CImguiMgr::Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* 
 
 	
 
-	m_mapImguiWin.emplace(L"Test",  CImguiWin_Test::Create());
+	//m_mapImguiWin.emplace(L"Test",  CImguiWin_Test::Create());
 	m_mapImguiWin.emplace(L"TextureTool", CImguiWin_TextureTool::Create());
 	m_mapImguiWin.emplace(L"DockingSpace", CImguiWin_DockingSpace::Create());
 
 	// + 성희 : 테스트 클래스 추가
-	//m_mapImguiWin.emplace(L"Test AnimationTool", CImguiAnimationTool::Create());
+	m_mapImguiWin.emplace(L"Test AnimationTool", CImguiAnimationTool::Create());
 
 	return S_OK;
 }
