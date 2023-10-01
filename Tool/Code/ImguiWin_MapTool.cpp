@@ -73,6 +73,8 @@ _int CImguiWin_MapTool::Update_ImguiWin(const _float& fTimeDelta)
             ImGui::DockBuilderDockWindow("Browser", dock_down_id);
             ImGui::DockBuilderDockWindow("Viewer", dockspace_id);
 
+            ImGui::DockBuilderFinish(dockspace_id);
+
             m_bFirstLoop = false;
         }
     }

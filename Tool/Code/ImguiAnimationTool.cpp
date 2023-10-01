@@ -8,6 +8,7 @@
 #include "imgui_impl_win32.h"
 #include "imgui_internal.h"
 #include <ImguiMgr.h>
+
 #include "PlayerAnimation.h"
 
 CImguiAnimationTool::CImguiAnimationTool()
@@ -73,12 +74,72 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
 
     SUPER::Update_ImguiWin(fTimeDelta);
 
-        // ImGui에서 텍스처를 표시할 이미지 크기 (예: 200x200 픽셀)
-        const ImVec2 imageSize(200.0f, 200.0f);
+#pragma region 도킹 스테이션
+
+
+
+    ImGuiWindowFlags iMain_Flags = ImGuiWindowFlags_NoMove;
+    ImGuiDockNodeFlags iDockSpace_Flags = ImGuiDockNodeFlags_NoDockingInCentralNode;
+
+    // [학준] 도킹 스테이션 바인딩
+    ImGui::Begin("Center", NULL, iMain_Flags);
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+    {
+        // 기본 독
+        ImGuiID dockspace_id = ImGui::GetID("DockSpace_AnimationTool");
+        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), iDockSpace_Flags);
+
+        if (m_bFirstLoop)
+        {
+            ImGui::DockBuilderRemoveNode(dockspace_id);
+            ImGui::DockBuilderAddNode(dockspace_id, iDockSpace_Flags | ImGuiDockNodeFlags_DockSpace);
+            ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetWindowSize());
+            
+            ImGuiID dock_right_id = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.2f, NULL, &dockspace_id);
+            ImGuiID dock_right_tap_id = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.2f, &dock_right_id, &dockspace_id);
+            ImGuiID dock_right_down_id = ImGui::DockBuilderSplitNode(dock_right_id, ImGuiDir_Down, 0.2f, NULL, &dock_right_id);
+            ImGuiID dock_right_down_tap_id = ImGui::DockBuilderSplitNode(dock_right_id, ImGuiDir_Down, 0.2f, &dock_right_down_id, &dock_right_id);
+            ImGuiID dock_down_id = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.2f, NULL, &dockspace_id);
+            
+            
+            ImGui::DockBuilderDockWindow(u8"텍스처", dock_right_id);
+            ImGui::DockBuilderDockWindow(u8"애니메이션 속성 편집", dock_right_tap_id);
+            ImGui::DockBuilderDockWindow(u8"Keyframe List", dock_right_down_id);
+            ImGui::DockBuilderDockWindow(u8"키프레임 목록", dock_right_down_tap_id);
+            ImGui::DockBuilderDockWindow(u8"애니메이션 툴", dock_down_id);
+            ImGui::DockBuilderDockWindow(u8"뷰어", dockspace_id);
+
+            ImGui::DockBuilderFinish(dockspace_id);
+        }
+
+        m_bFirstLoop = false;
+    }
+    else
+    {
+        //ShowDockingDisabledMessage();
+    }
+
+#pragma endregion
+
+
+#pragma region 뷰어
+    if (ImGui::Begin(u8"뷰어", NULL, iMain_Flags))
+    {
+
+    }
+    ImGui::End();
+#pragma endregion
+
+    // ImGui에서 텍스처를 표시할 이미지 크기 (예: 200x200 픽셀)
+    const ImVec2 imageSize(200.0f, 200.0f);
 
 #pragma region 텍스처 툴
-        static int counter = 0;
+    static int counter = 0;
 
+    if (ImGui::Begin(u8"텍스처"))
+    {
         // 프레임
         ImGui::Text(u8"프레임 %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
@@ -90,7 +151,7 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
         if (ImGui::CollapsingHeader(u8"이미지 불러오기"))
         {
             if (ImGui::ListBox("Image Paths", &selectedPathIndex, charImagePaths.data(), charImagePaths.size())) {
-            
+
                 // 선택한 이미지 경로를 사용하여 이미지를 로드하는 함수 호출
                 const std::string& selectedImagePath = imagePaths[selectedPathIndex];
                 //LoadImg(ConverCtoWC(selectedImagePath.c_str()));
@@ -99,10 +160,6 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
         }
 
         ToggleButton(u8"토글", &m_bTest);
-
-        // Start the Dear ImGui frame
-        ImGui_ImplDX9_NewFrame();
-        ImGui_ImplWin32_NewFrame();
 
         static const char* ini_to_load = NULL;
         if (ini_to_load)
@@ -123,14 +180,19 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
         {
             LoadObjectInforamtionData();
         }
+    }   
+    ImGui::End();
 #pragma endregion
 
 #pragma region 애니메이션 툴
-        // 타임라인 툴
-        ImGui::Begin(u8"애니메이션 툴");
-        RenderTimeline();
-        ImGui::End();
+    // 타임라인 툴
+    ImGui::Begin(u8"애니메이션 툴");
+    RenderTimeline();
+    ImGui::End();
 #pragma endregion
+
+    // [학준] Center End
+    ImGui::End();
          
     return 0;
 }
