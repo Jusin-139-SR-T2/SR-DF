@@ -1,6 +1,7 @@
 #ifndef Engine_Typedef_h__
 #define Engine_Typedef_h__
 
+using std::unordered_multimap;
 using std::unordered_map;
 using std::pair;
 
@@ -40,6 +41,10 @@ namespace Engine
 
 	template <typename Key, typename Value>
 	using _unmap = unordered_map<Key, Value>;
+
+	template <typename Key, typename Value>
+	using _ummap = unordered_multimap<Key, Value>;
+
 
 	typedef		D3DXVECTOR2					_vec2;
 	typedef		D3DXVECTOR3					_vec3;

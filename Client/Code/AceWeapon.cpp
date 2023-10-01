@@ -16,11 +16,13 @@ CAceWeapon::CAceWeapon(const CAceWeapon& rhs)
 
 CAceWeapon::~CAceWeapon()
 {
+    Free();
 }
 
 CAceWeapon* CAceWeapon::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
+
     if (FAILED(pInstance->Ready_GameObject()))
     {
         Safe_Release(pInstance);
@@ -52,7 +54,7 @@ _int CAceWeapon::Update_GameObject(const _float& fTimeDelta)
     BillBoard(fTimeDelta);
 
     // 변수에 저장된 enum과 hp로 texture 결정 
-    Change_Texture(m_pReceiveName);
+    Change_Texture(m_pCurName);
 
     // Renderer 등록 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -137,24 +139,60 @@ HRESULT CAceWeapon::BillBoard(const _float& fTimeDelta)
 
 void CAceWeapon::WeaponName(const _tchar* pObjTag)
 {
-    if (_tcscmp(pObjTag, _T("BOTTLE")) == 0)
-        m_pReceiveName = CAceWeapon::WEAPON_NAME::BOTTLE;
-    else if (_tcscmp(pObjTag, _T("PIPE")) == 0)
-        m_pReceiveName = CAceWeapon::WEAPON_NAME::PIPE;
-    else if (_tcscmp(pObjTag, _T("FRYINGPAN")) == 0)
-        m_pReceiveName = CAceWeapon::WEAPON_NAME::FRYINGPAN;
-    else if (_tcscmp(pObjTag, _T("PISTOL")) == 0)
-        m_pReceiveName = CAceWeapon::WEAPON_NAME::PISTOL;
-    else if (_tcscmp(pObjTag, _T("TOMMYGUN")) == 0)
-        m_pReceiveName = CAceWeapon::WEAPON_NAME::TOMMYGUN;
-    else if (_tcscmp(pObjTag, _T("GASCANISTER")) == 0)
-        m_pReceiveName = CAceWeapon::WEAPON_NAME::GASCANISTER;
+    if ((wcscmp(pObjTag, L"BOTTLE") == 0) || (wcscmp(pObjTag, L"Bottle") == 0))
+        m_pCurName = CAceWeapon::WEAPON_NAME::BOTTLE;
+    else if ((wcscmp(pObjTag, L"PIPE") == 0) || (wcscmp(pObjTag, L"Pipe") == 0))
+        m_pCurName = CAceWeapon::WEAPON_NAME::PIPE;
+    else if ((wcscmp(pObjTag, L"WALLPIPE") == 0) || (wcscmp(pObjTag, L"WallPipe") == 0))
+        m_pCurName = CAceWeapon::WEAPON_NAME::WALLPIPE;
+    else if ((wcscmp(pObjTag, L"FRYINGPAN") == 0) || (wcscmp(pObjTag, L"FryingPan") == 0))
+        m_pCurName = CAceWeapon::WEAPON_NAME::FRYINGPAN;
+    else if ((wcscmp(pObjTag, L"PISTOL") == 0) || (wcscmp(pObjTag, L"Pistol") == 0))
+        m_pCurName = CAceWeapon::WEAPON_NAME::PISTOL;
+    else if ((wcscmp(pObjTag, L"TOMMYGUN") == 0) || (wcscmp(pObjTag, L"TommyGun") == 0))
+        m_pCurName = CAceWeapon::WEAPON_NAME::TOMMYGUN;
+    else if ((wcscmp(pObjTag, L"GASCANISTER") == 0) || (wcscmp(pObjTag, L"GasCanister") == 0))
+        m_pCurName = CAceWeapon::WEAPON_NAME::GASCANISTER;
+    else if ((wcscmp(pObjTag, L"BROKENFRYINGPAN") == 0) || (wcscmp(pObjTag, L"BrokenFryingPan") == 0))
+    {
+        m_fHp = m_fBrokenHp;
+        m_pCurName = CAceWeapon::WEAPON_NAME::FRYINGPAN;
+    }
+    else if ((wcscmp(pObjTag, L"BROKENTOMMYGUN") == 0) || (wcscmp(pObjTag, L"BrokenTommyGun") == 0))
+    {
+        m_fHp = m_fBrokenHp;
+        m_pCurName = CAceWeapon::WEAPON_NAME::TOMMYGUN;
+    }
+    else if ((wcscmp(pObjTag, L"CRACKEDBOTTLE") == 0) || (wcscmp(pObjTag, L"CrackedBottle") == 0))
+    {
+        m_fHp = m_fCrackedHp;
+        m_pCurName = CAceWeapon::WEAPON_NAME::BOTTLE;
+    }
+    else if ((wcscmp(pObjTag, L"BROKENBOTTLE") == 0) || (wcscmp(pObjTag, L"BrokenBottle") == 0))
+    {
+        m_fHp = m_fBrokenHp;
+        m_pCurName = CAceWeapon::WEAPON_NAME::BOTTLE;
+    }
+    else if ((wcscmp(pObjTag, L"BROKENPISTOL") == 0) || (wcscmp(pObjTag, L"BrokenPistol") == 0))
+    {
+        m_fHp = m_fBrokenHp;
+        m_pCurName = CAceWeapon::WEAPON_NAME::PISTOL;
+    }
+    else if ((wcscmp(pObjTag, L"BROKENPIPE") == 0) || (wcscmp(pObjTag, L"BrokenPipe") == 0))
+    {
+        m_fHp = m_fBrokenHp;
+        m_pCurName = CAceWeapon::WEAPON_NAME::PIPE;
+    }
     else
-        m_pReceiveName = CAceWeapon::WEAPON_NAME::WEAPON_END;
+    {
+        m_pCurName = CAceWeapon::WEAPON_NAME::WEAPON_END;
+    }
 }
 
 void CAceWeapon::Change_Texture(WEAPON_NAME eReceiveName)
 {
+    m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+
     switch (eReceiveName)
     {
     case CAceWeapon::WEAPON_NAME::BOTTLE:

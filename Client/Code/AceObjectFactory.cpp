@@ -3,6 +3,8 @@
 
 #include "AceFood.h"
 #include "AceWeapon.h"
+#include "AceThrow.h"
+#include "AceInteraction.h"
 
 Engine::CGameObject* CAceObjectFactory::Create(LPDIRECT3DDEVICE9 pGraphicDev, OBJECT_CLASS objClass, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
 {
@@ -22,13 +24,13 @@ Engine::CGameObject* CAceObjectFactory::Create(LPDIRECT3DDEVICE9 pGraphicDev, OB
         break;
 
     case CAceObjectFactory::OBJECT_CLASS::INTERACTION:
+        pInstance = CAceInteraction::Create(pGraphicDev, pObjTag, _fx, _fy, _fz);
+        return pInstance;
         break;
 
-    case CAceObjectFactory::OBJECT_CLASS::KEY:
-        break;
-
-    case CAceObjectFactory::OBJECT_CLASS::THROW_WEAPON:
-        break;
+    case CAceObjectFactory::OBJECT_CLASS::THROW:
+        pInstance = CAceThrow::Create(pGraphicDev, pObjTag, _fx, _fy, _fz);
+        return pInstance;
     }
 
     return pInstance;

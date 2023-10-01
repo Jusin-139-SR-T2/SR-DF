@@ -76,11 +76,20 @@
     <Filter Include="02. GameObject\02. AceObjectFactory">
       <UniqueIdentifier>{5e61b933-9702-4f06-a920-205389efb9c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. AceObjectFactory\00. AceFood">
+    <Filter Include="02. GameObject\02. AceObjectFactory\02. Ace_Throw">
+      <UniqueIdentifier>{6e596035-6b1e-41fb-ba9a-b9f1bc6013d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. AceObjectFactory\01. Ace_Weapon">
+      <UniqueIdentifier>{54cb2c41-b362-4f49-a71b-ee5222bd28c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. AceObjectFactory\00. Ace_Food">
       <UniqueIdentifier>{8b0db644-e262-44d7-b6a1-4b79dd271bf1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. AceObjectFactory\01. AceWeapon">
-      <UniqueIdentifier>{54cb2c41-b362-4f49-a71b-ee5222bd28c0}</UniqueIdentifier>
+    <Filter Include="02. GameObject\02. AceObjectFactory\03. Ace_Interaction">
+      <UniqueIdentifier>{4229125e-a6f5-44e9-937f-86a8eac35fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. AceObjectFactory\04. Ace_DestructibleDisplay">
+      <UniqueIdentifier>{c8b7e316-05db-484a-9def-8b46d5e4fc26}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -151,13 +160,19 @@
       <Filter>02. GameObject\96. BlackBoardMgr</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceFood.h">
-      <Filter>02. GameObject\02. AceObjectFactory\00. AceFood</Filter>
+      <Filter>02. GameObject\02. AceObjectFactory\00. Ace_Food</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceObjectFactory.h">
       <Filter>02. GameObject\02. AceObjectFactory</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceWeapon.h">
-      <Filter>02. GameObject\02. AceObjectFactory\01. AceWeapon</Filter>
+      <Filter>02. GameObject\02. AceObjectFactory\01. Ace_Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\AceThrow.h">
+      <Filter>02. GameObject\02. AceObjectFactory\02. Ace_Throw</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\AceInteraction.h">
+      <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -225,13 +240,19 @@
       <Filter>02. GameObject\96. BlackBoardMgr</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceFood.cpp">
-      <Filter>02. GameObject\02. AceObjectFactory\00. AceFood</Filter>
+      <Filter>02. GameObject\02. AceObjectFactory\00. Ace_Food</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceObjectFactory.cpp">
       <Filter>02. GameObject\02. AceObjectFactory</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceWeapon.cpp">
-      <Filter>02. GameObject\02. AceObjectFactory\01. AceWeapon</Filter>
+      <Filter>02. GameObject\02. AceObjectFactory\01. Ace_Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AceThrow.cpp">
+      <Filter>02. GameObject\02. AceObjectFactory\02. Ace_Throw</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AceInteraction.cpp">
+      <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

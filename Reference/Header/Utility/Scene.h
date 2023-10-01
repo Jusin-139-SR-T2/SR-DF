@@ -34,6 +34,7 @@ protected:	// 레이어 관련
 	CLayer*				Get_Layer(const _tchar* pLayerTag) { return m_mapLayer[pLayerTag]; }
 
 protected:
+	//_ummap<const _tchar*, CLayer*>	m_mapLayer;
 	_unmap<const _tchar*, CLayer*>	m_mapLayer;
 
 };

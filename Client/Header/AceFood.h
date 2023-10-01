@@ -16,7 +16,9 @@ class CAceFood : public Engine::CGameObject
 {
 	DERIVED_CLASS(CGameObject, CAceFood)
 
-enum class FOOD_NAME { APPLE, EATENAPPLE, BANANA, BANANAPEEL, COLA, MEDIKIT, FOOD_END };
+enum class FOOD_NAME { APPLE, BANANA, COLA, MEDIKIT, 
+					EATENAPPLE, BANANAPEEL, 
+					FOOD_END };
 
 private:
 	explicit CAceFood(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -36,7 +38,6 @@ private:
 	HRESULT				Add_Component(); // 컴포넌트 추가 
 	HRESULT				BillBoard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	void				Height_On_Terrain(); // 지형타기 
-	void				FoodName(const _tchar* pObjTag); // TCHAR를 ENUM에 맞게 고치기 
 
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
@@ -45,12 +46,14 @@ private:
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
 
 private:// 함수
-	void				Change_Texture(FOOD_NAME eCurName);
-	void				Eat_Food(FOOD_NAME eCurName);
+	void				FoodName(const _tchar* pObjTag); // TCHAR를 ENUM에 맞게 고치기 
+	void				Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta);
 
 private: //변수
 	FOOD_NAME			m_pCurName;
 	_bool				m_bEat = false;  //blackboard 연동해서 플레이어 E상호작용 OR 피킹 여부 확인
 	_bool				m_bDead = false;  // 죽는거 생기면 그걸로 변경 
+	_vec3				CurPos;
+	_float				m_fChangeTextureSpeed = 1.f;
 };
 

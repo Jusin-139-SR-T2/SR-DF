@@ -82,7 +82,7 @@ _uint CLoading::Loading_For_Stage()
 	
 	// 오브젝트 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Food", L"Cola")), E_FAIL);
-
+	
 
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
@@ -248,13 +248,28 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Weapon/WallPipe.png", TEX_NORMAL, L"Weapon", L"WallPipe");
 	Load_Texture(L"./Resource/Texture/Item/Weapon/Pistol.png", TEX_NORMAL, L"Weapon", L"Pistol");
 
-	//Object - Throw (진행중)
+	//Object - Throw (진행중) - 사이즈 조절 필요 (확인불가) 
 	Load_Texture(L"./Resource/Texture/Item/Throw/UmbrellaStand.png", TEX_NORMAL, L"Throw", L"UmbrellaStand");
 	Load_Texture(L"./Resource/Texture/Item/Throw/TumblerGlass.png", TEX_NORMAL, L"Throw", L"TumblerGlass");
 	Load_Texture(L"./Resource/Texture/Item/Throw/WoodenBarrel.png", TEX_NORMAL, L"Throw", L"WoodenBarrel");
 	Load_Texture(L"./Resource/Texture/Item/Throw/WoodenStool.png", TEX_NORMAL, L"Throw", L"WoodenStool");
 	Load_Texture(L"./Resource/Texture/Item/Throw/CoatHanger.png", TEX_NORMAL, L"Throw", L"CoatHanger");
 	Load_Texture(L"./Resource/Texture/Item/Throw/Microphone.png", TEX_NORMAL, L"Throw", L"Microphone");
+
+	//Object - Interaction (진행중) 
+	Load_Texture(L"./Resource/Texture/Item/Interaction/LightSwitch_Off.png", TEX_NORMAL, L"Interaction", L"LightSwitch_Off");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/LightSwitch_On.png", TEX_NORMAL, L"Interaction", L"LightSwitch_On");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/BlockSwitch_Off.png", TEX_NORMAL, L"Interaction", L"BlockSwitch_Off");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/BlockSwitch_On.png", TEX_NORMAL, L"Interaction", L"BlockSwitch_On");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/TwoButton_Off.png", TEX_NORMAL, L"Interaction", L"TwoButton_Off");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/TwoButton_On.png", TEX_NORMAL, L"Interaction",  L"TwoButton_On");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/OneButton_Off.png", TEX_NORMAL, L"Interaction", L"OneButton_Off");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/OneButton_On.png", TEX_NORMAL, L"Interaction", L"OneButton_On");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/Padlock_Off.png", TEX_NORMAL, L"Interaction", L"Padlock_Off");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/Key_Blue.png", TEX_NORMAL, L"Interaction", L"Building_Key");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/Key_Red.png", TEX_NORMAL, L"Interaction", L"Bossroom_Key");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/Newspaper.png", TEX_NORMAL, L"Interaction", L"Newspaper");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/ComicBook.png", TEX_NORMAL, L"Interaction", L"ComicBook");
 
 #pragma endregion
 

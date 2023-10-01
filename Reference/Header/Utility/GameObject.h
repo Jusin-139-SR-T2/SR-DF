@@ -40,6 +40,7 @@ protected:
 	T* Set_DefaultComponent_FromProto(COMPONENTID eID, const _tchar* pComponentTag, const _tchar* pProtoTag);
 
 protected:
+	//_ummap<const _tchar*, CComponent*>		m_mapComponent[ID_END];
 	_unmap<const _tchar*, CComponent*>		m_mapComponent[ID_END];
 	LPDIRECT3DDEVICE9						m_pGraphicDev;
 

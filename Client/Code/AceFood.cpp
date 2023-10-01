@@ -16,11 +16,13 @@ CAceFood::CAceFood(const CAceFood& rhs)
 
 CAceFood::~CAceFood()
 {
+    Free();
 }
 
 CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
     if (FAILED(pInstance->Ready_GameObject()))
     {
         Safe_Release(pInstance);
@@ -31,13 +33,14 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
 
     pInstance->m_pTransformComp->Set_Pos({ _fx, _fy, _fz });
     pInstance->FoodName(pObjTag);
+    
+    //pInstance->CurPos = pInstance->m_pTransformComp->Get_Pos();
     return pInstance;
 }
 
 HRESULT CAceFood::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
 
     return S_OK;
 }
@@ -52,11 +55,14 @@ _int CAceFood::Update_GameObject(const _float& fTimeDelta)
     // 빌보드 
     BillBoard(fTimeDelta);
 
-    //Eat_Food
-    Eat_Food(m_pCurName);
+    // TEST --------------------------
+    if (Engine::IsKey_Pressed(DIK_O))
+        m_bEat = true;
+    
+    //--------------------------------
 
     // 변수에 저장된 enum으로 texture 결정 - eaten 변경때문에 
-    Change_Texture(m_pCurName);
+    Eat_Food(m_pCurName, fTimeDelta);
 
     // Renderer 등록 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -141,91 +147,92 @@ HRESULT CAceFood::BillBoard(const _float& fTimeDelta)
 void CAceFood::FoodName(const _tchar* pObjTag)
 {
     if ((wcscmp(pObjTag, L"APPLE") == 0) || (wcscmp(pObjTag, L"Apple") == 0))
+    {
         m_pCurName = CAceFood::FOOD_NAME::APPLE;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Apple");
+        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+    }
     else if ((wcscmp(pObjTag, L"EATENAPPLE") == 0) || (wcscmp(pObjTag, L"EatenApple") == 0))
+    {
         m_pCurName = CAceFood::FOOD_NAME::EATENAPPLE;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"EatenApple");
+        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+    }
     else if ((wcscmp(pObjTag, L"BANANA") == 0) || (wcscmp(pObjTag, L"Banana") == 0))
+    {
         m_pCurName = CAceFood::FOOD_NAME::BANANA;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Banana");
+        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+    }
     else if ((wcscmp(pObjTag, L"BANANAPEEL") == 0) || (wcscmp(pObjTag, L"BananaPeel") == 0))
+    {
         m_pCurName = CAceFood::FOOD_NAME::BANANAPEEL;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"BananaPeel");
+        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+    }
     else if ((wcscmp(pObjTag, L"COLA") == 0) || (wcscmp(pObjTag, L"Cola") == 0))
+    {
         m_pCurName = CAceFood::FOOD_NAME::COLA;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Cola");
+        m_pTransformComp->Set_Scale({ 0.1f, 1.f,  0.5f });
+    }
     else if ((wcscmp(pObjTag, L"MEDIKIT") == 0) || (wcscmp(pObjTag, L"Medkit") == 0))
+    {
         m_pCurName = CAceFood::FOOD_NAME::MEDIKIT;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Medkit");
+        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+    }
     else
         m_pCurName = CAceFood::FOOD_NAME::FOOD_END;
 
 }
 
-void CAceFood::Change_Texture(FOOD_NAME eCurName)
+void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta)
 {
-    switch (eCurName)
-    {
-    case CAceFood::FOOD_NAME::APPLE:
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Apple");
-        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
-        break;
-
-    case CAceFood::FOOD_NAME::EATENAPPLE:
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"EatenApple");
-        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
-        break;
-
-    case CAceFood::FOOD_NAME::BANANA:
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Banana");
-        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
-        break;
-
-    case CAceFood::FOOD_NAME::BANANAPEEL:
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"BananaPeel");
-        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
-        break;
-
-    case CAceFood::FOOD_NAME::COLA: //?? 왜 혼자 빌보드가 안먹히십니까 
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Cola");
-        m_pTransformComp->Set_Scale({ 0.1f, 1.f,  0.5f });
-        break;
-    
-    case CAceFood::FOOD_NAME::MEDIKIT:
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Medkit");
-        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
-        break;
-
-    }
-}
-
-void CAceFood::Eat_Food(FOOD_NAME eCurName)
-{
-    if (m_bEat) //blackboard 연동해서 플레이어 E상호작용 OR 피킹 여부 확인
+    if (m_bEat)
     {
         switch (eCurName)
         {
         case CAceFood::FOOD_NAME::APPLE:
-            m_bDead = FALSE; // 죽는거 생기면 그걸로 변경 
-            m_pCurName = CAceFood::FOOD_NAME::EATENAPPLE;
-            break;
 
-        case CAceFood::FOOD_NAME::EATENAPPLE:
-            m_bDead = TRUE;
+            m_pCurName = CAceFood::FOOD_NAME::EATENAPPLE;
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"EatenApple");
+            m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+            m_bDead = FALSE; // 죽는거 생기면 그걸로 변경 
+            //먹자마자 1증가, 체젠 5초간 0.8초당 1씩 증가 // 58 -> 65 , 71 -> 78 (+7)
+
             break;
 
         case CAceFood::FOOD_NAME::BANANA:
-            m_bDead = FALSE;
-            m_pCurName = CAceFood::FOOD_NAME::BANANAPEEL;
-            break;
 
-        case CAceFood::FOOD_NAME::BANANAPEEL:
-            m_bDead = TRUE;
+            m_pCurName = CAceFood::FOOD_NAME::BANANAPEEL;
+            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"BananaPeel");
+            m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+            m_bDead = FALSE;
+
             break;
 
         case CAceFood::FOOD_NAME::COLA:
+            // 먹자마자 0증가, 체젠 0.5초당 1씩 증가 , 20초간 이속증가 
             m_bDead = TRUE;
+
             break;
 
         case CAceFood::FOOD_NAME::MEDIKIT:
+            // 먹자마자 35 체력 증가 
             m_bDead = TRUE;
             break;
+
         }
+
+        //m_pTransformComp->Set_Pos({ CurPos.x, CurPos.y + 1.f ,CurPos.z });
+
+       // _vec3 gravity = { 0.f, -0.1f, 0.f };
+
+       // m_pTransformComp->Move_Pos(&gravity, fTimeDelta, m_fChangeTextureSpeed);
+
+        //if (CurPos.y >= m_pTransformComp->Get_Pos().y)
+         //   m_bEat = false;
 
     }
 }

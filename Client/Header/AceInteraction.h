@@ -1,0 +1,58 @@
+#pragma once
+
+#include "AceObjectFactory.h"
+#include "GameObject.h"
+
+BEGIN(Engine)
+
+class CRcBufferComp;
+class CTextureComponent;
+class CTransformComponent;
+class CCalculatorComponent;
+
+END
+
+
+class CAceInteraction : public Engine::CGameObject
+{
+	DERIVED_CLASS(CGameObject, CAceInteraction)
+
+	enum class INTERACTION_NAME {LIGHTSWITCH, ONE_BUTTON, TWO_BUTTON,  BLOCK_SWITCH, PADLOCK,
+								NEWSPAPER, COMICBOOK,
+								BUILDING_KEY, BOSSROOM_KEY,	INTERACTION_END };
+
+private:
+	explicit CAceInteraction(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CAceInteraction(const CAceInteraction& rhs);
+	virtual ~CAceInteraction();
+
+public:
+	virtual HRESULT		Ready_GameObject() override;
+	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
+	virtual void		LateUpdate_GameObject() override;
+	virtual void		Render_GameObject() override;
+	static CAceInteraction* Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
+
+private: // 함수 
+	virtual void		Free();											// Release
+	HRESULT				Add_Component();								// 컴포넌트 추가 
+	HRESULT				BillBoard(const _float& fTimeDelta);			// 빌보드
+	void				Height_On_Terrain();							// 지형타기 
+	void				ObjectName(const _tchar* pObjTag);				// 처음 주어진 wchar를 enum으로 변경 
+	void				Change_Texture(INTERACTION_NAME eReceiveName);  // 변경되는 texture를 바꾸는곳 
+
+private: // 변수 
+	INTERACTION_NAME			m_pCurName;								// 현재 오브젝트 enum 
+	_float m_fHp = 2.f;
+	_float m_fBrokenHp = 0.f;
+	_float m_fCrackedHp = 1.f;
+	_float m_fMaxHP = 2.f;
+	_float m_fBillboardHeight = 0.f;
+	_bool m_bOnOff = FALSE;
+
+private:
+	CRcBufferComp* m_pBufferComp = nullptr;
+	CTextureComponent* m_pTextureComp = nullptr;
+	CTransformComponent* m_pTransformComp = nullptr;
+	CCalculatorComponent* m_pCalculatorComp = nullptr;
+};
