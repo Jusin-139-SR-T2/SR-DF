@@ -49,8 +49,10 @@ HRESULT CMultiStateTexture::Ready_Texture(LPDIRECT3DDEVICE9 pGraphicDev)
 HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eType, const _tchar* pStateKey, const _range<_uint>& iCntRange)
 {
 	// 스테이트 키에 이미 텍스처 셋이 있으면 처리하지 않는다.
+	CTextureMgr::GetInstance()->Get_Mutex()->lock();
 	if (m_mapMultiState.find(pStateKey) != m_mapMultiState.end())
 		return E_FAIL;
+	CTextureMgr::GetInstance()->Get_Mutex()->unlock();
 
 	// 파일 존재여부 확인, 특히 사이즈에 해당하는 카운트 값이 존재하는지 확인, 잘못된 경로가 있다면 오류 반환
 	//{

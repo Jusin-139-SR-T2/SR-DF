@@ -28,6 +28,8 @@ private:
 	ImGuiDockNodeFlags		m_DockSpace_Flags;
 	ImGuiWindowFlags		m_Window_Flags;
 
+	
+
 
 };
 

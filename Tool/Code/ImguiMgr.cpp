@@ -12,6 +12,7 @@
 #include "ImguiAnimationTool.h"
 #include "ImguiWin_TextureTool.h"
 #include "ImguiWin_DockingSpace.h"
+#include "ImguiWin_MapTool.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
@@ -76,13 +77,30 @@ HRESULT CImguiMgr::Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* 
 	ImGui_ImplDX9_Init(m_pGraphicDev);
 
 	
-
+	
 	//m_mapImguiWin.emplace(L"Test",  CImguiWin_Test::Create());
-	m_mapImguiWin.emplace(L"TextureTool", CImguiWin_TextureTool::Create());
 	m_mapImguiWin.emplace(L"DockingSpace", CImguiWin_DockingSpace::Create());
+	m_mapImguiWin.emplace(L"MapTool", CImguiWin_MapTool::Create());
+	m_mapImguiWin.emplace(L"TextureTool", CImguiWin_TextureTool::Create());
+	m_mapImguiWin.emplace(L"AnimationTool", CImguiAnimationTool::Create());
 
-	// + 성희 : 테스트 클래스 추가
-	m_mapImguiWin.emplace(L"Test AnimationTool", CImguiAnimationTool::Create());
+	CImguiMgr::GetInstance()->Open_Layout(L"MapTool");
+	CImguiMgr::GetInstance()->Close_Layout(L"TextureTool");
+	CImguiMgr::GetInstance()->Close_Layout(L"AnimationTool");
+
+	// 우선도 기반으로 루프 돌리기
+	m_vecSortedImguiWin.reserve(m_mapImguiWin.size());
+	for (auto item : m_mapImguiWin)
+	{
+		m_vecSortedImguiWin.push_back(item);
+	}
+
+	// 정렬
+	sort(m_vecSortedImguiWin.begin(), m_vecSortedImguiWin.end(),
+		[](pair<const _tchar*, CImguiWin*>& pDst, pair<const _tchar*, CImguiWin*>& pSrc) {
+			return (pDst.second->Get_Priority() > pSrc.second->Get_Priority());
+		});
+
 
 	return S_OK;
 }
@@ -105,32 +123,32 @@ HRESULT CImguiMgr::Update_Imgui(const _float& fTimeDelta)
 
 	
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-	if (m_bShow_DemoWindow)
-		ImGui::ShowDemoWindow(&m_bShow_DemoWindow);
+	//if (m_bShow_DemoWindow)
+	//	ImGui::ShowDemoWindow(&m_bShow_DemoWindow);
 
-	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-	if (m_bShow_DemoWindow)
-	{
-		static float f = 0.0f;
-		static int counter = 0;
+	//// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+	//if (m_bShow_DemoWindow)
+	//{
+	//	static float f = 0.0f;
+	//	static int counter = 0;
 
-		ImGui::Begin("Hello, world!!");                          // Create a window called "Hello, world!" and append into it.
+	//	ImGui::Begin("Hello, world!!");                          // Create a window called "Hello, world!" and append into it.
 
-		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-		ImGui::Checkbox("Demo Window", &m_bShow_DemoWindow);      // Edit bools storing our window open/close state
-		ImGui::Checkbox("Another Window", &m_bShow_AnotherWindow);
+	//	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+	//	ImGui::Checkbox("Demo Window", &m_bShow_DemoWindow);      // Edit bools storing our window open/close state
+	//	ImGui::Checkbox("Another Window", &m_bShow_AnotherWindow);
 
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-		ImGui::ColorEdit3("clear color", (float*)&m_vClearColor); // Edit 3 floats representing a color
+	//	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+	//	ImGui::ColorEdit3("clear color", (float*)&m_vClearColor); // Edit 3 floats representing a color
 
-		if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-			counter++;
-		ImGui::SameLine();
-		ImGui::Text("counter = %d", counter);
+	//	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+	//		counter++;
+	//	ImGui::SameLine();
+	//	ImGui::Text("counter = %d", counter);
 
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / m_pIO->Framerate, m_pIO->Framerate);
-		ImGui::End();
-	}
+	//	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / m_pIO->Framerate, m_pIO->Framerate);
+	//	ImGui::End();
+	//}
 
 	
 
@@ -182,18 +200,18 @@ HRESULT CImguiMgr::Update_Imgui(const _float& fTimeDelta)
 	//ImGui::End();
 
 	// 3. Show another simple window.
-	if (m_bShow_AnotherWindow)
-	{
-		ImGui::Begin("Another Window", &m_bShow_AnotherWindow);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-		ImGui::Text("Hello from another window!");
-		if (ImGui::Button("Close Me"))
-			m_bShow_AnotherWindow = false;
-		ImGui::End();
-	}
+	//if (m_bShow_AnotherWindow)
+	//{
+	//	ImGui::Begin("Another Window", &m_bShow_AnotherWindow);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+	//	ImGui::Text("Hello from another window!");
+	//	if (ImGui::Button("Close Me"))
+	//		m_bShow_AnotherWindow = false;
+	//	ImGui::End();
+	//}
 
 
 	// 컨테이너에 저장된 윈도우 실행
-	for (auto item : m_mapImguiWin)
+	for (auto item : m_vecSortedImguiWin)
 		item.second->Update_ImguiWin(fTimeDelta);
 
 
@@ -266,4 +284,23 @@ void CImguiMgr::HelpMarkerEx(const char* marker, const char* desc)
 		ImGui::PopTextWrapPos();
 		ImGui::EndTooltip();
 	}
+}
+
+void CImguiMgr::Open_Layout(const _tchar* pWin)
+{
+	auto iter = m_mapImguiWin.find(pWin);
+	if (iter == m_mapImguiWin.end())
+		return;
+
+	(*iter).second->Set_Open(true);
+}
+
+void CImguiMgr::Close_Layout(const _tchar* pWin)
+{
+	auto iter = m_mapImguiWin.find(pWin);
+	if (iter == m_mapImguiWin.end())
+		return;
+
+	(*iter).second->Set_Open(false);
+	(*iter).second->Set_FirstLoop(true);
 }

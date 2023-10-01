@@ -96,6 +96,15 @@
     <ClInclude Include="Header\ImguiAnimationTool.h">
       <Filter>02. ImguiMgr\AnimationTool\00. MainTool</Filter>
     </ClInclude>
+    <ClInclude Include="Header\ImguiWin_TextureTool.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiWin_DockingSpace.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiWin_MapTool.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\framework.cpp">
@@ -149,6 +158,15 @@
     <ClCompile Include="Code\ImguiAnimationTool.cpp">
       <Filter>02. ImguiMgr\AnimationTool\00. MainTool</Filter>
     </ClCompile>
+    <ClCompile Include="Code\ImguiWin_TextureTool.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiWin_DockingSpace.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiWin_MapTool.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Include\Tool.rc">
@@ -160,6 +178,15 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="Include\Tool.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Include\metal-detector.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Include\icon1.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="metal-detector.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

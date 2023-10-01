@@ -24,7 +24,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Tool\Bin\Export\$(Configuratio
       <Message>헤더가 읽기모드로 복사되었습니다.\n바이너리 파일이 복사되었습니다.</Message>
     </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;dinput8.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxgi.lib;dxguid.lib;dinput8.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Reference\Library\Engine\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)Reference\Library\FMod\core\$(PlatformTarget)\;$(SolutionDir)Reference\Library\FMod\fsbank\$(PlatformTarget)\;$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\;$(SolutionDir)Reference\Header\Boost_1_83_0\libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>

@@ -256,8 +256,11 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ResourceCompile Include="Include\Tool.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Include\icon1.ico" />
+    <Image Include="Include\metal-detector.ico" />
     <Image Include="Include\small.ico" />
     <Image Include="Include\Tool.ico" />
+    <Image Include="metal-detector.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Imgui\imgui.natvis">
