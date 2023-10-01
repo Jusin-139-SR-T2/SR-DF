@@ -42,7 +42,7 @@ CComponent* CRcBufferComp::Clone()
 }
 
 void CRcBufferComp::Free()
-{
+{	
 	if (false == m_bClone)
 		Safe_Delete_Array(m_pVertexPos);
 

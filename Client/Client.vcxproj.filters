@@ -88,9 +88,6 @@
     <Filter Include="02. GameObject\02. AceObjectFactory\03. Ace_Interaction">
       <UniqueIdentifier>{4229125e-a6f5-44e9-937f-86a8eac35fab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. AceObjectFactory\04. Ace_DestructibleDisplay">
-      <UniqueIdentifier>{c8b7e316-05db-484a-9def-8b46d5e4fc26}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">

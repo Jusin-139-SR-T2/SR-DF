@@ -37,7 +37,7 @@ private: // 함수
 	HRESULT				BillBoard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	void				Height_On_Terrain();
 	void				WeaponName(const _tchar* pObjTag);
-	void				Change_Texture(WEAPON_NAME eReceiveName);
+	void				Change_Texture(WEAPON_NAME eReceiveName); //모든 무기에 내구도에 따른 이미지 존재 
 	
 private: // 변수 
 	WEAPON_NAME			m_pCurName;

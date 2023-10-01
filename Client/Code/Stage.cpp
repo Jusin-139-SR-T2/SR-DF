@@ -97,23 +97,31 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"CrackedBottle", 32.f, 1.f, 20.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenBottle", 36.f, 1.f, 20.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenPistol", 40.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"GasCanister", 44.f, 1.f, 20.f)), E_FAIL); //
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"GasCanister", 44.f, 1.f, 20.f)), E_FAIL); 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon7", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenPipe", 48.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon8", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"FryingPan", 52.f, 1.f, 20.f)), E_FAIL);//
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"TommyGun", 56.f, 1.f, 20.f)), E_FAIL); // 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon8", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"FryingPan", 52.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"TommyGun", 56.f, 1.f, 20.f)), E_FAIL); 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon10", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"LeadPipe", 60.f, 1.f, 20.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon11", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"WallPipe", 64.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon12", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"Pistol", 68.f, 1.f, 20.f)), E_FAIL); //
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon12", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"Pistol", 68.f, 1.f, 20.f)), E_FAIL); 
 	
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"BLOCK_SWITCH", 24.f, 1.f, 16.f)), E_FAIL); //
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"LIGHT_SWITCH", 28.f, 1.f, 16.f)), E_FAIL); //
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"TwoButton", 32.f, 1.f, 16.f)), E_FAIL); //
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"OneButton", 36.f, 1.f, 16.f)), E_FAIL); //
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Padlock", 40.f, 1.f, 16.f)), E_FAIL); //
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Newspaper", 44.f, 1.f, 16.f)), E_FAIL); //
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction7", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"ComicBook", 48.f, 1.f, 16.f)), E_FAIL); //
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction8", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Building_Key", 52.f, 1.f, 16.f)), E_FAIL); //
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Bossroom_Key", 56.f, 1.f, 16.f)), E_FAIL); //
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"BLOCK_SWITCH", 24.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"LIGHT_SWITCH", 28.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"TwoButton", 32.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"OneButton", 36.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Padlock", 40.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Newspaper", 44.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction7", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"ComicBook", 48.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction8", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Building_Key", 52.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Bossroom_Key", 56.f, 1.f, 16.f)), E_FAIL); 
+	
+	// 너무많아서 그냥 이정도만 깔음 - 스프라이트 형식으로 넣어서 Cnt값의 Frame을 넣어주면 해당하는거 나옴 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"Trashbin", 24.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"Lamp", 28.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"TrashCan", 32.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"CoatHanger", 36.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"PAINTCAN", 40.f, 1.f, 12.f, 2)), E_FAIL); //Cnt 예시
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"GENERICBOTTLE", 44.f, 1.f, 12.f, 5)), E_FAIL);  //Cnt 예시
 
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"BLOCK_SWITCH", 24.f, 1.f, 12.f)), E_FAIL); //
 	// Add_GameObject에 들어가는 pObjTag 가 다 달라야 들어감 -> Object 피킹하는데 연산량이 너무 증가함

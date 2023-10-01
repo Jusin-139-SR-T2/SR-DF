@@ -142,6 +142,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Player/PlayerKick_%d.png", TEX_NORMAL, L"Player_Multi", L"Kick", _range<_uint>(0U, 3U));
 #pragma endregion
 
+
 #pragma region Brown Monster
 	// Monster Texture - Brown - Single : 3EA
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Stand/Stand_South.png", TEX_NORMAL, L"Brown_Single", L"Stand_South");
@@ -169,6 +170,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Jump/Jump_%d.png", TEX_NORMAL, L"Brown_Multi", L"Jump", _range<_uint>(0U, 6U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Hit/Hit_%d.png", TEX_NORMAL, L"Brown_Multi", L"Hit", _range<_uint>(0U, 5U));
 #pragma endregion
+
 
 #pragma region Gray Monster
 	// Monster Texture - Gray - Single : 5EA (2 Pending Approval) 
@@ -200,6 +202,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Gray/Run/Run_%d.png", TEX_NORMAL, L"Gray_Multi", L"Run", _range<_uint>(0U, 21U));
 #pragma endregion
 
+
 #pragma region Boss Monster
 	// Monster Texture - Boss - Single
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Single/Pre_Attack.png", TEX_NORMAL, L"Boss_Single", L"Pre_Attack");
@@ -225,6 +228,8 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Walk/Walk_%d.png", TEX_NORMAL, L"Boss_Multi", L"Walk", _range<_uint>(0U, 28U));
 #pragma endregion
 
+	Wait_LoadTextureAsync();
+
 #pragma region Object 
 	// Object - Food
 	Load_Texture(L"./Resource/Texture/Item/Food/BananaPeel.png", TEX_NORMAL, L"Food", L"BananaPeel");
@@ -249,14 +254,49 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Weapon/Pistol.png", TEX_NORMAL, L"Weapon", L"Pistol");
 
 	//Object - Throw (진행중) - 사이즈 조절 필요 (확인불가) 
+	Load_Texture(L"./Resource/Texture/Item/Throw/ScrunchedPaper_%d.png", TEX_NORMAL, L"Throw", L"ScrunchedPaper", _range<_uint>(0U, 1U));
+	Load_Texture(L"./Resource/Texture/Item/Throw/PaperBox_%d.png", TEX_NORMAL, L"Throw", L"PaperBox", _range<_uint>(0U, 1U));
+	Load_Texture(L"./Resource/Texture/Item/Throw/Sack_%d.png", TEX_NORMAL, L"Throw", L"Sack", _range<_uint>(0U, 2U));
+	Load_Texture(L"./Resource/Texture/Item/Throw/Handbag.png", TEX_NORMAL, L"Throw", L"Handbag");
+	Load_Texture(L"./Resource/Texture/Item/Throw/Fedora.png", TEX_NORMAL, L"Throw", L"Fedora");
+	Load_Texture(L"./Resource/Texture/Item/Throw/Rope.png", TEX_NORMAL, L"Throw", L"Rope");
+		
+	Load_Texture(L"./Resource/Texture/Item/Throw/Board_%d.png", TEX_NORMAL, L"Throw", L"Board", _range<_uint>(0U, 2U));
+	Load_Texture(L"./Resource/Texture/Item/Throw/Chair_%d.png", TEX_NORMAL, L"Throw", L"Chair", _range<_uint>(0U, 7U));
 	Load_Texture(L"./Resource/Texture/Item/Throw/UmbrellaStand.png", TEX_NORMAL, L"Throw", L"UmbrellaStand");
-	Load_Texture(L"./Resource/Texture/Item/Throw/TumblerGlass.png", TEX_NORMAL, L"Throw", L"TumblerGlass");
 	Load_Texture(L"./Resource/Texture/Item/Throw/WoodenBarrel.png", TEX_NORMAL, L"Throw", L"WoodenBarrel");
 	Load_Texture(L"./Resource/Texture/Item/Throw/WoodenStool.png", TEX_NORMAL, L"Throw", L"WoodenStool");
 	Load_Texture(L"./Resource/Texture/Item/Throw/CoatHanger.png", TEX_NORMAL, L"Throw", L"CoatHanger");
+	Load_Texture(L"./Resource/Texture/Item/Throw/Mannequin.png", TEX_NORMAL, L"Throw", L"Mannequin");
+	Load_Texture(L"./Resource/Texture/Item/Throw/CableReel.png", TEX_NORMAL, L"Throw", L"CableReel");
+	Load_Texture(L"./Resource/Texture/Item/Throw/CafeTable.png", TEX_NORMAL, L"Throw", L"CafeTable");
+	Load_Texture(L"./Resource/Texture/Item/Throw/CafeSign.png", TEX_NORMAL, L"Throw", L"CafeSign");
+	Load_Texture(L"./Resource/Texture/Item/Throw/BarStool.png", TEX_NORMAL, L"Throw", L"BarStool");
+	Load_Texture(L"./Resource/Texture/Item/Throw/Toolbox.png", TEX_NORMAL, L"Throw", L"Toolbox");
+	Load_Texture(L"./Resource/Texture/Item/Throw/Matches.png", TEX_NORMAL, L"Throw", L"Matches");
+		
+	Load_Texture(L"./Resource/Texture/Item/Throw/GenericBottles_%d.png", TEX_NORMAL, L"Throw", L"GenericBottles", _range<_uint>(0U, 5U));
+	Load_Texture(L"./Resource/Texture/Item/Throw/Perfume_%d.png", TEX_NORMAL, L"Throw", L"Perfume", _range<_uint>(0U, 2U));
+	Load_Texture(L"./Resource/Texture/Item/Throw/Lamp_%d.png", TEX_NORMAL, L"Throw", L"Lamp", _range<_uint>(0U, 1U));
+	Load_Texture(L"./Resource/Texture/Item/Throw/TablePlantFlower.png", TEX_NORMAL, L"Throw", L"TablePlantFlower");
+	Load_Texture(L"./Resource/Texture/Item/Throw/TablePlantLeaf.png", TEX_NORMAL, L"Throw", L"TablePlantLeaf");
+	Load_Texture(L"./Resource/Texture/Item/Throw/WhiskeyGlass.png", TEX_NORMAL, L"Throw", L"WhiskeyGlass");
+	Load_Texture(L"./Resource/Texture/Item/Throw/MartiniGlass.png", TEX_NORMAL, L"Throw", L"MartiniGlass");
+	Load_Texture(L"./Resource/Texture/Item/Throw/BeerGlass.png", TEX_NORMAL, L"Throw", L"BeerGlass");
+	Load_Texture(L"./Resource/Texture/Item/Throw/Potplant.png", TEX_NORMAL, L"Throw", L"Potplant");
+	Load_Texture(L"./Resource/Texture/Item/Throw/BeerMug.png", TEX_NORMAL, L"Throw", L"BeerMug");
+		
+	Load_Texture(L"./Resource/Texture/Item/Throw/trashbin_%d.png", TEX_NORMAL, L"Throw", L"Trashbin", _range<_uint>(0U, 2U));
+	Load_Texture(L"./Resource/Texture/Item/Throw/trashcan_%d.png", TEX_NORMAL, L"Throw", L"TrashCan", _range<_uint>(0U, 2U));
+	Load_Texture(L"./Resource/Texture/Item/Throw/PaintCan_%d.png", TEX_NORMAL, L"Throw", L"PaintCan", _range<_uint>(0U, 3U));
+	Load_Texture(L"./Resource/Texture/Item/Throw/ChampagneBucket.png", TEX_NORMAL, L"Throw", L"ChampagneBucket");
+	Load_Texture(L"./Resource/Texture/Item/Throw/TrafficBollard.png", TEX_NORMAL, L"Throw", L"TrafficBollard");
+	Load_Texture(L"./Resource/Texture/Item/Throw/TrafficCone.png", TEX_NORMAL, L"Throw", L"TrafficCone");
+	Load_Texture(L"./Resource/Texture/Item/Throw/MetalBarrel.png", TEX_NORMAL, L"Throw", L"MetalBarrel");
 	Load_Texture(L"./Resource/Texture/Item/Throw/Microphone.png", TEX_NORMAL, L"Throw", L"Microphone");
+	Load_Texture(L"./Resource/Texture/Item/Throw/OilBarrel.png", TEX_NORMAL, L"Throw", L"OilBarrel");
+	Load_Texture(L"./Resource/Texture/Item/Throw/Bucket.png", TEX_NORMAL, L"Throw", L"Bucket");
 
-	//Object - Interaction (진행중) 
 	Load_Texture(L"./Resource/Texture/Item/Interaction/LightSwitch_Off.png", TEX_NORMAL, L"Interaction", L"LightSwitch_Off");
 	Load_Texture(L"./Resource/Texture/Item/Interaction/LightSwitch_On.png", TEX_NORMAL, L"Interaction", L"LightSwitch_On");
 	Load_Texture(L"./Resource/Texture/Item/Interaction/BlockSwitch_Off.png", TEX_NORMAL, L"Interaction", L"BlockSwitch_Off");
@@ -272,6 +312,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Interaction/ComicBook.png", TEX_NORMAL, L"Interaction", L"ComicBook");
 
 #pragma endregion
+
 
 #pragma region Object - Inventory : 직교투영 해야함 
 

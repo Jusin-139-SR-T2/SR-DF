@@ -16,7 +16,6 @@ CAceInteraction::CAceInteraction(const CAceInteraction& rhs)
 
 CAceInteraction::~CAceInteraction()
 {
-    Free();
 }
 
 CAceInteraction* CAceInteraction::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
@@ -60,11 +59,15 @@ _int CAceInteraction::Update_GameObject(const _float& fTimeDelta)
     // 지형타기 
     Height_On_Terrain();
 
-    // 빌보드 - 부착되어있어야하는데 빌보드 적용x해야함 
-    if((CAceInteraction::INTERACTION_NAME::NEWSPAPER ) <= m_pCurName)
-    BillBoard(fTimeDelta);
+    // 빌보드
+    //if((CAceInteraction::INTERACTION_NAME::NEWSPAPER ) <= m_pCurName)
+    //BillBoard(fTimeDelta);
 
+    // TEST --------------------------
+    if (Engine::IsKey_Pressed(DIK_P))
+        m_bOnOff = true;
 
+    //--------------------------------
 
     // 변수에 저장된 enum으로 texture 결정 - eaten 변경때문에 
     Change_Texture(m_pCurName);
@@ -95,7 +98,7 @@ void CAceInteraction::Render_GameObject()
 
 void CAceInteraction::Free()
 {
-    __super::Free();
+    SUPER::Free();
 }
 
 #pragma region Basic Setting Function 
@@ -144,23 +147,68 @@ void CAceInteraction::Height_On_Terrain()
 void CAceInteraction::ObjectName(const _tchar* pObjTag)
 {
     if ((wcscmp(pObjTag, L"LightSwitch") == 0) || (wcscmp(pObjTag, L"LIGHT_SWITCH") == 0))
+    {
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"LightSwitch_Off");
         m_pCurName = CAceInteraction::INTERACTION_NAME::LIGHTSWITCH;
+        m_pTransformComp->Set_Scale({ 0.25f, 0.5f, 1.f });
+        m_fBillboardHeight = 1.5f;
+    }
     else if ((wcscmp(pObjTag, L"OneButton") == 0) || (wcscmp(pObjTag, L"ONEBUTTON") == 0))
+    {
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"OneButton_Off");
         m_pCurName = CAceInteraction::INTERACTION_NAME::ONE_BUTTON;
+        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
+        m_fBillboardHeight = 1.5f;
+    }
     else if ((wcscmp(pObjTag, L"TwoButton") == 0) || (wcscmp(pObjTag, L"TWOBUTTON") == 0))
+    {
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"TwoButton_Off");
         m_pCurName = CAceInteraction::INTERACTION_NAME::TWO_BUTTON;
+        m_pTransformComp->Set_Scale({ 0.5f, 1.f, 1.f });
+        m_fBillboardHeight = 1.5f;
+    }
     else if ((wcscmp(pObjTag, L"BlockSwitch") == 0) || (wcscmp(pObjTag, L"BLOCK_SWITCH") == 0))
+    {
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"BlockSwitch_Off");
         m_pCurName = CAceInteraction::INTERACTION_NAME::BLOCK_SWITCH;
+        m_pTransformComp->Set_Scale({ 0.5f, 1.f, 1.f });
+        m_fBillboardHeight = 1.5f;
+    }
     else if ((wcscmp(pObjTag, L"Padlock") == 0) || (wcscmp(pObjTag, L"PADLOCK") == 0))
+    {
         m_pCurName = CAceInteraction::INTERACTION_NAME::PADLOCK;
+        m_pTransformComp->Set_Scale({ 3.f, 0.5f, 1.f });
+        m_fBillboardHeight = 0.75f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"Padlock_Off");
+    }
     else if ((wcscmp(pObjTag, L"Newspaper") == 0) || (wcscmp(pObjTag, L"NEWSPAPER") == 0))
+    {
         m_pCurName = CAceInteraction::INTERACTION_NAME::NEWSPAPER;
+        m_fBillboardHeight = -0.38f;
+        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"Newspaper");
+    }
     else if ((wcscmp(pObjTag, L"ComicBook") == 0) || (wcscmp(pObjTag, L"COMICBOOK") == 0))
+    {
         m_pCurName = CAceInteraction::INTERACTION_NAME::COMICBOOK;
+        m_fBillboardHeight = -0.39f;
+        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"ComicBook");
+    }
     else if ((wcscmp(pObjTag, L"Building_Key") == 0) || (wcscmp(pObjTag, L"BUILDING_KEY") == 0))
+    {
         m_pCurName = CAceInteraction::INTERACTION_NAME::BUILDING_KEY;
+        m_fBillboardHeight = -0.5f;
+        m_pTransformComp->Set_Scale({ 0.25f, 0.15f, 1.f });
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"Building_Key");
+    }
     else if ((wcscmp(pObjTag, L"Bossroom_Key") == 0) || (wcscmp(pObjTag, L"BOSSROOM_KEY") == 0))
+    {
         m_pCurName = CAceInteraction::INTERACTION_NAME::BOSSROOM_KEY;
+        m_fBillboardHeight = -0.5f;
+        m_pTransformComp->Set_Scale({ 0.25f, 0.15f, 1.f });
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"Bossroom_Key");
+    }
     else
     {
         m_pCurName = CAceInteraction::INTERACTION_NAME::INTERACTION_END;
@@ -169,75 +217,27 @@ void CAceInteraction::ObjectName(const _tchar* pObjTag)
 
 void CAceInteraction::Change_Texture(INTERACTION_NAME eReceiveName)
 {
-
-    switch (eReceiveName)
+    if (m_bOnOff)
     {
-    case CAceInteraction::INTERACTION_NAME::ONE_BUTTON:
-        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
-        m_fBillboardHeight = 1.5f;
-
-        if (!m_bOnOff) // Off일때 - false
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"OneButton_Off");
-        else  // On일때 
+        switch (eReceiveName)
+        {
+        case CAceInteraction::INTERACTION_NAME::ONE_BUTTON:
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"OneButton_On");
-        break;
+            break;
 
-    case CAceInteraction::INTERACTION_NAME::TWO_BUTTON:
-        m_pTransformComp->Set_Scale({ 0.5f, 1.f, 1.f });
-        m_fBillboardHeight = 1.5f;
-
-        if (!m_bOnOff) // Off일때 - false    
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"TwoButton_Off");
-        else  // On일때 
+        case CAceInteraction::INTERACTION_NAME::TWO_BUTTON:
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"TwoButton_On");
-        break;
+            break;
 
-    case CAceInteraction::INTERACTION_NAME::LIGHTSWITCH:
-        m_pTransformComp->Set_Scale({ 0.25f, 0.5f, 1.f });
-        m_fBillboardHeight = 1.5f;
-
-        if (!m_bOnOff) // Off일때 - false
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"LightSwitch_Off");
-        else  // On일때 
+        case CAceInteraction::INTERACTION_NAME::LIGHTSWITCH:
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"LightSwitch_On");
-        break;
+            break;
 
-    case CAceInteraction::INTERACTION_NAME::BLOCK_SWITCH:
-        m_pTransformComp->Set_Scale({ 0.5f, 1.f, 1.f });
-        m_fBillboardHeight = 1.5f;
-
-        if (!m_bOnOff) // Off일때 - false
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"BlockSwitch_Off");
-        else  // On일때 
+        case CAceInteraction::INTERACTION_NAME::BLOCK_SWITCH:
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"BlockSwitch_On");
-        break;
+            break;
 
-    case CAceInteraction::INTERACTION_NAME::PADLOCK:
-        m_pTransformComp->Set_Scale({ 3.f, 0.5f, 1.f });
-        m_fBillboardHeight = 0.75f;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"Padlock_Off");
-        break;
-
-    case CAceInteraction::INTERACTION_NAME::NEWSPAPER:
-        m_fBillboardHeight = -0.38f;
-        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"Newspaper");
-        break;
-    case CAceInteraction::INTERACTION_NAME::COMICBOOK:
-        m_fBillboardHeight = -0.39f;
-        m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"ComicBook");
-        break;
-    case CAceInteraction::INTERACTION_NAME::BUILDING_KEY:
-        m_fBillboardHeight = -0.5f;
-        m_pTransformComp->Set_Scale({ 0.25f, 0.15f, 1.f });
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"Building_Key");
-        break;
-    case CAceInteraction::INTERACTION_NAME::BOSSROOM_KEY:
-        m_fBillboardHeight = -0.5f;
-        m_pTransformComp->Set_Scale({ 0.25f, 0.15f, 1.f });
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Interaction", L"Bossroom_Key");
-        break;
+        }
     }
 }
 

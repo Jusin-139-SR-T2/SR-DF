@@ -16,7 +16,6 @@ CAceWeapon::CAceWeapon(const CAceWeapon& rhs)
 
 CAceWeapon::~CAceWeapon()
 {
-    Free();
 }
 
 CAceWeapon* CAceWeapon::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
@@ -82,7 +81,7 @@ void CAceWeapon::Render_GameObject()
 
 void CAceWeapon::Free()
 {
-    __super::Free();
+    SUPER::Free();
 }
 
 //------------------------------------------------------------------

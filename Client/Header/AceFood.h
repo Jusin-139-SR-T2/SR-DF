@@ -51,9 +51,9 @@ private:// 함수
 
 private: //변수
 	FOOD_NAME			m_pCurName;
-	_bool				m_bEat = false;  //blackboard 연동해서 플레이어 E상호작용 OR 피킹 여부 확인
+	_bool				m_bEat = false;   //blackboard 연동해서 플레이어 E상호작용 OR 피킹 여부 확인
 	_bool				m_bDead = false;  // 죽는거 생기면 그걸로 변경 
-	_vec3				CurPos;
-	_float				m_fChangeTextureSpeed = 1.f;
+	_vec3				CurPos;			  // 현재 위치 
+	_float				m_fChangeTextureSpeed = 0.001f;
 };
 

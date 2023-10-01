@@ -16,7 +16,6 @@ CAceFood::CAceFood(const CAceFood& rhs)
 
 CAceFood::~CAceFood()
 {
-    Free();
 }
 
 CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
@@ -34,7 +33,8 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
     pInstance->m_pTransformComp->Set_Pos({ _fx, _fy, _fz });
     pInstance->FoodName(pObjTag);
     
-    //pInstance->CurPos = pInstance->m_pTransformComp->Get_Pos();
+    pInstance->CurPos = pInstance->m_pTransformComp->Get_Pos();
+    
     return pInstance;
 }
 
@@ -60,7 +60,7 @@ _int CAceFood::Update_GameObject(const _float& fTimeDelta)
         m_bEat = true;
     
     //--------------------------------
-
+    
     // 변수에 저장된 enum으로 texture 결정 - eaten 변경때문에 
     Eat_Food(m_pCurName, fTimeDelta);
 
@@ -90,7 +90,7 @@ void CAceFood::Render_GameObject()
 
 void CAceFood::Free()
 {
-    __super::Free();
+    SUPER::Free();
 }
 
 HRESULT CAceFood::Add_Component()
@@ -224,15 +224,5 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta)
             break;
 
         }
-
-        //m_pTransformComp->Set_Pos({ CurPos.x, CurPos.y + 1.f ,CurPos.z });
-
-       // _vec3 gravity = { 0.f, -0.1f, 0.f };
-
-       // m_pTransformComp->Move_Pos(&gravity, fTimeDelta, m_fChangeTextureSpeed);
-
-        //if (CurPos.y >= m_pTransformComp->Get_Pos().y)
-         //   m_bEat = false;
-
     }
 }
