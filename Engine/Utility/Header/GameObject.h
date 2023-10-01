@@ -59,8 +59,8 @@ public:
 	GETSET_EX2(CGameObject*, m_pOwner, Owner, GET, SET)
 
 protected:
-	CGameObject*	m_pOwner = nullptr;
-	_float			m_fViewZ;
+	CGameObject*				m_pOwner = nullptr;
+	_float						m_fViewZ;
 
 public:		// 우선도 관련 GETSET 함수
 	GETSET_EX2(_float, m_fPriority[static_cast<_uint>(EPRIORITY::UPDATE)], PriorityUpdate, GET, SET)
@@ -93,6 +93,7 @@ template <typename T>
 T* CGameObject::Set_DefaultComponent_FromProto(COMPONENTID eID, const _tchar* pComponentTag, const _tchar* pProtoTag)
 {
 	T* pComponent = dynamic_cast<T*>(CProtoMgr::GetInstance()->Clone_Proto(pProtoTag));
+	
 	NULL_CHECK_RETURN(pComponent, nullptr);
 	bool bSuccess = m_mapComponent[eID].emplace(pComponentTag, pComponent).second;
 	// 보안 코드
@@ -101,6 +102,11 @@ T* CGameObject::Set_DefaultComponent_FromProto(COMPONENTID eID, const _tchar* pC
 		Safe_Release(pComponent);
 		MSG_BOX("Clone Pushback Failed");
 		return nullptr;
+	}
+	else
+	{
+		// RefCount + 오너 세팅
+		dynamic_cast<CComponent*>(pComponent)->Set_Owner(this);
 	}
 
 	return pComponent;

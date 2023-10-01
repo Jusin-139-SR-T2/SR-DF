@@ -76,6 +76,11 @@ HRESULT CImguiAnimationTool::Ready_ImguiWin()
 #pragma region 레이아웃
 _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
 {
+    if (!m_bOpen)
+        return 0;
+
+    SUPER::Update_ImguiWin(fTimeDelta);
+
         // ImGui에서 텍스처를 표시할 이미지 크기 (예: 200x200 픽셀)
         const ImVec2 imageSize(200.0f, 200.0f);
 
