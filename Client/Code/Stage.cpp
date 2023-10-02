@@ -20,9 +20,6 @@ CStage::~CStage()
 
 HRESULT CStage::Ready_Scene()
 {
-	FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
-	FAILED_CHECK_RETURN(Ready_SpotLightInfo(), E_FAIL);
-
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Camera(L"Camera"), E_FAIL);
@@ -65,6 +62,8 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	// Terrain
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", CTerrain::Create(m_pGraphicDev)), E_FAIL);
 	
+	// Torch
+
 	return S_OK;
 }
 
@@ -84,6 +83,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray", CGray::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev)), E_FAIL);
 
+	//Test용도 -------------------------------------------------------
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lighter", CAceLighter::Create(m_pGraphicDev)), E_FAIL);
+
 	// Object - 사이즈 조절이 필요해서 하나씩 다 stage에 올려봐야함 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"EatenApple", 24.f, 1.f, 25.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"BananaPeel", 32.f, 1.f, 25.f)), E_FAIL);
@@ -93,17 +95,18 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"Cola", 36.f, 1.f, 25.f)), E_FAIL);
 	
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenFryingPan", 24.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenTommyGun", 28.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"CrackedBottle", 32.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenBottle", 36.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenPistol", 40.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"GasCanister", 44.f, 1.f, 20.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon7", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenPipe", 48.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon8", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"FryingPan", 52.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"TommyGun", 56.f, 1.f, 20.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon10", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"LeadPipe", 60.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon11", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"WallPipe", 64.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon12", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"Pistol", 68.f, 1.f, 20.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenTommyGun", 26.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"CrackedBottle", 28.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenBottle", 30.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenPistol", 32.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"GasCanister", 34.f, 1.f, 20.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon7", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenPipe", 36.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon8", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"FryingPan", 38.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"WALLPIPE", 40.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon10", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"TommyGun", 42.f, 1.f, 20.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon11", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"Pistol", 44.f, 1.f, 20.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon12", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"Pipe", 46.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon13", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"Bottle", 48.f, 1.f, 20.f)), E_FAIL);
 	
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"BLOCK_SWITCH", 24.f, 1.f, 16.f)), E_FAIL); 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"LIGHT_SWITCH", 28.f, 1.f, 16.f)), E_FAIL); 
@@ -172,40 +175,6 @@ HRESULT CStage::Ready_Layer_Completed()
 
 	pCam->Set_Target(pObj);
 	pObj->Set_Camera(pCam);
-
-	return S_OK;
-}
-
-HRESULT CStage::Ready_LightInfo()
-{
-	D3DLIGHT9		tLightInfo;
-	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
-
-	tLightInfo.Type = D3DLIGHT_DIRECTIONAL;
-
-	tLightInfo.Diffuse	 = { 1.f, 1.f, 1.f, 1.f };
-	tLightInfo.Specular	 = { 1.f, 1.f, 1.f, 1.f };
-	tLightInfo.Ambient	 = { 1.f, 1.f, 1.f, 1.f };
-	tLightInfo.Direction = { 1.f, -1.f, 1.f };
-	
-	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
-
-	return S_OK;
-}
-
-HRESULT CStage::Ready_SpotLightInfo()
-{
-	D3DLIGHT9		tSpotLightInfo;
-	ZeroMemory(&tSpotLightInfo, sizeof(D3DLIGHT9));
-
-	tSpotLightInfo.Type = D3DLIGHT_SPOT;
-	
-	tSpotLightInfo.Diffuse	 = { 1.f, 0.f, 0.f, 1.f };  //붉은색 조명
-	tSpotLightInfo.Specular  = { 1.f, 1.f, 1.f, 1.f };
-	tSpotLightInfo.Ambient	 = { 1.f, 1.f, 1.f, 1.f };
-	tSpotLightInfo.Direction = { 1.f, 0.f, 1.f };
-
-	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tSpotLightInfo, 1), E_FAIL);
 
 	return S_OK;
 }

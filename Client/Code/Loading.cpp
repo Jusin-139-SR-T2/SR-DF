@@ -82,7 +82,7 @@ _uint CLoading::Loading_For_Stage()
 	
 	// 오브젝트 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Food", L"Cola")), E_FAIL);
-	
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LightTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Light", L"RedLight")), E_FAIL);
 
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
@@ -252,6 +252,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Weapon/LeadPipe.png", TEX_NORMAL, L"Weapon", L"LeadPipe");
 	Load_Texture(L"./Resource/Texture/Item/Weapon/WallPipe.png", TEX_NORMAL, L"Weapon", L"WallPipe");
 	Load_Texture(L"./Resource/Texture/Item/Weapon/Pistol.png", TEX_NORMAL, L"Weapon", L"Pistol");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/Bottle.png", TEX_NORMAL, L"Weapon", L"Bottle");
 
 	//Object - Throw (진행중) - 사이즈 조절 필요 (확인불가) 
 	Load_Texture(L"./Resource/Texture/Item/Throw/ScrunchedPaper_%d.png", TEX_NORMAL, L"Throw", L"ScrunchedPaper", _range<_uint>(0U, 1U));

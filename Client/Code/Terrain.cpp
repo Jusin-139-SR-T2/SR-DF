@@ -68,13 +68,15 @@ void CTerrain::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 
-    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
     SetUp_Material();
     m_pTextureComp->Render_Texture(0);
     m_pBufferComp->Render_Buffer();
 
+    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 }
@@ -90,6 +92,18 @@ HRESULT CTerrain::Add_Component()
 
 HRESULT CTerrain::SetUp_Material()
 {
+    D3DLIGHT9		tLightInfo;
+    ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+
+    tLightInfo.Type = D3DLIGHT_DIRECTIONAL;
+
+    tLightInfo.Diffuse = { 1.f, 1.f, 1.f, 1.f };
+    tLightInfo.Specular = { 1.f, 1.f, 1.f, 1.f };
+    tLightInfo.Ambient = { 1.f, 1.f, 1.f, 1.f };
+    tLightInfo.Direction = { 1.f, -1.f, 1.f };
+
+    FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
+
     D3DMATERIAL9			tMtrl;
     ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
 

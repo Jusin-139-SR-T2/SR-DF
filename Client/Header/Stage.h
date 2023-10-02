@@ -7,6 +7,7 @@
 #include "Gray.h"
 #include "Boss.h"
 #include "AceObjectFactory.h"
+#include "AceLighter.h"
 
 #include "Terrain.h"
 

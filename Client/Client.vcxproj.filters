@@ -64,9 +64,6 @@
     <Filter Include="02. GameObject\97. Background">
       <UniqueIdentifier>{d35c5bcf-69e7-4085-984f-bd63dd96fcf2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Torch">
-      <UniqueIdentifier>{e350700e-8895-4112-89d7-93342261724e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\96. BlackBoardMgr">
       <UniqueIdentifier>{5df87e8e-e025-480d-a666-568b962d64c9}</UniqueIdentifier>
     </Filter>
@@ -87,6 +84,9 @@
     </Filter>
     <Filter Include="02. GameObject\02. AceObjectFactory\03. Ace_Interaction">
       <UniqueIdentifier>{4229125e-a6f5-44e9-937f-86a8eac35fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Lighter">
+      <UniqueIdentifier>{e350700e-8895-4112-89d7-93342261724e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -132,9 +132,6 @@
     <ClInclude Include="Header\UI.h">
       <Filter>01. Scene\03. UI</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Torch.h">
-      <Filter>02. GameObject\03. Torch</Filter>
-    </ClInclude>
     <ClInclude Include="Header\TitleLogo.h">
       <Filter>01. Scene\00. Logo\TitleLogo</Filter>
     </ClInclude>
@@ -171,6 +168,9 @@
     <ClInclude Include="Header\AceInteraction.h">
       <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
     </ClInclude>
+    <ClInclude Include="AceLighter.h">
+      <Filter>02. GameObject\03. Lighter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -202,9 +202,6 @@
     </ClCompile>
     <ClCompile Include="Code\SkyBox.cpp">
       <Filter>02. GameObject\98. SkyBox</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Torch.cpp">
-      <Filter>02. GameObject\03. Torch</Filter>
     </ClCompile>
     <ClCompile Include="Code\UI.cpp">
       <Filter>01. Scene\03. UI</Filter>
@@ -250,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="Code\AceInteraction.cpp">
       <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
+    </ClCompile>
+    <ClCompile Include="AceLighter.cpp">
+      <Filter>02. GameObject\03. Lighter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

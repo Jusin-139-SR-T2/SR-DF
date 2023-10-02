@@ -50,6 +50,7 @@ _int CAceWeapon::Update_GameObject(const _float& fTimeDelta)
     Height_On_Terrain();
 
     // 빌보드 
+    if(CAceWeapon::WEAPON_NAME::WALLPIPE != m_pCurName) //벽에 박혀있는애라 빌보드 x
     BillBoard(fTimeDelta);
 
     // 변수에 저장된 enum과 hp로 texture 결정 
@@ -105,7 +106,7 @@ void CAceWeapon::Height_On_Terrain()
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
 
-    m_pTransformComp->Set_Pos(vPos.x, fHeight + 0.5f, vPos.z);
+    m_pTransformComp->Set_Pos(vPos.x, fHeight + 0.6f, vPos.z);
 }
 
 HRESULT CAceWeapon::BillBoard(const _float& fTimeDelta)
@@ -190,23 +191,25 @@ void CAceWeapon::WeaponName(const _tchar* pObjTag)
 
 void CAceWeapon::Change_Texture(WEAPON_NAME eReceiveName)
 {
-    m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
-
     switch (eReceiveName)
     {
     case CAceWeapon::WEAPON_NAME::BOTTLE:
+
         if (m_fMaxHP == m_fHp)
         {
+            m_pTransformComp->Set_Scale({ 0.25f, 1.f, 1.f });
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"Bottle");
             break;
         }
         else if (m_fCrackedHp == m_fHp)
         {
+            m_pTransformComp->Set_Scale({ 0.25f, 0.25f, 1.f });
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"CrackedBottle");
             break;
         }
         else
         {
+            m_pTransformComp->Set_Scale({ 0.25f, 0.25f, 1.f });
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenBottle");
             break;
         }
@@ -215,11 +218,13 @@ void CAceWeapon::Change_Texture(WEAPON_NAME eReceiveName)
     case CAceWeapon::WEAPON_NAME::PIPE:
         if (m_fMaxHP == m_fHp)
         {
+            m_pTransformComp->Set_Scale({ 1.f, 0.25f, 1.f });
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"LeadPipe");
             break;
         }
         else if (m_fBrokenHp == m_fHp)
         {
+            m_pTransformComp->Set_Scale({ 1.f, 0.25f, 1.f });
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenPipe");
             break;
         }
@@ -228,11 +233,13 @@ void CAceWeapon::Change_Texture(WEAPON_NAME eReceiveName)
     case CAceWeapon::WEAPON_NAME::WALLPIPE:
         if (m_fMaxHP == m_fHp)
         {
+            m_pTransformComp->Set_Scale({ 0.25f, 1.f, 1.f });
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"WallPipe");
             break;
         }
         else if (m_fBrokenHp == m_fHp)
         {
+            m_pTransformComp->Set_Scale({ 1.f, 0.25f, 1.f });
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenPipe");
             break;
         }
