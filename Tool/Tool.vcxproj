@@ -203,8 +203,8 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClInclude Include="Header\ImguiMgr.h" />
     <ClInclude Include="Header\MyTexture.h" />
     <ClInclude Include="Header\ImguiWin_TextureTool.h" />
-    <ClInclude Include="ImguiWin_DockingSpace.h" />
-    <ClInclude Include="ImguiWin_MapTool.h" />
+    <ClInclude Include="Header\ImguiWin_DockingSpace.h" />
+    <ClInclude Include="Header\ImguiWin_MapTool.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_dx9.h" />
@@ -228,8 +228,8 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClCompile Include="Code\ImguiMgr.cpp" />
     <ClCompile Include="Code\MyTexture.cpp" />
     <ClCompile Include="Code\ImguiWin_TextureTool.cpp" />
-    <ClCompile Include="ImguiWin_DockingSpace.cpp" />
-    <ClCompile Include="ImguiWin_MapTool.cpp" />
+    <ClCompile Include="Code\ImguiWin_DockingSpace.cpp" />
+    <ClCompile Include="Code\ImguiWin_MapTool.cpp" />
     <ClCompile Include="Imgui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -256,8 +256,11 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ResourceCompile Include="Include\Tool.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Include\icon1.ico" />
+    <Image Include="Include\metal-detector.ico" />
     <Image Include="Include\small.ico" />
     <Image Include="Include\Tool.ico" />
+    <Image Include="metal-detector.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Imgui\imgui.natvis">

@@ -4,6 +4,7 @@
 #include "Export_Utility.h"
 
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
 #include <ImguiMgr.h>
@@ -45,6 +46,8 @@ HRESULT CImguiWin_DockingSpace::Ready_ImguiWin()
 	m_DockSpace_Flags = ImGuiDockNodeFlags_None;
 	m_Window_Flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
+	m_fPriority = 10.f;
+
     return S_OK;
 }
 
@@ -52,8 +55,8 @@ _int CImguiWin_DockingSpace::Update_ImguiWin(const _float& fTimeDelta)
 {
 	SUPER::Update_ImguiWin(fTimeDelta);
 
-	m_DockSpace_Flags = ImGuiDockNodeFlags_None;
-	m_Window_Flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+	m_DockSpace_Flags = ImGuiDockNodeFlags_NoTabBar | ImGuiDockNodeFlags_NoDocking;
+	m_Window_Flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse;
 
 	
 	if (m_bOpt_FullScreen)
@@ -104,25 +107,19 @@ _int CImguiWin_DockingSpace::Update_ImguiWin(const _float& fTimeDelta)
 
 	if (ImGui::BeginMenuBar())
 	{
-		//if (ImGui::BeginMenu("Options"))
-		//{
-		//	// Disabling fullscreen would allow the window to be moved to the front of other windows,
-		//	// which we can't undo at the moment without finer window depth/z control.
-		//	ImGui::MenuItem("Fullscreen", NULL, &m_bOpt_FullScreen);
-		//	ImGui::MenuItem("Padding", NULL, &m_bOpt_Padding);
-		//	ImGui::Separator();
+		if (ImGui::BeginMenu("File"))
+		{
+			ImGui::MenuItem("Open Project");
+			ImGui::MenuItem("Save Project");
+			ImGui::MenuItem("Exit");
+			ImGui::EndMenu();
+		}
 
-		//	if (ImGui::MenuItem("Flag: NoSplit", "", (m_DockSpace_Flags & ImGuiDockNodeFlags_NoSplit) != 0)) { m_DockSpace_Flags ^= ImGuiDockNodeFlags_NoSplit; }
-		//	if (ImGui::MenuItem("Flag: NoResize", "", (m_DockSpace_Flags & ImGuiDockNodeFlags_NoResize) != 0)) { m_DockSpace_Flags ^= ImGuiDockNodeFlags_NoResize; }
-		//	if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", (m_DockSpace_Flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0)) { m_DockSpace_Flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode; }
-		//	if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (m_DockSpace_Flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) { m_DockSpace_Flags ^= ImGuiDockNodeFlags_AutoHideTabBar; }
-		//	if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (m_DockSpace_Flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, m_bOpt_FullScreen)) { m_DockSpace_Flags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
-		//	ImGui::Separator();
-
-		//	if (ImGui::MenuItem("Close", NULL, false, m_bOpen != NULL))
-		//		m_bOpen = false;
-		//	ImGui::EndMenu();
-		//}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			ImGui::MenuItem(u8"응애");
+			ImGui::EndMenu();
+		}
 
 
 		// 툴 레이아웃
@@ -133,27 +130,62 @@ _int CImguiWin_DockingSpace::Update_ImguiWin(const _float& fTimeDelta)
 		{
 			if (ImGui::BeginTabItem(u8"맵 툴")) 
 			{
-				// Tab 내용
+				CImguiMgr::GetInstance()->Open_Layout(L"MapTool");
+				CImguiMgr::GetInstance()->Close_Layout(L"TextureTool");
+				CImguiMgr::GetInstance()->Close_Layout(L"AnimationTool");
 				ImGui::EndTabItem();
 			}
 
 			if (ImGui::BeginTabItem(u8"텍스처 툴"))
 			{
-				// Tab 내용
+				CImguiMgr::GetInstance()->Close_Layout(L"MapTool");
+				CImguiMgr::GetInstance()->Open_Layout(L"TextureTool");
+				CImguiMgr::GetInstance()->Close_Layout(L"AnimationTool");
 				ImGui::EndTabItem();
 			}
 
 			if (ImGui::BeginTabItem(u8"애니메이션 툴"))
 			{
-				// Tab 내용
+				CImguiMgr::GetInstance()->Close_Layout(L"MapTool");
+				CImguiMgr::GetInstance()->Close_Layout(L"TextureTool");
+				CImguiMgr::GetInstance()->Open_Layout(L"AnimationTool");
 				ImGui::EndTabItem();
 			}
 
 			ImGui::EndTabBar();
 		}
-		
+
 		ImGui::EndMenuBar();
 	}
+	
+
+	// 독 빌더
+	if (m_bFirstLoop)
+	{
+		ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+		ImGui::DockBuilderRemoveNode(dockspace_id);
+		ImGui::DockBuilderAddNode(dockspace_id, m_DockSpace_Flags | ImGuiDockNodeFlags_DockSpace);
+		ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetWindowSize());
+
+
+		ImGuiID dock_right_id = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.2f, NULL, &dockspace_id);
+		ImGui::DockBuilderDockWindow("Left", dock_right_id);
+		ImGui::DockBuilderDockWindow("Center", dockspace_id);
+		//ImGui::DockBuilderDockWindow("One", dockspace_id);
+		//ImGui::DockBuilderDockWindow("Two", dockspace_id);
+
+		ImGui::DockBuilderFinish(dockspace_id);
+
+		m_bFirstLoop = false;
+	}
+
+	/*if (ImGui::Begin("Center"))
+	{
+		ImGui::Text("Hello");
+		ImGui::Separator();
+		
+	}
+	ImGui::End();*/
 
 	ImGui::End();
 

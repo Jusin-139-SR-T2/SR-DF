@@ -8,7 +8,7 @@
 #include "imgui_impl_win32.h"
 
 CImguiWin::CImguiWin()
-	: m_fPriority()
+	: m_fPriority(0.f), m_bFirstLoop(true)
 {
 }
 

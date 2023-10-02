@@ -109,4 +109,6 @@ void CBackGround::Render_GameObject()
 void CBackGround::Free()
 {
 	SUPER::Free();
+
+
 }

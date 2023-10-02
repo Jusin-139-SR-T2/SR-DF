@@ -45,18 +45,22 @@ enum OBJECTKEY
 struct Keyframe 
 {
 	char name[64];			// 키프레임 이름 (표시용)
+	
+	bool isEaseIn;			// Ease In 설정 (True 또는 False)
+	bool isEaseOut;			// Ease Out 설정 (True 또는 False)
 
 	float time;				// 키프레임의 시간 (0.0f ~ 1.0f 범위)
 	float value;			// 애니메이션 값 (크기, 회전, 이동 등)
 	float color[3];			// 키프레임 색상 (R, G, B)
-	float size;				// 크기 애니메이션에 필요한 멤버
-	float rotation;			// 회전 애니메이션에 필요한 멤버
-	float translation[2];	// 이동 애니메이션에 필요한 멤버
 
-	bool isEaseIn;			// Ease In 설정 (True 또는 False)
-	bool isEaseOut;			// Ease Out 설정 (True 또는 False)
+	OBJ_TYPE m_eObjectType; // 타입을 부여할 그릇 (ex : 한손, 양손)
+	OBJ_NAME m_eObjectName; // 이름을 부여할 그릇 (ex : 권총, 쇠파이프)
 
 	int type;				// 애니메이션 타입 (0: 크기, 1: 회전, 2: 이동)
+	
+	_vec3	vScale = { 0.f, 0.f, 0.f };			// 크기를 담을 그릇
+	_vec3	vRot = { 0.f, 0.f, 0.f };			// 회전을 담을 그릇
+	_vec3	vPos = { 0.f, 0.f, 0.f };			// 위치를 담을 그릇
 };
 
 // 애니메이션 Info 구조체
@@ -100,7 +104,7 @@ public:
 	char* ConverWStringtoC(const wstring& wstr);
 
 	//char를 wchar_t로 변경
-	wchar_t* ConverCtoWC2(char* str);
+	wchar_t* ConverCtoWC(char* str);
 
 	//wchar_t를 char로 변경
 	char* ConverWCtoC(wchar_t* str);
@@ -109,7 +113,10 @@ public:
 	string WstringToUTF8(const wstring& wstr);
 
 	std::wstring ConvertToWideString(const std::string& ansiString);
+	
+	std::vector<const char*> ConvertStringVectorToCharArray(const std::vector<std::string>& stringVector);
 #pragma endregion
+
 	// 이미지 로드 함수
 	void LoadImg(const _tchar* folderPath);
 
@@ -132,6 +139,8 @@ public:
 	// 선형 보간 함수
 	float Lerp(float a, float b, float t);
 
+	//
+	void DrawSelectedKeyframeEditor(Keyframe& selectedKeyframe);
 public:
 	// 오브젝트 설정 및 관리 함수
 	void ObjectSetting();
@@ -183,6 +192,9 @@ private:
 	// 애니메이션 정보를 담을 벡터
 	vector<MYANIMATIONINFO>	m_vecAnimationInfo;
 
+	// 애니메이션 정보를 담을 벡터
+	vector<Keyframe>	m_vecAnimationKeyframe;
+
 	// 파일을 담을 맵
 	map<wstring, vector<wstring>> m_MapFile;
 
@@ -223,6 +235,8 @@ private: // 멤버 변수
 	bool isDraggingTimeline = false;
 	bool isPlaying = false;
 	float playbackSpeed = 1.0f;
+	// 선택한 키프레임 인덱스를 저장하는 변수 (선택한 키프렘의 인덱스를 초기화합니다.)
+	int selectedKeyframeIndex = -1;
 
 	// 키프레임 드래그
 	bool	isDraggingKeyframe = false;
@@ -231,6 +245,41 @@ private: // 멤버 변수
 	// 애니메이션 재생
 	int animationFrame = 0;
 	float playbackTime = 0.f;
+
+	// 폴더 경로
+	// 이미지 경로 목록을 저장하는 벡터
+	std::vector<std::string> imagePaths = 
+	{
+		"../Client/Resource/Texture/Player",
+		"../Client/Resource/Texture/Monster",
+		"../Client/Resource/Texture/Item",
+		"../Client/Resource/Texture/BUTTON",
+		"../Client/Resource/Texture/crosshair",
+		"../Client/Resource/Texture/cursor",
+		"../Client/Resource/Texture/effect",
+		"../Client/Resource/Texture/Explosion",
+		"../Client/Resource/Texture/Font",
+		"../Client/Resource/Texture/idk",
+		"../Client/Resource/Texture/LIGHT",
+		"../Client/Resource/Texture/Lights",
+		"../Client/Resource/Texture/MAP",
+		"../Client/Resource/Texture/number",
+		"../Client/Resource/Texture/Scene",
+		"../Client/Resource/Texture/SkyBox",
+		"../Client/Resource/Texture/Terrain",
+		"../Client/Resource/Texture/Tile",
+		"../Client/Resource/Texture/UI",
+		"../Client/Resource/Texture/Weapon",
+		"../Client/Resource/Texture/Woman"
+	};
+
+	std::string m_cPath[5] = {
+		"Apple",
+		"Banana",
+		"Cherry",
+		"Date"
+	};
+	int selectedPathIndex = 0; // 선택된 이미지 경로 인덱스
 
 	// @@@@@@엔진의 멤버가 아니라그래서 주석걸어뒀음@@@@@@@
 	//std::map<OBJECTKEY, Engine::CGameObject*> m_mapObject; // 객체를 저장하는 맵

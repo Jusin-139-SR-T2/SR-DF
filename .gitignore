@@ -39,3 +39,5 @@ ipch/
 Reference/Library/Engine/
 
 #*.VC.db
+Tool/Include/Tool.aps
+imgui.ini

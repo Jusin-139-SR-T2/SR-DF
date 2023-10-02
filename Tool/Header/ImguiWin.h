@@ -34,7 +34,12 @@ protected:
 	_float				m_fPriority;
 
 
+public:
+	GETSET_EX1(_bool, m_bOpen, Open, SET)
+	GETSET_EX1(_bool, m_bFirstLoop, FirstLoop, SET)
+
 protected:	// 각종 속성
 	_bool					m_bOpen;
+	_bool					m_bFirstLoop;
 };
 

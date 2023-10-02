@@ -1,5 +1,6 @@
 #include "Header\GraphicDev.h"
 
+#include <dxgi.h>
 
 IMPLEMENT_SINGLETON(CGraphicDev)
 
@@ -31,7 +32,29 @@ HRESULT CGraphicDev::Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, W
 	NULL_CHECK_RETURN(m_pSDK, E_FAIL);
 
 
+	//IDXGIFactory* factory = nullptr;
+	//CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
 
+	//IDXGIAdapter* adapter = nullptr;
+	//for (UINT i = 0; factory->EnumAdapters(i, &adapter) != DXGI_ERROR_NOT_FOUND; ++i) {
+	//	DXGI_ADAPTER_DESC desc;
+	//	adapter->GetDesc(&desc);
+
+	//	if (desc.DedicatedVideoMemory > 0) {
+	//		// DedicatedVideoMemory가 0보다 크면 외장 그래픽 어댑터입니다.
+	//		break; // 외장 그래픽 어댑터를 찾았습니다.
+	//	}
+
+	//	adapter->Release(); // 내장 그래픽이라면 어댑터를 해제합니다.
+	//	adapter = nullptr;
+	//}
+
+	//if (adapter) {
+	//	// 외장 그래픽 어댑터를 사용하여 디바이스 초기화 등을 진행합니다.
+	//	// ...
+	//}
+
+	
 
 	// 2 : HAL, 버텍스 프로세싱
 	D3DCAPS9	DeviceCaps;
@@ -99,6 +122,9 @@ HRESULT CGraphicDev::Ready_GraphicDev(CGraphicDev** ppGraphicClass, HWND hWnd, W
 	//lstrcpy(tFontInfo.FaceName, L"궁서");
 
 	//FAILED_CHECK_MSG(D3DXCreateFontIndirect(m_pGraphicDev, &tFontInfo, &m_pFont), L"Create Font Failed");
+
+	/*adapter->Release();
+	factory->Release();*/
 
 	return m_dwReady = S_OK;
 }

@@ -54,7 +54,8 @@ private:
 	ImVec4		m_vClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 private:
-	_unmap<const _tchar*, CImguiWin*>		m_mapImguiWin;					// IMGUI 윈도우 클래스 저장 컨테이너
+	_unmap<const _tchar*, CImguiWin*>			m_mapImguiWin;			// IMGUI 윈도우 클래스 저장 컨테이너
+	vector<pair< const _tchar*, CImguiWin*>>	m_vecSortedImguiWin;	// IMGUI value 기반 정렬 컨테이너
 
 public:
 	GETSET_EX2(LPDIRECT3DTEXTURE9, m_pEditorTexture, EditorTexture, SET_PTR, GET_PTR)
@@ -66,5 +67,9 @@ public:
 	void HelpMarker(const char* desc) { HelpMarkerEx("(?)", desc); }
 	void HelpMarkerEx(const char* marker, const char* desc);
 	
+
+public:
+	void	Open_Layout(const _tchar* pWin);
+	void	Close_Layout(const _tchar* pWin);
 };
 
