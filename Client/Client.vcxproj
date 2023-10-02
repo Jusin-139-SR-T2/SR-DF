@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Header\AceInteraction.h" />
     <ClInclude Include="Header\AceFood.h" />
+    <ClInclude Include="Header\AceLighter.h" />
     <ClInclude Include="Header\AceObjectFactory.h" />
     <ClInclude Include="Header\AceThrow.h" />
     <ClInclude Include="Header\AceWeapon.h" />
@@ -44,11 +45,11 @@
     <ClInclude Include="Header\TitleLogo.h" />
     <ClInclude Include="Header\SkyBox.h" />
     <ClInclude Include="Header\BlackBoard.h" />
-    <ClInclude Include="AceLighter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceInteraction.cpp" />
     <ClCompile Include="Code\AceFood.cpp" />
+    <ClCompile Include="Code\AceLighter.cpp" />
     <ClCompile Include="Code\AceObjectFactory.cpp" />
     <ClCompile Include="Code\AceThrow.cpp" />
     <ClCompile Include="Code\AceWeapon.cpp" />
@@ -75,7 +76,6 @@
     <ClCompile Include="Code\TitleLogo.cpp" />
     <ClCompile Include="Code\SkyBox.cpp" />
     <ClCompile Include="Code\BlackBoard.cpp" />
-    <ClCompile Include="AceLighter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

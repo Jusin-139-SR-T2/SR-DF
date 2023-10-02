@@ -168,7 +168,7 @@
     <ClInclude Include="Header\AceInteraction.h">
       <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
     </ClInclude>
-    <ClInclude Include="AceLighter.h">
+    <ClInclude Include="Header\AceLighter.h">
       <Filter>02. GameObject\03. Lighter</Filter>
     </ClInclude>
   </ItemGroup>
@@ -248,7 +248,7 @@
     <ClCompile Include="Code\AceInteraction.cpp">
       <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
     </ClCompile>
-    <ClCompile Include="AceLighter.cpp">
+    <ClCompile Include="Code\AceLighter.cpp">
       <Filter>02. GameObject\03. Lighter</Filter>
     </ClCompile>
   </ItemGroup>
