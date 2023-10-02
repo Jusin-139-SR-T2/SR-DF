@@ -142,13 +142,6 @@ void CPlayer::LateUpdate_GameObject()
 
 void CPlayer::Render_GameObject()
 {
-    // 조명 테스트
-    if (bTorch)
-    {
-        m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
-        //SetUp_Material();
-    }
-
 #pragma region 옵션
     // 행렬 적용
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
@@ -205,9 +198,7 @@ void CPlayer::Render_GameObject()
     //}
 #pragma endregion
 
-#pragma region 조명 테스트
-    if (bTorch)
-        m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+#pragma region 옵션 끄기 
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 #pragma endregion

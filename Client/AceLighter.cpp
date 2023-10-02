@@ -34,7 +34,6 @@ HRESULT CAceLighter::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformComp->Set_Pos({ 24.f, 1.f, 11.f });
 	return S_OK;
 }
 

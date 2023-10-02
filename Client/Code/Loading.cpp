@@ -328,6 +328,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Inventory/Cola.png", TEX_NORMAL, L"Inventory", L"Cola");
 
 #pragma endregion
+	Load_Texture(L"./Resource/Texture/Light/RedLight.png", TEX_NORMAL, L"Light", L"RedLight");
 
 	Wait_LoadTextureAsync();
 
