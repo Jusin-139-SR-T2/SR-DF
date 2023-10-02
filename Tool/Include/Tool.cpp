@@ -169,7 +169,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   RECT	rc{ 0, 0, 1280, 720 };
+   RECT	rc{ 0, 0, WINCX, WINCY };
 
    AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 

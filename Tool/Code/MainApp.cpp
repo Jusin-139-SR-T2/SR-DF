@@ -57,36 +57,22 @@ void CMainApp::Render_MainApp()
 		// [오브젝트 렌더] 렌더러에 요청해서 그려야할 오브젝트들을 그린다.
 		Engine::Render_Scene(m_pGraphicDev);
 
-		/*LPDIRECT3DSURFACE9 pBackBuffer = NULL;
-		LPDIRECT3DSURFACE9 pSurface = NULL;
+		CImguiMgr* pImguiMgr = CImguiMgr::GetInstance();
+		LPDIRECT3DSURFACE9 pBackBuffer = nullptr;
+		LPDIRECT3DSURFACE9 pRenderTarget = nullptr;
+		D3DSURFACE_DESC desc;
 
-		m_pGraphicDev->CreateTexture(WINCX, WINCY, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_pTexture, NULL);
-		m_pGraphicDev->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer);
-		m_pTexture->GetSurfaceLevel(0, &pSurface);
-		m_pGraphicDev->StretchRect(pBackBuffer, NULL, pSurface, NULL, D3DTEXF_NONE);
+		pImguiMgr->Get_GraphicDev()->GetBackBuffer(0, 0U, D3DBACKBUFFER_TYPE::D3DBACKBUFFER_TYPE_MONO, &pBackBuffer);
+		pImguiMgr->Get_VecRenderTargetTex(0)->GetSurfaceLevel(0, &pRenderTarget);
+		pImguiMgr->Get_GraphicDev()->StretchRect(pBackBuffer, NULL, pRenderTarget, NULL, D3DTEXF_NONE);
+		pBackBuffer->GetDesc(&desc);
 
-		CImguiMgr::GetInstance()->Set_EditorTexture(&m_pTexture);
+		Safe_Release(pBackBuffer);
+		Safe_Release(pRenderTarget);
 
-
-		pSurface->Release();
-		pBackBuffer->Release();*/
-		//m_pTexture->Release();
-
-		//LPDIRECT3DSURFACE9 pSurface = NULL;
-		//D3DSURFACE_DESC desc;
-
-		/*m_pGraphicDev->CreateRenderTarget(m_pDeviceClass->Get_D3DPP()->BackBufferWidth, 
-			m_pDeviceClass->Get_D3DPP()->BackBufferHeight, 
-			D3DFMT_X8R8G8B8, D3DMULTISAMPLE_NONE, 0, TRUE, &pSurface, NULL);*/
-
-		//m_pGraphicDev->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pSurface);
-
-		//pSurface->GetDesc(&desc);
-
-		/*m_pGraphicDev->SetRenderTarget(0, pSurface);
-		pSurface->GetDesc(&desc);*/
-
-		//pSurface->Release();
+		D3DVIEWPORT9 viewport = {0, 0, 2560, 1440, 0.f, 1.f};
+		//m_pGraphicDev->GetViewport(&viewport);
+		m_pGraphicDev->SetViewport(&viewport);
 
 		// [IMGUI 렌더]
 		CImguiMgr::GetInstance()->Render_Imgui();
@@ -119,13 +105,23 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 
 HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 {
-	FAILED_CHECK_RETURN(Engine::Ready_GraphicDev(&m_pDeviceClass, g_hWnd, MODE_WIN, m_dwResizeWidth, m_dwResizeHeight), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_GraphicDev(&m_pDeviceClass, g_hWnd, MODE_WIN, 2560, 1440), E_FAIL);
 	m_pDeviceClass->AddRef();
 
 	(*ppGraphicDev) = m_pDeviceClass->Get_GraphicDev();
 	(*ppGraphicDev)->AddRef();
 
 	(*ppGraphicDev)->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+	// InputDev
+	FAILED_CHECK_RETURN(Engine::Ready_InputDev(g_hInst, g_hWnd), E_FAIL);
+
+	// Font
+	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Default", L"바탕", 15, 20, FW_HEAVY), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Jinji", L"궁서", 30, 30, FW_THIN), E_FAIL);
+
+	// Renderer
+	FAILED_CHECK_RETURN(Engine::Ready_Renderer(), E_FAIL);
 
 	return S_OK;
 }
@@ -146,10 +142,6 @@ CMainApp* CMainApp::Create()
 
 void CMainApp::Free()
 {
-	// ImGui 끝내기
-	ImGui_ImplDX9_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
 	CImguiMgr::GetInstance()->DestroyInstance();
 
 	// 장치 제거
@@ -173,12 +165,6 @@ void CMainApp::CleanupDeviceD3D()
 void CMainApp::ResetDevice(_uint dwResizeWidth, _uint dwResizeHeight)
 {
 	CImguiMgr::GetInstance()->ResetDevice(dwResizeWidth, dwResizeHeight);
-
-	if (m_pTexture != nullptr)
-	{
-		m_pTexture->Release();
-		m_pTexture = nullptr;
-	}
 }
 
 bool CMainApp::LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 pOutTex, _int* pOutWidth, _int* pOutHeight)

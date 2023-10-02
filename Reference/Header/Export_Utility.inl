@@ -46,6 +46,10 @@ CComponent*		Clone_Proto(const _tchar* pProtoTag, CComponent*& prComponent)
 
 
 // ·»´õ·¯ ÇÔ¼ö
+HRESULT		Ready_Renderer(const _uint iWidth, const _uint iHeight)
+{
+	return CRenderer::GetInstance()->Ready_Renderer(iWidth, iHeight);
+}
 void		Add_RenderGroup(RENDERID eType, CGameObject* pGameObject)
 {
 	CRenderer::GetInstance()->Add_RenderGroup(eType, pGameObject);

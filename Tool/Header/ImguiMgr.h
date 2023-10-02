@@ -11,6 +11,7 @@ class CManagement;
 END
 
 class CImguiWin;
+struct ImGuiIO;
 
 class CImguiMgr : public CBase
 {
@@ -24,7 +25,7 @@ public:
 	virtual void	Free();
 
 public:
-	HRESULT Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* ppGraphicDev);
+	HRESULT Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* ppGraphicDev, _uint iRenderTargetCount = 1U);
 	HRESULT Update_Imgui(const _float& fTimeDelta);
 	HRESULT Render_Imgui();
 	HRESULT Render_AdditionImgui();
@@ -36,13 +37,18 @@ public:
 	bool LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 pOutTex, _int* pOutWidth, _int* pOutHeight);
 
 public:
+	GETSET_EX1(Engine::CGraphicDev*, m_pDeviceClass, DeviceClass, GET_REF_C)
 	GETSET_EX1(LPDIRECT3DDEVICE9, m_pGraphicDev, GraphicDev, GET)
-
+	GETSET_EX1(vector<LPDIRECT3DTEXTURE9>, m_vecRenderTargetTex, VecRenderTargetTex, GET_C_REF)
+	LPDIRECT3DTEXTURE9& Get_VecRenderTargetTex(_uint value) { return m_vecRenderTargetTex[value]; }
+	GETSET_EX1(_uint, static_cast<_uint>(m_vecRenderTargetTex.size()), RenderTargetCount, GET_C_REF)
+	// ㅋ
 private:		// 접근을 최소화하는 함수, 변수
 	Engine::CGraphicDev*		m_pDeviceClass;
 	Engine::CManagement*		m_pManagementClass;
 	LPDIRECT3D9					m_pSDK;
 	LPDIRECT3DDEVICE9			m_pGraphicDev;
+	vector<LPDIRECT3DTEXTURE9>	m_vecRenderTargetTex;
 
 private:		// IMGUI 관련 변수
 	ImGuiIO*	m_pIO;
@@ -52,6 +58,9 @@ private:
 	bool		m_bShow_AnotherWindow =	false;
 	bool		m_bShow_MapWindow =	false;								// 소영 새로운창 create용
 	ImVec4		m_vClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+public:
+	void		Sort_ImguiWin();
 
 private:
 	_unmap<const _tchar*, CImguiWin*>			m_mapImguiWin;			// IMGUI 윈도우 클래스 저장 컨테이너

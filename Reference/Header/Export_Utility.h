@@ -23,9 +23,6 @@
 #include "TextureComponent.h"
 #include "TransformComponent.h"
 
-#include "PHY_Shape.h"
-#include "PHY_Sphere.h"
-
 
 BEGIN(Engine)
 
@@ -42,14 +39,16 @@ inline void			Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev);
 
 // ProtoMgr
 inline HRESULT			Ready_Proto(const _tchar* pProtoTag, CComponent* pComponent);
-template <typename T>	inline T* Clone_Proto(const _tchar* pProtoTag);
+template <typename T>	
+inline T*				Clone_Proto(const _tchar* pProtoTag);
 // 클론시 저장할 포인터 변수를 받는 오버로딩 함수
 inline CComponent*		Clone_Proto(const _tchar* pProtoTag, CComponent*& prComponent);
 
 // Renderer
-inline void		Add_RenderGroup(RENDERID eType, CGameObject* pGameObject);
-inline void		Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
-inline void		Clear_RenderGroup();
+inline HRESULT		Ready_Renderer(const _uint iWidth = WINCX, const _uint iHeight = WINCY);
+inline void			Add_RenderGroup(RENDERID eType, CGameObject* pGameObject);
+inline void			Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
+inline void			Clear_RenderGroup();
 
 // LightMgr
 inline HRESULT		Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,	const D3DLIGHT9 * pLightInfo,	const _uint & iIndex);

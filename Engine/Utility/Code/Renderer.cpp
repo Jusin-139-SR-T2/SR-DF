@@ -4,15 +4,7 @@ IMPLEMENT_SINGLETON(CRenderer)
 
 CRenderer::CRenderer()
 {
-	// 뷰포트 사용가능 디폴트 8개
-	m_vecViewport.reserve(VIEWPORT_COUNT);
-	for (size_t i = 0; i < VIEWPORT_COUNT; i++)
-	{
-		D3DVIEWPORT9 UiViewPort({ 0, 0, WINCX, WINCY, 0.f, 1.f });
-		m_vecViewport.push_back(UiViewPort);
-	}
-	D3DXMatrixOrthoLH(&m_matOrtho, WINCX, WINCY, 0.f, 100.f);
-
+	
 }
 
 CRenderer::~CRenderer()
@@ -20,9 +12,34 @@ CRenderer::~CRenderer()
 	Free();
 }
 
-void CRenderer::Ready_Renderer()
+void CRenderer::Free()
 {
+	Clear_RenderGroup();
+}
 
+HRESULT CRenderer::Ready_Renderer(const _uint iWidth, const _uint iHeight)
+{
+	// 뷰포트 사용가능 디폴트 8개
+	_uint iViewportCount = static_cast<_uint>(EVIEWPORT::SIZE);
+	m_vecViewport.reserve(iViewportCount);
+	for (size_t i = 0; i < iViewportCount; i++)
+	{
+		D3DVIEWPORT9 UiViewPort({ 0, 0, iWidth, iHeight, 0.f, 1.f });
+		m_vecViewport.push_back(UiViewPort);
+	}
+	
+	// 뷰포트 사용가능 디폴트 8개
+	_uint iViewportRTCount = static_cast<_uint>(EVIEWPORT_RT::SIZE);
+	m_vecViewport_RT.reserve(iViewportRTCount);
+	for (size_t i = 0; i < iViewportRTCount; i++)
+	{
+		D3DVIEWPORT9 UiViewPort({ 0, 0, iWidth, iHeight, 0.f, 1.f });
+		m_vecViewport_RT.push_back(UiViewPort);
+	}
+
+	D3DXMatrixOrthoLH(&m_matOrtho, iWidth, iHeight, 0.f, 100.f);
+
+	return S_OK;
 }
 
 void CRenderer::Add_RenderGroup(RENDERID eType, CGameObject* pGameObject)
@@ -126,7 +143,3 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);						// Z버퍼 ON
 }
 
-void CRenderer::Free()
-{
-	Clear_RenderGroup();
-}

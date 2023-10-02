@@ -8,7 +8,7 @@
 
 class Engine::CGraphicDev;
 class Engine::CManagement;
-class ImGuiIO;
+struct ImGuiIO;
 
 class CMainApp : public CBase
 {

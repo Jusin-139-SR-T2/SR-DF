@@ -17,7 +17,7 @@ protected:
 	virtual void Free();
 
 public:
-	virtual HRESULT Ready_ImguiWin() OVERRIDE;
-	virtual _int	Update_ImguiWin(const _float& fTimeDelta) OVERRIDE;
+	virtual HRESULT Ready_ImguiWin() override;
+	virtual _int	Update_ImguiWin(const _float& fTimeDelta) override;
 };
 
