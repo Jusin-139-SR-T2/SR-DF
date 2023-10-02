@@ -66,6 +66,7 @@ void CAceLighter::Render_GameObject()
     {
         m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
         //m_pGraphicDev->SetRenderState(D3DRS_NORMALIZENORMALS, TRUE);
+        m_pGraphicDev->LightEnable(2, TRUE); // 누수 잡음 
         Create_Light();
     }
     else

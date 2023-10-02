@@ -10,22 +10,22 @@ class CPsystem : public Engine::CGameObject
 {
 	DERIVED_CLASS(CGameObject, CPsystem)
 
-protected:
+public:
 	explicit CPsystem(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CPsystem(const CPsystem& rhs);
 	virtual ~CPsystem();
 
-protected:
-	HRESULT		Ready_Particle(const _tchar* texFileName);	// 포인트 스프라이트를 저장하기위한 버텍스 버퍼를 만들고 텍스처를 만드는등 초기화작업 처리하는곳 - 용책의 bool init에 해당 
-	HRESULT		Update_Particle(const _float& fTimeDelta);
-	void		LateUpdate_Particle();
-	void		Render_Particle();
+public:
+	HRESULT		Ready_GameObject(const _tchar* texFileName);	// 포인트 스프라이트를 저장하기위한 버텍스 버퍼를 만들고 텍스처를 만드는등 초기화작업 처리하는곳 - 용책의 bool init에 해당 
+	_int		Update_GameObject(const _float& fTimeDelta);
+	void		LateUpdate_GameObject();
+	void		Render_GameObject();
 
 protected:
 	virtual void ResetParticle(Attribute* attribute) PURE; // 파티클마다 리셋되는 방식이 다르다.
-	virtual void addParticle(); // 시스템에 파티클을 추가 
-
-private:
+	
+public:
+	virtual void AddParticle(); // 시스템에 파티클을 추가 
 	virtual void Free();
 	virtual void ResetList(); //시스템 내의 모든 파티클 속성을 리셋
 	virtual void preRender();	// 렌더링에 앞서 지정해야 할 초기 렌더 상태를 지정. -> 시스템에 따라 달라지므로 가상함수 선언 
@@ -36,7 +36,24 @@ public:
 	bool isEmpty() { return m_ParticleList.empty();	}   // 현재 시스템에 파티클이 없는 경우 true 리턴.
 	bool isDead(); // 시스템 내의 파티클이 모두 죽은 경우 true 리턴.
 
-	// 변수 ================================================
+protected:
+	void Get_RandomVector(_vec3* out, _vec3* min, _vec3* max)
+	{
+		out->x = Get_RandomFloat(min->x, max->x);
+		out->y = Get_RandomFloat(min->y, max->y);
+		out->z = Get_RandomFloat(min->z, max->z);
+	}
+
+	float Get_RandomFloat(float lowBound, float hightBound)
+	{
+		if (lowBound >= hightBound)
+			return lowBound;
+
+		float f = (rand() % 10000) * 0.0001f;
+
+		return (f * (hightBound - lowBound)) + lowBound;
+	}
+
 protected:
 	DWORD m_vbSize;       // 버텍스 버퍼가 보관할 수 있는 파티클의 수- 실제 파티클 시스템 내의 파티클 수와는 독립적.
 	DWORD m_vbOffset;     // 파티클 시스템의 렌더링에 이용.
@@ -48,9 +65,9 @@ protected:
 	
 	list<Attribute>					m_ParticleList;   // 시스템 내 파티클 속성의 리스트.
 	_vec3							m_vOrigin;		  // 시스템 내에서 파티클이 시작되는 곳.
-	_float							m_femitRate;	  // 시스템에 새로운 파티클이 추가되는 비율. 보통은 초당 파티클 수로 기록.
-	_float							m_fsize;		  // 시스템 내 모든 파티클의 크기
-	_int							m_imaxParticles;  // 주어진 시간 동안 시스템이 가질 수 있는 최대 파티클의 수.
+	_float							m_fEmitRate;	  // 시스템에 새로운 파티클이 추가되는 비율. 보통은 초당 파티클 수로 기록.
+	_float							m_fSize;		  // 시스템 내 모든 파티클의 크기
+	_int							m_iMaxParticles;  // 주어진 시간 동안 시스템이 가질 수 있는 최대 파티클의 수.
 
 };
 

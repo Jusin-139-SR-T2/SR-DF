@@ -45,6 +45,7 @@
     <ClInclude Include="Header\TitleLogo.h" />
     <ClInclude Include="Header\SkyBox.h" />
     <ClInclude Include="Header\BlackBoard.h" />
+    <ClInclude Include="SnowParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceInteraction.cpp" />
@@ -76,6 +77,7 @@
     <ClCompile Include="Code\TitleLogo.cpp" />
     <ClCompile Include="Code\SkyBox.cpp" />
     <ClCompile Include="Code\BlackBoard.cpp" />
+    <ClCompile Include="SnowParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

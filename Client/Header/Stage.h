@@ -10,10 +10,12 @@
 #include "AceLighter.h"
 
 #include "Terrain.h"
+#include "SnowParticle.h"
 
 class CStage : public Engine::CScene
 {
 	DERIVED_CLASS(CScene, CStage)
+
 private:
 	explicit CStage(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CStage();

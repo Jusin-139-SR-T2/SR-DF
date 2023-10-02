@@ -177,6 +177,9 @@
     <ClInclude Include="Header\AceLighter.h">
       <Filter>02. GameObject\03. Lighter</Filter>
     </ClInclude>
+    <ClInclude Include="SnowParticle.h">
+      <Filter>02. GameObject\04. Particle\00. Snow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -256,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="Code\AceLighter.cpp">
       <Filter>02. GameObject\03. Lighter</Filter>
+    </ClCompile>
+    <ClCompile Include="SnowParticle.cpp">
+      <Filter>02. GameObject\04. Particle\00. Snow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

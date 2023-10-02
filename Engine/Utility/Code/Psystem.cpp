@@ -1,7 +1,7 @@
 #include "Psystem.h"
 
 CPsystem::CPsystem(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+	: CGameObject(pGraphicDev), m_vbSize(0)
 {
 }
 
@@ -14,7 +14,7 @@ CPsystem::~CPsystem()
 {
 }
 
-HRESULT CPsystem::Ready_Particle(const _tchar* texFileName)
+HRESULT CPsystem::Ready_GameObject(const _tchar* texFileName)
 {
 	TCHAR	szFileName[128] = L"";
 	wsprintf(szFileName, texFileName);
@@ -40,7 +40,7 @@ HRESULT CPsystem::Ready_Particle(const _tchar* texFileName)
 	return S_OK;
 }
 
-HRESULT CPsystem::Update_Particle(const _float& fTimeDelta)
+_int CPsystem::Update_GameObject(const _float& fTimeDelta)
 {
 	for (auto& iter : m_ParticleList)
 	{
@@ -67,12 +67,12 @@ HRESULT CPsystem::Update_Particle(const _float& fTimeDelta)
 	return S_OK;
 }
 
-void CPsystem::LateUpdate_Particle()
+void CPsystem::LateUpdate_GameObject()
 {
 	RemoveDeadParticles();
 }
 
-void CPsystem::Render_Particle()
+void CPsystem::Render_GameObject()
 {	// Remarks:  The render method works by filling a section of the vertex buffer with data,
 	//           then we render that section.  While that section is rendering we lock a new
 	//           section and begin to fill that section.  Once that sections filled we render it.
@@ -163,7 +163,8 @@ void CPsystem::Render_Particle()
 	}
 }
 
-void CPsystem::addParticle()
+
+void CPsystem::AddParticle()
 {
 	// 시스템에 파티클을 추가.
 	// 리스트에 추가 하기전에 파티클을 초기화 하는데 resetPaticle 이용
@@ -198,8 +199,8 @@ void CPsystem::preRender()
 	// FtoDw 함수는 float을 DWORD로 형 변환한다.
 	// 이 함수가 필요한 것은 일반적인 IDirect3DDevice9::SetRenderState 호출이
 	// float이 아닌 DWORD를 필요로 하기 때문.
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSIZE, DWORD(m_fsize));
-	// *((DWORD*)&m_fSize))?
+	m_pGraphicDev->SetRenderState(D3DRS_POINTSIZE, *((DWORD*)&m_fSize));
+	// ?
 	// 포인트 스프라이트의 지정할 수 있는 최소 크기를 지정.
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSIZE_MIN, DWORD(0.0f));
 
@@ -207,7 +208,7 @@ void CPsystem::preRender()
 	// 여기에서 말하는 거리란 카메라와 포인트 스프라이트 간의 거리.
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_A, DWORD(0.0f));
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_B, DWORD(0.0f));
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_C, DWORD(m_fsize));
+	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_C, *((DWORD*)&m_fSize));
 
 	// 텍스처의 알파를 이용
 	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
