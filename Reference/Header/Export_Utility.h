@@ -27,6 +27,8 @@
 #include "PHY_Shape.h"
 #include "PHY_Sphere.h"
 
+#include "Psystem.h"
+
 
 BEGIN(Engine)
 

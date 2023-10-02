@@ -19,8 +19,6 @@ namespace Engine
 	const _ulong	FVF_COL = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX0;
 
 
-
-
 	typedef struct tagVertexTexture
 	{
 		_vec3		vPosition;
@@ -29,9 +27,6 @@ namespace Engine
 
 	}VTXTEX;
 	const _ulong	FVF_TEX = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1;
-
-
-
 
 	typedef struct tagVertexCubeTexture
 	{
@@ -57,6 +52,35 @@ namespace Engine
 		_ulong	_2;
 
 	}INDEX32;
+
+
+	typedef struct tagParticle
+	{
+		D3DXVECTOR3 vPosition;
+		D3DCOLOR    Color;
+	}Particle;
+
+	const _ulong	FVF_Particle = D3DFVF_XYZ | D3DFVF_DIFFUSE;
+
+
+	typedef struct tagAttribute
+	{
+		_vec3		vPosition;
+		_vec3		vVelocity;
+		_vec3		vAcceleration;
+		_float      fLifeTime;     // how long the particle lives for before dying  
+		_float      fAge;          // current age of the particle  
+		D3DXCOLOR   Color;        // current color of the particle   
+		D3DXCOLOR   ColorFade;    // how the color fades with respect to time
+		_bool       bIsAlive;
+	}Attribute;
+
+
+	typedef struct tagBoundingBox
+	{
+		_vec3 vMin;
+		_vec3 vMax;
+	}BoundingBox;
 
 
 #pragma region 간이 상태머신
