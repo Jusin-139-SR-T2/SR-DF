@@ -29,11 +29,25 @@ HRESULT CScene::Ready_Scene()
 
 _int CScene::Update_Scene(const _float& fTimeDelta)
 {
-	_int	iResult = 0;
-
-	for (auto& iter : m_mapLayer)
+	// 우선도 설정을 해준다.
 	{
-		iResult = iter.second->Update_Layer(fTimeDelta);
+		m_vecPriorityLayer.reserve(m_mapLayer.size());
+
+		// vector에 객체 추가
+		for (auto& item : m_mapLayer)
+			m_vecPriorityLayer.push_back(item.second);
+
+		// 우선도 기반 정렬
+		sort(m_vecPriorityLayer.begin(), m_vecPriorityLayer.end(),
+			[](CLayer* const pDst, CLayer* const pSrc) {
+				return pDst->Get_Priority() > pSrc->Get_Priority();
+			});
+	}
+
+	_int	iResult = 0;
+	for (auto& iter : m_vecPriorityLayer)
+	{
+		iResult = iter->Update_Layer(fTimeDelta);
 
 		if (iResult & 0x80000000)
 			return iResult;
@@ -44,8 +58,11 @@ _int CScene::Update_Scene(const _float& fTimeDelta)
 
 void CScene::LateUpdate_Scene()
 {
-	for (auto& iter : m_mapLayer)
-		iter.second->LateUpdate_Layer();
+	for (auto& iter : m_vecPriorityLayer)
+		iter->LateUpdate_Layer();
+
+	// 우선도 벡터 초기화
+	m_vecPriorityLayer.clear();
 }
 
 void CScene::Render_Scene()

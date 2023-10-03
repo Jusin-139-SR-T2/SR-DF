@@ -35,6 +35,7 @@ protected:	// 레이어 관련
 
 protected:
 	_unmap<const _tchar*, CLayer*>	m_mapLayer;
+	vector<CLayer*>					m_vecPriorityLayer;
 
 };
 

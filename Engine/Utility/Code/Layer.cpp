@@ -42,15 +42,36 @@ HRESULT CLayer::Ready_Layer(_float fPriority)
 
 _int CLayer::Update_Layer(const _float& fTimeDelta)
 {
+	// Set Dead로 설정된 객체를 삭제시킨다.
+	for (auto iter = m_mapObject.begin(); iter != m_mapObject.end();)
+	{
+		if ((*iter).second->Get_IsDead())
+		{
+			// 레퍼런스 카운터가 1이상이었을 때 추가적인 해제 작업이 필요하다.
+			_uint iRefCount = Safe_Release((*iter).second);
+			iter = m_mapObject.erase(iter);
+		}
+		else
+			++iter;
+	}
+
 	// 우선도 설정을 해준다.
 	for (_uint i = 0; i < static_cast<_uint>(EPRIORITY::RENDER); i++)
 	{
 		m_arrvecPriorityObject[i].reserve(m_mapObject.size());
 
+		// vector에 객체 추가
+		for (auto& item : m_mapObject)
+			m_arrvecPriorityObject[i].push_back(item.second);
+
+		// 우선도 기반 정렬
 		sort(m_arrvecPriorityObject[i].begin(), m_arrvecPriorityObject[i].end(),
 			[&i](CGameObject* const pDst, CGameObject* const pSrc) {
-				if (pDst->Get_IsUsePriority(i) && pSrc->Get_IsUsePriority(i))
-				return pDst->Get_Priority(i) > pSrc->Get_Priority(i);
+				if (!pDst->Get_IsUsePriority(i) && pDst->Get_IsUsePriority(i))
+					return true;
+				else if (!pDst->Get_IsUsePriority(i) && !pDst->Get_IsUsePriority(i))
+					return false;
+				return (pDst->Get_Priority(i) > pSrc->Get_Priority(i));
 			});
 	}
 
@@ -72,13 +93,13 @@ _int CLayer::Update_Layer(const _float& fTimeDelta)
 
 void CLayer::LateUpdate_Layer()
 {
-	for (auto& gameObj : m_mapObject)
+	for (auto& gameObj : m_arrvecPriorityObject[static_cast<_uint>(EPRIORITY::LATE)])
 	{
-		gameObj.second->LateUpdate_GameObject();
+		gameObj->LateUpdate_GameObject();
 	}
 
 	// 쓰고 나면 클리어
-	m_arrvecPriorityObject[static_cast<_uint>(EPRIORITY::UPDATE)].clear();
+	m_arrvecPriorityObject[static_cast<_uint>(EPRIORITY::LATE)].clear();
 }
 
 CComponent* CLayer::Get_Component(COMPONENTID eID, const _tchar* pObjTag, const _tchar* pComponentTag)
