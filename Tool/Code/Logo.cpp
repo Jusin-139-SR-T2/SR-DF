@@ -1,6 +1,7 @@
 #include "Logo.h"
 
 #include "BackGround.h"
+#include "MyTexture.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -82,6 +83,9 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	// 배경생성
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", CBackGround::Create(m_pGraphicDev)), E_FAIL);
+
+	// 플레이어 텍스처 생성
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MyTexture", CMyTexture::Create(m_pGraphicDev)), E_FAIL);
 
 	return S_OK;
 }
