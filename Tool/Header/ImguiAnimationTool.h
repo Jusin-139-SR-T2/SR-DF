@@ -49,7 +49,7 @@ struct Keyframe
 	bool isEaseIn;			// Ease In 설정 (True 또는 False)
 	bool isEaseOut;			// Ease Out 설정 (True 또는 False)
 
-	float time;				// 키프레임의 시간 (0.0f ~ 1.0f 범위)
+	float time;				// 키프레임의 시간 (0.0f ~ MaxTime 범위)
 	float value;			// 애니메이션 값 (크기, 회전, 이동 등)
 	float color[3];			// 키프레임 색상 (R, G, B)
 
@@ -61,6 +61,20 @@ struct Keyframe
 	_vec3	vScale = { 0.f, 0.f, 0.f };			// 크기를 담을 그릇
 	_vec3	vRot = { 0.f, 0.f, 0.f };			// 회전을 담을 그릇
 	_vec3	vPos = { 0.f, 0.f, 0.f };			// 위치를 담을 그릇
+};
+
+// 자동 애니메이션 생성시 최소 및 최대 값을 입력 받는 구조체
+struct AnimationProperties {
+	float minTime = 0.0f;
+	float maxTime = 20.f;
+	float minValue = 0.0f;
+	float maxValue = 1.0f;
+	_vec3 minScale = { 0.1f, 0.1f, 0.f };
+	_vec3 maxScale = { 5.f, 5.f, 5.f };
+	_vec3 minRotation = { 0.f, 0.f, 0.f };
+	_vec3 maxRotation = { 360.f, 360.f, 360.f };
+	_vec3 minPosition = { 0.f, 0.f, 0.f };
+	_vec3 maxPosition = { 300.f, 300.f, 300.f };
 };
 
 // 애니메이션 Info 구조체
@@ -154,6 +168,8 @@ public:
 	// 파일명 제거 함수
 	void PathRemoveFileSpec(TCHAR* path);
 
+	// 시간에 따른 애니메이션 자동 생성 함수
+	void EditKeyframesForAnimation(int numFrames);
 
 	//test
 	//ImVec4 ImLerp(const ImVec4& a, const ImVec4& b, float t);
@@ -225,16 +241,45 @@ private: // 멤버 변수
 	int	m_iObjectCreatIndex = -1;
 	int selectedItemIndex = -1; // 선택된 항목 인덱스, 기본값 -1은 아무 항목도 선택되지 않음을 나타냅니다.
 
+	bool isMouseDragging = false; // 마우스 드래그 상태 저장
+	_vec2 mouseClickPos; // 클릭된 좌표 저장
+
 	bool	m_bTest;
+
+private: // 애니메이션 툴 변수
 
 	// 애니메이션 타임 라인
 	std::vector<Keyframe> timeline;
 
 	// 애니메이션 타임라인
-	float currentTime = 0.0f;
+	float currentTime = 0.0f; // 현재 시간 값
+	float MaxTime = 20.f;
+	float fDisplayTime = 1.f;	// 눈금마다의 시간 값 표시
 	bool isDraggingTimeline = false;
-	bool isPlaying = false;
-	float playbackSpeed = 1.0f;
+	bool isPlaying = false;		// 재생 여부
+	float playbackSpeed = 1.0f; // 재생 속도
+
+#pragma region 최소, 최대 값
+	// 크기
+	float	fMin_Scale = 0.1f;	// 최소
+	float	fMax_Scale = 5.f;	// 최대
+
+	// 회전
+	float	fMin_Rot = 0.f;		// 최소
+	float	fMax_Rot = 360.f;	// 최대
+
+	// 이동
+	float	fMin_Pos = 0.f;		// 최소
+	float	fMax_Pos = 300.f;	// 최대
+
+	// 시간
+	float	fMin_Time = 0.f;	// 최소
+	float	fMax_Time = MaxTime;// 최대
+
+	// 벨류
+	float	fMin_Value = 0.f;	// 최소
+	float	fMax_Value = 1.f;	// 최대
+#pragma endregion
 	// 선택한 키프레임 인덱스를 저장하는 변수 (선택한 키프렘의 인덱스를 초기화합니다.)
 	int selectedKeyframeIndex = -1;
 
@@ -246,7 +291,12 @@ private: // 멤버 변수
 	int animationFrame = 0;
 	float playbackTime = 0.f;
 
-	// 폴더 경로
+	float initialKeyframeX = 0.f; // 마우스 드래그 시작 위치
+
+	// 이전에 그려진 빨간색 원을 저장하기 위한 변수
+	_vec2 lastRedCirclePos;
+
+	// ==============폴더 경로==============
 	// 이미지 경로 목록을 저장하는 벡터
 	std::vector<std::string> imagePaths = 
 	{

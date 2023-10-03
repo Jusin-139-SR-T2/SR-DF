@@ -68,13 +68,26 @@ _int CImguiWin_MapTool::Update_ImguiWin(const _float& fTimeDelta)
 
             
             ImGuiID dock_right_id = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.3f, NULL, &dockspace_id);
-            ImGuiID dock_down_id = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.3f, NULL, &dockspace_id);
-            ImGui::DockBuilderDockWindow("Hierachi", dock_right_id);
-            ImGui::DockBuilderDockWindow("Browser", dock_down_id);
-            ImGui::DockBuilderDockWindow("Viewer", dockspace_id);
 
+            ImGui::DockBuilderDockWindow(u8"ºä¾î", dockspace_id);
+            ImGui::DockBuilderDockWindow(u8"°èÃþ", dock_right_id);
+
+            
+
+            ImGuiID dock_brower_scene = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.2f, NULL, &dockspace_id);
+            //ImGui::DockSpace(dock_brower_scene, ImVec2(0.0f, 0.0f), m_DockSpace_Flags);
+            ImGuiID dock_brower_terrain = ImGui::DockBuilderAddNode(dock_brower_scene, m_DockSpace_Flags | ImGuiDockNodeFlags_CentralNode);
+            ImGuiID dock_brower_object = ImGui::DockBuilderAddNode(dock_brower_scene, m_DockSpace_Flags | ImGuiDockNodeFlags_CentralNode);
+            ImGuiID dock_brower_light = ImGui::DockBuilderAddNode(dock_brower_scene, m_DockSpace_Flags | ImGuiDockNodeFlags_CentralNode);
+
+            ImGui::DockBuilderDockWindow(u8"¾À", dock_brower_scene);
+            ImGui::DockBuilderDockWindow(u8"ÁöÇü", dock_brower_terrain);
+            ImGui::DockBuilderDockWindow(u8"¿ÀºêÁ§Æ®", dock_brower_object);
+            ImGui::DockBuilderDockWindow(u8"Á¶¸í", dock_brower_light);
+
+            ImGui::DockBuilderFinish(dock_brower_scene);
             ImGui::DockBuilderFinish(dockspace_id);
-
+            
             m_bFirstLoop = false;
         }
     }
@@ -83,25 +96,54 @@ _int CImguiWin_MapTool::Update_ImguiWin(const _float& fTimeDelta)
         //ShowDockingDisabledMessage();
     }
 
-    if (ImGui::Begin("Viewer", NULL, iMain_Flags))
-    {
-
-
-    }   ImGui::End();
-
-    if (ImGui::Begin("Browser", NULL, iMain_Flags))
-    {
-
-
-    }   ImGui::End();
-
-    if (ImGui::Begin("Hierachi", NULL, iMain_Flags))
-    {
-
-
-    }   ImGui::End();
-
     
+    // ¸®¼Ò½º
+    if (ImGui::Begin(u8"¾À", NULL, iMain_Flags))
+    {
+        
+
+    }   ImGui::End();
+
+    if (ImGui::Begin(u8"ÁöÇü", NULL, iMain_Flags))
+    {
+
+
+    }   ImGui::End();
+
+    if (ImGui::Begin(u8"¿ÀºêÁ§Æ®", NULL, iMain_Flags))
+    {
+
+
+    }   ImGui::End();
+
+    if (ImGui::Begin(u8"Á¶¸í", NULL, iMain_Flags))
+    {
+
+
+    }   ImGui::End();
+
+
+    // °èÃþ
+    if (ImGui::Begin(u8"°èÃþ", NULL, iMain_Flags))
+    {
+
+
+    }   ImGui::End();
+
+    // ºä¾î
+    if (ImGui::Begin(u8"ºä¾î", NULL, iMain_Flags))
+    {
+        CImguiMgr* pImguiMgr = CImguiMgr::GetInstance();
+
+        ImVec2 contentSize = ImGui::GetContentRegionAvail();
+        ImVec2 clipSize = ImVec2(contentSize.x / pImguiMgr->Get_DeviceClass()->Get_D3DPP()->BackBufferWidth, 
+                                contentSize.y / pImguiMgr->Get_DeviceClass()->Get_D3DPP()->BackBufferHeight);
+        
+        ImGui::Image((void*)pImguiMgr->Get_VecRenderTargetTex(0), contentSize, 
+                        ImVec2((1.f - clipSize.x) * 0.5f, (1.f - clipSize.y) * 0.5f),
+                        ImVec2(clipSize.x + (1.f - clipSize.x) * 0.5f, clipSize.y + (1.f - clipSize.y) * 0.5f));
+
+    }   ImGui::End();
 
     
     

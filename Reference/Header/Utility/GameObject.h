@@ -53,6 +53,11 @@ public:
 	virtual void	LateUpdate_GameObject();
 	virtual void	Render_GameObject()	PURE;
 
+protected:
+	virtual void	Collide(CGameObject* pDst) {}//PURE;
+	virtual void	CollisionEnterd(CGameObject* pDst) {}//PURE;
+	virtual void	CollisionExited(CGameObject* pDst) {}//PURE;
+
 public:
 	void Compute_ViewZ(const _vec3* pPos);
 

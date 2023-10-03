@@ -3,16 +3,10 @@
 IMPLEMENT_SINGLETON(CRenderer)
 
 CRenderer::CRenderer()
+	: m_hReadyResult(E_FAIL)
 {
-	// 뷰포트 사용가능 디폴트 8개
-	m_vecViewport.reserve(VIEWPORT_COUNT);
-	for (size_t i = 0; i < VIEWPORT_COUNT; i++)
-	{
-		D3DVIEWPORT9 UiViewPort({ 0, 0, WINCX, WINCY, 0.f, 1.f });
-		m_vecViewport.push_back(UiViewPort);
-	}
-	D3DXMatrixOrthoLH(&m_matOrtho, WINCX, WINCY, 0.f, 100.f);
-
+	D3DXMatrixIdentity(&m_matPersView);
+	D3DXMatrixIdentity(&m_matOrthoView);
 }
 
 CRenderer::~CRenderer()
@@ -20,9 +14,34 @@ CRenderer::~CRenderer()
 	Free();
 }
 
-void CRenderer::Ready_Renderer()
+void CRenderer::Free()
 {
+	Clear_RenderGroup();
+}
 
+HRESULT CRenderer::Ready_Renderer(const _uint iWidth, const _uint iHeight)
+{
+	// 뷰포트 사용가능 디폴트 8개
+	_uint iViewportCount = static_cast<_uint>(EVIEWPORT::SIZE);
+	m_vecViewport.reserve(iViewportCount);
+	for (size_t i = 0; i < iViewportCount; i++)
+	{
+		D3DVIEWPORT9 UiViewPort({ 0, 0, iWidth, iHeight, 0.f, 1.f });
+		m_vecViewport.push_back(UiViewPort);
+	}
+	
+	// 뷰포트 사용가능 디폴트 8개
+	_uint iViewportRTCount = static_cast<_uint>(EVIEWPORT_RT::SIZE);
+	m_vecViewport_RT.reserve(iViewportRTCount);
+	for (size_t i = 0; i < iViewportRTCount; i++)
+	{
+		D3DVIEWPORT9 UiViewPort({ 0, 0, iWidth, iHeight, 0.f, 1.f });
+		m_vecViewport_RT.push_back(UiViewPort);
+	}
+
+	D3DXMatrixOrthoLH(&m_matOrthoProject, iWidth, iHeight, 0.f, 100.f);
+
+	return m_hReadyResult = S_OK;
 }
 
 void CRenderer::Add_RenderGroup(RENDERID eType, CGameObject* pGameObject)
@@ -65,11 +84,7 @@ void CRenderer::Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev)
 // + 성희 추가
 void CRenderer::Render_AlphaTest(LPDIRECT3DDEVICE9& pGraphicDev)
 {
-	DWORD dwTest;
-	pGraphicDev->GetRenderState(D3DRS_ALPHABLENDENABLE, &dwTest);
-
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-
 	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 200);
 
@@ -88,7 +103,6 @@ void CRenderer::Render_NonAlpha(LPDIRECT3DDEVICE9& pGraphicDev)
 void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9& pGraphicDev)
 {
 	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-
 	pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	pGraphicDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
@@ -101,17 +115,15 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9& pGraphicDev)
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 {
-	_matrix matIdentity;
-	pGraphicDev->SetTransform(D3DTS_VIEW, D3DXMatrixIdentity(&matIdentity));	// 항등행렬로 적용된 뷰 행렬 초기화.
-	pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matOrtho);					// 직교투영 행렬 적용.
+	pGraphicDev->SetTransform(D3DTS_VIEW, &m_matOrthoView);						// 직교용 뷰 행렬 적용.
+	pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matOrthoProject);			// 직교투영 행렬 적용.
 	pGraphicDev->SetViewport(&m_vecViewport[0]);								// 뷰포트 설정.
 	
+	pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);						// Z버퍼 OFF
-
 	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);					// 알파렌더링 ON
-
 	pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	pGraphicDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
@@ -119,14 +131,9 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9& pGraphicDev)
 	for (auto& iter : m_RenderGroup[RENDER_UI])
 		iter->Render_GameObject();
 
+	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);						// Z버퍼 ON
+	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);					// 알파렌더링 OFF
 
-	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
-	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);						// Z버퍼 ON
 }
 
-void CRenderer::Free()
-{
-	Clear_RenderGroup();
-}

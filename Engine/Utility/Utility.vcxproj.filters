@@ -79,9 +79,6 @@
     <ClInclude Include="Header\Component\SceneComponent.h">
       <Filter>01. Component\98. SceneComponent</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Component\SphereColComp.h">
-      <Filter>01. Component\08. Collider\01. SphereColComp</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Data\PHY_Box.h">
       <Filter>01. Component\08. Collider\Data</Filter>
     </ClInclude>
@@ -236,9 +233,6 @@
     </ClCompile>
     <ClCompile Include="Code\Component\SceneComponent.cpp">
       <Filter>01. Component\98. SceneComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Component\SphereColComp.cpp">
-      <Filter>01. Component\08. Collider\01. SphereColComp</Filter>
     </ClCompile>
     <ClCompile Include="Code\Data\PHY_Box.cpp">
       <Filter>01. Component\08. Collider\Data</Filter>
