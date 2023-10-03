@@ -251,7 +251,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Weapon/Pistol.png", TEX_NORMAL, L"Weapon", L"Pistol");
 	Load_Texture(L"./Resource/Texture/Item/Weapon/Bottle.png", TEX_NORMAL, L"Weapon", L"Bottle");
 
-	//Object - Throw (진행중) - 사이즈 조절 필요 (확인불가) 
+	//Object - Throw 
 	Load_Texture(L"./Resource/Texture/Item/Throw/ScrunchedPaper_%d.png", TEX_NORMAL, L"Throw", L"ScrunchedPaper", _range<_uint>(0U, 1U));
 	Load_Texture(L"./Resource/Texture/Item/Throw/PaperBox_%d.png", TEX_NORMAL, L"Throw", L"PaperBox", _range<_uint>(0U, 1U));
 	Load_Texture(L"./Resource/Texture/Item/Throw/Sack_%d.png", TEX_NORMAL, L"Throw", L"Sack", _range<_uint>(0U, 2U));
@@ -325,8 +325,15 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Inventory/Cola.png", TEX_NORMAL, L"Inventory", L"Cola");
 
 #pragma endregion
-	Load_Texture(L"./Resource/Texture/Light/RedLight.png", TEX_NORMAL, L"Light", L"RedLight");
 
+#pragma region Effect
+
+	Load_Texture(L"./Resource/Texture/Effect/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 14U));
+	Load_Texture(L"./Resource/Texture/Effect/Awareness__end.png", TEX_NORMAL, L"Effect", L"Awareness_End");
+
+#pragma endregion
+
+	Load_Texture(L"./Resource/Texture/Light/RedLight.png", TEX_NORMAL, L"Light", L"RedLight");
 	Wait_LoadTextureAsync();
 
 	return S_OK;

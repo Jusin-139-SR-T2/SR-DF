@@ -29,10 +29,10 @@ HRESULT CFireWork::Ready_GameObject(_vec3 vOriginPos, _int numParticles)
 	for (int i = 0; i < numParticles; i++)
 		AddParticle();
 
-	_tchar* pPath = L"./Resource/Texture/Particle/snowball.bmp";
+	//_tchar* pPath = L"./Resource/Texture/Particle/snowball.bmp";
 	//_tchar* pPath = L"./Resource/Texture/Particle/crystal.bmp";
 	//_tchar* pPath = L"./Resource/Texture/Particle/heart.bmp";
-	//_tchar* pPath = L"./Resource/Texture/Particle/drop.png";
+	_tchar* pPath = L"./Resource/Texture/Particle/flower.png";
 
 	CPsystem::Ready_GameObject(pPath);
 	return S_OK;

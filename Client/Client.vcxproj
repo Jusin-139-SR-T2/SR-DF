@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Awareness.h" />
     <ClInclude Include="Header\FireWork.h" />
     <ClInclude Include="Header\AceInteraction.h" />
     <ClInclude Include="Header\AceFood.h" />
@@ -49,6 +50,7 @@
     <ClInclude Include="Header\SnowParticle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Awareness.cpp" />
     <ClCompile Include="Code\AceInteraction.cpp" />
     <ClCompile Include="Code\AceFood.cpp" />
     <ClCompile Include="Code\PlayerLighter.cpp" />

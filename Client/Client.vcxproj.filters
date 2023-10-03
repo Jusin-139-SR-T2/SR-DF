@@ -103,6 +103,12 @@
     <Filter Include="02. GameObject\05. Effect">
       <UniqueIdentifier>{263b8407-b440-45ab-b485-5cf2a9ff6021}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. Unit\2. Monster\4. Effect">
+      <UniqueIdentifier>{97e43efc-c4c6-40bb-a652-90155a2e19c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Unit\2. Monster\4. Effect\00. Awareness">
+      <UniqueIdentifier>{8e8a9b06-2670-4c7b-bc2d-a3d33c4f6e3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -192,6 +198,9 @@
     <ClInclude Include="Header\FireWork.h">
       <Filter>02. GameObject\04. Particle\01. FireWork</Filter>
     </ClInclude>
+    <ClInclude Include="Awareness.h">
+      <Filter>02. GameObject\01. Unit\2. Monster\4. Effect\00. Awareness</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -277,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="Code\FireWork.cpp">
       <Filter>02. GameObject\04. Particle\01. FireWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Awareness.cpp">
+      <Filter>02. GameObject\01. Unit\2. Monster\4. Effect\00. Awareness</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
