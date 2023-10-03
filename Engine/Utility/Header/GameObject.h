@@ -68,18 +68,28 @@ protected:
 	CGameObject*				m_pOwner = nullptr;
 	_float						m_fViewZ;
 
-public:		// 우선도 관련 GETSET 함수
-	GETSET_EX2(_float, m_fPriority[static_cast<_uint>(EPRIORITY::UPDATE)], PriorityUpdate, GET, SET)
-	GETSET_EX2(_float, m_fPriority[static_cast<_uint>(EPRIORITY::LATE)], PriorityLate, GET, SET)
-	GETSET_EX2(_float, m_fPriority[static_cast<_uint>(EPRIORITY::RENDER)], PriorityRender, GET, SET)
+public:
+	GETSET_EX1(_bool, m_bIsDead, IsDead, GET_C_REF)
+	void		Set_Dead() { m_bIsDead = true; }
 
-	GETSET_EX2(_bool, m_bUsePriority[static_cast<_uint>(EPRIORITY::UPDATE)], UsePriorityUpdate, GET, SET)
-	GETSET_EX2(_bool, m_bUsePriority[static_cast<_uint>(EPRIORITY::LATE)], UsePriorityLate, GET, SET)
-	GETSET_EX2(_bool, m_bUsePriority[static_cast<_uint>(EPRIORITY::RENDER)], UsePriorityRender, GET, SET)
+protected:
+	_bool						m_bIsDead;
+
+public:		// 우선도 관련 GETSET 함수
+	GETSET_EX2(_float, m_fPriority[static_cast<_uint>(EPRIORITY::UPDATE)], PriorityUpdate, GET_C_REF, SET_C)
+	GETSET_EX2(_float, m_fPriority[static_cast<_uint>(EPRIORITY::LATE)], PriorityLate, GET_C_REF, SET_C)
+	GETSET_EX2(_float, m_fPriority[static_cast<_uint>(EPRIORITY::RENDER)], PriorityRender, GET_C_REF, SET_C)
+	_float	Get_Priority(_uint value) { return m_fPriority[value]; }
+
+	GETSET_EX2(_bool, m_bUsePriority[static_cast<_uint>(EPRIORITY::UPDATE)], IsUsePriorityUpdate, GET_C_REF, SET_C)
+	GETSET_EX2(_bool, m_bUsePriority[static_cast<_uint>(EPRIORITY::LATE)], IsUsePriorityLate, GET_C_REF, SET_C)
+	GETSET_EX2(_bool, m_bUsePriority[static_cast<_uint>(EPRIORITY::RENDER)], IsUsePriorityRender, GET_C_REF, SET_C)
+	_float	Get_IsUsePriority(_uint value) { return m_bUsePriority[value]; }
 		
 protected:
 	_float			m_fPriority[static_cast<_uint>(EPRIORITY::SIZE)];			// 우선도
 	_bool			m_bUsePriority[static_cast<_uint>(EPRIORITY::SIZE)];		// 우선도 사용 여부, 객체 단위
+	// 렌더 우선도는 렌더러에서 사용되며, 
 
 };
 

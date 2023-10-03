@@ -22,28 +22,6 @@ void CScene::Free()
 	Safe_Release(m_pGraphicDev);
 }
 
-CComponent* CScene::Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag)
-{
-	// 씬 -> 레이어 -> 오브젝트 -> 컴포넌트
-	//auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
-	auto iter = m_mapLayer.find(pLayerTag);
-
-	if (iter == m_mapLayer.end())
-		return nullptr;
-
-	return iter->second->Get_Component(eID, pObjTag, pComponentTag);
-}
-
-CGameObject* CScene::Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
-{
-	CLayer* pLayer = m_mapLayer[pLayerTag];
-	NULL_CHECK_RETURN(pLayer, nullptr);
-
-	CGameObject* pObj = pLayer->Get_GameObject(pObjTag);
-
-	return pObj;
-}
-
 HRESULT CScene::Ready_Scene()
 {
 	return S_OK;
@@ -74,6 +52,28 @@ void CScene::Render_Scene()
 {
 	// _DEBUG 용
 
+}
+
+CComponent* CScene::Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag)
+{
+	// 씬 -> 레이어 -> 오브젝트 -> 컴포넌트
+	//auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+	auto iter = m_mapLayer.find(pLayerTag);
+
+	if (iter == m_mapLayer.end())
+		return nullptr;
+
+	return iter->second->Get_Component(eID, pObjTag, pComponentTag);
+}
+
+CGameObject* CScene::Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
+{
+	CLayer* pLayer = m_mapLayer[pLayerTag];
+	NULL_CHECK_RETURN(pLayer, nullptr);
+
+	CGameObject* pObj = pLayer->Get_GameObject(pObjTag);
+
+	return pObj;
 }
 
 HRESULT CScene::Add_Layer(const _tchar* pLayerTag, CLayer* pLayer)

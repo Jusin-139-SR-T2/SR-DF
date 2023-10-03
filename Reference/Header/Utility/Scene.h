@@ -15,10 +15,6 @@ public:
 	virtual void	Free();
 
 public:
-	CComponent* Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
-	CGameObject* Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
-
-public:
 	virtual HRESULT		Ready_Scene();
 	virtual _int		Update_Scene(const _float& fTimeDelta);
 	virtual void		LateUpdate_Scene();
@@ -27,6 +23,10 @@ public:
 protected:
 	LPDIRECT3DDEVICE9				m_pGraphicDev;
 
+public:
+	CComponent*			Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
+	CGameObject*		Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
+
 protected:	// 레이어 관련
 	// 모든 레이어가 준비되었을 때 작성하는 코드입니다.
 	virtual HRESULT		Ready_Layer_Completed() PURE;
@@ -34,7 +34,6 @@ protected:	// 레이어 관련
 	CLayer*				Get_Layer(const _tchar* pLayerTag) { return m_mapLayer[pLayerTag]; }
 
 protected:
-	//_ummap<const _tchar*, CLayer*>	m_mapLayer;
 	_unmap<const _tchar*, CLayer*>	m_mapLayer;
 
 };

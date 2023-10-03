@@ -123,7 +123,7 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 	// 정상
 	// 레이어 초기화
 	Engine::CLayer* pLayer = nullptr;
-	FAILED_CHECK_RETURN(Add_Layer(pLayerTag, pLayer = Engine::CLayer::Create()), E_FAIL);
+	FAILED_CHECK_RETURN(Add_Layer(pLayerTag, pLayer = Engine::CLayer::Create(0.f)), E_FAIL);
 
 	// 배경생성
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", CBackGround::Create(m_pGraphicDev)), E_FAIL);
