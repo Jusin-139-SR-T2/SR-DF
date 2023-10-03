@@ -273,6 +273,7 @@ void CPsystem::Free()
 	Safe_Release(m_pVB);
 	Safe_Release(m_pTexture);
 	RemoveDeadParticles(); // ¸®½ºÆ® erase
+	SUPER::Free(); 
 	//for_each(m_ParticleList.begin(), m_ParticleList.end(), CDeleteObj());
 	//m_ParticleList.clear();
 }
