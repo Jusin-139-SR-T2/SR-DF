@@ -73,20 +73,26 @@ private:
 	CTextureComponent*				m_pBackTextureComp = nullptr;
 
 	_matrix		m_ViewMatrix, m_ProjMatrix;
-private:
-	_float	m_fX, m_fY, m_fSizeX, m_fSizeY;
 
-	// 애니메이션 프레임
-	_float m_fAniamtionFrame = 0.f;
-	_float m_fAnimationSpeed = 7.f;
-	_float m_fMaxFrame = 0.f;
+private: //변수
+	// dt 값
+	_float fFrameTimeDelta, fCurFrameTimeDelta;
 
-	int m_iFrameCount = 0;
+	// 크기
+	_float fSizeX_Delta, fSizeY_Delta;
 
+	// 회전
+	_float fRotX_Delta, fRotY_Delta, fRotZ_Delta;
+
+	// 이동
+	_float fPosX_Delta, fPosY_Delta;
+
+	// 애니메이션 툴
 	CImguiAnimationTool* m_pAnimationTool;
+
+	// 애니메이션 값
 	std::vector<Keyframe>*  m_vecAnimationInfo;
 
-	Keyframe m_eAnimationInfo;
-	_bool bFrameOn = false;
+	//_bool bFrameOn = false;
 };
 
