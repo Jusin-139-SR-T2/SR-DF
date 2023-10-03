@@ -5,7 +5,7 @@
 IMPLEMENT_SINGLETON(CManagement)
 
 CManagement::CManagement()
-	: m_pScene(nullptr)
+	: m_pScene_Current(nullptr)
 {
 }
 
@@ -14,32 +14,42 @@ CManagement::~CManagement()
 	Free();
 }
 
+void CManagement::Free()
+{
+	switch (m_eSceneProcess)
+	{
+	case EMANAGE_SCENE::SINGLE:
+		Safe_Release(m_pScene_Current);
+		break;
+	case EMANAGE_SCENE::MULTI:
+		for (auto item : m_mapScene)
+			Safe_Release(item.second);
+		m_mapScene.clear();
+		break;
+	}
+}
+
 CComponent* Engine::CManagement::Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag)
 {
 	// 매니지먼트 -> 씬 -> 레이어 -> 게임 오브젝트 -> 컴포넌트
-	if (nullptr == m_pScene)
+	if (nullptr == m_pScene_Current)
 		return nullptr;
 
-	return m_pScene->Get_Component(eID, pLayerTag, pObjTag, pComponentTag);
+	return m_pScene_Current->Get_Component(eID, pLayerTag, pObjTag, pComponentTag);
 }
 
 CGameObject* CManagement::Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
 {
 	// 매니지먼트 -> 씬 -> 레이어 -> 게임 오브젝트
-	if (nullptr == m_pScene)
+	if (nullptr == m_pScene_Current)
 		return nullptr;
 
-	return m_pScene->Get_GameObject(pLayerTag, pObjTag);
+	return m_pScene_Current->Get_GameObject(pLayerTag, pObjTag);
 }
 
-HRESULT CManagement::Set_Scene(CScene* pScene)
+HRESULT CManagement::Ready_Management(const EMANAGE_SCENE eType)
 {
-	// 씬 해제 후 새로운 씬을 로드
-	Safe_Release(m_pScene);
-
-	Engine::Clear_RenderGroup();
-
-	m_pScene = pScene;
+	m_eSceneProcess = eType;
 
 	return S_OK;
 }
@@ -47,27 +57,80 @@ HRESULT CManagement::Set_Scene(CScene* pScene)
 _int CManagement::Update_Scene(const _float& fTimeDelta)
 {
 	// 씬 없으면 예외처리
-	NULL_CHECK_RETURN(m_pScene, -1)
+	NULL_CHECK_RETURN(m_pScene_Current, -1)
 
-	return m_pScene->Update_Scene(fTimeDelta);
+	return m_pScene_Current->Update_Scene(fTimeDelta);
 }
 
 void CManagement::LateUpdate_Scene()
 {
 	// 씬 없으면 예외처리
-	NULL_CHECK(m_pScene);
-	m_pScene->LateUpdate_Scene();
+	NULL_CHECK(m_pScene_Current);
+	m_pScene_Current->LateUpdate_Scene();
 }
 
 void CManagement::Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	Engine::Render_GameObject(pGraphicDev);
 
-	NULL_CHECK(m_pScene);
-	m_pScene->Render_Scene();		// 디버깅용
+	NULL_CHECK(m_pScene_Current);
+	m_pScene_Current->Render_Scene();		// 디버깅용
 }
 
-void CManagement::Free()
+HRESULT CManagement::Set_Scene(CScene* pScene)
 {
-	Safe_Release(m_pScene);
+	if (m_eSceneProcess != EMANAGE_SCENE::SINGLE)
+		return E_FAIL;
+
+	// 씬 해제 후 새로운 씬을 로드
+	Safe_Release(m_pScene_Current);
+
+	m_pScene_Current = pScene;
+
+	Engine::Clear_RenderGroup();
+
+	return S_OK;
+}
+
+HRESULT CManagement::Set_Scene(wstring strSceneName)
+{
+	auto iter = m_mapScene.find(strSceneName);
+	if (iter == m_mapScene.end())
+		return E_FAIL;
+
+	switch (m_eSceneProcess)
+	{
+	case EMANAGE_SCENE::SINGLE:
+		// 씬 해제 후 새로운 씬을 로드
+		Safe_Release(m_pScene_Current);
+		m_pScene_Current = (*iter).second;
+
+		break;
+	case EMANAGE_SCENE::MULTI:
+		// 기존 씬 자체는 유지한다. 씬을 로드하러 올 때 그 상태 그대로 로드한다.
+		// + 나중에 씬이 멈췄음을 인지할 수 있는 이벤트를 만들어 넣어주어야 한다.
+		// 이를 통해 씬과 관련없는 매니저와 같은 곳에서 로드되지 않은 자원을 쓰는 객체에 대해 통제할 수 있다.
+		// 특히 물리엔진
+		m_pScene_Current = (*iter).second;
+
+		break;
+	}
+	Engine::Clear_RenderGroup();
+
+	return S_OK;
+}
+
+HRESULT CManagement::Add_Scene(CScene* pScene, wstring strSceneName)
+{
+	m_mapScene.emplace(strSceneName, pScene);
+
+	return S_OK;
+}
+
+HRESULT CManagement::Clear_Scene()
+{
+	for (auto item : m_mapScene)
+		Safe_Release(item.second);
+
+	return S_OK;
 }

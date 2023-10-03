@@ -28,6 +28,11 @@ CImguiMgr::~CImguiMgr()
 
 void CImguiMgr::Free()
 {
+	// ImGui 끝내기
+	ImGui_ImplDX9_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+
 	// 장치 제거, RefCount 감소
 	Safe_Release(m_pGraphicDev);
 	Safe_Release(m_pDeviceClass);
@@ -35,14 +40,29 @@ void CImguiMgr::Free()
 	// ImguiWin 컨텐츠들 제거
 	for (auto item : m_mapImguiWin)
 		Safe_Release(item.second);
+
+	for (auto item : m_vecRenderTargetTex)
+		Safe_Release(item);
 }
 
-HRESULT CImguiMgr::Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* ppGraphicDev)
+HRESULT CImguiMgr::Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* ppGraphicDev, _uint iRenderTargetCount)
 {
 	// 이미 설정된 장치값을 받아 설정
 	m_pDeviceClass = (*ppGraphicClass)->Get_ByRef<CGraphicDev>();
 	m_pGraphicDev = (*ppGraphicDev);
 	m_pGraphicDev->AddRef();
+
+
+	// 렌더 타겟 수량 설정 및 생성
+	m_vecRenderTargetTex.reserve(iRenderTargetCount);
+	for (_uint i = 0U; i < iRenderTargetCount; i++)
+	{
+		LPDIRECT3DTEXTURE9 pTexture = nullptr;
+		m_pGraphicDev->CreateTexture(m_pDeviceClass->Get_D3DPP()->BackBufferWidth, m_pDeviceClass->Get_D3DPP()->BackBufferHeight,
+			1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &pTexture, NULL);
+		m_vecRenderTargetTex.push_back(pTexture);
+	}
+
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -77,145 +97,30 @@ HRESULT CImguiMgr::Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* 
 	ImGui_ImplDX9_Init(m_pGraphicDev);
 
 	
-	
+	// 사용 툴 객체 등록
 	//m_mapImguiWin.emplace(L"Test",  CImguiWin_Test::Create());
 	m_mapImguiWin.emplace(L"DockingSpace", CImguiWin_DockingSpace::Create());
 	m_mapImguiWin.emplace(L"MapTool", CImguiWin_MapTool::Create());
 	m_mapImguiWin.emplace(L"TextureTool", CImguiWin_TextureTool::Create());
 	m_mapImguiWin.emplace(L"AnimationTool", CImguiAnimationTool::Create());
 
-	CImguiMgr::GetInstance()->Open_Layout(L"MapTool");
-	CImguiMgr::GetInstance()->Close_Layout(L"TextureTool");
-	CImguiMgr::GetInstance()->Close_Layout(L"AnimationTool");
-
-	// 우선도 기반으로 루프 돌리기
-	m_vecSortedImguiWin.reserve(m_mapImguiWin.size());
-	for (auto item : m_mapImguiWin)
-	{
-		m_vecSortedImguiWin.push_back(item);
-	}
-
-	// 정렬
-	sort(m_vecSortedImguiWin.begin(), m_vecSortedImguiWin.end(),
-		[](pair<const _tchar*, CImguiWin*>& pDst, pair<const _tchar*, CImguiWin*>& pSrc) {
-			return (pDst.second->Get_Priority() > pSrc.second->Get_Priority());
-		});
-
+	Sort_ImguiWin();
 
 	return S_OK;
 }
 
 HRESULT CImguiMgr::Update_Imgui(const _float& fTimeDelta)
 {
-	// Handle window resize (we don't resize directly in the WM_SIZE handler)
-	/*if (g_ResizeWidth != 0 && g_ResizeHeight != 0)
-	{
-		g_d3dpp.BackBufferWidth = g_ResizeWidth;
-		g_d3dpp.BackBufferHeight = g_ResizeHeight;
-		g_ResizeWidth = g_ResizeHeight = 0;
-		ResetDevice();
-	}*/
-
 	// Start the Dear ImGui frame
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	
-	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-	//if (m_bShow_DemoWindow)
-	//	ImGui::ShowDemoWindow(&m_bShow_DemoWindow);
-
-	//// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-	//if (m_bShow_DemoWindow)
-	//{
-	//	static float f = 0.0f;
-	//	static int counter = 0;
-
-	//	ImGui::Begin("Hello, world!!");                          // Create a window called "Hello, world!" and append into it.
-
-	//	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-	//	ImGui::Checkbox("Demo Window", &m_bShow_DemoWindow);      // Edit bools storing our window open/close state
-	//	ImGui::Checkbox("Another Window", &m_bShow_AnotherWindow);
-
-	//	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-	//	ImGui::ColorEdit3("clear color", (float*)&m_vClearColor); // Edit 3 floats representing a color
-
-	//	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-	//		counter++;
-	//	ImGui::SameLine();
-	//	ImGui::Text("counter = %d", counter);
-
-	//	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / m_pIO->Framerate, m_pIO->Framerate);
-	//	ImGui::End();
-	//}
-
-	
-
-	// 소영 - 만들어본윈도우
-	//if (m_bShow_MapWindow)
-	//	ImGui::ShowDemoWindow(&m_bShow_MapWindow);
-
-	//{
-	//	ImGui::Begin("Map Tool", &m_bShow_MapWindow, ImGuiWindowFlags_MenuBar);
-	//	if (ImGui::BeginMenuBar())
-	//	{
-	//		if (ImGui::BeginMenu("File")) // 위에 메뉴바
-	//		{
-	//			if (ImGui::MenuItem("Open..", "Ctrl+O"))
-	//			{ /* Do stuff */
-	//				int a = 0;
-	//			}
-	//			if (ImGui::MenuItem("Save", "Ctrl+S"))
-	//			{ /* Do stuff */
-	//				int a = 0;
-	//			}
-	//			if (ImGui::MenuItem("Close", "Ctrl+W"))
-	//			{// my_tool_active = false;
-	//				int a = 0;
-	//			}
-	//			ImGui::EndMenu();
-	//		}
-	//		ImGui::EndMenuBar();
-	//	}
-	//	ImGui::Text(u8"오로지 텍스트만 입력"); // 한국어 붙일때는 u8"내용"
-	//	ImGui::Text(u8"한글가능");
-
-	//	ImGui::End();
-	//}
-	/*if (!ImGui::Begin("Window"))
-	{
-		ImGui::End();
-	}
-
-	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));*/
-
-	//if (m_io->ConfigFlags)// & ImGuiConfigFlags_DockingEnable)
-	//{
-	//	ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-	//	ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
-	//}
-	//ImDrawList::AddImage();
-
-	//ImGui::End();
-
-	// 3. Show another simple window.
-	//if (m_bShow_AnotherWindow)
-	//{
-	//	ImGui::Begin("Another Window", &m_bShow_AnotherWindow);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-	//	ImGui::Text("Hello from another window!");
-	//	if (ImGui::Button("Close Me"))
-	//		m_bShow_AnotherWindow = false;
-	//	ImGui::End();
-	//}
-
-
 	// 컨테이너에 저장된 윈도우 실행
 	for (auto item : m_vecSortedImguiWin)
 		item.second->Update_ImguiWin(fTimeDelta);
 
-
-	// Rendering
+	// 렌더링 옵션
 	ImGui::EndFrame();
 	m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
@@ -262,16 +167,65 @@ void CImguiMgr::ResetDevice(_uint dwResizeWidth, _uint dwResizeHeight)
 	m_pDeviceClass->Get_D3DPP()->BackBufferWidth = dwResizeWidth;
 	m_pDeviceClass->Get_D3DPP()->BackBufferHeight = dwResizeHeight;
 
+	// 렌더타겟 텍스처 해제
+	for (auto itemTexture : m_vecRenderTargetTex)
+	{
+		Safe_Release(itemTexture);
+	}
+	m_vecRenderTargetTex.clear();
+
+	// ImGui 리셋하기
 	ImGui_ImplDX9_InvalidateDeviceObjects();
 	if (m_pDeviceClass->Reset_GraphicDev() == D3DERR_INVALIDCALL)
 		IM_ASSERT(0);
 
 	ImGui_ImplDX9_CreateDeviceObjects();
+
+	// 렌더러가 준비되어 있다면, 기본 뷰포트의 사이즈도 변경한다. 
+	// 직교도 변경해준다.
+	// 뷰포트는 장치 초기화 후에 해줘야함.
+	if (Engine::IsReady_Renderer())
+	{
+		D3DXMatrixOrthoLH(Engine::Get_Renderer()->Get_MatOrthoProject(), dwResizeWidth, dwResizeHeight, 0.f, 100.f);
+		Engine::Get_Renderer()->Get_Viewport(0).Width = dwResizeWidth;
+		Engine::Get_Renderer()->Get_Viewport(0).Height = dwResizeHeight;
+	}
+
+	_uint iSize = (dwResizeWidth > dwResizeHeight) ? dwResizeWidth : dwResizeHeight;
+	_uint iPower = 1U;
+	while (iPower < iSize)
+	{
+		iPower *= 2U;
+	}
+
+	// 렌더타겟 텍스처 재할당
+	for (_uint i = 0U; i < m_vecRenderTargetTex.capacity(); i++)
+	{
+		LPDIRECT3DTEXTURE9 pTexture = nullptr;
+		m_pGraphicDev->CreateTexture(
+			iPower, iPower,
+			1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &pTexture, NULL);
+		m_vecRenderTargetTex.push_back(pTexture);
+	}
 }
 
 bool CImguiMgr::LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 pOutTex, _int* pOutWidth, _int* pOutHeight)
 {
 	return false;
+}
+
+void CImguiMgr::Sort_ImguiWin()
+{
+	// 우선도 기반으로 루프 돌리기
+	m_vecSortedImguiWin.reserve(m_mapImguiWin.size());
+	for (auto item : m_mapImguiWin)
+		m_vecSortedImguiWin.push_back(item);
+
+	// 정렬
+	sort(m_vecSortedImguiWin.begin(), m_vecSortedImguiWin.end(),
+		[](pair<const _tchar*, CImguiWin*>& pDst, pair<const _tchar*, CImguiWin*>& pSrc) {
+			return (pDst.second->Get_Priority() > pSrc.second->Get_Priority());
+		});
 }
 
 void CImguiMgr::HelpMarkerEx(const char* marker, const char* desc)

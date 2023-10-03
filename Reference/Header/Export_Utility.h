@@ -20,12 +20,8 @@
 #include "CameraComponent.h"
 #include "CubeBufferComp.h"
 #include "ColliderComponent.h"
-#include "SphereColComp.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
-
-#include "PHY_Shape.h"
-#include "PHY_Sphere.h"
 
 
 BEGIN(Engine)
@@ -33,7 +29,7 @@ BEGIN(Engine)
 // Management
 inline CComponent*	Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
 
-inline HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance);
+inline HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance, EMANAGE_SCENE eType);
 
 inline HRESULT		Set_Scene(CScene* pScene);
 inline _int			Update_Scene(const _float& fTimeDelta);
@@ -43,14 +39,18 @@ inline void			Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev);
 
 // ProtoMgr
 inline HRESULT			Ready_Proto(const _tchar* pProtoTag, CComponent* pComponent);
-template <typename T>	inline T* Clone_Proto(const _tchar* pProtoTag);
+template <typename T>	
+inline T*				Clone_Proto(const _tchar* pProtoTag);
 // 클론시 저장할 포인터 변수를 받는 오버로딩 함수
 inline CComponent*		Clone_Proto(const _tchar* pProtoTag, CComponent*& prComponent);
 
 // Renderer
-inline void		Add_RenderGroup(RENDERID eType, CGameObject* pGameObject);
-inline void		Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
-inline void		Clear_RenderGroup();
+inline _bool		IsReady_Renderer();
+inline CRenderer*	Get_Renderer();
+inline HRESULT		Ready_Renderer(const _uint iWidth = WINCX, const _uint iHeight = WINCY);
+inline void			Add_RenderGroup(RENDERID eType, CGameObject* pGameObject);
+inline void			Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
+inline void			Clear_RenderGroup();
 
 // LightMgr
 inline HRESULT		Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,	const D3DLIGHT9 * pLightInfo,	const _uint & iIndex);

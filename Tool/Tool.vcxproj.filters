@@ -16,9 +16,6 @@
     <Filter Include="00. MainApp">
       <UniqueIdentifier>{5258abe0-7d72-49af-8467-b451994484b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Imgui">
-      <UniqueIdentifier>{3005e087-f99d-4888-9962-62199a73dd1c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. ImguiMgr">
       <UniqueIdentifier>{238b928c-0cde-4bd0-840f-46385734c26b}</UniqueIdentifier>
     </Filter>
@@ -33,6 +30,15 @@
     </Filter>
     <Filter Include="02. ImguiMgr\AnimationTool\01. PlayerAnimation">
       <UniqueIdentifier>{d0da7613-0c88-45e3-9916-775caff4b08f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Imgui">
+      <UniqueIdentifier>{3005e087-f99d-4888-9962-62199a73dd1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene">
+      <UniqueIdentifier>{b7ed623c-c116-4d38-a8de-5dd64ade0ab3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Test">
+      <UniqueIdentifier>{994e9096-1405-44f7-9673-2144e66a50c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,28 +61,28 @@
       <Filter>00. MainApp</Filter>
     </ClInclude>
     <ClInclude Include="Imgui\imstb_truetype.h">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Imgui\imgui_impl_dx9.h">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Imgui\imgui_impl_win32.h">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Imgui\imgui_internal.h">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Imgui\imstb_rectpack.h">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Imgui\imstb_textedit.h">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Imgui\imgui.h">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Imgui\imconfig.h">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="Header\ImguiMgr.h">
       <Filter>02. ImguiMgr</Filter>
@@ -105,6 +111,18 @@
     <ClInclude Include="Header\ImguiWin_TextureTool.h">
       <Filter>02. ImguiMgr</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Scene_MapTool.h">
+      <Filter>01. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Scene_TextureTool.h">
+      <Filter>01. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Scene_AnimationTool.h">
+      <Filter>01. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\BackGround.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\framework.cpp">
@@ -120,25 +138,25 @@
       <Filter>00. MainApp</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui.cpp">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui_demo.cpp">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui_draw.cpp">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui_impl_dx9.cpp">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui_impl_win32.cpp">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui_tables.cpp">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui_widgets.cpp">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Code\ImguiMgr.cpp">
       <Filter>02. ImguiMgr</Filter>
@@ -167,6 +185,18 @@
     <ClCompile Include="Code\ImguiWin_TextureTool.cpp">
       <Filter>02. ImguiMgr</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Scene_MapTool.cpp">
+      <Filter>01. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scene_TextureTool.cpp">
+      <Filter>01. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scene_AnimationTool.cpp">
+      <Filter>01. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BackGround.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Include\Tool.rc">
@@ -192,10 +222,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Imgui\imgui.ini">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </None>
     <None Include="Imgui\imgui.natvis">
-      <Filter>01. Imgui</Filter>
+      <Filter>99. Imgui</Filter>
     </None>
   </ItemGroup>
 </Project>

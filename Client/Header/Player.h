@@ -87,6 +87,10 @@ public: // Get_Set
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 	GETSET_EX2(CSphereColComp*, m_pColliderComp, SphereColComponent, GET, SET)
 
+protected:
+	virtual void	Collide(CGameObject* pDst) override;
+	virtual void	CollisionEnterd(CGameObject* pDst) override;
+	virtual void	CollisionExited(CGameObject* pDst) override;
 
 public:// 플레이어 상태 값
 	// 플레이어

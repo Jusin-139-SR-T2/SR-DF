@@ -644,6 +644,24 @@ _bool CPlayer::Picking_On_Object()
         return false;
 }
 
+void CPlayer::Collide(CGameObject* pDst)
+{
+    // 충돌중일때
+
+}
+
+void CPlayer::CollisionEnterd(CGameObject* pDst)
+{
+    // 처음 충돌했을때
+
+}
+
+void CPlayer::CollisionExited(CGameObject* pDst)
+{
+    // 충돌에서 나갈때
+
+}
+
 bool CPlayer::Attack_Input(const _float& fTimeDelta)
 {
     // 발차기

@@ -22,11 +22,11 @@ CColliderComponent::~CColliderComponent()
 {
 }
 
-CComponent* CColliderComponent::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CComponent* CColliderComponent::Create(LPDIRECT3DDEVICE9 pGraphicDev, ECOLLISION eType)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-    if (FAILED(pInstance->Ready_Collider()))
+    if (FAILED(pInstance->Ready_Component(pGraphicDev, eType)))
     {
         Safe_Release(pInstance);
 
@@ -50,8 +50,21 @@ void CColliderComponent::Free()
     Safe_Delete(m_pCollisionShape);
 }
 
-HRESULT CColliderComponent::Ready_Collider()
+HRESULT CColliderComponent::Ready_Component(LPDIRECT3DDEVICE9 pGraphicDev, ECOLLISION eType)
 {
+    switch (eType)
+    {
+    case ECOLLISION::SPHERE:
+        m_pCollisionShape = new FCollisionSphere();
+        break;
+    case ECOLLISION::BOX:
+        m_pCollisionShape = new FCollisionBox();
+        break;
+    case ECOLLISION::CAPSULE:
+        m_pCollisionShape = new FCollisionCapsule();
+        break;
+    }
+
     return S_OK;
 }
 
@@ -83,11 +96,28 @@ void CColliderComponent::Collide(CColliderComponent* pDst)
         iter->second = true;
     
     // CollideEvent 발동
+    if (m_fnCollide)
+    {
+        // 오너 객체가 있어야 해당 객체를 주인에게 넘겨준다.
+        if (CGameObject* pObj = pDst->Get_Owner())
+        {
+            m_fnCollide(pObj);
+        }
+    }
+        
 }
 
 void CColliderComponent::CollisionEntered(CColliderComponent* pDst)
 {
     // CollisionEntered 발동
+    if (m_fnCollisionEntered)
+    {
+        // 오너 객체가 있어야 해당 객체를 주인에게 넘겨준다.
+        if (CGameObject* pObj = pDst->Get_Owner())
+        {
+            m_fnCollisionEntered(pObj);
+        }
+    }
 }
 
 void CColliderComponent::CollisionExited()
@@ -98,16 +128,15 @@ void CColliderComponent::CollisionExited()
         if (!iter->second)
         {
             // 각 충돌제거시 이벤트에 대한 CollisionExited 발동
-
+            if (m_fnCollisionEntered)
+            {
+                // 오너 객체가 있어야 해당 객체를 주인에게 넘겨준다.
+                if (CGameObject* pObj = (*iter).first->Get_Owner())
+                {
+                    m_fnCollisionEntered(pObj);
+                }
+            }
         }
     }
 }
 
-HRESULT CColliderComponent::Ready_Component()
-{
-    return E_NOTIMPL;
-}
-
-void CColliderComponent::Render_Component()
-{
-}

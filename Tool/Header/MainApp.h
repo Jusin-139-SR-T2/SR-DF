@@ -8,7 +8,7 @@
 
 class Engine::CGraphicDev;
 class Engine::CManagement;
-class ImGuiIO;
+struct ImGuiIO;
 
 class CMainApp : public CBase
 {
@@ -53,7 +53,6 @@ private:		// IMGUI 관련 변수
 public:
 	// 디바이스의 매개변수에 창 사이즈를 바꿔 초기화를 다시해줍니다.
 	void ResetDevice(_uint dwResizeWidth = 0, _uint dwResizeHeight = 0);
-	bool LoadTextureFromFile(const _tchar* pFileName, LPDIRECT3DTEXTURE9 pOutTex, _int* pOutWidth, _int* pOutHeight);
 
 private: // 소영 새로운창 create용
 	bool show_map_window = true;

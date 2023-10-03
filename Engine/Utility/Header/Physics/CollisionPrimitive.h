@@ -6,6 +6,13 @@
 
 BEGIN(Engine)
 
+enum class ECOLLISION_TYPE
+{
+	SPHERE, BOX, CAPSULE
+};
+using ECOLLISION = ECOLLISION_TYPE;
+
+
 /// <summary>
 /// 충돌체
 /// 기하학적인 모양을 가지는 클래스
@@ -14,8 +21,27 @@ BEGIN(Engine)
 class ENGINE_DLL FCollisionPrimitive
 {
 	THIS_CLASS(FCollisionPrimitive)
+
+public:
+	FCollisionPrimitive()
+	{
+		pBody = new FRigidBody();
+	}
+	FCollisionPrimitive(const FCollisionPrimitive& rhs)
+	{
+		pBody = new FRigidBody();
+		*pBody = *rhs.pBody;
+	}
+	~FCollisionPrimitive() 
+	{
+		Safe_Delete(pBody);
+	}
+	
+	
+
 public:
 	FRigidBody* pBody;				// 강체 정보
+	
 
 	FMatrix3x4	matOffset;			// 오프셋 행렬
 
@@ -30,6 +56,14 @@ public:
 protected:
 	FMatrix3x4	matTransform;		// 트랜스 폼 행렬
 
+public:
+	GETSET_EX1(ECOLLISION, eType, Type, GET_C_REF)
+
+protected:
+	ECOLLISION	eType;				// 타입
+
+public:
+	GETSET_EX1(function<void()>, fnEventHandler, Event, SET)
 
 protected:
 	function<void()>	fnEventHandler;
@@ -44,6 +78,13 @@ class ENGINE_DLL FCollisionSphere : public FCollisionPrimitive
 	DERIVED_CLASS(FCollisionPrimitive, FCollisionSphere)
 
 public:
+	FCollisionSphere()
+	{
+		eType = ECOLLISION::SPHERE;
+	}
+	~FCollisionSphere() {}
+
+public:
 	Real		fRadius;
 };
 
@@ -54,6 +95,12 @@ public:
 class ENGINE_DLL FCollisionBox : public FCollisionPrimitive
 {
 	DERIVED_CLASS(FCollisionPrimitive, FCollisionBox)
+public:
+	FCollisionBox()
+	{
+		eType = ECOLLISION::BOX;
+	}
+	~FCollisionBox() {}
 
 public:
 	FVector3	vHalfSize;
@@ -66,6 +113,12 @@ public:
 class ENGINE_DLL FCollisionCapsule : public FCollisionPrimitive
 {
 	DERIVED_CLASS(FCollisionPrimitive, FCollisionCapsule)
+public:
+	FCollisionCapsule()
+	{
+		eType = ECOLLISION::CAPSULE;
+	}
+	~FCollisionCapsule() {}
 
 public:
 	FVector3	vStart;
