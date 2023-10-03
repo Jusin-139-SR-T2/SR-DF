@@ -11,6 +11,8 @@ END
 
 class CFireWork : public Engine::CPsystem
 {
+	DERIVED_CLASS(CPsystem, CSnowParticle)
+
 private:
 	explicit CFireWork(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CFireWork();
@@ -21,7 +23,7 @@ public:
 	void					LateUpdate_GameObject(void);
 	void					Render_GameObject() override;
 
-	static CFireWork* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, int numParticles);
+	static CFireWork* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, _int numParticles);
 
 
 private:

@@ -19,7 +19,7 @@ HRESULT CFireWork::Ready_GameObject(_vec3 vOriginPos, _int numParticles)
 	boundingBox.vMax = _vec3(150.0f, 50.0f, 150.0f);
 
 	m_vOrigin = vOriginPos;			// 시스템 내에서 파티클이 시작되는 곳.
-	m_fSize = 0.2f;					// 시스템 내 모든 파티클의 크기
+	m_fSize = 1.f;					// 시스템 내 모든 파티클의 크기
 	m_dSize = 4096;					// 버텍스 버퍼가 보관할 수 있는 파티클의 수- 실제 파티클 시스템 내의 파티클 수와는 독립적.
 	m_dOffset = 0;					// 버텍스 버퍼에서 복사를 시작할 파티클 내 다음 단계로의 오프셋(바이트가 아닌 파티클 단위)
 	m_dBatchSize = 512;
@@ -28,16 +28,17 @@ HRESULT CFireWork::Ready_GameObject(_vec3 vOriginPos, _int numParticles)
 	for (int i = 0; i < numParticles; i++)
 		AddParticle();
 
-	//_tchar* pPath = L"./Resource/Texture/effect/ImpactSpark_4.png";
+	//_tchar* pPath = L"./Resource/Texture/effect/1.png";
 	//_tchar* pPath = L"./Resource/Texture/Particle/flare2.bmp";
-_tchar* pPath = L"./Resource/Texture/Particle/snowball.bmp";
+	//_tchar* pPath = L"./Resource/Texture/Particle/snowball.bmp";
+	_tchar* pPath = L"./Resource/Texture/Particle/heart.bmp";
 
 	CPsystem::Ready_GameObject(pPath);
 
 	return S_OK;
 }
 
-CFireWork* CFireWork::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, int numParticles)
+CFireWork* CFireWork::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, _int numParticles)
 {
 	CFireWork* pInstance = new CFireWork(pGraphicDev);
 
@@ -124,7 +125,7 @@ void CFireWork::ResetParticle(Attribute* _attribute)
 
 	_attribute->Color = D3DXCOLOR(	1.0f, // R
 									Get_RandomFloat(0.0f, 1.0f), // G
-									1.0f, // B
+									Get_RandomFloat(0.0f, 1.0f), // B
 									1.0f); // A
 	//Get_RandomFloat(0.0f, 1.0f) rgb
 	_attribute->fAge = 0.0f;

@@ -130,7 +130,7 @@ void CSnowParticle::billboard()
 	m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 }
 
-CSnowParticle* CSnowParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, int numParticles)
+CSnowParticle* CSnowParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, _int numParticles)
 {
 	CSnowParticle* pInstance = new CSnowParticle(pGraphicDev);
 
