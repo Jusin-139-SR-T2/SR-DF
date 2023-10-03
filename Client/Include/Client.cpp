@@ -148,34 +148,34 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     g_hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   RECT	rc{ 0, 0, WINCX, WINCY };
+    RECT	rc{ 0, 0, WINCX, WINCY };
 
-   AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+    AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, 
-	  rc.right - rc.left, 
-	  rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);
+    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, 0, 
+	    rc.right - rc.left, 
+	    rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);
 
-   /*DEVMODE devmode = {};
-   EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &devmode);
-   HWND hWnd = CreateWindowEx(WS_EX_APPWINDOW, szWindowClass, szTitle, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-       0, 0, devmode.dmPelsWidth, devmode.dmPelsHeight, nullptr, nullptr, hInstance, nullptr);*/
+    /*DEVMODE devmode = {};
+    EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &devmode);
+    HWND hWnd = CreateWindowEx(WS_EX_APPWINDOW, szWindowClass, szTitle, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+        0, 0, devmode.dmPelsWidth, devmode.dmPelsHeight, nullptr, nullptr, hInstance, nullptr);*/
 
-   // 테두리 없애기
-   //SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~WS_CAPTION & ~WS_THICKFRAME & ~WS_MINIMIZEBOX & ~WS_MAXIMIZEBOX);
+    // 테두리 없애기
+    //SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~WS_CAPTION & ~WS_THICKFRAME & ~WS_MINIMIZEBOX & ~WS_MAXIMIZEBOX);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+    if (!hWnd)
+    {
+        return FALSE;
+    }
 
-   g_hWnd = hWnd;
+    g_hWnd = hWnd;
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
 
-   return TRUE;
+    return TRUE;
 }
 
 //

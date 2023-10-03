@@ -39,6 +39,13 @@ public:
 	void			Clear_RenderGroup();
 
 public:
+	GETSET_EX1(HRESULT, m_hReadyResult, ReadyResult, GET_C_REF)
+
+private:
+	HRESULT			m_hReadyResult;
+
+
+public:
 	void			Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_AlphaTest(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_NonAlpha(LPDIRECT3DDEVICE9& pGraphicDev);
@@ -48,19 +55,131 @@ public:
 private:
 	list<CGameObject*>		m_RenderGroup[RENDER_END];
 
-public:
-
 
 public:
-	GETSET_EX1(_matrix,					m_matOrtho,			MatOrtho, GET)
-	GETSET_EX1(vector<D3DVIEWPORT9>,	m_vecViewport,		VecViewport, GET_C_REF)
-	GETSET_EX1(vector<D3DVIEWPORT9>,	m_vecViewport_RT,	VecViewport_RenderTarget, GET_C_REF)
+#pragma region 트랜스폼 변경 함수들
+	// 원근 뷰 행렬을 계산한다.
+	inline void Readjust_PersView();
+	// 직교 뷰 행렬을 계산한다.
+	inline void Readjust_OrthoView();
+	
+#pragma endregion
+
+public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
+	GETSET_EX1(_vec3, m_vInfo[INFO_RIGHT],	Right,	GET_C_REF)
+	GETSET_EX1(_vec3, m_vInfo[INFO_UP],		Up,		GET_C_REF)
+	GETSET_EX1(_vec3, m_vInfo[INFO_LOOK],	Look,	GET_C_REF)
+	GETSET_EX2(_vec3, m_vInfo[INFO_POS],	Pos,	GET_C_REF, SET_C)
+	void Set_PosX(const _float value) { m_vInfo[INFO_POS].x = value; }
+	void Set_PosY(const _float value) { m_vInfo[INFO_POS].y = value; }
+	void Set_PosZ(const _float value) { m_vInfo[INFO_POS].z = value; }
+
+	GETSET_EX2(_vec3,	m_vRotation,		Rotation,		GET_C_REF, SET_C)
+	void Set_RotationX(const _float value) { m_vRotation.x = value; }
+	void Set_RotationY(const _float value) { m_vRotation.y = value; }
+	void Set_RotationZ(const _float value) { m_vRotation.z = value; }
+
+	GETSET_EX2(_vec3,	m_vScale,			Scale,			GET_C_REF, SET_C)
+	void Set_ScaleX(const _float value) { m_vScale.x = value; }
+	void Set_ScaleY(const _float value) { m_vScale.y = value; }
+	void Set_ScaleZ(const _float value) { m_vScale.z = value; }
+
+	GETSET_EX2(_matrix,					m_matPersView,		MatPersView,				GET_PTR, SET_C_PTR)
+	GETSET_EX2(_matrix,					m_matOrthoView,		MatOrthoView,				GET_PTR, SET_C_PTR)
+	GETSET_EX2(_matrix,					m_matOrthoProject,	MatOrthoProject,			GET_PTR, SET_C_PTR)
+
+
+private:	// 렌더러의 위치 속성은 뷰를 기반으로 
+	_vec3		m_vInfo[INFO_END];		// 위치, 방향 정보
+	_vec3		m_vRotation;			// 오일러 회전축
+	_vec3		m_vScale;				// 크기
+	_matrix		m_matPersView;			// 원근용 뷰 행렬
+	_matrix		m_matOrthoView;			// 직교용 뷰 행렬
+	_matrix		m_matOrthoProject;		// UI용 직교투영 범위
+
+public:
+	GETSET_EX1(vector<D3DVIEWPORT9>,	m_vecViewport,		VecViewport,				GET_REF)
+	D3DVIEWPORT9&	Get_Viewport(_uint value) { return m_vecViewport[value]; }
+
+	GETSET_EX1(vector<D3DVIEWPORT9>,	m_vecViewport_RT,	VecViewport_RenderTarget,	GET_REF)
 
 private:
-	_matrix						m_matOrtho;				// UI용 직교투영 범위
+
 	vector<D3DVIEWPORT9>		m_vecViewport;			// 일반 뷰포트 세팅
 	vector<D3DVIEWPORT9>		m_vecViewport_RT;		// 렌더 타겟 뷰포트
 
 };
 
 END
+
+
+
+inline void CRenderer::Readjust_PersView()
+{
+	D3DXMatrixIdentity(&m_matPersView);
+
+	// 3x3만큼 월드 행렬로부터 vInfo에 복사
+	for (_int i = 0; i < INFO_POS; ++i)
+		memcpy(&m_vInfo[i], &m_matPersView.m[i][0], sizeof(_vec3));
+
+	// 크기 변환
+	for (_int i = 0; i < INFO_POS; ++i)
+	{
+		D3DXVec3Normalize(&m_vInfo[i], &m_vInfo[i]);
+		m_vInfo[i] *= *(((_float*)&m_vScale) + i);
+	}
+
+	// 회전 변환
+	_matrix		matRot[ROT_END];
+
+	D3DXMatrixRotationX(&matRot[ROT_X], m_vRotation.x);
+	D3DXMatrixRotationY(&matRot[ROT_Y], m_vRotation.y);
+	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vRotation.z);
+
+	for (_int i = 0; i < INFO_POS; ++i)
+	{
+		for (_int j = 0; j < ROT_END; ++j)
+		{
+			D3DXVec3TransformNormal(&m_vInfo[i], &m_vInfo[i], &matRot[j]);
+		}
+	}
+
+	// 월드 행렬 구성
+	for (_int i = 0; i < INFO_END; ++i)
+		memcpy(&m_matPersView.m[i][0], &m_vInfo[i], sizeof(_vec3));
+}
+
+inline void CRenderer::Readjust_OrthoView()
+{
+	D3DXMatrixIdentity(&m_matOrthoView);
+
+	// 3x3만큼 월드 행렬로부터 vInfo에 복사
+	for (_int i = 0; i < INFO_POS; ++i)
+		memcpy(&m_vInfo[i], &m_matOrthoView.m[i][0], sizeof(_vec3));
+
+	// 크기 변환
+	for (_int i = 0; i < INFO_POS; ++i)
+	{
+		D3DXVec3Normalize(&m_vInfo[i], &m_vInfo[i]);
+		m_vInfo[i] *= *(((_float*)&m_vScale) + i);
+	}
+
+	// 회전 변환
+	_matrix		matRot[ROT_END];
+
+	D3DXMatrixRotationX(&matRot[ROT_X], m_vRotation.x);
+	D3DXMatrixRotationY(&matRot[ROT_Y], m_vRotation.y);
+	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vRotation.z);
+
+	for (_int i = 0; i < INFO_POS; ++i)
+	{
+		for (_int j = 0; j < ROT_END; ++j)
+		{
+			D3DXVec3TransformNormal(&m_vInfo[i], &m_vInfo[i], &matRot[j]);
+		}
+	}
+
+	// 월드 행렬 구성
+	for (_int i = 0; i < INFO_END; ++i)
+		memcpy(&m_matOrthoView.m[i][0], &m_vInfo[i], sizeof(_vec3));
+}

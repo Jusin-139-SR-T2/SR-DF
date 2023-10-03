@@ -181,13 +181,29 @@ void CImguiMgr::ResetDevice(_uint dwResizeWidth, _uint dwResizeHeight)
 
 	ImGui_ImplDX9_CreateDeviceObjects();
 
+	// 렌더러가 준비되어 있다면, 기본 뷰포트의 사이즈도 변경한다. 
+	// 직교도 변경해준다.
+	// 뷰포트는 장치 초기화 후에 해줘야함.
+	if (Engine::IsReady_Renderer())
+	{
+		D3DXMatrixOrthoLH(Engine::Get_Renderer()->Get_MatOrthoProject(), dwResizeWidth, dwResizeHeight, 0.f, 100.f);
+		Engine::Get_Renderer()->Get_Viewport(0).Width = dwResizeWidth;
+		Engine::Get_Renderer()->Get_Viewport(0).Height = dwResizeHeight;
+	}
+
+	_uint iSize = (dwResizeWidth > dwResizeHeight) ? dwResizeWidth : dwResizeHeight;
+	_uint iPower = 1U;
+	while (iPower < iSize)
+	{
+		iPower *= 2U;
+	}
+
 	// 렌더타겟 텍스처 재할당
 	for (_uint i = 0U; i < m_vecRenderTargetTex.capacity(); i++)
 	{
 		LPDIRECT3DTEXTURE9 pTexture = nullptr;
 		m_pGraphicDev->CreateTexture(
-			m_pDeviceClass->Get_D3DPP()->BackBufferWidth,
-			m_pDeviceClass->Get_D3DPP()->BackBufferHeight,
+			iPower, iPower,
 			1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &pTexture, NULL);
 		m_vecRenderTargetTex.push_back(pTexture);
 	}

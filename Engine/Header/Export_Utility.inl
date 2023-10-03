@@ -3,10 +3,12 @@ CComponent*	Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar
 {
 	return CManagement::GetInstance()->Get_Component(eID, pLayerTag, pObjTag, pComponentTag);
 }
-HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance)
+HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance, EMANAGE_SCENE eType)
 {
 	CManagement*		pManagement = CManagement::GetInstance();
 	NULL_CHECK_RETURN(pManagement, E_FAIL);
+
+	pManagement->Ready_Management(eType);
 
 	*ppManagementInstance = pManagement;
 
@@ -46,6 +48,14 @@ CComponent*		Clone_Proto(const _tchar* pProtoTag, CComponent*& prComponent)
 
 
 // ·»´õ·¯ ÇÔ¼ö
+_bool		IsReady_Renderer()
+{
+	return (CRenderer::GetInstance()->Get_ReadyResult() == S_OK);
+}
+CRenderer*	Get_Renderer()
+{
+	return CRenderer::GetInstance();
+}
 HRESULT		Ready_Renderer(const _uint iWidth, const _uint iHeight)
 {
 	return CRenderer::GetInstance()->Ready_Renderer(iWidth, iHeight);

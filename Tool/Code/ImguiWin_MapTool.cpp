@@ -136,8 +136,12 @@ _int CImguiWin_MapTool::Update_ImguiWin(const _float& fTimeDelta)
         CImguiMgr* pImguiMgr = CImguiMgr::GetInstance();
 
         ImVec2 contentSize = ImGui::GetContentRegionAvail();
-
-        ImGui::Image((void*)pImguiMgr->Get_VecRenderTargetTex(0), contentSize);
+        ImVec2 clipSize = ImVec2(contentSize.x / pImguiMgr->Get_DeviceClass()->Get_D3DPP()->BackBufferWidth, 
+                                contentSize.y / pImguiMgr->Get_DeviceClass()->Get_D3DPP()->BackBufferHeight);
+        
+        ImGui::Image((void*)pImguiMgr->Get_VecRenderTargetTex(0), contentSize, 
+                        ImVec2((1.f - clipSize.x) * 0.5f, (1.f - clipSize.y) * 0.5f),
+                        ImVec2(clipSize.x + (1.f - clipSize.x) * 0.5f, clipSize.y + (1.f - clipSize.y) * 0.5f));
 
     }   ImGui::End();
 

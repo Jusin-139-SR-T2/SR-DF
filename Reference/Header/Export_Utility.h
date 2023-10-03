@@ -29,7 +29,7 @@ BEGIN(Engine)
 // Management
 inline CComponent*	Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
 
-inline HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance);
+inline HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance, EMANAGE_SCENE eType);
 
 inline HRESULT		Set_Scene(CScene* pScene);
 inline _int			Update_Scene(const _float& fTimeDelta);
@@ -45,6 +45,8 @@ inline T*				Clone_Proto(const _tchar* pProtoTag);
 inline CComponent*		Clone_Proto(const _tchar* pProtoTag, CComponent*& prComponent);
 
 // Renderer
+inline _bool		IsReady_Renderer();
+inline CRenderer*	Get_Renderer();
 inline HRESULT		Ready_Renderer(const _uint iWidth = WINCX, const _uint iHeight = WINCY);
 inline void			Add_RenderGroup(RENDERID eType, CGameObject* pGameObject);
 inline void			Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);

@@ -12,6 +12,11 @@ unsigned	long		CBase::AddRef()
 {
 	return ++m_dwRefCnt;
 }
+CBase*					CBase::Get_ByRef()
+{
+	AddRef();
+	return this;
+}
 template <class T>
 T*						CBase::Get_ByRef()
 {

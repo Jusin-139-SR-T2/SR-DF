@@ -27,16 +27,25 @@ CMainApp* CMainApp::Create()
 	return pInstance;
 }
 
+void CMainApp::Free()
+{
+	// 장치 제거
+	Safe_Release(m_pGraphicDev);
+	Safe_Release(m_pDeviceClass);
+
+	// 루트 매니저 클래스 제거
+	Safe_Release(m_pManagementClass);
+
+	// dll 싱글톤 제거
+	Engine::Release_Utility();
+	Engine::Release_System();
+}
+
 
 HRESULT CMainApp::Ready_MainApp()
 {
 	FAILED_CHECK_RETURN(SetUp_DefaultSetting(&m_pGraphicDev), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Scene(m_pGraphicDev, &m_pManagementClass), E_FAIL);
-
-	// 장치에서 샘플러를 사용할 수 있게 설정하는 옵션 (안티 앨리어싱)
-	m_pGraphicDev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	m_pGraphicDev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	m_pGraphicDev->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 
 	return S_OK;
 }
@@ -71,11 +80,14 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 {
 	Engine::CScene* pScene = nullptr;
 
+	
+	// 씬 매니지먼트 추가
+	FAILED_CHECK_RETURN(Engine::Create_Management(pGraphicDev, ppManagement, EMANAGE_SCENE::SINGLE), E_FAIL);
+	(*ppManagement)->AddRef();
+
+	// 기본 씬
 	pScene = CLogo::Create(pGraphicDev);
 	NULL_CHECK_RETURN(pScene, E_FAIL);
-
-	FAILED_CHECK_RETURN(Engine::Create_Management(pGraphicDev, ppManagement), E_FAIL);
-	(*ppManagement)->AddRef();
 
 	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(pScene), E_FAIL);
 
@@ -84,6 +96,7 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 
 HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 {
+	// 장치 초기화
 	FAILED_CHECK_RETURN(Engine::Ready_GraphicDev(&m_pDeviceClass, g_hWnd, MODE_WIN), E_FAIL);
 	m_pDeviceClass->AddRef();
 
@@ -91,6 +104,12 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	(*ppGraphicDev)->AddRef();
 
 	(*ppGraphicDev)->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+	// 장치에서 샘플러를 사용할 수 있게 설정하는 옵션 (안티 앨리어싱)
+	(*ppGraphicDev)->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	(*ppGraphicDev)->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	(*ppGraphicDev)->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+
 
 	// InputDev
 	FAILED_CHECK_RETURN(Engine::Ready_InputDev(g_hInst, g_hWnd), E_FAIL);
@@ -109,18 +128,4 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	FAILED_CHECK_RETURN(Engine::Ready_PhysicsMgr(1), E_FAIL);
 
 	return S_OK;
-}
-
-void CMainApp::Free()
-{
-	// 장치 제거
-	Safe_Release(m_pGraphicDev);
-	Safe_Release(m_pDeviceClass);
-
-	// 루트 매니저 클래스 제거
-	Safe_Release(m_pManagementClass);
-
-	// dll 싱글톤 제거
-	Engine::Release_Utility();
-	Engine::Release_System();
 }
