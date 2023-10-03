@@ -20,8 +20,8 @@ HRESULT CSnowParticle::Ready_GameObject(_vec3 vOriginPos, _int numParticles)
 	boundingBox.vMax = _vec3(150.0f, 50.0f, 150.0f);
 
 	m_vOrigin = vOriginPos;			// 시스템 내에서 파티클이 시작되는 곳.
-	m_fSize = 0.5f;					// 시스템 내 모든 파티클의 크기
-	m_dSize = 2048;					// 버텍스 버퍼가 보관할 수 있는 파티클의 수- 실제 파티클 시스템 내의 파티클 수와는 독립적.
+	m_fSize = 0.3f;					// 시스템 내 모든 파티클의 크기
+	m_dSize = 4096;					// 버텍스 버퍼가 보관할 수 있는 파티클의 수- 실제 파티클 시스템 내의 파티클 수와는 독립적.
 	m_dOffset = 0;					// 버텍스 버퍼에서 복사를 시작할 파티클 내 다음 단계로의 오프셋(바이트가 아닌 파티클 단위)
 	m_dBatchSize = 512;
 	m_BoundingBox = boundingBox;  
@@ -44,10 +44,10 @@ _int CSnowParticle::Update_GameObject(const _float& fTimeDelta)
 	{
 		if (iter.bIsAlive)
 		{
-			if (m_fTime < m_fMoveTime)
+			//if (m_fTime < m_fMoveTime)
 				iter.vPosition += iter.vVelocity * fTimeDelta;
-			else
-				iter.vPosition += (iter.vVelocity / 2) * fTimeDelta;
+			//else
+			//	iter.vPosition += (iter.vVelocity / 2) * fTimeDelta;
 
 			iter.fAge += fTimeDelta;
 
@@ -65,7 +65,8 @@ _int CSnowParticle::Update_GameObject(const _float& fTimeDelta)
 		}
 	}
 
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	billboard();
+	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
 	return 0;
 }
@@ -76,25 +77,8 @@ void CSnowParticle::LateUpdate_GameObject(void)
 }
 
 void CSnowParticle::Render_GameObject()
-{/*
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, true);
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSIZE, *((DWORD*)&m_fSize));
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSIZE_MIN, DWORD(0.0f));
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_A, DWORD(0.0f));
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_B, DWORD(0.0f));
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_C, *((DWORD*)&m_fSize));*/
-
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); // 뒷면제거 
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-
+{
 	CPsystem::Render_GameObject();
-
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);/*
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, false);*/
 }
 
 void CSnowParticle::ResetParticle(Attribute* _attribute)
@@ -125,6 +109,25 @@ HRESULT CSnowParticle::Add_Component()
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 
 	return S_OK;
+}
+
+void CSnowParticle::billboard()
+{
+	_matrix		matWorld, matView, matBill;
+
+	matWorld = *m_pTransformComp->Get_Transform();
+
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	D3DXMatrixIdentity(&matBill);
+
+	matBill._11 = matView._11;
+	matBill._13 = matView._13;
+	matBill._31 = matView._31;
+	matBill._33 = matView._33;
+
+	D3DXMatrixInverse(&matBill, 0, &matBill);
+
+	m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 }
 
 CSnowParticle* CSnowParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, int numParticles)

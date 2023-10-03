@@ -11,6 +11,7 @@
 
 #include "Terrain.h"
 #include "SnowParticle.h"
+#include "FireWork.h"
 
 class CStage : public Engine::CScene
 {

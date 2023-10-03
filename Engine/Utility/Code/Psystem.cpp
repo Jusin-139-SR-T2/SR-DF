@@ -182,15 +182,17 @@ void CPsystem::preRender()
 	WorldMatrix._43 = m_vOrigin.z;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &WorldMatrix);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); // 뒷면제거 
+	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	// 포인트 스프라이트 렌더 상태 = 점 하나로 표현되는 스프라이트, 일반적으로 입자시스템에 이용 
 	// 현재 지정된 전체 텍스처를 포인트 스프라이트의 텍스처 매핑에 이용할것임을 의미
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
+	m_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, TRUE);
 
 	// 포인트 크기를 뷰 스페이스 단위로 해석하도록 지정.
 	// 포인트 스프라이트의 크기는 카메라와의 거리에 따라 적절하게 조정됨.
 	// 즉, 카메라와 멀리 떨어진 파티클은 가까운 파티클에 비해작게 나타남.
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, true);
+	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, TRUE);
 
 	// 포인트 스프라이트의 크기를 지정.
 	// 이 값은 D3DRS_POINTSCALEENABLE 상태 값에 따라서 뷰 스페이스 내의 크기나
@@ -217,7 +219,7 @@ void CPsystem::preRender()
 	// 예, "눈덩이와 비슷한" 둥근 파티클을 얻기 위해서는
 	// 흰색의 원형과 검은색의 알파 채널을 갖는 흰색 텍스처를 이용하면 됨.
 	// 이렇게 하면 사각형의 흰색 텍스처 전체가아닌 흰색 원 모양의 파티클을 만들 수 있다.
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
@@ -226,9 +228,11 @@ void CPsystem::preRender()
 // 이 메서드는 시스템에 따라 달라질 수 있으므로 가상 메서드로 선언.
 void CPsystem::postRender()
 {
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
-	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, false);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+	m_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 void CPsystem::ResetList()

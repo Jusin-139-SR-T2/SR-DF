@@ -180,13 +180,13 @@
     <ClInclude Include="Header\AceInteraction.h">
       <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
     </ClInclude>
-    <ClInclude Include="SnowParticle.h">
+    <ClInclude Include="Header\SnowParticle.h">
       <Filter>02. GameObject\04. Particle\00. Snow</Filter>
     </ClInclude>
     <ClInclude Include="Header\PlayerLighter.h">
       <Filter>02. GameObject\03. Lighter\00. PlayerLighter</Filter>
     </ClInclude>
-    <ClInclude Include="FireWork.h">
+    <ClInclude Include="Header\FireWork.h">
       <Filter>02. GameObject\04. Particle\01. FireWork</Filter>
     </ClInclude>
   </ItemGroup>
@@ -266,13 +266,13 @@
     <ClCompile Include="Code\AceInteraction.cpp">
       <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
     </ClCompile>
-    <ClCompile Include="SnowParticle.cpp">
+    <ClCompile Include="Code\SnowParticle.cpp">
       <Filter>02. GameObject\04. Particle\00. Snow</Filter>
     </ClCompile>
     <ClCompile Include="Code\PlayerLighter.cpp">
       <Filter>02. GameObject\03. Lighter\00. PlayerLighter</Filter>
     </ClCompile>
-    <ClCompile Include="FireWork.cpp">
+    <ClCompile Include="Code\FireWork.cpp">
       <Filter>02. GameObject\04. Particle\01. FireWork</Filter>
     </ClCompile>
   </ItemGroup>

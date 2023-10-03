@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FireWork.h" />
+    <ClInclude Include="Header\FireWork.h" />
     <ClInclude Include="Header\AceInteraction.h" />
     <ClInclude Include="Header\AceFood.h" />
     <ClInclude Include="Header\PlayerLighter.h" />
@@ -46,7 +46,7 @@
     <ClInclude Include="Header\TitleLogo.h" />
     <ClInclude Include="Header\SkyBox.h" />
     <ClInclude Include="Header\BlackBoard.h" />
-    <ClInclude Include="SnowParticle.h" />
+    <ClInclude Include="Header\SnowParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceInteraction.cpp" />
@@ -64,7 +64,7 @@
     <ClCompile Include="Code\DynamicCamera.cpp" />
     <ClCompile Include="Code\UI.cpp" />
     <ClCompile Include="Code\Gray.cpp" />
-    <ClCompile Include="FireWork.cpp" />
+    <ClCompile Include="Code\FireWork.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -79,7 +79,7 @@
     <ClCompile Include="Code\TitleLogo.cpp" />
     <ClCompile Include="Code\SkyBox.cpp" />
     <ClCompile Include="Code\BlackBoard.cpp" />
-    <ClCompile Include="SnowParticle.cpp" />
+    <ClCompile Include="Code\SnowParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

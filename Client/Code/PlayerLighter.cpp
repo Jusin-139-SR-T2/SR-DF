@@ -43,11 +43,11 @@ _int CPlayerLighter::Update_GameObject(const _float& fTimeDelta)
 
     Height_On_Terrain();
 
+
     if (Engine::IsKey_Pressed(DIK_V))
     {
         m_bLightOn = !m_bLightOn;
     }
-
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
     return S_OK;

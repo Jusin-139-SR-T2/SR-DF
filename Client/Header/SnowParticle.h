@@ -16,28 +16,26 @@ private:
 	virtual ~CSnowParticle();
 
 public:
-	HRESULT		Ready_GameObject(_vec3 vOriginPos, _int numParticles);
-	_int		Update_GameObject(const _float& fTimeDelta);
-	void		LateUpdate_GameObject(void);
-	void		Render_GameObject() override;
+	HRESULT					Ready_GameObject(_vec3 vOriginPos, _int numParticles);
+	_int					Update_GameObject(const _float& fTimeDelta);
+	void					LateUpdate_GameObject(void);
+	void					Render_GameObject() override;
 
-	static CSnowParticle* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, int numParticles);
+	static CSnowParticle*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, int numParticles);
 
-	void        ResetParticle(Attribute* _attribute) override;
-	HRESULT		Add_Component();
+
+private:
+	void					ResetParticle(Attribute* _attribute) override;
+	virtual void			Free();
+	HRESULT					Add_Component();
+	void					billboard();
 
 private:
 	_float	    m_fTime = 0.f;
-	_float      m_fSpeed = 5.f;
-	_float      m_fDieTime = 10.f;
 	_float      m_fMoveTime = 20.f;
 
 public:
 	CTransformComponent* m_pTransformComp = nullptr;
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
-private:
-	virtual void Free();
-
-	// CPsystem을(를) 통해 상속됨
 };

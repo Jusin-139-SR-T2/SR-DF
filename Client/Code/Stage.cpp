@@ -63,7 +63,9 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", CTerrain::Create(m_pGraphicDev)), E_FAIL);
 	
 	// Particle
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SnowParticle", CSnowParticle::Create(m_pGraphicDev, {40.f, 10.f, 40.f}, 5000) ), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SnowParticle", CSnowParticle::Create(m_pGraphicDev, {40.f, 10.f, 40.f}, 10000) ), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"FireWorkParticle", CFireWork::Create(m_pGraphicDev, { 24.f, 3.f, 12.f }, 2000)), E_FAIL);
+	
 
 
 	return S_OK;
