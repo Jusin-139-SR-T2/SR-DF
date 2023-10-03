@@ -127,14 +127,24 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
     }
 
 #pragma endregion
-
+    RECT rc = {};
+    GetClientRect(g_hWnd, &rc);
 
 #pragma region 뷰어
     if (ImGui::Begin(u8"뷰어", NULL, iMain_Flags))
     {
+        CImguiMgr* pImguiMgr = CImguiMgr::GetInstance();
 
-    }
-    ImGui::End();
+        ImVec2 contentSize = ImGui::GetContentRegionAvail();
+        ImVec2 clipSize = ImVec2(contentSize.x / pImguiMgr->Get_DeviceClass()->Get_D3DPP()->BackBufferWidth,
+            contentSize.y / pImguiMgr->Get_DeviceClass()->Get_D3DPP()->BackBufferHeight);
+
+        // 이미지 조정
+        ImGui::Image((void*)pImguiMgr->Get_VecRenderTargetTex(0), contentSize,
+            ImVec2((1.f - clipSize.x) * 0.5f, (1.f - clipSize.y) * 0.5f),
+            ImVec2(clipSize.x + (1.f - clipSize.x) * 0.5f, clipSize.y + (1.f - clipSize.y) * 0.5f));
+
+    }   ImGui::End();
 #pragma endregion
 
     // ImGui에서 텍스처를 표시할 이미지 크기 (예: 200x200 픽셀)
