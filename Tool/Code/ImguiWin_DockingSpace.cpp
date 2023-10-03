@@ -152,6 +152,12 @@ _int CImguiWin_DockingSpace::Update_ImguiWin(const _float& fTimeDelta)
 				ImGui::EndTabItem();
 			}
 
+			if (m_bFirstLoop)
+			{
+				ImGui::SetTabItemClosed(u8"맵 툴");
+				ImGui::SetTabItemClosed(u8"텍스처 툴");
+			}
+
 			ImGui::EndTabBar();
 		}
 
@@ -188,6 +194,8 @@ _int CImguiWin_DockingSpace::Update_ImguiWin(const _float& fTimeDelta)
 	ImGui::End();*/
 
 	ImGui::End();
+
+	m_bFirstLoop = false;
 
     return 0;
 }
