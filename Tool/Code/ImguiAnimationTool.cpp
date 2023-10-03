@@ -127,8 +127,6 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
     }
 
 #pragma endregion
-    RECT rc = {};
-    GetClientRect(g_hWnd, &rc);
 
 #pragma region ºä¾î
     if (ImGui::Begin(u8"ºä¾î", NULL, iMain_Flags))
