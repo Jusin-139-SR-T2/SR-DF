@@ -65,14 +65,20 @@ namespace Engine
 
 	typedef struct tagAttribute
 	{
-		_vec3		vPosition;
-		_vec3		vVelocity;
-		_vec3		vAcceleration;
-		_float      fLifeTime;     // how long the particle lives for before dying  
-		_float      fAge;          // current age of the particle  
-		D3DXCOLOR   Color;        // current color of the particle   
-		D3DXCOLOR   ColorFade;    // how the color fades with respect to time
-		_bool       bIsAlive;
+		tagAttribute() // 생성자 
+		{
+			fLifeTime = 0.0f;
+			fAge = 0.0f;
+			bIsAlive = true;
+		}
+		_vec3		vPosition; // 현재 위치를 저장
+		_vec3		vVelocity; // 현재 속도를 저장
+		_vec3		vAcceleration; // 현재 가속도를 저장 
+		_float      fLifeTime;     // 물체가 살아있는동안의 수명 - 얼마나 오래 존재할것인가 
+		_float      fAge;          // 물체의 현재 나이 - 얼마나 오래 존재했는가 
+		D3DXCOLOR   Color;        // 현재 색상 - 어떤 색상으로 렌더링 되어야 하는가 
+		D3DXCOLOR   ColorFade;    // 시간에 따라 색상이 어떻게 변해야 하는가
+		_bool       bIsAlive; // 물체가 살아있는지 여부 - 활성상태인지 아니면 소멸했는지 
 	}Attribute;
 
 

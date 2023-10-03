@@ -94,6 +94,12 @@
     <Filter Include="02. GameObject\04. Particle\00. Snow">
       <UniqueIdentifier>{a8602073-922e-4493-ad1c-9fc6fabd3a13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\03. Lighter\00. PlayerLighter">
+      <UniqueIdentifier>{aa69537c-df32-4a2e-b2c2-06149ae88894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Particle\01. FireWork">
+      <UniqueIdentifier>{8ab2be83-6fa5-4fde-9971-970b4bffbbeb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -174,11 +180,14 @@
     <ClInclude Include="Header\AceInteraction.h">
       <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
     </ClInclude>
-    <ClInclude Include="Header\AceLighter.h">
-      <Filter>02. GameObject\03. Lighter</Filter>
-    </ClInclude>
     <ClInclude Include="SnowParticle.h">
       <Filter>02. GameObject\04. Particle\00. Snow</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PlayerLighter.h">
+      <Filter>02. GameObject\03. Lighter\00. PlayerLighter</Filter>
+    </ClInclude>
+    <ClInclude Include="FireWork.h">
+      <Filter>02. GameObject\04. Particle\01. FireWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -257,11 +266,14 @@
     <ClCompile Include="Code\AceInteraction.cpp">
       <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
     </ClCompile>
-    <ClCompile Include="Code\AceLighter.cpp">
-      <Filter>02. GameObject\03. Lighter</Filter>
-    </ClCompile>
     <ClCompile Include="SnowParticle.cpp">
       <Filter>02. GameObject\04. Particle\00. Snow</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerLighter.cpp">
+      <Filter>02. GameObject\03. Lighter\00. PlayerLighter</Filter>
+    </ClCompile>
+    <ClCompile Include="FireWork.cpp">
+      <Filter>02. GameObject\04. Particle\01. FireWork</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

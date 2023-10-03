@@ -1,7 +1,7 @@
 #include "Psystem.h"
 
 CPsystem::CPsystem(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev), m_vbSize(0)
+	: CGameObject(pGraphicDev)
 {
 }
 
@@ -26,7 +26,7 @@ HRESULT CPsystem::Ready_GameObject(const _tchar* texFileName)
 
 	//CVIBufferComp 에서 한거와 같은 버퍼 만들기 
 	FAILED_CHECK_RETURN(m_pGraphicDev->CreateVertexBuffer(
-		m_vbSize * sizeof(Particle), // 생성할 버퍼의 크기
+		m_dSize * sizeof(Particle), // 생성할 버퍼의 크기
 		D3DUSAGE_DYNAMIC | D3DUSAGE_POINTS | D3DUSAGE_WRITEONLY, // 생성하고자 하는 버텍스 버퍼의 종류(0인 경우 정적 버퍼, D3DUSAGE_DYNAMIC)
 		D3DFVF_XYZ | D3DFVF_DIFFUSE,// 버텍스 속성 옵션
 		D3DPOOL_DEFAULT,// 메모리 풀 방식 - 동적 생성 (정적 버퍼인 경우 MANAGED)
@@ -69,7 +69,7 @@ _int CPsystem::Update_GameObject(const _float& fTimeDelta)
 
 void CPsystem::LateUpdate_GameObject()
 {
-	RemoveDeadParticles();
+	//RemoveDeadParticles();
 }
 
 void CPsystem::Render_GameObject()
@@ -89,19 +89,19 @@ void CPsystem::Render_GameObject()
 		m_pGraphicDev->SetStreamSource(0, m_pVB, 0, sizeof(Particle));
 
 		// 버텍스 버퍼를 벗어날 경우 처음부터 시작한다.
-		// _vbOffset - 버텍스 버퍼에서 복사를 시작할 파티클 내 다음 단계로의 오프셋(바이트가 아닌 파티클 단위)
+		// m_dOffset - 버텍스 버퍼에서 복사를 시작할 파티클 내 다음 단계로의 오프셋(바이트가 아닌 파티클 단위)
 		// 예, 단계 1이 0부터 499까지 항목이라면 단계 2로의 오프셋은 500이 된다.
 
-		if (m_vbOffset >= m_vbSize)
-			m_vbOffset = 0;
+		if (m_dOffset >= m_dSize)
+			m_dOffset = 0;
 
 		Particle* v = 0;
 
 		m_pVB->Lock(
-			m_vbOffset * sizeof(Particle),
-			m_vbBatchSize * sizeof(Particle),
+			m_dOffset * sizeof(Particle),
+			m_dBatchSize * sizeof(Particle),
 			(void**)&v,
-			m_vbOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
+			m_dOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
 
 		DWORD numParticlesInBatch = 0;
 
@@ -118,27 +118,27 @@ void CPsystem::Render_GameObject()
 				numParticlesInBatch++;  //단계 카운터를 증가시킨다.
 
 				// 현재 단계가 모두 채워져 있는가?
-				if (numParticlesInBatch == m_vbBatchSize)
+				if (numParticlesInBatch == m_dBatchSize)
 				{
 					// 버텍스 버퍼로 복사된 마지막 단계의 파티클들을 그린다.
 					m_pVB->Unlock();
 
-					m_pGraphicDev->DrawPrimitive(D3DPT_POINTLIST, m_vbOffset, m_vbBatchSize);
+					m_pGraphicDev->DrawPrimitive(D3DPT_POINTLIST, m_dOffset, m_dBatchSize);
 
 					// 단계가 그려지는 동안 다음 단계를 파티클로 채운다.
 					// 다음 단계의 처음 오프셋으로 이동한다.
-					m_vbOffset += m_vbBatchSize;
+					m_dOffset += m_dBatchSize;
 
 					// 버텍스 버퍼의 경계를 넘는메모리로 오프셋을 설정하지 않는다.
 					// 경계를 넘을 경우 처음부터 시작.
-					if (m_vbOffset >= m_vbSize)
-						m_vbOffset = 0;
+					if (m_dOffset >= m_dSize)
+						m_dOffset = 0;
 
 					m_pVB->Lock(
-						m_vbOffset * sizeof(Particle),
-						m_vbBatchSize * sizeof(Particle),
+						m_dOffset * sizeof(Particle),
+						m_dBatchSize * sizeof(Particle),
 						(void**)&v,
-						m_vbOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
+						m_dOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
 
 					numParticlesInBatch = 0; // 다음 단계를 위한 리셋
 				}
@@ -151,14 +151,13 @@ void CPsystem::Render_GameObject()
 
 		if (numParticlesInBatch)
 		{
-			m_pGraphicDev->DrawPrimitive(D3DPT_POINTLIST, m_vbOffset, numParticlesInBatch);
+			m_pGraphicDev->DrawPrimitive(D3DPT_POINTLIST, m_dOffset, numParticlesInBatch);
 		}
 
 		// next block
-		m_vbOffset += m_vbBatchSize;
+		m_dOffset += m_dBatchSize;
 
-		// reset render states
-
+		// 렌더상태 초기화 
 		postRender();
 	}
 }
@@ -169,7 +168,7 @@ void CPsystem::AddParticle()
 	// 시스템에 파티클을 추가.
 	// 리스트에 추가 하기전에 파티클을 초기화 하는데 resetPaticle 이용
 	Attribute attribute;
-	ResetParticle(&attribute);
+	ResetParticle(&attribute); // 바운딩박스 최상단으로 파티클을 밀어넣음 
 	m_ParticleList.push_back(attribute);
 }
 
@@ -183,25 +182,23 @@ void CPsystem::preRender()
 	WorldMatrix._43 = m_vOrigin.z;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &WorldMatrix);
-	///
-	// 포인트 스프라이트 렌더 상태
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
+
+	// 포인트 스프라이트 렌더 상태 = 점 하나로 표현되는 스프라이트, 일반적으로 입자시스템에 이용 
 	// 현재 지정된 전체 텍스처를 포인트 스프라이트의 텍스처 매핑에 이용할것임을 의미
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
+
 	// 포인트 크기를 뷰 스페이스 단위로 해석하도록 지정.
-	// 뷰 스페이스 단위는 간단히 카메라 공간 내의 3D 포인트를 나타내며,
 	// 포인트 스프라이트의 크기는 카메라와의 거리에 따라 적절하게 조정됨.
 	// 즉, 카메라와 멀리 떨어진 파티클은 가까운 파티클에 비해작게 나타남.
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, true);
+
 	// 포인트 스프라이트의 크기를 지정.
 	// 이 값은 D3DRS_POINTSCALEENABLE 상태 값에 따라서 뷰 스페이스 내의 크기나
 	// 스크린 스페이스 내의 크기로 해석.
-	// FtoDw 함수는 float을 DWORD로 형 변환한다.
-	// 이 함수가 필요한 것은 일반적인 IDirect3DDevice9::SetRenderState 호출이
-	// float이 아닌 DWORD를 필요로 하기 때문.
+	// SetRenderState 호출이 float이 아닌 DWORD를 필요로 하기 때문.
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSIZE, *((DWORD*)&m_fSize));
-	// ?
-	// 포인트 스프라이트의 지정할 수 있는 최소 크기를 지정.
+	
+	// 포인트 스프라이트의 지정할 수 있는 최소 크기를 지정 - 너무 작아지지않도록 제한 
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSIZE_MIN, DWORD(0.0f));
 
 	// 거리에 따라 포인트 스프라이트의 크기가 변하는 방법을 제어
@@ -210,7 +207,7 @@ void CPsystem::preRender()
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_B, DWORD(0.0f));
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_C, *((DWORD*)&m_fSize));
 
-	// 텍스처의 알파를 이용
+	//// 텍스처의 알파를 이용
 	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 
@@ -271,7 +268,7 @@ void CPsystem::Free()
 {
 	Safe_Release(m_pVB);
 	Safe_Release(m_pTexture);
-
+	RemoveDeadParticles(); // 리스트 erase
 	//for_each(m_ParticleList.begin(), m_ParticleList.end(), CDeleteObj());
 	//m_ParticleList.clear();
 }

@@ -19,9 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FireWork.h" />
     <ClInclude Include="Header\AceInteraction.h" />
     <ClInclude Include="Header\AceFood.h" />
-    <ClInclude Include="Header\AceLighter.h" />
+    <ClInclude Include="Header\PlayerLighter.h" />
     <ClInclude Include="Header\AceObjectFactory.h" />
     <ClInclude Include="Header\AceThrow.h" />
     <ClInclude Include="Header\AceWeapon.h" />
@@ -50,7 +51,7 @@
   <ItemGroup>
     <ClCompile Include="Code\AceInteraction.cpp" />
     <ClCompile Include="Code\AceFood.cpp" />
-    <ClCompile Include="Code\AceLighter.cpp" />
+    <ClCompile Include="Code\PlayerLighter.cpp" />
     <ClCompile Include="Code\AceObjectFactory.cpp" />
     <ClCompile Include="Code\AceThrow.cpp" />
     <ClCompile Include="Code\AceWeapon.cpp" />
@@ -63,6 +64,7 @@
     <ClCompile Include="Code\DynamicCamera.cpp" />
     <ClCompile Include="Code\UI.cpp" />
     <ClCompile Include="Code\Gray.cpp" />
+    <ClCompile Include="FireWork.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

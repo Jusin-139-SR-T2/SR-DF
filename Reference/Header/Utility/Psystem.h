@@ -1,12 +1,13 @@
 #pragma once
 #include "GameObject.h"
+#include "Engine_Define.h"
 
 // 시스템 내의 모든 파티클에 영향을 주는 전역 특성들을 관리
 // 파티클의 갱신과 디스플레이 소멸, 생성 등을 관장하는 역할
 
 BEGIN(Engine)
 
-class CPsystem : public Engine::CGameObject
+class ENGINE_DLL CPsystem : public CGameObject
 {
 	DERIVED_CLASS(CGameObject, CPsystem)
 
@@ -27,16 +28,19 @@ protected:
 public:
 	virtual void AddParticle(); // 시스템에 파티클을 추가 
 	virtual void Free();
-	virtual void ResetList(); //시스템 내의 모든 파티클 속성을 리셋
-	virtual void preRender();	// 렌더링에 앞서 지정해야 할 초기 렌더 상태를 지정. -> 시스템에 따라 달라지므로 가상함수 선언 
-	virtual void postRender();  // 특정 파티클 시스템이 지정했을 수 있는 렌더 상태를 복구하는 데 이용. -> 가상 메서드로 선언.
 	virtual void RemoveDeadParticles(); // 속성 리스트 _particle을 검색하여 죽은 파티클을 리스트에서 제거.
 
+private:
+	virtual void ResetList(); //시스템 내의 모든 파티클 속성을 리셋
+	virtual void preRender();	// 렌더링에 앞서 지정해야 할 초기 렌더 상태를 지정
+	virtual void postRender();  // 특정 파티클 시스템이 지정했을 수 있는 렌더 상태를 복구하는 데 이용
+
 public:
-	bool isEmpty() { return m_ParticleList.empty();	}   // 현재 시스템에 파티클이 없는 경우 true 리턴.
-	bool isDead(); // 시스템 내의 파티클이 모두 죽은 경우 true 리턴.
 
 protected:
+	_bool isEmpty() { return m_ParticleList.empty(); }   // 현재 시스템에 파티클이 없는 경우 true 리턴.
+	_bool isDead(); // 시스템 내의 파티클이 모두 죽은 경우 true 리턴.
+	
 	void Get_RandomVector(_vec3* out, _vec3* min, _vec3* max)
 	{
 		out->x = Get_RandomFloat(min->x, max->x);
@@ -44,22 +48,23 @@ protected:
 		out->z = Get_RandomFloat(min->z, max->z);
 	}
 
-	float Get_RandomFloat(float lowBound, float hightBound)
+	_float Get_RandomFloat(_float lowBound, _float hightBound)
 	{
 		if (lowBound >= hightBound)
 			return lowBound;
 
-		float f = (rand() % 10000) * 0.0001f;
+		_float f = (rand() % 10000) * 0.0001f;
 
 		return (f * (hightBound - lowBound)) + lowBound;
 	}
 
 protected:
-	DWORD m_vbSize;       // 버텍스 버퍼가 보관할 수 있는 파티클의 수- 실제 파티클 시스템 내의 파티클 수와는 독립적.
-	DWORD m_vbOffset;     // 파티클 시스템의 렌더링에 이용.
-	DWORD m_vbBatchSize;  // 파티클 시스템의 렌더링에 이용.
+	DWORD m_dSize;       // 버텍스 버퍼가 보관할 수 있는 파티클의 수- 실제 파티클 시스템 내의 파티클 수와는 독립적.
+	DWORD m_dOffset;     // 파티클 시스템의 렌더링에 이용.
+	DWORD m_dBatchSize;  // 파티클 시스템의 렌더링에 이용.
 
 	LPDIRECT3DVERTEXBUFFER9			m_pVB;
+	//LPDIRECT3DDEVICE9				m_pGraphicDev;
 	LPDIRECT3DTEXTURE9              m_pTexture;
 	BoundingBox						m_BoundingBox;    // 파티클이 이동할 수 있는 부피를 제한하는 데 이용. -> 원하는 영역을 경계상자로 정의하면 이 영역을 벗어난 파티클들을 곧바로 소멸.
 	

@@ -7,7 +7,7 @@
 #include "Gray.h"
 #include "Boss.h"
 #include "AceObjectFactory.h"
-#include "AceLighter.h"
+#include "PlayerLighter.h"
 
 #include "Terrain.h"
 #include "SnowParticle.h"
@@ -32,9 +32,6 @@ public:
 	virtual void		Render_Scene();
 
 private:
-	HRESULT				Ready_LightInfo();
-	HRESULT				Ready_SpotLightInfo();
-
 	HRESULT				Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_Camera(const _tchar* pLayerTag);

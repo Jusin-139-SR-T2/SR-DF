@@ -63,7 +63,7 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", CTerrain::Create(m_pGraphicDev)), E_FAIL);
 	
 	// Particle
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SnowParticle", CSnowParticle::Create(m_pGraphicDev, {24.f, 1.f, 12.f}, 300) ), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SnowParticle", CSnowParticle::Create(m_pGraphicDev, {40.f, 10.f, 40.f}, 5000) ), E_FAIL);
 
 
 	return S_OK;
@@ -86,7 +86,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev)), E_FAIL);
 
 	//Test용도 -------------------------------------------------------
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lighter", CAceLighter::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PlayerLighter", CPlayerLighter::Create(m_pGraphicDev)), E_FAIL);
 
 	// Object - 사이즈 조절이 필요해서 하나씩 다 stage에 올려봐야함 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"EatenApple", 24.f, 1.f, 25.f)), E_FAIL);
@@ -128,7 +128,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"PAINTCAN", 40.f, 1.f, 12.f, 2)), E_FAIL); //Cnt 예시
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"GENERICBOTTLE", 44.f, 1.f, 12.f, 5)), E_FAIL);  //Cnt 예시
 
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"BLOCK_SWITCH", 24.f, 1.f, 12.f)), E_FAIL); //
+	// FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"BLOCK_SWITCH", 24.f, 1.f, 12.f)), E_FAIL); //
 	// Add_GameObject에 들어가는 pObjTag 가 다 달라야 들어감 -> Object 피킹하는데 연산량이 너무 증가함
 	// 해결방안 생각해봐야 할듯 
 

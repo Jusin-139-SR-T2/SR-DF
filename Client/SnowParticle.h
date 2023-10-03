@@ -27,18 +27,14 @@ public:
 	HRESULT		Add_Component();
 
 private:
-	CTransformComponent* m_pTransformComp = nullptr;
-
-public:
-	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-
-private:
 	_float	    m_fTime = 0.f;
-	_float      m_fSpeed = 0.f;
-	_float      m_fDieTime = 0.f;
-	_float      m_fMoveTime = 0.f;
+	_float      m_fSpeed = 5.f;
+	_float      m_fDieTime = 10.f;
+	_float      m_fMoveTime = 20.f;
 
 public:
+	CTransformComponent* m_pTransformComp = nullptr;
+	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
 private:
 	virtual void Free();
