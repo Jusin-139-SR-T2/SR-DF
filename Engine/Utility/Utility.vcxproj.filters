@@ -112,9 +112,6 @@
     <ClInclude Include="Header\AStarMgr.h">
       <Filter>08. AstarMgr</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Physics\PhysicsCore.h" />
-    <ClInclude Include="Header\Physics\PhysicsPrecision.h" />
-    <ClInclude Include="Header\Physics\RigidBody.h" />
     <ClInclude Include="Header\Physics\CollisionPrimitive.h">
       <Filter>05. Physics\03. Collsion</Filter>
     </ClInclude>
@@ -144,6 +141,18 @@
     </ClInclude>
     <ClInclude Include="Header\Physics\Contact.h">
       <Filter>05. Physics\04. Contact</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Psystem.h">
+      <Filter>09. Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsCore.h">
+      <Filter>05. Physics\01. PhysicsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\PhysicsPrecision.h">
+      <Filter>05. Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Physics\RigidBody.h">
+      <Filter>05. Physics\02. RigidBody</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -255,8 +264,6 @@
     <ClCompile Include="Code\AStarMgr.cpp">
       <Filter>08. AstarMgr</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Physics\PhysicsCore.cpp" />
-    <ClCompile Include="Code\Physics\RigidBody.cpp" />
     <ClCompile Include="Code\Physics\CollisionPrimitive.cpp">
       <Filter>05. Physics\03. Collsion</Filter>
     </ClCompile>
@@ -283,6 +290,15 @@
     </ClCompile>
     <ClCompile Include="Code\Physics\Contact.cpp">
       <Filter>05. Physics\04. Contact</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Psystem.cpp">
+      <Filter>09. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\PhysicsCore.cpp">
+      <Filter>05. Physics\01. PhysicsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Physics\RigidBody.cpp">
+      <Filter>05. Physics\02. RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -396,6 +412,9 @@
     </Filter>
     <Filter Include="05. Physics\04. Contact\ContactGen_Joint">
       <UniqueIdentifier>{5d2b6d2e-f797-4250-ab32-8d7d551c5887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Particle">
+      <UniqueIdentifier>{4b30e8fd-4f41-4198-a882-d671f060871e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

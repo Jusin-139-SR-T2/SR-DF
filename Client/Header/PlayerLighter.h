@@ -11,21 +11,21 @@ class CTransformComponent;
 
 END
 
-class CAceLighter : public Engine::CGameObject
+class CPlayerLighter : public Engine::CGameObject
 {
-	DERIVED_CLASS(CGameObject, CAceLighter)
+	DERIVED_CLASS(CGameObject, CPlayerLighter)
 
 private:
-	explicit CAceLighter(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CAceLighter(const CAceLighter& rhs);
-	virtual ~CAceLighter();
+	explicit CPlayerLighter(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CPlayerLighter(const CPlayerLighter& rhs);
+	virtual ~CPlayerLighter();
 
 public:
 	virtual HRESULT		Ready_GameObject() override;
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
-	static CAceLighter* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPlayerLighter* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	void				Height_On_Terrain();
@@ -45,7 +45,8 @@ public:
 
 private:
 	HRESULT Create_Light(); // 점광원 만들기 
-	D3DLIGHT9 AceLight; // 점광원 
+
+	D3DLIGHT9 AceLight;		// 점광원 
 	_bool m_bLightOn = false; // 블랙보드 연동해서 가져올 플레이어 라이터 on상태 
 
 };

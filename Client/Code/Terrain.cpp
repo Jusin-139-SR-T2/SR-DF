@@ -109,11 +109,10 @@ HRESULT CTerrain::SetUp_Material()
 
     //ambient + diffuse*intensity +specular
 
-    tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f }; //난반사 - 물체의 색이 가장 밝은색임
-    //tMtrl.Diffuse = { 0.5f, 0.5f, 0.1f, 0.1f };
-    tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f }; //정반사 - 하이라이트 표현 
-    //tMtrl.Specular = { 0.1f, 0.1f, 0.1f, 0.1f }; //정반사
-    tMtrl.Ambient = { 0.1f, 0.1f, 0.1f, 1.f }; //간접조명 - 빛이없더라도 이건 존재한다는 가정하에 들어가는 조명 
+    tMtrl.Diffuse = D3DXCOLOR(DXCOLOR_WHITE); //난반사 - 물체의 색이 가장 밝은색임
+    tMtrl.Specular = D3DXCOLOR(DXCOLOR_WHITE); //정반사 - 하이라이트 표현
+    tMtrl.Ambient = D3DXCOLOR(DXCOLOR_BLACK); //간접조명 - 빛이없더라도 이건 존재한다는 가정하에 들어가는 조명 
+    //tMtrl.Ambient = { 0.1f, 0.1f, 0.1f, 1.f };
     tMtrl.Emissive = { 0.f, 0.f, 0.f, 0.f }; //자체 발광 
     tMtrl.Power = 0.f;
 
