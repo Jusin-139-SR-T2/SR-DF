@@ -1168,6 +1168,7 @@ void CImguiAnimationTool::SaveAnimationToFile(const char* fileName)
             << keyframe.type << " "
             << keyframe.isEaseIn << " "
             << keyframe.isEaseOut << " "
+            << keyframe.texureframe << " "
             << keyframe.vScale.x << " "
             << keyframe.vScale.y << " "
             << keyframe.vScale.z << " "
@@ -1201,7 +1202,7 @@ void CImguiAnimationTool::LoadAnimationFromFile(const char* fileName)
     Keyframe keyframe;
 
     while (file >> keyframe.time >> keyframe.value >> keyframe.type >>
-        keyframe.isEaseIn >> keyframe.isEaseOut >>
+        keyframe.isEaseIn >> keyframe.isEaseOut >> keyframe.texureframe >>
         keyframe.vScale.x >> keyframe.vScale.y >> keyframe.vScale.z >>
         keyframe.vRot.x >> keyframe.vRot.y >> keyframe.vRot.z >>
         keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z) {
@@ -1352,11 +1353,8 @@ void CImguiAnimationTool::DrawSelectedKeyframeEditor(Keyframe& selectedKeyframe)
     ImGui::PushItemWidth(40);
 
     // 시간 입력 필드
-    if (ImGui::InputFloat(u8"시간", &newTime, fMin_Time, fMax_Time))
+    if (ImGui::InputFloat(u8"시간", &selectedKeyframe.time, fMin_Time, fMax_Time))
     {
-        // 선택된 키프레임시간 값을 변경
-        selectedKeyframe.time = newTime;
-
         // 원래 키프레임의 인덱스 찾기
         for (int i = 0; i < timeline.size(); ++i) {
             if (&timeline[i] == &selectedKeyframe) {
@@ -1410,6 +1408,15 @@ void CImguiAnimationTool::DrawSelectedKeyframeEditor(Keyframe& selectedKeyframe)
     ImGui::InputFloat(u8"벨류", &selectedKeyframe.value, fMin_Value, fMax_Value);
     ImGui::PopItemWidth();
     
+    //ImGui::SameLine(); // 같은 라인
+    ImGui::Dummy(ImVec2(0, 5)); // 공백
+
+    // 텍스처 입력 필드의 가로 길이를 조절 (ex : 40 픽셀)
+    ImGui::PushItemWidth(80);
+    //ImGui::Text("%d", selectedKeyframe.texureframe);
+    ImGui::InputInt(u8"텍스처 번호", &selectedKeyframe.texureframe);
+    ImGui::PopItemWidth();
+
     // 원래의 ItemInnerSpacing 값으로 복원
     style.ItemInnerSpacing.x = originalItemWidth;
 
