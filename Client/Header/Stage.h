@@ -32,6 +32,8 @@ public:
 	virtual void		LateUpdate_Scene();
 	virtual void		Render_Scene();
 
+	virtual HRESULT		ReadyLate_Scene();
+
 private:
 	HRESULT				Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);

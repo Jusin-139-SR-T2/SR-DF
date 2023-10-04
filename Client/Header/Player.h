@@ -85,12 +85,24 @@ public: // Get_Set
 	GETSET_EX2(CTextureComponent*, m_pLeftHandComp, m_pLeftHandComp, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pRightHandComp, m_pRightHandComp, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-	GETSET_EX2(CSphereColComp*, m_pColliderComp, SphereColComponent, GET, SET)
+	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
 
-protected:
-	virtual void	Collide(CGameObject* pDst) override;
-	virtual void	CollisionEnterd(CGameObject* pDst) override;
-	virtual void	CollisionExited(CGameObject* pDst) override;
+protected: // 충돌 onoff
+	virtual void	OnCollision(CGameObject* pDst) override;
+	virtual void	OnCollisionEntered(CGameObject* pDst) override;
+	virtual void	OnCollisionExited(CGameObject* pDst) override;
+
+private: // 컴포넌트
+	// 기능
+	CRcBufferComp* m_pBufferComp = nullptr;					// Rc버퍼
+	CTransformComponent* m_pTransformComp = nullptr;		// 이동행렬 버퍼
+	CCalculatorComponent* m_pCalculatorComp = nullptr;		// 지형 타기 컴포넌트
+	CColliderComponent* m_pColliderComp = nullptr;				// 구 충돌 콜라이더
+
+	// 플레이어 손
+	CTextureComponent* m_pLeftHandComp = nullptr;			// 왼손 텍스처(담을곳)
+	CTextureComponent* m_pRightHandComp = nullptr;			// 오른손 텍스처(담을곳)
+
 
 public:// 플레이어 상태 값
 	// 플레이어
@@ -165,17 +177,6 @@ private: // 함수
 
 private:
 	void State_Update(float fTimeDelta);	// 상태 업데이트(상태 체크)
-
-private: // 컴포넌트
-	// 기능
-	CRcBufferComp*				m_pBufferComp = nullptr;			// Rc버퍼
-	CTransformComponent*		m_pTransformComp = nullptr;			// 이동행렬 버퍼
-	CCalculatorComponent*		m_pCalculatorComp = nullptr;		// 지형 타기 컴포넌트
-	CSphereColComp*				m_pColliderComp = nullptr;			// 구 충돌 콜라이더
-
-	// 플레이어 손
-	CTextureComponent*			m_pLeftHandComp = nullptr;			// 왼손 텍스처(담을곳)
-	CTextureComponent*			m_pRightHandComp = nullptr;			// 오른손 텍스처(담을곳)
 
 private: // 스위치
 	_bool		bAttackOn = false;		// 공격 On/Off

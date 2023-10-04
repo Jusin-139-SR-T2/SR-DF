@@ -48,9 +48,16 @@ void CStage::Render_Scene()
 
 }
 
+HRESULT CStage::ReadyLate_Scene()
+{
+	
+
+	return S_OK;
+}
+
 HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 {
-	Engine::CLayer*		pLayer = Engine::CLayer::Create();
+	Engine::CLayer*		pLayer = Engine::CLayer::Create(-10.f);
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
@@ -73,7 +80,7 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 
 HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 {
-	Engine::CLayer*		pLayer = Engine::CLayer::Create();
+	Engine::CLayer*		pLayer = Engine::CLayer::Create(0.f);
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
@@ -91,12 +98,13 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PlayerLighter", CPlayerLighter::Create(m_pGraphicDev)), E_FAIL);
 
 	// Object - 사이즈 조절이 필요해서 하나씩 다 stage에 올려봐야함 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"EatenApple", 24.f, 1.f, 25.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"BananaPeel", 32.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"EatenApple", 24.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"BananaPeel", 32.f, 1.f, 25.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"Banana", 28.f, 1.f, 25.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"Medkit", 40.f, 1.f, 25.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"Apple", 20.f, 1.f, 25.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"Cola", 36.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"Medkit", 40.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"Apple", 20.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"Cola", 36.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food7", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::FOOD, L"Cola", 44.f, 1.f, 25.f)), E_FAIL);
 	
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenFryingPan", 24.f, 1.f, 20.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenTommyGun", 26.f, 1.f, 20.f)), E_FAIL);
@@ -106,29 +114,29 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"GasCanister", 34.f, 1.f, 20.f)), E_FAIL); 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon7", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"BrokenPipe", 36.f, 1.f, 20.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon8", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"FryingPan", 38.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"WALLPIPE", 40.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon10", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"TommyGun", 42.f, 1.f, 20.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"TommyGun", 42.f, 1.f, 20.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon10", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"WALLPIPE", 40.f, 1.f, 20.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon11", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"Pistol", 44.f, 1.f, 20.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon12", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"Pipe", 46.f, 1.f, 20.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon13", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"Bottle", 48.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Weapon12", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::WEAPON, L"Pipe", 46.f, 1.f, 20.f)), E_FAIL);
 	
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"BLOCK_SWITCH", 24.f, 1.f, 16.f)), E_FAIL); 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"LIGHT_SWITCH", 28.f, 1.f, 16.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"TwoButton", 32.f, 1.f, 16.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"OneButton", 36.f, 1.f, 16.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Padlock", 40.f, 1.f, 16.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Newspaper", 44.f, 1.f, 16.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction7", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"ComicBook", 48.f, 1.f, 16.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction8", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Building_Key", 52.f, 1.f, 16.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Bossroom_Key", 56.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Building_Key", 52.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Bossroom_Key", 56.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"TwoButton", 32.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"OneButton", 36.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction7", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Newspaper", 44.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction8", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"ComicBook", 48.f, 1.f, 16.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Padlock", 40.f, 1.f, 16.f)), E_FAIL); 
 	
 	// 너무많아서 그냥 이정도만 깔음 - 스프라이트 형식으로 넣어서 Cnt값의 Frame을 넣어주면 해당하는거 나옴 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"Trashbin", 24.f, 1.f, 12.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"Lamp", 28.f, 1.f, 12.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"TrashCan", 32.f, 1.f, 12.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"CoatHanger", 36.f, 1.f, 12.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"PAINTCAN", 40.f, 1.f, 12.f, 2)), E_FAIL); //Cnt 예시
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"GENERICBOTTLE", 44.f, 1.f, 12.f, 5)), E_FAIL);  //Cnt 예시
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"GENERICBOTTLE", 44.f, 1.f, 12.f, 5)), E_FAIL);  //Cnt 예시
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"PAINTCAN", 40.f, 1.f, 12.f, 2)), E_FAIL); //Cnt 예시
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"CoatHanger", 36.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"TrashCan", 32.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"Trashbin", 24.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"Lamp", 28.f, 1.f, 12.f)), E_FAIL); 
 
 	// FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"BLOCK_SWITCH", 24.f, 1.f, 12.f)), E_FAIL); //
 	// Add_GameObject에 들어가는 pObjTag 가 다 달라야 들어감 -> Object 피킹하는데 연산량이 너무 증가함
@@ -139,7 +147,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 HRESULT CStage::Ready_Layer_Camera(const _tchar* pLayerTag)
 {
-	Engine::CLayer* pLayer = Engine::CLayer::Create();
+	Engine::CLayer* pLayer = Engine::CLayer::Create(-1.f);
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
@@ -157,7 +165,7 @@ HRESULT CStage::Ready_Layer_Camera(const _tchar* pLayerTag)
 
 HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 {
-	Engine::CLayer*		pLayer = Engine::CLayer::Create();
+	Engine::CLayer*		pLayer = Engine::CLayer::Create(-100.f);
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	Engine::CGameObject*		pGameObject = nullptr;

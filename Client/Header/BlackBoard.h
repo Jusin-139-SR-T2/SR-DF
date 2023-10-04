@@ -10,8 +10,7 @@
 #include "Export_Utility.h"
 #include "Engine_Macro.h"
 
-class   CBlackBoard:
-    public CGameObject
+class   CBlackBoard: public Engine::CGameObject
 {
 private:
     explicit CBlackBoard(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -22,7 +21,7 @@ public:
     virtual HRESULT Ready_GameObject() override;
     virtual _int	Update_GameObject(const _float& fTimeDelta) override;
     virtual void	LateUpdate_GameObject() override;
-    void Render_GameObject() override;
+    void            Render_GameObject() override;
     static CBrown* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:

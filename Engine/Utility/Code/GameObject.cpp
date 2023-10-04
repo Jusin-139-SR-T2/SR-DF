@@ -2,8 +2,14 @@
 
 CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
     : m_pGraphicDev(pGraphicDev)
+    , m_bIsDead(false)
 {
     m_pGraphicDev->AddRef();
+
+    // 기본 우선도 설정
+    ZeroMemory(m_fPriority, static_cast<_uint>(EPRIORITY::SIZE));
+    for (_uint i = 0; i < static_cast<_uint>(EPRIORITY::SIZE); i++)
+        m_bUsePriority[i] = true;
 }
 
 CGameObject::CGameObject(const CGameObject& rhs)

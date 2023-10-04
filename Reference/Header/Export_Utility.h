@@ -59,6 +59,11 @@ inline HRESULT		Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,	const D3DLIGHT9 * pLi
 inline HRESULT		Ready_PhysicsMgr(const _uint iMaxPhysicsWorld3D);
 inline void			StartFrame_PhysicsMgr();
 inline _int			Update_PhysicsMgr(const Real& fTimeDelta);
+inline void			Stop_PhysicsSimulation(const _uint iIndex);
+inline void			Play_PhysicsSimulation(const _uint iIndex);
+inline void			Add_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCollider);
+inline void			Delete_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCollider);
+
 
 // TextureMgr
 inline HRESULT	Ready_TextureMgr(LPDIRECT3DDEVICE9 pGraphicDev);

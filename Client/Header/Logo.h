@@ -23,6 +23,8 @@ public:
 	virtual void		LateUpdate_Scene();
 	virtual void		Render_Scene();
 
+	virtual HRESULT		ReadyLate_Scene();
+
 private:
 	HRESULT				Ready_Texture();
 	HRESULT				Ready_Prototype();

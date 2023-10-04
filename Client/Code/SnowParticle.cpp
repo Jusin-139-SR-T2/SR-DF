@@ -12,8 +12,6 @@ CSnowParticle::~CSnowParticle()
 
 HRESULT CSnowParticle::Ready_GameObject(_vec3 vOriginPos, _int numParticles)
 {
-	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
 	srand(_ulong(time(NULL)));
 	BoundingBox boundingBox;
 	boundingBox.vMin = _vec3(-50.0f, -50.0f, -50.0f);
@@ -30,7 +28,7 @@ HRESULT CSnowParticle::Ready_GameObject(_vec3 vOriginPos, _int numParticles)
 		AddParticle();
 
 	//_tchar* pPath = L"./Resource/Texture/Particle/snowball.bmp";
-	_tchar* pPath = L"./Resource/Texture/Particle/crystal.bmp";
+	_tchar* pPath = L"./Resource/Texture/Particle/CrystalSnow2.bmp";
 
 	CPsystem::Ready_GameObject(pPath);
 
@@ -66,7 +64,6 @@ _int CSnowParticle::Update_GameObject(const _float& fTimeDelta)
 		}
 	}
 
-	billboard();
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
 	return 0;
@@ -99,36 +96,14 @@ void CSnowParticle::ResetParticle(Attribute* _attribute)
 	_attribute->vVelocity.y = Get_RandomFloat(0.0f, 1.0f) * -12.0f;
 	_attribute->vVelocity.z = 0.0f;
 
-	// Èò»öÀÇ ´«¼ÛÀÌ
-	_attribute->Color = DXCOLOR_WHITE;
+	_float a = Get_RandomFloat(0.9f, 1.0f);
+	// Èò»öÀÇ ´«¼ÛÀÌ	
+	_attribute->Color = D3DXCOLOR(a, // R
+								  a, // G
+								  a, // B
+								  1.0f); // A
 	_attribute->fLifeTime = 60.f;
 	_attribute->fAge = 0.f;
-}
-
-HRESULT CSnowParticle::Add_Component()
-{
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
-	return S_OK;
-}
-
-void CSnowParticle::billboard()
-{
-	_matrix		matWorld, matView, matBill;
-
-	matWorld = *m_pTransformComp->Get_Transform();
-
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-	D3DXMatrixIdentity(&matBill);
-
-	matBill._11 = matView._11;
-	matBill._13 = matView._13;
-	matBill._31 = matView._31;
-	matBill._33 = matView._33;
-
-	D3DXMatrixInverse(&matBill, 0, &matBill);
-
-	m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 }
 
 CSnowParticle* CSnowParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, _int numParticles)

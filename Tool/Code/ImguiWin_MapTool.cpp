@@ -65,27 +65,20 @@ _int CImguiWin_MapTool::Update_ImguiWin(const _float& fTimeDelta)
             ImGui::DockBuilderRemoveNode(dockspace_id);
             ImGui::DockBuilderAddNode(dockspace_id, m_DockSpace_Flags | ImGuiDockNodeFlags_DockSpace);
             ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetWindowSize());
+            ImVec2 vDockSize = ImGui::GetWindowSize();
 
-            
-            ImGuiID dock_right_id = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.3f, NULL, &dockspace_id);
+            ImGuiID dock_right_id = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 250.f / vDockSize.x, NULL, &dockspace_id);
+            ImGuiID dock_property_id = ImGui::DockBuilderSplitNode(dock_right_id, ImGuiDir_Down, 0.5f, NULL, &dock_right_id);
 
             ImGui::DockBuilderDockWindow(u8"뷰어", dockspace_id);
             ImGui::DockBuilderDockWindow(u8"계층", dock_right_id);
-
+            ImGui::DockBuilderDockWindow(u8"속성", dock_property_id);
             
+            
+            ImGuiID dock_browser_scene = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 200.f / vDockSize.y, NULL, &dockspace_id);
 
-            ImGuiID dock_brower_scene = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.2f, NULL, &dockspace_id);
-            //ImGui::DockSpace(dock_brower_scene, ImVec2(0.0f, 0.0f), m_DockSpace_Flags);
-            ImGuiID dock_brower_terrain = ImGui::DockBuilderAddNode(dock_brower_scene, m_DockSpace_Flags | ImGuiDockNodeFlags_CentralNode);
-            ImGuiID dock_brower_object = ImGui::DockBuilderAddNode(dock_brower_scene, m_DockSpace_Flags | ImGuiDockNodeFlags_CentralNode);
-            ImGuiID dock_brower_light = ImGui::DockBuilderAddNode(dock_brower_scene, m_DockSpace_Flags | ImGuiDockNodeFlags_CentralNode);
+            ImGui::DockBuilderDockWindow(u8"브라우저", dock_browser_scene);
 
-            ImGui::DockBuilderDockWindow(u8"씬", dock_brower_scene);
-            ImGui::DockBuilderDockWindow(u8"지형", dock_brower_terrain);
-            ImGui::DockBuilderDockWindow(u8"오브젝트", dock_brower_object);
-            ImGui::DockBuilderDockWindow(u8"조명", dock_brower_light);
-
-            ImGui::DockBuilderFinish(dock_brower_scene);
             ImGui::DockBuilderFinish(dockspace_id);
             
             m_bFirstLoop = false;
@@ -98,33 +91,55 @@ _int CImguiWin_MapTool::Update_ImguiWin(const _float& fTimeDelta)
 
     
     // 리소스
-    if (ImGui::Begin(u8"씬", NULL, iMain_Flags))
+    if (ImGui::Begin(u8"브라우저", NULL, iMain_Flags))
     {
-        
+        if (ImGui::BeginTabBar(u8"에셋"))
+        {
+            if (ImGui::BeginTabItem(u8"씬"))
+            {
 
-    }   ImGui::End();
+                ImGui::EndTabItem();
+            }
 
-    if (ImGui::Begin(u8"지형", NULL, iMain_Flags))
-    {
+            if (ImGui::BeginTabItem(u8"지형"))
+            {
 
+                ImGui::EndTabItem();
+            }
 
-    }   ImGui::End();
+            if (ImGui::BeginTabItem(u8"오브젝트"))
+            {
 
-    if (ImGui::Begin(u8"오브젝트", NULL, iMain_Flags))
-    {
+                ImGui::EndTabItem();
+            }
 
+            if (ImGui::BeginTabItem(u8"조명"))
+            {
 
-    }   ImGui::End();
+                ImGui::EndTabItem();
+            }
 
-    if (ImGui::Begin(u8"조명", NULL, iMain_Flags))
-    {
+            if (ImGui::BeginTabItem(u8"카메라"))
+            {
 
+                ImGui::EndTabItem();
+            }
+
+            ImGui::EndTabBar();
+        }
 
     }   ImGui::End();
 
 
     // 계층
     if (ImGui::Begin(u8"계층", NULL, iMain_Flags))
+    {
+
+
+    }   ImGui::End();
+
+    // 계층
+    if (ImGui::Begin(u8"속성", NULL, iMain_Flags))
     {
 
 

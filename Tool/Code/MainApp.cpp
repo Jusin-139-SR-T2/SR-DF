@@ -71,11 +71,18 @@ int CMainApp::Update_MainApp(const _float& fTimeDelta)
 {
 	// 다이렉트 인풋 업데이트
 	Engine::Update_KeyMgr();
+	CImguiMgr::GetInstance()->Update_Imgui(fTimeDelta);
+	// 물리 업데이트
+	Engine::StartFrame_PhysicsMgr();
 
+	// 씬 업데이트
 	m_pManagementClass->Update_Scene(fTimeDelta);
 
+	// 물리 업데이트
+	Engine::Update_PhysicsMgr(fTimeDelta);
 
-	CImguiMgr::GetInstance()->Update_Imgui(fTimeDelta);
+
+	
 	
 	
 	return 0;
@@ -179,6 +186,9 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 
 	// TextureMgr
 	FAILED_CHECK_RETURN(Engine::Ready_TextureMgr(*ppGraphicDev), E_FAIL);
+
+	// PhysicsMgr
+	FAILED_CHECK_RETURN(Engine::Ready_PhysicsMgr(1), E_FAIL);
 
 	return S_OK;
 }

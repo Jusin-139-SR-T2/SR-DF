@@ -34,8 +34,8 @@ CLoading* CLoading::Create(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID)
 void CLoading::Free()
 {
 	WaitForSingleObject(m_hThread, INFINITE);
-	CloseHandle(m_hThread);
 	DeleteCriticalSection(&m_Crt);
+	CloseHandle(m_hThread);
 
 	Safe_Release(m_pGraphicDev);
 }
@@ -81,6 +81,10 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Food", L"Cola")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LightTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Light", L"RedLight")), E_FAIL);
 
+	// 충돌 컴포넌트
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderSphereComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::SPHERE)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderBoxComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::BOX)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderCapsuleComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::CAPSULE)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 
@@ -150,8 +154,8 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Brown/BasicAttack/BasicAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"BasicAttack", _range<_uint>(0U, 4U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/InchForward/InchForward_%d.png", TEX_NORMAL, L"Brown_Multi", L"InchForward", _range<_uint>(0U, 5U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/HeavyAttack/HeavyAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"HeavyAttack", _range<_uint>(0U, 6U));
-	Load_Texture(L"./Resource/Texture/Monster/Brown/Chopped/KarateChopped_%d.png", TEX_NORMAL, L"Brown_Multi", L"Chopped", _range<_uint>(0U, 17U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/WalkNorth/WalkNorth_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_North", _range<_uint>(0U, 31U));
+	Load_Texture(L"./Resource/Texture/Monster/Brown/Chopped/KarateChopped_%d.png", TEX_NORMAL, L"Brown_Multi", L"Chopped", _range<_uint>(0U, 17U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/FacePunch/FacePunch_%d.png", TEX_NORMAL, L"Brown_Multi", L"FacePunch", _range<_uint>(0U, 7U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Run/South/RunSouth_%d.png", TEX_NORMAL, L"Brown_Multi", L"RunSouth", _range<_uint>(0U, 20U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Headless/Headless_%d.png", TEX_NORMAL, L"Brown_Multi", L"Headless", _range<_uint>(0U, 15U));
@@ -251,7 +255,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Weapon/Pistol.png", TEX_NORMAL, L"Weapon", L"Pistol");
 	Load_Texture(L"./Resource/Texture/Item/Weapon/Bottle.png", TEX_NORMAL, L"Weapon", L"Bottle");
 
-	//Object - Throw (진행중) - 사이즈 조절 필요 (확인불가) 
+	//Object - Throw 
 	Load_Texture(L"./Resource/Texture/Item/Throw/ScrunchedPaper_%d.png", TEX_NORMAL, L"Throw", L"ScrunchedPaper", _range<_uint>(0U, 1U));
 	Load_Texture(L"./Resource/Texture/Item/Throw/PaperBox_%d.png", TEX_NORMAL, L"Throw", L"PaperBox", _range<_uint>(0U, 1U));
 	Load_Texture(L"./Resource/Texture/Item/Throw/Sack_%d.png", TEX_NORMAL, L"Throw", L"Sack", _range<_uint>(0U, 2U));
@@ -296,12 +300,12 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Throw/Bucket.png", TEX_NORMAL, L"Throw", L"Bucket");
 
 	Load_Texture(L"./Resource/Texture/Item/Interaction/LightSwitch_Off.png", TEX_NORMAL, L"Interaction", L"LightSwitch_Off");
-	Load_Texture(L"./Resource/Texture/Item/Interaction/LightSwitch_On.png", TEX_NORMAL, L"Interaction", L"LightSwitch_On");
 	Load_Texture(L"./Resource/Texture/Item/Interaction/BlockSwitch_Off.png", TEX_NORMAL, L"Interaction", L"BlockSwitch_Off");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/LightSwitch_On.png", TEX_NORMAL, L"Interaction", L"LightSwitch_On");
 	Load_Texture(L"./Resource/Texture/Item/Interaction/BlockSwitch_On.png", TEX_NORMAL, L"Interaction", L"BlockSwitch_On");
+	Load_Texture(L"./Resource/Texture/Item/Interaction/OneButton_Off.png", TEX_NORMAL, L"Interaction", L"OneButton_Off");
 	Load_Texture(L"./Resource/Texture/Item/Interaction/TwoButton_Off.png", TEX_NORMAL, L"Interaction", L"TwoButton_Off");
 	Load_Texture(L"./Resource/Texture/Item/Interaction/TwoButton_On.png", TEX_NORMAL, L"Interaction",  L"TwoButton_On");
-	Load_Texture(L"./Resource/Texture/Item/Interaction/OneButton_Off.png", TEX_NORMAL, L"Interaction", L"OneButton_Off");
 	Load_Texture(L"./Resource/Texture/Item/Interaction/OneButton_On.png", TEX_NORMAL, L"Interaction", L"OneButton_On");
 	Load_Texture(L"./Resource/Texture/Item/Interaction/Padlock_Off.png", TEX_NORMAL, L"Interaction", L"Padlock_Off");
 	Load_Texture(L"./Resource/Texture/Item/Interaction/Key_Blue.png", TEX_NORMAL, L"Interaction", L"Building_Key");
@@ -325,8 +329,15 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Inventory/Cola.png", TEX_NORMAL, L"Inventory", L"Cola");
 
 #pragma endregion
-	Load_Texture(L"./Resource/Texture/Light/RedLight.png", TEX_NORMAL, L"Light", L"RedLight");
 
+#pragma region Effect
+
+	Load_Texture(L"./Resource/Texture/Effect/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 14U));
+	Load_Texture(L"./Resource/Texture/Effect/Awareness__end.png", TEX_NORMAL, L"Effect", L"Awareness_End");
+
+#pragma endregion
+
+	Load_Texture(L"./Resource/Texture/Light/RedLight.png", TEX_NORMAL, L"Light", L"RedLight");
 	Wait_LoadTextureAsync();
 
 	return S_OK;

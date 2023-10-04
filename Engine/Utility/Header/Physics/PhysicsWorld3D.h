@@ -28,21 +28,35 @@ private:
 	virtual		void	Free();
 
 public:
-	HRESULT				Ready_Physics(_uint iMaxContacts, _uint iIterations);
-	void				StartFrame_Physics();
-	_int				Update_Physics(const Real& fTimeDelta);
-	_uint				Generate_Contacts();
+	HRESULT						Ready_Physics(_uint iMaxContacts, _uint iIterations);
+	void						StartFrame_Physics();
+	_int						Update_Physics(const Real& fTimeDelta);
+	_uint						Generate_Contacts();
+	// 단순 물리 충돌 테스트
+	FCollisionPrimitive*		Test_Contact(FCollisionPrimitive* pCollision);
+	list< FCollisionPrimitive*>	Test_Contacts(FCollisionPrimitive* pCollision);
+
+public:
+	void						Add_RigidBody(FRigidBody* pBody);
+	void						Delete_RigidBody(FRigidBody* pBody);
 
 private:
 	_bool						m_bCalculateIterations;			// 계산 반복
 
-	list<FRigidBody*>			m_listBody;						// 충돌체 리스트
+	list<FRigidBody*>			m_listBody;						// 강체 정보 리스트
 
 	FContactResolver			m_ContactResolver;				// 접촉 해결자
 	list<FContactGenerator*>	m_ConGenList;					// 접촉 발생기 리스트
 	FContact*					m_pContacts;					// 추가 접촉처리가 필요한 객체에 대한 포인터
 
 	_uint						m_iMaxContacts;					// 최대 접촉 개수
+
+public:
+	void						Pause_Simulation() { m_bIsPaused = true; }
+	void						Play_Simulation() { m_bIsPaused = false; }
+
+private:
+	_bool						m_bIsPaused = false;
 };
 
 END

@@ -85,7 +85,7 @@ public:
 
 /// <summary>
 /// 충돌에 대해 감지하는 클래스
-/// IntersectTests와 다르게 충돌에 대해 
+/// IntersectTests와 다르게 충돌에 대해 이벤트를 작동시킨다.
 /// </summary>
 class ENGINE_DLL FCollisionDetector
 {
@@ -99,7 +99,7 @@ public:
 
 	// 박스 충돌
 	static bool BoxAndBox(const FCollisionBox& srcBox, const FCollisionBox& dstBox);
-	static bool BoxAndSphere(const FCollisionBox& srcBox, const FCollisionSphere& dstSphere);// { return SphereAndBox(dstSphere, srcBox); }
+	static bool BoxAndSphere(const FCollisionBox& srcBox, const FCollisionSphere& dstSphere) { return SphereAndBox(dstSphere, srcBox); }
 	static bool BoxAndPlane(const FCollisionBox& srcBox, const FCollisionPlane& dstPlane);
 
 	// 캡슐 충돌

@@ -32,7 +32,11 @@ class ENGINE_DLL FRigidBody
 	THIS_CLASS(FRigidBody)
 
 public:
-    FRigidBody() {}
+    FRigidBody()
+        : fInverseMass(), vPosition(0.f, 0.f, 0.f), vRotation(0.f, 0.f, 0.f)
+        , vVelocity(0.f, 0.f, 0.f), vAcceleration(0.f, 0.f, 0.f)
+        , vTorqueAccum()
+    {}
     ~FRigidBody() {}
 
 
@@ -452,6 +456,12 @@ protected:
     FVector3        vTorqueAccum;                   // 회전힘 합
     FVector3        vAcceleration;                  // 가속도
     FVector3        vLastFrameAcceleration;         // 이전 프레임 가속도
+
+public:
+    GETSET_EX2(void*, pOwner, Owner, GET, SET)
+
+protected:
+    void*           pOwner = nullptr;
 };
 
 END

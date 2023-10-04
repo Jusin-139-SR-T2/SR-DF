@@ -20,15 +20,10 @@ CSkyBox::~CSkyBox()
 
 HRESULT CSkyBox::Add_Component()
 {
-	CComponent* pComponent = nullptr;
-
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-	
-	  // 몬스터 텍스처
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_SkyBoxTextureComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pCubeBufferComp = Set_DefaultComponent_FromProto<CCubeBufferComp>(ID_STATIC, L"Com_CubeTex", L"Proto_CubeBufferComp"), E_FAIL);
-
 
 	return S_OK;
 }
@@ -50,7 +45,7 @@ CSkyBox* CSkyBox::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CSkyBox::Free()
 {
-	__super::Free();
+	SUPER::Free();
 }
 
 HRESULT CSkyBox::Ready_GameObject()
@@ -66,20 +61,21 @@ HRESULT CSkyBox::Ready_GameObject()
 
 Engine::_int CSkyBox::Update_GameObject(const _float& fTimeDelta)
 {
-
-	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
-
-	return 	__super::Update_GameObject(fTimeDelta);
-}
-
-void CSkyBox::LateUpdate_GameObject()
-{
 	_matrix	matCamWorld;
 
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matCamWorld);
 	D3DXMatrixInverse(&matCamWorld, nullptr, &matCamWorld);
 
 	m_pTransformComp->Set_Pos(matCamWorld._41, matCamWorld._42 + 3.f, matCamWorld._43);
+
+	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
+
+	return 	SUPER::Update_GameObject(fTimeDelta);
+}
+
+void CSkyBox::LateUpdate_GameObject()
+{
+	
 }
 void CSkyBox::Render_GameObject()
 {

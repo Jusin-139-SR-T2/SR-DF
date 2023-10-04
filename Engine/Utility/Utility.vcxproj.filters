@@ -154,6 +154,10 @@
     <ClInclude Include="Header\Physics\RigidBody.h">
       <Filter>05. Physics\02. RigidBody</Filter>
     </ClInclude>
+    <ClInclude Include="AbstractFac_Scene.h" />
+    <ClInclude Include="Esystem.h">
+      <Filter>10. Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -300,6 +304,10 @@
     <ClCompile Include="Code\Physics\RigidBody.cpp">
       <Filter>05. Physics\02. RigidBody</Filter>
     </ClCompile>
+    <ClCompile Include="Esystem.cpp">
+      <Filter>10. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractFac_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">
@@ -415,6 +423,9 @@
     </Filter>
     <Filter Include="09. Particle">
       <UniqueIdentifier>{4b30e8fd-4f41-4198-a882-d671f060871e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Effect">
+      <UniqueIdentifier>{8db7d787-5d21-4852-a4d0-744d7f60a851}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
