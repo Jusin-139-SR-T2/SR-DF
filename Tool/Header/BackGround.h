@@ -87,6 +87,8 @@ private: //변수
 	// 이동
 	_float fPosX_Delta, fPosY_Delta;
 
+	int TextureNum = 0;
+
 	// 애니메이션 툴
 	CImguiAnimationTool* m_pAnimationTool;
 

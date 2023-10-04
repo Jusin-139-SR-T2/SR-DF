@@ -52,6 +52,7 @@ struct Keyframe
 	float time;				// 키프레임의 시간 (0.0f ~ MaxTime 범위)
 	float value;			// 애니메이션 값 (크기, 회전, 이동 등)
 	float color[3];			// 키프레임 색상 (R, G, B)
+	int texureframe;		// 텍스처 변경 값
 
 	OBJ_TYPE m_eObjectType; // 타입을 부여할 그릇 (ex : 한손, 양손)
 	OBJ_NAME m_eObjectName; // 이름을 부여할 그릇 (ex : 권총, 쇠파이프)
@@ -371,3 +372,15 @@ private: // 애니메이션 툴 변수
 	//std::map<OBJECTKEY, Engine::CGameObject*> m_mapObject; // 객체를 저장하는 맵
 	// @@@@@@엔진의 멤버가 아니라그래서 주석걸어뒀음@@@@@@@
 };
+
+#pragma region 단축키
+
+// "A" 키 : 현재 마우스 위치에 키프레임을 생성
+// "R" 키 : 현재 시간(시간선)을 0으로 초기화 [처음으로 이동]
+// "T" 키 : 현재 시간(시간 선)을 마우스 위치로 변경
+// "Space" 키 : 애니메이션 재생/정지
+// "0" 키 : 재생 속도 초기화
+// "-" 키 : 재생 속도 -
+// "+" 키 : 재생 속도 +
+
+#pragma endrigion

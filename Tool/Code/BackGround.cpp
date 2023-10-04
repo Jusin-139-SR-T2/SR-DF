@@ -43,7 +43,7 @@ HRESULT CBackGround::Add_Component()
 	// 텍스쳐 컴포넌트
 	NULL_CHECK_RETURN(m_pBackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TitleTexture", L"Proto_TitleBackTextureComp"), E_FAIL);
 	// 텍스쳐 컴포넌트
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_LogoTexture", L"Proto_LogoTextureComp"), E_FAIL);
+	//NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_LogoTexture", L"Proto_LogoTextureComp"), E_FAIL);
 	
 	//몬스터 - 작업할때 넣기 
 	//NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_LogoTexture", L"Proto_BrownTextureComp"), E_FAIL);
@@ -103,8 +103,8 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 
 	if (!m_vecAnimationInfo->empty()) // 비었는지 체크
 	{
-		if (m_pAnimationTool->Get_FramePlaying()) // 재생 버튼을 눌렀을 경우만
-		{
+		//if (m_pAnimationTool->Get_FramePlaying()) // 재생 버튼을 눌렀을 경우만
+		//{
 			if (m_pAnimationTool->Get_currentTime() >= 0.f &&
 				m_pAnimationTool->Get_currentTime() <= m_vecAnimationInfo->back().time)
 			{
@@ -169,6 +169,8 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 					m_pTransformComp->Set_Rotation({ (*m_vecAnimationInfo)[iFrameIndex].vRot.x + fRotX_Delta, 	// 이미지 회전
 													 (*m_vecAnimationInfo)[iFrameIndex].vRot.y + fRotY_Delta,
 													 (*m_vecAnimationInfo)[iFrameIndex].vRot.z + fRotZ_Delta });
+				
+					TextureNum = (*m_vecAnimationInfo)[iFrameIndex].texureframe;
 				}
 				else
 				{
@@ -179,9 +181,12 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 					m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x,
 												(*m_vecAnimationInfo)[iFrameIndex].vPos.y,
 												0.f });	// 이미지 위치
+
+					TextureNum = (*m_vecAnimationInfo)[iFrameIndex].texureframe;
 				}
+				
 			}
-		}
+		//}
 
 	}
 
@@ -204,11 +209,11 @@ void CBackGround::Render_GameObject()
 	// 위의 두개만 쓰면 텍스처 행렬과 부모 행렬을 별개로 두고 계산할 수 있음.
 
 	// 이제부터 Render_Texture 함수 안에서 자동으로 텍스처의 행렬이 디바이스에 들어간다.(SetTransform(D3DTS_WORLD, 텍스처 행렬))
-	m_pBackTextureComp->Render_Texture(0, true);
+	m_pBackTextureComp->Render_Texture(TextureNum, true);
 	m_pBufferComp->Render_Buffer();
 
 	// 이건 부모 행렬을 텍스처 행렬에 그대로 쓰는 방법, 텍스처 별개의 행렬이 필요없을 때 사용
-	m_pTextureComp->Set_Transform(m_pTransformComp->Get_Transform());
+	//m_pTextureComp->Set_Transform(m_pTransformComp->Get_Transform());
 
 	// m_pBackTextureComp에 적용한 것과 m_pTextureComp에 적용한 것. 두개다 백그라운드에서 동일한 위치, 크기로 설정되므로 유효함.
 
@@ -216,8 +221,8 @@ void CBackGround::Render_GameObject()
 	// Readjust_Transform : 텍스처의 로컬 좌표, 회전, 크기를 텍스처의 월드 행렬(트랜스폼)에 적용한다.
 	// Set_TransformToWorld : 텍스처 월드 행렬 * 부모 행렬, 행렬곱임
 
-	m_pTextureComp->Render_Texture(0, true);
-	m_pBufferComp->Render_Buffer();
+	//m_pTextureComp->Render_Texture(0, true);
+	//m_pBufferComp->Render_Buffer();
 }
 
 // 애니메이션 불러오기
