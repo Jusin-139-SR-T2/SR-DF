@@ -1,32 +1,69 @@
-#pragma once
-
-#include "ImguiWin.h"
-
-class CMyTexture : public CImguiWin
-{
-	DERIVED_CLASS(CImguiWin, CMyTexture)
-
-private:
-	explicit CMyTexture();
-	virtual ~CMyTexture();
-
-public:
-	static CMyTexture* Create();
-
-public:
-	virtual HRESULT Ready_ImguiWin() override;
-	virtual _int	Update_ImguiWin(const _float& fTimeDelta) override;
-
-public:
-	GETSET_EX1(LPDIRECT3DTEXTURE9, m_pTexture, Texture, GET_REF)
-
-protected:
-	virtual void Free();
-
-private:
-	LPDIRECT3DTEXTURE9 m_pTexture = nullptr;
-	LPDIRECT3DSURFACE9 m_pRenderTargetSurface = nullptr;
-
-
-};
-
+//#pragma once
+//
+//#include "GameObject.h"
+//#include "ImguiAnimationTool.h"
+//
+//BEGIN(Engine)
+//
+//class CRcBufferComp;
+//class CTextureComponent;
+//class CTransformComponent;
+//
+//END
+//
+//class CMyTexture : public Engine::CGameObject
+//{
+//	DERIVED_CLASS(CGameObject, CMyTexture)
+//
+//private:
+//	explicit CMyTexture(LPDIRECT3DDEVICE9 pGraphicDev);
+//	explicit CMyTexture(const CMyTexture& rhs);
+//	virtual ~CMyTexture();
+//
+//public:
+//	static CMyTexture* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+//
+//private:
+//	virtual void		Free();
+//
+//private:
+//	HRESULT				Add_Component();
+//
+//public:
+//	virtual HRESULT		Ready_GameObject() override;
+//	virtual _int		Update_GameObject(const _float& fDelta) override;
+//	virtual void		LateUpdate_GameObject() override;
+//	virtual void		Render_GameObject() override;
+//
+//public:
+//	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+//	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
+//	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
+//
+//private:
+//	CTransformComponent* m_pTransformComp = nullptr;
+//	CRcBufferComp* m_pBufferComp = nullptr;
+//	CTextureComponent* m_pTextureComp = nullptr;
+//	CTextureComponent* m_pBackTextureComp = nullptr;
+//
+//	_matrix		m_ViewMatrix, m_ProjMatrix;
+//private:
+//	_float	m_fX, m_fY, m_fSizeX, m_fSizeY;
+//
+//	// 애니메이션 프레임
+//	_float m_fAniamtionFrame = 0.f;
+//	_float m_fAnimationSpeed = 7.f;
+//	_float m_fMaxFrame = 0.f;
+//
+//	CImguiAnimationTool* m_pAnimationTool;
+//	std::vector<Keyframe>* m_vecAnimationInfo;
+//
+//
+//	_float fFrameTimeDelta, fCurFrameTimeDelta;	//dt
+//	_float fSizeX_Delta, fSizeY_Delta;
+//	_float fRotX_Delta, fRotY_Delta;
+//	_float fPosX_Delta, fPosY_Delta;
+//
+//	_bool bFrameOn = false;
+//};
+//

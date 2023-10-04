@@ -57,13 +57,16 @@ private:
 	bool		m_bShow_DemoWindow =false;
 	bool		m_bShow_AnotherWindow =	false;
 	bool		m_bShow_MapWindow =	false;								// 소영 새로운창 create용
-	ImVec4		m_vClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 public:
 	void		Sort_ImguiWin();
 
+public:
+	using win_map = _unmap<const _tchar*, CImguiWin*>;
+	GETSET_EX1(win_map, m_mapImguiWin, MapImguiWin, GET_REF)
+
 private:
-	_unmap<const _tchar*, CImguiWin*>			m_mapImguiWin;			// IMGUI 윈도우 클래스 저장 컨테이너
+	win_map										m_mapImguiWin;			// IMGUI 윈도우 클래스 저장 컨테이너
 	vector<pair< const _tchar*, CImguiWin*>>	m_vecSortedImguiWin;	// IMGUI value 기반 정렬 컨테이너
 
 public:

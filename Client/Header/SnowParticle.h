@@ -11,6 +11,8 @@ END
 
 class CSnowParticle : public Engine::CPsystem
 {
+	DERIVED_CLASS(CPsystem, CSnowParticle)
+
 private:
 	explicit CSnowParticle(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CSnowParticle();
@@ -21,7 +23,7 @@ public:
 	void					LateUpdate_GameObject(void);
 	void					Render_GameObject() override;
 
-	static CSnowParticle*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, int numParticles);
+	static CSnowParticle*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, _int numParticles);
 
 
 private:
