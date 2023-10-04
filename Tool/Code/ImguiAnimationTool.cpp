@@ -703,12 +703,12 @@ void CImguiAnimationTool::RenderTimeline()
 
         // 타임 라인 상의 위치를 계산
         float xPos = timelinePos.x + (keyframe.time / 20.0f) * timelineSize.x;
-        //float yPos = timelinePos.y + timelineSize.y - timelineSize.y * keyframe.value;
+        float yPos = timelinePos.y + timelineSize.y - timelineSize.y * keyframe.value;
 
         if (ImGui::IsMouseHoveringRect(
-            ImVec2(xPos - 5.0f, timelinePos.y - 0.1f),
-            ImVec2(xPos + 5.0f, timelinePos.y + timelineSize.y + 5.0f))
-            && ImGui::IsMouseClicked(0)) 
+            ImVec2(xPos - 5.0f, yPos - 5.0f), // 좌표 설정
+            ImVec2(xPos + 5.0f, yPos + 5.0f)) // 좌표 설정
+            && ImGui::IsMouseClicked(0))
         {
             isDraggingKeyframe = true;
             draggingKeyframeIndex = i;
@@ -780,6 +780,96 @@ void CImguiAnimationTool::RenderTimeline()
         newKeyframe.time = currentTime;
         timeline.insert(timeline.begin() + insertIndex, newKeyframe);
     }
+
+    // "A" 키 : 현재 마우스 위치에 키프레임을 생성
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_A)))
+    {
+        // 새로운 키프레임을 추가할 때 현재 시간과 가장 가까운 키프레임을 찾습니다.
+        float minDist = FLT_MAX;
+        int insertIndex = 0;
+        for (int i = 0; i < timeline.size(); ++i) {
+            float dist = fabsf(currentTime - timeline[i].time);
+            if (dist < minDist) {
+                minDist = dist;
+                insertIndex = i;
+            }
+        }
+
+        // 현재 마우스 위치
+        ImVec2 mousePos = ImGui::GetMousePos();
+
+        // 애니메이션 타임 라인 위치
+        ImVec2 timelinePos = ImGui::GetCursorScreenPos();
+        timelinePos.x += 0.f;
+        timelinePos.y += 30.f;
+
+        // 마우스 위치X를 애니메이션 타임 라인 상의 상대적인 위치로 변환
+        float relativeMouseX = (mousePos.x - timelinePos.x) / timelineSize.x;
+
+        // 마우스 위치를 애니메이션 타임 라인 상의 상대적인 위치로 변환합니다.
+        float relativeMouseY = (mousePos.y - timelinePos.y) / timelineSize.y;
+
+        // 벨류 값을 계산합니다. 예를 들어, 상대적인 마우스 위치를 벨류 값으로 사용할 수 있습니다.
+        float newValue = 0.7f - ImClamp(relativeMouseY, 0.0f, 1.0f); // 벨류 값 범위를 0에서 1로 클램핑합니다.
+
+        // 시간 값을 계산하여 새로운 키프레임을 생성
+        float newTime = relativeMouseX * MaxTime; // MaxTime은 최대 시간 값
+
+        // 새로운 키프레임을 생성하고 삽입합니다.
+        Keyframe newKeyframe = { newTime, newValue, 0, false, false };
+        newKeyframe.time = newTime;
+        newKeyframe.value = newValue;
+        timeline.push_back(newKeyframe);
+
+    }
+
+#pragma region 단축키
+    // "R" 키 : 현재 시간(시간선)을 0으로 초기화 [처음으로 이동]
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_R)))
+    {
+        currentTime = 0.f;
+    }
+
+    // "T" 키 : 현재 시간(시간 선)을 마우스 위치로 변경
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_T)))
+    {
+        // 현재 마우스 위치
+        ImVec2 mousePos = ImGui::GetMousePos();
+
+        // 마우스 위치X를 애니메이션 타임 라인 상의 상대적인 위치로 변환
+        float relativeMouseX = (mousePos.x - timelinePos.x) / timelineSize.x;
+
+        // 시간 값을 계산하여 새로운 키프레임을 생성
+        float newTime = relativeMouseX * MaxTime; // MaxTime은 최대 시간 값
+
+        // 시간을 현재 마우스 위치에 맞게 설정합니다.
+        currentTime = newTime;   
+    }
+
+    // "Space" 키 : 애니메이션 재생/정지
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Space)))
+    {
+        isPlaying = !isPlaying;
+    }
+
+    // "0" 키 : 재생 속도 초기화
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_0)))
+    {
+        playbackSpeed = 1.f;
+    }
+
+    // "-" 키 : 재생 속도 -
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Minus)))
+    {
+        playbackSpeed -= 1.f;
+    }
+
+    // "+" 키 : 재생 속도 +
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Equal)))
+    {
+        playbackSpeed += 1.f;
+    }
+#pragma endregion
 
     ImGui::SameLine();
 
@@ -868,7 +958,7 @@ void CImguiAnimationTool::RenderTimeline()
     }
     ImGui::End();
 
-    // 선택된 키프렘의 인덱스를 사용하여 키프렘을 편집.
+    // 선택된 키프렘의 인덱스를 사용하여 키프레임을 편집.
     if (!timeline.empty() && selectedKeyframeIndex >= 0 && selectedKeyframeIndex < timeline.size()) 
     {
         Keyframe& selectedKeyframe = timeline[selectedKeyframeIndex];
@@ -1014,6 +1104,43 @@ void CImguiAnimationTool::RenderTimeline()
 
     }
 
+#pragma endregion
+
+#pragma region 키프레임 자동 생성
+
+    ImGui::Begin("Generate");
+
+    ImGui::Text(u8"키프레임 자동 생성");
+
+    // 입력값을 받는 UI 요소 생성
+    ImGui::InputFloat2("Min, Max Time", _v2Time);
+    ImGui::InputFloat2("Min, Max Value", _v2Value);
+    ImGui::InputFloat3("Min Scale", minScale);
+    ImGui::InputFloat3("Max Scale", maxScale);    
+    ImGui::InputFloat3("Min Rot", minRot);
+    ImGui::InputFloat3("Max Rot", maxRot);
+    ImGui::InputFloat3("Min Pos", minPos);
+    ImGui::InputFloat3("Max Pos", maxPos);
+    ImGui::InputFloat("KeyFrame", &numKeyframes);
+
+    if (ImGui::Button("Generate Keyframes")) {
+        // 버튼이 클릭되면 timeline 벡터를 비우고 CreateKeyframesWithLinearInterpolation 함수 호출
+        timeline.clear();
+
+        CreateKeyframesWithLinearInterpolation(timeline,
+            _v2Time.x, _v2Time.y,
+            _v2Value.x, _v2Value.y,
+            minScale, maxScale,
+            minRot, maxRot,
+            minPos, maxPos,
+            numKeyframes);
+    }
+
+    if (ImGui::Button("clear")) {
+        // 버튼이 클릭되면 timeline 벡터를 비우고 CreateKeyframesWithLinearInterpolation 함수 호출
+        timeline.clear();
+    }
+    ImGui::End();
 #pragma endregion
 
 }
@@ -1223,9 +1350,57 @@ void CImguiAnimationTool::DrawSelectedKeyframeEditor(Keyframe& selectedKeyframe)
 
     // 시간 입력 필드의 가로 길이를 조절 (ex : 40 픽셀)
     ImGui::PushItemWidth(40);
+
     // 시간 입력 필드
-    ImGui::InputFloat(u8"시간", &selectedKeyframe.time, fMin_Time, fMax_Time);
+    if (ImGui::InputFloat(u8"시간", &newTime, fMin_Time, fMax_Time))
+    {
+        // 선택된 키프레임시간 값을 변경
+        selectedKeyframe.time = newTime;
+
+        // 원래 키프레임의 인덱스 찾기
+        for (int i = 0; i < timeline.size(); ++i) {
+            if (&timeline[i] == &selectedKeyframe) {
+                originalIndex = i;
+                break;
+            }
+        }
+
+        // 키프레임을 시간에 따라 정렬
+        std::sort(timeline.begin(), timeline.end(), [](const Keyframe& a, const Keyframe& b) {
+            return a.time < b.time;
+            });
+
+        // 원래 키프레임의 인덱스 찾기
+        for (int i = 0; i < timeline.size(); ++i) {
+            if (&timeline[i] == &selectedKeyframe) {
+                selectedKeyframeIndex = i;
+                break;
+            }
+        }
+
+        // 키프레임 순서 변경
+        if (originalIndex != selectedKeyframeIndex) {
+            // 키프레임이 원래 위치에서 이동한 경우
+            // 이동한 위치에 따라 인덱스 업데이트
+            draggingKeyframeIndex = selectedKeyframeIndex;
+        }
+    }
+
     ImGui::PopItemWidth();
+
+    //// 시간 값 저장
+    //oldTime = selectedKeyframe.time;
+
+    //// 이제 다른 키프렘들의 시간 값을 변경하지 않도록 조치한다
+    //// 시간 값을 변경한 키프렘보다 높은 인덱스의 키프렘들은 이동하지 않아야 한다
+    //for (int i = selectedKeyframeIndex + 1; i < timeline.size(); ++i)
+    //{
+    //    Keyframe& currentKeyframe = timeline[i];
+
+    //    // 이동하지 않도록 기존 시간과의 차이를 더합니다.
+    //    float timeDifference = currentKeyframe.time - oldTime;
+    //    currentKeyframe.time = newTime + timeDifference;
+    //}
 
     ImGui::SameLine(); // 같은 라인
 
@@ -1363,6 +1538,92 @@ void CImguiAnimationTool::DrawSelectedKeyframeEditor(Keyframe& selectedKeyframe)
 
     // 선택된 키프레임만 업데이트
     timeline[selectedKeyframeIndex] = selectedKeyframe;
+}
+
+// _vec3 선형 보간 함수
+_vec3 CImguiAnimationTool::Lerp(const _vec3& a, const _vec3& b, float t) {
+    _vec3 result;
+    result.x = a.x + t * (b.x - a.x);
+    result.y = a.y + t * (b.y - a.y);
+    result.z = a.z + t * (b.z - a.z);
+    return result;
+}
+
+// _vec2 선형 보간 함수
+_float CImguiAnimationTool::Lerp2(const _float& a, const _float& b, float t) {
+    _float result;
+    result = a + t * (b - a);
+    return result;
+}
+
+// 최소, 최대 값 및 크기, 회전, 이동 값을 기반으로 선형 보간된 키프레임을 자동으로 생성하는 함수
+void CImguiAnimationTool::CreateKeyframesWithLinearInterpolation(
+    std::vector<Keyframe>& timeline, float minTime, float maxTime,
+    _float minValue, _float maxValue,
+    _vec3 minscaleValue, _vec3 maxscaleValue,
+    _vec3 minrotationValue, _vec3 maxrotationValue,
+    _vec3 mintranslationValue, _vec3 maxtranslationValue, int numKeyframes)
+{
+    if (numKeyframes < 2) {
+        // 최소 2개 이상의 키프레임이 필요합니다.
+        return;
+    }
+
+    // 키프레임 간의 시간 간격을 계산
+    float timeStep = 1.0f / static_cast<float>(numKeyframes - 1);
+
+    // 첫 번째와 마지막 키프레임을 수동으로 추가
+    Keyframe firstKeyframe;
+
+    // 값 보간
+    firstKeyframe.time = minTime;
+    firstKeyframe.value = minValue;
+    firstKeyframe.vScale = minscaleValue;
+    firstKeyframe.vRot = minrotationValue;
+    firstKeyframe.vPos = mintranslationValue;
+    timeline.push_back(firstKeyframe);
+
+    Keyframe lastKeyframe;
+   
+    // 값 보간
+    lastKeyframe.time = maxTime;
+    lastKeyframe.value = maxValue;
+    lastKeyframe.vScale = maxscaleValue;
+    lastKeyframe.vRot = maxrotationValue;
+    lastKeyframe.vPos = maxtranslationValue;
+
+    timeline.push_back(lastKeyframe);
+
+    // 중간 키프레임 생성 및 보간
+    for (int i = 1; i < numKeyframes - 1; ++i) {
+        float time = i * timeStep;
+        float t = time;  // 시간을 보간 계수로 사용
+
+        // 각각의 속성에 대해 보간값을 계산
+        _vec3 scale = Lerp(minscaleValue, maxscaleValue, t);
+
+        _vec3 rotation = Lerp(minrotationValue, maxrotationValue, t);
+
+        _vec3 translation = Lerp(mintranslationValue, maxtranslationValue, t);
+
+        _float value = Lerp2(minValue, maxValue, t);
+
+        Keyframe keyframe;
+
+        // 값 보간
+        keyframe.time = time;
+        keyframe.value = value;
+        keyframe.vScale = scale;
+        keyframe.vRot = rotation;
+        keyframe.vPos = translation;
+
+        timeline.push_back(keyframe);
+    }
+
+    // 시간에 따라 키프레임 정렬
+    std::sort(timeline.begin(), timeline.end(), [](const Keyframe& a, const Keyframe& b) {
+        return a.time < b.time;
+        });
 }
 
 void CImguiAnimationTool::EditKeyframesForAnimation(int numFrames)

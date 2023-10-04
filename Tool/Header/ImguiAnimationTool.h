@@ -158,6 +158,10 @@ public:
 	//
 	void DrawSelectedKeyframeEditor(Keyframe& selectedKeyframe);
 
+	_vec3 Lerp(const _vec3& a, const _vec3& b, float t);
+
+	_float Lerp2(const _float& a, const _float& b, float t);
+
 public: // 애니메이션 함수
 	// 오브젝트 설정 및 관리 함수
 	void ObjectSetting();
@@ -185,6 +189,14 @@ public: // 애니메이션 함수
 
 	// 애니메이션 불러오기
 	void LoadAnimationFromFile(const char* fileName);
+
+	// 키프레임 자동 생성 함수
+	void CreateKeyframesWithLinearInterpolation(
+		std::vector<Keyframe>& timeline, float minTime, float maxTime,
+		_float minValue, _float maxValue,
+		_vec3 minscaleValue, _vec3 maxscaleValue,
+		_vec3 minrotationValue, _vec3 maxrotationValue,
+		_vec3 mintranslationValue, _vec3 maxtranslationValue, int numKeyframes);
 
 public:
 	virtual HRESULT Ready_ImguiWin() override;
@@ -266,16 +278,16 @@ private: // 애니메이션 툴 변수
 
 #pragma region 최소, 최대 값
 	// 크기
-	float	fMin_Scale = 0.1f;	// 최소
-	float	fMax_Scale = 800.f;	// 최대
+	float	fMin_Scale = -1200.1f;	// 최소
+	float	fMax_Scale = 1200.f;	// 최대
 
 	// 회전
-	float	fMin_Rot = 0.f;		// 최소
-	float	fMax_Rot = 360.f;	// 최대
+	float	fMin_Rot = -180.f;		// 최소
+	float	fMax_Rot = 180.f;	// 최대
 
 	// 이동
-	float	fMin_Pos = 0.f;		// 최소
-	float	fMax_Pos = 300.f;	// 최대
+	float	fMin_Pos = -1000.f;		// 최소
+	float	fMax_Pos = 1000.f;	// 최대
 
 	// 시간
 	float	fMin_Time = 0.f;	// 최소
@@ -285,6 +297,25 @@ private: // 애니메이션 툴 변수
 	float	fMin_Value = 0.f;	// 최소
 	float	fMax_Value = 1.f;	// 최대
 #pragma endregion
+
+#pragma region 최소, 최대 자동 생성 값
+
+	_vec2 _v2Time = { 0.f, 0.f };
+	_vec2 _v2Value = { 0.f, 0.f };
+	_vec3 minScale = { 0.f, 0.f, 0.f };
+	_vec3 maxScale = { 0.f, 0.f, 0.f };
+	_vec3 minRot = { 0.f, 0.f, 0.f };
+	_vec3 maxRot = { 0.f, 0.f, 0.f };
+	_vec3 minPos = { 0.f, 0.f, 0.f };
+	_vec3 maxPos = { 0.f, 0.f, 0.f };
+
+	_float numKeyframes = 0.f;
+#pragma endregion
+
+	float oldTime = 0.f;	// 이전 시간 값 저장
+	float newTime = 0.f;	// 새로운 시간 값 (원하는 값으로 변경)
+	float originalIndex;
+
 	// 선택한 키프레임 인덱스를 저장하는 변수 (선택한 키프렘의 인덱스를 초기화합니다.)
 	int selectedKeyframeIndex = -1;
 
