@@ -45,7 +45,7 @@ CSkyBox* CSkyBox::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CSkyBox::Free()
 {
-	__super::Free();
+	SUPER::Free();
 }
 
 HRESULT CSkyBox::Ready_GameObject()
@@ -61,20 +61,21 @@ HRESULT CSkyBox::Ready_GameObject()
 
 Engine::_int CSkyBox::Update_GameObject(const _float& fTimeDelta)
 {
-
-	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
-
-	return 	__super::Update_GameObject(fTimeDelta);
-}
-
-void CSkyBox::LateUpdate_GameObject()
-{
 	_matrix	matCamWorld;
 
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matCamWorld);
 	D3DXMatrixInverse(&matCamWorld, nullptr, &matCamWorld);
 
 	m_pTransformComp->Set_Pos(matCamWorld._41, matCamWorld._42 + 3.f, matCamWorld._43);
+
+	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
+
+	return 	SUPER::Update_GameObject(fTimeDelta);
+}
+
+void CSkyBox::LateUpdate_GameObject()
+{
+	
 }
 void CSkyBox::Render_GameObject()
 {

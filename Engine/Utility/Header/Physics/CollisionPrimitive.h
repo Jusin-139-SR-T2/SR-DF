@@ -26,18 +26,25 @@ public:
 	FCollisionPrimitive()
 	{
 		pBody = new FRigidBody();
+		pBody->Set_Owner(this);
 	}
 	FCollisionPrimitive(const FCollisionPrimitive& rhs)
 	{
 		pBody = new FRigidBody();
 		*pBody = *rhs.pBody;
+		pBody->Set_Owner(this);
+		fnEventHandler = nullptr;		// 이벤트 함수는 복사하면 안됨.
 	}
-	~FCollisionPrimitive() 
+	virtual ~FCollisionPrimitive() 
 	{
 		Safe_Delete(pBody);
 	}
 	
-	
+public:
+	GETSET_EX2(void*, pOwner, Owner, GET, SET)
+
+protected:
+	void* pOwner = nullptr;
 
 public:
 	FRigidBody* pBody;				// 강체 정보
@@ -46,7 +53,7 @@ public:
 	FMatrix3x4	matOffset;			// 오프셋 행렬
 
 public:
-	GETSET_EX1(FMatrix3x4, matTransform, Transform, GET_C_REF)
+	GETSET_EX2(FMatrix3x4, matTransform, Transform, GET_C_REF, GET_REF)
 	// 축 정보를 트랜스폼에서 얻어옴
 	FVector3 Get_Axis(_uint iIndex) const
 	{
@@ -57,16 +64,16 @@ protected:
 	FMatrix3x4	matTransform;		// 트랜스 폼 행렬
 
 public:
-	GETSET_EX1(ECOLLISION, eType, Type, GET_C_REF)
+	GETSET_EX2(ECOLLISION, eType, Type, GET_C_REF, GET_REF)
 
 protected:
 	ECOLLISION	eType;				// 타입
 
 public:
-	GETSET_EX1(function<void()>, fnEventHandler, Event, SET)
+	GETSET_EX2(function<void(void*)>, fnEventHandler, Event, SET, GET_C_REF)
 
 protected:
-	function<void()>	fnEventHandler;
+	function<void(void*)>	fnEventHandler;
 };
 
 
@@ -79,12 +86,20 @@ class ENGINE_DLL FCollisionSphere : public FCollisionPrimitive
 
 public:
 	FCollisionSphere()
+		: vPos(0.f, 0.f, 0.f), fRadius(1.f)
 	{
 		eType = ECOLLISION::SPHERE;
 	}
-	~FCollisionSphere() {}
+	FCollisionSphere(const FCollisionSphere& rhs)
+		: Base(rhs), 
+		vPos(rhs.vPos), fRadius(rhs.fRadius)
+	{
+		eType = ECOLLISION::SPHERE;
+	}
+	virtual ~FCollisionSphere() {}
 
 public:
+	FVector3	vPos;
 	Real		fRadius;
 };
 
@@ -97,12 +112,20 @@ class ENGINE_DLL FCollisionBox : public FCollisionPrimitive
 	DERIVED_CLASS(FCollisionPrimitive, FCollisionBox)
 public:
 	FCollisionBox()
+		: vPos(0.f, 0.f, 0.f), vHalfSize(1.f, 1.f, 1.f)
 	{
 		eType = ECOLLISION::BOX;
 	}
-	~FCollisionBox() {}
+	FCollisionBox(const FCollisionBox& rhs)
+		: Base(rhs),
+		vPos(rhs.vPos), vHalfSize(rhs.vHalfSize)
+	{
+		eType = ECOLLISION::BOX;
+	}
+	virtual ~FCollisionBox() {}
 
 public:
+	FVector3	vPos;
 	FVector3	vHalfSize;
 };
 
@@ -115,10 +138,17 @@ class ENGINE_DLL FCollisionCapsule : public FCollisionPrimitive
 	DERIVED_CLASS(FCollisionPrimitive, FCollisionCapsule)
 public:
 	FCollisionCapsule()
+		: vStart(0.f, -1.f, 0.f), vEnd(0.f, 1.f, 0.f), fRadius(2.f)
 	{
 		eType = ECOLLISION::CAPSULE;
 	}
-	~FCollisionCapsule() {}
+	FCollisionCapsule(const FCollisionCapsule& rhs)
+		: Base(rhs)
+		, vStart(rhs.vStart), vEnd(rhs.vEnd), fRadius(rhs.fRadius)
+	{
+		eType = ECOLLISION::CAPSULE;
+	}
+	virtual ~FCollisionCapsule() {}
 
 public:
 	FVector3	vStart;

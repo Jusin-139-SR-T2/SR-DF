@@ -56,6 +56,16 @@ HRESULT CManagement::Ready_Management(const EMANAGE_SCENE eType)
 
 _int CManagement::Update_Scene(const _float& fTimeDelta)
 {
+	if (m_pScene_Reserve)
+	{
+		Safe_Release(m_pScene_Current);
+		m_pScene_Current = m_pScene_Reserve;
+		m_pScene_Reserve = nullptr;
+
+		Engine::Clear_RenderGroup();
+		Engine::Play_PhysicsSimulation(0);
+	}
+
 	// 씬 없으면 예외처리
 	NULL_CHECK_RETURN(m_pScene_Current, -1)
 
@@ -83,11 +93,8 @@ HRESULT CManagement::Set_Scene(CScene* pScene)
 		return E_FAIL;
 
 	// 씬 해제 후 새로운 씬을 로드
-	Safe_Release(m_pScene_Current);
-
-	m_pScene_Current = pScene;
-
-	Engine::Clear_RenderGroup();
+	m_pScene_Reserve = pScene;
+	Engine::Stop_PhysicsSimulation(0);
 
 	return S_OK;
 }
@@ -102,8 +109,7 @@ HRESULT CManagement::Set_Scene(wstring strSceneName)
 	{
 	case EMANAGE_SCENE::SINGLE:
 		// 씬 해제 후 새로운 씬을 로드
-		Safe_Release(m_pScene_Current);
-		m_pScene_Current = (*iter).second;
+		m_pScene_Reserve = (*iter).second;
 
 		break;
 	case EMANAGE_SCENE::MULTI:
@@ -111,11 +117,11 @@ HRESULT CManagement::Set_Scene(wstring strSceneName)
 		// + 나중에 씬이 멈췄음을 인지할 수 있는 이벤트를 만들어 넣어주어야 한다.
 		// 이를 통해 씬과 관련없는 매니저와 같은 곳에서 로드되지 않은 자원을 쓰는 객체에 대해 통제할 수 있다.
 		// 특히 물리엔진
-		m_pScene_Current = (*iter).second;
+		m_pScene_Reserve = (*iter).second;
 
 		break;
 	}
-	Engine::Clear_RenderGroup();
+	Engine::Stop_PhysicsSimulation(0);
 
 	return S_OK;
 }

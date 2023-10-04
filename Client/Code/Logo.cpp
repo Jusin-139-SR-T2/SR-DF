@@ -68,21 +68,7 @@ _int CLogo::Update_Scene(const _float& fTimeDelta)
 		}
 	}
 
-	// 로딩이 끝났을 때 엔터를 눌러 스테이지 씬으로 진입할 수 있다.
-	if (!m_bInitFrame && m_pLoading->Get_Finish())
-	{
-		g_bLockEsc = false;
-
-		if (Engine::IsKey_Pressed(DIK_RETURN))
-		{
-			CScene* pScene = CStage::Create(m_pGraphicDev);
-			NULL_CHECK_RETURN(pScene, E_FAIL);
-
-			FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
-
-			return 0;
-		}
-	}
+	
 
 	return iExit;
 }
@@ -91,11 +77,32 @@ void CLogo::LateUpdate_Scene()
 {
 	SUPER::LateUpdate_Scene();
 
+
+	// 로딩이 끝났을 때 엔터를 눌러 스테이지 씬으로 진입할 수 있다.
+	if (!m_bInitFrame && m_pLoading->Get_Finish())
+	{
+		g_bLockEsc = false;
+
+		if (Engine::IsKey_Pressed(DIK_RETURN))
+		{
+			CScene* pScene = CStage::Create(m_pGraphicDev);
+			NULL_CHECK(pScene, E_FAIL);
+
+			Engine::Set_Scene(pScene);
+		}
+	}
 }
 
 void CLogo::Render_Scene()
 {
 	// _DEBUG 용
+}
+
+HRESULT CLogo::ReadyLate_Scene()
+{
+	
+
+	return S_OK;
 }
 
 HRESULT CLogo::Ready_Texture()
@@ -123,7 +130,7 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 	// 정상
 	// 레이어 초기화
 	Engine::CLayer* pLayer = nullptr;
-	FAILED_CHECK_RETURN(Add_Layer(pLayerTag, pLayer = Engine::CLayer::Create()), E_FAIL);
+	FAILED_CHECK_RETURN(Add_Layer(pLayerTag, pLayer = Engine::CLayer::Create(0.f)), E_FAIL);
 
 	// 배경생성
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", CBackGround::Create(m_pGraphicDev)), E_FAIL);

@@ -22,6 +22,62 @@ void CScene::Free()
 	Safe_Release(m_pGraphicDev);
 }
 
+HRESULT CScene::Ready_Scene()
+{
+	return S_OK;
+}
+
+_int CScene::Update_Scene(const _float& fTimeDelta)
+{
+	// 우선도 설정을 해준다.
+	{
+		m_vecPriorityLayer.reserve(m_mapLayer.size());
+
+		// vector에 객체 추가
+		for (auto& item : m_mapLayer)
+			m_vecPriorityLayer.push_back(item.second);
+
+		// 우선도 기반 정렬
+		sort(m_vecPriorityLayer.begin(), m_vecPriorityLayer.end(),
+			[](CLayer* const pDst, CLayer* const pSrc) {
+				return pDst->Get_Priority() > pSrc->Get_Priority();
+			});
+	}
+
+	_int	iResult = 0;
+	for (auto& iter : m_vecPriorityLayer)
+	{
+		iResult = iter->Update_Layer(fTimeDelta);
+
+		if (iResult & 0x80000000)
+			return iResult;
+	}
+
+	return iResult;
+}
+
+void CScene::LateUpdate_Scene()
+{
+	for (auto& iter : m_vecPriorityLayer)
+		iter->LateUpdate_Layer();
+
+	// 우선도 벡터 초기화
+	m_vecPriorityLayer.clear();
+}
+
+void CScene::Render_Scene()
+{
+	// _DEBUG 용
+
+}
+
+HRESULT CScene::ReadyLate_Scene()
+{
+	
+
+	return S_OK;
+}
+
 CComponent* CScene::Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag)
 {
 	// 씬 -> 레이어 -> 오브젝트 -> 컴포넌트
@@ -42,38 +98,6 @@ CGameObject* CScene::Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjT
 	CGameObject* pObj = pLayer->Get_GameObject(pObjTag);
 
 	return pObj;
-}
-
-HRESULT CScene::Ready_Scene()
-{
-	return S_OK;
-}
-
-_int CScene::Update_Scene(const _float& fTimeDelta)
-{
-	_int	iResult = 0;
-
-	for (auto& iter : m_mapLayer)
-	{
-		iResult = iter.second->Update_Layer(fTimeDelta);
-
-		if (iResult & 0x80000000)
-			return iResult;
-	}
-
-	return iResult;
-}
-
-void CScene::LateUpdate_Scene()
-{
-	for (auto& iter : m_mapLayer)
-		iter.second->LateUpdate_Layer();
-}
-
-void CScene::Render_Scene()
-{
-	// _DEBUG 용
-
 }
 
 HRESULT CScene::Add_Layer(const _tchar* pLayerTag, CLayer* pLayer)

@@ -49,10 +49,16 @@ public:
 #pragma endregion
 
 public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
-	GETSET_EX1(_vec3, m_vInfo[INFO_RIGHT],	Right,	GET_C_REF)
-	GETSET_EX1(_vec3, m_vInfo[INFO_UP],		Up,		GET_C_REF)
-	GETSET_EX1(_vec3, m_vInfo[INFO_LOOK],	Look,	GET_C_REF)
+	GETSET_EX2(_vec3, m_vInfo[INFO_RIGHT],	Right,	GET_C_REF, SET_C)
+	GETSET_EX2(_vec3, m_vInfo[INFO_UP],		Up,		GET_C_REF, SET_C)
+	GETSET_EX2(_vec3, m_vInfo[INFO_LOOK],	Look,	GET_C_REF, SET_C)
 	GETSET_EX2(_vec3, m_vInfo[INFO_POS],	Pos,	GET_C_REF, SET_C)
+	void Set_Pos(const _float& x, const _float& y, const _float& z) 
+	{
+		m_vInfo[INFO_POS].x = x;
+		m_vInfo[INFO_POS].y = y;
+		m_vInfo[INFO_POS].z = z;
+	}
 	void Set_PosX(const _float value) { m_vInfo[INFO_POS].x = value; }
 	void Set_PosY(const _float value) { m_vInfo[INFO_POS].y = value; }
 	void Set_PosZ(const _float value) { m_vInfo[INFO_POS].z = value; }
@@ -68,7 +74,8 @@ public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
 	void Set_ScaleZ(const _float value) { m_vScale.z = value; }
 
 
-	GETSET_EX2(_matrix, m_matTransform,		Transform,		GET_C_PTR, SET_C_PTR)
+	GETSET_EX2(_matrix, m_matTransform, Transform, GET_C_PTR, SET_C_PTR)
+	_vec3 Get_PosByTransform() { return _vec3(m_matTransform._41, m_matTransform._42, m_matTransform._43); }
 
 protected:
 	_vec3		m_vInfo[INFO_END];		// 위치, 방향 정보

@@ -104,6 +104,22 @@ _int		Update_PhysicsMgr(const Real& fTimeDelta)
 {
 	return CPhysicsMgr::GetInstance()->Update_Physics(fTimeDelta);
 }
+void		Stop_PhysicsSimulation(const _uint iIndex)
+{
+	CPhysicsMgr::GetInstance()->Get_World3D(iIndex)->Pause_Simulation();
+}
+void		Play_PhysicsSimulation(const _uint iIndex)
+{
+	CPhysicsMgr::GetInstance()->Get_World3D(iIndex)->Play_Simulation();
+}
+void		Add_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCollider)
+{
+	CPhysicsMgr::GetInstance()->Get_World3D(iIndex)->Add_RigidBody(pCollider->pBody);
+}
+void		Delete_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCollider)
+{
+	CPhysicsMgr::GetInstance()->Get_World3D(iIndex)->Delete_RigidBody(pCollider->pBody);
+}
 
 
 
@@ -184,8 +200,8 @@ void		Release_Utility()
 	CLightMgr::GetInstance()->DestroyInstance();
 	CRenderer::GetInstance()->DestroyInstance();
 	CProtoMgr::GetInstance()->DestroyInstance();
-	CPhysicsMgr::GetInstance()->DestroyInstance();
 	CTextureMgr::GetInstance()->DestroyInstance();
 	CKeyMgr::GetInstance()->DestroyInstance();
 	CManagement::GetInstance()->DestroyInstance();
+	CPhysicsMgr::GetInstance()->DestroyInstance();		// 물리는 마지막에 해제한다.
 }

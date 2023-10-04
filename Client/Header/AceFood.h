@@ -9,6 +9,7 @@ class CRcBufferComp;
 class CTextureComponent;
 class CTransformComponent;
 class CCalculatorComponent;
+class CColliderComponent;
 
 END
 
@@ -26,11 +27,17 @@ private:
 	virtual ~CAceFood();
 
 public:
-	virtual HRESULT		Ready_GameObject() override;
+	PRIVATE virtual HRESULT		Ready_GameObject() override { return S_OK; }
+	PUBLIC	virtual HRESULT		Ready_GameObject(const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 	static CAceFood*	Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
+
+protected:
+	virtual void	OnCollision(CGameObject* pDst);
+	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollisionExited(CGameObject* pDst);
 
 private: 
 	virtual void		Free();
@@ -44,6 +51,7 @@ private:
 	CTextureComponent* m_pTextureComp = nullptr;
 	CTransformComponent* m_pTransformComp = nullptr;
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
+	CColliderComponent* m_pColliderComp = nullptr;
 
 private:// 함수
 	void				FoodName(const _tchar* pObjTag); // TCHAR를 ENUM에 맞게 고치기 
