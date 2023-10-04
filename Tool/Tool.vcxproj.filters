@@ -22,9 +22,6 @@
     <Filter Include="02. ImguiMgr\AnimationTool">
       <UniqueIdentifier>{47f4c625-8be4-454b-8864-15bc31ba8028}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. ImguiMgr\AnimationTool\PlayerTexture">
-      <UniqueIdentifier>{0e50d04c-cd0c-4087-b546-42c19e63c79f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. ImguiMgr\AnimationTool\00. MainTool">
       <UniqueIdentifier>{5ebf88ea-c036-4c38-ad87-fb3f11fe6fea}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="98. Test">
       <UniqueIdentifier>{994e9096-1405-44f7-9673-2144e66a50c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. ImguiMgr\AnimationTool\02. PlayerTexture">
+      <UniqueIdentifier>{0e50d04c-cd0c-4087-b546-42c19e63c79f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +94,7 @@
       <Filter>02. ImguiMgr</Filter>
     </ClInclude>
     <ClInclude Include="Header\MyTexture.h">
-      <Filter>02. ImguiMgr\AnimationTool\PlayerTexture</Filter>
+      <Filter>02. ImguiMgr\AnimationTool\02. PlayerTexture</Filter>
     </ClInclude>
     <ClInclude Include="Header\PlayerAnimation.h">
       <Filter>02. ImguiMgr\AnimationTool\01. PlayerAnimation</Filter>
@@ -168,7 +168,7 @@
       <Filter>02. ImguiMgr</Filter>
     </ClCompile>
     <ClCompile Include="Code\MyTexture.cpp">
-      <Filter>02. ImguiMgr\AnimationTool\PlayerTexture</Filter>
+      <Filter>02. ImguiMgr\AnimationTool\02. PlayerTexture</Filter>
     </ClCompile>
     <ClCompile Include="Code\PlayerAnimation.cpp">
       <Filter>02. ImguiMgr\AnimationTool\01. PlayerAnimation</Filter>

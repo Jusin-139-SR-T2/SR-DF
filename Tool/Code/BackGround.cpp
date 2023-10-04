@@ -74,113 +74,109 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 	// 비었는지 검사
 	if (!m_vecAnimationInfo->empty())
 	{
+		// 프레임 재생 여부
 		if (m_pAnimationTool->Get_FramePlaying())
 		{
-			//m_fMaxFrame = m_vecAnimationInfo->size(); // 사이즈를 최대 프레임으로 설정
-		}
-	}
-
-	// 프레임 재생 여부
-	if (m_pAnimationTool->Get_FramePlaying())
-	{
-		// 현재 프레임을 시간(프레임)마다 증가시키기
+			// 현재 프레임을 시간(프레임)마다 증가시키기
 
 
-		// 현재 프레임이 최대 프레임에 도달한 경우
-		if (m_pAnimationTool->Get_currentTime() > (*m_vecAnimationInfo)[m_vecAnimationInfo->size() - 1].time)
-		{
-			// 현재 프레임 초기화
-			//m_pAnimationTool->Get_currentTime() = 0.f;
-
-			// 반복 On/Off
-			if (true)
+			// 현재 프레임이 최대 프레임에 도달한 경우
+			if (m_pAnimationTool->Get_currentTime() > (*m_vecAnimationInfo)[m_vecAnimationInfo->size() - 1].time)
 			{
-				//m_pAnimationTool->Set_FramePlaying(false);
-			}
+				// 현재 프레임 초기화
+				//m_pAnimationTool->Get_currentTime() = 0.f;
 
-			// 툴 시간 초기화
-			m_pAnimationTool->Set_currentTime(0);
-		}
-	}
-
-	if (!m_vecAnimationInfo->empty())
-	{
-		if (m_pAnimationTool->Get_currentTime() >= 0.f &&
-			m_pAnimationTool->Get_currentTime() <= m_vecAnimationInfo->back().time)
-		{
-			//m_eAnimationInfo = m_vecAnimationInfo[(int)m_iFrameCount].front();
-			_uint iFrameIndex = 0U;
-			for (_uint i = m_vecAnimationInfo->size() - 1; i >= 0; i--)
-			{
-				if ((*m_vecAnimationInfo)[i].time <= m_pAnimationTool->Get_currentTime())
+				// 반복 On/Off
+				if (true)
 				{
-					iFrameIndex = i;
-					break;
+					//m_pAnimationTool->Set_FramePlaying(false);
 				}
+
+				// 툴 시간 초기화
+				m_pAnimationTool->Set_currentTime(0);
 			}
+		}
+	}
 
-			// Constant
-			//m_fSizeX = (*m_vecAnimationInfo)[iFrameIndex].vScale.x;
-			//m_fSizeY = (*m_vecAnimationInfo)[iFrameIndex].vScale.y;
-
-			//m_fX = m_fSizeX * 0.5f; // 중점위치 
-			//m_fY = m_fSizeY * 0.5f;
-
-			//m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x,
-			//							(*m_vecAnimationInfo)[iFrameIndex].vPos.y,
-			//							0.f });	// 이미지 위치
-
-			//m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });	// 이미지 크기
-
-
-			// Linear
-			if (iFrameIndex + 1U < m_vecAnimationInfo->size())
+	if (!m_vecAnimationInfo->empty()) // 비었는지 체크
+	{
+		if (m_pAnimationTool->Get_FramePlaying()) // 재생 버튼을 눌렀을 경우만
+		{
+			if (m_pAnimationTool->Get_currentTime() >= 0.f &&
+				m_pAnimationTool->Get_currentTime() <= m_vecAnimationInfo->back().time)
 			{
+				//m_eAnimationInfo = m_vecAnimationInfo[(int)m_iFrameCount].front();
+				_uint iFrameIndex = 0U;
+				for (_uint i = m_vecAnimationInfo->size() - 1; i > 0; i--)
+				{
+					if ((*m_vecAnimationInfo)[i].time <= m_pAnimationTool->Get_currentTime())
+					{
+						iFrameIndex = i;
+						break;
+					}
+				}
+
+				// Constant
+				//m_fSizeX = (*m_vecAnimationInfo)[iFrameIndex].vScale.x;
+				//m_fSizeY = (*m_vecAnimationInfo)[iFrameIndex].vScale.y;
+
+				//m_fX = m_fSizeX * 0.5f; // 중점위치 
+				//m_fY = m_fSizeY * 0.5f;
+
+				//m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x,
+				//							(*m_vecAnimationInfo)[iFrameIndex].vPos.y,
+				//							0.f });	// 이미지 위치
+
+				//m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });	// 이미지 크기
 
 
-				// 키 프레임간 시간 변화율
-				fFrameTimeDelta = (*m_vecAnimationInfo)[iFrameIndex + 1U].time - (*m_vecAnimationInfo)[iFrameIndex].time;
-				// 현재 키 프레임시간부터 현재 시간 변화율
-				fCurFrameTimeDelta = (m_pAnimationTool->Get_currentTime() - (*m_vecAnimationInfo)[iFrameIndex].time);
+				// Linear
+				if (iFrameIndex + 1U < m_vecAnimationInfo->size())
+				{
+					// 키 프레임간 시간 변화율
+					fFrameTimeDelta = (*m_vecAnimationInfo)[iFrameIndex + 1U].time - (*m_vecAnimationInfo)[iFrameIndex].time;
+					// 현재 키 프레임시간부터 현재 시간 변화율
+					fCurFrameTimeDelta = (m_pAnimationTool->Get_currentTime() - (*m_vecAnimationInfo)[iFrameIndex].time);
 
-				fSizeX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vScale.x - (*m_vecAnimationInfo)[iFrameIndex].vScale.x;
-				fSizeX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-				fSizeY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vScale.y - (*m_vecAnimationInfo)[iFrameIndex].vScale.y;
-				fSizeY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+					fSizeX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vScale.x - (*m_vecAnimationInfo)[iFrameIndex].vScale.x;
+					fSizeX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+					fSizeY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vScale.y - (*m_vecAnimationInfo)[iFrameIndex].vScale.y;
+					fSizeY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
 
-				fRotX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.x - (*m_vecAnimationInfo)[iFrameIndex].vRot.x;
-				fRotX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-				fRotY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.y - (*m_vecAnimationInfo)[iFrameIndex].vRot.y;
-				fRotY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-				fRotZ_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.z - (*m_vecAnimationInfo)[iFrameIndex].vRot.z;
-				fRotZ_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+					fRotX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.x - (*m_vecAnimationInfo)[iFrameIndex].vRot.x;
+					fRotX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+					fRotY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.y - (*m_vecAnimationInfo)[iFrameIndex].vRot.y;
+					fRotY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+					fRotZ_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.z - (*m_vecAnimationInfo)[iFrameIndex].vRot.z;
+					fRotZ_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
 
-				fPosX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vPos.x - (*m_vecAnimationInfo)[iFrameIndex].vPos.x;
-				fPosX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-				fPosY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vPos.y - (*m_vecAnimationInfo)[iFrameIndex].vPos.y;
-				fPosY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+					fPosX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vPos.x - (*m_vecAnimationInfo)[iFrameIndex].vPos.x;
+					fPosX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+					fPosY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vPos.y - (*m_vecAnimationInfo)[iFrameIndex].vPos.y;
+					fPosY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
 
-				m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x + fPosX_Delta,
-											(*m_vecAnimationInfo)[iFrameIndex].vPos.y + fPosX_Delta,
-											0.f });	// 이미지 위치
+					m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x + fPosX_Delta,
+												(*m_vecAnimationInfo)[iFrameIndex].vPos.y + fPosY_Delta,
+												0.f });	// 이미지 위치
 
-				m_pTransformComp->Set_Scale({ (*m_vecAnimationInfo)[iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
-											  (*m_vecAnimationInfo)[iFrameIndex].vScale.y + fSizeY_Delta,
-											  1.f });
+					m_pTransformComp->Set_Scale({ (*m_vecAnimationInfo)[iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
+												  (*m_vecAnimationInfo)[iFrameIndex].vScale.y + fSizeY_Delta,
+												  1.f });
 
-				m_pTransformComp->Set_Rotation({ (*m_vecAnimationInfo)[iFrameIndex].vRot.x + fRotX_Delta, 	// 이미지 회전
-												 (*m_vecAnimationInfo)[iFrameIndex].vRot.y + fRotY_Delta,
-												 (*m_vecAnimationInfo)[iFrameIndex].vRot.z + fRotZ_Delta });
-			}
-			else
-			{
-				m_pTransformComp->Set_Scale({ (*m_vecAnimationInfo)[iFrameIndex].vScale.x, 	// 이미지 크기
-											  (*m_vecAnimationInfo)[iFrameIndex].vScale.y,
-											  1.f });
+					m_pTransformComp->Set_Rotation({ (*m_vecAnimationInfo)[iFrameIndex].vRot.x + fRotX_Delta, 	// 이미지 회전
+													 (*m_vecAnimationInfo)[iFrameIndex].vRot.y + fRotY_Delta,
+													 (*m_vecAnimationInfo)[iFrameIndex].vRot.z + fRotZ_Delta });
+				}
+				else
+				{
+					m_pTransformComp->Set_Scale({ (*m_vecAnimationInfo)[iFrameIndex].vScale.x, 	// 이미지 크기
+												  (*m_vecAnimationInfo)[iFrameIndex].vScale.y,
+												  1.f });
 
-				m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x,
-											(*m_vecAnimationInfo)[iFrameIndex].vPos.y,
-											0.f });	// 이미지 위치
+					m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x,
+												(*m_vecAnimationInfo)[iFrameIndex].vPos.y,
+												0.f });	// 이미지 위치
+				}
 			}
 		}
 
