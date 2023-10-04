@@ -48,6 +48,13 @@ void CStage::Render_Scene()
 
 }
 
+HRESULT CStage::ReadyLate_Scene()
+{
+	
+
+	return S_OK;
+}
+
 HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 {
 	Engine::CLayer*		pLayer = Engine::CLayer::Create(-10.f);

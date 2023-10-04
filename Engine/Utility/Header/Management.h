@@ -40,6 +40,7 @@ public:
 	HRESULT			Clear_Scene();
 
 private:
+	CScene*								m_pScene_Reserve;
 	CScene*								m_pScene_Current;
 	_unmap<wstring, CScene*>			m_mapScene;
 	EMANAGE_SCENE						m_eSceneProcess;

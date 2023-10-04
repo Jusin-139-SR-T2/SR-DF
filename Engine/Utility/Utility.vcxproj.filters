@@ -154,6 +154,7 @@
     <ClInclude Include="Header\Physics\RigidBody.h">
       <Filter>05. Physics\02. RigidBody</Filter>
     </ClInclude>
+    <ClInclude Include="AbstractFac_Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -300,6 +301,7 @@
     <ClCompile Include="Code\Physics\RigidBody.cpp">
       <Filter>05. Physics\02. RigidBody</Filter>
     </ClCompile>
+    <ClCompile Include="AbstractFac_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">

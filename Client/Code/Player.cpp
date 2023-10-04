@@ -6,6 +6,7 @@
 
 #include "DynamicCamera.h"
 #include "CalculatorComponent.h"
+#include "ColliderComponent.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -27,6 +28,8 @@ HRESULT CPlayer::Ready_GameObject()
 
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
     m_pTransformComp->Set_Pos({10.f, 0.f, 10.f});
+    m_pTransformComp->Readjust_Transform();
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
 
     // 왼손
     m_fSizeX = 300;
@@ -126,6 +129,9 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     // 프레임 관리
     FrameManage(fTimeDelta);
 
+    // 물리 업데이트 코드
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
+
     // 랜더 그룹 지정, 현재상태 : 알파 테스트
     Engine::Add_RenderGroup(RENDER_UI, this);
 
@@ -213,6 +219,8 @@ HRESULT CPlayer::Add_Component()
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     // 지형타기 컴포넌트
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
+    // 콜라이더 컴포넌트
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_SphereComp"), E_FAIL);
     // 왼손 컴포넌트
     NULL_CHECK_RETURN(m_pLeftHandComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureLeftHandTest", L"Proto_PlayerLeftTextureComp"), E_FAIL);
     // 오른손 컴포넌트
@@ -224,6 +232,14 @@ HRESULT CPlayer::Add_Component()
     m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Left_Hand");
     // 오른손
     m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Right_Hand");
+
+
+    // 물리 세계 등록
+    m_pColliderComp->EnterToPhysics(0);
+    // 충돌 함수 연결
+    m_pColliderComp->Set_Collision_Event<CPlayer>(this, &CPlayer::OnCollision);
+    m_pColliderComp->Set_CollisionEntered_Event<CPlayer>(this, &CPlayer::OnCollisionEntered);
+    m_pColliderComp->Set_CollisionExited_Event<CPlayer>(this, &CPlayer::OnCollisionExited);
 
     return S_OK;
 }
@@ -644,22 +660,22 @@ _bool CPlayer::Picking_On_Object()
         return false;
 }
 
-void CPlayer::Collide(CGameObject* pDst)
+void CPlayer::OnCollision(CGameObject* pDst)
 {
     // 충돌중일때
-
+    OutputDebugString(L"충돌함 > <\n");
 }
 
-void CPlayer::CollisionEnterd(CGameObject* pDst)
+void CPlayer::OnCollisionEntered(CGameObject* pDst)
 {
     // 처음 충돌했을때
-
+    OutputDebugString(L"충돌시작 !> <!\n");
 }
 
-void CPlayer::CollisionExited(CGameObject* pDst)
+void CPlayer::OnCollisionExited(CGameObject* pDst)
 {
     // 충돌에서 나갈때
-
+    OutputDebugString(L"충돌끝남 \\> </\n");
 }
 
 bool CPlayer::Attack_Input(const _float& fTimeDelta)

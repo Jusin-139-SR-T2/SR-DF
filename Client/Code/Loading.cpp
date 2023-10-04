@@ -81,6 +81,10 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Food", L"Cola")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LightTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Light", L"RedLight")), E_FAIL);
 
+	// 충돌 컴포넌트
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SphereComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::SPHERE)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BoxComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::BOX)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CapsuleComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::CAPSULE)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 

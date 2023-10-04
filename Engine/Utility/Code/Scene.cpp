@@ -71,6 +71,13 @@ void CScene::Render_Scene()
 
 }
 
+HRESULT CScene::ReadyLate_Scene()
+{
+	
+
+	return S_OK;
+}
+
 CComponent* CScene::Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag)
 {
 	// 씬 -> 레이어 -> 오브젝트 -> 컴포넌트

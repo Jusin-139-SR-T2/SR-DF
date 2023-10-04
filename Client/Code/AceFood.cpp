@@ -22,25 +22,45 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-    if (FAILED(pInstance->Ready_GameObject()))
+    if (!pInstance)
+        return nullptr;
+
+    if (FAILED(pInstance->Ready_GameObject(pObjTag, _fx, _fy, _fz)))
     {
         Safe_Release(pInstance);
 
         MSG_BOX("FoodObject Create Failed");
         return nullptr;
     }
-
-    pInstance->m_pTransformComp->Set_Pos({ _fx, _fy, _fz });
-    pInstance->FoodName(pObjTag);
-    
-    pInstance->CurPos = pInstance->m_pTransformComp->Get_Pos();
     
     return pInstance;
 }
 
-HRESULT CAceFood::Ready_GameObject()
+void CAceFood::OnCollision(CGameObject* pDst)
+{
+}
+
+void CAceFood::OnCollisionEntered(CGameObject* pDst)
+{
+    Set_Dead();
+}
+
+void CAceFood::OnCollisionExited(CGameObject* pDst)
+{
+    Set_Dead();
+}
+
+HRESULT CAceFood::Ready_GameObject(const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    m_pTransformComp->Set_Pos({ _fx, _fy, _fz });
+    FoodName(pObjTag);
+
+    CurPos = m_pTransformComp->Get_Pos();
+
+    m_pTransformComp->Readjust_Transform();
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
 
     return S_OK;
 }
@@ -63,6 +83,9 @@ _int CAceFood::Update_GameObject(const _float& fTimeDelta)
     
     // 변수에 저장된 enum으로 texture 결정 - eaten 변경때문에 
     Eat_Food(m_pCurName, fTimeDelta);
+
+    // 물리 업데이트
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
 
     // Renderer 등록 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -99,6 +122,14 @@ HRESULT CAceFood::Add_Component()
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_ObjectTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_SphereComp"), E_FAIL);
+
+    // 물리 세계 등록
+    m_pColliderComp->EnterToPhysics(0);
+    // 충돌 함수 연결
+    m_pColliderComp->Set_Collision_Event<ThisClass>(this, &ThisClass::OnCollision);
+    m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
+    m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
 
     return S_OK;
 }

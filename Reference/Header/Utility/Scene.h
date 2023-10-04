@@ -20,6 +20,8 @@ public:
 	virtual void		LateUpdate_Scene();
 	virtual void		Render_Scene();
 
+	virtual HRESULT		ReadyLate_Scene();
+
 protected:
 	LPDIRECT3DDEVICE9				m_pGraphicDev;
 

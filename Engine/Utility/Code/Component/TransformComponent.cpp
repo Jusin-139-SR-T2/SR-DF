@@ -1,7 +1,6 @@
 #include "TransformComponent.h"
 
 CTransformComponent::CTransformComponent()
-    : m_vRotation(0.f, 0.f, 0.f), m_vScale(1.f, 1.f, 1.f)
 {
     ZeroMemory(m_vInfo, sizeof(m_vInfo));
     D3DXMatrixIdentity(&m_matTransform);
@@ -9,7 +8,6 @@ CTransformComponent::CTransformComponent()
 
 CTransformComponent::CTransformComponent(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
-    , m_vRotation(0.f, 0.f, 0.f), m_vScale(1.f, 1.f, 1.f)
 {
     ZeroMemory(m_vInfo, sizeof(m_vInfo));
     D3DXMatrixIdentity(&m_matTransform);
@@ -17,7 +15,6 @@ CTransformComponent::CTransformComponent(LPDIRECT3DDEVICE9 pGraphicDev)
 
 CTransformComponent::CTransformComponent(const CTransformComponent& rhs)
     : Base(rhs)
-    , m_vRotation(rhs.m_vRotation), m_vScale(rhs.m_vScale)
 {
     for (size_t i = 0; i < INFO_END; i++)
     {
@@ -34,7 +31,7 @@ CTransformComponent* CTransformComponent::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Transform()))
+	if (FAILED(pInstance->Ready_Component()))
 	{
 		Safe_Release(pInstance);
 		MSG_BOX("Transform Create Failed");
@@ -54,7 +51,7 @@ void CTransformComponent::Free()
 	SUPER::Free();
 }
 
-HRESULT CTransformComponent::Ready_Transform()
+HRESULT CTransformComponent::Ready_Component()
 {
     D3DXMatrixIdentity(&m_matTransform);
 
@@ -143,4 +140,6 @@ const _matrix* CTransformComponent::Compute_LootAtTarget(const _vec3* pTargetPos
 									acosf(D3DXVec3Dot(D3DXVec3Normalize(&vDir, &vDir),
 										D3DXVec3Normalize(&vUp, &m_vInfo[INFO_UP]))));
 }
+
+
 

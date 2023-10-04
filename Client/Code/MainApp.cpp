@@ -52,11 +52,17 @@ HRESULT CMainApp::Ready_MainApp()
 
 int CMainApp::Update_MainApp(const _float& fTimeDelta)
 {
-	// 다이렉트 인풋 업데이트
+	// 다이렉트 인풋 업데이트, 
 	Engine::Update_KeyMgr();
+
+	// 물리 업데이트
+	Engine::StartFrame_PhysicsMgr();
 
 	// 씬 업데이트
 	m_pManagementClass->Update_Scene(fTimeDelta);
+
+	// 물리 업데이트
+	Engine::Update_PhysicsMgr(fTimeDelta);
 
 	return 0;
 }
@@ -64,7 +70,7 @@ int CMainApp::Update_MainApp(const _float& fTimeDelta)
 void CMainApp::LateUpdate_MainApp()
 {
 	Engine::LateUpdate_Scene();
-	Engine::LateUpdate_KeyMgr();		// 가상키 시스템 업데이트
+	Engine::LateUpdate_KeyMgr();		// 가상키 시스템 업데이트, 키 상태 변경 단계
 }
 
 void CMainApp::Render_MainApp()
