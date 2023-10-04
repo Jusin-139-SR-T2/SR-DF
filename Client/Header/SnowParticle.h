@@ -3,12 +3,6 @@
 #include "Export_Utility.h"
 #include "Psystem.h"
 
-BEGIN(Engine)
-
-class CTransformComponent;
-
-END
-
 class CSnowParticle : public Engine::CPsystem
 {
 	DERIVED_CLASS(CPsystem, CSnowParticle)
@@ -29,15 +23,9 @@ public:
 private:
 	void					ResetParticle(Attribute* _attribute) override;
 	virtual void			Free();
-	HRESULT					Add_Component();
-	void					billboard();
 
 private:
 	_float	    m_fTime = 0.f;
 	_float      m_fMoveTime = 20.f;
-
-public:
-	CTransformComponent* m_pTransformComp = nullptr;
-	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
 };

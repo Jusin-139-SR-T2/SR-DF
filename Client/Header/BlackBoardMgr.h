@@ -2,8 +2,7 @@
 #include "Base.h"
 #include "BlackBoard.h"
 
-class CBlackBoardMgr :
-    public CBase
+class CBlackBoardMgr :	public CBase
 {
 	DERIVED_CLASS_SINGLETON(CBase, CBlackBoardMgr)
 private:

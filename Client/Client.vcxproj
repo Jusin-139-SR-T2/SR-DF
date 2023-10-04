@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Awareness.h" />
+    <ClInclude Include="Dazed.h" />
     <ClInclude Include="Header\FireWork.h" />
     <ClInclude Include="Header\AceInteraction.h" />
     <ClInclude Include="Header\AceFood.h" />
@@ -67,6 +68,7 @@
     <ClCompile Include="Code\UI.cpp" />
     <ClCompile Include="Code\Gray.cpp" />
     <ClCompile Include="Code\FireWork.cpp" />
+    <ClCompile Include="Dazed.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

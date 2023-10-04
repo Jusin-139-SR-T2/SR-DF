@@ -12,7 +12,6 @@ CFireWork::~CFireWork()
 
 HRESULT CFireWork::Ready_GameObject(_vec3 vOriginPos, _int numParticles)
 {
-	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	//FAILED_CHECK_RETURN(LoadAssets(), E_FAIL);
 
 	BoundingBox boundingBox; 
@@ -33,6 +32,7 @@ HRESULT CFireWork::Ready_GameObject(_vec3 vOriginPos, _int numParticles)
 	//_tchar* pPath = L"./Resource/Texture/Particle/crystal.bmp";
 	//_tchar* pPath = L"./Resource/Texture/Particle/heart.bmp";
 	_tchar* pPath = L"./Resource/Texture/Particle/flower.png";
+	//_tchar* pPath = L"./Resource/Texture/Particle/DefaultParticle.png";
 
 	CPsystem::Ready_GameObject(pPath);
 	return S_OK;
@@ -84,8 +84,6 @@ _int CFireWork::Update_GameObject(const _float& fTimeDelta)
 			}
 		}
 	}
-
-	billboard();
 
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
@@ -181,32 +179,6 @@ void CFireWork::ResetParticle(Attribute* _attribute)
 
 	//m_fDieTime = Get_RandomFloat(3.f, 10.f);
 	//m_fMoveTime = Get_RandomFloat(.1f, .5f);
-}
-
-HRESULT CFireWork::Add_Component()
-{
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
-	return S_OK;
-}
-
-void CFireWork::billboard()
-{
-	_matrix		matWorld, matView, matBill;
-
-	matWorld = *m_pTransformComp->Get_Transform();
-
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-	D3DXMatrixIdentity(&matBill);
-
-	matBill._11 = matView._11;
-	matBill._13 = matView._13;
-	matBill._31 = matView._31;
-	matBill._33 = matView._33;
-
-	D3DXMatrixInverse(&matBill, 0, &matBill);
-
-	m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 }
 
 LPD3DXEFFECT CFireWork::LoadShader(const _tchar* filename)

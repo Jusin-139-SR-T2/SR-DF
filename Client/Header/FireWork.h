@@ -3,12 +3,6 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-BEGIN(Engine)
-
-class CTransformComponent;
-
-END
-
 class CFireWork : public Engine::CPsystem
 {
 	DERIVED_CLASS(CPsystem, CFireWork)
@@ -29,19 +23,13 @@ public:
 private:
 	void					ResetParticle(Attribute* _attribute) override;
 	virtual void			Free();
-	HRESULT					Add_Component();
-	void					billboard();
 
 private:
 	_float	    m_fTime = 0.f;
 	_float      m_fMoveTime = 20.f;
 	_float      m_fDieTime = 20.f;
 
-public:
-	CTransformComponent* m_pTransformComp = nullptr;
-	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-
-		//=============== ¼ÎÀÌ´õ ¿¬½À ===============
+//=============== ¼ÎÀÌ´õ ¿¬½À ===============
 private:
 	LPD3DXEFFECT			gpLightingShader = NULL; // ½¦ÀÌ´õ - L4¿ë 
 	LPD3DXEFFECT			gpTextureMappingShader = NULL; // ½¦ÀÌ´õ - L3¿ë

@@ -64,7 +64,6 @@ protected:
 	DWORD m_dBatchSize;  // 파티클 시스템의 렌더링에 이용.
 
 	LPDIRECT3DVERTEXBUFFER9			m_pVB;
-	//LPDIRECT3DDEVICE9				m_pGraphicDev;
 	LPDIRECT3DTEXTURE9              m_pTexture;
 	BoundingBox						m_BoundingBox;    // 파티클이 이동할 수 있는 부피를 제한하는 데 이용. -> 원하는 영역을 경계상자로 정의하면 이 영역을 벗어난 파티클들을 곧바로 소멸.
 	
