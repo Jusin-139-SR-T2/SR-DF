@@ -11,6 +11,7 @@ BEGIN(Engine)
 class CRcBufferComp;
 class CTextureComponent;
 class CTransformComponent;
+class CSphereColComp;
 
 END
 
@@ -38,6 +39,7 @@ private:
 	CTransformComponent*	m_pPlayerTransformcomp = nullptr;
 	CCalculatorComponent*	m_pCalculatorComp = nullptr;
 	CPlayer*				m_pPlayer = nullptr;
+	CColliderComponent* m_pColliderComp = nullptr;				// 구 충돌 콜라이더
 
 private:
 	void				Height_On_Terrain();
@@ -51,6 +53,14 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 	GETSET_EX2(CPlayer*, m_pPlayer, Player, GET, SET)
+	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
+
+protected: // 충돌 onoff
+	//virtual void	OnCollision(CGameObject* pDst);
+	//virtual void	OnCollisionEntered(CGameObject* pDst) ;
+	//virtual void	OnCollisionExited(CGameObject* pDst) ;
+
+
 
 	// 상태머신 셋팅 ---------------------------------------------------------
 private:

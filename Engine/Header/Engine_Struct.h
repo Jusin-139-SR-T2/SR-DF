@@ -62,7 +62,6 @@ namespace Engine
 
 	const _ulong	FVF_Particle = D3DFVF_XYZ | D3DFVF_DIFFUSE;
 
-
 	typedef struct tagAttribute
 	{
 		tagAttribute() // 생성자 
@@ -79,6 +78,7 @@ namespace Engine
 		D3DXCOLOR   Color;        // 현재 색상 - 어떤 색상으로 렌더링 되어야 하는가 
 		D3DXCOLOR   ColorFade;    // 시간에 따라 색상이 어떻게 변해야 하는가
 		_bool       bIsAlive; // 물체가 살아있는지 여부 - 활성상태인지 아니면 소멸했는지 
+
 	}Attribute;
 
 

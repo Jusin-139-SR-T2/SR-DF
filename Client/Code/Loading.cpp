@@ -86,11 +86,14 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderBoxComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::BOX)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderCapsuleComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::CAPSULE)), E_FAIL);
 
+	// 이펙트 컴포넌트
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Effect_AwarenessTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Effect", L"Awareness_End")), E_FAIL);
+
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 
 	m_bFinish = true;
 
-	return 0;
+	return S_OK;
 }
 
 // 텍스처 매니저 텍스처 추가
@@ -314,7 +317,6 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Interaction/ComicBook.png", TEX_NORMAL, L"Interaction", L"ComicBook");
 
 #pragma endregion
-
 
 #pragma region Object - Inventory : 직교투영 해야함 
 

@@ -122,14 +122,31 @@ HRESULT CPlayerLighter::Create_Light()
     AceLight.Type = D3DLIGHT_POINT; // 점광원으로 설정
     AceLight.Position = m_pPlayerTransformcomp->Get_Pos();
     AceLight.Range = 8.f; // 조명을 받는 객체의 가장 먼 거리 
-    AceLight.Diffuse = D3DXCOLOR(DXCOLOR_DARK_ORANGE); // 광원 색상 설정 - 광원에 반사될 때 출력되는 가장 주된 색
+    AceLight.Diffuse = D3DXCOLOR(DXCOLOR_YELLOW); // 광원 색상 설정 - 광원에 반사될 때 출력되는 가장 주된 색
     AceLight.Ambient = D3DXCOLOR(DXCOLOR_DARK_ORANGE); // 광원 주변 환경색 설정 - 광원의 위치와 무관하게 똑같은 양으로 모든 점에서 반사되는 색
+    AceLight.Falloff = 1.f;
     // POINT 점광원 에서는 광선의 방향(DIRECTION) 무시 
 
     // 감쇠 - 거리에 따른 선형 감쇠값
-    AceLight.Attenuation0 = 0.8f; // 정적 감쇠 계수 
-    AceLight.Attenuation1 = 0.3f; // 선형 감쇠 계수 -> 방향성 광원인경우
+    AceLight.Attenuation0 = 0.1f; // 정적 감쇠 계수 
+    AceLight.Attenuation1 = 0.1f; // 선형 감쇠 계수 -> 방향성 광원인경우
     AceLight.Attenuation2 = 0.0f; // 2차 감쇠 계수 
+   
+
+    /* LIGHT_SPOT 일경우, 
+    	m_tLight.Type = D3DLIGHT_POINT;
+    	m_tLight.Diffuse = D D3DXCOLOR(DXCOLOR_DARK_ORANGE);
+		m_tLight.Ambient = D D3DXCOLOR(DXCOLOR_DARK_ORANGE);
+		m_tLight.Attenuation0 = 0.15f;
+		m_tLight.Attenuation1 = 0.15f;
+		m_tLight.Attenuation2 = 0.f;
+		m_tLight.Falloff = 1.f;
+		m_tLight.Theta = D3DXToRadian(40.f);
+		m_tLight.Phi = D3DXToRadian(80.f);
+		m_tLight.Range = 100.f;
+		m_tLight.Position = _vec3(0.f, 5.f, 0.f);
+		m_tLight.Direction = _vec3(1.f, -1.5f, 0.f);*/
+
 
     // 광원 등록
     FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &AceLight, 2), E_FAIL);

@@ -43,10 +43,7 @@ _int CSnowParticle::Update_GameObject(const _float& fTimeDelta)
 	{
 		if (iter.bIsAlive)
 		{
-			//if (m_fTime < m_fMoveTime)
-				iter.vPosition += iter.vVelocity * fTimeDelta;
-			//else
-			//	iter.vPosition += (iter.vVelocity / 2) * fTimeDelta;
+			iter.vPosition += iter.vVelocity * fTimeDelta;
 
 			iter.fAge += fTimeDelta;
 

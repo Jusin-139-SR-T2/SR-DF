@@ -108,8 +108,12 @@ HRESULT CLogo::ReadyLate_Scene()
 HRESULT CLogo::Ready_Texture()
 {
 	// 로고용 텍스처들
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"Resource/Texture/Scene/LogoShot.png", TEX_NORMAL, L"UI", L"Logo"), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"Resource/Texture/Scene/Title.png", TEX_NORMAL, L"UI", L"Title"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Scene/LogoShot.png", TEX_NORMAL, L"UI", L"Logo"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Scene/Title.png", TEX_NORMAL, L"UI", L"Title"), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"Resource/Texture/Scene/Title_%d.png", TEX_NORMAL, L"UI", L"Title", _range<_uint>(0U, 2U), E_FAIL);
+
+
+
 
 	return S_OK;
 }

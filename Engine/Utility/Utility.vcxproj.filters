@@ -155,7 +155,7 @@
       <Filter>05. Physics\02. RigidBody</Filter>
     </ClInclude>
     <ClInclude Include="AbstractFac_Scene.h" />
-    <ClInclude Include="Esystem.h">
+    <ClInclude Include="Header\Esystem.h">
       <Filter>10. Effect</Filter>
     </ClInclude>
   </ItemGroup>
@@ -304,7 +304,7 @@
     <ClCompile Include="Code\Physics\RigidBody.cpp">
       <Filter>05. Physics\02. RigidBody</Filter>
     </ClCompile>
-    <ClCompile Include="Esystem.cpp">
+    <ClCompile Include="Code\Esystem.cpp">
       <Filter>10. Effect</Filter>
     </ClCompile>
     <ClCompile Include="AbstractFac_Scene.cpp" />

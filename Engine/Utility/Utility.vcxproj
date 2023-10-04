@@ -185,7 +185,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
   <ItemGroup>
     <ClInclude Include="..\Header\Export_Utility.h" />
     <ClInclude Include="AbstractFac_Scene.h" />
-    <ClInclude Include="Esystem.h" />
+    <ClInclude Include="Header\Esystem.h" />
     <ClInclude Include="Header\Physics\ContactGen_Joint.h" />
     <ClInclude Include="Header\Physics\ForceGenerator.h" />
     <ClInclude Include="Header\Physics\Collide.h" />
@@ -282,7 +282,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClCompile Include="Code\Physics\ContactGen_Joint.cpp" />
     <ClCompile Include="Code\Physics\PhysicsMgr.cpp" />
     <ClCompile Include="Code\Psystem.cpp" />
-    <ClCompile Include="Esystem.cpp" />
+    <ClCompile Include="Code\Esystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_Utility.inl" />

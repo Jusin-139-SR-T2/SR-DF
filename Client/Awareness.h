@@ -1,21 +1,11 @@
 #pragma once
-
-#include "GameObject.h"
-
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "Esystem.h"
 
-BEGIN(Engine)
-
-class CRcBufferComp;
-class CTextureComponent;
-class CTransformComponent;
-
-END
-
-class CAwareness : public Engine::CGameObject
+class CAwareness : public Engine::CEsystem
 {
-	DERIVED_CLASS(CGameObject, CAwareness)
+	DERIVED_CLASS(CEsystem, CAwareness)
 
 private:
 	explicit CAwareness(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -33,28 +23,8 @@ public:
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
-	void				Billboard();
 
-	CGameObject* m_pTarget = nullptr;
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
-	CTransformComponent* m_pMonsterTransformComp = nullptr;
-
-public:
-	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
-	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
-	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-	GETSET_EX2(CTransformComponent*, m_pMonsterTransformComp, MonsterTransformComponent, GET, SET)
-	GETSET_EX2(CGameObject*, m_pTarget, Target, GET, SET)
-
-	//기본셋팅 끝
-private:
-	_float m_fFrame = 0;
-	_float m_fFrameEnd;
-
-	_bool m_bMonsterAware = false;
-	HRESULT ShowImg(const _float& fTimeDelta);
+	void Billboard();
 
 
 };
