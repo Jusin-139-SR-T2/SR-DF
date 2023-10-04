@@ -29,7 +29,7 @@ HRESULT CPlayer::Ready_GameObject()
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
     m_pTransformComp->Set_Pos({10.f, 0.f, 10.f});
     m_pTransformComp->Readjust_Transform();
-    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 
     // 왼손
     m_fSizeX = 300;
@@ -130,7 +130,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     FrameManage(fTimeDelta);
 
     // 물리 업데이트 코드
-    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 계속 검사하는곳 : player - update 
 
     // 랜더 그룹 지정, 현재상태 : 알파 테스트
     Engine::Add_RenderGroup(RENDER_UI, this);
@@ -220,7 +220,7 @@ HRESULT CPlayer::Add_Component()
     // 지형타기 컴포넌트
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
     // 콜라이더 컴포넌트
-    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_SphereComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
     // 왼손 컴포넌트
     NULL_CHECK_RETURN(m_pLeftHandComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureLeftHandTest", L"Proto_PlayerLeftTextureComp"), E_FAIL);
     // 오른손 컴포넌트
@@ -233,13 +233,14 @@ HRESULT CPlayer::Add_Component()
     // 오른손
     m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Right_Hand");
 
-
     // 물리 세계 등록
     m_pColliderComp->EnterToPhysics(0);
     // 충돌 함수 연결
     m_pColliderComp->Set_Collision_Event<CPlayer>(this, &CPlayer::OnCollision);
     m_pColliderComp->Set_CollisionEntered_Event<CPlayer>(this, &CPlayer::OnCollisionEntered);
     m_pColliderComp->Set_CollisionExited_Event<CPlayer>(this, &CPlayer::OnCollisionExited);
+
+   // m_pColliderComp->Get_Shape()
 
     return S_OK;
 }

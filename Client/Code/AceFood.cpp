@@ -36,16 +36,17 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
     return pInstance;
 }
 
-void CAceFood::OnCollision(CGameObject* pDst)
+// Collision - 트리거 발동용 (event방식)
+void CAceFood::OnCollision(CGameObject* pDst) // 계속 충돌중 
 {
 }
 
-void CAceFood::OnCollisionEntered(CGameObject* pDst)
+void CAceFood::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
     Set_Dead();
 }
 
-void CAceFood::OnCollisionExited(CGameObject* pDst)
+void CAceFood::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
 {
     Set_Dead();
 }
@@ -122,10 +123,11 @@ HRESULT CAceFood::Add_Component()
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_ObjectTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_SphereComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
 
     // 물리 세계 등록
     m_pColliderComp->EnterToPhysics(0);
+
     // 충돌 함수 연결
     m_pColliderComp->Set_Collision_Event<ThisClass>(this, &ThisClass::OnCollision);
     m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
