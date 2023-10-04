@@ -85,9 +85,9 @@ public: // Get_Set
 	GETSET_EX2(CTextureComponent*, m_pLeftHandComp, m_pLeftHandComp, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pRightHandComp, m_pRightHandComp, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
+	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
 
-protected:
+protected: // 충돌 onoff
 	virtual void	OnCollision(CGameObject* pDst) override;
 	virtual void	OnCollisionEntered(CGameObject* pDst) override;
 	virtual void	OnCollisionExited(CGameObject* pDst) override;
