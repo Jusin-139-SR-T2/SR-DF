@@ -100,10 +100,12 @@ private:
 public:
 	static CImguiAnimationTool* Create();
 
-
 public:
 	// 이미지를 추가하는 함수
 	void AddImage(const std::string& imagePath);
+
+	// 애니메이션 정보 벡터 넘겨주기
+	std::vector<Keyframe>* Get_Animation() { return &timeline; }
 
 	//std::string	OpenImageFileDialog();
 	//HRESULT OpenImageFileDialog(const _tchar* folderPath, LPDIRECT3DDEVICE9 pGraphicDev);
@@ -155,7 +157,8 @@ public:
 
 	//
 	void DrawSelectedKeyframeEditor(Keyframe& selectedKeyframe);
-public:
+
+public: // 애니메이션 함수
 	// 오브젝트 설정 및 관리 함수
 	void ObjectSetting();
 
@@ -189,7 +192,9 @@ public:
 
 public:
 	GETSET_EX1(LPDIRECT3DTEXTURE9, m_pTexture, Texture, GET_REF)
-
+	GETSET_EX2(_bool, isPlaying, FramePlaying, GET, SET)
+	GETSET_EX2(_float, currentTime, currentTime, GET, SET)
+		
 protected:
 	virtual void Free();
 	
@@ -255,14 +260,14 @@ private: // 애니메이션 툴 변수
 	float currentTime = 0.0f; // 현재 시간 값
 	float MaxTime = 20.f;
 	float fDisplayTime = 1.f;	// 눈금마다의 시간 값 표시
-	bool isDraggingTimeline = false;
-	bool isPlaying = false;		// 재생 여부
+	_bool isDraggingTimeline = false;
+	_bool isPlaying = false;		// 재생 여부
 	float playbackSpeed = 1.0f; // 재생 속도
 
 #pragma region 최소, 최대 값
 	// 크기
 	float	fMin_Scale = 0.1f;	// 최소
-	float	fMax_Scale = 5.f;	// 최대
+	float	fMax_Scale = 800.f;	// 최대
 
 	// 회전
 	float	fMin_Rot = 0.f;		// 최소

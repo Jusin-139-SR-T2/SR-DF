@@ -100,6 +100,9 @@
     <Filter Include="02. GameObject\04. Particle\01. FireWork">
       <UniqueIdentifier>{8ab2be83-6fa5-4fde-9971-970b4bffbbeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\05. Effect">
+      <UniqueIdentifier>{263b8407-b440-45ab-b485-5cf2a9ff6021}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">

@@ -2,6 +2,7 @@
 
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include <ImguiMgr.h>
 
 CBackGround::CBackGround(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
@@ -51,22 +52,139 @@ HRESULT CBackGround::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_fSizeX = WINCX;
-	m_fSizeY = WINCY;
+	m_pAnimationTool = dynamic_cast<CImguiAnimationTool*>
+		(CImguiMgr::GetInstance()->Get_MapImguiWin()[L"AnimationTool"]);
 
-	m_fX = m_fSizeX * 0.5f; // 중점위치 
-	m_fY = m_fSizeY * 0.5f;
+	if (m_pAnimationTool->Get_Animation()->empty())
+	{
+		m_vecAnimationInfo = m_pAnimationTool->Get_Animation();
+	}	
 
-	m_pTransformComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
-	m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
-
+	m_pTransformComp->Set_Pos({ 0.f, 0.f, 0.f });	// 이미지 위치
+	m_pTransformComp->Set_Scale({ 100.f, 100.f, 1.f });	// 이미지 크기
 
 	return S_OK;
 }
 
 _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 {
+
 	SUPER::Update_GameObject(fTimeDelta);
+
+	// 비었는지 검사
+	if (!m_vecAnimationInfo->empty())
+	{
+		if (m_pAnimationTool->Get_FramePlaying())
+		{
+			//m_fMaxFrame = m_vecAnimationInfo->size(); // 사이즈를 최대 프레임으로 설정
+		}
+	}
+
+	// 프레임 재생 여부
+	if (m_pAnimationTool->Get_FramePlaying())
+	{
+		// 현재 프레임을 시간(프레임)마다 증가시키기
+
+
+		// 현재 프레임이 최대 프레임에 도달한 경우
+		if (m_pAnimationTool->Get_currentTime() > (*m_vecAnimationInfo)[m_vecAnimationInfo->size() - 1].time)
+		{
+			// 현재 프레임 초기화
+			//m_pAnimationTool->Get_currentTime() = 0.f;
+
+			// 반복 On/Off
+			if (true)
+			{
+				//m_pAnimationTool->Set_FramePlaying(false);
+			}
+
+			// 툴 시간 초기화
+			m_pAnimationTool->Set_currentTime(0);
+		}
+	}
+
+	if (!m_vecAnimationInfo->empty())
+	{
+		if (m_pAnimationTool->Get_currentTime() >= 0.f &&
+			m_pAnimationTool->Get_currentTime() <= m_vecAnimationInfo->back().time)
+		{
+			//m_eAnimationInfo = m_vecAnimationInfo[(int)m_iFrameCount].front();
+			_uint iFrameIndex = 0U;
+			for (_uint i = m_vecAnimationInfo->size() - 1; i >= 0; i--)
+			{
+				if ((*m_vecAnimationInfo)[i].time <= m_pAnimationTool->Get_currentTime())
+				{
+					iFrameIndex = i;
+					break;
+				}
+			}
+
+			// Constant
+			//m_fSizeX = (*m_vecAnimationInfo)[iFrameIndex].vScale.x;
+			//m_fSizeY = (*m_vecAnimationInfo)[iFrameIndex].vScale.y;
+
+			//m_fX = m_fSizeX * 0.5f; // 중점위치 
+			//m_fY = m_fSizeY * 0.5f;
+
+			//m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x,
+			//							(*m_vecAnimationInfo)[iFrameIndex].vPos.y,
+			//							0.f });	// 이미지 위치
+
+			//m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });	// 이미지 크기
+
+
+			// Linear
+			if (iFrameIndex + 1U < m_vecAnimationInfo->size())
+			{
+
+
+				// 키 프레임간 시간 변화율
+				fFrameTimeDelta = (*m_vecAnimationInfo)[iFrameIndex + 1U].time - (*m_vecAnimationInfo)[iFrameIndex].time;
+				// 현재 키 프레임시간부터 현재 시간 변화율
+				fCurFrameTimeDelta = (m_pAnimationTool->Get_currentTime() - (*m_vecAnimationInfo)[iFrameIndex].time);
+
+				fSizeX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vScale.x - (*m_vecAnimationInfo)[iFrameIndex].vScale.x;
+				fSizeX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+				fSizeY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vScale.y - (*m_vecAnimationInfo)[iFrameIndex].vScale.y;
+				fSizeY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+
+				fRotX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.x - (*m_vecAnimationInfo)[iFrameIndex].vRot.x;
+				fRotX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+				fRotY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.y - (*m_vecAnimationInfo)[iFrameIndex].vRot.y;
+				fRotY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+				fRotZ_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.z - (*m_vecAnimationInfo)[iFrameIndex].vRot.z;
+				fRotZ_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+
+				fPosX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vPos.x - (*m_vecAnimationInfo)[iFrameIndex].vPos.x;
+				fPosX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+				fPosY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vPos.y - (*m_vecAnimationInfo)[iFrameIndex].vPos.y;
+				fPosY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+
+				m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x + fPosX_Delta,
+											(*m_vecAnimationInfo)[iFrameIndex].vPos.y + fPosX_Delta,
+											0.f });	// 이미지 위치
+
+				m_pTransformComp->Set_Scale({ (*m_vecAnimationInfo)[iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
+											  (*m_vecAnimationInfo)[iFrameIndex].vScale.y + fSizeY_Delta,
+											  1.f });
+
+				m_pTransformComp->Set_Rotation({ (*m_vecAnimationInfo)[iFrameIndex].vRot.x + fRotX_Delta, 	// 이미지 회전
+												 (*m_vecAnimationInfo)[iFrameIndex].vRot.y + fRotY_Delta,
+												 (*m_vecAnimationInfo)[iFrameIndex].vRot.z + fRotZ_Delta });
+			}
+			else
+			{
+				m_pTransformComp->Set_Scale({ (*m_vecAnimationInfo)[iFrameIndex].vScale.x, 	// 이미지 크기
+											  (*m_vecAnimationInfo)[iFrameIndex].vScale.y,
+											  1.f });
+
+				m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x,
+											(*m_vecAnimationInfo)[iFrameIndex].vPos.y,
+											0.f });	// 이미지 위치
+			}
+		}
+
+	}
 
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
@@ -101,6 +219,34 @@ void CBackGround::Render_GameObject()
 
 	m_pTextureComp->Render_Texture(0, true);
 	m_pBufferComp->Render_Buffer();
+}
+
+// 애니메이션 불러오기
+void CBackGround::LoadAnimationFromFile(const char* fileName)
+{
+	// .dat 파일 확장자를 추가한 파일 이름 생성
+	std::string datFileName = "../Data/" + std::string(fileName) + ".dat";
+
+	// 파일을 UTF-8로 열기
+	std::ifstream file(datFileName.c_str(), std::ios::in | std::ios::binary);
+
+	if (!file.is_open()) {
+		// 파일을 열 수 없을 때의 오류 처리
+		return;
+	}
+
+	m_vecAnimationInfo->clear();
+	Keyframe keyframe;
+
+	while (file >> keyframe.time >> keyframe.value >> keyframe.type >>
+		keyframe.isEaseIn >> keyframe.isEaseOut >>
+		keyframe.vScale.x >> keyframe.vScale.y >> keyframe.vScale.z >>
+		keyframe.vRot.x >> keyframe.vRot.y >> keyframe.vRot.z >>
+		keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z) {
+		m_vecAnimationInfo->push_back(keyframe);
+	}
+
+	file.close();
 }
 
 void CBackGround::Free()

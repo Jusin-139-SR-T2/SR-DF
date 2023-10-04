@@ -11,6 +11,8 @@ END
 
 class CFireWork : public Engine::CPsystem
 {
+	DERIVED_CLASS(CPsystem, CFireWork)
+
 private:
 	explicit CFireWork(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CFireWork();
@@ -21,7 +23,7 @@ public:
 	void					LateUpdate_GameObject(void);
 	void					Render_GameObject() override;
 
-	static CFireWork* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, int numParticles);
+	static CFireWork* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vOriginPos, _int numParticles);
 
 
 private:
@@ -39,5 +41,19 @@ public:
 	CTransformComponent* m_pTransformComp = nullptr;
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
+		//=============== 셰이더 연습 ===============
+private:
+	LPD3DXEFFECT			gpLightingShader = NULL; // 쉐이더 - L4용 
+	LPD3DXEFFECT			gpTextureMappingShader = NULL; // 쉐이더 - L3용
+	LPD3DXMESH				gpSphere = NULL; // 모델
+	LPDIRECT3DTEXTURE9		gpEarthDM = NULL;// 텍스처
+
+	D3DXVECTOR4				gWorldLightPosition = { 500.0f, 500.0f, -500.0f, 1.0f };// 빛의 위치
+	D3DXVECTOR4				gWorldCameraPosition = { 0.0f, 0.0f, -200.0f, 1.0f };// 카메라 위치
+
+	LPD3DXEFFECT LoadShader(const _tchar* filename); // 쉐이더 로딩
+	LPD3DXMESH LoadModel(const _tchar* filename);// 모델 로딩
+	LPDIRECT3DTEXTURE9 LoadTexture(const _tchar* filename);// 텍스처 로딩
+	_bool LoadAssets();
 };
 
