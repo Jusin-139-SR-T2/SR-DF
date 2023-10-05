@@ -107,7 +107,7 @@ private:
 	// 위치 조절 
 	_vec3		vPlayerPos;							// 플레이어 위치 벡터
 	_vec3		vDir;								// 몬스터가 플레이어 바라보는 벡터  
-	_vec3		m_vFirstPos;
+	_vec3		vPatrolPointZero;
 	
 	//스위치 on/off 
 	_bool		Dead = false;

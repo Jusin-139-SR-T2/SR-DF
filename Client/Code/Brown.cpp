@@ -24,7 +24,7 @@ HRESULT CBrown::Ready_GameObject()
     
     m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
     m_pTransformComp->Set_Pos({ 5.f, 1.f, 25.f });
-    m_vFirstPos = m_pTransformComp->Get_Pos();
+    vPatrolPointZero = m_pTransformComp->Get_Pos();
     m_fFrameEnd = 0;
     m_fFrameSpeed = 8.f;
 
@@ -35,7 +35,7 @@ HRESULT CBrown::Ready_GameObject()
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
     FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-    pShape->fRadius = 2.f;
+    pShape->fRadius = 3.f;
 
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
@@ -131,7 +131,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     // 현재 피격 테스트중 
     if (Engine::IsKey_Pressing(DIK_H))
     {
-        m_iHP = 0; //즉사 기믹 확인용 
+        m_tState_Obj.Set_State(STATE_OBJ::HIT);
     }
 
     if (Engine::IsKey_Pressing(DIK_J))
@@ -148,8 +148,8 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     //    (*iter)->Set_Dead();
 
 
-    swprintf_s(debugString, L"Brown - 변수 확인 m_iHP = %i \n", m_iHP);
-    OutputDebugStringW(debugString);
+    //swprintf_s(debugString, L"Brown - 변수 확인 m_iHP = %i \n", m_iHP);
+    //OutputDebugStringW(debugString);
 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
@@ -213,23 +213,21 @@ CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중 
 {
     OutputDebugString(L"▶Brown이랑 충돌중 \n");
+
+    // 플레이어가 공격을 한것인지 인지해야함. 기본적으로 Collision을 갖고있음. 
 }
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
     OutputDebugString(L"▶Brown이랑 충돌시작 \n");
 
-    //if(0 == m_iHP )
-    //    Set_Dead();
-
-    //if (0 < m_iHP)
-    //    m_iHP -= 1.f;
+    m_iHP -= 1.f;
+    m_tState_Obj.Set_State(STATE_OBJ::HIT);
 }
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
 {
-//    OutputDebugString(L"▶Brown이랑 충돌끝남 \n");
-    m_iHP -= 1.f;
+    OutputDebugString(L"▶Brown이랑 충돌끝남 \n");
 
 }
 
@@ -768,7 +766,7 @@ void CBrown::AI_Hit(float fDeltaTime)
     {
           OutputDebugString(L"▷Brown - 행동머신 : Hit 진입   \n");
 
-        m_fFrameSpeed = 8.f;
+        m_fFrameSpeed = 6.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Hit");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -962,6 +960,7 @@ void CBrown::AI_Death(float fDeltaTime)
 
 void CBrown::AI_Reconnaissance(float fDeltaTime)
 {
+    //플레이어 놓쳐서 인지변수 0까지 내려갔을경우 
     if (m_tState_Obj.IsState_Entered())
     {
           OutputDebugString(L"▷Brown - 행동머신 : Reconnaissance 진입   \n");
@@ -969,22 +968,26 @@ void CBrown::AI_Reconnaissance(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        m_fConsider -= fDeltaTime * 3.f;
-
-        if (Detect_Player())
+        if (Detect_Player()) //플레이어 포착하면 다시 돌입 
         {
-            m_fAwareness += fDeltaTime * 4.f; // 이전보다 더 빠르게 증가할것 
+            m_fAwareness += fDeltaTime * 5.f; // 이전보다 더 빠르게 증가할것 
             if (m_fAwareness >= m_fMaxAwareness)
             {
                 m_fAwareness = m_fMaxAwareness;
                 m_tState_Obj.Set_State(STATE_OBJ::TAUNT);
             }
         }
+        else // 플레이어 포착x
+        {
+           m_fConsider -= fDeltaTime * 3.f;
+
+        }
 
         if (0 >= m_fConsider)
         {
             m_fConsider = 10.f; // 다시 초기 셋팅으로 
-            m_tState_Obj.Set_State(STATE_OBJ::IDLE);
+            m_mapActionKey[ACTION_KEY::GOHOME].Act(); // 원래 자리로 돌아가는 액션키 누름 
+            m_tState_Obj.Set_State(STATE_OBJ::IDLE); 
         }
     }
 
@@ -1061,6 +1064,14 @@ void CBrown::Idle(float fDeltaTime)
               OutputDebugString(L"▷Brown - 가상키 : HEAVY_ATTACK 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::ATTACK);
         }
+
+        if (m_mapActionKey[ACTION_KEY::GOHOME].IsOnAct())
+        {
+              OutputDebugString(L"▷Brown - 가상키 : GoHome 확인    \n");
+            m_tState_Act.Set_State(STATE_ACT::GOHOME);
+        }
+
+
     }
 
     if (m_tState_Act.IsState_Exit()) // 가끔 필요할때가 있어서 - 찾아보기 
@@ -1109,7 +1120,7 @@ void CBrown::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
 
     if (m_tState_Act.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 행동머신 : Approach 끝   \n");
+          //OutputDebugString(L"▷Brown - 행동머신 : Approach 끝   \n");
     }
 }
 void CBrown::Moving(float fDeltaTime)
@@ -1157,7 +1168,7 @@ void CBrown::Moving(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
+         // OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
     }
 }
 
@@ -1193,10 +1204,43 @@ void CBrown::Attack(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
+         // OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
     }
 }
 
 void CBrown::GoHome(float fDeltaTime)
 {
+    if (m_tState_Act.IsState_Entered())
+    {
+        OutputDebugString(L"▷Brown - 행동머신 : GoHome 진입   \n");
+    }
+
+    // 실행
+    {
+        _vec3 vDirect = vPatrolPointZero - m_pTransformComp->Get_Pos();
+
+        _float fDistance = D3DXVec3Length(&vDirect);
+
+        D3DXVec3Normalize(&vDirect, &vDirect);
+
+        if (2.f >= fDistance)
+        {
+            m_tState_Act.Set_State(STATE_ACT::IDLE);
+        }
+        else
+        {
+            OutputDebugString(L"▷Brown - 기존 패트롤 포인트 복귀중   \n");
+            m_pTransformComp->Move_Pos(&vDirect, fDeltaTime, m_fRunDistance);
+        }
+    }
+
+    // 조건
+    {
+
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+        //OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
+    }
 }
