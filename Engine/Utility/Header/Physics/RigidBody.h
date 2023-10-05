@@ -8,6 +8,7 @@
 
 BEGIN(Engine)
 
+class FCollisionPrimitive;
 
 enum class ERIGID_BODY_TYPE
 {
@@ -438,30 +439,30 @@ protected:
     ERIGID_BODY_TYPE    eBodyType = ERIGID_BODY_TYPE::DYNAMIC;
 
 protected:
-    Real            fInverseMass;				    // 역질량
-	FMatrix3        matInverseInertiaTensor;		// 역관성텐서
-    Real            fLinearDamping;                 // 등속이동 감쇄
-    Real            fAngularDamping;                // 각속도 감쇄
-    FVector3        vPosition;                      // 위치
-    FQuaternion     qtOrientation;                  // 정위, 나중에 쿼터니온으로 바꿀 것
-    FVector3        vVelocity;                      // 속도
-    FVector3        vRotation;                      // 회전 속도
+    Real                            fInverseMass;				    // 역질량
+	FMatrix3                        matInverseInertiaTensor;		// 역관성텐서
+    Real                            fLinearDamping;                 // 등속이동 감쇄
+    Real                            fAngularDamping;                // 각속도 감쇄
+    FVector3                        vPosition;                      // 위치
+    FQuaternion                     qtOrientation;                  // 정위, 나중에 쿼터니온으로 바꿀 것
+    FVector3                        vVelocity;                      // 속도
+    FVector3                        vRotation;                      // 회전 속도
 
-    FMatrix3        matInverseInertiaTensorWorld;   // 3차원 행렬
-    Real            fMotion;                        // 모션
-    _bool           bIsAwake;                       // 힘 작용 업데이트 가능 여부
-    _bool           bCanSleep;                      // 앱실론 자동 연산 제외 기능
-    FMatrix3x4      matTransform;                   // 4차원 행렬, 트랜스폼
-    FVector3        vForceAccum;                    // 속도힘 합
-    FVector3        vTorqueAccum;                   // 회전힘 합
-    FVector3        vAcceleration;                  // 가속도
-    FVector3        vLastFrameAcceleration;         // 이전 프레임 가속도
+    FMatrix3                        matInverseInertiaTensorWorld;   // 3차원 행렬
+    Real                            fMotion;                        // 모션
+    _bool                           bIsAwake;                       // 힘 작용 업데이트 가능 여부
+    _bool                           bCanSleep;                      // 앱실론 자동 연산 제외 기능
+    FMatrix3x4                      matTransform;                   // 4차원 행렬, 트랜스폼
+    FVector3                        vForceAccum;                    // 속도힘 합
+    FVector3                        vTorqueAccum;                   // 회전힘 합
+    FVector3                        vAcceleration;                  // 가속도
+    FVector3                        vLastFrameAcceleration;         // 이전 프레임 가속도
 
 public:
     GETSET_EX2(void*, pOwner, Owner, GET, SET)
 
 protected:
-    void*           pOwner = nullptr;
+    void*           pOwner = nullptr;                // 충돌기하학 모양, 
 };
 
 END

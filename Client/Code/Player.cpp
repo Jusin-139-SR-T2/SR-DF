@@ -132,6 +132,12 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     // 물리 업데이트 코드
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 계속 검사하는곳 : player - update 
 
+    _vec3 vTest = m_pTransformComp->Get_Pos();
+    vTest.z += 10.f;
+    list<CGameObject*> listCollision = Engine::IntersectTests_Sphere_GetGameObject(0, vTest, 5.f);
+    for (auto iter = listCollision.begin(); iter != listCollision.end(); ++iter)
+        (*iter)->Set_Dead();
+
     // 랜더 그룹 지정, 현재상태 : 알파 테스트
     Engine::Add_RenderGroup(RENDER_UI, this);
 

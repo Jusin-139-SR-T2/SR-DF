@@ -43,7 +43,7 @@ void CAceFood::OnCollision(CGameObject* pDst) // 계속 충돌중
 
 void CAceFood::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
-    Set_Dead();
+    
 }
 
 void CAceFood::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
@@ -85,7 +85,7 @@ _int CAceFood::Update_GameObject(const _float& fTimeDelta)
     // 변수에 저장된 enum으로 texture 결정 - eaten 변경때문에 
     Eat_Food(m_pCurName, fTimeDelta);
 
-    // 물리 업데이트
+    // 물리바디 업데이트
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
 
     // Renderer 등록 

@@ -112,6 +112,10 @@ HRESULT CColliderComponent::Ready_Component(LPDIRECT3DDEVICE9 pGraphicDev, ECOLL
 
 _int CColliderComponent::Update_Component(const _float& fTimeDelta)
 {
+    // Exited 발동
+    OnCollisionExited();
+
+    // Exited 초기화
     for (auto iter = m_listColliderObject.begin(); iter != m_listColliderObject.end(); ++iter)
         iter->second = false;
 

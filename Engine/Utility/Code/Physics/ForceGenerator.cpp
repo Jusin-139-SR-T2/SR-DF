@@ -72,7 +72,7 @@ void FForce_Spring::Update_Force(FRigidBody* pBody, const Real& fDuration)
     magnitude *= fSpringConstant;
 
     // Calculate the final force and apply it
-    force.Normalise();
+    force.Normalize();
     force *= -magnitude;
     pBody->Add_ForceAtPoint(force, lws);
 }

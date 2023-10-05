@@ -3,6 +3,7 @@
 
 using std::unordered_multimap;
 using std::unordered_map;
+using std::unordered_set;
 using std::pair;
 
 namespace Engine
@@ -44,6 +45,9 @@ namespace Engine
 
 	template <typename Key, typename Value>
 	using _ummap = unordered_multimap<Key, Value>;
+
+	template <typename Key>
+	using _unset = unordered_set<Key>;
 
 
 	typedef		D3DXVECTOR2					_vec2;
