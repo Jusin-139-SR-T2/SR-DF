@@ -1,6 +1,82 @@
 #include "Collide.h"
 
 
+bool FCollisionDetector::CollsionPrimitive(const FCollisionPrimitive* srcShape, const FCollisionPrimitive* dstShape, FCollisionData* pColData)
+{
+	bool bCollide = false;
+	switch (srcShape->Get_Type())
+	{
+	case ECOLLISION::SPHERE:
+	{
+		if (srcShape->Get_Type() == ECOLLISION::SPHERE)
+		{
+			const FCollisionSphere* pShapeSrc = static_cast<const FCollisionSphere*>(srcShape);
+			const FCollisionSphere* pShapeDst = static_cast<const FCollisionSphere*>(dstShape);
+			bCollide = FCollisionDetector::SphereAndSphere(*pShapeSrc, *pShapeDst);
+		}
+		else if (srcShape->Get_Type() == ECOLLISION::BOX)
+		{
+			const FCollisionSphere* pShapeSrc = static_cast<const FCollisionSphere*>(srcShape);
+			const FCollisionBox* pShapeDst = static_cast<const FCollisionBox*>(dstShape);
+			bCollide = FCollisionDetector::SphereAndBox(*pShapeSrc, *pShapeDst);
+		}
+		else if (srcShape->Get_Type() == ECOLLISION::CAPSULE)
+		{
+			const FCollisionSphere* pShapeSrc = static_cast<const FCollisionSphere*>(srcShape);
+			const FCollisionCapsule* pShapeDst = static_cast<const FCollisionCapsule*>(dstShape);
+			FCollisionDetector::SphereAndCapsule(*pShapeSrc, *pShapeDst);
+		}
+		break;
+	}
+	case ECOLLISION::BOX:
+	{
+		if (srcShape->Get_Type() == ECOLLISION::SPHERE)
+		{
+			const FCollisionBox* pShapeSrc = static_cast<const FCollisionBox*>(srcShape);
+			const FCollisionSphere* pShapeDst = static_cast<const FCollisionSphere*>(dstShape);
+			bCollide = FCollisionDetector::BoxAndSphere(*pShapeSrc, *pShapeDst);
+		}
+		else if (srcShape->Get_Type() == ECOLLISION::BOX)
+		{
+			const FCollisionBox* pShapeSrc = static_cast<const FCollisionBox*>(srcShape);
+			const FCollisionBox* pShapeDst = static_cast<const FCollisionBox*>(dstShape);
+			bCollide = FCollisionDetector::BoxAndBox(*pShapeSrc, *pShapeDst);
+		}
+		else if (srcShape->Get_Type() == ECOLLISION::CAPSULE)
+		{
+			const FCollisionBox* pShapeSrc = static_cast<const FCollisionBox*>(srcShape);
+			const FCollisionCapsule* pShapeDst = static_cast<const FCollisionCapsule*>(dstShape);
+			FCollisionDetector::BoxAndCapsule(*pShapeSrc, *pShapeDst);
+		}
+		break;
+	}
+	case ECOLLISION::CAPSULE:
+	{
+		if (srcShape->Get_Type() == ECOLLISION::SPHERE)
+		{
+			const FCollisionCapsule* pShapeSrc = static_cast<const FCollisionCapsule*>(srcShape);
+			const FCollisionSphere* pShapeDst = static_cast<const FCollisionSphere*>(dstShape);
+			bCollide = FCollisionDetector::CapsuleAndSphere(*pShapeSrc, *pShapeDst);
+		}
+		else if (srcShape->Get_Type() == ECOLLISION::BOX)
+		{
+			const FCollisionCapsule* pShapeSrc = static_cast<const FCollisionCapsule*>(srcShape);
+			const FCollisionBox* pShapeDst = static_cast<const FCollisionBox*>(dstShape);
+			bCollide = FCollisionDetector::CapsuleAndBox(*pShapeSrc, *pShapeDst);
+		}
+		else if (srcShape->Get_Type() == ECOLLISION::CAPSULE)
+		{
+			const FCollisionCapsule* pShapeSrc = static_cast<const FCollisionCapsule*>(srcShape);
+			const FCollisionCapsule* pShapeDst = static_cast<const FCollisionCapsule*>(dstShape);
+			FCollisionDetector::CapsuleAndCapsule(*pShapeSrc, *pShapeDst);
+		}
+		break;
+	}
+	}
+
+	return bCollide;
+}
+
 bool FCollisionDetector::SphereAndSphere(const FCollisionSphere& srcSphere, const FCollisionSphere& dstSphere)
 {
 	FVector3 vSub = dstSphere.vPos - srcSphere.vPos;

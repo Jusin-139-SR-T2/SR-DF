@@ -64,9 +64,10 @@ _int CPhysicsWorld3D::Update_Physics(const Real& fTimeDelta)
 
 
 	// 강체 위치 기반으로 충돌체 위치 수정
-	for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
+	for (auto iter = m_setBody.begin(); iter != m_setBody.end(); ++iter)
 	{
 		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
+		pCol->Calculate_Transform();
 		switch (pCol->Get_Type())
 		{
 		case ECOLLISION::SPHERE:
@@ -93,7 +94,6 @@ _int CPhysicsWorld3D::Update_Physics(const Real& fTimeDelta)
 
 	// 접촉 발생기
 	_uint iUsedContacts = Generate_Contacts();
-
 
 
 	//// 힘 발생기와 접촉 발생기로 나온 결과로 충돌을 해결
@@ -123,18 +123,10 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 	// 충돌 최적화, 추후 추가 예정
 	// 계획은 충돌객체를 트리로 만들어 부딪힐 것 같은 객체에 대해 처리하는 것.
 	// 여기서 발생시킨 충돌에 대한 것은 엔진에서 발생하는 
-
-
-	// 여기 구조를 좀 어떻게 하면 될 것 같다.
-	/*for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
-	{
-		FCollisionDetector::SphereAndSphere();
-	}*/
-
-	for (auto iterSrc = m_listBody.begin(); iterSrc != m_listBody.end(); ++iterSrc)
+	for (auto iterSrc = m_setBody.begin(); iterSrc != m_setBody.end(); ++iterSrc)
 	{
 		// 재연산 방지, 현재 반복자로부터 다음 것을 가져다가 쓴다.
-		for (auto iterDst = (++iterSrc)--; iterDst != m_listBody.end(); ++iterDst)
+		for (auto iterDst = (++iterSrc)--; iterDst != m_setBody.end(); ++iterDst)
 		{
 			bool	bCollide = false;
 			if ((*iterSrc) == (*iterDst))
@@ -142,82 +134,13 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 
 			FCollisionPrimitive* pColSrc = static_cast<FCollisionPrimitive*>((*iterSrc)->Get_Owner());
 			FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iterDst)->Get_Owner());
-			switch (pColSrc->Get_Type())
-			{
-			case ECOLLISION::SPHERE:
-			{
-				if (pColDst->Get_Type() == ECOLLISION::SPHERE)
-				{
-					FCollisionSphere* pShapeSrc = static_cast<FCollisionSphere*>(pColSrc);
-					FCollisionSphere* pShapeDst = static_cast<FCollisionSphere*>(pColDst);
-					bCollide = FCollisionDetector::SphereAndSphere(*pShapeSrc, *pShapeDst);
-				}
-				else if (pColDst->Get_Type() == ECOLLISION::BOX)
-				{
-					FCollisionSphere* pShapeSrc = static_cast<FCollisionSphere*>(pColSrc);
-					FCollisionBox* pShapeDst = static_cast<FCollisionBox*>(pColDst);
-					bCollide = FCollisionDetector::SphereAndBox(*pShapeSrc, *pShapeDst);
-				}
-				else if (pColDst->Get_Type() == ECOLLISION::CAPSULE)
-				{
-					FCollisionSphere* pShapeSrc = static_cast<FCollisionSphere*>(pColSrc);
-					FCollisionCapsule* pShapeDst = static_cast<FCollisionCapsule*>(pColDst);
-					FCollisionDetector::SphereAndCapsule(*pShapeSrc, *pShapeDst);
-				}
-				break;
-			}
-			case ECOLLISION::BOX:
-			{
-				if (pColDst->Get_Type() == ECOLLISION::SPHERE)
-				{
-					FCollisionBox* pShapeSrc = static_cast<FCollisionBox*>(pColSrc);
-					FCollisionSphere* pShapeDst = static_cast<FCollisionSphere*>(pColDst);
-					bCollide = FCollisionDetector::BoxAndSphere(*pShapeSrc, *pShapeDst);
-				}
-				else if (pColDst->Get_Type() == ECOLLISION::BOX)
-				{
-					FCollisionBox* pShapeSrc = static_cast<FCollisionBox*>(pColSrc);
-					FCollisionBox* pShapeDst = static_cast<FCollisionBox*>(pColDst);
-					bCollide = FCollisionDetector::BoxAndBox(*pShapeSrc, *pShapeDst);
-				}
-				else if (pColDst->Get_Type() == ECOLLISION::CAPSULE)
-				{
-					FCollisionBox* pShapeSrc = static_cast<FCollisionBox*>(pColSrc);
-					FCollisionCapsule* pShapeDst = static_cast<FCollisionCapsule*>(pColDst);
-					FCollisionDetector::BoxAndCapsule(*pShapeSrc, *pShapeDst);
-				}
-				break;
-			}
-			case ECOLLISION::CAPSULE:
-			{
-				if (pColDst->Get_Type() == ECOLLISION::SPHERE)
-				{
-					FCollisionCapsule* pShapeSrc = static_cast<FCollisionCapsule*>(pColSrc);
-					FCollisionSphere* pShapeDst = static_cast<FCollisionSphere*>(pColDst);
-					bCollide = FCollisionDetector::CapsuleAndSphere(*pShapeSrc, *pShapeDst);
-				}
-				else if (pColDst->Get_Type() == ECOLLISION::BOX)
-				{
-					FCollisionCapsule* pShapeSrc = static_cast<FCollisionCapsule*>(pColSrc);
-					FCollisionBox* pShapeDst = static_cast<FCollisionBox*>(pColDst);
-					bCollide = FCollisionDetector::CapsuleAndBox(*pShapeSrc, *pShapeDst);
-				}
-				else if (pColDst->Get_Type() == ECOLLISION::CAPSULE)
-				{
-					FCollisionCapsule* pShapeSrc = static_cast<FCollisionCapsule*>(pColSrc);
-					FCollisionCapsule* pShapeDst = static_cast<FCollisionCapsule*>(pColDst);
-					FCollisionDetector::CapsuleAndCapsule(*pShapeSrc, *pShapeDst);
-				}
-				break;
-			}
-			}
+
+			bCollide = FCollisionDetector::CollsionPrimitive(pColSrc, pColDst, nullptr);
 
 			if (bCollide)
 			{
-				if (pColSrc->Get_Event())
-					{ pColSrc->Get_Event()(pColSrc->Get_Owner()); }
-				if (pColDst->Get_Event())
-					{ pColDst->Get_Event()(pColDst->Get_Owner()); }
+				pColSrc->Handle_Event(pColSrc->Get_Owner());
+				pColDst->Handle_Event(pColDst->Get_Owner());
 			}
 		}
 	}
@@ -226,51 +149,29 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 	return m_iMaxContacts - iLimit;
 }
 
-FCollisionPrimitive* CPhysicsWorld3D::Test_Contact(FCollisionPrimitive* pCollision)
+FCollisionPrimitive* CPhysicsWorld3D::Test_Contact(FCollisionPrimitive* const pCollision)
 {
-	switch (pCollision->Get_Type())
+	// 받은 충돌체로 리스트바디의 충돌체들과 비교해서 하나라도 충돌하면 반환한다.
+	for (auto iter = m_setBody.begin(); iter != m_setBody.end(); ++iter)
 	{
-	case ECOLLISION::SPHERE:
-	{
-		FCollisionSphere* pShape = static_cast<FCollisionSphere*>(pCollision);
-		break;
-	}
-	case ECOLLISION::BOX:
-	{
-		FCollisionBox* pShape = static_cast<FCollisionBox*>(pCollision);
-		break;
-	}
-	case ECOLLISION::CAPSULE:
-	{
-		FCollisionCapsule* pShape = static_cast<FCollisionCapsule*>(pCollision);
-		break;
-	}
+		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
+		if (FCollisionDetector::CollsionPrimitive(pCollision, pCol, nullptr))
+			return pCol;
 	}
 
-	return pCollision;
+	return nullptr;
 }
 
-list<FCollisionPrimitive*> CPhysicsWorld3D::Test_Contacts(FCollisionPrimitive* pCollision)
+list<FCollisionPrimitive*> CPhysicsWorld3D::Test_Contacts(FCollisionPrimitive* const pCollision)
 {
 	list<FCollisionPrimitive*> listCollision;
 
-	switch (pCollision->Get_Type())
+	// 받은 충돌체로 리스트바디의 충돌체들과 비교해서 하나라도 충돌하면 반환한다.
+	for (auto iter = m_setBody.begin(); iter != m_setBody.end(); ++iter)
 	{
-	case ECOLLISION::SPHERE:
-	{
-		FCollisionSphere* pShape = static_cast<FCollisionSphere*>(pCollision);
-		break;
-	}
-	case ECOLLISION::BOX:
-	{
-		FCollisionBox* pShape = static_cast<FCollisionBox*>(pCollision);
-		break;
-	}
-	case ECOLLISION::CAPSULE:
-	{
-		FCollisionCapsule* pShape = static_cast<FCollisionCapsule*>(pCollision);
-		break;
-	}
+		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
+		if (FCollisionDetector::CollsionPrimitive(pCollision, pCol, nullptr))
+			listCollision.push_back(pCol);
 	}
 
 	return listCollision;
@@ -278,14 +179,16 @@ list<FCollisionPrimitive*> CPhysicsWorld3D::Test_Contacts(FCollisionPrimitive* p
 
 void CPhysicsWorld3D::Add_RigidBody(FRigidBody* pBody)
 {
-	m_listBody.push_back(pBody);
+	auto iter = m_setBody.find(pBody);
+	if (iter != m_setBody.end())
+		return;
+	
+	m_setBody.emplace(pBody);
 }
 
 void CPhysicsWorld3D::Delete_RigidBody(FRigidBody* pBody)
 {
-	auto iter = find_if(m_listBody.begin(), m_listBody.end(), [&pBody](FRigidBody* pDst) {
-		return (pBody == pDst);
-		});
-	if (iter != m_listBody.end())
-		m_listBody.erase(iter);
+	auto iter = m_setBody.find(pBody);
+	if (iter != m_setBody.end())
+		m_setBody.erase(iter);
 }

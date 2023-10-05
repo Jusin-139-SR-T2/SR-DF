@@ -63,6 +63,17 @@ inline void			Stop_PhysicsSimulation(const _uint iIndex);
 inline void			Play_PhysicsSimulation(const _uint iIndex);
 inline void			Add_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCollider);
 inline void			Delete_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCollider);
+inline list<CColliderComponent*>	IntersectTests(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc);
+inline list<CColliderComponent*>	IntersectTests_Sphere(const _uint iWorldID, _vec3 vPos, _float fRadius);
+inline list<CColliderComponent*>	IntersectTests_Box(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize);
+inline list<CColliderComponent*>	IntersectTests_Capsule(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius);
+
+inline list<CGameObject*>			IntersectTests_GetGameObject(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc);
+inline list<CGameObject*>			IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius);
+inline list<CGameObject*>			IntersectTests_Box_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize);
+inline list<CGameObject*>			IntersectTests_Capsule_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius);
+
+
 
 
 // TextureMgr

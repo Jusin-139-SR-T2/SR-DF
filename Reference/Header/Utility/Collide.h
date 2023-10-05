@@ -99,6 +99,7 @@ public:
 class ENGINE_DLL FCollisionDetector
 {
 public:
+	static bool CollsionPrimitive(const FCollisionPrimitive* srcShape, const FCollisionPrimitive* dstShape, FCollisionData* pColData);
 	// ±¸ Ãæµ¹
 	static bool SphereAndSphere(const FCollisionSphere& srcSphere, const FCollisionSphere& dstSphere);
 	static bool SphereAndBox(const FCollisionSphere& srcSphere, const FCollisionBox& dstBox);
