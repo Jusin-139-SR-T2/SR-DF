@@ -16,8 +16,9 @@ class CHut : public Engine::CGameObject
 {
 	DERIVED_CLASS(CGameObject, CHut)
 
-		// 빌딩 dds 만들때 positiveX 에 문이 위치한것 기준으로 만들기 
-		enum class BuildDirection {EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST, NORTH, NORTHEAST, DIR_END};
+	// 건물 dds 만들때 positiveX 에 문이 위치한것 기준으로 만들기 
+	enum class BuildDirection {EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST, NORTH, NORTHEAST, DIR_END};
+
 private:
 	explicit CHut(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CHut(const CHut& rhs);
@@ -50,7 +51,7 @@ private:
 	virtual void		Free();
 	
 	BuildDirection		m_eDir;
-	_float m_fSize;
+	_vec3				 m_vSize;
 	HRESULT				Add_Component();
-	HRESULT				Set_BuildingSize(_float	_Size, BuildDirection _eDir);
+	HRESULT				Set_BuildingSize(_vec3	_vSize, BuildDirection _eDir);
 };

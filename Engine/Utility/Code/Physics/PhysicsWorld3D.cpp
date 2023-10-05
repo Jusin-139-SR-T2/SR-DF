@@ -170,6 +170,10 @@ list<FCollisionPrimitive*> CPhysicsWorld3D::Test_Contacts(FCollisionPrimitive* c
 	for (auto iter = m_setBody.begin(); iter != m_setBody.end(); ++iter)
 	{
 		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
+		FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>(pCollision->Get_Owner());
+		if (pCol == pColDst)
+			continue;
+
 		if (FCollisionDetector::CollsionPrimitive(pCollision, pCol, nullptr))
 			listCollision.push_back(pCol);
 	}

@@ -14,7 +14,7 @@ HRESULT CSnowParticle::Ready_GameObject(_vec3 vOriginPos, _int numParticles)
 {
 	srand(_ulong(time(NULL)));
 	BoundingBox boundingBox;
-	boundingBox.vMin = _vec3(-50.0f, -50.0f, -50.0f);
+	boundingBox.vMin = _vec3(-50.0f, -10.0f, -50.0f);
 	boundingBox.vMax = _vec3(150.0f, 50.0f, 150.0f);
 
 	m_vOrigin = vOriginPos;			// 시스템 내에서 파티클이 시작되는 곳.

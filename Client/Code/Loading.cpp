@@ -61,7 +61,7 @@ _uint CLoading::Loading_For_Stage()
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TriColBufferComp", CTriColorComp::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeBufferComp", CCubeBufferComp::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CalculatorComp", CCalculatorComponent::Create(m_pGraphicDev)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainBufferComp", CTerrainBufferComp::Create(m_pGraphicDev, L"./Resource/Texture/Terrain/Height.bmp", VTXCNTX, VTXCNTZ, VTXITV)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainBufferComp", CTerrainBufferComp::Create(m_pGraphicDev, L"./Resource/Texture/Terrain/FlatLand.bmp", VTXCNTX, VTXCNTZ, VTXITV)), E_FAIL);
 
 	// 텍스처 컴포넌트
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Tile", L"22")), E_FAIL);
@@ -103,9 +103,7 @@ _uint CLoading::Loading_For_Stage()
 // 텍스처 매니저 텍스처 추가
 HRESULT CLoading::Loading_For_Texture()
 {
-
-	Load_Texture(L"./Resource/Texture/Tile/Buildings/building2.jpg.", TEX_NORMAL, L"Building", L"Texture");
-	Load_Texture(L"./Resource/Texture/Building/TestBuilding.dds", TEX_CUBE, L"TestBuilding", L"Apartment");
+	Load_Texture(L"./Resource/Texture/Building/School.dds", TEX_CUBE, L"TestBuilding", L"Apartment");
 
 #pragma region 기타 등등
 	Load_Texture(L"./Resource/Texture/Tile/Tile/22.jpg", TEX_NORMAL, L"Tile", L"22");
