@@ -22,7 +22,7 @@ HRESULT CHut::Ready_GameObject()
     m_pTransformComp->Set_Pos({ 35.f, 1.f, 25.f });
     m_fSize = 4.f;
 
-    FAILED_CHECK_RETURN(Set_BuildingSize(m_fSize, BuildDirection::NORTHEAST), E_FAIL);
+    FAILED_CHECK_RETURN(Set_BuildingSize(m_fSize, BuildDirection::SOUTH), E_FAIL);
 
     return S_OK;
 }
@@ -121,7 +121,7 @@ HRESULT CHut::Set_BuildingSize(_float _Size, BuildDirection _eDir)
         m_pTransformComp->Set_RotationY(D3DX_PI / 4);
         break;
 
-    case CHut::BuildDirection::SOUT:
+    case CHut::BuildDirection::SOUTH:
         m_pTransformComp->Set_RotationY(D3DX_PI / 2);
         break;
 
