@@ -172,6 +172,23 @@ public:
         z += vector.z * scale;
     }
 
+    FVector3 operator / (const Real& devide) const
+    {
+        FVector3 vector;
+        vector.x /= devide;
+        vector.y /= devide;
+        vector.z /= devide;
+        return vector;
+    }
+
+    FVector3 operator /= (const Real& devide)
+    {
+        x /= devide;
+        y /= devide;
+        z /= devide;
+        return (*this);
+    }
+
     /** Gets the magnitude of this vector. */
     Real Magnitude() const
     {
@@ -189,7 +206,7 @@ public:
     {
         if (SquareMagnitude() > size * size)
         {
-            Normalise();
+            Normalize();
             x *= size;
             y *= size;
             z *= size;
@@ -197,7 +214,7 @@ public:
     }
 
     // Á¤±ÔÈ­
-    void Normalise()
+    void Normalize()
     {
         Real l = Magnitude();
         if (l > 0)
@@ -210,7 +227,7 @@ public:
     FVector3 Unit() const
     {
         FVector3 result = *this;
-        result.Normalise();
+        result.Normalize();
         return result;
     }
 

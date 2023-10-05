@@ -49,8 +49,13 @@ protected:
 public:
 	FRigidBody* pBody;				// 강체 정보
 	
-
 	FMatrix3x4	matOffset;			// 오프셋 행렬
+
+public:
+	void Calculate_Transform()
+	{
+		matTransform = pBody->Get_Transform() * matOffset;
+	}
 
 public:
 	GETSET_EX2(FMatrix3x4, matTransform, Transform, GET_C_REF, GET_REF)
@@ -70,7 +75,8 @@ protected:
 	ECOLLISION	eType;				// 타입
 
 public:
-	GETSET_EX2(function<void(void*)>, fnEventHandler, Event, SET, GET_C_REF)
+	GETSET_EX1(function<void(void*)>, fnEventHandler, Event, SET)
+	void Handle_Event(void* pDst) { if (fnEventHandler) fnEventHandler(pDst); }
 
 protected:
 	function<void(void*)>	fnEventHandler;

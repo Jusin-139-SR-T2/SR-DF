@@ -32,9 +32,12 @@ public:
 	void						StartFrame_Physics();
 	_int						Update_Physics(const Real& fTimeDelta);
 	_uint						Generate_Contacts();
+
 	// 단순 물리 충돌 테스트
-	FCollisionPrimitive*		Test_Contact(FCollisionPrimitive* pCollision);
-	list< FCollisionPrimitive*>	Test_Contacts(FCollisionPrimitive* pCollision);
+	// 충돌한 객체중 가장 먼저 충돌한 객체를 반환. 정말 간단한데서만 씀.
+	FCollisionPrimitive*		Test_Contact(FCollisionPrimitive* const pCollision);
+	// 충돌한 모든 충돌체 반환. 주로 많이 쓰이는 방식. 다양한 충돌체와 충돌중이면 한번에 처리가 가능하다.
+	list<FCollisionPrimitive*>	Test_Contacts(FCollisionPrimitive* const pCollision);
 
 public:
 	void						Add_RigidBody(FRigidBody* pBody);
@@ -43,7 +46,7 @@ public:
 private:
 	_bool						m_bCalculateIterations;			// 계산 반복
 
-	list<FRigidBody*>			m_listBody;						// 강체 정보 리스트
+	_unset<FRigidBody*>			m_setBody;						// 강체 정보 세트
 
 	FContactResolver			m_ContactResolver;				// 접촉 해결자
 	list<FContactGenerator*>	m_ConGenList;					// 접촉 발생기 리스트
