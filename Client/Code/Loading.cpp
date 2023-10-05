@@ -89,6 +89,10 @@ _uint CLoading::Loading_For_Stage()
 	// 이펙트 컴포넌트
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Effect_AwarenessTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Effect", L"Awareness_End")), E_FAIL);
 
+	//가건물 용도 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BuildingTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"TestBuilding", L"Apartment")), E_FAIL);
+
+
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 
 	m_bFinish = true;
@@ -99,6 +103,10 @@ _uint CLoading::Loading_For_Stage()
 // 텍스처 매니저 텍스처 추가
 HRESULT CLoading::Loading_For_Texture()
 {
+
+	Load_Texture(L"./Resource/Texture/Tile/Buildings/building2.jpg.", TEX_NORMAL, L"Building", L"Texture");
+	Load_Texture(L"./Resource/Texture/Building/TestBuilding.dds", TEX_CUBE, L"TestBuilding", L"Apartment");
+
 #pragma region 기타 등등
 	Load_Texture(L"./Resource/Texture/Tile/Tile/22.jpg", TEX_NORMAL, L"Tile", L"22");
 	Load_Texture(L"./Resource/Texture/SkyBox/Test4.dds", TEX_CUBE, L"TestCube", L"4");
@@ -340,6 +348,7 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma endregion
 
 	Load_Texture(L"./Resource/Texture/Light/RedLight.png", TEX_NORMAL, L"Light", L"RedLight");
+
 	Wait_LoadTextureAsync();
 
 	return S_OK;
