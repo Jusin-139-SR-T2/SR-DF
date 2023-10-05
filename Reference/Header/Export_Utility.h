@@ -63,6 +63,7 @@ inline void			Stop_PhysicsSimulation(const _uint iIndex);
 inline void			Play_PhysicsSimulation(const _uint iIndex);
 inline void			Add_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCollider);
 inline void			Delete_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCollider);
+
 inline list<CColliderComponent*>	IntersectTests(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc);
 inline list<CColliderComponent*>	IntersectTests_Sphere(const _uint iWorldID, _vec3 vPos, _float fRadius);
 inline list<CColliderComponent*>	IntersectTests_Box(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize);
