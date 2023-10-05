@@ -73,7 +73,7 @@ private:
 	
 	// =============================== 피킹 =============================== // 소영 추가 
 	//_vec3				Picking_On_Object();	// 오브젝트 마우스 피킹 
-	_bool Picking_On_Object();
+	_bool				Picking_On_Object();
 	// ====================================================================
 
 public: // Camera
@@ -268,7 +268,7 @@ private: //빛
 	//HRESULT			SetUp_Material();
 	_bool			bTorch = false;
 
-
+		
 private: // 쿼터니언
 		_long dwMouseMoveX;
 		_long dwMouseMoveY;

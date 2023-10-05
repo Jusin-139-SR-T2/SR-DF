@@ -20,9 +20,9 @@ HRESULT CHut::Ready_GameObject()
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_pTransformComp->Set_Pos({ 35.f, 1.f, 25.f });
-    m_fSize = 4.f;
+    m_vSize = { 1.f, 5.f, 5.f }; // 건물 사이즈 배 + 지형타기 높이 알아서 보정용 
 
-    FAILED_CHECK_RETURN(Set_BuildingSize(m_fSize, BuildDirection::SOUTH), E_FAIL);
+    FAILED_CHECK_RETURN(Set_BuildingSize(m_vSize, BuildDirection::SOUTH), E_FAIL);
 
     return S_OK;
 }
@@ -83,7 +83,7 @@ void CHut::Height_On_Terrain()
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
 
-    m_pTransformComp->Set_Pos(vPos.x, fHeight + m_fSize, vPos.z);
+    m_pTransformComp->Set_Pos(vPos.x, fHeight + m_vSize.y , vPos.z);
 }
 
 HRESULT CHut::Add_Component()
@@ -109,9 +109,9 @@ void CHut::Free()
     SUPER::Free();
 }
 
-HRESULT CHut::Set_BuildingSize(_float _Size, BuildDirection _eDir)
+HRESULT CHut::Set_BuildingSize(_vec3 _vSize, BuildDirection _eDir)
 {
-    m_pTransformComp->Set_Scale({ _Size, _Size, _Size });
+    m_pTransformComp->Set_Scale({ _vSize.x, _vSize.y, _vSize.z });
     
     switch (_eDir)
     {

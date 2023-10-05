@@ -14,16 +14,13 @@ HRESULT CFireWork::Ready_GameObject(_vec3 vOriginPos, _int numParticles)
 {
 	//FAILED_CHECK_RETURN(LoadAssets(), E_FAIL);
 
-	BoundingBox boundingBox; 
-	boundingBox.vMin = _vec3(-50.0f, -50.0f, -50.0f);
-	boundingBox.vMax = _vec3(150.0f, 50.0f, 150.0f);
-
 	m_vOrigin = vOriginPos;			// 시스템 내에서 파티클이 시작되는 곳.
 	m_fSize = 1.f;					// 시스템 내 모든 파티클의 크기
 	m_dSize = 4096;					// 버텍스 버퍼가 보관할 수 있는 파티클의 수- 실제 파티클 시스템 내의 파티클 수와는 독립적.
 	m_dOffset = 0;					// 버텍스 버퍼에서 복사를 시작할 파티클 내 다음 단계로의 오프셋(바이트가 아닌 파티클 단위)
 	m_dBatchSize = 512;
-	m_BoundingBox = boundingBox;
+	m_BoundingBox.vMin = _vec3(-50.0f, -50.0f, -50.0f);
+	m_BoundingBox.vMax = _vec3(150.0f, 50.0f, 150.0f);
 
 	for (int i = 0; i < numParticles; i++)
 		AddParticle();

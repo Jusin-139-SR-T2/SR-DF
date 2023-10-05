@@ -11,8 +11,8 @@ BEGIN(Engine)
 class CRcBufferComp;
 class CTextureComponent;
 class CTransformComponent;
-class CSphereColComp;
-
+class CCalculatorComponent;
+class CColliderComponent;
 END
 
 class CBrown : public Engine::CGameObject
@@ -35,18 +35,16 @@ public:
 private:
 	CRcBufferComp*			m_pBufferComp = nullptr;
 	CTextureComponent*		m_pTextureComp = nullptr;
-	CTransformComponent*	m_pTransformComp = nullptr;
-	CTransformComponent*	m_pPlayerTransformcomp = nullptr;
-	CCalculatorComponent*	m_pCalculatorComp = nullptr;
-	CPlayer*				m_pPlayer = nullptr;
 	CColliderComponent*		m_pColliderComp = nullptr;				// 구 충돌 콜라이더
+	CTransformComponent*	m_pTransformComp = nullptr;
+	CCalculatorComponent*	m_pCalculatorComp = nullptr;
+	CTransformComponent*	m_pPlayerTransformcomp = nullptr;
 
 private:
 	void				Height_On_Terrain();
 	HRESULT				Add_Component();
 	virtual void		Free();
 
-	//행동상태 알아내는것
 public:
 	_bool m_bAwareness = false;
 	
@@ -54,18 +52,15 @@ public:
 public: 
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
-	GETSET_EX2(CPlayer*, m_pPlayer, Player, GET, SET)
-
-protected: // 충돌 onoff
+		
+	// 충돌 onoff------------------------------------------------------------
+protected: 
 	virtual void	OnCollision(CGameObject* pDst);
 	virtual void	OnCollisionEntered(CGameObject* pDst) ;
 	virtual void	OnCollisionExited(CGameObject* pDst) ;
-
-
-
 
 	// 상태머신 셋팅 ---------------------------------------------------------
 private:
@@ -76,6 +71,7 @@ private:
 	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
 
 	// 변수 -----------------------------------------------------------------
+	wchar_t		debugString[100];
 	_float		m_fCheck = 0;						// 프레임 돌리는횟수 지정
 	_int		m_iHP;								// 몬스터 현재 hp 
 	_int		m_iPreHP;							// 이전 HP 저장용도 
@@ -112,6 +108,7 @@ private:
 	_vec3		vPlayerPos;							// 플레이어 위치 벡터
 	_vec3		vDir;								// 몬스터가 플레이어 바라보는 벡터  
 	_vec3		m_vFirstPos;
+	
 	//스위치 on/off 
 	_bool		Dead = false;
 	_bool		DeadSpin = true;
@@ -182,3 +179,15 @@ private:
 #pragma endregion
 };
 
+/*
+디버그 라인 
+
+OutputDebugString(L"▶ : 충돌 관련 디버그 
+OutputDebugString(L"▷ : 상태머신 관련 디버그 
+
+// 변수값이랑 같이 
+swprintf_s(debugString, L"Brown - 변수 확인 m_fAwareness = %f\n", m_fAwareness);
+OutputDebugStringW(debugString);
+
+
+*/
