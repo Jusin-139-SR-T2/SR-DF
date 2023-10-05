@@ -59,7 +59,6 @@ _int CAwareness::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);    
 
-
     //ºôº¸µå Àû¿ë 
     Billboard();
 
@@ -113,5 +112,3 @@ void CAwareness::Billboard()
 
     m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 }
-
-

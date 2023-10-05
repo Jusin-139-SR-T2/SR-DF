@@ -74,7 +74,6 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"FireWorkParticle", CFireWork::Create(m_pGraphicDev, { 24.f, 3.f, 12.f }, 200)), E_FAIL);
 	
 
-
 	return S_OK;
 }
 

@@ -44,6 +44,10 @@ public:
 	CColliderComponent* m_pColliderComp;
 	CSphereColComp* m_pSphereComp;
 
+	//이펙트 수행 bool용도
+public: 
+	_bool m_bAwareness;
+
 public:
 	GETSET_EX2(CGameObject*, m_pTarget, GameObject, GET, SET)
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -55,6 +59,8 @@ public:
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) 
 	GETSET_EX2(CSphereColComp*, m_pSphereComp, SphereColComponent, GET, SET) 
 		
+	// 이펙트 트리거 
+	GETSET_EX2(_bool, m_bAwareness, Awareness, GET, SET)
 protected:
 	// 무조건 셋팅해줘야 하는 값 - Ready_GameObject에서 매개변수로 들어가니까 넣어주세요 
 	// 이펙트가 시간단위로 재생할지, 전체프레임 반복횟수로 재생할지 지정해야함,
