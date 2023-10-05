@@ -131,8 +131,8 @@ _vec3 CCalculatorComponent::Picking_On_Object(HWND hWnd,
 
 	_float fU(0.f), fV(0.f), fDist(0.f);
 
-	int dwCntX = 2;
-	int dwCntZ = 2;
+	_long dwCntX = 2;
+	_long dwCntZ = 2;
 
 	for (_ulong i = 0; i < dwCntZ - 1; ++i)
 	{

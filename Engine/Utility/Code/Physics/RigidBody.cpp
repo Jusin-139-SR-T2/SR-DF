@@ -1,5 +1,7 @@
 #include "RigidBody.h"
 
+#include "CollisionPrimitive.h"
+
 
 void FRigidBody::CalculateDerivedData()
 {

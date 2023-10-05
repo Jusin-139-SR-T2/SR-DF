@@ -17,8 +17,6 @@ BEGIN(Engine)
 /// </summary>
 class ENGINE_DLL FIntersectTests
 {
-	THIS_CLASS(FIntersectTests)
-
 public:
 	// 구 충돌
 	static bool SphereAndSphere(const FCollisionSphere& srcSphere, const FCollisionSphere& dstSphere);
@@ -36,14 +34,25 @@ public:
 	static bool CapapsuleAndPlane(const FCollisionCapsule& srcCapsule, const FCollisionPlane& dstPlane);
 };
 
+class ENGINE_DLL FLineTests
+{
+public:
+	inline static FVector3 ClosestPointOnLineSegment(const FVector3& vA, const FVector3& vB, const FVector3& vPoint);
+};
+
+inline FVector3 FLineTests::ClosestPointOnLineSegment(const FVector3& vA, const FVector3& vB, const FVector3& vPoint)
+{
+	FVector3 vAB = vB - vA;
+	Real fSaturate = min(max(0, (vPoint - vA).DotProduct(vAB) / vAB.DotProduct(vAB)), 1);
+
+	return vA + vAB * fSaturate;
+}
 
 /// <summary>
 /// 충돌에 대한 정보를 저장합니다.
 /// </summary>
 struct ENGINE_DLL FCollisionData
 {
-	THIS_CLASS(FCollisionData)
-
 public:
 	FContact*	pContactArray;
 	FContact*	pContacts;
@@ -89,23 +98,25 @@ public:
 /// </summary>
 class ENGINE_DLL FCollisionDetector
 {
-	THIS_CLASS(FCollisionDetector)
-
 public:
 	// 구 충돌
 	static bool SphereAndSphere(const FCollisionSphere& srcSphere, const FCollisionSphere& dstSphere);
 	static bool SphereAndBox(const FCollisionSphere& srcSphere, const FCollisionBox& dstBox);
+	static bool SphereAndCapsule(const FCollisionSphere& srcCapsule, const FCollisionCapsule& dstCapsule);
 	static bool SphereAndPlane(const FCollisionSphere& srcSphere, const FCollisionPlane& dstPlane);
 
 	// 박스 충돌
 	static bool BoxAndBox(const FCollisionBox& srcBox, const FCollisionBox& dstBox);
 	static bool BoxAndSphere(const FCollisionBox& srcBox, const FCollisionSphere& dstSphere) { return SphereAndBox(dstSphere, srcBox); }
+	static bool BoxAndCapsule(const FCollisionBox& srcBox, const FCollisionCapsule& dstCapsule);
 	static bool BoxAndPlane(const FCollisionBox& srcBox, const FCollisionPlane& dstPlane);
 
 	// 캡슐 충돌
-	static bool CapapsuleAndBox(const FCollisionCapsule& srcCapsule, const FCollisionBox& dstBox);
-	static bool CapapsuleAndSphere(const FCollisionCapsule& srcCapsule, const FCollisionSphere& dstSphere);
-	static bool CapapsuleAndPlane(const FCollisionCapsule& srcCapsule, const FCollisionPlane& dstPlane);
+	static bool CapsuleAndCapsule(const FCollisionCapsule& srcCapsule, const FCollisionCapsule& dstCapsult);
+	static bool CapsuleAndBox(const FCollisionCapsule& srcCapsule, const FCollisionBox& dstBox) { return BoxAndCapsule(dstBox, srcCapsule); }
+	static bool CapsuleAndSphere(const FCollisionCapsule& srcCapsule, const FCollisionSphere& dstSphere) { return SphereAndCapsule(dstSphere, srcCapsule); }
+	static bool CapsuleAndPlane(const FCollisionCapsule& srcCapsule, const FCollisionPlane& dstPlane);
 };
+
 
 END

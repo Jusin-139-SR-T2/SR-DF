@@ -66,7 +66,7 @@ _int CPhysicsWorld3D::Update_Physics(const Real& fTimeDelta)
 	// 강체 위치 기반으로 충돌체 위치 수정
 	for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
 	{
-		FCollisionPrimitive* pCol = reinterpret_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
+		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
 		switch (pCol->Get_Type())
 		{
 		case ECOLLISION::SPHERE:
@@ -133,35 +133,36 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 
 	for (auto iterSrc = m_listBody.begin(); iterSrc != m_listBody.end(); ++iterSrc)
 	{
-		for (auto iterDst = m_listBody.begin(); iterDst != m_listBody.end(); ++iterDst)
+		// 재연산 방지, 현재 반복자로부터 다음 것을 가져다가 쓴다.
+		for (auto iterDst = (++iterSrc)--; iterDst != m_listBody.end(); ++iterDst)
 		{
 			bool	bCollide = false;
 			if ((*iterSrc) == (*iterDst))
 				continue;
 
-			FCollisionPrimitive* pColSrc = reinterpret_cast<FCollisionPrimitive*>((*iterSrc)->Get_Owner());
-			FCollisionPrimitive* pColDst = reinterpret_cast<FCollisionPrimitive*>((*iterDst)->Get_Owner());
+			FCollisionPrimitive* pColSrc = static_cast<FCollisionPrimitive*>((*iterSrc)->Get_Owner());
+			FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iterDst)->Get_Owner());
 			switch (pColSrc->Get_Type())
 			{
 			case ECOLLISION::SPHERE:
 			{
 				if (pColDst->Get_Type() == ECOLLISION::SPHERE)
 				{
-					FCollisionSphere* pShapeSrc = dynamic_cast<FCollisionSphere*>(pColSrc);
-					FCollisionSphere* pShapeDst = dynamic_cast<FCollisionSphere*>(pColDst);
+					FCollisionSphere* pShapeSrc = static_cast<FCollisionSphere*>(pColSrc);
+					FCollisionSphere* pShapeDst = static_cast<FCollisionSphere*>(pColDst);
 					bCollide = FCollisionDetector::SphereAndSphere(*pShapeSrc, *pShapeDst);
 				}
 				else if (pColDst->Get_Type() == ECOLLISION::BOX)
 				{
-					FCollisionSphere* pShapeSrc = dynamic_cast<FCollisionSphere*>(pColSrc);
-					FCollisionBox* pShapeDst = dynamic_cast<FCollisionBox*>(pColDst);
+					FCollisionSphere* pShapeSrc = static_cast<FCollisionSphere*>(pColSrc);
+					FCollisionBox* pShapeDst = static_cast<FCollisionBox*>(pColDst);
 					bCollide = FCollisionDetector::SphereAndBox(*pShapeSrc, *pShapeDst);
 				}
 				else if (pColDst->Get_Type() == ECOLLISION::CAPSULE)
 				{
-					/*FCollisionSphere* pShapeSrc = dynamic_cast<FCollisionSphere*>(*iterSrc);
-					FCollisionSphere* pShapeDst = dynamic_cast<FCollisionSphere*>(*iterDst);
-					FCollisionDetector::SphereAndCa(*pShapeSrc, *pShapeDst);*/
+					FCollisionSphere* pShapeSrc = static_cast<FCollisionSphere*>(pColSrc);
+					FCollisionCapsule* pShapeDst = static_cast<FCollisionCapsule*>(pColDst);
+					FCollisionDetector::SphereAndCapsule(*pShapeSrc, *pShapeDst);
 				}
 				break;
 			}
@@ -169,23 +170,45 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 			{
 				if (pColDst->Get_Type() == ECOLLISION::SPHERE)
 				{
-					FCollisionBox* pShapeSrc = dynamic_cast<FCollisionBox*>(pColSrc);
-					FCollisionBox* pShapeDst = dynamic_cast<FCollisionBox*>(pColDst);
-					bCollide = FCollisionDetector::BoxAndBox(*pShapeSrc, *pShapeDst);
+					FCollisionBox* pShapeSrc = static_cast<FCollisionBox*>(pColSrc);
+					FCollisionSphere* pShapeDst = static_cast<FCollisionSphere*>(pColDst);
+					bCollide = FCollisionDetector::BoxAndSphere(*pShapeSrc, *pShapeDst);
 				}
 				else if (pColDst->Get_Type() == ECOLLISION::BOX)
 				{
-					FCollisionBox* pShapeSrc = dynamic_cast<FCollisionBox*>(pColSrc);
-					FCollisionSphere* pShapeDst = dynamic_cast<FCollisionSphere*>(pColDst);
-					bCollide = FCollisionDetector::BoxAndSphere(*pShapeSrc, *pShapeDst);
+					FCollisionBox* pShapeSrc = static_cast<FCollisionBox*>(pColSrc);
+					FCollisionBox* pShapeDst = static_cast<FCollisionBox*>(pColDst);
+					bCollide = FCollisionDetector::BoxAndBox(*pShapeSrc, *pShapeDst);
+				}
+				else if (pColDst->Get_Type() == ECOLLISION::CAPSULE)
+				{
+					FCollisionBox* pShapeSrc = static_cast<FCollisionBox*>(pColSrc);
+					FCollisionCapsule* pShapeDst = static_cast<FCollisionCapsule*>(pColDst);
+					FCollisionDetector::BoxAndCapsule(*pShapeSrc, *pShapeDst);
 				}
 				break;
 			}
 			case ECOLLISION::CAPSULE:
 			{
-				
+				if (pColDst->Get_Type() == ECOLLISION::SPHERE)
+				{
+					FCollisionCapsule* pShapeSrc = static_cast<FCollisionCapsule*>(pColSrc);
+					FCollisionSphere* pShapeDst = static_cast<FCollisionSphere*>(pColDst);
+					bCollide = FCollisionDetector::CapsuleAndSphere(*pShapeSrc, *pShapeDst);
+				}
+				else if (pColDst->Get_Type() == ECOLLISION::BOX)
+				{
+					FCollisionCapsule* pShapeSrc = static_cast<FCollisionCapsule*>(pColSrc);
+					FCollisionBox* pShapeDst = static_cast<FCollisionBox*>(pColDst);
+					bCollide = FCollisionDetector::CapsuleAndBox(*pShapeSrc, *pShapeDst);
+				}
+				else if (pColDst->Get_Type() == ECOLLISION::CAPSULE)
+				{
+					FCollisionCapsule* pShapeSrc = static_cast<FCollisionCapsule*>(pColSrc);
+					FCollisionCapsule* pShapeDst = static_cast<FCollisionCapsule*>(pColDst);
+					FCollisionDetector::CapsuleAndCapsule(*pShapeSrc, *pShapeDst);
+				}
 				break;
-
 			}
 			}
 
@@ -209,17 +232,17 @@ FCollisionPrimitive* CPhysicsWorld3D::Test_Contact(FCollisionPrimitive* pCollisi
 	{
 	case ECOLLISION::SPHERE:
 	{
-		FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(pCollision);
+		FCollisionSphere* pShape = static_cast<FCollisionSphere*>(pCollision);
 		break;
 	}
 	case ECOLLISION::BOX:
 	{
-		FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(pCollision);
+		FCollisionBox* pShape = static_cast<FCollisionBox*>(pCollision);
 		break;
 	}
 	case ECOLLISION::CAPSULE:
 	{
-		FCollisionCapsule* pShape = dynamic_cast<FCollisionCapsule*>(pCollision);
+		FCollisionCapsule* pShape = static_cast<FCollisionCapsule*>(pCollision);
 		break;
 	}
 	}
@@ -229,26 +252,28 @@ FCollisionPrimitive* CPhysicsWorld3D::Test_Contact(FCollisionPrimitive* pCollisi
 
 list<FCollisionPrimitive*> CPhysicsWorld3D::Test_Contacts(FCollisionPrimitive* pCollision)
 {
+	list<FCollisionPrimitive*> listCollision;
+
 	switch (pCollision->Get_Type())
 	{
 	case ECOLLISION::SPHERE:
 	{
-		FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(pCollision);
+		FCollisionSphere* pShape = static_cast<FCollisionSphere*>(pCollision);
 		break;
 	}
 	case ECOLLISION::BOX:
 	{
-		FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(pCollision);
+		FCollisionBox* pShape = static_cast<FCollisionBox*>(pCollision);
 		break;
 	}
 	case ECOLLISION::CAPSULE:
 	{
-		FCollisionCapsule* pShape = dynamic_cast<FCollisionCapsule*>(pCollision);
+		FCollisionCapsule* pShape = static_cast<FCollisionCapsule*>(pCollision);
 		break;
 	}
 	}
 
-	return list<FCollisionPrimitive*>();
+	return listCollision;
 }
 
 void CPhysicsWorld3D::Add_RigidBody(FRigidBody* pBody)

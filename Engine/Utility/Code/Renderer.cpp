@@ -39,7 +39,7 @@ HRESULT CRenderer::Ready_Renderer(const _uint iWidth, const _uint iHeight)
 		m_vecViewport_RT.push_back(UiViewPort);
 	}
 
-	D3DXMatrixOrthoLH(&m_matOrthoProject, iWidth, iHeight, 0.f, 100.f);
+	D3DXMatrixOrthoLH(&m_matOrthoProject, static_cast<float>(iWidth), static_cast<float>(iHeight), 0.f, 100.f);
 
 	return m_hReadyResult = S_OK;
 }
