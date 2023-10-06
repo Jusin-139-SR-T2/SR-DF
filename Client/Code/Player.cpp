@@ -135,14 +135,14 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     // 물리 업데이트 코드
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌체 이동
 
-    /*_vec3 vTest = m_pTransformComp->Get_Pos();
-    vTest.z += 10.f;
-    list<CGameObject*> listCollision = Engine::IntersectTests_Sphere_GetGameObject(0, vTest, 5.f);
-    Engine::IntersectTests_Sphere_GetGameObject(0, vTest, 5.f);
-    for (auto iter = listCollision.begin(); iter != listCollision.end(); ++iter)
-        (*iter)->Set_Dead();*/
-
-    
+    //_vec3 vTest = m_pTransformComp->Get_Pos();
+    //vTest.z += 1.f;
+    //list<CGameObject*> listCollision = Engine::IntersectTests_Sphere_GetGameObject(0, vTest, 2.f);
+    //for (auto iter = listCollision.begin(); iter != listCollision.end(); ++iter)
+    //{
+    //    if ((*iter) != this) // 자기자신을 죽이지 않는 보안코드 삽입 
+    //        (*iter)->Set_Dead();
+    //}
 
     // 랜더 그룹 지정, 현재상태 : 알파 테스트
     Engine::Add_RenderGroup(RENDER_UI, this);
@@ -676,19 +676,19 @@ _bool CPlayer::Picking_On_Object()
 void CPlayer::OnCollision(CGameObject* pDst)
 {
     // 충돌중일때
-    OutputDebugString(L"충돌함 > <\n");
+    OutputDebugString(L"플레이어와 충돌중\n");
 }
 
 void CPlayer::OnCollisionEntered(CGameObject* pDst)
 {
     // 처음 충돌했을때
-    OutputDebugString(L"충돌시작 !> <!\n");
+    OutputDebugString(L"플레이어와 충돌진입\n");
 }
 
 void CPlayer::OnCollisionExited(CGameObject* pDst)
 {
     // 충돌에서 나갈때
-    OutputDebugString(L"충돌끝남 \\> </\n");
+    OutputDebugString(L"플레이어와 충돌완료\n");
 }
 
 bool CPlayer::Attack_Input(const _float& fTimeDelta)

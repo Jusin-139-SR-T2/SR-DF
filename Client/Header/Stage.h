@@ -13,6 +13,9 @@
 #include "SnowParticle.h"
 #include "FireWork.h"
 
+#include "Awareness.h"
+#include "Hut.h"
+
 class CStage : public Engine::CScene
 {
 	DERIVED_CLASS(CScene, CStage)

@@ -122,7 +122,7 @@ HRESULT CPlayerLighter::Create_Light()
     AceLight.Type = D3DLIGHT_POINT; // 점광원으로 설정
     AceLight.Position = m_pPlayerTransformcomp->Get_Pos();
     AceLight.Range = 8.f; // 조명을 받는 객체의 가장 먼 거리 
-    AceLight.Diffuse = D3DXCOLOR(DXCOLOR_YELLOW); // 광원 색상 설정 - 광원에 반사될 때 출력되는 가장 주된 색
+    AceLight.Diffuse = D3DXCOLOR(DXCOLOR_ORANGE); // 광원 색상 설정 - 광원에 반사될 때 출력되는 가장 주된 색
     AceLight.Ambient = D3DXCOLOR(DXCOLOR_DARK_ORANGE); // 광원 주변 환경색 설정 - 광원의 위치와 무관하게 똑같은 양으로 모든 점에서 반사되는 색
     AceLight.Falloff = 1.f;
     // POINT 점광원 에서는 광선의 방향(DIRECTION) 무시 

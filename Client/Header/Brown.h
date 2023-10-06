@@ -11,8 +11,8 @@ BEGIN(Engine)
 class CRcBufferComp;
 class CTextureComponent;
 class CTransformComponent;
-class CSphereColComp;
-
+class CCalculatorComponent;
+class CColliderComponent;
 END
 
 class CBrown : public Engine::CGameObject
@@ -35,43 +35,44 @@ public:
 private:
 	CRcBufferComp*			m_pBufferComp = nullptr;
 	CTextureComponent*		m_pTextureComp = nullptr;
+	CColliderComponent*		m_pColliderComp = nullptr;				// 구 충돌 콜라이더
 	CTransformComponent*	m_pTransformComp = nullptr;
-	CTransformComponent*	m_pPlayerTransformcomp = nullptr;
 	CCalculatorComponent*	m_pCalculatorComp = nullptr;
-	CPlayer*				m_pPlayer = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;				// 구 충돌 콜라이더
+	CTransformComponent*	m_pPlayerTransformcomp = nullptr;
 
 private:
 	void				Height_On_Terrain();
 	HRESULT				Add_Component();
 	virtual void		Free();
 
+public:
+	_bool m_bAwareness = false;
+	
 	// Get, Set 함수 만들기 --------------------------------------------------
 public: 
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-	GETSET_EX2(CPlayer*, m_pPlayer, Player, GET, SET)
-	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
-
-protected: // 충돌 onoff
-	//virtual void	OnCollision(CGameObject* pDst);
-	//virtual void	OnCollisionEntered(CGameObject* pDst) ;
-	//virtual void	OnCollisionExited(CGameObject* pDst) ;
-
-
+		
+	// 충돌 onoff------------------------------------------------------------
+protected: 
+	virtual void	OnCollision(CGameObject* pDst);
+	virtual void	OnCollisionEntered(CGameObject* pDst) ;
+	virtual void	OnCollisionExited(CGameObject* pDst) ;
 
 	// 상태머신 셋팅 ---------------------------------------------------------
 private:
 	// 함수 -----------------------------------------------------------------
 	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
 	_float		m_fDistance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
-	void		FaceTurn(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
+	void		Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
 
 	// 변수 -----------------------------------------------------------------
-	_float		m_fCheck = 0;						//Taunt 등 프레임 돌리는횟수 지정
+	wchar_t		debugString[100];
+	_float		m_fCheck = 0;						// 프레임 돌리는횟수 지정
 	_int		m_iHP;								// 몬스터 현재 hp 
 	_int		m_iPreHP;							// 이전 HP 저장용도 
 	_int		m_iDazedHP = 25;					// 몬스터 기절하는 hp
@@ -106,11 +107,13 @@ private:
 	// 위치 조절 
 	_vec3		vPlayerPos;							// 플레이어 위치 벡터
 	_vec3		vDir;								// 몬스터가 플레이어 바라보는 벡터  
-
+	_vec3		m_vFirstPos;
+	
 	//스위치 on/off 
-	_bool Dead = false;
-	_bool DeadSpin = true;
-	_bool m_bGoHome = false;
+	_bool		Dead = false;
+	_bool		DeadSpin = true;
+	_bool		m_bGoHome = false;
+
 
 	// 상태머신 enum --------------------------------------------------
 public: 
@@ -139,28 +142,28 @@ private:
 
 #pragma region AI 
 
-	void AI_Idle(float fDeltaTime); 
-	void AI_Suspicious(float fDeltaTime); 
-	void AI_Taunt(float fDeltaTime);
-	void AI_Chase(float fDeltaTime);
-	void AI_Rest(float fDeltaTime);
+	void AI_Idle(float fDeltaTime); // SOUTH 바라보는중 
+	void AI_Suspicious(float fDeltaTime); // 오 ? 의심중
+	void AI_Taunt(float fDeltaTime); // 다가와봐 하고 도발상태 
+	void AI_Chase(float fDeltaTime); // 거리 체크해서 각종 상태 보내버리는 일종의 허브역할 
+	void AI_Rest(float fDeltaTime); // 제자리에서 들썩거림
 
-	void AI_Run(float fDeltaTime);
-	void AI_Walk(float fDeltaTime);
-	void AI_InchForward(float fDeltaTime);
-	void AI_Strafing(float fDeltaTime);
-	void AI_BasicAttack(float fDeltaTime);
-	void AI_HeavyAttack(float fDeltaTime);
-	void AI_Jump(float fDeltaTime);
+	void AI_Run(float fDeltaTime); // 달리기 
+	void AI_Walk(float fDeltaTime); // 걷기
+	void AI_InchForward(float fDeltaTime); // 앞으로 훅 다가오는 복싱 자세 
+	void AI_Strafing(float fDeltaTime); // 좌우로 흔들면서 옆, 뒤 둘중 하나로 이동 
+	void AI_BasicAttack(float fDeltaTime); // 일반 공격
+	void AI_HeavyAttack(float fDeltaTime); // 강공격 
+	void AI_Jump(float fDeltaTime); // 점프하는상태 - 플레이어가 공격하면 무서워서 뒤로 점프함 
 
-	void AI_Hit(float fDeltaTime);
-	void AI_FacePunch(float fDeltaTime);
-	void AI_HitByPitchedBall(float fDeltaTime);
+	void AI_Hit(float fDeltaTime); // 맞은 히트판정 
+	void AI_FacePunch(float fDeltaTime); // 얼굴에 맞았을경우 
+	void AI_HitByPitchedBall(float fDeltaTime); // 하단에 공격했을경우 
 
-	void AI_Dazed(float fDeltaTime);
-	void AI_Chopped(float fDeltaTime);
-	void AI_Headless(float fDeltaTime);
-	void AI_Death(float fDeltaTime);
+	void AI_Dazed(float fDeltaTime); // hp 일정이상 닳은 상태 
+	void AI_Chopped(float fDeltaTime); // 뒤에서 플레이어가 기습공격했을경우 Sleep으로 들어감 
+	void AI_Headless(float fDeltaTime); // 총류로 머리를 맞았을경우 
+	void AI_Death(float fDeltaTime); // hp 0인상태 
 
 	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 
 	void AI_GoHome(float fDeltaTime);		 // 정찰마치고 원위치 복귀중 
@@ -176,3 +179,15 @@ private:
 #pragma endregion
 };
 
+/*
+디버그 라인 
+
+OutputDebugString(L"▶ : 충돌 관련 디버그 
+OutputDebugString(L"▷ : 상태머신 관련 디버그 
+
+// 변수값이랑 같이 
+swprintf_s(debugString, L"Brown - 변수 확인 m_fAwareness = %f\n", m_fAwareness);
+OutputDebugStringW(debugString);
+
+
+*/

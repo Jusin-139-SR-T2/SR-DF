@@ -191,7 +191,7 @@ void CColliderComponent::OnCollisionEntered(CColliderComponent* pDst)
 void CColliderComponent::OnCollisionExited()
 {
     // 가지고 있던 충돌 정보를 확인하고
-    for (auto iter = m_listColliderObject.begin(); iter != m_listColliderObject.end(); ++iter)
+    for (auto iter = m_listColliderObject.begin(); iter != m_listColliderObject.end();)
     {
         if (!iter->second)
         {
@@ -204,7 +204,10 @@ void CColliderComponent::OnCollisionExited()
                     m_fnCollisionExited(pObj);
                 }
             }
+            iter = m_listColliderObject.erase(iter); // 계속해서 Exited를 돌지않게 충돌할경우 erase로 지우도록함  
         }
+        else
+            ++iter;
     }
 }
 

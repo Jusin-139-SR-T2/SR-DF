@@ -75,12 +75,6 @@ _int CAceFood::Update_GameObject(const _float& fTimeDelta)
 
     // 빌보드 
     BillBoard(fTimeDelta);
-
-    // TEST --------------------------
-    if (Engine::IsKey_Pressed(DIK_O))
-        m_bEat = true;
-    
-    //--------------------------------
     
     // 변수에 저장된 enum으로 texture 결정 - eaten 변경때문에 
     Eat_Food(m_pCurName, fTimeDelta);
