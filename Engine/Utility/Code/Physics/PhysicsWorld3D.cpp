@@ -85,7 +85,7 @@ _int CPhysicsWorld3D::Update_Physics(const Real& fTimeDelta)
 		case ECOLLISION::CAPSULE:
 		{
 			FCollisionCapsule* pShape = dynamic_cast<FCollisionCapsule*>(pCol);
-			pShape->vStart = pShape->pBody->Get_Position();
+			pShape->vPos = pShape->pBody->Get_Position();
 			break;
 		}
 		}

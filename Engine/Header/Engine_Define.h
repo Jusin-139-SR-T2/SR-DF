@@ -25,6 +25,7 @@
 #include <ctime>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 
 // 사운드 라이브러리

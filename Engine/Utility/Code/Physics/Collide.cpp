@@ -8,19 +8,19 @@ bool FCollisionDetector::CollsionPrimitive(const FCollisionPrimitive* srcShape, 
 	{
 	case ECOLLISION::SPHERE:
 	{
-		if (srcShape->Get_Type() == ECOLLISION::SPHERE)
+		if (dstShape->Get_Type() == ECOLLISION::SPHERE)
 		{
 			const FCollisionSphere* pShapeSrc = static_cast<const FCollisionSphere*>(srcShape);
 			const FCollisionSphere* pShapeDst = static_cast<const FCollisionSphere*>(dstShape);
 			bCollide = FCollisionDetector::SphereAndSphere(*pShapeSrc, *pShapeDst);
 		}
-		else if (srcShape->Get_Type() == ECOLLISION::BOX)
+		else if (dstShape->Get_Type() == ECOLLISION::BOX)
 		{
 			const FCollisionSphere* pShapeSrc = static_cast<const FCollisionSphere*>(srcShape);
 			const FCollisionBox* pShapeDst = static_cast<const FCollisionBox*>(dstShape);
 			bCollide = FCollisionDetector::SphereAndBox(*pShapeSrc, *pShapeDst);
 		}
-		else if (srcShape->Get_Type() == ECOLLISION::CAPSULE)
+		else if (dstShape->Get_Type() == ECOLLISION::CAPSULE)
 		{
 			const FCollisionSphere* pShapeSrc = static_cast<const FCollisionSphere*>(srcShape);
 			const FCollisionCapsule* pShapeDst = static_cast<const FCollisionCapsule*>(dstShape);
@@ -30,19 +30,19 @@ bool FCollisionDetector::CollsionPrimitive(const FCollisionPrimitive* srcShape, 
 	}
 	case ECOLLISION::BOX:
 	{
-		if (srcShape->Get_Type() == ECOLLISION::SPHERE)
+		if (dstShape->Get_Type() == ECOLLISION::SPHERE)
 		{
 			const FCollisionBox* pShapeSrc = static_cast<const FCollisionBox*>(srcShape);
 			const FCollisionSphere* pShapeDst = static_cast<const FCollisionSphere*>(dstShape);
 			bCollide = FCollisionDetector::BoxAndSphere(*pShapeSrc, *pShapeDst);
 		}
-		else if (srcShape->Get_Type() == ECOLLISION::BOX)
+		else if (dstShape->Get_Type() == ECOLLISION::BOX)
 		{
 			const FCollisionBox* pShapeSrc = static_cast<const FCollisionBox*>(srcShape);
 			const FCollisionBox* pShapeDst = static_cast<const FCollisionBox*>(dstShape);
 			bCollide = FCollisionDetector::BoxAndBox(*pShapeSrc, *pShapeDst);
 		}
-		else if (srcShape->Get_Type() == ECOLLISION::CAPSULE)
+		else if (dstShape->Get_Type() == ECOLLISION::CAPSULE)
 		{
 			const FCollisionBox* pShapeSrc = static_cast<const FCollisionBox*>(srcShape);
 			const FCollisionCapsule* pShapeDst = static_cast<const FCollisionCapsule*>(dstShape);
@@ -52,19 +52,19 @@ bool FCollisionDetector::CollsionPrimitive(const FCollisionPrimitive* srcShape, 
 	}
 	case ECOLLISION::CAPSULE:
 	{
-		if (srcShape->Get_Type() == ECOLLISION::SPHERE)
+		if (dstShape->Get_Type() == ECOLLISION::SPHERE)
 		{
 			const FCollisionCapsule* pShapeSrc = static_cast<const FCollisionCapsule*>(srcShape);
 			const FCollisionSphere* pShapeDst = static_cast<const FCollisionSphere*>(dstShape);
 			bCollide = FCollisionDetector::CapsuleAndSphere(*pShapeSrc, *pShapeDst);
 		}
-		else if (srcShape->Get_Type() == ECOLLISION::BOX)
+		else if (dstShape->Get_Type() == ECOLLISION::BOX)
 		{
 			const FCollisionCapsule* pShapeSrc = static_cast<const FCollisionCapsule*>(srcShape);
 			const FCollisionBox* pShapeDst = static_cast<const FCollisionBox*>(dstShape);
 			bCollide = FCollisionDetector::CapsuleAndBox(*pShapeSrc, *pShapeDst);
 		}
-		else if (srcShape->Get_Type() == ECOLLISION::CAPSULE)
+		else if (dstShape->Get_Type() == ECOLLISION::CAPSULE)
 		{
 			const FCollisionCapsule* pShapeSrc = static_cast<const FCollisionCapsule*>(srcShape);
 			const FCollisionCapsule* pShapeDst = static_cast<const FCollisionCapsule*>(dstShape);
@@ -85,14 +85,38 @@ bool FCollisionDetector::SphereAndSphere(const FCollisionSphere& srcSphere, cons
 
 bool FCollisionDetector::SphereAndBox(const FCollisionSphere& srcSphere, const FCollisionBox& dstBox)
 {
+	FVector3 vResult = srcSphere.vPos;
+	FVector3 vMin = dstBox.vPos - dstBox.vHalfSize;
+	FVector3 vMax = dstBox.vPos + dstBox.vHalfSize;
 
-	return false;
+	vResult.x = (vResult.x < vMin.x) ? vMin.x : vResult.x;
+	vResult.y = (vResult.y < vMin.y) ? vMin.y : vResult.y;
+	vResult.z = (vResult.z < vMin.z) ? vMin.z : vResult.z;
+
+	vResult.x = (vResult.x > vMax.x) ? vMax.x : vResult.x;
+	vResult.y = (vResult.y > vMax.y) ? vMax.y : vResult.y;
+	vResult.z = (vResult.z > vMax.z) ? vMax.z : vResult.z;
+
+	FVector3 vClosestPoint = vResult;
+	Real fDistSq = (srcSphere.vPos - vClosestPoint).SquareMagnitude();
+	Real fRadiusSq = (srcSphere.fRadius * srcSphere.fRadius);
+
+	return fDistSq < fRadiusSq;
 }
 
-bool FCollisionDetector::SphereAndCapsule(const FCollisionSphere& srcCapsule, const FCollisionCapsule& dstCapsule)
+bool FCollisionDetector::SphereAndCapsule(const FCollisionSphere& srcSphere, const FCollisionCapsule& dstCapsule)
 {
+	FVector3 vDst_Normal = dstCapsule.vDirHalfSize.Unit();
+	FVector3 vDst_LineEndOffset = vDst_Normal * dstCapsule.fRadius;
+	FVector3 vDst_A = dstCapsule.vPos - dstCapsule.vDirHalfSize + vDst_LineEndOffset;			// A 구 위치
+	FVector3 vDst_B = dstCapsule.vPos + dstCapsule.vDirHalfSize - vDst_LineEndOffset;			// B 구 위치
 
-	return false;
+	FVector3 vBest = FLineTests::ClosestPointOnLineSegment(vDst_A, vDst_B, srcSphere.vPos);
+
+	FVector3 vSub = vBest - srcSphere.vPos;
+	Real fSqLength = vSub.Magnitude();
+
+	return (srcSphere.fRadius + dstCapsule.fRadius >= fSqLength);
 }
 
 bool FCollisionDetector::SphereAndPlane(const FCollisionSphere& srcSphere, const FCollisionPlane& dstPlane)
@@ -103,8 +127,8 @@ bool FCollisionDetector::SphereAndPlane(const FCollisionSphere& srcSphere, const
 
 bool FCollisionDetector::BoxAndBox(const FCollisionBox& srcBox, const FCollisionBox& dstBox)
 {
-	return ((srcBox.vPos + srcBox.vHalfSize <= dstBox.vPos - dstBox.vHalfSize)
-		&& (dstBox.vPos + dstBox.vHalfSize <= srcBox.vPos - srcBox.vHalfSize));
+	return (((srcBox.vPos + srcBox.vHalfSize) >= (dstBox.vPos - dstBox.vHalfSize))
+		&& ((dstBox.vPos + dstBox.vHalfSize) >= (srcBox.vPos - srcBox.vHalfSize)));
 }
 
 bool FCollisionDetector::BoxAndCapsule(const FCollisionBox& srcBox, const FCollisionCapsule& dstCapsule)
@@ -117,21 +141,21 @@ bool FCollisionDetector::BoxAndPlane(const FCollisionBox& srcBox, const FCollisi
 	return false;
 }
 
-bool FCollisionDetector::CapsuleAndCapsule(const FCollisionCapsule& srcCapsule, const FCollisionCapsule& dstCapsult)
+bool FCollisionDetector::CapsuleAndCapsule(const FCollisionCapsule& srcCapsule, const FCollisionCapsule& dstCapsule)
 {
-	FVector3 vSrc_Normal = (srcCapsule.vEnd - srcCapsule.vStart).Unit();
+	FVector3 vSrc_Normal = srcCapsule.vDirHalfSize.Unit();
 	FVector3 vSrc_LineEndOffset = vSrc_Normal * srcCapsule.fRadius;
-	FVector3 vSrc_A = srcCapsule.vStart + vSrc_LineEndOffset;			// A 구 위치
-	FVector3 vSrc_B = srcCapsule.vEnd - vSrc_LineEndOffset;				// B 구 위치
+	FVector3 vSrc_A = srcCapsule.vPos - srcCapsule.vDirHalfSize + vSrc_LineEndOffset;			// A 구 위치
+	FVector3 vSrc_B = srcCapsule.vPos + srcCapsule.vDirHalfSize - vSrc_LineEndOffset;			// B 구 위치
 
-	FVector3 vDst_Normal = (srcCapsule.vEnd - srcCapsule.vStart).Unit();
-	FVector3 vDst_LineEndOffset = vDst_Normal * srcCapsule.fRadius;
-	FVector3 vDst_A = srcCapsule.vStart + vDst_LineEndOffset;			// A 구 위치
-	FVector3 vDst_B = srcCapsule.vEnd - vDst_LineEndOffset;				// B 구 위치
+	FVector3 vDst_Normal = dstCapsule.vDirHalfSize.Unit();
+	FVector3 vDst_LineEndOffset = vDst_Normal * dstCapsule.fRadius;
+	FVector3 vDst_A = dstCapsule.vPos - dstCapsule.vDirHalfSize + vDst_LineEndOffset;			// A 구 위치
+	FVector3 vDst_B = dstCapsule.vPos + dstCapsule.vDirHalfSize - vDst_LineEndOffset;			// B 구 위치
 
 	FVector3 vAA = vDst_A - vSrc_A;
-	FVector3 vAB = vDst_B - vSrc_B;
-	FVector3 vBA = vDst_A - vSrc_A;
+	FVector3 vAB = vDst_A - vSrc_B;
+	FVector3 vBA = vDst_B - vSrc_A;
 	FVector3 vBB = vDst_B - vSrc_B;
 
 	Real fAA = vAA.SquareMagnitude();
@@ -156,7 +180,7 @@ bool FCollisionDetector::CapsuleAndCapsule(const FCollisionCapsule& srcCapsule, 
 	FVector3 vPenetration_Normal = vBestA - vBestB;
 	Real fLength = vPenetration_Normal.Magnitude();
 	vPenetration_Normal /= fLength;
-	Real fPenetration_Depth = srcCapsule.fRadius + dstCapsult.fRadius - fLength;
+	Real fPenetration_Depth = srcCapsule.fRadius + dstCapsule.fRadius - fLength;
 	bool bIntersects = fPenetration_Depth > 0.f;
 
 	return bIntersects;

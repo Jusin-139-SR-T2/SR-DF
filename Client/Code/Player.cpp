@@ -31,6 +31,9 @@ HRESULT CPlayer::Ready_GameObject()
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 
+    /*FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
+    pShape->fRadius = 5.f;*/
+
     // 왼손
     m_fSizeX = 300;
     m_fSizeY = 300;
@@ -130,13 +133,16 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     FrameManage(fTimeDelta);
 
     // 물리 업데이트 코드
-    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 계속 검사하는곳 : player - update 
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌체 이동
 
-    _vec3 vTest = m_pTransformComp->Get_Pos();
+    /*_vec3 vTest = m_pTransformComp->Get_Pos();
     vTest.z += 10.f;
     list<CGameObject*> listCollision = Engine::IntersectTests_Sphere_GetGameObject(0, vTest, 5.f);
+    Engine::IntersectTests_Sphere_GetGameObject(0, vTest, 5.f);
     for (auto iter = listCollision.begin(); iter != listCollision.end(); ++iter)
-        (*iter)->Set_Dead();
+        (*iter)->Set_Dead();*/
+
+    
 
     // 랜더 그룹 지정, 현재상태 : 알파 테스트
     Engine::Add_RenderGroup(RENDER_UI, this);
@@ -226,7 +232,7 @@ HRESULT CPlayer::Add_Component()
     // 지형타기 컴포넌트
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
     // 콜라이더 컴포넌트
-    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
     // 왼손 컴포넌트
     NULL_CHECK_RETURN(m_pLeftHandComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureLeftHandTest", L"Proto_PlayerLeftTextureComp"), E_FAIL);
     // 오른손 컴포넌트
@@ -242,9 +248,9 @@ HRESULT CPlayer::Add_Component()
     // 물리 세계 등록
     m_pColliderComp->EnterToPhysics(0);
     // 충돌 함수 연결
-    m_pColliderComp->Set_Collision_Event<CPlayer>(this, &CPlayer::OnCollision);
-    m_pColliderComp->Set_CollisionEntered_Event<CPlayer>(this, &CPlayer::OnCollisionEntered);
-    m_pColliderComp->Set_CollisionExited_Event<CPlayer>(this, &CPlayer::OnCollisionExited);
+    m_pColliderComp->Set_Collision_Event<ThisClass>(this, &ThisClass::OnCollision);
+    m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
+    m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
 
    // m_pColliderComp->Get_Shape()
 

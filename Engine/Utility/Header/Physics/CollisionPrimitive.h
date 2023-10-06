@@ -144,21 +144,21 @@ class ENGINE_DLL FCollisionCapsule : public FCollisionPrimitive
 	DERIVED_CLASS(FCollisionPrimitive, FCollisionCapsule)
 public:
 	FCollisionCapsule()
-		: vStart(0.f, -1.f, 0.f), vEnd(0.f, 1.f, 0.f), fRadius(2.f)
+		: vPos(0.f, 0.f, 0.f), vDirHalfSize(0.f, 1.f, 0.f), fRadius(0.5f)
 	{
 		eType = ECOLLISION::CAPSULE;
 	}
 	FCollisionCapsule(const FCollisionCapsule& rhs)
 		: Base(rhs)
-		, vStart(rhs.vStart), vEnd(rhs.vEnd), fRadius(rhs.fRadius)
+		, vPos(rhs.vPos), vDirHalfSize(rhs.vDirHalfSize), fRadius(rhs.fRadius)
 	{
 		eType = ECOLLISION::CAPSULE;
 	}
 	virtual ~FCollisionCapsule() {}
 
 public:
-	FVector3	vStart;
-	FVector3	vEnd;
+	FVector3	vPos;
+	FVector3	vDirHalfSize;
 	Real		fRadius;
 };
 

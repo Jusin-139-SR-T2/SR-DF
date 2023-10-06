@@ -43,7 +43,7 @@ public:
 inline FVector3 FLineTests::ClosestPointOnLineSegment(const FVector3& vA, const FVector3& vB, const FVector3& vPoint)
 {
 	FVector3 vAB = vB - vA;
-	Real fSaturate = min(max(0, (vPoint - vA).DotProduct(vAB) / vAB.DotProduct(vAB)), 1);
+	Real fSaturate = min(max(0.f, (vPoint - vA).DotProduct(vAB) / vAB.DotProduct(vAB)), 1.f);
 
 	return vA + vAB * fSaturate;
 }
@@ -103,7 +103,7 @@ public:
 	// 구 충돌
 	static bool SphereAndSphere(const FCollisionSphere& srcSphere, const FCollisionSphere& dstSphere);
 	static bool SphereAndBox(const FCollisionSphere& srcSphere, const FCollisionBox& dstBox);
-	static bool SphereAndCapsule(const FCollisionSphere& srcCapsule, const FCollisionCapsule& dstCapsule);
+	static bool SphereAndCapsule(const FCollisionSphere& srcSphere, const FCollisionCapsule& dstCapsule);
 	static bool SphereAndPlane(const FCollisionSphere& srcSphere, const FCollisionPlane& dstPlane);
 
 	// 박스 충돌
@@ -113,7 +113,7 @@ public:
 	static bool BoxAndPlane(const FCollisionBox& srcBox, const FCollisionPlane& dstPlane);
 
 	// 캡슐 충돌
-	static bool CapsuleAndCapsule(const FCollisionCapsule& srcCapsule, const FCollisionCapsule& dstCapsult);
+	static bool CapsuleAndCapsule(const FCollisionCapsule& srcCapsule, const FCollisionCapsule& dstCapsule);
 	static bool CapsuleAndBox(const FCollisionCapsule& srcCapsule, const FCollisionBox& dstBox) { return BoxAndCapsule(dstBox, srcCapsule); }
 	static bool CapsuleAndSphere(const FCollisionCapsule& srcCapsule, const FCollisionSphere& dstSphere) { return SphereAndCapsule(dstSphere, srcCapsule); }
 	static bool CapsuleAndPlane(const FCollisionCapsule& srcCapsule, const FCollisionPlane& dstPlane);

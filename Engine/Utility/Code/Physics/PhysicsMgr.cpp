@@ -107,8 +107,8 @@ list<CColliderComponent*> CPhysicsMgr::IntersectTests_Box(const _uint iWorldID, 
 list<CColliderComponent*> CPhysicsMgr::IntersectTests_Capsule(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius)
 {
 	FCollisionCapsule pShape;
-	pShape.vStart = FVector3(vPos.x - vNormal.x, vPos.y - vNormal.y, vPos.z - vNormal.z);
-	pShape.vEnd = FVector3(vPos.x + vNormal.x, vPos.y + vNormal.y, vPos.z + vNormal.z);
+	pShape.vPos = FVector3(vPos.x, vPos.y, vPos.z);
+	pShape.vDirHalfSize = FVector3(vNormal.x, vNormal.y, vNormal.z);
 	pShape.fRadius = fRadius;
 
 	list<CColliderComponent*> listColliderComp;
