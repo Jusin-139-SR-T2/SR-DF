@@ -130,12 +130,3 @@ CGameObject* CLayer::Get_GameObject(const _tchar* pObjTag)
 
 	return pObj;
 }
-
-HRESULT CLayer::LateCreate_Object(const _tchar* pObjTag, CGameObject* pGameObject)
-{
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-
-	m_mapObject.insert({ pObjTag, pGameObject });
-
-	return S_OK;
-}

@@ -116,15 +116,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     // 빌보드
     Billboard(fTimeDelta);
     
-    if (m_fFrame > m_fFrameEnd)
-    {
-        m_fFrame = 0.f;
-   
-        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State()
-            || STATE_OBJ::DEATH == m_tState_Obj.Get_State())
-            m_fCheck += 1;
-    }
-
     // 상태머신-------------------------------------
     m_fFrame += m_fFrameSpeed * fTimeDelta;
 
@@ -132,10 +123,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
     m_mapActionKey.Update();	// 액션키 초기화
 
-    //swprintf_s(debugString, L"Brown - 변수 확인 m_fAwareness = %f\n", m_fAwareness);
-    ////OutputDebugStringW(debugString);
-
-    // ---------- 테스트 빌드 ----------------------
     // 현재 피격 테스트중 
     if (Engine::IsKey_Pressing(DIK_H))
     {
@@ -148,6 +135,15 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         m_tState_Obj.Set_State(STATE_OBJ::DEATH);
     }
 
+    if (m_fFrame > m_fFrameEnd)
+    {
+        m_fFrame = 0.f;
+
+        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State()
+            || STATE_OBJ::DEATH == m_tState_Obj.Get_State())
+            m_fCheck += 1;
+    }
+
     // 물리 업데이트 코드
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 
     //_vec3 vTest = m_pTransformComp->Get_Pos();
@@ -155,10 +151,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     //list<CGameObject*> listCollision = Engine::IntersectTests_Sphere_GetGameObject(0, vTest, 5.f);
     //for (auto iter = listCollision.begin(); iter != listCollision.end(); ++iter)
     //    (*iter)->Set_Dead();
-
-
-    //swprintf_s(debugString, L"Brown - 변수 확인 m_iHP = %i \n", m_iHP);
-    ////OutputDebugStringW(debugString);
 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 

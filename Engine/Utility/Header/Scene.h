@@ -35,10 +35,6 @@ protected:	// 레이어 관련
 	HRESULT				Add_Layer(const _tchar* pLayerTag, CLayer* pLayer);
 	CLayer*				Get_Layer(const _tchar* pLayerTag) { return m_mapLayer[pLayerTag]; }
 
-
-public:
-	HRESULT				LateCreate_Object(const _tchar* pLayerTag, const _tchar* pObjectTag, CLayer* pLayer, CGameObject* pObject);
-
 protected:
 	_unmap<const _tchar*, CLayer*>	m_mapLayer;
 	vector<CLayer*>					m_vecPriorityLayer;

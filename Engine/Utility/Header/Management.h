@@ -39,9 +39,6 @@ public:
 	HRESULT			Add_Scene(CScene* pScene, wstring strSceneName);
 	HRESULT			Clear_Scene();
 
-	// Stage진입 이후 Create용도 
-	HRESULT			LateCreate_Object(const _tchar* pLayerTag, const _tchar* pObjectTag, CLayer* pLayer, CGameObject* pObject);
-
 private:
 	CScene*								m_pScene_Reserve;
 	CScene*								m_pScene_Current;

@@ -105,16 +105,3 @@ HRESULT CScene::Add_Layer(const _tchar* pLayerTag, CLayer* pLayer)
 
 	return S_OK;
 }
-
-HRESULT CScene::LateCreate_Object(const _tchar* pLayerTag, const _tchar* pObjectTag, CLayer* pLayer, CGameObject* pObject)
-{
-	NULL_CHECK_RETURN(pLayer, E_FAIL);
-
-	auto iter = m_mapLayer.find(pLayerTag);
-
-	if (iter == m_mapLayer.end()) // 기존거에 올려야 하니 없으면 E_FAIL 
-		return E_FAIL;
-
-	return pLayer->LateCreate_Object(pObjectTag, pObject);
-}
-

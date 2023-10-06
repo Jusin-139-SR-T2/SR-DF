@@ -509,6 +509,7 @@ void CBoss::AI_Pre_Attack(float fDeltaTime)
                 {
                     m_tState_Obj.Set_State(STATE_OBJ::SHOOTING);
                 }
+
             }
             else
             {
