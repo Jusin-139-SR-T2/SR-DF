@@ -3,6 +3,10 @@ CComponent*	Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar
 {
 	return CManagement::GetInstance()->Get_Component(eID, pLayerTag, pObjTag, pComponentTag);
 }
+CGameObject* Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
+{
+	return CManagement::GetInstance()->Get_GameObject(pLayerTag, pObjTag);
+}
 HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance, EMANAGE_SCENE eType)
 {
 	CManagement*		pManagement = CManagement::GetInstance();

@@ -193,6 +193,7 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
         {
             LoadObjectInforamtionData();
         }
+
     }   
     ImGui::End();
 #pragma endregion
@@ -751,6 +752,37 @@ void CImguiAnimationTool::RenderTimeline()
         }
     }
 
+#pragma region 선택한 키프레임 수정 부분 (보류)
+    //// 클릭 반경(키프레임을 클릭하기 위한 반경) 설정
+    //float clickRadius = 10.0f; // 예: 10 픽셀
+
+    //if (ImGui::IsMouseClicked(0))
+    //{
+    //    // 마우스 클릭 위치를 가져옵니다.
+    //    ImVec2 mousePos = ImGui::GetMousePos();
+
+    //    // 클릭한 위치와 일정 반경 내에 있는 키프레임을 찾습니다.
+    //    for (int i = 0; i < timeline.size(); ++i)
+    //    {
+    //        Keyframe& keyframe = timeline[i];
+    //        // 키프레임의 시간을 화면 X 좌표로 변환합니다.
+    //        float xPos = timelinePos.x + (keyframe.time / MaxTime) * timelineSize.x;
+    //        float yPos = timelinePos.y + timelineSize.y - timelineSize.y * keyframe.value;
+
+    //        // 클릭한 위치와 키프레임 사이의 거리를 계산합니다.
+    //        float distance = sqrt((xPos - mousePos.x) * (xPos - mousePos.x) + (yPos - mousePos.y) * (yPos - mousePos.y));
+
+    //        // 일정 반경 내에 있는 경우 키프레임을 수정합니다.
+    //        if (distance < clickRadius)
+    //        {
+    //            // 해당 인덱스의 키프레임을 수정합니다.
+    //            DrawSelectedKeyframeEditor(keyframe);
+    //            break;
+    //        }
+    //    }
+    //}
+#pragma endregion
+
 #pragma endregion
 
     // 마우스 릴리즈 시 드래그 종료
@@ -869,6 +901,12 @@ void CImguiAnimationTool::RenderTimeline()
     {
         playbackSpeed += 1.f;
     }
+
+    // "F5" 키 : 키프레임 초기화
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F5)))
+    {
+        timeline.clear();
+    }
 #pragma endregion
 
     ImGui::SameLine();
@@ -913,9 +951,9 @@ void CImguiAnimationTool::RenderTimeline()
 
     ImGui::SameLine();
 
-    // 애니메이션 저장 및 로드 버튼
+    // 애니메이션 저장
     if (ImGui::Button(u8"저장", ImVec2(30, 0))) {
-        SaveAnimationToFile("Animation");
+        SaveAnimationToFile(cFileSaveName);
     }
 
 #pragma endregion
@@ -936,21 +974,22 @@ void CImguiAnimationTool::RenderTimeline()
 
 #pragma endregion
 
-    //ImGui::Separator();
-
 #pragma region 애니메이션 속성 편집
+
+    HandleKeyframeClick();
 
     // 키프렘 목록을 보여주는 ImGui 윈도우를 만든다.
     if (ImGui::Begin(u8"키프레임 수정")) 
     {
         // 키프렘 목록을 루프를 돌며 표시.
-        for (int i = 0; i < timeline.size(); ++i) 
+        for (int i = 0; i < timeline.size(); ++i)
         {
             Keyframe& keyframe = timeline[i];
 
             // 각 키프렘을 버튼 또는 다른 ImGui 위젯으로 표시.
             // 여기에서는 버튼을 사용.
-            if (ImGui::Button((u8"키프레임" + std::to_string(i)).c_str())) {
+            if (ImGui::Button((u8"키프레임" + std::to_string(i)).c_str())) 
+            {
                 // 키프렘이 클릭되면 해당 인덱스를 선택된 키프렘 인덱스로 설정.
                 selectedKeyframeIndex = i;
             }
@@ -970,7 +1009,8 @@ void CImguiAnimationTool::RenderTimeline()
     // 미리보기 키프레임 보간
     if (!timeline.empty()) 
     {
-        for (int i = 0; i < timeline.size() - 1; ++i) {
+        for (int i = 0; i < timeline.size() - 1; ++i) 
+        {
             Keyframe& prevKeyframe = timeline[i];
             Keyframe& nextKeyframe = timeline[i + 1];
 
@@ -1005,11 +1045,21 @@ void CImguiAnimationTool::RenderTimeline()
         currentTime = playbackTime;
     }
 
+    ImGui::SameLine(320);
+
+    ImGui::Text(u8"애니메이션 반복 : ");
+
+    ImGui::SameLine();
+
+    ImGui::RadioButton(u8"On", &bRepetition, false); // 반복 On
+    ImGui::SameLine();
+    ImGui::RadioButton(u8"Off", &bRepetition, true); // 반복 Off
 
     ImGui::SameLine(690.f);
 
+    // 애니메이션 불러오기
     if (ImGui::Button(u8"애니메이션 불러오기", ImVec2(120, 0))) {
-        LoadAnimationFromFile("Animation");
+        LoadAnimationFromFile(cFileLoadName);
     }
 
     // 애니메이션 시간 설정
@@ -1022,6 +1072,12 @@ void CImguiAnimationTool::RenderTimeline()
             isPlaying = false;  // 플레이 중지
         }
     }
+
+    ImGui::PushItemWidth(100); // 입력 필드의 길이를 원하는 픽셀로 지정
+    ImGui::InputText(u8"저장할 파일 이름", cFileSaveName, sizeof(cFileSaveName));
+    ImGui::SameLine();
+    ImGui::InputText(u8"불러올 파일 이름", cFileLoadName, sizeof(cFileLoadName));
+    ImGui::PopItemWidth(); // 길이 설정을 되돌림
 
 #pragma endregion
 
@@ -1716,3 +1772,78 @@ void CImguiAnimationTool::EditKeyframesForAnimation(int numFrames)
 //    t = (t < 0.0f) ? 0.0f : ((t > 1.0f) ? 1.0f : t); // t 값을 [0, 1] 범위로 클램프합니다.
 //    return ImVec4(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t, a.w + (b.w - a.w) * t);
 //}
+
+//// 애니메이션 타임라인에 랜더링된 키프레임을 클릭했을 때 호출되는 함수
+//void CImguiAnimationTool::HandleKeyframeClick()
+//{
+//    // 이 함수는 마우스 이벤트 처리 로직을 포함합니다.
+//    // 여기서는 간단한 예제로 클릭 시 선택된 키프레임을 찾아 수정하는 로직을 추가합니다.
+//
+//    // 마우스 버튼 클릭 여부 확인
+//    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+//    {
+//        // 마우스 클릭 위치를 가져옵니다.
+//        ImVec2 mousePos = ImGui::GetMousePos();
+//
+//        // 타임라인의 시작 위치를 가져옵니다.
+//        ImVec2 timelineStartPos = ImGui::GetCursorScreenPos();
+//
+//        // 타임라인의 각 키프레임 버튼을 클릭 여부를 확인하고 선택합니다.
+//        for (int i = 0; i < timeline.size(); ++i)
+//        {
+//            ImVec2 keyframeButtonPos = timelineStartPos + ImVec2(i * 30, 0); // 키프레임 버튼 간격은 30입니다.
+//
+//            // 클릭한 위치가 해당 키프레임 버튼의 영역에 포함되는지 확인합니다.
+//            if (mousePos.x >= keyframeButtonPos.x && mousePos.x <= (keyframeButtonPos.x + 20)) // 버튼 너비는 20입니다.
+//            {
+//                // 클릭한 키프레임을 선택합니다.
+//                selectedKeyframeIndex = i;
+//                break; // 선택 후 루프 종료
+//            }
+//        }
+//    }
+//}
+
+// 마우스 이벤트 처리 함수
+void CImguiAnimationTool::HandleKeyframeClick()
+{
+    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    {
+        ImVec2 mousePos = ImGui::GetMousePos();
+
+        // 타임라인의 시작 위치와 끝 위치를 계산합니다.
+        ImVec2 windowPos = ImGui::GetWindowPos();
+        ImVec2 timelineStartPos = windowPos + ImGui::GetCursorScreenPos();
+        ImVec2 timelineEndPos = timelineStartPos + ImVec2(timeline.size() * 30, 20); // 키프레임 버튼 간격은 30, 높이는 20으로 가정합니다.
+
+        // 마우스 클릭 위치가 타임라인 영역 내에 있는지 확인합니다.
+       // if (mousePos.x >= timelineStartPos.x && mousePos.x <= timelineEndPos.x &&
+       //     mousePos.y >= timelineStartPos.y && mousePos.y <= timelineEndPos.y)
+        {
+            // 각 키프레임 버튼을 클릭 여부를 확인하고 선택합니다.
+            for (int i = 0; i < timeline.size(); ++i)
+            {
+                ImVec2 keyframeButtonPos = timelineStartPos + ImVec2(i * 30, 0); // 키프레임 버튼 간격은 30, 높이는 20으로 가정합니다.
+                ImVec2 keyframeButtonEndPos = keyframeButtonPos + ImVec2(20, 20); // 버튼 너비와 높이는 20으로 가정합니다.
+
+                // 클릭한 위치가 해당 키프레임 버튼의 영역에 포함되는지 확인합니다.
+                if (mousePos.x >= keyframeButtonPos.x && mousePos.x <= keyframeButtonEndPos.x &&
+                    mousePos.y >= keyframeButtonPos.y && mousePos.y <= keyframeButtonEndPos.y)
+                {
+                    // 클릭한 키프레임을 선택합니다.
+                    selectedKeyframeIndex = i;
+                    break; // 선택 후 루프 종료
+                }
+            }
+        }
+    }
+
+    // 선택된 키프레임의 인덱스를 사용하여 키프레임을 편집합니다.
+    if (!timeline.empty() && selectedKeyframeIndex >= 0 && selectedKeyframeIndex < timeline.size())
+    {
+        Keyframe& selectedKeyframe = timeline[selectedKeyframeIndex];
+
+        // 선택된 키프렘의 애니메이션 속성을 편집하는 함수 호출
+        //DrawSelectedKeyframeEditor(selectedKeyframe);
+    }
+}

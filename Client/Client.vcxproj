@@ -56,6 +56,9 @@
     <ClCompile Include="Code\AceBuilding.cpp" />
     <ClCompile Include="Code\AceInteraction.cpp" />
     <ClCompile Include="Code\AceFood.cpp" />
+    <ClCompile Include="Code\Attack.cpp" />
+    <ClCompile Include="Code\AttackPool.cpp" />
+    <ClCompile Include="Code\Bullet.cpp" />
     <ClCompile Include="Code\PlayerLighter.cpp" />
     <ClCompile Include="Code\AceObjectFactory.cpp" />
     <ClCompile Include="Code\AceThrow.cpp" />
