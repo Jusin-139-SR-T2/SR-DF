@@ -46,8 +46,8 @@ HRESULT CBackGround::Add_Component()
 	//NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_LogoTexture", L"Proto_LogoTextureComp"), E_FAIL);
 	
 	//몬스터 - 작업할때 넣기 
-	//NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_LogoTexture", L"Proto_BrownTextureComp"), E_FAIL);
-	
+	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_MonsterTexture", L"Proto_BrownTextureComp"), E_FAIL);
+
 	return S_OK;
 }
 

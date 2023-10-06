@@ -28,7 +28,7 @@ public:
 	virtual void	LateUpdate_GameObject() override;
 	virtual void	Render_GameObject() override;
 
-	static CGray* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CGray* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
 
 private:
 	CRcBufferComp*			m_pBufferComp = nullptr;

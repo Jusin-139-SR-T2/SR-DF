@@ -127,11 +127,8 @@
     <Filter Include="02. GameObject\03. Lighter\01. CeilingLighter">
       <UniqueIdentifier>{d2f211d2-f5ae-419c-bc37-862eb89e188f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\95. Temporary">
-      <UniqueIdentifier>{f553330e-1def-4c8f-b61c-2f0e25dfa29f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\95. Temporary\0. Hut">
-      <UniqueIdentifier>{ef027c69-f40f-4591-ad2b-ad8734a81160}</UniqueIdentifier>
+    <Filter Include="02. GameObject\02. AceObjectFactory\04. Ace_Building">
+      <UniqueIdentifier>{46d2f07e-70eb-4b8c-977b-bfe73d40833b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -228,8 +225,8 @@
     <ClInclude Include="Dazed.h">
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
     </ClInclude>
-    <ClInclude Include="Hut.h">
-      <Filter>02. GameObject\95. Temporary\0. Hut</Filter>
+    <ClInclude Include="AceBuilding.h">
+      <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -323,8 +320,8 @@
     <ClCompile Include="Dazed.cpp">
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
     </ClCompile>
-    <ClCompile Include="Hut.cpp">
-      <Filter>02. GameObject\95. Temporary\0. Hut</Filter>
+    <ClCompile Include="AceBuilding.cpp">
+      <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

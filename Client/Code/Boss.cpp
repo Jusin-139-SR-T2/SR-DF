@@ -15,7 +15,7 @@ CBoss::~CBoss()
 {
 }
 
-CBoss* CBoss::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CBoss* CBoss::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -27,8 +27,12 @@ CBoss* CBoss::Create(LPDIRECT3DDEVICE9 pGraphicDev)
         return nullptr;
     }
 
+    pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
+    pInstance->vPatrolPointZero = { _x, _y, _z };
+
     return pInstance;
 }
+
 
 HRESULT CBoss::Ready_GameObject()
 {
@@ -37,7 +41,6 @@ HRESULT CBoss::Ready_GameObject()
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
-    m_pTransformComp->Set_Pos({ 15.f, 10.f, 25.f });
     m_fFrame = 0;
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
@@ -635,7 +638,7 @@ void CBoss::AI_Run(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::RUN].Act();
 
-        if (m_fFrame > m_fFrameEnd)
+        if (Calc_Distance() < 5.f)
         {
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }

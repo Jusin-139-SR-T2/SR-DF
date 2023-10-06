@@ -42,6 +42,7 @@ private:
 public:
 	GETSET_EX1(_float, m_fPriority, Priority, GET_C_REF)
 
+	HRESULT LateCreate_Object(const _tchar* pObjTag, CGameObject* pGameObject);
 protected:
 	_float			m_fPriority;
 

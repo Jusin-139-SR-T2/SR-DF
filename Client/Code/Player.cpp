@@ -32,7 +32,7 @@ HRESULT CPlayer::Ready_GameObject()
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
     FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-    pShape->fRadius = 3.f;
+    pShape->fRadius = 2.f;
 
     // 왼손
     m_fSizeX = 300;
@@ -40,7 +40,7 @@ HRESULT CPlayer::Ready_GameObject()
 
     m_fX = -200.f; // 중점위치 
     m_fY = -280.f;
-
+    
     m_pLeftHandComp->Set_Pos({ m_fX, m_fY, 0.f });	// 이미지 위치
     m_pLeftHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 

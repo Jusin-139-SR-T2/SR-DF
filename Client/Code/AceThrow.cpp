@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "AceThrow.h"
-#include "Export_System.h"
-#include "Export_Utility.h"
 
 CAceThrow::CAceThrow(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)

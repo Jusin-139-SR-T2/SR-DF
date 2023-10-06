@@ -28,7 +28,7 @@ public:
 	virtual void	LateUpdate_GameObject() override;
 	virtual void	Render_GameObject() override;
 
-	static CBoss* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CBoss* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
 
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
@@ -99,7 +99,7 @@ private:
 	// 위치 조절 
 	_vec3		vPlayerPos;							// 플레이어 위치 벡터
 	_vec3		vDir;								// 몬스터가 플레이어 바라보는 벡터  
-
+	_vec3		vPatrolPointZero;
 	//스위치 on/off 
 	_bool m_bGoHome = FALSE;
 

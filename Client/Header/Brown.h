@@ -15,6 +15,8 @@ class CCalculatorComponent;
 class CColliderComponent;
 END
 
+enum PlayerHit {PUNCH, PISTOL, TOMSON, RUN, };
+
 class CBrown : public Engine::CGameObject
 {
 	DERIVED_CLASS(CGameObject, CBrown)
@@ -30,7 +32,7 @@ public:
 	virtual void	LateUpdate_GameObject() override;
 	virtual void	Render_GameObject() override;
 
-	static CBrown*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CBrown* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
 
 private:
 	CRcBufferComp*			m_pBufferComp = nullptr;
@@ -39,15 +41,12 @@ private:
 	CTransformComponent*	m_pTransformComp = nullptr;
 	CCalculatorComponent*	m_pCalculatorComp = nullptr;
 	CTransformComponent*	m_pPlayerTransformcomp = nullptr;
-
+	
 private:
 	void				Height_On_Terrain();
 	HRESULT				Add_Component();
 	virtual void		Free();
 
-public:
-	_bool m_bAwareness = false;
-	
 	// Get, Set 함수 만들기 --------------------------------------------------
 public: 
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -56,11 +55,14 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 		
-	// 충돌 onoff------------------------------------------------------------
+	// 충돌 -----------------------------------------------------------------
 protected: 
 	virtual void	OnCollision(CGameObject* pDst);
 	virtual void	OnCollisionEntered(CGameObject* pDst) ;
 	virtual void	OnCollisionExited(CGameObject* pDst) ;
+
+public:
+	CGameObject* m_pPalyer = nullptr; // 피격에서 플레이어 상태 가져오는용도로 언젠가 쓸놈
 
 	// 상태머신 셋팅 ---------------------------------------------------------
 private:
@@ -69,6 +71,7 @@ private:
 	_float		m_fDistance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
 	void		Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
+	PlayerHit   m_PlayerState;
 
 	// 변수 -----------------------------------------------------------------
 	wchar_t		debugString[100];
@@ -92,7 +95,7 @@ private:
 	// 속도조절 
 	_float		m_fRunSpeed = 2.0f;					// 뛰어오는 속도
 	_float		m_fWalkSpeed = 1.0f;				// 걷는속도
-	_float		m_fInchSpeed = 4.f;					// 앞으로 전진하며 무빙하는 속도 
+	_float		m_fInchSpeed = 7.f;					// 앞으로 전진하며 무빙하는 속도 
 	_float		m_fStrafingSpeed = 8.f;				// 옆으로 무빙하는  속도 
 	_float		m_fBasicAttackSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
 	_float		m_fHeavAttackSpeed = 4.f;			// 강공격때 뛰어오는 속도 
@@ -112,7 +115,8 @@ private:
 	//스위치 on/off 
 	_bool		Dead = false;
 	_bool		DeadSpin = true;
-	_bool		m_bGoHome = false;
+	_bool		m_bArrive = false;
+	_bool		m_bAwareness = false;
 
 
 	// 상태머신 enum --------------------------------------------------
@@ -142,29 +146,36 @@ private:
 
 #pragma region AI 
 
+	// 전조 
 	void AI_Idle(float fDeltaTime); // SOUTH 바라보는중 
 	void AI_Suspicious(float fDeltaTime); // 오 ? 의심중
 	void AI_Taunt(float fDeltaTime); // 다가와봐 하고 도발상태 
 	void AI_Chase(float fDeltaTime); // 거리 체크해서 각종 상태 보내버리는 일종의 허브역할 
 	void AI_Rest(float fDeltaTime); // 제자리에서 들썩거림
 
+	// 추격 
 	void AI_Run(float fDeltaTime); // 달리기 
 	void AI_Walk(float fDeltaTime); // 걷기
 	void AI_InchForward(float fDeltaTime); // 앞으로 훅 다가오는 복싱 자세 
 	void AI_Strafing(float fDeltaTime); // 좌우로 흔들면서 옆, 뒤 둘중 하나로 이동 
-	void AI_BasicAttack(float fDeltaTime); // 일반 공격
-	void AI_HeavyAttack(float fDeltaTime); // 강공격 
 	void AI_Jump(float fDeltaTime); // 점프하는상태 - 플레이어가 공격하면 무서워서 뒤로 점프함 
 
+	// 공격
+	void AI_HeavyAttack(float fDeltaTime); // 강공격 
+	void AI_BasicAttack(float fDeltaTime); // 일반 공격
+	
+	// 피격
 	void AI_Hit(float fDeltaTime); // 맞은 히트판정 
+	void AI_Dazed(float fDeltaTime); // hp 일정이상 닳은 상태 
 	void AI_FacePunch(float fDeltaTime); // 얼굴에 맞았을경우 
 	void AI_HitByPitchedBall(float fDeltaTime); // 하단에 공격했을경우 
 
-	void AI_Dazed(float fDeltaTime); // hp 일정이상 닳은 상태 
+	// 죽음 
 	void AI_Chopped(float fDeltaTime); // 뒤에서 플레이어가 기습공격했을경우 Sleep으로 들어감 
 	void AI_Headless(float fDeltaTime); // 총류로 머리를 맞았을경우 
 	void AI_Death(float fDeltaTime); // hp 0인상태 
 
+	// 복귀
 	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 
 	void AI_GoHome(float fDeltaTime);		 // 정찰마치고 원위치 복귀중 
 
@@ -188,6 +199,4 @@ OutputDebugString(L"▷ : 상태머신 관련 디버그
 // 변수값이랑 같이 
 swprintf_s(debugString, L"Brown - 변수 확인 m_fAwareness = %f\n", m_fAwareness);
 OutputDebugStringW(debugString);
-
-
 */

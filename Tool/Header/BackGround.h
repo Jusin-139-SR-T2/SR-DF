@@ -65,6 +65,7 @@ public:
 	GETSET_EX2(CTransformComponent*,	m_pTransformComp,	TransformComponent,	GET, SET)
 	GETSET_EX2(CRcBufferComp*,			m_pBufferComp,		BufferComponent,	GET, SET)
 	GETSET_EX2(CTextureComponent*,		m_pTextureComp,		TextureComponent,	GET, SET)
+	GETSET_EX2(CTextureComponent*, m_pBackTextureComp,		BackTextureComponent,	GET, SET)
 
 private:
 	CTransformComponent*			m_pTransformComp = nullptr;

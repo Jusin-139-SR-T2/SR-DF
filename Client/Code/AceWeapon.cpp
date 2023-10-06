@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "AceWeapon.h"
 
-#include "Export_System.h"
-#include "Export_Utility.h"
-
 CAceWeapon::CAceWeapon(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {
