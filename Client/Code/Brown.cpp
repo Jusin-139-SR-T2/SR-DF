@@ -133,7 +133,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     m_mapActionKey.Update();	// 액션키 초기화
 
     //swprintf_s(debugString, L"Brown - 변수 확인 m_fAwareness = %f\n", m_fAwareness);
-    //OutputDebugStringW(debugString);
+    ////OutputDebugStringW(debugString);
 
     // ---------- 테스트 빌드 ----------------------
     // 현재 피격 테스트중 
@@ -158,7 +158,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 
 
     //swprintf_s(debugString, L"Brown - 변수 확인 m_iHP = %i \n", m_iHP);
-    //OutputDebugStringW(debugString);
+    ////OutputDebugStringW(debugString);
 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
@@ -222,14 +222,14 @@ CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _flo
 
 void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중 
 {
-    OutputDebugString(L"▶Brown이랑 충돌중 \n");
+    //OutputDebugString(L"▶Brown이랑 충돌중 \n");
 
     // 플레이어가 공격을 한것인지 인지해야함. 기본적으로 Collision을 갖고있음. 
 }
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
-    OutputDebugString(L"▶Brown이랑 충돌시작 \n");
+    //OutputDebugString(L"▶Brown이랑 충돌시작 \n");
     // 플레이어 무기상태, 플레이어가 공격했을때가 필요함 여기에 변화 
     //디폴트로 일단 넣어둠 
     m_tState_Obj.Set_State(STATE_OBJ::HIT);
@@ -262,7 +262,7 @@ void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
 {
-    OutputDebugString(L"▶Brown이랑 충돌끝남 \n");
+    //OutputDebugString(L"▶Brown이랑 충돌끝남 \n");
 
 }
 
@@ -389,7 +389,7 @@ void CBrown::AI_Idle(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : idle 돌입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : idle 돌입   \n");
 
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -411,7 +411,7 @@ void CBrown::AI_Idle(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : idle 끝 \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : idle 끝 \n");
     }
 }
 
@@ -419,7 +419,7 @@ void CBrown::AI_Suspicious(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Suspicious 돌입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Suspicious 돌입   \n");
 
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Suspicious");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -429,7 +429,7 @@ void CBrown::AI_Suspicious(float fDeltaTime)
     {
         if(Detect_Player()) // 시야각 이내에 위치 + 시야거리 이내 위치 
         {
-           // OutputDebugString(L"▶Brown - 변수체크 : 인지변수 상승중   \n");
+           // //OutputDebugString(L"▶Brown - 변수체크 : 인지변수 상승중   \n");
             m_fAwareness += fDeltaTime * 2.f;
             // 2. 인지값이 MAX가 되면 플레이어 추격 시작 
             if (m_fMaxAwareness <= m_fAwareness)
@@ -440,7 +440,7 @@ void CBrown::AI_Suspicious(float fDeltaTime)
         }
         else // 범위밖은 감소
         {
-            //OutputDebugString(L"▶Brown - 변수체크 : 인지변수 감소중   \n");
+            ////OutputDebugString(L"▶Brown - 변수체크 : 인지변수 감소중   \n");
             m_fAwareness -= fDeltaTime * 4.f;
 
             if (0 >= m_fAwareness)
@@ -453,7 +453,7 @@ void CBrown::AI_Suspicious(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Suspicious 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Suspicious 끝   \n");
     }
 }
 
@@ -461,7 +461,7 @@ void CBrown::AI_Taunt(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Taunt 돌입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Taunt 돌입   \n");
         m_fFrameSpeed = 7.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Taunt");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -480,7 +480,7 @@ void CBrown::AI_Taunt(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Taunt 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Taunt 끝   \n");
     }
 }
 
@@ -488,7 +488,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Chease 돌입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Chease 돌입   \n");
        // m_pTransformComp->m_vScale.x = 0.5f;
         m_fFrameSpeed = 10.f; //원상복귀 
     }
@@ -496,28 +496,28 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
     {
         _float CurDistance = m_fDistance();
 
-        OutputDebugString(L"★ 디버그 찾기 : Chease - Update 돌입   \n");
+        //OutputDebugString(L"★ 디버그 찾기 : Chease - Update 돌입   \n");
 
         if (Detect_Player()) // 사거리에 포착되는경우 
         {
-            OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 \n");
+            //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 \n");
             // --------거리비교 상태머신 -----------
             // 뛰어서 다가옴 : a > 8
             if (m_fRunDistance < CurDistance)
             {
-                OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - Run 실행  \n");
+                //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - Run 실행  \n");
                 m_tState_Obj.Set_State(STATE_OBJ::RUN);
             }
             // 걸어서 다가옴 : 7 < a <= 8 
             else if (m_fWalkDistance < CurDistance && m_fRunDistance >= CurDistance)
             {
-                OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - Walk 실행 \n");
+                //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - Walk 실행 \n");
                 m_tState_Obj.Set_State(STATE_OBJ::WALK);
             }
             // 무빙 : 4 < a <= 7
             else if (m_fInchDistance < CurDistance && m_fWalkDistance >= CurDistance)
             {
-                OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - Moving 실행 \n");
+                //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - Moving 실행 \n");
                 int iCombo = (rand() % 10) + 1; 
 
                 if (6 <= iCombo)
@@ -529,7 +529,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
             // 공격함
             else
             {
-                OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - 공격 실행  \n");
+                //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - 공격 실행  \n");
                 int iCombo = (rand() % 10) + 1; 
 
                 if (6 <= iCombo)
@@ -541,12 +541,12 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
         }
         else // 사거리내 플레이어를 놓쳤을경우 
         {
-            OutputDebugString(L"▷Brown - 상태머신 : 플레이어 놓침    \n");
+            //OutputDebugString(L"▷Brown - 상태머신 : 플레이어 놓침    \n");
             m_fAwareness -= fDeltaTime * 4.f; // 인지값 감소 
 
             if (0 >= m_fAwareness) //인지값이 초기화되면 
             {
-                OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 놓침 - Recon으로 넘어감  \n");
+                //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 놓침 - Recon으로 넘어감  \n");
                 m_fAwareness = 0.f;
                 m_tState_Obj.Set_State(STATE_OBJ::RECONNAISSANCE); // ★ 여기 변경해야함, 원래위치로 돌아가는 goHOME으로 가야함 
             }
@@ -555,7 +555,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Chease 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Chease 끝   \n");
     }
 }
 
@@ -563,7 +563,7 @@ void CBrown::AI_Rest(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Rest 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Rest 진입   \n");
 
         m_fFrameSpeed = 12.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Rest");
@@ -579,7 +579,7 @@ void CBrown::AI_Rest(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Rest 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Rest 끝   \n");
 
     }
 }
@@ -588,7 +588,7 @@ void CBrown::AI_Run(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Run 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Run 진입   \n");
 
         m_fFrameSpeed = 11.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"RunSouth");
@@ -608,7 +608,7 @@ void CBrown::AI_Run(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Run 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Run 끝   \n");
     }
 }
 
@@ -616,7 +616,7 @@ void CBrown::AI_Walk(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Walk 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Walk 진입   \n");
         m_fFrameSpeed = 14.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_South");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -636,7 +636,7 @@ void CBrown::AI_Walk(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Walk 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Walk 끝   \n");
 
     }
 }
@@ -645,7 +645,7 @@ void CBrown::AI_InchForward(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷Brown - 상태머신 : InchForward 진입   \n");
+        //OutputDebugString(L"▷Brown - 상태머신 : InchForward 진입   \n");
         m_fFrameSpeed = 11.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"InchForward");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -655,20 +655,20 @@ void CBrown::AI_InchForward(float fDeltaTime)
         //행동이 IDLE일때 가상키 누르기 
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
         {
-            OutputDebugString(L"★ 디버그 찾기 : INCHFORWARD - 가상키 누르기 돌입   \n");
+            //OutputDebugString(L"★ 디버그 찾기 : INCHFORWARD - 가상키 누르기 돌입   \n");
             m_mapActionKey[ACTION_KEY::INCHFORWARD].Act();
         }
         if (m_fDistance() <= m_fInchDistance)
         {
-            OutputDebugString(L"★ 디버그 찾기 : INCHFORWARD - 프레임 다 돌음 \n");
-            OutputDebugString(L"▷Brown - 상태머신 : InchForward 끝   \n");
+            //OutputDebugString(L"★ 디버그 찾기 : INCHFORWARD - 프레임 다 돌음 \n");
+            //OutputDebugString(L"▷Brown - 상태머신 : InchForward 끝   \n");
             m_tState_Obj.Set_State(STATE_OBJ::BASICATTACK);
         }
     }
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : InchForward 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : InchForward 끝   \n");
 
     }
 }
@@ -677,7 +677,7 @@ void CBrown::AI_Strafing(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Strafing 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Strafing 진입   \n");
 
         m_fFrameSpeed = 11.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Strafing");
@@ -697,7 +697,7 @@ void CBrown::AI_Strafing(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Strafing 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Strafing 끝   \n");
     }
 }
 
@@ -705,7 +705,7 @@ void CBrown::AI_BasicAttack(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Basic Attack 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Basic Attack 진입   \n");
         m_fFrameSpeed = 8.5f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"BasicAttack");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -724,7 +724,7 @@ void CBrown::AI_BasicAttack(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Basic Attack 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Basic Attack 끝   \n");
     }
 }
 
@@ -732,7 +732,7 @@ void CBrown::AI_HeavyAttack(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : HeavyAttack 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : HeavyAttack 진입   \n");
 
         m_fFrameSpeed = 8.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"HeavyAttack");
@@ -753,7 +753,7 @@ void CBrown::AI_HeavyAttack(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : HeavyAttack 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : HeavyAttack 끝   \n");
     }
 }
 
@@ -761,7 +761,7 @@ void CBrown::AI_Jump(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Jump 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Jump 진입   \n");
 
         m_fFrameSpeed = 8.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Jump");
@@ -778,7 +778,7 @@ void CBrown::AI_Jump(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Jump 끝  \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Jump 끝  \n");
     }  
 }
 
@@ -786,7 +786,7 @@ void CBrown::AI_Hit(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Hit 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Hit 진입   \n");
 
         m_fFrameSpeed = 6.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Hit");
@@ -803,7 +803,7 @@ void CBrown::AI_Hit(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Hit 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Hit 끝   \n");
     }
 }
 
@@ -811,7 +811,7 @@ void CBrown::AI_FacePunch(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : FacePunch 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : FacePunch 진입   \n");
 
         m_fFrameSpeed = 8.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"FacePunch");
@@ -829,7 +829,7 @@ void CBrown::AI_FacePunch(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : FacePunch 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : FacePunch 끝   \n");
     }
 }
 
@@ -837,7 +837,7 @@ void CBrown::AI_HitByPitchedBall(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : HitByPitchedBall 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : HitByPitchedBall 진입   \n");
 
         m_fFrameSpeed = 0.1f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"CrotchHit");
@@ -852,7 +852,7 @@ void CBrown::AI_HitByPitchedBall(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : HitByPitchedBall 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : HitByPitchedBall 끝   \n");
     }
 }
 
@@ -860,7 +860,7 @@ void CBrown::AI_Dazed(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Dazed 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Dazed 진입   \n");
 
         m_iPreHP = m_iHP;
         m_fFrameSpeed = 10.f;
@@ -895,7 +895,7 @@ void CBrown::AI_Dazed(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Dazed 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Dazed 끝   \n");
     }
 }
 
@@ -903,7 +903,7 @@ void CBrown::AI_Chopped(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Chopped 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Chopped 진입   \n");
 
         m_fFrameSpeed = 10.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Chopped");
@@ -925,7 +925,7 @@ void CBrown::AI_Chopped(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Chopped 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Chopped 끝   \n");
     }
 }
 
@@ -933,7 +933,7 @@ void CBrown::AI_Headless(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Headless 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Headless 진입   \n");
 
         m_fFrameSpeed = 10.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Headless");
@@ -954,7 +954,7 @@ void CBrown::AI_Headless(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Headless 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Headless 끝   \n");
     }
 }
 
@@ -962,7 +962,7 @@ void CBrown::AI_Death(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Death 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Death 진입   \n");
 
         m_fFrameSpeed = 10.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Death");
@@ -980,7 +980,7 @@ void CBrown::AI_Death(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Death 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Death 끝   \n");
     }
 }
 
@@ -989,7 +989,7 @@ void CBrown::AI_Reconnaissance(float fDeltaTime)
     //플레이어 놓쳐서 인지변수 0까지 내려갔을경우 
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Reconnaissance 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Reconnaissance 진입   \n");
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1018,7 +1018,7 @@ void CBrown::AI_Reconnaissance(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Reconnaissance 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : Reconnaissance 끝   \n");
     }
 }
 
@@ -1026,7 +1026,7 @@ void CBrown::AI_GoHome(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : GoHome 진입   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : GoHome 진입   \n");
           m_fFrameSpeed = 13.f;
           m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_North");
           m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -1042,12 +1042,11 @@ void CBrown::AI_GoHome(float fDeltaTime)
             m_bArrive = false;
             m_tState_Obj.Set_State(STATE_OBJ::IDLE);
         }
-
     }
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : GoHome 끝   \n");
+          //OutputDebugString(L"▷Brown - 상태머신 : GoHome 끝   \n");
     }
 }
 
@@ -1063,41 +1062,41 @@ void CBrown::Idle(float fDeltaTime)
     {
         if (m_mapActionKey[ACTION_KEY::RUN].IsOnAct())
         {
-              OutputDebugString(L"▷Brown - 가상키 : RUN 확인    \n");
+              //OutputDebugString(L"▷Brown - 가상키 : RUN 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::APPROACH);
         }
         if (m_mapActionKey[ACTION_KEY::WALK].IsOnAct())
         {
-              OutputDebugString(L"▷Brown - 가상키 : WALK 확인    \n");
+              //OutputDebugString(L"▷Brown - 가상키 : WALK 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::APPROACH);
         }
 
         if (m_mapActionKey[ACTION_KEY::INCHFORWARD].IsOnAct())
         {
-              OutputDebugString(L"▷Brown - 가상키 : INCHFORWARD 확인    \n");
+              //OutputDebugString(L"▷Brown - 가상키 : INCHFORWARD 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::MOVING);
         }
 
         if (m_mapActionKey[ACTION_KEY::STRAFING].IsOnAct())
         {
-              OutputDebugString(L"▷Brown - 가상키 : STRAFING 확인    \n");
+              //OutputDebugString(L"▷Brown - 가상키 : STRAFING 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::MOVING);
         }
         if (m_mapActionKey[ACTION_KEY::BASIC_ATTACK].IsOnAct())
         {
-              OutputDebugString(L"▷Brown - 가상키 : ATTACK 확인    \n");
+              //OutputDebugString(L"▷Brown - 가상키 : ATTACK 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::ATTACK);
         }
 
         if (m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].IsOnAct())
         {
-              OutputDebugString(L"▷Brown - 가상키 : HEAVY_ATTACK 확인    \n");
+              //OutputDebugString(L"▷Brown - 가상키 : HEAVY_ATTACK 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::ATTACK);
         }
 
         if (m_mapActionKey[ACTION_KEY::GOHOME].IsOnAct())
         {
-              OutputDebugString(L"▷Brown - 가상키 : GoHome 확인    \n");
+              //OutputDebugString(L"▷Brown - 가상키 : GoHome 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::GOHOME);
         }
 
@@ -1113,14 +1112,14 @@ void CBrown::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
 {
     if (m_tState_Act.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 행동머신 : Approach 진입   \n");
+          //OutputDebugString(L"▷Brown - 행동머신 : Approach 진입   \n");
     }
 
     // 실행
     {
         if (STATE_OBJ::RUN == m_tState_Obj.Get_State())
         {
-              OutputDebugString(L"▷Brown - 가상키 : RUN 수행   \n");
+              //OutputDebugString(L"▷Brown - 가상키 : RUN 수행   \n");
 
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
@@ -1132,7 +1131,7 @@ void CBrown::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
 
         if (STATE_OBJ::WALK == m_tState_Obj.Get_State())
         { 
-              OutputDebugString(L"▷Brown - 가상키 : WALK 수행   \n");
+              //OutputDebugString(L"▷Brown - 가상키 : WALK 수행   \n");
 
             m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
@@ -1150,21 +1149,21 @@ void CBrown::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
 
     if (m_tState_Act.IsState_Exit())
     {
-          //OutputDebugString(L"▷Brown - 행동머신 : Approach 끝   \n");
+          ////OutputDebugString(L"▷Brown - 행동머신 : Approach 끝   \n");
     }
 }
 void CBrown::Moving(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 행동머신 : MOVING 진입   \n");
+          //OutputDebugString(L"▷Brown - 행동머신 : MOVING 진입   \n");
     }
 
     // 실행
     {
         if (STATE_OBJ::INCHFORWARD == m_tState_Obj.Get_State())
         {
-            OutputDebugString(L"▷Brown - 가상키 : INCHFORWARD 수행   \n");
+            //OutputDebugString(L"▷Brown - 가상키 : INCHFORWARD 수행   \n");
 
             // 몬스터가 플레이어를 보는벡터 = 플 - 몬 
             vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos(); // 플레이어 쪽으로 이동 
@@ -1174,7 +1173,7 @@ void CBrown::Moving(float fDeltaTime)
 
         if (STATE_OBJ::STRAFING == m_tState_Obj.Get_State())
         {
-           OutputDebugString(L"▷Brown - 가상키 : STRAFING 수행   \n");
+           //OutputDebugString(L"▷Brown - 가상키 : STRAFING 수행   \n");
 
            _vec3 MoveDir;
            MoveDir = m_pPlayerTransformcomp->Get_Right(); // 플레이어 오른쪽 
@@ -1193,7 +1192,7 @@ void CBrown::Moving(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
+          //OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
     }
 }
 
@@ -1201,21 +1200,21 @@ void CBrown::Attack(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 행동머신 : ATTACK 진입   \n");
+          //OutputDebugString(L"▷Brown - 행동머신 : ATTACK 진입   \n");
     }
 
     // 실행
     {
         if (STATE_OBJ::BASICATTACK == m_tState_Obj.Get_State())
         {
-              OutputDebugString(L"▷Brown - 가상키 : BASICATTACK 수행   \n");
+              //OutputDebugString(L"▷Brown - 가상키 : BASICATTACK 수행   \n");
             // 충돌체 만들어서 기본공격 수행
 
         }
 
         if (STATE_OBJ::HEAVYATTACK == m_tState_Obj.Get_State())
         {
-              OutputDebugString(L"▷Brown - 가상키 : HEAVYATTACK 수행   \n");
+              //OutputDebugString(L"▷Brown - 가상키 : HEAVYATTACK 수행   \n");
             // 충돌체 만들어서 공격 수행
         }
 
@@ -1229,7 +1228,7 @@ void CBrown::Attack(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-         // OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
+         // //OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
     }
 }
 
@@ -1237,7 +1236,7 @@ void CBrown::GoHome(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-        OutputDebugString(L"▷Brown - 행동머신 : GoHome 진입   \n");
+        //OutputDebugString(L"▷Brown - 행동머신 : GoHome 진입   \n");
     }
 
     // 실행
@@ -1255,7 +1254,7 @@ void CBrown::GoHome(float fDeltaTime)
         }
         else
         {
-            OutputDebugString(L"▷Brown - 기존 패트롤 포인트 복귀중   \n");
+            //OutputDebugString(L"▷Brown - 기존 패트롤 포인트 복귀중   \n");
             m_pTransformComp->Move_Pos(&vDirect, fDeltaTime, m_fRunDistance);
         }
     }
@@ -1267,6 +1266,6 @@ void CBrown::GoHome(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-        //OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
+        ////OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
     }
 }
