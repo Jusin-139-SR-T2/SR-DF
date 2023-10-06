@@ -29,7 +29,7 @@ private:
 	virtual ~CPlayer();
 
 public:
-	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 public:
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
@@ -70,10 +70,10 @@ private:
 	// =============================== 차징 ===============================
 	void				Charge(const _float& fTimeDelta);	// 차징
 	// ====================================================================
-	
+
 	// =============================== 피킹 =============================== // 소영 추가 
 	//_vec3				Picking_On_Object();	// 오브젝트 마우스 피킹 
-	_bool Picking_On_Object();
+	_bool				Picking_On_Object();
 	// ====================================================================
 
 public: // Camera
@@ -81,11 +81,12 @@ public: // Camera
 
 public: // Get_Set
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
-	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-	GETSET_EX2(CTextureComponent*, m_pLeftHandComp, m_pLeftHandComp, GET, SET)
-	GETSET_EX2(CTextureComponent*, m_pRightHandComp, m_pRightHandComp, GET, SET)
-	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
+		GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+		GETSET_EX2(CTextureComponent*, m_pLeftHandComp, m_pLeftHandComp, GET, SET)
+		GETSET_EX2(CTextureComponent*, m_pRightHandComp, m_pRightHandComp, GET, SET)
+		GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+		GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
+		GETSET_EX2(CPlayerLighter*, m_PlayerLighter, PlayerLighter, GET, SET)	// 라이터 조명
 
 protected: // 충돌 onoff
 	virtual void	OnCollision(CGameObject* pDst) override;
@@ -106,18 +107,42 @@ private: // 컴포넌트
 
 public:// 플레이어 상태 값
 	// 플레이어
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY,  DIE };
+	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY, DIE };
 	// 왼손
 	enum class STATE_LEFTHAND { NONE, HAND, OPEN_HAND, RUN_HAND, RIGHTER, RUN_RIHGTER };
 	// 오른손
 	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
-	
+
 	// TEST
 	enum class OBJECT_TYPE { NONE, TWO_HAND, TWO_OBJECT, RIGHT_OBJECT }; // 테스트(오브젝트)
 	enum class OBJECT_NAME { NONE, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN };
 
 	// TEST
 	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향 
+
+public:
+	// 키프레임 구조체
+	struct Keyframe
+	{
+		char name[64];			// 키프레임 이름 (표시용)
+
+		bool isEaseIn;			// Ease In 설정 (True 또는 False)
+		bool isEaseOut;			// Ease Out 설정 (True 또는 False)
+
+		float time;				// 키프레임의 시간 (0.0f ~ MaxTime 범위)
+		float value;			// 애니메이션 값 (크기, 회전, 이동 등)
+		float color[3];			// 키프레임 색상 (R, G, B)
+		int texureframe;		// 텍스처 변경 값
+
+		OBJECT_TYPE m_eObjectType; // 타입을 부여할 그릇 (ex : 한손, 양손)
+		OBJECT_NAME m_eObjectName; // 이름을 부여할 그릇 (ex : 권총, 쇠파이프)
+
+		int type;				// 애니메이션 타입 (0: 크기, 1: 회전, 2: 이동)
+
+		_vec3	vScale = { 0.f, 0.f, 0.f };			// 크기를 담을 그릇
+		_vec3	vRot = { 0.f, 0.f, 0.f };			// 회전을 담을 그릇
+		_vec3	vPos = { 0.f, 0.f, 0.f };			// 위치를 담을 그릇
+	};
 
 private: // 플레이어의 상태 머신
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
@@ -162,7 +187,9 @@ private: // 함수
 	void				Height_On_Terrain();						// 지형타기
 	void				Dash(const _float& fTimeDelta);
 	//void				Hand_Check();								// 플레이어 손 상태 체크
-	
+	void				LoadAnimationFromFile(const char* fileName);// 애니메이션 불러오기
+	void				Interpolation(float _fFrame);
+
 	//// ==============================양손 주먹=============================
 	//void				Two_Hand();
 	//// ====================================================================
@@ -188,6 +215,7 @@ private: // 스위치
 	_bool		bRighterSwitch = false; // 라이터 스위치 On/Off
 	_bool		bLeftHandOn = true;		// 왼손 출력 On/Off
 	_bool		bRightHandOn = true;	// 오른손 출력 On/Off
+	_bool		bLightOn = false;		// 라이터 조명 On/Off
 
 	// 대쉬
 	_bool		bDashOn = false;		// 플레이어 대쉬 여부
@@ -240,6 +268,9 @@ private:
 	// 대쉬 방향
 	DASHDIR m_eDashDir;
 
+	// 라이터 조명
+	CPlayerLighter* m_PlayerLighter;
+
 private:
 	_long			dwMouseMove = 0;		// 마우스 무브
 
@@ -253,7 +284,7 @@ private:
 	virtual void		Free();
 
 protected:
-	CDynamicCamera*		m_pCamera = nullptr;
+	CDynamicCamera* m_pCamera = nullptr;
 	_vec3	m_vCameraAt;
 	_vec3	m_vPlayerLook;
 	_float	fDot;
@@ -270,14 +301,33 @@ private: //빛
 
 
 private: // 쿼터니언
-		_long dwMouseMoveX;
-		_long dwMouseMoveY;
+	_long dwMouseMoveX;
+	_long dwMouseMoveY;
 
-		D3DXQUATERNION	m_quaternion;	// 쿼터니온 변수
+	D3DXQUATERNION	m_quaternion;	// 쿼터니온 변수
 
 private:
 	_float	m_fX, m_fY, m_fSizeX, m_fSizeY;
 
+private: // 보간 변수
+	// dt 값
+	_float fFrameTimeDelta, fCurFrameTimeDelta;
+
+	// 크기
+	_float fSizeX_Delta, fSizeY_Delta;
+
+	// 회전
+	_float fRotX_Delta, fRotY_Delta, fRotZ_Delta;
+
+	// 이동
+	_float fPosX_Delta, fPosY_Delta;
+
+private:
+	CGameObject* m_pPlayer;
+
+private:
+	// 애니메이션 타임 라인
+	std::vector<Keyframe> timeline;
 };
 
 /*	현재 키 설명

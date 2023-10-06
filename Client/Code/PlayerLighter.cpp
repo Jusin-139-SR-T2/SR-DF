@@ -44,10 +44,11 @@ _int CPlayerLighter::Update_GameObject(const _float& fTimeDelta)
     Height_On_Terrain();
 
 
-    if (Engine::IsKey_Pressed(DIK_V))
-    {
-        m_bLightOn = !m_bLightOn;
-    }
+    //if (Engine::IsKey_Pressed(DIK_V))
+    //{
+    //    m_bLightOn = !m_bLightOn;
+    //}
+
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
     return S_OK;
@@ -75,7 +76,7 @@ void CPlayerLighter::Render_GameObject()
 
     }
     
-    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); // µÞ¸éÁ¦°Å 
+    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); // µÞ¸éÁ¦°Å
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);

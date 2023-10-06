@@ -93,7 +93,7 @@ private:
 	_float		m_fWalkSpeed = 1.0f;				// 걷는속도
 	_float		m_fInchSpeed = 4.f;					// 앞으로 전진하며 무빙하는 속도 
 	_float		m_fStrafingSpeed = 8.f;				// 옆으로 무빙하는  속도 
-	_float		m_fBasicAttackSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
+	_float		m_fBasiCPlayerLighterSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
 	_float		m_fHeavAttackSpeed = 4.f;			// 강공격때 뛰어오는 속도 
 
 	// 사거리 , 시야각
@@ -117,7 +117,7 @@ public:
 	// 목표 상태머신(AI)
 	enum class STATE_OBJ {
 		IDLE, SUSPICIOUS, TAUNT, CHASE, REST,			// intro 
-		RUN, WALK, INCHFORWARD, STRAFING, BASICATTACK, HEAVYATTACK, JUMP,	// 거리재는부분
+		RUN, WALK, INCHFORWARD, STRAFING, BASICPlayerLighter, HEAVYATTACK, JUMP,	// 거리재는부분
 		HIT, FACEPUNCH, CROTCHHIT,											// 피격판정 
 		DAZED, FALLING, CHOPPED, DEATH, HEADLESS,							// 죽을때
 		RECONNAISSANCE, GOHOME
@@ -149,7 +149,7 @@ private:
 	void AI_Walk(float fDeltaTime);
 	void AI_InchForward(float fDeltaTime);
 	void AI_Strafing(float fDeltaTime);
-	void AI_BasicAttack(float fDeltaTime);
+	void AI_BasiCPlayerLighter(float fDeltaTime);
 	void AI_HeavyAttack(float fDeltaTime);
 	void AI_Jump(float fDeltaTime);
 
@@ -171,7 +171,7 @@ private:
 	void Idle(float fDeltaTime);
 	void Approach(float fDeltaTime);		// AI_Run + AI_Walk
 	void Moving(float fDeltaTime);			// AI_InchForward + AI_Strafing
-	void Attack(float fDeltaTime);			// AI_BasicAttack + AI_HeavyAttack
+	void Attack(float fDeltaTime);			// AI_BasiCPlayerLighter + AI_HeavyAttack
 	void GoHome(float fDeltaTime);			// Gohome
 #pragma endregion
 };

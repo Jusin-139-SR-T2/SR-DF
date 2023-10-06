@@ -8,6 +8,7 @@
 #include "Boss.h"
 #include "AceObjectFactory.h"
 #include "PlayerLighter.h"
+#include "Bullet.h"
 
 #include "Terrain.h"
 #include "SnowParticle.h"

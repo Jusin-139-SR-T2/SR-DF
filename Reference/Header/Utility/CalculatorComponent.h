@@ -31,9 +31,16 @@ public:
 										const _ulong& dwCntX = VTXCNTX, const _ulong& dwCntZ = VTXCNTZ,
 										const _ulong& dwVtxItv = 1);
 
-	_vec3		Picking_On_Object(HWND hWnd,
+	// 마우스/타겟 : 로컬 피킹
+	_vec3		Picking_On_Object_Local(HWND hWnd,
 		CRcBufferComp* pRcBufferComp,
 		CTransformComponent* pTransformComp);
+
+	// 마우스/타겟 : 월드 피킹
+	_vec3		Picking_On_Object_World(HWND hWnd,
+		CRcBufferComp* pRcBufferComp,
+		CTransformComponent* pTransformComp);
+
 };
 
 END

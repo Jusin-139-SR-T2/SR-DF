@@ -7,6 +7,8 @@
 #include "DynamicCamera.h"
 #include "CalculatorComponent.h"
 #include "ColliderComponent.h"
+#include "PlayerLighter.h"
+#include "Management.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -27,7 +29,7 @@ HRESULT CPlayer::Ready_GameObject()
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
-    m_pTransformComp->Set_Pos({10.f, 0.f, 10.f});
+    m_pTransformComp->Set_Pos({ 10.f, 0.f, 10.f });
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 
@@ -240,7 +242,7 @@ HRESULT CPlayer::Add_Component()
     m_pColliderComp->Set_CollisionEntered_Event<CPlayer>(this, &CPlayer::OnCollisionEntered);
     m_pColliderComp->Set_CollisionExited_Event<CPlayer>(this, &CPlayer::OnCollisionExited);
 
-   // m_pColliderComp->Get_Shape()
+    // m_pColliderComp->Get_Shape()
 
     return S_OK;
 }
@@ -423,7 +425,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     }
 
     // 오브젝트 상호작용 // 소영 추가 
-    /*if (Engine::IsKey_Pressed(DIK_E) && Picking_On_Object())
+    /*if (Engine::IsKey_Pressed(DIK_E) && Picking_On_Object_Local())
     {
         int a = 0;
     }*/
@@ -472,12 +474,13 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
                     {
                         // (현재 프레임) 라이터를 켜져있는 이미지로 고정
                         m_fLeftFrame = 5.f;
+                        m_PlayerLighter->Set_m_bLightOn(true);
                     }
                     else // 라이터가 안켜져있을 경우
                     {
                         // 현재 프레임 초기화
                         m_fLeftFrame = 0.f;
-
+                        //Get_Component();
                         // 왼손 프레임 Off
                         bLeftFrameOn = false;
                     }
@@ -495,6 +498,7 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
                     bRighter = false;
                     bLeftFrameOn = false;
                     bBackRighter = false;
+                    m_PlayerLighter->Set_m_bLightOn(false);
                 }
             }
         }
@@ -512,7 +516,7 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
         else // 쉴드를 안했을 경우
         {
             // 오른손 프레임 증가
-            m_fRightFrame += fRightFrameSpeed * fTimeDelta;
+            Interpolation(m_fRightFrame);
 
             // 차징 공격이 켜지고, 현재 프레임이 풀 차징 프레임에 도달했을 경우
             if (bChargeAttack &&
@@ -653,8 +657,8 @@ _bool CPlayer::Picking_On_Object()
     CTransformComponent* pObjectTransCom = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Food1", L"Proto_TransformComp"));
     NULL_CHECK_RETURN(pObjectTransCom, _vec3());
 
-    _vec3 PickingPos = m_pCalculatorComp->Picking_On_Object(g_hWnd, pObjectBufferCom, pObjectTransCom);
-    
+    _vec3 PickingPos = m_pCalculatorComp->Picking_On_Object_Local(g_hWnd, pObjectBufferCom, pObjectTransCom);
+
     if (PickingPos)
         return true;
     else
@@ -1687,6 +1691,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
         m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
+        LoadAnimationFromFile("Steel_Pipe");
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -1783,3 +1788,111 @@ void CPlayer::Right_Kick(float fTimeDelta)
 }
 
 #pragma endregion
+
+// 애니메이션 불러오기
+void CPlayer::LoadAnimationFromFile(const char* fileName)
+{
+    // .dat 파일 확장자를 추가한 파일 이름 생성
+    std::string datFileName = "../Data/" + std::string(fileName) + ".dat";
+
+    // 파일을 UTF-8로 열기
+    std::ifstream file(datFileName.c_str(), std::ios::in | std::ios::binary);
+
+    if (!file.is_open()) {
+        // 파일을 열 수 없을 때의 오류 처리
+        return;
+    }
+
+    timeline.clear();
+    Keyframe keyframe;
+
+    while (file >> keyframe.time >> keyframe.value >> keyframe.type >>
+        keyframe.isEaseIn >> keyframe.isEaseOut >> keyframe.texureframe >>
+        keyframe.vScale.x >> keyframe.vScale.y >> keyframe.vScale.z >>
+        keyframe.vRot.x >> keyframe.vRot.y >> keyframe.vRot.z >>
+        keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z) {
+        timeline.push_back(keyframe);
+    }
+
+    file.close();
+}
+
+void CPlayer::Interpolation(float _fFrame)
+{
+    if (!timeline.empty()) // 비었는지 체크
+    {
+        if (bRightFrameOn) // 오른손 프레임 On
+        {
+            if (fTextureChangeTime >= 0.f &&
+                fTextureChangeTime <= timeline.back().time)
+            {
+                _uint iFrameIndex = 0U;
+                for (_uint i = timeline.size() - 1; i > 0; i--)
+                {
+                    if ((timeline)[i].time <= fTextureChangeTime)
+                    {
+                        iFrameIndex = i;
+                        break;
+                    }
+                }
+
+                // Linear
+                if (iFrameIndex + 1U < timeline.size())
+                {
+                    // 키 프레임간 시간 변화율
+                    fFrameTimeDelta = (timeline)[iFrameIndex + 1U].time - (timeline)[iFrameIndex].time;
+
+                    // 현재 키 프레임시간부터 현재 시간 변화율
+                    fCurFrameTimeDelta = (fTextureChangeTime - (timeline)[iFrameIndex].time);
+
+                    fSizeX_Delta = (timeline)[iFrameIndex + 1U].vScale.x - (timeline)[iFrameIndex].vScale.x;
+                    fSizeX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+                    fSizeY_Delta = (timeline)[iFrameIndex + 1U].vScale.y - (timeline)[iFrameIndex].vScale.y;
+                    fSizeY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+
+                    fRotX_Delta = (timeline)[iFrameIndex + 1U].vRot.x - (timeline)[iFrameIndex].vRot.x;
+                    fRotX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+                    fRotY_Delta = (timeline)[iFrameIndex + 1U].vRot.y - (timeline)[iFrameIndex].vRot.y;
+                    fRotY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+                    fRotZ_Delta = (timeline)[iFrameIndex + 1U].vRot.z - (timeline)[iFrameIndex].vRot.z;
+                    fRotZ_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+
+                    fPosX_Delta = (timeline)[iFrameIndex + 1U].vPos.x - (timeline)[iFrameIndex].vPos.x;
+                    fPosX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+                    fPosY_Delta = (timeline)[iFrameIndex + 1U].vPos.y - (timeline)[iFrameIndex].vPos.y;
+                    fPosY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+
+                    m_pRightHandComp->Set_Pos({ (timeline)[iFrameIndex].vPos.x + fPosX_Delta,
+                                                (timeline)[iFrameIndex].vPos.y + fPosY_Delta,
+                                                0.f });	// 이미지 위치
+
+                    m_pRightHandComp->Set_Scale({ (timeline)[iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
+                                                  (timeline)[iFrameIndex].vScale.y + fSizeY_Delta,
+                                                  1.f });
+
+                    m_pRightHandComp->Set_Rotation({ (timeline)[iFrameIndex].vRot.x + fRotX_Delta, 	// 이미지 회전
+                                                     (timeline)[iFrameIndex].vRot.y + fRotY_Delta,
+                                                     (timeline)[iFrameIndex].vRot.z + fRotZ_Delta });
+
+                    // 텍스처 번호
+                    _fFrame = (timeline)[iFrameIndex].texureframe;
+                }
+                else
+                {
+                    m_pRightHandComp->Set_Scale({ (timeline)[iFrameIndex].vScale.x, 	// 이미지 크기
+                                                  (timeline)[iFrameIndex].vScale.y,
+                                                  1.f });
+
+                    m_pRightHandComp->Set_Pos({ (timeline)[iFrameIndex].vPos.x,
+                                                (timeline)[iFrameIndex].vPos.y,
+                                                0.f });	// 이미지 위치
+
+                    // 텍스처 번호
+                    _fFrame = (timeline)[iFrameIndex].texureframe;
+                }
+
+            }
+
+        }
+    }
+}

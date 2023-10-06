@@ -154,7 +154,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Single/CrotchHit.png", TEX_NORMAL, L"Brown_Single", L"CrotchHit");
 
 	// Monster Texture - Brown - Multi : 18EA
-	Load_Texture(L"./Resource/Texture/Monster/Brown/BasicAttack/BasicAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"BasicAttack", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/Monster/Brown/BasiCPlayerLighter/BasiCPlayerLighter_%d.png", TEX_NORMAL, L"Brown_Multi", L"BasiCPlayerLighter", _range<_uint>(0U, 4U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/InchForward/InchForward_%d.png", TEX_NORMAL, L"Brown_Multi", L"InchForward", _range<_uint>(0U, 5U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/HeavyAttack/HeavyAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"HeavyAttack", _range<_uint>(0U, 6U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/WalkNorth/WalkNorth_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_North", _range<_uint>(0U, 31U));
@@ -232,7 +232,6 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Walk/Walk_%d.png", TEX_NORMAL, L"Boss_Multi", L"Walk", _range<_uint>(0U, 28U));
 #pragma endregion
 
-	Wait_LoadTextureAsync();
 
 #pragma region Object 
 	// Object - Food

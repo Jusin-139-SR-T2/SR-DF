@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClInclude Include="Awareness.h" />
     <ClInclude Include="Dazed.h" />
+    <ClInclude Include="Header\Attack.h" />
+    <ClInclude Include="Header\AttackPool.h" />
+    <ClInclude Include="Header\Bullet.h" />
     <ClInclude Include="Header\FireWork.h" />
     <ClInclude Include="Header\AceInteraction.h" />
     <ClInclude Include="Header\AceFood.h" />
@@ -54,6 +57,9 @@
     <ClCompile Include="Awareness.cpp" />
     <ClCompile Include="Code\AceInteraction.cpp" />
     <ClCompile Include="Code\AceFood.cpp" />
+    <ClCompile Include="Code\Attack.cpp" />
+    <ClCompile Include="Code\AttackPool.cpp" />
+    <ClCompile Include="Code\Bullet.cpp" />
     <ClCompile Include="Code\PlayerLighter.cpp" />
     <ClCompile Include="Code\AceObjectFactory.cpp" />
     <ClCompile Include="Code\AceThrow.cpp" />

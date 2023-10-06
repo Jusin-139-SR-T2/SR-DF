@@ -29,6 +29,8 @@ BEGIN(Engine)
 // Management
 inline CComponent*	Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
 
+inline CGameObject* Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
+
 inline HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance, EMANAGE_SCENE eType);
 
 inline HRESULT		Set_Scene(CScene* pScene);
