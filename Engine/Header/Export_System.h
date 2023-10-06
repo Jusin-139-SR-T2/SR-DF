@@ -23,14 +23,17 @@ inline HRESULT					Render_Begin(D3DXCOLOR Color);
 inline HRESULT					Render_End();
 
 // TimerMgr
-inline _float			Get_TimeDelta(const _tchar* pTimerTag);
-inline void				Set_TimeDelta(const _tchar* pTimerTag);
-inline HRESULT			Ready_Timer(const _tchar* pTimerTag);
-inline void				Release_System();
+inline _float				Get_TimeDelta(const _tchar* pTimerTag);
+inline void					Set_TimeDelta(const _tchar* pTimerTag);
+inline HRESULT				Ready_Timer(const _tchar* pTimerTag);
+inline void					Release_System();
 
 // FrameMgr
-inline _bool			IsPermit_Call(const _tchar* pFrameTag, const _float& fTimeDelta);
-inline HRESULT			Ready_Frame(const _tchar* pFrameTag, const _float& fCallLimit);
+inline _bool				IsPermit_Call(const _tchar* pFrameTag, const _float& fTimeDelta);
+inline HRESULT				Ready_Frame(const _tchar* pFrameTag, const _float& fCallLimit);
+inline void					Set_FrameRate(const _tchar* pFrameTag, const _float& fFrameRate);
+inline const _float&		Get_FrameRate(const _tchar* pFrameTag);
+
 
 // FontMgr
 inline HRESULT		Ready_Font(LPDIRECT3DDEVICE9 pGraphicDev,

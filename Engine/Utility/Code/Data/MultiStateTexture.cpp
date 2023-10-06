@@ -91,7 +91,9 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 	}
 	vecAsync.clear();
 
+	CTextureMgr::GetInstance()->Get_Mutex()->lock();
 	m_mapMultiState.emplace(pStateKey, vecTexture);
+	CTextureMgr::GetInstance()->Get_Mutex()->unlock();
 
 	return S_OK;
 }

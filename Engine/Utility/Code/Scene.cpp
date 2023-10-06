@@ -100,7 +100,7 @@ CGameObject* CScene::Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjT
 	return pObj;
 }
 
-void CScene::Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj)
+void CScene::Add_GameObject(const _tchar* pLayerTag, CGameObject* pObj)
 {
 	auto iter = m_mapLayer.find(pLayerTag);
 	if (iter == m_mapLayer.end())
@@ -110,7 +110,7 @@ void CScene::Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj)
 		return;
 	}
 
-	m_mapLayer.emplace(pObj->Get_Name().c_str(), pObj);
+	(*iter).second->Add_GameObject(pObj);
 }
 
 HRESULT CScene::Add_Layer(const _tchar* pLayerTag, CLayer* pLayer)

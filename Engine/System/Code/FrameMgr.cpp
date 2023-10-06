@@ -46,6 +46,24 @@ CFrame* CFrameMgr::Find_Frame(const _tchar* pFrameTag)
 	return iter->second;
 }
 
+void CFrameMgr::Set_FrameRate(const _tchar* pFrameTag, const _float& fFrameRate)
+{
+	CFrame* pFrame = Find_Frame(pFrameTag);
+	if (pFrame == nullptr)
+		return;
+
+	pFrame->Set_FrameRate(fFrameRate);
+}
+
+const _float& CFrameMgr::Get_FrameRate(const _tchar* pFrameTag)
+{
+	CFrame* pFrame = Find_Frame(pFrameTag);
+	if (pFrame == nullptr)
+		return _float(0.f);
+
+	return pFrame->Get_FrameRate();
+}
+
 void CFrameMgr::Free()
 {
 	for_each(m_mapFrame.begin(), m_mapFrame.end(), CDeleteMap());

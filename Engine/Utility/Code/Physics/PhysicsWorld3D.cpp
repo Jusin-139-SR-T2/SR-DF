@@ -123,27 +123,39 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 	// 충돌 최적화, 추후 추가 예정
 	// 계획은 충돌객체를 트리로 만들어 부딪힐 것 같은 객체에 대해 처리하는 것.
 	// 여기서 발생시킨 충돌에 대한 것은 엔진에서 발생하는 
+	_int iDebugCount = 0;
 	for (auto iterSrc = m_setBody.begin(); iterSrc != m_setBody.end(); ++iterSrc)
 	{
 		// 재연산 방지, 현재 반복자로부터 다음 것을 가져다가 쓴다.
-		for (auto iterDst = (++iterSrc)--; iterDst != m_setBody.end(); ++iterDst)
+		for (auto iterDst = m_setBody.begin(); iterDst != m_setBody.end(); ++iterDst)
 		{
-			bool	bCollide = false;
+			bool bCollide = false;
 			if ((*iterSrc) == (*iterDst))
 				continue;
 
 			FCollisionPrimitive* pColSrc = static_cast<FCollisionPrimitive*>((*iterSrc)->Get_Owner());
 			FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iterDst)->Get_Owner());
 
+			
+				
+
 			bCollide = FCollisionDetector::CollsionPrimitive(pColSrc, pColDst, nullptr);
 
 			if (bCollide)
 			{
-				pColSrc->Handle_Event(pColSrc->Get_Owner());
-				pColDst->Handle_Event(pColDst->Get_Owner());
+				if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer())
+					pColSrc->Handle_CollsionEvent(pColDst->Get_Owner());
+				if (pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
+					pColDst->Handle_CollsionEvent(pColSrc->Get_Owner());
 			}
+			++iDebugCount;
 		}
 	}
+	wstringstream ss;
+	wstring str;
+	ss << iDebugCount;
+	str = L"Physics CheckCount : " + ss.str() + L"\n";
+	OutputDebugString(str.c_str());
 
 	// 사용된 접촉 수를 반환
 	return m_iMaxContacts - iLimit;

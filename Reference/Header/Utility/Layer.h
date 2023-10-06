@@ -30,14 +30,17 @@ public:
 public:
 	CComponent*		Get_Component(COMPONENTID eID, const _tchar* pObjTag, const _tchar* pComponentTag);
 
+	
+
 public:
-	HRESULT			Add_GameObject(const _tchar* pObjTag, CGameObject* pGameObject);
-	CGameObject*	Get_GameObject(const _tchar* pObjTag);
+	HRESULT			Add_GameObject(CGameObject* pGameObject);
+	HRESULT			Add_GameObject(const wstring pObjTag, CGameObject* pGameObject);
+	CGameObject*	Get_GameObject(const wstring pObjTag);
 
 private:
-	_unmap<const _tchar*, CGameObject*> m_mapObject;
+	_unmap<wstring, CGameObject*>	m_mapObject;
 	// 렌더는 렌더러에서 해줘서 필요없음! 그래서 사이즈를 렌더로 설정
-	vector<CGameObject*>				m_arrvecPriorityObject[static_cast<_uint>(EPRIORITY::RENDER)];	
+	vector<CGameObject*>			m_arrvecPriorityObject[static_cast<_uint>(EPRIORITY::RENDER)];	
 
 public:
 	GETSET_EX1(_float, m_fPriority, Priority, GET_C_REF)

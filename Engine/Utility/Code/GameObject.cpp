@@ -4,7 +4,7 @@ _ulonglong CGameObject::g_dwID_Count = 0ULL;
 
 CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
     : m_pGraphicDev(pGraphicDev)
-    , m_bIsDead(false), m_strObjectName(L""), m_dwObjectID(g_dwID_Count++), m_dwObjectState(0U)
+    , m_bIsDead(false), m_strObjectName(L" "), m_dwObjectID(g_dwID_Count++), m_dwObjectState(0U)
 {
     m_pGraphicDev->AddRef();
 
@@ -16,7 +16,7 @@ CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
 
 CGameObject::CGameObject(const CGameObject& rhs)
     : m_pGraphicDev(rhs.m_pGraphicDev)
-    , m_strObjectName(rhs.m_strObjectName), m_dwObjectID(g_dwID_Count++), m_dwObjectState(rhs.m_dwObjectState)
+    , m_bIsDead(false), m_strObjectName(rhs.m_strObjectName), m_dwObjectID(g_dwID_Count++), m_dwObjectState(rhs.m_dwObjectState)
 {
     m_pGraphicDev->AddRef();
 }

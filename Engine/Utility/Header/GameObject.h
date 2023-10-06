@@ -49,7 +49,7 @@ protected:
 	T* Set_DefaultComponent_FromProto(COMPONENTID eID, const _tchar* pComponentTag, const _tchar* pProtoTag);
 
 protected:
-	_unmap<const _tchar*, CComponent*>		m_mapComponent[ID_END];
+	_unmap<wstring, CComponent*>		m_mapComponent[ID_END];
 	LPDIRECT3DDEVICE9						m_pGraphicDev;
 
 private:
@@ -75,7 +75,7 @@ protected:
 public:
 	using map_object_tag = _unset<wstring>;
 	GETSET_EX2(_ulonglong, m_dwObjectID, ObjectID, GET_C_REF, SET_C)
-	GETSET_EX2(wstring, m_strObjectName, ObjectName, GET_C, SET_C)
+	GETSET_EX2(wstring, m_strObjectName, ObjectName, GET_C, SET_C_REF)
 	GETSET_EX1(map_object_tag, m_mapObjectTag, ObjectTag, GET_REF)
 	GETSET_EX1(_ulong, m_dwObjectState, ObjectState, GET_C_REF)
 	bool IsObjectState(EOBJECT_STATE eState)

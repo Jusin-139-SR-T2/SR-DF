@@ -23,5 +23,46 @@ namespace Engine
 
 	enum MOUSEMOVESTATE {	DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };
 
+	enum EBIT_FLAG_32 : unsigned long
+	{
+		EBIT_FLAG32_0 = 1UL << 0,
+		EBIT_FLAG32_1 = 1UL << 1,
+		EBIT_FLAG32_2 = 1UL << 2,
+		EBIT_FLAG32_3 = 1UL << 3,
+		EBIT_FLAG32_4 = 1UL << 4,
+		EBIT_FLAG32_5 = 1UL << 5,
+		EBIT_FLAG32_6 = 1UL << 6,
+		EBIT_FLAG32_7 = 1UL << 7,
+		EBIT_FLAG32_8 = 1UL << 8,
+		EBIT_FLAG32_9 = 1UL << 9,
+		EBIT_FLAG32_10 = 1UL << 10,
+		EBIT_FLAG32_11 = 1UL << 11,
+		EBIT_FLAG32_12 = 1UL << 12,
+		EBIT_FLAG32_13 = 1UL << 13,
+		EBIT_FLAG32_14 = 1UL << 14,
+		EBIT_FLAG32_15 = 1UL << 15,
+		EBIT_FLAG32_16 = 1UL << 16,
+		EBIT_FLAG32_17 = 1UL << 17,
+		EBIT_FLAG32_18 = 1UL << 18,
+		EBIT_FLAG32_19 = 1UL << 19,
+		EBIT_FLAG32_20 = 1UL << 20,
+		EBIT_FLAG32_21 = 1UL << 21,
+		EBIT_FLAG32_22 = 1UL << 22,
+		EBIT_FLAG32_23 = 1UL << 23,
+		EBIT_FLAG32_24 = 1UL << 24,
+		EBIT_FLAG32_25 = 1UL << 25,
+		EBIT_FLAG32_26 = 1UL << 26,
+		EBIT_FLAG32_27 = 1UL << 27,
+		EBIT_FLAG32_28 = 1UL << 28,
+		EBIT_FLAG32_29 = 1UL << 29,
+		EBIT_FLAG32_30 = 1UL << 30,
+		EBIT_FLAG32_31 = 1UL << 31,
+	};
+
+	// ¾Æ ±ÍÂú¾Æ ¾ÈÇØ
+	enum EBIT_FLAG_64 : unsigned long long
+	{
+
+	};
 }
 #endif // Engine_Enum_h__

@@ -30,6 +30,16 @@ void			Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CManagement::GetInstance()->Render_Scene(pGraphicDev);
 }
+void			Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj)
+{
+	CManagement::GetInstance()->Add_GameObject(pLayerTag, pObj);
+}
+
+
+
+
+
+
 
 // 프로토 매니저 함수
 HRESULT			Ready_Proto(const _tchar* pProtoTag, CComponent* pComponent)
