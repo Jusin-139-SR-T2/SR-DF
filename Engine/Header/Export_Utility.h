@@ -38,6 +38,9 @@ inline _int			Update_Scene(const _float& fTimeDelta);
 inline void			LateUpdate_Scene();
 inline void			Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev);
 
+// 게임 런타임용 오브젝트 생성기
+inline void			Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj);
+
 
 // ProtoMgr
 inline HRESULT			Ready_Proto(const _tchar* pProtoTag, CComponent* pComponent);

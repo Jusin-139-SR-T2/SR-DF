@@ -54,6 +54,8 @@ HRESULT CBackGround::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	Set_ObjectName(L"Background");
+
 	m_fSizeX = WINCX;
 	m_fSizeY = WINCY;
 

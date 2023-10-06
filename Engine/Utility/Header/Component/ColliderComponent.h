@@ -73,7 +73,27 @@ protected:
 	using pair_collider = pair<CColliderComponent*, _bool>;
 	// 충돌 발생시 충돌한 객체를 가리키기 위한 리스트, Collide를 통해 매 프레임 조절됩니다.
 	list<pair_collider> m_listColliderObject;
-	
+
+public:
+	GETSET_EX1(_ulong, m_dwCollisionLayer_Flag, CollisionLayer, GET_C_REF)
+	void Set_CollisionLayer(const _ulong dwLayer_Flag)
+	{
+		m_dwCollisionLayer_Flag = dwLayer_Flag;
+		if (m_pCollisionShape)
+			m_pCollisionShape->Set_CollisionLayer(m_dwCollisionLayer_Flag);
+	}
+	GETSET_EX1(_ulong, m_dwCollisionMask_Flag, CollisionMask, GET_C_REF)
+	void Set_CollisionMask(const _ulong dwMask_Flag)
+	{
+		m_dwCollisionMask_Flag = dwMask_Flag;
+		if (m_pCollisionShape)
+			m_pCollisionShape->Set_CollisionMask(m_dwCollisionMask_Flag);
+	}
+
+protected:
+	_ulong				m_dwCollisionLayer_Flag;			// 콜리전 레이어, 충돌체가 존재하는 층
+	_ulong				m_dwCollisionMask_Flag;				// 콜리전 마스크, 충돌체가 충돌하고 싶어하는 층
+
 };
 
 END

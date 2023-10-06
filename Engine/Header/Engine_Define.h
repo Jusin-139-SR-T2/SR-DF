@@ -17,6 +17,7 @@
 #include <map>
 #include <set>
 #include <unordered_set>
+#include <array>
 #include <tuple>
 #include <algorithm>
 #include <functional>

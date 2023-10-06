@@ -13,6 +13,7 @@
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {
+    Set_ObjectName(L"Player");
 }
 
 CPlayer::CPlayer(const CPlayer& rhs)
@@ -31,9 +32,9 @@ HRESULT CPlayer::Ready_GameObject()
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
     m_pTransformComp->Set_Pos({ 10.f, 0.f, 10.f });
     m_pTransformComp->Readjust_Transform();
-    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-    FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-    pShape->fRadius = 2.f;
+    //m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
+    //FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+    //pShape->fRadius = 2.f;
 
     /*FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
     pShape->fRadius = 5.f;*/
@@ -138,6 +139,13 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     // 물리 업데이트 코드
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌체 이동
+
+    //플레이어 뒤로 콜라가 생성되는 코드
+    //if (Engine::IsKey_Pressed(DIK_BACK))
+    Engine::Add_GameObject(L"GameLogic", 
+        CAceObjectFactory::Create(m_pGraphicDev,
+        CAceObjectFactory::OBJECT_CLASS::FOOD, L"Test",
+        m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z));
 
     //_vec3 vTest = m_pTransformComp->Get_Pos();
     //vTest.z += 1.f;
@@ -255,8 +263,9 @@ HRESULT CPlayer::Add_Component()
     m_pColliderComp->Set_Collision_Event<ThisClass>(this, &ThisClass::OnCollision);
     m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
     m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
-
-    // m_pColliderComp->Get_Shape()
+    // 충돌 레이어, 마스크 설정
+    m_pColliderComp->Set_CollisionLayer(EBIT_FLAG32_0);
+    m_pColliderComp->Set_CollisionMask(EBIT_FLAG32_2 | EBIT_FLAG32_3);
 
     return S_OK;
 }

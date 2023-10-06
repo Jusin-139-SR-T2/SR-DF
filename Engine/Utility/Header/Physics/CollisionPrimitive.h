@@ -27,13 +27,17 @@ public:
 	{
 		pBody = new FRigidBody();
 		pBody->Set_Owner(this);
+		m_dwCollisionLayer_Flag = 0UL;
+		m_dwCollisionMask_Flag = 0UL;
 	}
 	FCollisionPrimitive(const FCollisionPrimitive& rhs)
+		: m_dwCollisionLayer_Flag(rhs.m_dwCollisionLayer_Flag)
+		, m_dwCollisionMask_Flag(rhs.m_dwCollisionMask_Flag)
 	{
 		pBody = new FRigidBody();
 		*pBody = *rhs.pBody;
 		pBody->Set_Owner(this);
-		fnEventHandler = nullptr;		// 이벤트 함수는 복사하면 안됨.
+		//arr = nullptr;		// 이벤트 함수는 복사하면 안됨.
 	}
 	virtual ~FCollisionPrimitive() 
 	{
@@ -69,14 +73,22 @@ protected:
 	FMatrix3x4	matTransform;		// 트랜스 폼 행렬
 
 public:
+	GETSET_EX2(_ulong, m_dwCollisionLayer_Flag, CollisionLayer, GET_C_REF, SET_C)
+	GETSET_EX2(_ulong, m_dwCollisionMask_Flag, CollisionMask, GET_C_REF, SET_C)
+
+protected:
+	_ulong				m_dwCollisionLayer_Flag;			// 콜리전 레이어, 충돌체가 존재하는 층
+	_ulong				m_dwCollisionMask_Flag;				// 콜리전 마스크, 충돌체가 충돌하고 싶어하는 층
+
+public:
 	GETSET_EX2(ECOLLISION, eType, Type, GET_C_REF, GET_REF)
 
 protected:
 	ECOLLISION	eType;				// 타입
 
 public:
-	GETSET_EX1(function<void(void*)>, fnEventHandler, Event, SET)
-	void Handle_Event(void* pDst) { if (fnEventHandler) fnEventHandler(pDst); }
+	void Add_CollisionEvent(const function<void(void*)>& fn) { fnEventHandler = fn; }
+	void Handle_CollsionEvent(void* pDst) { if (fnEventHandler) fnEventHandler(pDst); }
 
 protected:
 	function<void(void*)>	fnEventHandler;

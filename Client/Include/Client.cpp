@@ -9,6 +9,9 @@
 
 #define MAX_LOADSTRING 100
 
+// 콘솔창 키고 싶으면 이거 1로 설정
+#define _TEST_CONSOLE 0
+
 // 전역 변수:
 HINSTANCE g_hInst;                              // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
@@ -31,6 +34,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
+
+#ifdef _DEBUG
+#if _TEST_CONSOLE
+    // 디버그용 콘솔창
+    if (::AllocConsole() == TRUE)
+    {
+        FILE* nfp[3];
+        freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
+        freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
+        freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
+        std::ios::sync_with_stdio();
+    }
+#endif
+#endif // _DEBUG
+
+    
 
     // TODO: 여기에 코드를 입력합니다.
 
@@ -56,9 +75,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return FALSE;
 
     FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_Immediate"), FALSE);
-    FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_FPS60"), FALSE);
+    FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_FPS"), FALSE);
 
-    FAILED_CHECK_RETURN(Engine::Ready_Frame(L"Frame60", 60.f), FALSE);
+    FAILED_CHECK_RETURN(Engine::Ready_Frame(L"Frame", 60.f), FALSE);
 
     // 기본 메시지 루프입니다.
     while (true)
@@ -81,10 +100,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             _float	fTimeDelta_Immediate = Engine::Get_TimeDelta(L"Timer_Immediate");
 
             // 프레임이 넘어갈 때 틱 함수 작동
-            if (Engine::IsPermit_Call(L"Frame60", fTimeDelta_Immediate))
+            if (Engine::IsPermit_Call(L"Frame", fTimeDelta_Immediate))
             {
-                Engine::Set_TimeDelta(L"Timer_FPS60");
-                _float	fTimeDelta_60 = Engine::Get_TimeDelta(L"Timer_FPS60");
+                Engine::Set_TimeDelta(L"Timer_FPS");
+                _float	fTimeDelta_60 = Engine::Get_TimeDelta(L"Timer_FPS");
 
 
                 // 틱 함수
@@ -103,6 +122,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
+#ifdef _DEBUG
+#if _TEST_CONSOLE
+    // 콘솔 사용 해제
+    FreeConsole();
+#endif
+#endif // _DEBUG
 
     return (int) msg.wParam;
 }

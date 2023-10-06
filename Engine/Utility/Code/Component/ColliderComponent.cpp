@@ -11,11 +11,15 @@ CColliderComponent::CColliderComponent()
 
 CColliderComponent::CColliderComponent(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
+    , m_dwCollisionLayer_Flag(m_dwCollisionLayer_Flag)
+    , m_dwCollisionMask_Flag(m_dwCollisionMask_Flag)
 {
 }
 
 CColliderComponent::CColliderComponent(const CColliderComponent& rhs)
     : Base(rhs)
+    , m_dwCollisionLayer_Flag(rhs.m_dwCollisionLayer_Flag)
+    , m_dwCollisionMask_Flag(rhs.m_dwCollisionMask_Flag)
 {
     // 충돌체 값복사
     switch (rhs.m_pCollisionShape->Get_Type())
@@ -43,10 +47,12 @@ CColliderComponent::CColliderComponent(const CColliderComponent& rhs)
 
     m_pCollisionShape->Set_Owner(this);
 
-    // 충돌체에 직접 이벤트 추가하기
-    m_pCollisionShape->Set_Event([this](void* pDst) { 
-        this->OnCollision(reinterpret_cast<CColliderComponent*>(pDst));
+    // 충돌체에 충돌 이벤트 추가하기
+    m_pCollisionShape->Add_CollisionEvent([this](void* pDst) {
+        this->OnCollision(static_cast<CColliderComponent*>(pDst));
         });
+    
+
 
     // 이벤트 함수 클론 제외, 수동으로 외부에서 추가
 }
@@ -102,9 +108,9 @@ HRESULT CColliderComponent::Ready_Component(LPDIRECT3DDEVICE9 pGraphicDev, ECOLL
     // 충돌체에 오너 설정
     m_pCollisionShape->Set_Owner(this);
 
-    // 충돌체에 직접 이벤트 추가하기
-    m_pCollisionShape->Set_Event([this](void* pDst) {
-        this->OnCollision(reinterpret_cast<CColliderComponent*>(pDst));
+    // 충돌체에 충돌 이벤트 추가하기
+    m_pCollisionShape->Add_CollisionEvent([this](void* pDst) {
+        this->OnCollision(static_cast<CColliderComponent*>(pDst));
         });
 
     return S_OK;
@@ -112,7 +118,6 @@ HRESULT CColliderComponent::Ready_Component(LPDIRECT3DDEVICE9 pGraphicDev, ECOLL
 
 _int CColliderComponent::Update_Component(const _float& fTimeDelta)
 {
-    // Exited 발동
     OnCollisionExited();
 
     // Exited 초기화
@@ -150,7 +155,7 @@ void CColliderComponent::OnCollision(CColliderComponent* pDst)
 
     // 충돌 중이었던 객체가 있는지 확인
     auto iter = find_if(m_listColliderObject.begin(), m_listColliderObject.end(), 
-        [&pDst](pair_collider pSrc) {
+        [&pDst](pair_collider& pSrc) {
             return pDst == pSrc.first;
         });
 

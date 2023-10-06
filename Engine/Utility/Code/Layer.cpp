@@ -114,17 +114,80 @@ CComponent* CLayer::Get_Component(COMPONENTID eID, const _tchar* pObjTag, const 
 	return iter->second->Get_Component(eID, pComponentTag);
 }
 
-HRESULT CLayer::Add_GameObject(const _tchar* pObjTag, CGameObject* pGameObject)
+HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 {
 	// 이 레이어에 게임 오브젝트를 적재한다.
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 
-	m_mapObject.insert({ pObjTag, pGameObject });
+	wstring strObjectTag = pGameObject->Get_ObjectName();
+	auto iter = m_mapObject.find(strObjectTag.c_str());
+	// 대충 중복 이름 있으면 숫자 붙여서 넣는 방식
+	if (iter != m_mapObject.end())
+	{
+		_uint i = 0U;
+		while (true)
+		{
+			wstringstream ss;
+			ss << i;
+			wstring strNew = strObjectTag + ss.str();
+			auto iterObject = m_mapObject.find(strNew);
+			// 없으면 추가하기
+			if (iterObject == m_mapObject.end())
+			{
+				m_mapObject.emplace(strNew, pGameObject);
+				pGameObject->Set_ObjectName(strNew);
+				break;
+			}
+
+			++i;
+		}
+
+	}
+	else
+		m_mapObject.emplace(strObjectTag.c_str(), pGameObject);
 
 	return S_OK;
 }
 
-CGameObject* CLayer::Get_GameObject(const _tchar* pObjTag)
+HRESULT CLayer::Add_GameObject(const wstring pObjTag, CGameObject* pGameObject)
+{
+	// 이 레이어에 게임 오브젝트를 적재한다.
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+	auto iter = m_mapObject.find(pObjTag);
+	// 대충 중복 이름 있으면 숫자 붙여서 넣는 방식
+	if (iter != m_mapObject.end())
+	{
+		_uint i = 0U;
+		while (true)
+		{
+			wstringstream ss;
+			ss << i;
+			wstring strNew = pObjTag + ss.str();
+			auto iterObject = m_mapObject.find(strNew);
+			// 없으면 추가하기
+			if (iterObject == m_mapObject.end())
+			{
+				m_mapObject.emplace(strNew, pGameObject);
+				pGameObject->Set_ObjectName(strNew);
+				break;
+			}
+
+			++i;
+		}
+		
+	}
+	else
+	{
+		m_mapObject.emplace(pObjTag, pGameObject);
+		pGameObject->Set_ObjectName(pObjTag);
+	}
+		
+
+	return S_OK;
+}
+
+CGameObject* CLayer::Get_GameObject(const wstring pObjTag)
 {
 	CGameObject* pObj = m_mapObject[pObjTag];
 
