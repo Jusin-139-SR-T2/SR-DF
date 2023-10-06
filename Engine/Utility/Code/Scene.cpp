@@ -100,6 +100,19 @@ CGameObject* CScene::Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjT
 	return pObj;
 }
 
+void CScene::Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj)
+{
+	auto iter = m_mapLayer.find(pLayerTag);
+	if (iter == m_mapLayer.end())
+	{
+		OutputDebugString(L"레이어 없음!");
+		Safe_Release(pObj);
+		return;
+	}
+
+	m_mapLayer.emplace(pObj->Get_Name().c_str(), pObj);
+}
+
 HRESULT CScene::Add_Layer(const _tchar* pLayerTag, CLayer* pLayer)
 {
 	NULL_CHECK_RETURN(pLayer, E_FAIL);

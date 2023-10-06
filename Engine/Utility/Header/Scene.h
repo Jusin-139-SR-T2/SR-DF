@@ -28,6 +28,7 @@ protected:
 public:
 	CComponent*			Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
 	CGameObject*		Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
+	void				Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj);
 
 protected:	// 레이어 관련
 	// 모든 레이어가 준비되었을 때 작성하는 코드입니다.

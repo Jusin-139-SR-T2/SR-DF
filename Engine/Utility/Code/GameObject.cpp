@@ -1,8 +1,10 @@
 #include "GameObject.h"
 
+_ulonglong CGameObject::g_dwID_Count = 0ULL;
+
 CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
     : m_pGraphicDev(pGraphicDev)
-    , m_bIsDead(false)
+    , m_bIsDead(false), m_strObjectName(L""), m_dwObjectID(g_dwID_Count++), m_dwObjectState(0U)
 {
     m_pGraphicDev->AddRef();
 
@@ -14,6 +16,7 @@ CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
 
 CGameObject::CGameObject(const CGameObject& rhs)
     : m_pGraphicDev(rhs.m_pGraphicDev)
+    , m_strObjectName(rhs.m_strObjectName), m_dwObjectID(g_dwID_Count++), m_dwObjectState(rhs.m_dwObjectState)
 {
     m_pGraphicDev->AddRef();
 }
@@ -68,7 +71,7 @@ _int CGameObject::Update_GameObject(const _float& fTimeDelta)
     // 프레임 업데이트를 수행해야하는 컴포넌트 집단에 대해 업데이트 수행
     for (auto& iter : m_mapComponent[ID_DYNAMIC])
         iter.second->Update_Component(fTimeDelta);
-
+    
     return 0;
 }
 
