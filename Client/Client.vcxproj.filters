@@ -219,13 +219,13 @@
     <ClInclude Include="Header\FireWork.h">
       <Filter>02. GameObject\04. Particle\01. FireWork</Filter>
     </ClInclude>
-    <ClInclude Include="Awareness.h">
+    <ClInclude Include="Header\Awareness.h">
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClInclude>
-    <ClInclude Include="Dazed.h">
+    <ClInclude Include="Header\Dazed.h">
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
     </ClInclude>
-    <ClInclude Include="AceBuilding.h">
+    <ClInclude Include="Header\AceBuilding.h">
       <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
     </ClInclude>
   </ItemGroup>
@@ -314,13 +314,13 @@
     <ClCompile Include="Code\FireWork.cpp">
       <Filter>02. GameObject\04. Particle\01. FireWork</Filter>
     </ClCompile>
-    <ClCompile Include="Awareness.cpp">
+    <ClCompile Include="Code\Awareness.cpp">
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClCompile>
-    <ClCompile Include="Dazed.cpp">
+    <ClCompile Include="Code\Dazed.cpp">
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
     </ClCompile>
-    <ClCompile Include="AceBuilding.cpp">
+    <ClCompile Include="Code\AceBuilding.cpp">
       <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
     </ClCompile>
   </ItemGroup>

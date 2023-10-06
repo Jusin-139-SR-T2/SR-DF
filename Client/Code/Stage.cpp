@@ -94,8 +94,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray", CGray::Create(m_pGraphicDev, 40.f, 1.f, 25.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev, 75.f, 1.f, 25.f)), E_FAIL);
 
-
 	//Test¿ëµµ -------------------------------------------------------
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LightBeam", CDazed::Create(m_pGraphicDev)), E_FAIL);
+
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Building1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::BUILDING, L"A", 14.f, 1.f, 45.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Building2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::BUILDING, L"B", 24.f, 1.f, 45.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Building3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::BUILDING, L"C", 34.f, 1.f, 45.f)), E_FAIL);

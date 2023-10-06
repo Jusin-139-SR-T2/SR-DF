@@ -88,6 +88,7 @@ _uint CLoading::Loading_For_Stage()
 
 	// 이펙트 컴포넌트
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Effect_AwarenessTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Effect", L"Awareness_End")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Effect_BeamTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Effect", L"LightBeam")), E_FAIL);
 
 	//가건물 용도 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BuildingTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Building", L"A")), E_FAIL);
@@ -103,6 +104,10 @@ _uint CLoading::Loading_For_Stage()
 // 텍스처 매니저 텍스처 추가
 HRESULT CLoading::Loading_For_Texture()
 {
+	//Load_Texture(L"./Resource/Texture/Monster/Effect/BossRazer/RedLazer_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 14U)); //Razer
+	//Load_Texture(L"./Resource/Texture/Monster/Effect/Razer/Razer_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 18U)); // Bomb
+	Load_Texture(L"./Resource/Texture/Monster/Effect/Holy/Holy_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 3U)); // Bomb
+
 	Load_Texture(L"./Resource/Texture/Building/A.dds", TEX_CUBE, L"Building", L"A");
 	Load_Texture(L"./Resource/Texture/Building/B.dds", TEX_CUBE, L"Building", L"B");
 	Load_Texture(L"./Resource/Texture/Building/C.dds", TEX_CUBE, L"Building", L"C");
@@ -348,6 +353,8 @@ HRESULT CLoading::Loading_For_Texture()
 
 	Load_Texture(L"./Resource/Texture/Effect/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 14U));
 	Load_Texture(L"./Resource/Texture/Effect/Awareness__end.png", TEX_NORMAL, L"Effect", L"Awareness_End");
+
+
 
 #pragma endregion
 

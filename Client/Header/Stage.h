@@ -14,6 +14,7 @@
 #include "FireWork.h"
 
 #include "Awareness.h"
+#include "Dazed.h"
 
 class CStage : public Engine::CScene
 {
