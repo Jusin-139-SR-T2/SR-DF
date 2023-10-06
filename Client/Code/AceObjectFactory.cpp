@@ -5,15 +5,16 @@
 #include "AceWeapon.h"
 #include "AceThrow.h"
 #include "AceInteraction.h"
+#include "AceBuilding.h"
 
-Engine::CGameObject* CAceObjectFactory::Create
-(LPDIRECT3DDEVICE9 pGraphicDev, 
-    OBJECT_CLASS objClass, 
-    const _tchar* pObjTag, 
-    const _float _fx, 
-    const _float _fy, 
-    const _float _fz, 
-    const _float iCnt)
+Engine::CGameObject* CAceObjectFactory::Create(LPDIRECT3DDEVICE9 pGraphicDev, 
+                                                OBJECT_CLASS objClass, 
+                                                const _tchar* pObjTag, 
+                                                const _float _fx, 
+                                                const _float _fy, 
+                                                const _float _fz, 
+                                                const _float iCnt, 
+                                                CAceObjectFactory::OBJECT_DIRECTION pDirection)
 {
     Engine::CGameObject* pInstance = nullptr;
 
@@ -35,7 +36,13 @@ Engine::CGameObject* CAceObjectFactory::Create
     case CAceObjectFactory::OBJECT_CLASS::THROW:
         pInstance = CAceThrow::Create(pGraphicDev, pObjTag, _fx, _fy, _fz, iCnt);
         return pInstance;
+        
+    case CAceObjectFactory::OBJECT_CLASS::BUILDING:
+        pInstance = CAceBuilding::Create(pGraphicDev, pObjTag, _fx, _fy, _fz, pDirection);
+        return pInstance;
+
     }
 
     return pInstance;
 }
+

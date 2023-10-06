@@ -140,3 +140,11 @@ HRESULT CManagement::Clear_Scene()
 
 	return S_OK;
 }
+
+HRESULT CManagement::LateCreate_Object(const _tchar* pLayerTag, const _tchar* pObjectTag, CLayer* pLayer, CGameObject* pObject)
+{
+	if (nullptr == m_pScene_Current)
+		return E_FAIL;
+
+	return m_pScene_Current->LateCreate_Object(pLayerTag, pObjectTag, pLayer, pObject);
+}

@@ -15,7 +15,7 @@ CGray::~CGray()
 {
 }
 
-CGray* CGray::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CGray* CGray::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -27,6 +27,8 @@ CGray* CGray::Create(LPDIRECT3DDEVICE9 pGraphicDev)
         return nullptr;
     }
 
+    pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
+    pInstance->vPatrolPointZero = { _x, _y, _z };
     return pInstance;
 }
 
@@ -37,7 +39,6 @@ HRESULT CGray::Ready_GameObject()
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
-    m_pTransformComp->Set_Pos({ 10.f, 10.f, 25.f });
     m_fFrame = 0;
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;

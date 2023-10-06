@@ -90,7 +90,7 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Effect_AwarenessTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Effect", L"Awareness_End")), E_FAIL);
 
 	//가건물 용도 
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BuildingTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"TestBuilding", L"Apartment")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BuildingTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Building", L"A")), E_FAIL);
 
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
@@ -103,7 +103,12 @@ _uint CLoading::Loading_For_Stage()
 // 텍스처 매니저 텍스처 추가
 HRESULT CLoading::Loading_For_Texture()
 {
-	Load_Texture(L"./Resource/Texture/Building/School.dds", TEX_CUBE, L"TestBuilding", L"Apartment");
+	Load_Texture(L"./Resource/Texture/Building/A.dds", TEX_CUBE, L"Building", L"A");
+	Load_Texture(L"./Resource/Texture/Building/B.dds", TEX_CUBE, L"Building", L"B");
+	Load_Texture(L"./Resource/Texture/Building/C.dds", TEX_CUBE, L"Building", L"C");
+	Load_Texture(L"./Resource/Texture/Building/D.dds", TEX_CUBE, L"Building", L"D");
+	Load_Texture(L"./Resource/Texture/Building/E.dds", TEX_CUBE, L"Building", L"E");
+	Load_Texture(L"./Resource/Texture/Building/F.dds", TEX_CUBE, L"Building", L"F");
 
 #pragma region 기타 등등
 	Load_Texture(L"./Resource/Texture/Tile/Tile/22.jpg", TEX_NORMAL, L"Tile", L"22");
@@ -158,12 +163,13 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Stand/Stand_South.png", TEX_NORMAL, L"Brown_Single", L"Stand_South");
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Single/Suspicious.png", TEX_NORMAL, L"Brown_Single", L"Suspicious");
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Single/CrotchHit.png", TEX_NORMAL, L"Brown_Single", L"CrotchHit");
+	Load_Texture(L"./Resource/Texture/Monster/Brown/Death/Death_4.png", TEX_NORMAL, L"Brown_Single", L"FinalDeath");
 
 	// Monster Texture - Brown - Multi : 18EA
 	Load_Texture(L"./Resource/Texture/Monster/Brown/BasicAttack/BasicAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"BasicAttack", _range<_uint>(0U, 4U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/InchForward/InchForward_%d.png", TEX_NORMAL, L"Brown_Multi", L"InchForward", _range<_uint>(0U, 5U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/HeavyAttack/HeavyAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"HeavyAttack", _range<_uint>(0U, 6U));
-	Load_Texture(L"./Resource/Texture/Monster/Brown/WalkNorth/WalkNorth_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_North", _range<_uint>(0U, 31U));
+	Load_Texture(L"./Resource/Texture/Monster/Brown/Walk/North/WalkNorth_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_North", _range<_uint>(0U, 31U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Chopped/KarateChopped_%d.png", TEX_NORMAL, L"Brown_Multi", L"Chopped", _range<_uint>(0U, 17U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/FacePunch/FacePunch_%d.png", TEX_NORMAL, L"Brown_Multi", L"FacePunch", _range<_uint>(0U, 7U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Run/South/RunSouth_%d.png", TEX_NORMAL, L"Brown_Multi", L"RunSouth", _range<_uint>(0U, 20U));

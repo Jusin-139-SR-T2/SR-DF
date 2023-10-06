@@ -5,12 +5,12 @@
 #include "Export_Utility.h"
 
 CAceInteraction::CAceInteraction(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Base(pGraphicDev)
+	: CGameObject(pGraphicDev)
 {
 }
 
 CAceInteraction::CAceInteraction(const CAceInteraction& rhs)
-	: Base(rhs)
+	: CGameObject(rhs)
 {
 }
 

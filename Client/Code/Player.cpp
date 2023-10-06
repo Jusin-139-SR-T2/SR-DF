@@ -28,8 +28,11 @@ HRESULT CPlayer::Ready_GameObject()
 
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
     m_pTransformComp->Set_Pos({10.f, 0.f, 10.f});
+
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
+    FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+    pShape->fRadius = 2.f;
 
     /*FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
     pShape->fRadius = 5.f;*/
@@ -40,7 +43,7 @@ HRESULT CPlayer::Ready_GameObject()
 
     m_fX = -200.f; // 중점위치 
     m_fY = -280.f;
-
+    
     m_pLeftHandComp->Set_Pos({ m_fX, m_fY, 0.f });	// 이미지 위치
     m_pLeftHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 
@@ -137,7 +140,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     //_vec3 vTest = m_pTransformComp->Get_Pos();
     //vTest.z += 1.f;
-    //list<CGameObject*> listCollision = Engine::IntersectTests_Sphere_GetGameObject(0, vTest, 2.f);
+    //list<CGameObject*> listCollision = Engine::IntersectTests_Sphere_GetGameObject(0, vTest, 3.f);
     //for (auto iter = listCollision.begin(); iter != listCollision.end(); ++iter)
     //{
     //    if ((*iter) != this) // 자기자신을 죽이지 않는 보안코드 삽입 

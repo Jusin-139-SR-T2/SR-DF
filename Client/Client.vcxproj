@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Awareness.h" />
+    <ClInclude Include="AceBuilding.h" />
     <ClInclude Include="Dazed.h" />
     <ClInclude Include="Header\FireWork.h" />
     <ClInclude Include="Header\AceInteraction.h" />
@@ -37,7 +38,6 @@
     <ClInclude Include="Header\MainApp.h" />
     <ClInclude Include="Header\Stage.h" />
     <ClInclude Include="Header\UI.h" />
-    <ClInclude Include="Hut.h" />
     <ClInclude Include="Include\Client.h" />
     <ClInclude Include="Include\Resource.h" />
     <ClInclude Include="Include\stdafx.h" />
@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Awareness.cpp" />
+    <ClCompile Include="AceBuilding.cpp" />
     <ClCompile Include="Code\AceInteraction.cpp" />
     <ClCompile Include="Code\AceFood.cpp" />
     <ClCompile Include="Code\PlayerLighter.cpp" />
@@ -70,7 +71,6 @@
     <ClCompile Include="Code\Gray.cpp" />
     <ClCompile Include="Code\FireWork.cpp" />
     <ClCompile Include="Dazed.cpp" />
-    <ClCompile Include="Hut.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

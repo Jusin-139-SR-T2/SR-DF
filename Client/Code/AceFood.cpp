@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "AceFood.h"
 
-#include "Export_System.h"
-#include "Export_Utility.h"
-
 CAceFood::CAceFood(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {
@@ -39,15 +36,18 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
 // Collision - 트리거 발동용 (event방식)
 void CAceFood::OnCollision(CGameObject* pDst) // 계속 충돌중 
 {
+    OutputDebugString(L"Object - Food 충돌중\n");
 }
 
 void CAceFood::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
-    
+
+    OutputDebugString(L"Object - Food 충돌 진입 \n");
 }
 
 void CAceFood::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
 {
+    OutputDebugString(L"Object - Food 충돌 끝\n");
     Set_Dead();
 }
 
