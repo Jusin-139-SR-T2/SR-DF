@@ -15,7 +15,7 @@ class CCalculatorComponent;
 class CColliderComponent;
 END
 
-enum PlayerHit {PUNCH, PISTOL, TOMSON, RUN, };
+enum PlayerHit {PUNCH, PISTOL, TOMSON, RUN, }; //임시용 
 
 class CBrown : public Engine::CGameObject
 {
@@ -123,11 +123,15 @@ private:
 public: 
 	// 목표 상태머신(AI)
 	enum class STATE_OBJ {
-		IDLE, SUSPICIOUS, TAUNT, CHASE, REST,			// intro 
-		RUN, WALK, INCHFORWARD, STRAFING, BASICATTACK, HEAVYATTACK, JUMP,	// 거리재는부분
+		IDLE, SUSPICIOUS, TAUNT, REST, CHASE, 			 
+		RUN, WALK, INCHFORWARD, STRAFING, 
+		BASICATTACK, HEAVYATTACK, 	// 거리재는부분
 		HIT, FACEPUNCH, CROTCHHIT,											// 피격판정 
 		DAZED, FALLING, CHOPPED, DEATH, HEADLESS,							// 죽을때
-		RECONNAISSANCE, GOHOME
+		RECONNAISSANCE, GOHOME,
+
+		//미구현 리스트 
+		JUMP,
 	};
 
 	// 행동 상태머신
