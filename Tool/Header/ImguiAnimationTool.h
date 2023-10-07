@@ -41,6 +41,19 @@ enum OBJECTKEY
 	KEY_FRYINGPAN
 };
 
+// 변경할 속성 값 모드
+enum EDITMODE 
+{
+	EDITMODE_NONE,
+	EDITMODE_SCALE,
+	EDITMODE_ROTATION,
+	EDITMODE_TRANSLATION,
+	EDITMODE_TIME_VALUE,
+	EDITMODE_TEXTURE
+};
+
+EDITMODE eEditMode = EDITMODE_NONE; // 변경할 모드 변수
+
 // 키프레임 구조체
 struct Keyframe 
 {
@@ -62,6 +75,8 @@ struct Keyframe
 	_vec3	vScale = { 0.f, 0.f, 0.f };			// 크기를 담을 그릇
 	_vec3	vRot = { 0.f, 0.f, 0.f };			// 회전을 담을 그릇
 	_vec3	vPos = { 0.f, 0.f, 0.f };			// 위치를 담을 그릇
+
+	_vec2	vKeyFramePos = { 0.00000000f, 0.00000000f };		// 툴에서의 해당 키프레임 위치
 };
 
 // 자동 애니메이션 생성시 최소 및 최대 값을 입력 받는 구조체
@@ -202,6 +217,33 @@ public: // 애니메이션 함수
 	// 키프레임을 선택하여 해당 키프레임 수정
 	void HandleKeyframeClick();
 
+	// 단축키 모음 (키입력)
+	void KeyInput();
+
+	// 단축키로 키프레임의 속성 값 변경
+	void SelectKeyframeValueChange();
+
+	// 타임라인의 키프레임을 마우스로 선택하여 구분하는 함수
+	void SelectKeyframeMouseL();
+
+	// 키프레임 목록
+	void KeyframeList();
+
+	// 키프레임 수정 창
+	void KeyframeChangeWindow();
+
+	// 키프레임 미리보기 보간 (보류)
+	void KeyframeAniV();
+
+	// 키프레임 랜더링 및 편집 (순서 UI중 가장 마지막)
+	void KeyframeRender_ValueChange();
+
+	// 키프레임 자동 생성 함수
+	void KeyframeAutomaticGeneration();
+
+	// 우클릭으로 키프레임 삭제하는 함수
+	void KeyframeDeleteMouseR();
+
 public:
 	virtual HRESULT Ready_ImguiWin() override;
 	virtual _int	Update_ImguiWin(const _float& fTimeDelta) override;
@@ -317,9 +359,22 @@ private: // 애니메이션 툴 변수
 	_float numKeyframes = 0.f;
 #pragma endregion
 
+#pragma region 애니메이션 타임 라인
+
+	// 키프레임 변경 관련 함수
+	float oldKeyframeIndex = 0.f;
+
+#pragma endregion
+
 	float oldTime = 0.f;	// 이전 시간 값 저장
 	float newTime = 0.f;	// 새로운 시간 값 (원하는 값으로 변경)
 	float originalIndex;
+
+	float vValueSize = 1.f;	// 변경을 줄 값의 크기
+	float fValueCurve = 0.1f; // 변경을 줄 값을 조절하는 변수
+
+
+	int closestKeyframeIndex = -1; // # 현재 마우스로 선택한 키프레임 인덱스
 
 	// 선택한 키프레임 인덱스를 저장하는 변수 (선택한 키프렘의 인덱스를 초기화합니다.)
 	int selectedKeyframeIndex = -1;
@@ -381,9 +436,7 @@ private: // 애니메이션 툴 변수
 	};
 	int selectedPathIndex = 0; // 선택된 이미지 경로 인덱스
 
-	// @@@@@@엔진의 멤버가 아니라그래서 주석걸어뒀음@@@@@@@
-	//std::map<OBJECTKEY, Engine::CGameObject*> m_mapObject; // 객체를 저장하는 맵
-	// @@@@@@엔진의 멤버가 아니라그래서 주석걸어뒀음@@@@@@@
+	float fScaleSpeed = 0.1f; // 크기 조정 속도 조절
 };
 
 #pragma region 단축키
