@@ -185,6 +185,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
   <ItemGroup>
     <ClInclude Include="..\Header\Export_Utility.h" />
     <ClInclude Include="AbstractFac_Scene.h" />
+    <ClInclude Include="Header\BlackBoardPtr.h" />
     <ClInclude Include="Header\BlackBoard.h" />
     <ClInclude Include="Header\BlackBoardMgr.h" />
     <ClInclude Include="Header\Esystem.h" />
@@ -238,6 +239,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractFac_Scene.cpp" />
+    <ClCompile Include="Code\BlackBoardPtr.cpp" />
     <ClCompile Include="Code\AStarMgr.cpp" />
     <ClCompile Include="Code\BlackBoard.cpp" />
     <ClCompile Include="Code\BlackBoardMgr.cpp" />

@@ -258,10 +258,9 @@ inline HRESULT	Add_BlackBoard(const wstring& strBoardName, CBlackBoard* pBlackBo
 {
 	return CBlackBoardMgr::GetInstance()->Add_BlackBoard(strBoardName, pBlackBoard);
 }
-template <typename T>
-inline HRESULT	Get_BlackBoard(const wstring& strBoardName, FBlackBoardPtr<T>& pBlackBoard)
+inline CBlackBoard* Get_BlackBoard(const wstring& strBoardName)
 {
-	return CBlackBoardMgr::GetInstance()->Add_BlackBoard(strBoardName, pBlackBoard);
+	return CBlackBoardMgr::GetInstance()->Get_BlackBoard(strBoardName);
 }
 
 #pragma endregion

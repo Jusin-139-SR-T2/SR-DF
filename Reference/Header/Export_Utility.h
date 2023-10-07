@@ -113,11 +113,10 @@ inline bool		IsMouse_Released(const MOUSEKEYSTATE&& iMouse);
 
 
 #pragma region 블랙보드 매니저
-inline HRESULT	Ready_BlackBoardMgr();
-inline _int		Update_BlackBoardMgr();
-inline HRESULT	Add_BlackBoard(const wstring& strBoardName, CBlackBoard* pBlackBoard);
-template <typename T>
-inline HRESULT	Get_BlackBoard(const wstring& strBoardName, FBlackBoardPtr<T>& pBlackBoard);
+inline HRESULT		Ready_BlackBoardMgr();
+inline _int			Update_BlackBoardMgr();
+inline HRESULT		Add_BlackBoard(const wstring& strBoardName, CBlackBoard* pBlackBoard);
+inline CBlackBoard* Get_BlackBoard(const wstring& strBoardName);
 #pragma endregion
 
 

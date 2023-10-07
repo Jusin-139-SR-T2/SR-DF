@@ -27,6 +27,9 @@ protected:
 	explicit CBlackBoard_Player(const CBlackBoard_Player& rhs);
 	virtual ~CBlackBoard_Player();
 
+public:
+	static CBlackBoard_Player* Create();
+
 private:
 	virtual void		Free();
 

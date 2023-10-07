@@ -3,6 +3,13 @@
 #include "UI.h"
 #include "Engine_Macro.h"
 
+#include "BlackBoard_Player.h"
+#include "BlackBoardPtr.h"
+#include "BlackBoardMgr.h"
+
+#include "Export_System.h"
+#include "Export_Utility.h"
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -17,7 +24,7 @@ END
 class CUI_Player : public CUI
 {
 	DERIVED_CLASS(CUI, CUI_Player)
-private:
+protected:
 	explicit CUI_Player(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CUI_Player(const CUI_Player& rhs);
 	virtual ~CUI_Player();
@@ -34,10 +41,10 @@ public:
 	virtual void LateUpdate_GameObject() override;
 	virtual void Render_GameObject() override;
 
+//---------------------------------------------------------------------------------------------
+
 private:
 	HRESULT Add_Component();
-
-	void Key_Input(const _float& fTimeDelta);
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -48,6 +55,15 @@ private:
 	CRcBufferComp*			m_pBufferComp = nullptr;
 	CTransformComponent*	m_pTransformComp = nullptr;
 	CTextureComponent*		m_pTextureComp = nullptr;
+
+
+//---------------------------------------------------------------------------------------------
+
+private:
+	void	Update_InternalData();
+
+protected:
+	FBlackBoardPtr<CBlackBoard_Player>	m_wpBlackBoard_Player;	// 블랙보드 플레이어
 
 private:
 	_float				m_fX, m_fY, m_fSizeX, m_fSizeY;

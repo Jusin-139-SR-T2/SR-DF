@@ -164,6 +164,9 @@
     <ClInclude Include="Header\BlackBoard.h">
       <Filter>11. BlackBoardMgr\BlackBoard</Filter>
     </ClInclude>
+    <ClInclude Include="Header\BlackBoardPtr.h">
+      <Filter>11. BlackBoardMgr\BlackBoard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -318,6 +321,9 @@
       <Filter>11. BlackBoardMgr</Filter>
     </ClCompile>
     <ClCompile Include="Code\BlackBoard.cpp">
+      <Filter>11. BlackBoardMgr\BlackBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoardPtr.cpp">
       <Filter>11. BlackBoardMgr\BlackBoard</Filter>
     </ClCompile>
   </ItemGroup>

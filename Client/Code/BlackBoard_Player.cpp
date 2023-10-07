@@ -19,6 +19,21 @@ CBlackBoard_Player::~CBlackBoard_Player()
     Free();
 }
 
+CBlackBoard_Player* CBlackBoard_Player::Create()
+{
+    ThisClass* pInstance = new ThisClass();
+
+    if (FAILED(pInstance->Ready_BlackBoard()))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("BlackBoard_Player Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
+}
+
 void CBlackBoard_Player::Free()
 {
     

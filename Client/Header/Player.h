@@ -7,6 +7,9 @@
 //임시용
 #include "AceFood.h" 
 
+#include "BlackBoard_Player.h"
+#include "BlackBoardPtr.h"
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -77,8 +80,19 @@ private:
 	_bool				Picking_On_Object();
 	// ====================================================================
 
+
+//-------------------------------------------------------------------------------------------------
+
+protected: // 충돌 onoff
+	virtual void	OnCollision(CGameObject* pDst) override;
+	virtual void	OnCollisionEntered(CGameObject* pDst) override;
+	virtual void	OnCollisionExited(CGameObject* pDst) override;
+
+//-------------------------------------------------------------------------------------------------
+
 public: // Camera
 	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)
+
 
 public: // Get_Set
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -89,10 +103,6 @@ public: // Get_Set
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
 	GETSET_EX2(CPlayerLighter*, m_PlayerLighter, PlayerLighter, GET, SET)	// 라이터 조명
 
-protected: // 충돌 onoff
-	virtual void	OnCollision(CGameObject* pDst) override;
-	virtual void	OnCollisionEntered(CGameObject* pDst) override;
-	virtual void	OnCollisionExited(CGameObject* pDst) override;
 
 private: // 컴포넌트
 	// 기능
@@ -105,6 +115,16 @@ private: // 컴포넌트
 	CTextureComponent* m_pLeftHandComp = nullptr;			// 왼손 텍스처(담을곳)
 	CTextureComponent* m_pRightHandComp = nullptr;			// 오른손 텍스처(담을곳)
 
+
+//-------------------------------------------------------------------------------------------------
+
+public:
+	void		Update_BlackBoard();
+
+private:
+	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player;
+
+//-------------------------------------------------------------------------------------------------
 
 public:// 플레이어 상태 값
 	// 플레이어
