@@ -22,6 +22,10 @@ HRESULT		Set_Scene(CScene* pScene)
 {
 	return CManagement::GetInstance()->Set_Scene(pScene);
 }
+HRESULT		Set_Scene(wstring strSceneName)
+{
+	return CManagement::GetInstance()->Set_Scene(strSceneName);
+}
 _int			Update_Scene(const _float& fTimeDelta)
 {
 	return CManagement::GetInstance()->Update_Scene(fTimeDelta);
@@ -240,6 +244,32 @@ bool		IsMouse_Released(const MOUSEKEYSTATE&& iMouse)
 }
 
 
+#pragma region 블랙보드 매니저
+
+inline HRESULT	Ready_BlackBoardMgr()
+{
+	return CBlackBoardMgr::GetInstance()->Ready_BlackBoard();
+}
+inline _int		Update_BlackBoardMgr()
+{
+	return CBlackBoardMgr::GetInstance()->Update_BlackBoard();
+}
+inline HRESULT	Add_BlackBoard(const wstring& strBoardName, CBlackBoard* pBlackBoard)
+{
+	return CBlackBoardMgr::GetInstance()->Add_BlackBoard(strBoardName, pBlackBoard);
+}
+template <typename T>
+inline HRESULT	Get_BlackBoard(const wstring& strBoardName, FBlackBoardPtr<T>& pBlackBoard)
+{
+	return CBlackBoardMgr::GetInstance()->Add_BlackBoard(strBoardName, pBlackBoard);
+}
+
+#pragma endregion
+
+
+
+
+
 
 // 싱글톤 해제 코드
 void		Release_Utility()
@@ -249,6 +279,7 @@ void		Release_Utility()
 	CProtoMgr::GetInstance()->DestroyInstance();
 	CTextureMgr::GetInstance()->DestroyInstance();
 	CKeyMgr::GetInstance()->DestroyInstance();
+	CBlackBoardMgr::GetInstance()->DestroyInstance();
 	CManagement::GetInstance()->DestroyInstance();
 	CPhysicsMgr::GetInstance()->DestroyInstance();		// 물리는 마지막에 해제한다.
 }

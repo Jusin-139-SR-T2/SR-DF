@@ -19,6 +19,7 @@ class CSphereColComp;
 END
 
 class CDynamicCamera;
+class CPlayerLighter;
 
 class CPlayer : public Engine::CGameObject
 {
@@ -81,12 +82,12 @@ public: // Camera
 
 public: // Get_Set
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
-		GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-		GETSET_EX2(CTextureComponent*, m_pLeftHandComp, m_pLeftHandComp, GET, SET)
-		GETSET_EX2(CTextureComponent*, m_pRightHandComp, m_pRightHandComp, GET, SET)
-		GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-		GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
-		GETSET_EX2(CPlayerLighter*, m_PlayerLighter, PlayerLighter, GET, SET)	// 라이터 조명
+	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+	GETSET_EX2(CTextureComponent*, m_pLeftHandComp, m_pLeftHandComp, GET, SET)
+	GETSET_EX2(CTextureComponent*, m_pRightHandComp, m_pRightHandComp, GET, SET)
+	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
+	GETSET_EX2(CPlayerLighter*, m_PlayerLighter, PlayerLighter, GET, SET)	// 라이터 조명
 
 protected: // 충돌 onoff
 	virtual void	OnCollision(CGameObject* pDst) override;

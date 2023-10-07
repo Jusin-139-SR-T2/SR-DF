@@ -110,7 +110,7 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
             
             
             ImGui::DockBuilderDockWindow(u8"텍스처", dock_right_id);
-            ImGui::DockBuilderDockWindow(u8"애니메이션 속성 편집", dock_right_tap_id);
+            ImGui::DockBuilderDockWindow(u8"Generate", dock_right_tap_id);
             ImGui::DockBuilderDockWindow(u8"키프레임 수정", dock_right_down_id);
             ImGui::DockBuilderDockWindow(u8"키프레임 정보", dock_right_down_tap_id);
             ImGui::DockBuilderDockWindow(u8"애니메이션 툴", dock_down_id);
@@ -1164,7 +1164,7 @@ void CImguiAnimationTool::RenderTimeline()
 
 #pragma region 키프레임 자동 생성
 
-    ImGui::Begin("Generate");
+    ImGui::Begin(u8"Generate");
 
     ImGui::Text(u8"키프레임 자동 생성");
 

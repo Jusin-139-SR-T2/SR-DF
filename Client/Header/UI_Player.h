@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "UI.h"
 #include "Engine_Macro.h"
 
 BEGIN(Engine)
@@ -11,16 +11,19 @@ class CTransformComponent;
 
 END
 
-class CUI : public Engine::CGameObject
+/// <summary>
+/// 플레이어의 정보를 표시하는 UI 클래스
+/// </summary>
+class CUI_Player : public CUI
 {
-	DERIVED_CLASS(CGameObject, CUI)
+	DERIVED_CLASS(CUI, CUI_Player)
 private:
-	explicit CUI(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CUI(const CUI& rhs);
-	virtual ~CUI();
+	explicit CUI_Player(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CUI_Player(const CUI_Player& rhs);
+	virtual ~CUI_Player();
 
 public:
-	static CUI* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CUI_Player* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private: 
 	virtual void Free();
@@ -42,9 +45,9 @@ public:
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
 
 private:
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
+	CRcBufferComp*			m_pBufferComp = nullptr;
+	CTransformComponent*	m_pTransformComp = nullptr;
+	CTextureComponent*		m_pTextureComp = nullptr;
 
 private:
 	_float				m_fX, m_fY, m_fSizeX, m_fSizeY;

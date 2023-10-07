@@ -1,25 +1,26 @@
 #include "stdafx.h"
-#include "UI.h"
+#include "UI_Player.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
 
 #include "DynamicCamera.h"
 
-CUI::CUI(LPDIRECT3DDEVICE9 pGraphicDev) : CGameObject(pGraphicDev), m_fHp(100.f)
+CUI_Player::CUI_Player(LPDIRECT3DDEVICE9 pGraphicDev) 
+	: Base(pGraphicDev), m_fHp(100.f)
 {
 }
 
-CUI::CUI(const CUI& rhs)
-	: CGameObject(rhs)
+CUI_Player::CUI_Player(const CUI_Player& rhs)
+	: Base(rhs)
 {
 }
 
-CUI::~CUI()
+CUI_Player::~CUI_Player()
 {
 }
 
-HRESULT CUI::Ready_GameObject()
+HRESULT CUI_Player::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -35,7 +36,7 @@ HRESULT CUI::Ready_GameObject()
 	return S_OK;
 }
 
-_int CUI::Update_GameObject(const _float& fTimeDelta)
+_int CUI_Player::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = SUPER::Update_GameObject(fTimeDelta);
 
@@ -44,11 +45,11 @@ _int CUI::Update_GameObject(const _float& fTimeDelta)
 	return iExit;
 }
 
-void CUI::LateUpdate_GameObject()
+void CUI_Player::LateUpdate_GameObject()
 {
 }
 
-CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CUI_Player* CUI_Player::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -62,19 +63,19 @@ CUI* CUI::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CUI::Render_GameObject()
+void CUI_Player::Render_GameObject()
 {
 	m_pTextureComp->Readjust_Transform();
 	m_pTextureComp->Render_Texture(0, true);
 	m_pBufferComp->Render_Buffer();
 }
 
-void CUI::Free()
+void CUI_Player::Free()
 {
 	SUPER::Free();
 }
 
-HRESULT CUI::Add_Component()
+HRESULT CUI_Player::Add_Component()
 {
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_UITextureComp"), E_FAIL);
@@ -83,7 +84,7 @@ HRESULT CUI::Add_Component()
 	return S_OK;
 }
 
-void CUI::Key_Input(const _float& fTimeDelta)
+void CUI_Player::Key_Input(const _float& fTimeDelta)
 {
 	//추후에 1,2,3번으로 인벤토리 바꾸는 것
 	if (Engine::Get_DIKeyState(DIK_Z) & 0x80)

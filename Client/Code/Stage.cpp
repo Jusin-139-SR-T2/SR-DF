@@ -6,7 +6,7 @@
 #include "DynamicCamera.h"
 #include "BackGround.h"
 #include "SkyBox.h"
-#include "UI.h"
+#include "UI_Player.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -181,7 +181,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 
 	Engine::CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI", CUI::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Player", CUI_Player::Create(m_pGraphicDev)), E_FAIL);
 	
 	m_mapLayer.insert({ pLayerTag, pLayer });
 	
