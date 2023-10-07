@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ImguiWin.h"
-#include "MyTexture.h"
+
 
 enum class OBJ_TYPE // 오브젝트의 타입
 { 
@@ -199,6 +199,9 @@ public: // 애니메이션 함수
 		_vec3 minrotationValue, _vec3 maxrotationValue,
 		_vec3 mintranslationValue, _vec3 maxtranslationValue, int numKeyframes);
 
+	// 키프레임을 선택하여 해당 키프레임 수정
+	void HandleKeyframeClick();
+
 public:
 	virtual HRESULT Ready_ImguiWin() override;
 	virtual _int	Update_ImguiWin(const _float& fTimeDelta) override;
@@ -207,6 +210,7 @@ public:
 	GETSET_EX1(LPDIRECT3DTEXTURE9, m_pTexture, Texture, GET_REF)
 	GETSET_EX2(_bool, isPlaying, FramePlaying, GET, SET)
 	GETSET_EX2(_float, currentTime, currentTime, GET, SET)
+	GETSET_EX2(_float, bRepetition, Repetition, GET, SET)
 		
 protected:
 	virtual void Free();
@@ -329,6 +333,15 @@ private: // 애니메이션 툴 변수
 	float playbackTime = 0.f;
 
 	float initialKeyframeX = 0.f; // 마우스 드래그 시작 위치
+
+	// 애니메이션 반복 여부
+	int bRepetition = 1;
+
+	// 애니메이션 저장 파일명
+	char cFileSaveName[128] = "Animation";
+
+	// 애니메이션 불러오기 파일명
+	char cFileLoadName[128] = "Animation";
 
 	// 이전에 그려진 빨간색 원을 저장하기 위한 변수
 	_vec2 lastRedCirclePos;

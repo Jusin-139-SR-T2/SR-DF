@@ -41,5 +41,9 @@ private:		// 접근을 최소화하는 함수, 변수
 	Engine::CManagement*		m_pManagementClass;
 	LPDIRECT3DDEVICE9			m_pGraphicDev;
 
+
+private:
+	void		Render_FrameRate();
+
 };
 

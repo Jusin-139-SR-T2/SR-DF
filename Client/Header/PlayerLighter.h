@@ -42,11 +42,12 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pPlayerTransformcomp, PlayerTransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+	GETSET_EX2(_bool, m_bLightOn, m_bLightOn, GET, SET)
 
 private:
 	HRESULT Create_Light(); // 점광원 만들기 
 
 	D3DLIGHT9 AceLight;		// 점광원 
-	_bool m_bLightOn = false; // 블랙보드 연동해서 가져올 플레이어 라이터 on상태 
+	_bool m_bLightOn; // 블랙보드 연동해서 가져올 플레이어 라이터 on상태 
 
 };

@@ -83,7 +83,7 @@ private:
 	_float		m_fUprightSpeed = 2.5f;				// 파이프들고 달려오는 속도 
 	_float		m_fThrowSpeed = 4.f;				// 투사체 스피드 
 
-	_float		m_fBasicAttackSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
+	_float		m_fBasiCPlayerLighterSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
 	_float		m_fHeavAttackSpeed = 4.f;			// 강공격때 뛰어오는 속도 
 
 	// 사거리 , 시야각

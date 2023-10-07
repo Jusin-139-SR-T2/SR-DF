@@ -3,6 +3,9 @@
 
 #include "Logo.h"
 
+#include "Export_System.h"
+#include "Export_Utility.h"
+
 
 CMainApp::CMainApp()
 	: m_pDeviceClass(nullptr), m_pGraphicDev(nullptr), m_pManagementClass(nullptr)
@@ -79,6 +82,8 @@ void CMainApp::Render_MainApp()
 
 	Engine::Render_Scene(m_pGraphicDev);
 
+	Render_FrameRate();
+
 	Engine::Render_End();
 }
 
@@ -134,4 +139,26 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	FAILED_CHECK_RETURN(Engine::Ready_PhysicsMgr(1), E_FAIL);
 
 	return S_OK;
+}
+
+void CMainApp::Render_FrameRate()
+{
+	_float fFrameRate = Engine::Get_FrameRate(L"Frame");
+	_float fTimeDelta = Engine::Get_TimeDelta(L"Timer_FPS");
+	_float fResultFrameRate = static_cast<int>(fFrameRate / (fTimeDelta * fFrameRate));
+
+	wstringstream ss;
+	ss << fResultFrameRate;
+	wstring str = ss.str();
+	_vec2 vFontPos = { 0.f, 0.f };
+	D3DXCOLOR colorFont;
+
+	if (fResultFrameRate >= fFrameRate * 0.9f)
+		colorFont = DXCOLOR_GREEN;
+	else if (fResultFrameRate >= fFrameRate * 0.5f)
+		colorFont = DXCOLOR_ORANGE;
+	else
+		colorFont = DXCOLOR_RED;
+
+	Engine::Render_Font(L"Font_Jinji", str.c_str(), &vFontPos, colorFont);
 }

@@ -58,7 +58,14 @@ HRESULT			Ready_Frame(const _tchar* pFrameTag, const _float& fCallLimit)
 {
 	return CFrameMgr::GetInstance()->Ready_Frame(pFrameTag, fCallLimit);
 }
-
+void			Set_FrameRate(const _tchar* pFrameTag, const _float& fFrameRate)
+{
+	CFrameMgr::GetInstance()->Set_FrameRate(pFrameTag, fFrameRate);
+}
+const _float&	Get_FrameRate(const _tchar* pFrameTag)
+{
+	return CFrameMgr::GetInstance()->Get_FrameRate(pFrameTag);
+}
 
 #pragma endregion
 

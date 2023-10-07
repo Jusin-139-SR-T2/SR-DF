@@ -24,6 +24,7 @@ _bool CFrame::IsPermit_Call(const _float& fTimeDelta)
 
 HRESULT CFrame::Ready_Frame(const _float& fCallLimit)
 {
+	m_fFrameRate = fCallLimit;
 	m_fCallLimit = 1.f / fCallLimit;
 
 	return S_OK;

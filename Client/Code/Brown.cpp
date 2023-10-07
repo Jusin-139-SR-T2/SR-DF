@@ -165,6 +165,7 @@ void CBrown::LateUpdate_GameObject()
 void CBrown::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
+
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
@@ -524,7 +525,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
                 int iCombo = (rand() % 10) + 1; 
 
                 if (6 <= iCombo)
-                    m_tState_Obj.Set_State(STATE_OBJ::BASICATTACK);
+                    m_tState_Obj.Set_State(STATE_OBJ::BASICPlayerLighter);
 
                 if (6 > iCombo)
                     m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
@@ -692,13 +693,13 @@ void CBrown::AI_Strafing(float fDeltaTime)
     }
 }
 
-void CBrown::AI_BasicAttack(float fDeltaTime)
+void CBrown::AI_BasiCPlayerLighter(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
           OutputDebugString(L"▷Brown - 상태머신 : Basic Attack 진입   \n");
         m_fFrameSpeed = 8.5f;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"BasicAttack");
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"BasiCPlayerLighter");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
     if (m_tState_Obj.Can_Update())
@@ -1196,7 +1197,7 @@ void CBrown::Attack(float fDeltaTime)
 
     // 실행
     {
-        if (STATE_OBJ::BASICATTACK == m_tState_Obj.Get_State())
+        if (STATE_OBJ::BASICPlayerLighter == m_tState_Obj.Get_State())
         {
               OutputDebugString(L"▷Brown - 가상키 : BASICATTACK 수행   \n");
             // 충돌체 만들어서 기본공격 수행

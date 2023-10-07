@@ -9,7 +9,7 @@
 CDynamicCamera::CDynamicCamera(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {
-
+	Set_ObjectName(L"DynamicCamera");
 }
 
 CDynamicCamera::~CDynamicCamera()

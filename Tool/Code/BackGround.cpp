@@ -44,7 +44,9 @@ HRESULT CBackGround::Add_Component()
 	NULL_CHECK_RETURN(m_pBackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TitleTexture", L"Proto_TitleBackTextureComp"), E_FAIL);
 	// 텍스쳐 컴포넌트
 	//NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_LogoTexture", L"Proto_LogoTextureComp"), E_FAIL);
-	
+	// 텍스쳐 컴포넌트
+	NULL_CHECK_RETURN(m_pBackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_PlayerTexture", L"Proto_PlayerTextureComp"), E_FAIL);
+
 	//몬스터 - 작업할때 넣기 
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_MonsterTexture", L"Proto_BrownTextureComp"), E_FAIL);
 
@@ -90,9 +92,9 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 				//m_pAnimationTool->Get_currentTime() = 0.f;
 
 				// 반복 On/Off
-				if (true)
+				if (m_pAnimationTool->Get_Repetition())
 				{
-					//m_pAnimationTool->Set_FramePlaying(false);
+					m_pAnimationTool->Set_FramePlaying(false);
 				}
 
 				// 툴 시간 초기화

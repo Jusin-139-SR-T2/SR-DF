@@ -28,6 +28,7 @@ protected:
 public:
 	CComponent*			Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
 	CGameObject*		Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
+	void				Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj);
 
 protected:	// 레이어 관련
 	// 모든 레이어가 준비되었을 때 작성하는 코드입니다.
@@ -36,7 +37,7 @@ protected:	// 레이어 관련
 	CLayer*				Get_Layer(const _tchar* pLayerTag) { return m_mapLayer[pLayerTag]; }
 
 protected:
-	_unmap<const _tchar*, CLayer*>	m_mapLayer;
+	_unmap<wstring, CLayer*>	m_mapLayer;
 	vector<CLayer*>					m_vecPriorityLayer;
 
 };

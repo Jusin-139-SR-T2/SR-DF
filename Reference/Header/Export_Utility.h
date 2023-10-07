@@ -29,12 +29,17 @@ BEGIN(Engine)
 // Management
 inline CComponent*	Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
 
+inline CGameObject* Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
+
 inline HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance, EMANAGE_SCENE eType);
 
 inline HRESULT		Set_Scene(CScene* pScene);
 inline _int			Update_Scene(const _float& fTimeDelta);
 inline void			LateUpdate_Scene();
 inline void			Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev);
+
+// 게임 런타임용 오브젝트 생성기
+inline void			Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj);
 
 
 // ProtoMgr

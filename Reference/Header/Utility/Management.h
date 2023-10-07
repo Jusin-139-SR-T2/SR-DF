@@ -26,6 +26,7 @@ public:
 public:
 	CComponent*		Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
 	CGameObject*	Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
+	void			Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj);
 
 public:
 	HRESULT			Ready_Management(const EMANAGE_SCENE eType);

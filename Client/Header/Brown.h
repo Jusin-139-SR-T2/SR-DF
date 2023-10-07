@@ -97,7 +97,7 @@ private:
 	_float		m_fWalkSpeed = 1.0f;				// 걷는속도
 	_float		m_fInchSpeed = 7.f;					// 앞으로 전진하며 무빙하는 속도 
 	_float		m_fStrafingSpeed = 8.f;				// 옆으로 무빙하는  속도 
-	_float		m_fBasicAttackSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
+	_float		m_fBasiCPlayerLighterSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
 	_float		m_fHeavAttackSpeed = 4.f;			// 강공격때 뛰어오는 속도 
 
 	// 사거리 , 시야각
@@ -117,7 +117,6 @@ private:
 	_bool		DeadSpin = true;
 	_bool		m_bArrive = false;
 	_bool		m_bAwareness = false;
-
 
 	// 상태머신 enum --------------------------------------------------
 public: 
@@ -140,8 +139,12 @@ public:
 	};
 
 	// 행동키
-	enum class ACTION_KEY { IDLE, RUN, WALK, INCHFORWARD, STRAFING, JUMP, 
-		BASIC_ATTACK, HEAVY_ATTACK, GOHOME };
+	enum class ACTION_KEY { 
+		IDLE, 
+		RUN, WALK, INCHFORWARD, STRAFING, 
+		JUMP, 
+		BASIC_ATTACK, HEAVY_ATTACK, 
+		GOHOME };
 
 private:
 	STATE_SET<STATE_OBJ, void(CBrown*, float)> m_tState_Obj;				//AI

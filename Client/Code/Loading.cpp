@@ -333,7 +333,7 @@ HRESULT CLoading::Loading_For_Texture()
 
 #pragma endregion
 
-#pragma region Effect - TEX_NORMAL
+#pragma region Effect
 
 	Load_Texture(L"./Resource/Texture/Effect/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 14U));
 	Load_Texture(L"./Resource/Texture/Effect/Awareness__end.png", TEX_NORMAL, L"Effect", L"Awareness_End");
@@ -342,13 +342,15 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Effect/Razer/Razer_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 18U)); // Bomb
 	//Load_Texture(L"./Resource/Texture/Monster/Effect/Holy/Holy_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 2U)); // Bomb
 
+#pragma endregion 
+
+#pragma region Building - TEX_CUBE 
 	Load_Texture(L"./Resource/Texture/Building/A.dds", TEX_CUBE, L"Building", L"A");
 	Load_Texture(L"./Resource/Texture/Building/B.dds", TEX_CUBE, L"Building", L"B");
 	Load_Texture(L"./Resource/Texture/Building/C.dds", TEX_CUBE, L"Building", L"C");
 	Load_Texture(L"./Resource/Texture/Building/D.dds", TEX_CUBE, L"Building", L"D");
 	Load_Texture(L"./Resource/Texture/Building/E.dds", TEX_CUBE, L"Building", L"E");
 	Load_Texture(L"./Resource/Texture/Building/F.dds", TEX_CUBE, L"Building", L"F");
-
 
 #pragma endregion
 
