@@ -53,7 +53,7 @@ HRESULT CBrown::Ready_GameObject()
     m_tState_Obj.Add_Func(STATE_OBJ::JUMP, &CBrown::AI_Jump);
     
     //공격
-    m_tState_Obj.Add_Func(STATE_OBJ::BASICATTACK, &CBrown::AI_BasicAttack);
+    m_tState_Obj.Add_Func(STATE_OBJ::NORMALATTACK, &CBrown::AI_NORMALATTACK);
     m_tState_Obj.Add_Func(STATE_OBJ::HEAVYATTACK, &CBrown::AI_HeavyAttack);
 
     // ================================================================ 확인필요 
@@ -92,7 +92,7 @@ HRESULT CBrown::Ready_GameObject()
     m_mapActionKey.Add_Action(ACTION_KEY::INCHFORWARD); //가까울때
     m_mapActionKey.Add_Action(ACTION_KEY::STRAFING); // 가까울때
     m_mapActionKey.Add_Action(ACTION_KEY::JUMP); // y축에 차이가 있을때 
-    m_mapActionKey.Add_Action(ACTION_KEY::BASIC_ATTACK);
+    m_mapActionKey.Add_Action(ACTION_KEY::NORMALATTACK);
     m_mapActionKey.Add_Action(ACTION_KEY::HEAVY_ATTACK);
     m_mapActionKey.Add_Action(ACTION_KEY::GOHOME);
 
@@ -525,7 +525,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
                 int iCombo = (rand() % 10) + 1; 
 
                 if (6 <= iCombo)
-                    m_tState_Obj.Set_State(STATE_OBJ::BASICPlayerLighter);
+                    m_tState_Obj.Set_State(STATE_OBJ::NORMALATTACK);
 
                 if (6 > iCombo)
                     m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
@@ -654,7 +654,7 @@ void CBrown::AI_InchForward(float fDeltaTime)
         {
             OutputDebugString(L"★ 디버그 찾기 : INCHFORWARD - 프레임 다 돌음 \n");
             OutputDebugString(L"▷Brown - 상태머신 : InchForward 끝   \n");
-            m_tState_Obj.Set_State(STATE_OBJ::BASICATTACK);
+            m_tState_Obj.Set_State(STATE_OBJ::NORMALATTACK);
         }
     }
 
@@ -693,11 +693,11 @@ void CBrown::AI_Strafing(float fDeltaTime)
     }
 }
 
-void CBrown::AI_BasiCPlayerLighter(float fDeltaTime)
+void CBrown::AI_NORMALATTACK(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Basic Attack 진입   \n");
+          OutputDebugString(L"▷Brown - 상태머신 : Attack 진입   \n");
         m_fFrameSpeed = 8.5f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"BasiCPlayerLighter");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -706,7 +706,7 @@ void CBrown::AI_BasiCPlayerLighter(float fDeltaTime)
     {
         //행동이 IDLE일때 가상키 누르기 
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
-            m_mapActionKey[ACTION_KEY::BASIC_ATTACK].Act();
+            m_mapActionKey[ACTION_KEY::NORMALATTACK].Act();
 
         if (m_fFrame > m_fFrameEnd)
         {
@@ -716,7 +716,7 @@ void CBrown::AI_BasiCPlayerLighter(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-          OutputDebugString(L"▷Brown - 상태머신 : Basic Attack 끝   \n");
+          OutputDebugString(L"▷Brown - 상태머신 : Attack 끝   \n");
     }
 }
 
@@ -1074,7 +1074,7 @@ void CBrown::Idle(float fDeltaTime)
               OutputDebugString(L"▷Brown - 가상키 : STRAFING 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::MOVING);
         }
-        if (m_mapActionKey[ACTION_KEY::BASIC_ATTACK].IsOnAct())
+        if (m_mapActionKey[ACTION_KEY::NORMALATTACK].IsOnAct())
         {
               OutputDebugString(L"▷Brown - 가상키 : ATTACK 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::ATTACK);
@@ -1197,7 +1197,7 @@ void CBrown::Attack(float fDeltaTime)
 
     // 실행
     {
-        if (STATE_OBJ::BASICPlayerLighter == m_tState_Obj.Get_State())
+        if (STATE_OBJ::NORMALATTACK == m_tState_Obj.Get_State())
         {
               OutputDebugString(L"▷Brown - 가상키 : BASICATTACK 수행   \n");
             // 충돌체 만들어서 기본공격 수행

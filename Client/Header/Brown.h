@@ -124,7 +124,7 @@ public:
 	enum class STATE_OBJ {
 		IDLE, SUSPICIOUS, TAUNT, REST, CHASE, 			 
 		RUN, WALK, INCHFORWARD, STRAFING, 
-		BASICATTACK, HEAVYATTACK, 	// 거리재는부분
+		NORMALATTACK, HEAVYATTACK, 	// 거리재는부분
 		HIT, FACEPUNCH, CROTCHHIT,											// 피격판정 
 		DAZED, FALLING, CHOPPED, DEATH, HEADLESS,							// 죽을때
 		RECONNAISSANCE, GOHOME,
@@ -143,7 +143,7 @@ public:
 		IDLE, 
 		RUN, WALK, INCHFORWARD, STRAFING, 
 		JUMP, 
-		BASIC_ATTACK, HEAVY_ATTACK, 
+		NORMALATTACK, HEAVY_ATTACK,
 		GOHOME };
 
 private:
@@ -169,7 +169,7 @@ private:
 
 	// 공격
 	void AI_HeavyAttack(float fDeltaTime); // 강공격 
-	void AI_BasicAttack(float fDeltaTime); // 일반 공격
+	void AI_NORMALATTACK(float fDeltaTime); // 일반 공격
 	
 	// 피격
 	void AI_Hit(float fDeltaTime); // 맞은 히트판정 
@@ -192,7 +192,7 @@ private:
 	void Idle(float fDeltaTime);
 	void Approach(float fDeltaTime);		// AI_Run + AI_Walk
 	void Moving(float fDeltaTime);			// AI_InchForward + AI_Strafing
-	void Attack(float fDeltaTime);			// AI_BasicAttack + AI_HeavyAttack
+	void Attack(float fDeltaTime);			// AI_NORMALATTACK + AI_HeavyAttack
 	void GoHome(float fDeltaTime);			// Gohome
 #pragma endregion
 };
