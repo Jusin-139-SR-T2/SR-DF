@@ -142,10 +142,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     //플레이어 뒤로 콜라가 생성되는 코드
     //if (Engine::IsKey_Pressed(DIK_BACK))
-    Engine::Add_GameObject(L"GameLogic", 
-        CAceObjectFactory::Create(m_pGraphicDev,
-        CAceObjectFactory::OBJECT_CLASS::FOOD, L"Test",
-        m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z));
+    //Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 
+    //    L"Test", m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z));
 
     //_vec3 vTest = m_pTransformComp->Get_Pos();
     //vTest.z += 1.f;

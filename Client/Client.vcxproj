@@ -50,7 +50,7 @@
     <ClInclude Include="Header\SkyBox.h" />
     <ClInclude Include="Header\BlackBoard.h" />
     <ClInclude Include="Header\SnowParticle.h" />
-    <ClInclude Include="ThrowPipe.h" />
+    <ClInclude Include="Header\ThrowPipe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Awareness.cpp" />
@@ -90,7 +90,7 @@
     <ClCompile Include="Code\SkyBox.cpp" />
     <ClCompile Include="Code\BlackBoard.cpp" />
     <ClCompile Include="Code\SnowParticle.cpp" />
-    <ClCompile Include="ThrowPipe.cpp" />
+    <ClCompile Include="Code\ThrowPipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

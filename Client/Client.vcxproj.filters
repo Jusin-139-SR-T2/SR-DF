@@ -255,19 +255,10 @@
     <ClInclude Include="Header\Dazed.h">
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Attack.h">
-      <Filter>02. GameObject\07. Attack\01. Attack\00. Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\AttackPool.h">
-      <Filter>02. GameObject\07. Attack\00. AttackPull</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Bullet.h">
-      <Filter>02. GameObject\07. Attack\01. Attack\04. Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="Header\AceBuilding.h">
       <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
     </ClInclude>
-    <ClInclude Include="ThrowPipe.h">
+    <ClInclude Include="Header\ThrowPipe.h">
       <Filter>02. GameObject\01. Monster\01. Projectile\00. Gray_ThrowPipe</Filter>
     </ClInclude>
   </ItemGroup>
@@ -374,7 +365,7 @@
     <ClCompile Include="Code\AceBuilding.cpp">
       <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
     </ClCompile>
-    <ClCompile Include="ThrowPipe.cpp">
+    <ClCompile Include="Code\ThrowPipe.cpp">
       <Filter>02. GameObject\01. Monster\01. Projectile\00. Gray_ThrowPipe</Filter>
     </ClCompile>
   </ItemGroup>

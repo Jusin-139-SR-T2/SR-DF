@@ -56,6 +56,7 @@ HRESULT CAceFood::Ready_GameObject(const _tchar* pObjTag, const _float _fx, cons
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_pTransformComp->Set_Pos({ _fx, _fy, _fz });
+
     FoodName(pObjTag);
 
     CurPos = m_pTransformComp->Get_Pos();

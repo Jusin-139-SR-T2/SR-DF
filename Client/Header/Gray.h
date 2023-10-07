@@ -5,6 +5,8 @@
 #include "Export_Utility.h"
 #include "Engine_Macro.h"
 
+#include "ThrowPipe.h"
+
 BEGIN(Engine)
 
 class CRcBufferComp;

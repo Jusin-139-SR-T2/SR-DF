@@ -66,4 +66,6 @@ private: // ÇÔ¼ö
 	BUILDING_NAME		m_pCurName;
 	_float m_fHeight;
 	HRESULT				Set_BuildingDir(CAceObjectFactory::OBJECT_DIRECTION _eDir);
+
+	void Set_Material();
 };

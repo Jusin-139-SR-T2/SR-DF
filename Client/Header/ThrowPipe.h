@@ -46,10 +46,10 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
 	// 충돌 -----------------------------------------------------------------
-//protected:
-//	virtual void	OnCollision(CGameObject* pDst);
-//	virtual void	OnCollisionEntered(CGameObject* pDst);
-//	virtual void	OnCollisionExited(CGameObject* pDst);
+protected:
+	virtual void	OnCollision(CGameObject* pDst);
+	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollisionExited(CGameObject* pDst);
 
 private:
 	_float m_fFrame;
@@ -58,7 +58,8 @@ private:
 	_float m_fMoveSpeed; // 투사체 발사 속도 
 
 	_vec3 m_vPlayerPos; //생성시 플레이어 위치
-
 	_vec3 m_vDir; // 날아가는 방향 
+
+	_bool _bLoop; // 한번만 하게 함
 };
 

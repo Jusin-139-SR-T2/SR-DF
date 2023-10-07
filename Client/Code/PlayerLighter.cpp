@@ -34,6 +34,8 @@ HRESULT CPlayerLighter::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+    m_bLightOn = false;
+
 	return S_OK;
 }
 
@@ -42,12 +44,6 @@ _int CPlayerLighter::Update_GameObject(const _float& fTimeDelta)
     SUPER::Update_GameObject(fTimeDelta);
 
     Height_On_Terrain();
-
-
-    //if (Engine::IsKey_Pressed(DIK_V))
-    //{
-    //    m_bLightOn = !m_bLightOn;
-    //}
 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
@@ -73,7 +69,6 @@ void CPlayerLighter::Render_GameObject()
     {
         m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
         m_pGraphicDev->LightEnable(2, FALSE); // 라이트 인덱스 2를 비활성화
-
     }
     
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); // 뒷면제거

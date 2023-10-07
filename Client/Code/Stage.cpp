@@ -99,7 +99,6 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	//Test¿ëµµ -------------------------------------------------------
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TestEffect", CDazed::Create(m_pGraphicDev)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw", CThrowPipe::Create(m_pGraphicDev, 10.f, 2.f, 15.f)), E_FAIL);
 
 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Building1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::BUILDING, L"A", 14.f, 1.f, 45.f)), E_FAIL);
