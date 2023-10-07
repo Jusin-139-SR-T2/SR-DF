@@ -298,7 +298,7 @@ void CBackGround::KeyInput()
 	}
 
 	// ¹ßÂ÷±â
-	if (Engine::IsKey_Pressed(DIK_Q))
+	if (Engine::IsKey_Pressed(DIK_0))
 	{
 		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Kick");
 	}

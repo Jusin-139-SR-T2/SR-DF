@@ -132,7 +132,7 @@ HRESULT CLoading::Loading_For_Texture()
 	// ผ่ฦฤภฬวม
 	Load_Texture(L"./Resource/Texture/Player/Steel_Pipe%d.png", TEX_NORMAL, L"Player_Multi", L"Steel_Pipe", _range<_uint>(0U, 4U));
 	// ผ่ฦฤภฬวม ย๗ยก
-	Load_Texture(L"./Resource/Texture/Player/Steel_Pipe_Charging%d.png", TEX_NORMAL, L"Player_Multi", L"Steel_Pipe_Charging", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/Player/Steel_Pipe_Charging%d.png", TEX_NORMAL, L"Player_Multi", L"Steel_Pipe_Charging", _range<_uint>(0U, 3U));
 	// วมถ๓ภฬฦา
 	Load_Texture(L"./Resource/Texture/Player/FryingPan%d.png", TEX_NORMAL, L"Player_Multi", L"FryingPan", _range<_uint>(0U, 5U));
 	// วมถ๓ภฬฦา ย๗ยก

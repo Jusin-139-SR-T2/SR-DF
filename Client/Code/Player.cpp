@@ -142,8 +142,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     //플레이어 뒤로 콜라가 생성되는 코드
     //if (Engine::IsKey_Pressed(DIK_BACK))
-    //Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 
-    //    L"Test", m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z));
+    Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 
+        L"Test", m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z));
 
     //_vec3 vTest = m_pTransformComp->Get_Pos();
     //vTest.z += 1.f;
@@ -262,7 +262,7 @@ HRESULT CPlayer::Add_Component()
     m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
     m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
     // 충돌 레이어, 마스크 설정
-    m_pColliderComp->Set_CollisionLayer(EBIT_FLAG32_0);
+    m_pColliderComp->Set_CollisionLayer(ELAYER_PLAYER);
     m_pColliderComp->Set_CollisionMask(EBIT_FLAG32_2 | EBIT_FLAG32_3);
 
     return S_OK;

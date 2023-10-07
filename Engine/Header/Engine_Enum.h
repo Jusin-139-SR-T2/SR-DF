@@ -59,6 +59,14 @@ namespace Engine
 		EBIT_FLAG32_31 = 1UL << 31,
 	};
 
+	enum ECOLLISION_LAYER : unsigned long
+	{
+		ELAYER_PLAYER = EBIT_FLAG32_0,
+		ELAYER_MONSTER = EBIT_FLAG32_1,
+		ELAYER_WALL = EBIT_FLAG32_2,
+		ELAYER_ITEM = EBIT_FLAG32_3,
+	};
+
 	// ¾Æ ±ÍÂú¾Æ ¾ÈÇØ
 	enum EBIT_FLAG_64 : unsigned long long
 	{
