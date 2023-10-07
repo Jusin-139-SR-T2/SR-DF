@@ -262,8 +262,8 @@ HRESULT CPlayer::Add_Component()
     m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
     m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
     // 충돌 레이어, 마스크 설정
-    m_pColliderComp->Set_CollisionLayer(EBIT_FLAG32_0);
-    m_pColliderComp->Set_CollisionMask(EBIT_FLAG32_2 | EBIT_FLAG32_3);
+    m_pColliderComp->Set_CollisionLayer(ELAYER_PLAYER);
+    m_pColliderComp->Set_CollisionMask(ELAYER_MONSTER | ELAYER_FACTORY_FOOD);
 
     return S_OK;
 }

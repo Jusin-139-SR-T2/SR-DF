@@ -98,7 +98,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev, 75.f, 1.f, 25.f)), E_FAIL);
 
 	//Test용도 -------------------------------------------------------
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TestEffect", CDazed::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TestEffect", CDazed::Create(m_pGraphicDev)), E_FAIL); //레이저빔 테스트용 
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TestCreate", CAwareness::Create(m_pGraphicDev, 15.f, 2.f, 15.f)), E_FAIL); //레이저빔 테스트용 
 
 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Building1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::BUILDING, L"A", 14.f, 1.f, 45.f)), E_FAIL);

@@ -67,5 +67,5 @@ private: // ÇÔ¼ö
 	_float m_fHeight;
 	HRESULT				Set_BuildingDir(CAceObjectFactory::OBJECT_DIRECTION _eDir);
 
-	void Set_Material();
+	//void Set_Material();
 };

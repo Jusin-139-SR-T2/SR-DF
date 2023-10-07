@@ -42,6 +42,12 @@ HRESULT CGray::Ready_GameObject()
     m_fFrame = 0;
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
+    
+    // 충돌용
+    m_pTransformComp->Readjust_Transform();
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
+    FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
+    pShape->vHalfSize = { 1.f, 2.f, 0.1f };
 
     // INFO
     m_iHP = 40;         // 체력
@@ -160,7 +166,9 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     }
 
     // 빌보드 --------------------------------------
-    FaceTurn(fTimeDelta);
+    Billboard(fTimeDelta);
+
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳
 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
@@ -203,9 +211,22 @@ HRESULT CGray::Add_Component()
     NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-
-    // 몬스터 텍스처
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_GrayTextureComp"), E_FAIL);
+
+    // 콜라이더 컴포넌트
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
+
+    // 물리 세계 등록
+    m_pColliderComp->EnterToPhysics(0);
+
+    // 충돌 함수 연결
+    m_pColliderComp->Set_Collision_Event<ThisClass>(this, &ThisClass::OnCollision);
+    m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
+    m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
+
+    // 충돌 레이어, 마스크 설정
+    m_pColliderComp->Set_CollisionLayer(ELAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
+    m_pColliderComp->Set_CollisionMask(ELAYER_PLAYER); // 얘랑 충돌해야하는 레이어들 
 
     return S_OK;
 }
@@ -216,7 +237,7 @@ void CGray::Free()
 }
 
 #pragma region 상태머신 부속파트 
-void CGray::FaceTurn(const _float& fTimeDelta)
+void CGray::Billboard(const _float& fTimeDelta)
 { 
     //case1. 회전행렬 만들기 
     _matrix		matWorld, matView, matBill, matScale, matChangeScale;
@@ -302,8 +323,31 @@ _float CGray::Calc_Distance()
     return fDistance;
 }
 
+HRESULT CGray::Get_PlayerPos(const _float& fTimeDelta)
+{
+    return E_NOTIMPL;
+}
+
 #pragma endregion
 
+#pragma region 충돌파트 
+
+void CGray::OnCollision(CGameObject* pDst)
+{
+    OutputDebugString(L"▶Gray 충돌중 \n");
+}
+void CGray::OnCollisionEntered(CGameObject* pDst)
+{
+    OutputDebugString(L"▶Gray 충돌시작 \n");
+}
+
+void CGray::OnCollisionExited(CGameObject* pDst)
+{
+    OutputDebugString(L"▶Gray이랑 충돌끝남 \n");
+}
+
+
+#pragma endregion 
 
 #pragma region 목표(AI) 상태머신 부분 
 void CGray::AI_Idle(float fDeltaTime)
@@ -746,6 +790,8 @@ void CGray::AI_Throw(float fDeltaTime)
         m_fFrameSpeed = 10.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Throw");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+       
+        // 투사체 발사 
         Engine::Add_GameObject(L"GameLogic", CThrowPipe::Create(m_pGraphicDev, 
             m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 1.f , m_pTransformComp->Get_Pos().z));
     }

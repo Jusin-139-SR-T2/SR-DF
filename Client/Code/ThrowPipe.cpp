@@ -41,6 +41,8 @@ _int CThrowPipe::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
+	Billboard(fTimeDelta);
+
 	if (!_bLoop)
 	{
 		// 플레이어 쪽으로 날아가기위해 방향벡터 잡기 
@@ -127,8 +129,8 @@ HRESULT CThrowPipe::Add_Component()
 	m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
 
 	// 충돌 레이어, 마스크 설정
-	m_pColliderComp->Set_CollisionLayer(EBIT_FLAG32_1);
-	m_pColliderComp->Set_CollisionMask(EBIT_FLAG32_0 | EBIT_FLAG32_3);
+	m_pColliderComp->Set_CollisionLayer(ELAYER_PROJECTILE); // 이 클래스가 속할 충돌레이어 
+	m_pColliderComp->Set_CollisionMask(ELAYER_PLAYER | ELAYER_MONSTER); // 얘랑 충돌해야하는 레이어들 
 
 	return S_OK;
 }
@@ -136,6 +138,11 @@ HRESULT CThrowPipe::Add_Component()
 void CThrowPipe::Free()
 {
 	SUPER::Free();
+}
+
+void CThrowPipe::Billboard(const _float& fTimeDelta)
+{
+
 }
 
 void CThrowPipe::OnCollision(CGameObject* pDst)
