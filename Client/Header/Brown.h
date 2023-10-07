@@ -15,7 +15,7 @@ class CCalculatorComponent;
 class CColliderComponent;
 END
 
-enum PlayerHit {PUNCH, PISTOL, TOMSON, RUN, };
+enum PlayerHit {PUNCH, PISTOL, TOMSON, RUN, }; //임시용 
 
 class CBrown : public Engine::CGameObject
 {
@@ -118,16 +118,19 @@ private:
 	_bool		m_bArrive = false;
 	_bool		m_bAwareness = false;
 
-
 	// 상태머신 enum --------------------------------------------------
 public: 
 	// 목표 상태머신(AI)
 	enum class STATE_OBJ {
-		IDLE, SUSPICIOUS, TAUNT, CHASE, REST,			// intro 
-		RUN, WALK, INCHFORWARD, STRAFING, BASICPlayerLighter, HEAVYATTACK, JUMP,	// 거리재는부분
+		IDLE, SUSPICIOUS, TAUNT, REST, CHASE, 			 
+		RUN, WALK, INCHFORWARD, STRAFING, 
+		NORMALATTACK, HEAVYATTACK, 	// 거리재는부분
 		HIT, FACEPUNCH, CROTCHHIT,											// 피격판정 
 		DAZED, FALLING, CHOPPED, DEATH, HEADLESS,							// 죽을때
-		RECONNAISSANCE, GOHOME
+		RECONNAISSANCE, GOHOME,
+
+		//미구현 리스트 
+		JUMP,
 	};
 
 	// 행동 상태머신
@@ -136,8 +139,12 @@ public:
 	};
 
 	// 행동키
-	enum class ACTION_KEY { IDLE, RUN, WALK, INCHFORWARD, STRAFING, JUMP, 
-		BASIC_ATTACK, HEAVY_ATTACK, GOHOME };
+	enum class ACTION_KEY { 
+		IDLE, 
+		RUN, WALK, INCHFORWARD, STRAFING, 
+		JUMP, 
+		NORMALATTACK, HEAVY_ATTACK,
+		GOHOME };
 
 private:
 	STATE_SET<STATE_OBJ, void(CBrown*, float)> m_tState_Obj;				//AI
@@ -162,7 +169,7 @@ private:
 
 	// 공격
 	void AI_HeavyAttack(float fDeltaTime); // 강공격 
-	void AI_BasicAttack(float fDeltaTime); // 일반 공격
+	void AI_NORMALATTACK(float fDeltaTime); // 일반 공격
 	
 	// 피격
 	void AI_Hit(float fDeltaTime); // 맞은 히트판정 
@@ -185,7 +192,7 @@ private:
 	void Idle(float fDeltaTime);
 	void Approach(float fDeltaTime);		// AI_Run + AI_Walk
 	void Moving(float fDeltaTime);			// AI_InchForward + AI_Strafing
-	void Attack(float fDeltaTime);			// AI_BasiCPlayerLighter + AI_HeavyAttack
+	void Attack(float fDeltaTime);			// AI_NORMALATTACK + AI_HeavyAttack
 	void GoHome(float fDeltaTime);			// Gohome
 #pragma endregion
 };

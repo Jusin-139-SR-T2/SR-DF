@@ -142,10 +142,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     //플레이어 뒤로 콜라가 생성되는 코드
     //if (Engine::IsKey_Pressed(DIK_BACK))
-    Engine::Add_GameObject(L"GameLogic", 
-        CAceObjectFactory::Create(m_pGraphicDev,
-        CAceObjectFactory::OBJECT_CLASS::FOOD, L"Test",
-        m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z));
+    //Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 
+    //    L"Test", m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z));
 
     //_vec3 vTest = m_pTransformComp->Get_Pos();
     //vTest.z += 1.f;
@@ -202,7 +200,7 @@ void CPlayer::Render_GameObject()
     // 오른손 출력 여부
     if (bRightHandOn)
     {
-        m_pRightHandComp->Render_Texture((_ulong)m_fRightFrame, true);    // 오른손 텍스처 출력
+        m_pRightHandComp->Render_Texture(m_fRightFrame, true);    // 오른손 텍스처 출력
         m_pBufferComp->Render_Buffer();                             // 오른손 버퍼
     }
 #pragma endregion
@@ -538,6 +536,8 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
         }
         else // 쉴드를 안했을 경우
         {
+            // 시간마다 텍스처 변경 시간을 채워준다.
+            fTextureChangeTime += fCurChangeTime * fTimeDelta;
             // 오른손 프레임 증가
             Interpolation(m_fRightFrame);
 
@@ -555,6 +555,19 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
             {
                 m_ePlayerState = STATE_PLAYER::NONE; // 플레이어 상태 초기화
                 Two_Hand(); // 맨 주먹으로 돌아가기 (나중에 이전상태로 돌아가게 해야함)
+            }
+
+            if (!timeline.empty())
+            {
+                // 현재 텍스처 변경 시간이 최대 변경시간 보다 크거나 같을 경우(변경하고 싶은 시간이 됐을 때)
+                if (fTextureChangeTime >= timeline[timeline.size() - 1].time)
+                {
+                    // 플레이어 상태 초기화
+                    m_ePlayerState = STATE_PLAYER::NONE;
+                    fTextureChangeTime = 0.f; // 텍스처 변경시간 초기화
+                    m_fRightFrame = 0.f; // 오른손 프레임 초기화
+                    bRightFrameOn = false; // 오른손 프레임Off
+                }
             }
 
             // 오른손 프레임이 최대 프레임에 도달했을 경우
@@ -621,6 +634,7 @@ void CPlayer::Charge(const _float& fTimeDelta)
     {
         fChageTime = fFullChargeTime;
     }
+
     // 차징 전환 시간 누적
     fChageTime += 10.f * fTimeDelta;
 
@@ -630,45 +644,45 @@ void CPlayer::Charge(const _float& fTimeDelta)
 
         switch (m_eObjectName)
         {
-        case CPlayer::OBJECT_NAME::NONE:
-        {
-            m_ePlayerState = STATE_PLAYER::CHARGING; // 플레이어 상태 : 차징
-            fFullChage = 0.f;       // 풀차징 프레임
-            bChargeAttack = true;   // 차징공격On
-            bRightFrameOn = true;   // 오른손 프레임On
-            break;
-        }
-        case CPlayer::OBJECT_NAME::GUN:
-        {
+            case CPlayer::OBJECT_NAME::NONE:
+            {
+                m_ePlayerState = STATE_PLAYER::CHARGING; // 플레이어 상태 : 차징
+                fFullChage = 0.f;       // 풀차징 프레임
+                bChargeAttack = true;   // 차징공격On
+                bRightFrameOn = true;   // 오른손 프레임On
+                break;
+            }
+            case CPlayer::OBJECT_NAME::GUN:
+            {
 
-            break;
-        }
-        case CPlayer::OBJECT_NAME::THOMPSON:
-        {
-            bRightFrameOn = true;
-            break;
-        }
-        case CPlayer::OBJECT_NAME::STEELPIPE: // 쇠파이프
-        {
-            m_ePlayerState = STATE_PLAYER::CHARGING; // 플레이어 상태 : 차징
-            fFullChage = 1.f;       // 풀차징 프레임
-            bChargeAttack = true;   // 차징공격On
-            bRightFrameOn = true;   // 오른손 프레임On
-            break;
-        }
-        case CPlayer::OBJECT_NAME::BEERBOTLE:
-        {
+                break;
+            }
+            case CPlayer::OBJECT_NAME::THOMPSON:
+            {
+                bRightFrameOn = true;
+                break;
+            }
+            case CPlayer::OBJECT_NAME::STEELPIPE: // 쇠파이프
+            {
+                m_ePlayerState = STATE_PLAYER::CHARGING; // 플레이어 상태 : 차징
+                fFullChage = 1.f;       // 풀차징 프레임
+                bChargeAttack = true;   // 차징공격On
+                bRightFrameOn = true;   // 오른손 프레임On
+                break;
+            }
+            case CPlayer::OBJECT_NAME::BEERBOTLE:
+            {
 
-            break;
-        }
-        case CPlayer::OBJECT_NAME::FRYINGPAN: // 프라이팬
-        {
-            m_ePlayerState = STATE_PLAYER::CHARGING; // 플레이어 상태 : 차징
-            fFullChage = 1.f;       // 풀차징 프레임
-            bChargeAttack = true;   // 차징공격On
-            bRightFrameOn = true;   // 오른손 프레임On
-            break;
-        }
+                break;
+            }
+            case CPlayer::OBJECT_NAME::FRYINGPAN: // 프라이팬
+            {
+                m_ePlayerState = STATE_PLAYER::CHARGING; // 플레이어 상태 : 차징
+                fFullChage = 1.f;       // 풀차징 프레임
+                bChargeAttack = true;   // 차징공격On
+                bRightFrameOn = true;   // 오른손 프레임On
+                break;
+            }
         }
     }
 }
@@ -1073,50 +1087,50 @@ void CPlayer::Right_Object()
     // 오른손
     switch (m_eObjectName)
     {
-        // 권총
-    case CPlayer::OBJECT_NAME::GUN:
-    {
-        // 오른손 권총 (한손)
-        m_tRightHand_State.Set_State(STATE_RIGHTHAND::GUN);
-        // 왼손 없음
-        m_eLeftState = STATE_LEFTHAND::NONE;
-        // 차징 불가
-        bChargingReady = false;
-        break;
-    }
-    // 쇠파이프
-    case CPlayer::OBJECT_NAME::STEELPIPE:
-    {
-        // 오른손 쇠파이프
-        m_tRightHand_State.Set_State(STATE_RIGHTHAND::STEELPIPE);
-        // 왼손 오픈 핸드
-        m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
-        // 차징 가능
-        bChargingReady = false;
-        break;
-    }
-    // 맥주병
-    case CPlayer::OBJECT_NAME::BEERBOTLE:
-    {
-        // 오른손 맥주병
-        m_tRightHand_State.Set_State(STATE_RIGHTHAND::BEERBOTLE);
-        // 왼손 오픈 핸드
-        m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
-        // 차징 불가
-        bChargingReady = false;
-        break;
-    }
-    // 프라이팬
-    case CPlayer::OBJECT_NAME::FRYINGPAN:
-    {
-        // 오른손 프라이팬
-        m_tRightHand_State.Set_State(STATE_RIGHTHAND::FRYINGPAN);
-        // 왼손 오픈 핸드
-        m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
-        // 차징 가능
-        bChargingReady = false;
-        break;
-    }
+            // 권총
+        case CPlayer::OBJECT_NAME::GUN:
+        {
+            // 오른손 권총 (한손)
+            m_tRightHand_State.Set_State(STATE_RIGHTHAND::GUN);
+            // 왼손 없음
+            m_eLeftState = STATE_LEFTHAND::NONE;
+            // 차징 불가
+            bChargingReady = false;
+            break;
+        }
+        // 쇠파이프
+        case CPlayer::OBJECT_NAME::STEELPIPE:
+        {
+            // 오른손 쇠파이프
+            m_tRightHand_State.Set_State(STATE_RIGHTHAND::STEELPIPE);
+            // 왼손 오픈 핸드
+            m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
+            // 차징 가능
+            bChargingReady = true;
+            break;
+        }
+        // 맥주병
+        case CPlayer::OBJECT_NAME::BEERBOTLE:
+        {
+            // 오른손 맥주병
+            m_tRightHand_State.Set_State(STATE_RIGHTHAND::BEERBOTLE);
+            // 왼손 오픈 핸드
+            m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
+            // 차징 불가
+            bChargingReady = false;
+            break;
+        }
+        // 프라이팬
+        case CPlayer::OBJECT_NAME::FRYINGPAN:
+        {
+            // 오른손 프라이팬
+            m_tRightHand_State.Set_State(STATE_RIGHTHAND::FRYINGPAN);
+            // 왼손 오픈 핸드
+            m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
+            // 차징 가능
+            bChargingReady = true;
+            break;
+        }
     }
 
     // 왼손
@@ -1150,6 +1164,15 @@ void CPlayer::Hand_Check()
     // 왼손 오른손 출력 On
     bLeftHandOn = true;
     bRightHandOn = true;
+    
+    // 플레이어의 손이 기존 상태가 아닐경우
+    if (m_tRightState_Old.Get_State() != m_tRightHand_State.Get_State())
+    {
+        bGetAnimation = true; // 새로운 애니메이션 불러오기 On
+    }
+
+    // 플레이어의 현재 상태를 저장
+    m_tRightState_Old.Set_State(m_tRightHand_State.Get_State());
 
     // 플레이어가 안뛰고있는 경우
     if (m_ePlayerState != STATE_PLAYER::RUN)
@@ -1712,9 +1735,16 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
         // 오른손 쇠파이프
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Steel_Pipe");
         m_fRightMaxFrame = 4.f; // 최대 프레임 지정
-        fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
+        fRightFrameSpeed = 5.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
-        LoadAnimationFromFile("Steel_Pipe");
+
+        // 애니메이션 불러오기
+        if (bGetAnimation)
+        {
+            LoadAnimationFromFile("Steel_Pipe");
+            bGetAnimation = false; // Off
+        }
+        
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -1732,7 +1762,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
 
     if (m_tRightHand_State.IsState_Exit())
     {
-
+        
     }
 }
 
@@ -1849,7 +1879,10 @@ void CPlayer::Interpolation(float _fFrame)
             if (fTextureChangeTime >= 0.f &&
                 fTextureChangeTime <= timeline.back().time)
             {
+                // 프레임 0으로 초기화
                 _uint iFrameIndex = 0U;
+
+                // 사이즈의 끝에서부터 시작해서 찾기
                 for (_uint i = timeline.size() - 1; i > 0; i--)
                 {
                     if ((timeline)[i].time <= fTextureChangeTime)

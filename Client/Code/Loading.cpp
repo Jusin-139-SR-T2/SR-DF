@@ -79,8 +79,6 @@ _uint CLoading::Loading_For_Stage()
 	
 	// 오브젝트 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Food", L"Cola")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LightTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Light", L"RedLight")), E_FAIL);
-
 	// 충돌 컴포넌트
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderSphereComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::SPHERE)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderBoxComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::BOX)), E_FAIL);
@@ -93,6 +91,8 @@ _uint CLoading::Loading_For_Stage()
 	//가건물 용도 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BuildingTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Building", L"A")), E_FAIL);
 
+	//투사체 용도
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ProjectileTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Projectile", L"ThrowPipe")), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 
@@ -104,18 +104,7 @@ _uint CLoading::Loading_For_Stage()
 // 텍스처 매니저 텍스처 추가
 HRESULT CLoading::Loading_For_Texture()
 {
-	//Load_Texture(L"./Resource/Texture/Monster/Effect/BossRazer/RedLazer_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 14U)); //Razer
-	//Load_Texture(L"./Resource/Texture/Monster/Effect/Razer/Razer_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 18U)); // Bomb
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Holy/Holy_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 3U)); // Bomb
-
-	Load_Texture(L"./Resource/Texture/Building/A.dds", TEX_CUBE, L"Building", L"A");
-	Load_Texture(L"./Resource/Texture/Building/B.dds", TEX_CUBE, L"Building", L"B");
-	Load_Texture(L"./Resource/Texture/Building/C.dds", TEX_CUBE, L"Building", L"C");
-	Load_Texture(L"./Resource/Texture/Building/D.dds", TEX_CUBE, L"Building", L"D");
-	Load_Texture(L"./Resource/Texture/Building/E.dds", TEX_CUBE, L"Building", L"E");
-	Load_Texture(L"./Resource/Texture/Building/F.dds", TEX_CUBE, L"Building", L"F");
-
-#pragma region 기타 등등
+#pragma region Terrain, UI
 	Load_Texture(L"./Resource/Texture/Tile/Tile/22.jpg", TEX_NORMAL, L"Tile", L"22");
 	Load_Texture(L"./Resource/Texture/SkyBox/Test4.dds", TEX_CUBE, L"TestCube", L"4");
 	//Load_Texture(L"./Resource/Texture/SkyBox/Skybox.dds", TEX_CUBE, L"TestCube", L"4");
@@ -162,7 +151,6 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Player/PlayerKick_%d.png", TEX_NORMAL, L"Player_Multi", L"Kick", _range<_uint>(0U, 3U));
 #pragma endregion
 
-
 #pragma region Brown Monster
 	// Monster Texture - Brown - Single : 3EA
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Stand/Stand_South.png", TEX_NORMAL, L"Brown_Single", L"Stand_South");
@@ -171,7 +159,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Death/Death_4.png", TEX_NORMAL, L"Brown_Single", L"FinalDeath");
 
 	// Monster Texture - Brown - Multi : 18EA
-	Load_Texture(L"./Resource/Texture/Monster/Brown/BasiCPlayerLighter/BasiCPlayerLighter_%d.png", TEX_NORMAL, L"Brown_Multi", L"BasiCPlayerLighter", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/Monster/Brown/BasicAttack/BasicAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"BasicAttack", _range<_uint>(0U, 4U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/InchForward/InchForward_%d.png", TEX_NORMAL, L"Brown_Multi", L"InchForward", _range<_uint>(0U, 5U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/HeavyAttack/HeavyAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"HeavyAttack", _range<_uint>(0U, 6U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Walk/North/WalkNorth_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_North", _range<_uint>(0U, 31U));
@@ -191,7 +179,6 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Jump/Jump_%d.png", TEX_NORMAL, L"Brown_Multi", L"Jump", _range<_uint>(0U, 6U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Hit/Hit_%d.png", TEX_NORMAL, L"Brown_Multi", L"Hit", _range<_uint>(0U, 5U));
 #pragma endregion
-
 
 #pragma region Gray Monster
 	// Monster Texture - Gray - Single : 5EA (2 Pending Approval) 
@@ -223,7 +210,6 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Gray/Run/Run_%d.png", TEX_NORMAL, L"Gray_Multi", L"Run", _range<_uint>(0U, 21U));
 #pragma endregion
 
-
 #pragma region Boss Monster
 	// Monster Texture - Boss - Single
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Single/Pre_Attack.png", TEX_NORMAL, L"Boss_Single", L"Pre_Attack");
@@ -248,7 +234,6 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Roll/Roll_%d.png", TEX_NORMAL, L"Boss_Multi", L"Roll", _range<_uint>(0U, 19U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Walk/Walk_%d.png", TEX_NORMAL, L"Boss_Multi", L"Walk", _range<_uint>(0U, 28U));
 #pragma endregion
-
 
 #pragma region Object 
 	// Object - Food
@@ -353,11 +338,27 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Effect/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 14U));
 	Load_Texture(L"./Resource/Texture/Effect/Awareness__end.png", TEX_NORMAL, L"Effect", L"Awareness_End");
 
+	//Load_Texture(L"./Resource/Texture/Monster/Effect/BossRazer/RedLazer_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 14U)); //Razer
+	Load_Texture(L"./Resource/Texture/Monster/Effect/Razer/Razer_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 18U)); // Bomb
+	//Load_Texture(L"./Resource/Texture/Monster/Effect/Holy/Holy_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 2U)); // Bomb
 
+#pragma endregion 
+
+#pragma region Building - TEX_CUBE 
+	Load_Texture(L"./Resource/Texture/Building/A.dds", TEX_CUBE, L"Building", L"A");
+	Load_Texture(L"./Resource/Texture/Building/B.dds", TEX_CUBE, L"Building", L"B");
+	Load_Texture(L"./Resource/Texture/Building/C.dds", TEX_CUBE, L"Building", L"C");
+	Load_Texture(L"./Resource/Texture/Building/D.dds", TEX_CUBE, L"Building", L"D");
+	Load_Texture(L"./Resource/Texture/Building/E.dds", TEX_CUBE, L"Building", L"E");
+	Load_Texture(L"./Resource/Texture/Building/F.dds", TEX_CUBE, L"Building", L"F");
 
 #pragma endregion
 
-	Load_Texture(L"./Resource/Texture/Light/RedLight.png", TEX_NORMAL, L"Light", L"RedLight");
+#pragma region Projectile
+	Load_Texture(L"./Resource/Texture/Monster/Projectile/ThrowPipe_%d.png", TEX_NORMAL, L"Projectile", L"ThrowPipe", _range<_uint>(0U, 11U)); // Bomb
+
+
+#pragma endregion
 
 	Wait_LoadTextureAsync();
 

@@ -154,7 +154,7 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 	wstringstream ss;
 	wstring str;
 	ss << iDebugCount;
-	str = L"Physics CheckCount : " + ss.str() + L"\n";
+	//str = L"Physics CheckCount : " + ss.str() + L"\n";
 	OutputDebugString(str.c_str());
 
 	// 사용된 접촉 수를 반환

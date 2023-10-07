@@ -41,14 +41,14 @@ HRESULT CBackGround::Add_Component()
 	// 버퍼
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	// 텍스쳐 컴포넌트
-	NULL_CHECK_RETURN(m_pBackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_TitleTexture", L"Proto_TitleBackTextureComp"), E_FAIL);
+	NULL_CHECK_RETURN(m_pRightHandTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_RightTexture", L"Proto_RightHandTextureComp"), E_FAIL);
 	// 텍스쳐 컴포넌트
 	//NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_LogoTexture", L"Proto_LogoTextureComp"), E_FAIL);
 	// 텍스쳐 컴포넌트
-	NULL_CHECK_RETURN(m_pBackTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_PlayerTexture", L"Proto_PlayerTextureComp"), E_FAIL);
+	NULL_CHECK_RETURN(m_pLeftHandTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_DYNAMIC, L"Comp_LeftTexture", L"Proto_LeftHandTextureComp"), E_FAIL);
 
-	//몬스터 - 작업할때 넣기 
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_MonsterTexture", L"Proto_BrownTextureComp"), E_FAIL);
+	////몬스터 - 작업할때 넣기 
+	//NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Comp_MonsterTexture", L"Proto_BrownTextureComp"), E_FAIL);
 
 	return S_OK;
 }
@@ -68,6 +68,8 @@ HRESULT CBackGround::Ready_GameObject()
 	m_pTransformComp->Set_Pos({ 0.f, 0.f, 0.f });	// 이미지 위치
 	m_pTransformComp->Set_Scale({ 100.f, 100.f, 1.f });	// 이미지 크기
 
+	m_pLeftHandTextureComp->Set_Pos({ 0.f, 0.f, 0.f });
+
 	return S_OK;
 }
 
@@ -75,6 +77,8 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 {
 
 	SUPER::Update_GameObject(fTimeDelta);
+
+	KeyInput();
 
 	// 비었는지 검사
 	if (!m_vecAnimationInfo->empty())
@@ -204,14 +208,24 @@ void CBackGround::LateUpdate_GameObject()
 
 void CBackGround::Render_GameObject()
 {
+
 	// 텍스처의 트랜스폼을 월드 행렬, DYNAMIC으로 설정시 수동으로 해줄 필요가 없음
-	m_pBackTextureComp->Readjust_Transform();	
+	m_pRightHandTextureComp->Readjust_Transform();
 	// 텍스처 행렬 * 부모(게임오브젝트)의 행렬
-	m_pBackTextureComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
+	m_pRightHandTextureComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
 	// 위의 두개만 쓰면 텍스처 행렬과 부모 행렬을 별개로 두고 계산할 수 있음.
 
+		// 텍스처의 트랜스폼을 월드 행렬, DYNAMIC으로 설정시 수동으로 해줄 필요가 없음
+	m_pLeftHandTextureComp->Readjust_Transform();
+	// 텍스처 행렬 * 부모(게임오브젝트)의 행렬
+	//m_pLeftHandTextureComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
+	// 위의 두개만 쓰면 텍스처 행렬과 부모 행렬을 별개로 두고 계산할 수 있음.
+	// 
 	// 이제부터 Render_Texture 함수 안에서 자동으로 텍스처의 행렬이 디바이스에 들어간다.(SetTransform(D3DTS_WORLD, 텍스처 행렬))
-	m_pBackTextureComp->Render_Texture(TextureNum, true);
+	m_pLeftHandTextureComp->Render_Texture(0, true);
+	m_pBufferComp->Render_Buffer();
+
+	m_pRightHandTextureComp->Render_Texture(TextureNum, true);
 	m_pBufferComp->Render_Buffer();
 
 	// 이건 부모 행렬을 텍스처 행렬에 그대로 쓰는 방법, 텍스처 별개의 행렬이 필요없을 때 사용
@@ -225,6 +239,87 @@ void CBackGround::Render_GameObject()
 
 	//m_pTextureComp->Render_Texture(0, true);
 	//m_pBufferComp->Render_Buffer();
+}
+
+void CBackGround::KeyInput()
+{
+	// 손
+	if (Engine::IsKey_Pressed(DIK_1))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
+	}
+
+	// 권총
+	if (Engine::IsKey_Pressed(DIK_2))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun");
+	}
+
+	// 톰슨 기관총
+	if (Engine::IsKey_Pressed(DIK_3))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Thompson");
+	}
+
+	// 쇠파이프
+	if (Engine::IsKey_Pressed(DIK_4))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe");
+	}
+
+	// 맥주병
+	if (Engine::IsKey_Pressed(DIK_5))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"BeerBottle");
+	}
+
+	// 프라이팬
+	if (Engine::IsKey_Pressed(DIK_6))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
+	}
+
+	// 주먹 차징
+	if (Engine::IsKey_Pressed(DIK_7))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"RightHand_Charging");
+	}
+
+	// 프라이팬 차징
+	if (Engine::IsKey_Pressed(DIK_8))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan_Charging");
+	}
+
+	// 쇠파이프 차징
+	if (Engine::IsKey_Pressed(DIK_9))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe_Charging");
+	}
+
+	// 발차기
+	if (Engine::IsKey_Pressed(DIK_Q))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Kick");
+	}
+
+	// 권총 회전
+	if (Engine::IsKey_Pressed(DIK_R))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun_Spin");
+	}
+
+	// 라이터
+	if (Engine::IsKey_Pressed(DIK_V))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Righter");
+	}
+
+	// 오브젝트 버리기 (오브젝트가 있을 경우만 실행가능)
+	if (Engine::IsKey_Pressed(DIK_F))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"UnderThrow_RightHand");
+	}
 }
 
 // 애니메이션 불러오기

@@ -20,13 +20,15 @@ HRESULT CDazed::Ready_GameObject()
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransformComp->Set_Pos(5.f, 2.f, 15.f);
+	m_pTransformComp->Set_Scale({ 10.f, 1.f, 1.f });
 
 	m_fFrame = 0;
-	m_fFrameSpeed = 11.f;	
+	m_fFrameSpeed = 15.f;	
+
 
 	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 
-	m_pTransformComp->Set_Scale({ 5.f, 5.f, 1.f });
+	//m_pTransformComp->Set_Pos(m_pBossTransformcomp->Get_Pos());
 	return S_OK;
 }
 
@@ -42,6 +44,7 @@ _int CDazed::Update_GameObject(const _float& fTimeDelta)
 	}
 
 	Engine::Add_RenderGroup(RENDER_ALPHATEST , this);
+
 	return S_OK;
 }
 

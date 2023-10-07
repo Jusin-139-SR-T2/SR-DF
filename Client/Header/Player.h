@@ -168,6 +168,7 @@ private: // 플레이어의 왼손 상태 머신
 
 private: // 플레이어의 오른손 상태 머신
 	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightHand_State;
+	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightState_Old;
 
 	void	Right_None(float fTimeDelta);
 	void	Right_Hand(float fTimeDelta);
@@ -216,6 +217,7 @@ private: // 스위치
 	_bool		bLeftHandOn = true;		// 왼손 출력 On/Off
 	_bool		bRightHandOn = true;	// 오른손 출력 On/Off
 	_bool		bLightOn = false;		// 라이터 조명 On/Off
+	_bool		bGetAnimation = false;	// 애니메이션 불러오기 On/Off
 
 	// 대쉬
 	_bool		bDashOn = false;		// 플레이어 대쉬 여부

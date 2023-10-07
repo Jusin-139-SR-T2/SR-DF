@@ -125,7 +125,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     // ---------- 테스트 빌드 ---------------------
     if (Engine::IsKey_Pressing(DIK_K))
     {
-        m_iHP = 0; //즉사 기믹 확인용 
+        m_tState_Obj.Set_State(STATE_OBJ::THROW);
     }
 
     if (Engine::IsKey_Pressing(DIK_L))
@@ -746,6 +746,8 @@ void CGray::AI_Throw(float fDeltaTime)
         m_fFrameSpeed = 10.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Throw");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        Engine::Add_GameObject(L"GameLogic", CThrowPipe::Create(m_pGraphicDev, 
+            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 1.f , m_pTransformComp->Get_Pos().z));
     }
 
     if (m_tState_Obj.Can_Update())
