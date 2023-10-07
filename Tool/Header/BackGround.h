@@ -40,16 +40,21 @@ public:
 	virtual void		Render_GameObject() override;
 
 public:
+	void				KeyInput();
+
+public:
 	GETSET_EX2(CTransformComponent*,	m_pTransformComp,	TransformComponent,	GET, SET)
 	GETSET_EX2(CRcBufferComp*,			m_pBufferComp,		BufferComponent,	GET, SET)
 	GETSET_EX2(CTextureComponent*,		m_pTextureComp,		TextureComponent,	GET, SET)
-	GETSET_EX2(CTextureComponent*, m_pBackTextureComp,		BackTextureComponent,	GET, SET)
+	GETSET_EX2(CTextureComponent*,		m_pLeftHandTextureComp, LeftHandTextureComp,	GET, SET)
+	GETSET_EX2(CTextureComponent*,		m_pRightHandTextureComp, RightHandTextureComp, GET, SET)
 
 private:
 	CTransformComponent*			m_pTransformComp = nullptr;
 	CRcBufferComp*					m_pBufferComp = nullptr;
 	CTextureComponent*				m_pTextureComp = nullptr;
-	CTextureComponent*				m_pBackTextureComp = nullptr;
+	CTextureComponent*				m_pLeftHandTextureComp = nullptr;
+	CTextureComponent*				m_pRightHandTextureComp = nullptr;
 
 	_matrix		m_ViewMatrix, m_ProjMatrix;
 

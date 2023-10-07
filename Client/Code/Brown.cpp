@@ -526,7 +526,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
                 int iCombo = (rand() % 10) + 1; 
 
                 if (6 <= iCombo)
-                    m_tState_Obj.Set_State(STATE_OBJ::BASICPlayerLighter);
+                    m_tState_Obj.Set_State(STATE_OBJ::BASICATTACK);
 
                 if (6 > iCombo)
                     m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
@@ -694,7 +694,7 @@ void CBrown::AI_Strafing(float fDeltaTime)
     }
 }
 
-void CBrown::AI_BasiCPlayerLighter(float fDeltaTime)
+void CBrown::AI_BasicAttack(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
@@ -1198,7 +1198,7 @@ void CBrown::Attack(float fDeltaTime)
 
     // 실행
     {
-        if (STATE_OBJ::BASICPlayerLighter == m_tState_Obj.Get_State())
+        if (STATE_OBJ::BASICATTACK == m_tState_Obj.Get_State())
         {
               //OutputDebugString(L"▷Brown - 가상키 : BASICATTACK 수행   \n");
             // 충돌체 만들어서 기본공격 수행
