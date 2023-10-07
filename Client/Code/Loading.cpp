@@ -85,7 +85,7 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderCapsuleComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::CAPSULE)), E_FAIL);
 
 	// 이펙트 컴포넌트
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Effect_AwarenessTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Effect", L"Awareness_End")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EffectTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Effect", L"Awareness_End")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Effect_BeamTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Effect", L"LightBeam")), E_FAIL);
 
 	//가건물 용도 
@@ -159,7 +159,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Death/Death_4.png", TEX_NORMAL, L"Brown_Single", L"FinalDeath");
 
 	// Monster Texture - Brown - Multi : 18EA
-	Load_Texture(L"./Resource/Texture/Monster/Brown/BasicAttack/BasicAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"BasicAttack", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/Monster/Brown/BasicAttack/BasicAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"NormalAttack", _range<_uint>(0U, 4U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/InchForward/InchForward_%d.png", TEX_NORMAL, L"Brown_Multi", L"InchForward", _range<_uint>(0U, 5U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/HeavyAttack/HeavyAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"HeavyAttack", _range<_uint>(0U, 6U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Walk/North/WalkNorth_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_North", _range<_uint>(0U, 31U));
@@ -335,11 +335,10 @@ HRESULT CLoading::Loading_For_Texture()
 
 #pragma region Effect
 
-	Load_Texture(L"./Resource/Texture/Effect/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 14U));
-	Load_Texture(L"./Resource/Texture/Effect/Awareness__end.png", TEX_NORMAL, L"Effect", L"Awareness_End");
+	Load_Texture(L"./Resource/Texture/Monster/Effect/Awareness/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 15U));
 
-	//Load_Texture(L"./Resource/Texture/Monster/Effect/BossRazer/RedLazer_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 14U)); //Razer
 	Load_Texture(L"./Resource/Texture/Monster/Effect/Razer/Razer_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 18U)); // Bomb
+	//Load_Texture(L"./Resource/Texture/Monster/Effect/BossRazer/RedLazer_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 14U)); //Razer
 	//Load_Texture(L"./Resource/Texture/Monster/Effect/Holy/Holy_%d.png", TEX_NORMAL, L"Effect", L"LightBeam", _range<_uint>(0U, 2U)); // Bomb
 
 #pragma endregion 

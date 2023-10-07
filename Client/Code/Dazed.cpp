@@ -43,6 +43,8 @@ _int CDazed::Update_GameObject(const _float& fTimeDelta)
 		m_fFrame = 0.f;
 	}
 
+	Billboard();
+
 	Engine::Add_RenderGroup(RENDER_ALPHATEST , this);
 
 	return S_OK;
@@ -93,4 +95,23 @@ HRESULT CDazed::Add_Component()
 void CDazed::Free()
 {
 	SUPER::Free();
+}
+
+void CDazed::Billboard()
+{
+	_matrix		matWorld, matView, matBill;
+
+	matWorld = *m_pTransformComp->Get_Transform();
+
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	D3DXMatrixIdentity(&matBill);
+
+	matBill._11 = matView._11;
+	matBill._13 = matView._13;
+	matBill._31 = matView._31;
+	matBill._33 = matView._33;
+
+	D3DXMatrixInverse(&matBill, 0, &matBill);
+
+	m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));
 }

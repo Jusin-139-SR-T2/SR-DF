@@ -46,6 +46,8 @@ private:
 	_float m_fFrame;
 	_float m_fFrameEnd;
 	_float m_fFrameSpeed;
+
+	void Billboard();
 	
 };
 

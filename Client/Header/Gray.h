@@ -12,6 +12,8 @@ BEGIN(Engine)
 class CRcBufferComp;
 class CTextureComponent;
 class CTransformComponent;
+class CCalculatorComponent;
+class CColliderComponent;
 
 END
 
@@ -35,9 +37,10 @@ public:
 private:
 	CRcBufferComp*			m_pBufferComp = nullptr;
 	CTextureComponent*		m_pTextureComp = nullptr;
+	CColliderComponent*		m_pColliderComp = nullptr;
 	CTransformComponent*	m_pTransformComp = nullptr;
-	CTransformComponent*	m_pPlayerTransformcomp = nullptr;
 	CCalculatorComponent*	m_pCalculatorComp = nullptr;
+	CTransformComponent*	m_pPlayerTransformcomp = nullptr;
 
 private:
 	void				Height_On_Terrain();
@@ -48,16 +51,23 @@ private:
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+
+	// 충돌
+protected:
+	virtual void	OnCollision(CGameObject* pDst);
+	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollisionExited(CGameObject* pDst);
 
 	// 상태머신 셋팅 --------------------------------------------------
 private:
 	// 함수 ----------					
 	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
 	_float		Calc_Distance();					// 몬스터와 플레이어 사이의 거리 체크하는 함수 
-	void		FaceTurn(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
-	
+	void		Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
+	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
 	// 변수 ----------
 	_float		m_fCheck = 0;						//Taunt 등 프레임 돌리는횟수 지정
 	_int		m_iHP;								// 몬스터 현재 hp 

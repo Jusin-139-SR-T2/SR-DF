@@ -58,6 +58,18 @@ namespace Engine
 		EBIT_FLAG32_30 = 1UL << 30,
 		EBIT_FLAG32_31 = 1UL << 31,
 	};
+	 
+	// 나중에 정리하겠지만 지금은 일단 충돌해야하는애들 떄려박아서 테스트 돌리겠습니다. //소영 
+	enum ELAYER : unsigned long
+	{
+		ELAYER_PLAYER = EBIT_FLAG32_0,
+		ELAYER_MONSTER = EBIT_FLAG32_1,
+		ELAYER_WALL = EBIT_FLAG32_2,
+		ELAYER_FACTORY_FOOD = EBIT_FLAG32_3, 
+		ELAYER_PROJECTILE = EBIT_FLAG32_4, // 투사체 
+		//ELAYER_FACTORY_FOOD_SLIDING = EBIT_FLAG32_4;
+		//ELAYER_FACTORY_WEAPON = EBIT_FLAG32_0;
+	};
 
 	// 아 귀찮아 안해
 	enum EBIT_FLAG_64 : unsigned long long

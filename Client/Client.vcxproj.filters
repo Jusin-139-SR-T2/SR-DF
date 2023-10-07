@@ -97,9 +97,6 @@
     <Filter Include="02. GameObject\05. Effect\01. MonsterEffect\00. Awareness">
       <UniqueIdentifier>{e5d83c0d-5126-43f7-bb72-1c56d159e4e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\05. Effect\01. MonsterEffect\01. Dazed">
-      <UniqueIdentifier>{9b780b3c-b100-4169-b025-a876d4d3045f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. StateBar">
       <UniqueIdentifier>{3a43f6e3-9552-4345-a7d8-08b9a487927f}</UniqueIdentifier>
     </Filter>
@@ -159,6 +156,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. Monster\01. Projectile\00. Gray_ThrowPipe">
       <UniqueIdentifier>{b5c2064b-46d6-415d-a18d-ca7a5e1f369f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\05. Effect\01. MonsterEffect\01. RedLaser">
+      <UniqueIdentifier>{9b780b3c-b100-4169-b025-a876d4d3045f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -253,7 +253,7 @@
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClInclude>
     <ClInclude Include="Header\Dazed.h">
-      <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
+      <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. RedLaser</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceBuilding.h">
       <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
@@ -351,7 +351,7 @@
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClCompile>
     <ClCompile Include="Code\Dazed.cpp">
-      <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
+      <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. RedLaser</Filter>
     </ClCompile>
     <ClCompile Include="Code\Attack.cpp">
       <Filter>02. GameObject\07. Attack\01. Attack\00. Attack</Filter>

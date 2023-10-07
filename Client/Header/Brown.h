@@ -5,6 +5,7 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "Engine_Macro.h"
+#include "Awareness.h"
 
 BEGIN(Engine)
 
@@ -13,6 +14,7 @@ class CTextureComponent;
 class CTransformComponent;
 class CCalculatorComponent;
 class CColliderComponent;
+
 END
 
 enum PlayerHit {PUNCH, PISTOL, TOMSON, RUN, }; //임시용 
@@ -61,16 +63,21 @@ protected:
 	virtual void	OnCollisionEntered(CGameObject* pDst) ;
 	virtual void	OnCollisionExited(CGameObject* pDst) ;
 
-public:
-	CGameObject* m_pPalyer = nullptr; // 피격에서 플레이어 상태 가져오는용도로 언젠가 쓸놈
+private:
+	FCollisionBox* pShape;
+	_vec3 vCollisionOriginSize;
+	_vec3 vLook;
 
 	// 상태머신 셋팅 ---------------------------------------------------------
 private:
 	// 함수 -----------------------------------------------------------------
 	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
-	_float		m_fDistance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
+	_float		Calc_Distance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
 	void		Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
+	HRESULT		Make_AttackCollider();
+
+	//임시변수 
 	PlayerHit   m_PlayerState;
 
 	// 변수 -----------------------------------------------------------------
@@ -86,9 +93,12 @@ private:
 	_float		m_fFrameEnd;						// 이미지마다 변수 넣어줘야함 
 	_float		m_fFrameSpeed;						// 프레임 돌리는 속도
 
+	_float		m_fAge = 0.f;		// 프레임 아닌 pause 시간 
+	_float		m_fLifeTime = 0.f;
+
 	// 몬스터 인식 관련 
 	_float		m_fAwareness = 0;					// 의심게이지 숫자 
-	_float		m_fMaxAwareness = 10.f;				// 의심게이지 max -> 추격으로 변함 
+	_float		m_fMaxAwareness = 15.f;				// 의심게이지 max -> 추격으로 변함 
 	_float		m_fConsider = 10.f;					// 플레이어 놓친뒤에 주변정찰 게이지 
 	_float		m_fMaxConsider = 10.f;				// 플레이어 놓친뒤에 주변정찰 게이지 
 
@@ -103,9 +113,10 @@ private:
 	// 사거리 , 시야각
 	_float		m_fMonsterFov = 90;					//시야각 - 반각 기준
 	_float		m_fMonsterSightDistance = 12.f;		// 몬스터가 포착하는 사거리 
-	_float		m_fRunDistance = 7.f;				// 사거리 ~ Run 사이 =  run
-	_float		m_fWalkDistance = 6.5f;				// run~walk 사이 = walk
-	_float		m_fInchDistance = 1.5f;				// inch ~ walk 사이 = inch/strafy & 0 ~inch = attack 
+
+	_float		m_fRunDistance = 6.f;				// 사거리 ~ Run 사이 =  run
+	_float		m_fWalkDistance = 5.5f;				// run~walk 사이 = walk
+	_float		m_fInchDistance = 2.f;  
 
 	// 위치 조절 
 	_vec3		vPlayerPos;							// 플레이어 위치 벡터
@@ -117,6 +128,8 @@ private:
 	_bool		DeadSpin = true;
 	_bool		m_bArrive = false;
 	_bool		m_bAwareness = false;
+	_bool		m_ComboAttack = false;
+	_bool		m_AgeTime = false;
 
 	// 상태머신 enum --------------------------------------------------
 public: 
@@ -169,13 +182,12 @@ private:
 
 	// 공격
 	void AI_HeavyAttack(float fDeltaTime); // 강공격 
-	void AI_NORMALATTACK(float fDeltaTime); // 일반 공격
+	void AI_NormalATTACK(float fDeltaTime); // 일반 공격
 	
 	// 피격
 	void AI_Hit(float fDeltaTime); // 맞은 히트판정 
 	void AI_Dazed(float fDeltaTime); // hp 일정이상 닳은 상태 
 	void AI_FacePunch(float fDeltaTime); // 얼굴에 맞았을경우 
-	void AI_HitByPitchedBall(float fDeltaTime); // 하단에 공격했을경우 
 
 	// 죽음 
 	void AI_Chopped(float fDeltaTime); // 뒤에서 플레이어가 기습공격했을경우 Sleep으로 들어감 
@@ -195,6 +207,7 @@ private:
 	void Attack(float fDeltaTime);			// AI_NORMALATTACK + AI_HeavyAttack
 	void GoHome(float fDeltaTime);			// Gohome
 #pragma endregion
+
 };
 
 /*

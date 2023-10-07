@@ -32,6 +32,7 @@ public:
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
+	void				Billboard(const _float& fTimeDelta);
 
 	CRcBufferComp* m_pBufferComp = nullptr;
 	CTextureComponent* m_pTextureComp = nullptr;
@@ -51,6 +52,7 @@ protected:
 	virtual void	OnCollisionEntered(CGameObject* pDst);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 
+	
 private:
 	_float m_fFrame;
 	_float m_fFrameEnd;

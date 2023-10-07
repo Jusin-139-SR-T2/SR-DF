@@ -16,7 +16,7 @@
 
 #include "Awareness.h"
 #include "Dazed.h"
-#include "ThrowPipe.h"
+
 
 class CStage : public Engine::CScene
 {

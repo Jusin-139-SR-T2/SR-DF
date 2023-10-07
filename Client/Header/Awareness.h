@@ -1,11 +1,20 @@
 #pragma once
+#include "GameObject.h"
+
 #include "Export_System.h"
 #include "Export_Utility.h"
-#include "Esystem.h"
 
-class CAwareness : public Engine::CEsystem
+BEGIN(Engine)
+
+	class CRcBufferComp;
+class CTextureComponent;
+class CTransformComponent;
+
+END
+
+class CAwareness : public Engine::CGameObject
 {
-	DERIVED_CLASS(CEsystem, CAwareness)
+	DERIVED_CLASS(CGameObject, CAwareness)
 
 private:
 	explicit CAwareness(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -18,14 +27,27 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CAwareness* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CAwareness* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
 
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
 
-	void Billboard();
+	CRcBufferComp* m_pBufferComp = nullptr;
+	CTextureComponent* m_pTextureComp = nullptr;
+	CTransformComponent* m_pTransformComp = nullptr;
 
+public:
+	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
+	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
+private:
+	_float m_fFrame;
+	_float m_fFrameEnd;
+	_float m_fFrameSpeed;
+	_vec3 vPlayerPos;
+	HRESULT Billboard();
 };
+	
 
