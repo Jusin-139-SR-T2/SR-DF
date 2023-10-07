@@ -154,7 +154,7 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"AnimationTool"), E_FAIL);
 
 	// 씬을 설정한다.
-	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(L"Logo"), E_FAIL);
+	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(L"AnimationTool"), E_FAIL);
 
 	return S_OK;
 }

@@ -63,9 +63,22 @@ _int CManagement::Update_Scene(const _float& fTimeDelta)
 {
 	if (m_pScene_Reserve)
 	{
-		Safe_Release(m_pScene_Current);
-		m_pScene_Current = m_pScene_Reserve;
-		m_pScene_Reserve = nullptr;
+		switch (m_eSceneProcess)
+		{
+		case Engine::EMANAGE_SCENE::SINGLE:
+		{
+			Safe_Release(m_pScene_Current);
+			m_pScene_Current = m_pScene_Reserve;
+			m_pScene_Reserve = nullptr;
+			break;
+		}
+		case Engine::EMANAGE_SCENE::MULTI:
+		{
+			m_pScene_Current = m_pScene_Reserve;
+			m_pScene_Reserve = nullptr;
+			break;
+		}
+		}
 
 		Engine::Clear_RenderGroup();
 		Engine::Play_PhysicsSimulation(0);
