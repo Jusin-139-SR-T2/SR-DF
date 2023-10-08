@@ -71,6 +71,14 @@ namespace Engine
 		//ELAYER_FACTORY_WEAPON = EBIT_FLAG32_0;
 	};
 
+	enum ECOLLISION_LAYER : unsigned long // 10_08_08:42 : 성희 수정 - ELAYER와 이름이 같아 재정의되는 오류 수정 ( ex : ELAYER_PLAYER -> LAYER_PLAYER )
+	{
+		LAYER_PLAYER = EBIT_FLAG32_0,
+		LAYER_MONSTER = EBIT_FLAG32_1,
+		LAYER_WALL = EBIT_FLAG32_2,
+		LAYER_ITEM = EBIT_FLAG32_3,
+	};
+
 	// 아 귀찮아 안해
 	enum EBIT_FLAG_64 : unsigned long long
 	{

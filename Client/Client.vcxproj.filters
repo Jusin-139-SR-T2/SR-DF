@@ -31,9 +31,6 @@
     <Filter Include="01. Scene\02. Loading">
       <UniqueIdentifier>{171166f6-c6c9-4809-9b50-9ba3511144ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\03. UI">
-      <UniqueIdentifier>{73c6059c-b0b0-48ab-ba48-db6bbc94e26c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\00. Logo\TitleLogo">
       <UniqueIdentifier>{b7dbd553-426e-4b8a-be54-78c84d2dcda3}</UniqueIdentifier>
     </Filter>
@@ -45,12 +42,6 @@
     </Filter>
     <Filter Include="02. GameObject\97. Background">
       <UniqueIdentifier>{d35c5bcf-69e7-4085-984f-bd63dd96fcf2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\96. BlackBoardMgr">
-      <UniqueIdentifier>{5df87e8e-e025-480d-a666-568b962d64c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\96. BlackBoardMgr\00. BlackBoard">
-      <UniqueIdentifier>{607f2415-f271-4a94-b809-d62fe68ca80a}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\02. AceObjectFactory">
       <UniqueIdentifier>{5e61b933-9702-4f06-a920-205389efb9c6}</UniqueIdentifier>
@@ -96,6 +87,9 @@
     </Filter>
     <Filter Include="02. GameObject\05. Effect\01. MonsterEffect\00. Awareness">
       <UniqueIdentifier>{e5d83c0d-5126-43f7-bb72-1c56d159e4e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\05. Effect\01. MonsterEffect\01. Dazed">
+      <UniqueIdentifier>{9b780b3c-b100-4169-b025-a876d4d3045f}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. StateBar">
       <UniqueIdentifier>{3a43f6e3-9552-4345-a7d8-08b9a487927f}</UniqueIdentifier>
@@ -157,8 +151,14 @@
     <Filter Include="02. GameObject\01. Monster\01. Projectile\00. Gray_ThrowPipe">
       <UniqueIdentifier>{b5c2064b-46d6-415d-a18d-ca7a5e1f369f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\05. Effect\01. MonsterEffect\01. RedLaser">
-      <UniqueIdentifier>{9b780b3c-b100-4169-b025-a876d4d3045f}</UniqueIdentifier>
+    <Filter Include="03. BlackBoard">
+      <UniqueIdentifier>{c309ba83-28a7-447b-a829-249506d301bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. UI">
+      <UniqueIdentifier>{73c6059c-b0b0-48ab-ba48-db6bbc94e26c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. UI\01. Player">
+      <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -201,14 +201,8 @@
     <ClInclude Include="Header\Player.h">
       <Filter>02. GameObject\00. Player</Filter>
     </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>01. Scene\03. UI</Filter>
-    </ClInclude>
     <ClInclude Include="Header\TitleLogo.h">
       <Filter>01. Scene\00. Logo\TitleLogo</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>01. Scene\03. UI</Filter>
     </ClInclude>
     <ClInclude Include="Header\Gray.h">
       <Filter>02. GameObject\01. Monster\00. Unit\2. Gray</Filter>
@@ -218,12 +212,6 @@
     </ClInclude>
     <ClInclude Include="Header\Brown.h">
       <Filter>02. GameObject\01. Monster\00. Unit\1. Brown</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\BlackBoard.h">
-      <Filter>02. GameObject\96. BlackBoardMgr\00. BlackBoard</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\BlackBoardMgr.h">
-      <Filter>02. GameObject\96. BlackBoardMgr</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceFood.h">
       <Filter>02. GameObject\02. AceObjectFactory\00. Ace_Food</Filter>
@@ -253,13 +241,25 @@
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClInclude>
     <ClInclude Include="Header\Dazed.h">
-      <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. RedLaser</Filter>
+      <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceBuilding.h">
       <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
     </ClInclude>
     <ClInclude Include="Header\ThrowPipe.h">
       <Filter>02. GameObject\01. Monster\01. Projectile\00. Gray_ThrowPipe</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI_Player.h">
+      <Filter>04. UI\01. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\BlackBoard_Player.h">
+      <Filter>03. BlackBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -293,14 +293,8 @@
     <ClCompile Include="Code\SkyBox.cpp">
       <Filter>02. GameObject\98. SkyBox</Filter>
     </ClCompile>
-    <ClCompile Include="Code\UI.cpp">
-      <Filter>01. Scene\03. UI</Filter>
-    </ClCompile>
     <ClCompile Include="Code\TitleLogo.cpp">
       <Filter>01. Scene\00. Logo\TitleLogo</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\UI.cpp">
-      <Filter>01. Scene\03. UI</Filter>
     </ClCompile>
     <ClCompile Include="Code\Gray.cpp">
       <Filter>02. GameObject\01. Monster\00. Unit\2. Gray</Filter>
@@ -316,12 +310,6 @@
     </ClCompile>
     <ClCompile Include="Code\Player.cpp">
       <Filter>02. GameObject\00. Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\BlackBoard.cpp">
-      <Filter>02. GameObject\96. BlackBoardMgr\00. BlackBoard</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\BlackBoardMgr.cpp">
-      <Filter>02. GameObject\96. BlackBoardMgr</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceFood.cpp">
       <Filter>02. GameObject\02. AceObjectFactory\00. Ace_Food</Filter>
@@ -351,7 +339,7 @@
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClCompile>
     <ClCompile Include="Code\Dazed.cpp">
-      <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. RedLaser</Filter>
+      <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
     </ClCompile>
     <ClCompile Include="Code\Attack.cpp">
       <Filter>02. GameObject\07. Attack\01. Attack\00. Attack</Filter>
@@ -367,6 +355,18 @@
     </ClCompile>
     <ClCompile Include="Code\ThrowPipe.cpp">
       <Filter>02. GameObject\01. Monster\01. Projectile\00. Gray_ThrowPipe</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI_Player.cpp">
+      <Filter>04. UI\01. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoard_Player.cpp">
+      <Filter>03. BlackBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

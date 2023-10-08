@@ -86,7 +86,7 @@ void CLogo::LateUpdate_Scene()
 		if (Engine::IsKey_Pressed(DIK_RETURN))
 		{
 			CScene* pScene = CStage::Create(m_pGraphicDev);
-			NULL_CHECK(pScene, E_FAIL);
+			NULL_CHECK(pScene);
 
 			Engine::Set_Scene(pScene);
 		}

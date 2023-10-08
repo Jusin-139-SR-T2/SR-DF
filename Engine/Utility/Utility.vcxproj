@@ -185,6 +185,9 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
   <ItemGroup>
     <ClInclude Include="..\Header\Export_Utility.h" />
     <ClInclude Include="AbstractFac_Scene.h" />
+    <ClInclude Include="Header\BlackBoardPtr.h" />
+    <ClInclude Include="Header\BlackBoard.h" />
+    <ClInclude Include="Header\BlackBoardMgr.h" />
     <ClInclude Include="Header\Esystem.h" />
     <ClInclude Include="Header\Physics\ContactGen_Joint.h" />
     <ClInclude Include="Header\Physics\ForceGenerator.h" />
@@ -236,7 +239,10 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractFac_Scene.cpp" />
+    <ClCompile Include="Code\BlackBoardPtr.cpp" />
     <ClCompile Include="Code\AStarMgr.cpp" />
+    <ClCompile Include="Code\BlackBoard.cpp" />
+    <ClCompile Include="Code\BlackBoardMgr.cpp" />
     <ClCompile Include="Code\Component\GameObjComponent.cpp" />
     <ClCompile Include="Code\Component\CalculatorComponent.cpp" />
     <ClCompile Include="Code\Camera.cpp" />

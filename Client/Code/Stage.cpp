@@ -6,7 +6,7 @@
 #include "DynamicCamera.h"
 #include "BackGround.h"
 #include "SkyBox.h"
-#include "UI.h"
+#include "UI_Player.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -98,7 +98,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev, 75.f, 1.f, 25.f)), E_FAIL);
 
 	//Test용도 -------------------------------------------------------
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TestEffect", CDazed::Create(m_pGraphicDev)), E_FAIL); //레이저빔 테스트용 
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TestEffect", CDazed::Create(m_pGraphicDev)), E_FAIL); //레이저빔 테스트용 
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TestCreate", CAwareness::Create(m_pGraphicDev, 15.f, 2.f, 15.f)), E_FAIL); //레이저빔 테스트용 
 
 
@@ -182,7 +182,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 
 	Engine::CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI", CUI::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Player", CUI_Player::Create(m_pGraphicDev)), E_FAIL);
 	
 	m_mapLayer.insert({ pLayerTag, pLayer });
 	

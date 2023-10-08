@@ -128,12 +128,16 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	// Font
 	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Default", L"πŸ≈¡", 15, 20, FW_HEAVY), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Jinji", L"±√º≠", 30, 30, FW_THIN), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Thin_Jinji", L"±√º≠", 18, 30, FW_THIN), E_FAIL);
 
 	// Renderer
 	FAILED_CHECK_RETURN(Engine::Ready_Renderer(), E_FAIL);
 
 	// TextureMgr
 	FAILED_CHECK_RETURN(Engine::Ready_TextureMgr(*ppGraphicDev), E_FAIL);
+
+	// BlackBoardMgr
+	FAILED_CHECK_RETURN(Engine::Ready_BlackBoardMgr(), E_FAIL);
 
 	// PhysicsMgr
 	FAILED_CHECK_RETURN(Engine::Ready_PhysicsMgr(1), E_FAIL);

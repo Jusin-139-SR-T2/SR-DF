@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\BlackBoard_Player.h" />
     <ClInclude Include="Header\Awareness.h" />
     <ClInclude Include="Header\AceBuilding.h" />
     <ClInclude Include="Header\Dazed.h" />
@@ -29,7 +30,6 @@
     <ClInclude Include="Header\AceObjectFactory.h" />
     <ClInclude Include="Header\AceThrow.h" />
     <ClInclude Include="Header\AceWeapon.h" />
-    <ClInclude Include="Header\BlackBoardMgr.h" />
     <ClInclude Include="Header\Boss.h" />
     <ClInclude Include="Header\Gray.h" />
     <ClInclude Include="Header\DynamicCamera.h" />
@@ -37,7 +37,7 @@
     <ClInclude Include="Header\Loading.h" />
     <ClInclude Include="Header\MainApp.h" />
     <ClInclude Include="Header\Stage.h" />
-    <ClInclude Include="Header\UI.h" />
+    <ClInclude Include="Header\UI_Player.h" />
     <ClInclude Include="Include\Client.h" />
     <ClInclude Include="Include\Resource.h" />
     <ClInclude Include="Include\stdafx.h" />
@@ -48,11 +48,12 @@
     <ClInclude Include="Header\Terrain.h" />
     <ClInclude Include="Header\TitleLogo.h" />
     <ClInclude Include="Header\SkyBox.h" />
-    <ClInclude Include="Header\BlackBoard.h" />
     <ClInclude Include="Header\SnowParticle.h" />
     <ClInclude Include="Header\ThrowPipe.h" />
+    <ClInclude Include="Header\UI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\BlackBoard_Player.cpp" />
     <ClCompile Include="Code\Awareness.cpp" />
     <ClCompile Include="Code\AceBuilding.cpp" />
     <ClCompile Include="Code\AceInteraction.cpp" />
@@ -64,14 +65,13 @@
     <ClCompile Include="Code\AceObjectFactory.cpp" />
     <ClCompile Include="Code\AceThrow.cpp" />
     <ClCompile Include="Code\AceWeapon.cpp" />
-    <ClCompile Include="Code\BlackBoardMgr.cpp" />
     <ClCompile Include="Code\Boss.cpp" />
     <ClCompile Include="Code\BackGround.cpp" />
     <ClCompile Include="Code\Loading.cpp" />
     <ClCompile Include="Code\MainApp.cpp" />
     <ClCompile Include="Code\Stage.cpp" />
     <ClCompile Include="Code\DynamicCamera.cpp" />
-    <ClCompile Include="Code\UI.cpp" />
+    <ClCompile Include="Code\UI_Player.cpp" />
     <ClCompile Include="Code\Gray.cpp" />
     <ClCompile Include="Code\FireWork.cpp" />
     <ClCompile Include="Code\Dazed.cpp" />
@@ -88,9 +88,9 @@
     <ClCompile Include="Code\Terrain.cpp" />
     <ClCompile Include="Code\TitleLogo.cpp" />
     <ClCompile Include="Code\SkyBox.cpp" />
-    <ClCompile Include="Code\BlackBoard.cpp" />
     <ClCompile Include="Code\SnowParticle.cpp" />
     <ClCompile Include="Code\ThrowPipe.cpp" />
+    <ClCompile Include="Code\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

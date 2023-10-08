@@ -9,6 +9,7 @@
 #include "ColliderComponent.h"
 #include "PlayerLighter.h"
 #include "Management.h"
+#include "BlackBoard_Player.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -29,12 +30,19 @@ HRESULT CPlayer::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+#pragma region 블랙보드
+
+    Engine::Add_BlackBoard(L"Player", CBlackBoard_Player::Create());
+
+#pragma endregion
+
+
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
     m_pTransformComp->Set_Pos({ 10.f, 0.f, 10.f });
     m_pTransformComp->Readjust_Transform();
     //m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-    //FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-    //pShape->fRadius = 2.f;
+    FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+    pShape->fRadius = 0.5f;
 
     /*FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
     pShape->fRadius = 5.f;*/
@@ -154,6 +162,10 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     //        (*iter)->Set_Dead();
     //}
 
+
+    // 블랙보드 연동하기
+    Update_BlackBoard();
+
     // 랜더 그룹 지정, 현재상태 : 알파 테스트
     Engine::Add_RenderGroup(RENDER_UI, this);
 
@@ -264,6 +276,7 @@ HRESULT CPlayer::Add_Component()
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(ELAYER_PLAYER);
     m_pColliderComp->Set_CollisionMask(ELAYER_MONSTER | ELAYER_FACTORY_FOOD);
+    // 플레이어가 shift로 대쉬를 하거나 공격을 했을때만 몬스터와 충돌이 허용됨. 
 
     return S_OK;
 }
@@ -705,19 +718,37 @@ _bool CPlayer::Picking_On_Object()
 void CPlayer::OnCollision(CGameObject* pDst)
 {
     // 충돌중일때
-    OutputDebugString(L"플레이어와 충돌중\n");
+    //OutputDebugString(L"플레이어와 충돌중\n");
 }
 
 void CPlayer::OnCollisionEntered(CGameObject* pDst)
 {
     // 처음 충돌했을때
-    OutputDebugString(L"플레이어와 충돌진입\n");
+    //OutputDebugString(L"플레이어와 충돌진입\n");
 }
 
 void CPlayer::OnCollisionExited(CGameObject* pDst)
 {
     // 충돌에서 나갈때
-    OutputDebugString(L"플레이어와 충돌완료\n");
+    //OutputDebugString(L"플레이어와 충돌완료\n");
+}
+
+void CPlayer::Update_BlackBoard()
+{
+    // 블랙보드 연결 대기, 안전 코드로 필수
+    if (!m_wpBlackBoard_Player.Get_BlackBoard())
+    {
+        m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"Player"));
+        // 연결 실패
+        if (!m_wpBlackBoard_Player.Get_BlackBoard())
+            return;
+    }
+
+    // 안전 코드를 거치면 일반 포인터로 접근 허용.
+    CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
+
+    // 여기서부터 블랙보드의 정보를 업데이트 한다.
+    pBlackBoard->Get_HP().Cur = m_pTransformComp->Get_Pos().x;
 }
 
 bool CPlayer::Attack_Input(const _float& fTimeDelta)

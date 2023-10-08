@@ -19,11 +19,10 @@ HRESULT CAwareness::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
-
 	//m_pTransformComp->Set_Pos(15.f, 2.f, 15.f);
 	m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
 
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
 	m_fFrame = 0;
 	m_fFrameSpeed = 2.f;
 
@@ -38,13 +37,7 @@ _int CAwareness::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	m_fFrame += m_fFrameSpeed * fTimeDelta;
-
-	if (m_fFrame >= m_fFrameEnd)
-	{
-		m_fFrame = m_fFrameEnd - 1.f;
-	}
-
+	// 몬스터 상태 Taunt로 바뀌면 바로 set_dead로 가기 
 	Billboard();
 
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -63,7 +56,7 @@ void CAwareness::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
-	m_pTextureComp->Render_Texture(_ulong(m_fFrame));
+	m_pTextureComp->Render_Texture();
 	m_pBufferComp->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -104,27 +97,17 @@ void CAwareness::Free()
 
 HRESULT CAwareness::Billboard()
 {
-	_matrix		matWorld;
-
-	matWorld = *m_pTransformComp->Get_Transform();
-	
 	CTransformComponent* m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-
 	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
-	m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-
-	_vec3 Pos = m_pTransformComp->Get_Pos();
-
-	_vec3 vDir = vPlayerPos - m_pTransformComp->Get_Pos();
+	// 이펙트가 플레이어 보는 벡터 
+	_vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();  
 
 	D3DXVec3Normalize(&vDir, &vDir);
 
 	_float rad = atan2f(vDir.x, vDir.z);
 
-	// 회전행렬 생성
-	_matrix rotationMatrix;
-	D3DXMatrixRotationY(&rotationMatrix, rad);
+	m_pTransformComp->Set_RotationY(rad - D3DX_PI);
 
-	m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
+	return S_OK;
 }

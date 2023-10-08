@@ -132,7 +132,7 @@ HRESULT CLoading::Loading_For_Texture()
 	// ¼èÆÄÀÌÇÁ
 	Load_Texture(L"./Resource/Texture/Player/Steel_Pipe%d.png", TEX_NORMAL, L"Player_Multi", L"Steel_Pipe", _range<_uint>(0U, 4U));
 	// ¼èÆÄÀÌÇÁ Â÷Â¡
-	Load_Texture(L"./Resource/Texture/Player/Steel_Pipe_Charging%d.png", TEX_NORMAL, L"Player_Multi", L"Steel_Pipe_Charging", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/Player/Steel_Pipe_Charging%d.png", TEX_NORMAL, L"Player_Multi", L"Steel_Pipe_Charging", _range<_uint>(0U, 3U));
 	// ÇÁ¶óÀÌÆÒ
 	Load_Texture(L"./Resource/Texture/Player/FryingPan%d.png", TEX_NORMAL, L"Player_Multi", L"FryingPan", _range<_uint>(0U, 5U));
 	// ÇÁ¶óÀÌÆÒ Â÷Â¡
@@ -334,6 +334,7 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma endregion
 
 #pragma region Effect
+	Load_Texture(L"./Resource/Texture/Object/PoolBalls_0.png", TEX_NORMAL, L"Debug", L"Sphere");
 
 	Load_Texture(L"./Resource/Texture/Monster/Effect/Awareness/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 15U));
 

@@ -158,6 +158,15 @@
     <ClInclude Include="Header\Esystem.h">
       <Filter>10. Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Header\BlackBoardMgr.h">
+      <Filter>11. BlackBoardMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\BlackBoard.h">
+      <Filter>11. BlackBoardMgr\BlackBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\BlackBoardPtr.h">
+      <Filter>11. BlackBoardMgr\BlackBoard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -308,6 +317,15 @@
       <Filter>10. Effect</Filter>
     </ClCompile>
     <ClCompile Include="AbstractFac_Scene.cpp" />
+    <ClCompile Include="Code\BlackBoardMgr.cpp">
+      <Filter>11. BlackBoardMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoard.cpp">
+      <Filter>11. BlackBoardMgr\BlackBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoardPtr.cpp">
+      <Filter>11. BlackBoardMgr\BlackBoard</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">
@@ -426,6 +444,12 @@
     </Filter>
     <Filter Include="10. Effect">
       <UniqueIdentifier>{8db7d787-5d21-4852-a4d0-744d7f60a851}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="11. BlackBoardMgr">
+      <UniqueIdentifier>{47026fd2-4e96-42f1-9807-f0562b8e5ac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="11. BlackBoardMgr\BlackBoard">
+      <UniqueIdentifier>{2da6d0c2-3ef6-48b8-b94f-ce3803fa6a4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

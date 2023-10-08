@@ -130,7 +130,7 @@ _int CBoss::Update_GameObject(const _float& fTimeDelta)
     }
 
     // 빌보드 --------------------------------------
-    FaceTurn(fTimeDelta);
+    Billboard(fTimeDelta);
 
     // Renderer -----------------------------------
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -187,46 +187,17 @@ void CBoss::Free()
 }
 
 #pragma region 상태머신 부속파트 
-void CBoss::FaceTurn(const _float& fTimeDelta)
+void CBoss::Billboard(const _float& fTimeDelta)
 {
-    //case1. 회전행렬 만들기 
-    _matrix		matWorld, matView, matBill, matScale, matChangeScale;
-
-    matWorld = *m_pTransformComp->Get_Transform();
-
-    m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-    _vec3 Pos = m_pTransformComp->Get_Pos();
-
-    _vec3 vDir = vPlayerPos - m_pTransformComp->Get_Pos();
+    _vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos(); // 몬스터가 플레이어 바라보는 벡터 
 
     D3DXVec3Normalize(&vDir, &vDir);
 
     _float rad = atan2f(vDir.x, vDir.z);
 
-    // 회전행렬 생성
-    _matrix rotationMatrix;
-    D3DXMatrixRotationY(&rotationMatrix, rad);
+    m_pTransformComp->Set_RotationY(rad); // 버그픽스 
 
-    m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
-
-    // case2. 빌보드 구성하기 
-    /*_matrix		matWorld, matView, matBill;
-
-    matWorld = *m_pTransformComp->Get_Transform();
-
-    m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-    D3DXMatrixIdentity(&matBill);
-
-    matBill._11 = matView._11;
-    matBill._13 = matView._13;
-    matBill._31 = matView._31;
-    matBill._33 = matView._33;
-
-    D3DXMatrixInverse(&matBill, 0, &matBill);
-
-    m_pTransformComp->Set_WorldMatrixS(&(matBill * matWorld));*/
-
-    m_pTransformComp->Set_ScaleY(1.9f);
+    m_pTransformComp->Set_ScaleY(1.8f);
 }
 
 _bool CBoss::Detect_Player()

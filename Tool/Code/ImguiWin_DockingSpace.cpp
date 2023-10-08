@@ -133,6 +133,9 @@ _int CImguiWin_DockingSpace::Update_ImguiWin(const _float& fTimeDelta)
 				CImguiMgr::GetInstance()->Open_Layout(L"MapTool");
 				CImguiMgr::GetInstance()->Close_Layout(L"TextureTool");
 				CImguiMgr::GetInstance()->Close_Layout(L"AnimationTool");
+				// 씬을 설정한다.
+				FAILED_CHECK_RETURN(Engine::Set_Scene(L"MapTool"), E_FAIL);
+
 				ImGui::EndTabItem();
 			}
 
@@ -141,6 +144,9 @@ _int CImguiWin_DockingSpace::Update_ImguiWin(const _float& fTimeDelta)
 				CImguiMgr::GetInstance()->Close_Layout(L"MapTool");
 				CImguiMgr::GetInstance()->Open_Layout(L"TextureTool");
 				CImguiMgr::GetInstance()->Close_Layout(L"AnimationTool");
+				// 씬을 설정한다.
+				FAILED_CHECK_RETURN(Engine::Set_Scene(L"TextureTool"), E_FAIL);
+
 				ImGui::EndTabItem();
 			}
 
@@ -149,6 +155,9 @@ _int CImguiWin_DockingSpace::Update_ImguiWin(const _float& fTimeDelta)
 				CImguiMgr::GetInstance()->Close_Layout(L"MapTool");
 				CImguiMgr::GetInstance()->Close_Layout(L"TextureTool");
 				CImguiMgr::GetInstance()->Open_Layout(L"AnimationTool");
+				// 씬을 설정한다.
+				FAILED_CHECK_RETURN(Engine::Set_Scene(L"AnimationTool"), E_FAIL);
+
 				ImGui::EndTabItem();
 			}
 

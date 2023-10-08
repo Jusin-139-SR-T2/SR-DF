@@ -114,6 +114,7 @@ CComponent* CLayer::Get_Component(COMPONENTID eID, const _tchar* pObjTag, const 
 	return iter->second->Get_Component(eID, pComponentTag);
 }
 
+// 인게임에서 추가할 때 (Update 타이밍때)
 HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 {
 	// 이 레이어에 게임 오브젝트를 적재한다.
@@ -149,6 +150,7 @@ HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 	return S_OK;
 }
 
+// 씬 레디 전용
 HRESULT CLayer::Add_GameObject(const wstring pObjTag, CGameObject* pGameObject)
 {
 	// 이 레이어에 게임 오브젝트를 적재한다.
