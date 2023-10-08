@@ -5,8 +5,13 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "Engine_Macro.h"
+
+#include "BlackBoard_Monster.h"
+#include "BlackBoardPtr.h"
+
 #include "Awareness.h"
-//#include "MonsterPuch.h"
+#include "MonsterPunch.h"
+
 
 BEGIN(Engine)
 
@@ -62,25 +67,25 @@ public:
 	// 충돌 -----------------------------------------------------------------
 protected: 
 	virtual void	OnCollision(CGameObject* pDst);
-	virtual void	OnCollisionEntered(CGameObject* pDst) ;
-	virtual void	OnCollisionExited(CGameObject* pDst) ;
+	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollisionExited(CGameObject* pDst);
+	PRIVATE FCollisionBox* pShape;
+
+	// BlackBoard
+public:
+	void		Update_BlackBoard();
 
 private:
-	FCollisionBox* pShape;
-	_vec3 vCollisionOriginSize;
-	_vec3 vLook;
+	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster;
+
 
 	// 상태머신 셋팅 ---------------------------------------------------------
 private:
 	// 함수 -----------------------------------------------------------------
 	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
 	_float		Calc_Distance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
-	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
-	HRESULT		Make_AttackCollider();
-	HRESULT		Reset_AttackCollider();
-	
+	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 	
 
-	//임시변수 
 	PlayerHit   m_PlayerState;
 
 	// 변수 -----------------------------------------------------------------
@@ -100,7 +105,7 @@ private:
 	_float		m_fLifeTime = 0.f;
 
 	// 몬스터 인식 관련 
-	_float		m_fAwareness = 0;					// 의심게이지 숫자 
+	_float		m_fBrownAwareness = 0;					// 의심게이지 숫자 
 	_float		m_fMaxAwareness = 15.f;				// 의심게이지 max -> 추격으로 변함 
 	_float		m_fConsider = 10.f;					// 플레이어 놓친뒤에 주변정찰 게이지 
 	_float		m_fMaxConsider = 10.f;				// 플레이어 놓친뒤에 주변정찰 게이지 
@@ -119,7 +124,7 @@ private:
 
 	_float		m_fRunDistance = 6.f;				// 사거리 ~ Run 사이 =  run
 	_float		m_fWalkDistance = 5.5f;				// run~walk 사이 = walk
-	_float		m_fInchDistance = 2.f;  
+	_float		m_fInchDistance = 1.5f;  
 
 	// 위치 조절 
 	_vec3		vPlayerPos;							// 플레이어 위치 벡터
@@ -133,6 +138,7 @@ private:
 	_bool		m_bAwareness = false;
 	_bool		m_ComboAttack = false;
 	_bool		m_AgeTime = false;
+	_bool		m_AttackOnce = false;
 
 	// 상태머신 enum --------------------------------------------------
 public: 

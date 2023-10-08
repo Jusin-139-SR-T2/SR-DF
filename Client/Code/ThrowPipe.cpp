@@ -29,6 +29,7 @@ HRESULT CThrowPipe::Ready_GameObject()
 
 	//변수 값 조정
 	m_fFrame = 0.f;
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Projectile", L"ThrowPipe");
 	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_fFrameSpeed = 10.f;
 	m_fMoveSpeed = 7.f;
@@ -41,7 +42,7 @@ _int CThrowPipe::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Billboard(fTimeDelta);
+	//Billboard(fTimeDelta);
 
 	if (!_bLoop)
 	{
@@ -130,7 +131,7 @@ HRESULT CThrowPipe::Add_Component()
 
 	// 충돌 레이어, 마스크 설정
 	m_pColliderComp->Set_CollisionLayer(ELAYER_PROJECTILE); // 이 클래스가 속할 충돌레이어 
-	m_pColliderComp->Set_CollisionMask(ELAYER_PLAYER | ELAYER_MONSTER); // 얘랑 충돌해야하는 레이어들 
+	m_pColliderComp->Set_CollisionMask(ELAYER_PLAYER); // 얘랑 충돌해야하는 레이어들 
 
 	return S_OK;
 }
@@ -141,7 +142,14 @@ void CThrowPipe::Free()
 }
 
 void CThrowPipe::Billboard(const _float& fTimeDelta)
-{
+{// 몬스터가 플레이어 바라보는 벡터 
+	_vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
+
+	D3DXVec3Normalize(&vDir, &vDir);
+
+	_float rad = atan2f(vDir.x, vDir.z);
+
+	m_pTransformComp->Set_RotationY(rad);
 
 }
 

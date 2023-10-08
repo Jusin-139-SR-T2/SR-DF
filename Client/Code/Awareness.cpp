@@ -3,6 +3,7 @@
 
 CAwareness::CAwareness(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
+	, m_fBrownAwareness(0), m_fGrayAwareness(0), m_fBossAwareness(0)
 {
 }
 
@@ -25,8 +26,10 @@ HRESULT CAwareness::Ready_GameObject()
 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
 	m_fFrame = 0;
-	m_fFrameSpeed = 2.f;
-
+	//BrownÀÏ‹š
+	//m_fFrameSpeed = 2.f;
+	//Gray
+	m_fFrameSpeed = 3.f;
 
 	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 

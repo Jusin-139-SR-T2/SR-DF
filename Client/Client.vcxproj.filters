@@ -157,6 +157,12 @@
     <Filter Include="02. GameObject\01. Monster\02. Attack">
       <UniqueIdentifier>{67886598-b0dc-4b95-bd60-0d930a3e0d4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. BlackBoard\0. Player">
+      <UniqueIdentifier>{d47f6f5c-fd84-4254-91e1-51f4d5adf5e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. BlackBoard\1. Monster">
+      <UniqueIdentifier>{fee4b291-3060-41d3-9272-9146cd714457}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -252,14 +258,17 @@
     <ClInclude Include="Header\UI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Header\BlackBoard_Player.h">
-      <Filter>03. BlackBoard</Filter>
-    </ClInclude>
     <ClInclude Include="Header\UI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MonsterPunch.h">
+    <ClInclude Include="Header\MonsterPunch.h">
       <Filter>02. GameObject\01. Monster\02. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\BlackBoard_Player.h">
+      <Filter>03. BlackBoard\0. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\BlackBoard_Monster.h">
+      <Filter>03. BlackBoard\1. Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -362,14 +371,17 @@
     <ClCompile Include="Code\UI.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Code\BlackBoard_Player.cpp">
-      <Filter>03. BlackBoard</Filter>
-    </ClCompile>
     <ClCompile Include="Code\UI.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MonsterPunch.cpp">
+    <ClCompile Include="Code\MonsterPunch.cpp">
       <Filter>02. GameObject\01. Monster\02. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoard_Player.cpp">
+      <Filter>03. BlackBoard\0. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoard_Monster.cpp">
+      <Filter>03. BlackBoard\1. Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

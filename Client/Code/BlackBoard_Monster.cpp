@@ -1,0 +1,50 @@
+#include "stdafx.h"
+#include "BlackBoard_Monster.h"
+
+CBlackBoard_Monster::CBlackBoard_Monster()
+	: Base()
+	, m_fBrownAwareness(GAUGE<_float>(15.f))
+	, m_fGrayAwareness(GAUGE<_float>(15.f))
+	, m_fBossAwareness(GAUGE<_float>(15.f))
+{
+    
+}
+
+CBlackBoard_Monster::CBlackBoard_Monster(const CBlackBoard_Monster& rhs)
+	: Base(rhs)
+{
+}
+
+CBlackBoard_Monster::~CBlackBoard_Monster()
+{
+	Free();
+}
+
+CBlackBoard_Monster* CBlackBoard_Monster::Create()
+{
+    ThisClass* pInstance = new ThisClass();
+
+    if (FAILED(pInstance->Ready_BlackBoard()))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("BlackBoard_Monster Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
+}
+
+void CBlackBoard_Monster::Free()
+{
+    //여기서 뭐 release할거 알아서 추가하셈 
+}
+
+HRESULT CBlackBoard_Monster::Ready_BlackBoard(const FBlackBoard_MonsterInit& tInit)
+{
+    m_pBrown = tInit.pBrown;
+    m_pGray = tInit.pGray;
+    m_pBoss = tInit.pBoss;
+
+    return S_OK;
+}

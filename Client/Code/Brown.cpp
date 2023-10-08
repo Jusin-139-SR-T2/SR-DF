@@ -15,6 +15,23 @@ CBrown::~CBrown()
 {
 }
 
+CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
+{
+    ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+    if (FAILED(pInstance->Ready_GameObject()))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("Monster Create Failed");
+        return nullptr;
+    }
+
+    pInstance->m_pTransformComp->Set_Pos(_x, _y, _z); // 시작위치 설정
+    pInstance->vPatrolPointZero = { _x, _y, _z }; // 시작위치로 복귀포인트 설정 
+    return pInstance;
+}
+
 HRESULT CBrown::Ready_GameObject()
 {
     srand((_uint)time(NULL));
@@ -24,7 +41,6 @@ HRESULT CBrown::Ready_GameObject()
     m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });
     m_fFrameEnd = 0;
     m_fFrameSpeed = 8.f;
-    vCollisionOriginSize = { 1.f, 2.f, 0.3f };
 
     // 충돌용
     m_pTransformComp->Readjust_Transform();
@@ -116,26 +132,13 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     // 빌보드
     Billboard(fTimeDelta);
 
-     //상태머신-------------------------------------
+     //상태머신
     m_fFrame += m_fFrameSpeed * fTimeDelta;
     
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
     m_mapActionKey.Update();	// 액션키 초기화
     
-    // 현재 피격 테스트중 
-    if (Engine::IsKey_Pressing(DIK_H))
-    {
-        m_tState_Obj.Set_State(STATE_OBJ::NORMALATTACK);
-    }
-    
-    //if (Engine::IsKey_Pressing(DIK_J))
-    //{
-    //    m_iHP = 0; // 피격 기믹 확인용 
-    //    m_tState_Obj.Set_State(STATE_OBJ::DEATH);
-    //}
-    //
-
     if (m_fFrame > m_fFrameEnd)
     {
         m_fFrame = 0.f;
@@ -145,13 +148,21 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
             m_fCheck += 1;
     }
 
-     //물리 업데이트 코드
-    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 
+#pragma region 테스트 장소 
 
-    Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
+    // 현재 피격 테스트중 
+    if (Engine::IsKey_Pressing(DIK_B))
+    {
+        m_tState_Obj.Set_State(STATE_OBJ::NORMALATTACK);
+    }
 
+    //if (Engine::IsKey_Pressing(DIK_J))
+    //{
+    //    m_iHP = 0; // 피격 기믹 확인용 
+    //    m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+    //}
+    //
 
-#pragma region 회전 확인코드
    // if (Engine::IsKey_Pressing(DIK_J))
    // {
    //     _vec3 vRight = m_pTransformComp->Get_Right();
@@ -160,6 +171,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
    // 
    //     m_pTransformComp->Move_Pos(&vRight, fTimeDelta, 2.f);
    // }
+
    // if (Engine::IsKey_Pressing(DIK_H))
    // {
    //     _vec3 vLook = m_pTransformComp->Get_Look();
@@ -167,12 +179,18 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
    //     m_pTransformComp->Move_Pos(&vLook, fTimeDelta, 2.f);
    //
    // }
-    
+
 #pragma endregion 
+
+     //물리 업데이트 코드
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 
+
+    Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
     return S_OK;
 }
 
+#pragma region 기본 환경설정 
 void CBrown::LateUpdate_GameObject()
 {
     SUPER::LateUpdate_GameObject();
@@ -217,33 +235,27 @@ HRESULT CBrown::Add_Component()
     return S_OK;
 }
 
-CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
+
+
+void CBrown::Free()
 {
-    ThisClass* pInstance = new ThisClass(pGraphicDev);
-
-    if (FAILED(pInstance->Ready_GameObject()))
-    {
-        Safe_Release(pInstance);
-
-        MSG_BOX("Monster Create Failed");
-        return nullptr;
-    }
-
-    pInstance->m_pTransformComp->Set_Pos(_x, _y, _z); // 시작위치 설정
-    pInstance->vPatrolPointZero = { _x, _y, _z}; // 시작위치로 복귀포인트 설정 
-    return pInstance;
+    SUPER::Free();
 }
+
+#pragma endregion 
+
+#pragma region 충돌 - OnCollision 
 
 void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중 
 {
-    OutputDebugString(L"▶Brown 충돌중 \n");
+    //OutputDebugString(L"▶Brown 충돌중 \n");
 
     // 플레이어가 공격을 한것인지 인지해야함. 기본적으로 Collision을 갖고있음. 
 }
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
-    OutputDebugString(L"▶Brown 충돌시작 \n");
+    //OutputDebugString(L"▶Brown 충돌시작 \n");
     // 플레이어 무기상태, 플레이어가 공격했을때가 필요함 여기에 변화 
     // 디폴트로 일단 넣어둠 
     m_iHP -= 1;
@@ -280,56 +292,66 @@ void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
 {
-    OutputDebugString(L"▶Brown 충돌끝남 \n");
+    //OutputDebugString(L"▶Brown 충돌끝남 \n");
 
 }
 
+#pragma endregion 
+
+#pragma region BlackBoard
+
+void CBrown::Update_BlackBoard()
+{ // 블랙보드 연결 대기, 안전 코드로 필수
+    if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+    {
+        m_wpBlackBoard_Monster.Set_BlackBoard(Engine::Get_BlackBoard(L"MonsterUnion"));
+        // 연결 실패
+        if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+        {
+            MSG_BOX("MONSTER BLACKBOARD CONNECT FAILED");
+            return;
+        }
+    }
+
+    // 안전 코드를 거치면 일반 포인터로 접근 허용.
+    CBlackBoard_Monster* pBlackBoard = m_wpBlackBoard_Monster.Get_BlackBoard();
+
+    // 여기서부터 블랙보드의 정보를 업데이트 한다.
+//    pBlackBoard->Get_HP().Cur = m_pTransformComp->Get_Pos().x;
+    pBlackBoard->Get_BrownAwareness().Cur = m_fBrownAwareness;
+}
+
+#pragma endregion 
+
+#pragma region 환경설정 부속파트 + 상태머신 보조함수 
+
 _bool CBrown::Detect_Player() // 몬스터 시야내 플레이어 있는지 체크하는 함수 
 {
-    // 플레이어 위치 가져옴 
-    _vec3 vPlayerPos, vMonsterPos, vPlayerLook, vMonsterLook;
+    _vec3 vMonsterLook;
 
-    // 플레이어의 위치, 바라보는 방향
-    m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-    m_pPlayerTransformcomp->Get_Info(INFO_LOOK, &vPlayerLook);
-
-    // 몬스터 위치, 바라보는 방향
-    m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos);
     m_pTransformComp->Get_Info(INFO_LOOK, &vMonsterLook);
 
-    // 몬스터와 플레이어 위치 벡터 계산 + 정규화 
-    _vec3 MonToPlayer = vMonsterPos - vPlayerPos;
-   float currdistance = D3DXVec3Length(&MonToPlayer); // 현재 플레이어 위치에서 몬스터까지의 길이 = 시야거리 비교 
+    //몬스터가 플레이어 바라보는 벡터 
+    _vec3 MonToPlayer = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
+    _float currdistance = D3DXVec3Length(&MonToPlayer);
+
+    //정규화
     D3DXVec3Normalize(&MonToPlayer, &MonToPlayer);
-   
-   //현재 플레이어 위치가 몬스터 시야거리 외부(밖)에 있다 
-   if (currdistance > m_fMonsterSightDistance) 
-       return false;
 
-    // 내부에 있는지 판별 = 몬스터 앞 X (몬스터가 플레이어를 보는 벡터) -> 양수일경우 내적해서 180도 이내 = 시야각안 
-    _float fradian = acos(D3DXVec3Dot(&vMonsterLook, &MonToPlayer)) * 180 / D3DX_PI; 
+    // 시야범위 우선체크 
+    if (currdistance > m_fMonsterSightDistance)
+        return false;
 
-    // 시야각도 내부 && 시야거리 이내 
-    if (fradian < m_fMonsterFov * 2 && currdistance <  m_fMonsterSightDistance ) 
+    // 내적하여 RADIAN구하기 
+    _float fradian = acos(D3DXVec3Dot(&vMonsterLook, &MonToPlayer)) * 180 / D3DX_PI;
+
+    // 시야범위 + 시야각도 = 포착 
+    if (fradian < m_fMonsterFov * 2 && currdistance < m_fMonsterSightDistance)
         return true;
     else
         return false;
 }
 
-float CBrown::Calc_Distance()
-{
-    _vec3 vPlayerPos, vMonsterPos, vPlayerLook, vMonsterLook;
-
-    m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-
-    m_pTransformComp->Get_Info(INFO_POS, &vMonsterPos);
-
-    _vec3    vDistance = (vPlayerPos - vMonsterPos);
-
-    float fDistance = D3DXVec3Length(&vDistance);
-    
-    return fDistance;
-}
 
 void CBrown::Billboard(const _float& fTimeDelta)
 {
@@ -343,6 +365,14 @@ void CBrown::Billboard(const _float& fTimeDelta)
     m_pTransformComp->Set_RotationY(rad);   
 }
 
+float CBrown::Calc_Distance()
+{
+    // 플레이어 위치 - 몬스터 위치 = 몬스터가 플레이어 바라보는 벡터
+    _float fDistance = D3DXVec3Length(&(m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos()));
+
+    return fDistance;
+}
+
 HRESULT CBrown::Get_PlayerPos(const _float& fTimeDelta)
 {
     m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
@@ -351,36 +381,6 @@ HRESULT CBrown::Get_PlayerPos(const _float& fTimeDelta)
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
     return S_OK;
-}
-
-HRESULT CBrown::Make_AttackCollider()
-{
-    _vec3 vLook = m_pTransformComp->Get_Look();
-    D3DXVec3Normalize(&vLook, &vLook);
-
-    _vec3 vDirPos = m_pTransformComp->Get_Pos() + vLook;
-
-    pShape->vHalfSize = { 1.5f, 1.5f, 1.5f };
-    pShape->vPos.x = vDirPos.x;
-    pShape->vPos.y = vDirPos.y;
-    pShape->vPos.z = vDirPos.z;
-
-    return S_OK;
-}
-
-HRESULT CBrown::Reset_AttackCollider()
-{
-    pShape->vHalfSize = { 1.f, 2.f, 0.5f };
-    pShape->vPos.x = m_pTransformComp->Get_Pos().x;
-    pShape->vPos.y = m_pTransformComp->Get_Pos().y;
-    pShape->vPos.z = m_pTransformComp->Get_Pos().z;
-
-    return S_OK;
-}
-
-void CBrown::Free()
-{
-    SUPER::Free();
 }
 
 void CBrown::Height_On_Terrain()
@@ -395,6 +395,10 @@ void CBrown::Height_On_Terrain()
 
     m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.2f, vPos.z);
 }
+
+#pragma endregion 
+
+#pragma region 상태머신 : idle ~ Death
 
 //------------------ AI ---------------------------
 void CBrown::AI_Idle(float fDeltaTime)
@@ -446,7 +450,7 @@ void CBrown::AI_Suspicious(float fDeltaTime)
         if(Detect_Player()) // 시야각 이내에 위치 + 시야거리 이내 위치 
         {
            // //OutputDebugString(L"▶Brown - 변수체크 : 인지변수 상승중   \n");
-            m_fAwareness += fDeltaTime * 2.f;
+            m_fBrownAwareness += fDeltaTime * 2.f;
 
             // ＠＠ 수정사항 
             // 중요 << ★ 여기서 awareness와 몬스터의 m_awareness 서로 연결해서 값에따라 증가하게 해야함. 
@@ -454,20 +458,20 @@ void CBrown::AI_Suspicious(float fDeltaTime)
             // 당장은 야매로 값 비슷하게 맞춘거 
 
             // 2. 인지값이 MAX가 되면 플레이어 추격 시작 
-            if (m_fMaxAwareness <= m_fAwareness)
+            if (m_fMaxAwareness <= m_fBrownAwareness)
             {
-                m_fAwareness = m_fMaxAwareness; // 추후 감소를 위해 최대값으로 고정 
+                m_fBrownAwareness = m_fMaxAwareness; // 추후 감소를 위해 최대값으로 고정 
                 m_tState_Obj.Set_State(STATE_OBJ::TAUNT); // 추격으로 시작 
             }
         }
         else // 범위밖은 감소
         {
             ////OutputDebugString(L"▶Brown - 변수체크 : 인지변수 감소중   \n");
-            m_fAwareness -= fDeltaTime * 4.f;
+            m_fBrownAwareness -= fDeltaTime * 4.f;
 
-            if (0 >= m_fAwareness)
+            if (0 >= m_fBrownAwareness)
             {
-                m_fAwareness = 0.f;
+                m_fBrownAwareness = 0.f;
                 m_tState_Obj.Set_State(STATE_OBJ::IDLE);
             }
         }
@@ -516,30 +520,31 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
     }
     if (m_tState_Obj.Can_Update())
     {
+        m_AttackOnce = false;
         _float CurDistance = Calc_Distance();
 
-        //OutputDebugString(L"★ 디버그 찾기 : Chease - Update 돌입   \n");
+        //OutputDebugString(L"★ Brown 디버깅 : Chease - Update 돌입   \n");
 
         if (Detect_Player()) // 사거리에 포착되는경우 
         {
-            //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 \n");
+            //OutputDebugString(L"★ Brown 디버깅 : Chease -플레이어 포착 \n");
             // --------거리비교 상태머신 -----------
             // 뛰어서 다가옴 : a > 8
             if (m_fRunDistance < CurDistance)
             {
-                //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - Run 실행  \n");
+                //OutputDebugString(L"★ Brown 디버깅 : Chease -플레이어 포착 - Run 실행  \n");
                 m_tState_Obj.Set_State(STATE_OBJ::RUN);
             }
             // 걸어서 다가옴 : 7 < a <= 8 
             else if (m_fWalkDistance < CurDistance && m_fRunDistance >= CurDistance)
             {
-                //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - Walk 실행 \n");
+                //OutputDebugString(L"★ Brown 디버깅 : Chease -플레이어 포착 - Walk 실행 \n");
                 m_tState_Obj.Set_State(STATE_OBJ::WALK);
             }
             // 무빙 : 4 < a <= 7
             else if (m_fInchDistance < CurDistance && m_fWalkDistance >= CurDistance)
             {
-                //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - Moving 실행 \n");
+                //OutputDebugString(L"★ Brown 디버깅 : Chease -플레이어 포착 - Moving 실행 \n");
                 int iCombo = (rand() % 10) + 1;
 
                 if (5 <= iCombo) // 60% / 5~10 
@@ -551,7 +556,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
             // 공격함
             else
             {
-                //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 포착 - 공격 실행  \n");
+                //OutputDebugString(L"★ Brown 디버깅 : Chease -플레이어 포착 - 공격 실행  \n");
                 int iCombo = (rand() % 10) + 1; 
 
                 if (6 <= iCombo)
@@ -564,12 +569,12 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
         else // 사거리내 플레이어를 놓쳤을경우 
         {
             //OutputDebugString(L"▷Brown - 상태머신 : 플레이어 놓침    \n");
-            m_fAwareness -= fDeltaTime * 4.f; // 인지값 감소 
+            m_fBrownAwareness -= fDeltaTime * 4.f; // 인지값 감소 
 
-            if (0 >= m_fAwareness) //인지값이 초기화
+            if (0 >= m_fBrownAwareness) //인지값이 초기화
             {
                 //OutputDebugString(L"★ 디버그 찾기 : Chease -플레이어 놓침 - Recon으로 넘어감  \n");
-                m_fAwareness = 0.f;
+                m_fBrownAwareness = 0.f;
                 m_tState_Obj.Set_State(STATE_OBJ::RECONNAISSANCE); 
             }
         }
@@ -729,7 +734,6 @@ void CBrown::AI_NormalATTACK(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"NormalAttack");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 
-        Make_AttackCollider();
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -739,7 +743,6 @@ void CBrown::AI_NormalATTACK(float fDeltaTime)
 
         if (m_fFrame > m_fFrameEnd)
         {
-            Reset_AttackCollider();
             m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
@@ -759,8 +762,6 @@ void CBrown::AI_HeavyAttack(float fDeltaTime)
         m_fFrameSpeed = 8.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"HeavyAttack");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-
-        Make_AttackCollider();
     }
 
     if (m_tState_Obj.Can_Update())
@@ -771,7 +772,6 @@ void CBrown::AI_HeavyAttack(float fDeltaTime)
 
         if (m_fFrame > m_fFrameEnd)
         {
-            Reset_AttackCollider();
             m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
@@ -972,10 +972,10 @@ void CBrown::AI_Reconnaissance(float fDeltaTime)
     {
         if (Detect_Player()) //플레이어 포착하면 다시 돌입 
         {
-            m_fAwareness += fDeltaTime * 6.f; // 이전보다 더 빠르게 증가할것 
-            if (m_fAwareness >= m_fMaxAwareness)
+            m_fBrownAwareness += fDeltaTime * 6.f; // 이전보다 더 빠르게 증가할것 
+            if (m_fBrownAwareness >= m_fMaxAwareness)
             {
-                m_fAwareness = m_fMaxAwareness;
+                m_fBrownAwareness = m_fMaxAwareness;
                 m_tState_Obj.Set_State(STATE_OBJ::TAUNT);
             }
         }
@@ -1026,8 +1026,9 @@ void CBrown::AI_GoHome(float fDeltaTime)
     }
 }
 
-//------------------ 행동 -------------------------
+#pragma endregion 
 
+#pragma region 행동머신 Idle ~ GoHome
 void CBrown::Idle(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
@@ -1200,15 +1201,39 @@ void CBrown::Attack(float fDeltaTime)
     {
         if (STATE_OBJ::NORMALATTACK == m_tState_Obj.Get_State())
         {
-            //OutputDebugString(L"▷Brown - 가상키 : BASICATTACK 수행   \n");
-            // 충돌체 만들어서 기본공격 수행
+            if (!m_AttackOnce)
+            {
+                //OutputDebugString(L"▷Brown - 가상키 : BASICATTACK 수행   \n");
+                // 충돌체 만들어서 기본공격 수행
 
+                _vec3 vLook = m_pTransformComp->Get_Look();
+                D3DXVec3Normalize(&vLook, &vLook);
+
+                _vec3 vDirPos = m_pTransformComp->Get_Pos() + vLook * 2;
+
+                Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev, vDirPos.x, vDirPos.y, vDirPos.z));
+                
+                m_AttackOnce = true;
+            }
         }
 
         if (STATE_OBJ::HEAVYATTACK == m_tState_Obj.Get_State())
         {
             //OutputDebugString(L"▷Brown - 가상키 : HEAVYATTACK 수행   \n");
-            // 충돌체 만들어서 공격 수행
+            if (!m_AttackOnce)
+            {
+                //OutputDebugString(L"▷Brown - 가상키 : BASICATTACK 수행   \n");
+                // 충돌체 만들어서 기본공격 수행
+
+                _vec3 vLook = m_pTransformComp->Get_Look();
+                D3DXVec3Normalize(&vLook, &vLook);
+
+                _vec3 vDirPos = m_pTransformComp->Get_Pos() + vLook * 2;
+
+                Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev, vDirPos.x, vDirPos.y, vDirPos.z));
+
+                m_AttackOnce = true;
+            }
         }
 
         m_tState_Act.Set_State(STATE_ACT::IDLE);
@@ -1263,3 +1288,5 @@ void CBrown::GoHome(float fDeltaTime)
         ////OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
     }
 }
+
+#pragma endregion

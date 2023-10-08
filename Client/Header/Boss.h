@@ -70,7 +70,7 @@ private:
 	_float		m_fFrameSpeed;						// 프레임 돌리는 속도
 
 	// 몬스터 인식 관련 
-	_float		m_fAwareness = 0;					// 의심게이지 숫자 
+	_float		m_fBossAwareness = 0;					// 의심게이지 숫자 
 	_float		m_fMaxAwareness = 7.f;				// 의심게이지 max -> 추격으로 변함 
 	_float		m_fConsider = 10.f;					// 플레이어 놓친뒤에 주변정찰 게이지 
 	_float		m_fMaxConsider = 10.f;				// 플레이어 놓친뒤에 주변정찰 게이지 

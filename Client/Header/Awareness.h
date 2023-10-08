@@ -4,6 +4,10 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 
+#include "BlackBoard_Monster.h"
+#include "BlackBoardPtr.h"
+#include "BlackBoardMgr.h"
+
 BEGIN(Engine)
 
 	class CRcBufferComp;
@@ -42,12 +46,23 @@ public:
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
+// BlackBoard -------------------------------
+private:
+	void	Update_InternalData();
+
+protected:
+	FBlackBoardPtr<CBlackBoard_Monster>	m_wpBlackBoard_Monster;	// 블랙보드 플레이어
+
 private:
 	_float m_fFrame;
 	_float m_fFrameEnd;
 	_float m_fFrameSpeed;
 	_vec3 vPlayerPos;
 	HRESULT Billboard();
+
+	_float 	m_fBrownAwareness;
+	_float 	m_fGrayAwareness;
+	_float 	m_fBossAwareness;
 };
 	
 

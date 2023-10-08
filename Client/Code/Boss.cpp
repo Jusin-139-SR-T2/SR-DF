@@ -282,27 +282,27 @@ void CBoss::AI_Suspicious(float fDeltaTime)
     {
         if (Detect_Player()) // 시야각 이내에 위치 + 시야거리 이내 위치 
         {
-            m_fAwareness += fDeltaTime * 3.f;
+            m_fBossAwareness += fDeltaTime * 3.f;
 
             // 2. 인지값이 MAX가 되면 플레이어 추격 시작 
-            if (m_fMaxAwareness <= m_fAwareness)
+            if (m_fMaxAwareness <= m_fBossAwareness)
             {
-                m_fAwareness = m_fMaxAwareness;
+                m_fBossAwareness = m_fMaxAwareness;
 
                 m_tState_Obj.Set_State(STATE_OBJ::RELOADING);
             }
         }
         else // 범위밖은 감소
         {
-            m_fAwareness -= fDeltaTime * 6.f;
+            m_fBossAwareness -= fDeltaTime * 6.f;
 
-            if (m_fAwareness < 0)
-                m_fAwareness = 0;
+            if (m_fBossAwareness < 0)
+                m_fBossAwareness = 0;
 
             //플레이어가 시야각을 벗어나 인지값이 초기화되면 idle로 back
-            if (0 >= m_fAwareness)
+            if (0 >= m_fBossAwareness)
             {
-                m_fAwareness = 0.f;
+                m_fBossAwareness = 0.f;
                 m_tState_Obj.Set_State(STATE_OBJ::IDLE);
             }
         }
@@ -357,11 +357,11 @@ void CBoss::AI_BackIdle(float fDeltaTime)
         
         if (Detect_Player())
         {
-            m_fAwareness += fDeltaTime * 4.f; // 이전보다 더 빠르게 증가할것 
+            m_fBossAwareness += fDeltaTime * 4.f; // 이전보다 더 빠르게 증가할것 
 
-            if (m_fMaxAwareness <= m_fAwareness)
+            if (m_fMaxAwareness <= m_fBossAwareness)
             {
-                m_fAwareness = m_fMaxAwareness;
+                m_fBossAwareness = m_fMaxAwareness;
                 m_tState_Obj.Set_State(STATE_OBJ::RELOADING);
             }
         }
@@ -424,11 +424,11 @@ void CBoss::AI_Chase(float fDeltaTime)
         }
         else
         {
-            m_fAwareness -= fDeltaTime * 6.f;
+            m_fBossAwareness -= fDeltaTime * 6.f;
 
-            if (0 >= m_fAwareness)
+            if (0 >= m_fBossAwareness)
             {
-                m_fAwareness = 0;
+                m_fBossAwareness = 0;
                 m_tState_Obj.Set_State(STATE_OBJ::BACKIDLE);
             }
         }
@@ -485,11 +485,11 @@ void CBoss::AI_Pre_Attack(float fDeltaTime)
             }
             else
             {
-                m_fAwareness -= fDeltaTime * 6.f;
+                m_fBossAwareness -= fDeltaTime * 6.f;
 
-                if (0 >= m_fAwareness)
+                if (0 >= m_fBossAwareness)
                 {
-                    m_fAwareness = 0;
+                    m_fBossAwareness = 0;
                     m_tState_Obj.Set_State(STATE_OBJ::BACKIDLE);
                 }
             }
@@ -525,11 +525,11 @@ void CBoss::AI_Side_Ready(float fDeltaTime)
             }
             else
             {
-                m_fAwareness -= fDeltaTime * 6.f;
+                m_fBossAwareness -= fDeltaTime * 6.f;
 
-                if (0 >= m_fAwareness)
+                if (0 >= m_fBossAwareness)
                 {
-                    m_fAwareness = 0.f;
+                    m_fBossAwareness = 0.f;
                     m_tState_Obj.Set_State(STATE_OBJ::BACKIDLE);
                 }
             }

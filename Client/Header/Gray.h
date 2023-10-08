@@ -46,8 +46,9 @@ private:
 	void				Height_On_Terrain();
 	HRESULT				Add_Component();
 	virtual void		Free();
+	void				Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 
-	// Get, Set 함수 만들기 ---------------------------------------------------------------
+	// Get, Set 함수 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
@@ -60,14 +61,13 @@ protected:
 	virtual void	OnCollision(CGameObject* pDst);
 	virtual void	OnCollisionEntered(CGameObject* pDst);
 	virtual void	OnCollisionExited(CGameObject* pDst);
+	PRIVATE FCollisionBox* pShape;
 
-	// 상태머신 셋팅 --------------------------------------------------
 private:
 	// 함수 ----------					
 	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
 	_float		Calc_Distance();					// 몬스터와 플레이어 사이의 거리 체크하는 함수 
-	void		Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
-	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
+	HRESULT     Get_PlayerPos(); // 플레이어 dynamic_cast용도 
 	
 	// 변수 ----------
 	_float		m_fCheck = 0;						//Taunt 등 프레임 돌리는횟수 지정
@@ -82,8 +82,8 @@ private:
 	_float		m_fFrameSpeed;						// 프레임 돌리는 속도
 
 	// 몬스터 인식 관련 
-	_float		m_fAwareness = 0;					// 의심게이지 숫자 
-	_float		m_fMaxAwareness = 8.f;				// 의심게이지 max -> 추격으로 변함 
+	_float		m_fGrayAwareness = 0;					// 의심게이지 숫자 
+	_float		m_fMaxAwareness = 15.f;				// 의심게이지 max -> 추격으로 변함 
 	_float		m_fConsider = 10.f;					// 플레이어 놓친뒤에 주변정찰 게이지 
 	_float		m_fMaxConsider = 10.f;				// 플레이어 놓친뒤에 주변정찰 게이지 
 
@@ -114,6 +114,7 @@ private:
 	
 	//스위치 on/off 
 	_bool		m_bGoHome = false;
+	_bool		m_AttackOnce = false;
 
 public:
 	// 목표 상태머신(AI)
@@ -123,7 +124,11 @@ public:
 		THROW,		ATTACK,			UPRIGHTRUN, FRIGHTEN, HEAVYATTACK,		 BLOCK,
 		CROTCHHIT,  FACEPUNCH,		FALLING,	DAZED,	  CHOPPED,
 		HEADSHOT,	HEADLESS,		DEATH, 
-		GOHOME};
+		GOHOME
+	
+		//미구현 리스트 
+
+	};
 
 	// 행동 상태머신
 	enum class STATE_ACT { IDLE, APPROACH, SUDDENATTACK, SIDEMOVING, ATTACK,
@@ -178,25 +183,14 @@ private:
 #pragma endregion
 
 #pragma region 행동 : AI 이후 넘어가는곳 
+
 	void Idle(float fDeltaTime);
-	void Approach(float fDeltaTime);
-	void SuddenAttack(float fDeltaTime);
-	void SideMoving(float fDeltaTime);
-	void Attack(float fDeltaTime);
-	void GoHome(float fDeltaTime);
+	void Approach(float fDeltaTime); // RUN + WALK 
+	void SuddenAttack(float fDeltaTime);  // UPRIGHT + FRIGHTEN
+	void SideMoving(float fDeltaTime); // EKKPEYE + SIDEWALK
+	void Attack(float fDeltaTime); // BASIC ATTACK + HEAVY ATTACK
+	void GoHome(float fDeltaTime); // GOHOME 
 
-	//void Walk(float fDeltaTime);
-	//void Inch(float fDeltaTime);
-
-	//void Heavy_Attack(float fDeltaTime);
-	//void Prepare_Atk(float fDeltaTime);
-	//void Attack(float fDeltaTime);
-	//void Parrying(float fDeltaTime);
-	//
-	//void Jump(float fDeltaTime);
-	//void Falling(float fDeltaTime);
-	//void Dead(float fDeltaTime);
 #pragma endregion
-	// 액션키는 CPP쪽에 만들음
 };
 
