@@ -258,9 +258,6 @@
     <ClInclude Include="Header\BlackBoard_Player.h">
       <Filter>03. BlackBoard</Filter>
     </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -364,9 +361,6 @@
     </ClCompile>
     <ClCompile Include="Code\BlackBoard_Player.cpp">
       <Filter>03. BlackBoard</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\UI.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
