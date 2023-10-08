@@ -19,7 +19,8 @@ HRESULT CAwareness::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	//m_pTransformComp->Set_Pos(15.f, 2.f, 15.f);
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
+
 	m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
@@ -56,7 +57,7 @@ void CAwareness::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
-	m_pTextureComp->Render_Texture();
+	m_pTextureComp->Render_Texture(_ulong(m_fFrame));
 	m_pBufferComp->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);

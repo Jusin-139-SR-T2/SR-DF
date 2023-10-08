@@ -718,55 +718,19 @@ _bool CPlayer::Picking_On_Object()
 void CPlayer::OnCollision(CGameObject* pDst)
 {
     // 충돌중일때
-    //OutputDebugString(L"플레이어와 충돌중\n");
+    OutputDebugString(L"플레이어와 충돌중\n");
 }
 
 void CPlayer::OnCollisionEntered(CGameObject* pDst)
 {
     // 처음 충돌했을때
-    //OutputDebugString(L"플레이어와 충돌진입\n");
+    OutputDebugString(L"플레이어와 충돌진입\n");
 }
 
 void CPlayer::OnCollisionExited(CGameObject* pDst)
 {
     // 충돌에서 나갈때
-    //OutputDebugString(L"플레이어와 충돌완료\n");
-}
-
-void CPlayer::Update_BlackBoard()
-{
-    // 블랙보드 연결 대기, 안전 코드로 필수
-    if (!m_wpBlackBoard_Player.Get_BlackBoard())
-    {
-        m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"Player"));
-        // 연결 실패
-        if (!m_wpBlackBoard_Player.Get_BlackBoard())
-            return;
-    }
-
-    // 안전 코드를 거치면 일반 포인터로 접근 허용.
-    CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
-
-    // 여기서부터 블랙보드의 정보를 업데이트 한다.
-    pBlackBoard->Get_HP().Cur = m_pTransformComp->Get_Pos().x;
-}
-
-void CPlayer::Update_BlackBoard()
-{
-    // 블랙보드 연결 대기, 안전 코드로 필수
-    if (!m_wpBlackBoard_Player.Get_BlackBoard())
-    {
-        m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"Player"));
-        // 연결 실패
-        if (!m_wpBlackBoard_Player.Get_BlackBoard())
-            return;
-    }
-
-    // 안전 코드를 거치면 일반 포인터로 접근 허용.
-    CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
-
-    // 여기서부터 블랙보드의 정보를 업데이트 한다.
-    pBlackBoard->Get_HP().Cur = m_pTransformComp->Get_Pos().x;
+    OutputDebugString(L"플레이어와 충돌완료\n");
 }
 
 void CPlayer::Update_BlackBoard()

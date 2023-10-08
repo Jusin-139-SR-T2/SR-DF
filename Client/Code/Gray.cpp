@@ -239,15 +239,16 @@ void CGray::Free()
 #pragma region 상태머신 부속파트 
 void CGray::Billboard(const _float& fTimeDelta)
 { 
-    _vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos(); // 몬스터가 플레이어 바라보는 벡터 
+    // 몬스터가 플레이어 바라보는 벡터 
+    _vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
 
     D3DXVec3Normalize(&vDir, &vDir);
 
     _float rad = atan2f(vDir.x, vDir.z);
 
-    m_pTransformComp->Set_RotationY(rad); // 버그픽스 
+    m_pTransformComp->Set_RotationY(rad);
 
-    m_pTransformComp->Set_ScaleY(1.8f);
+    m_pTransformComp->Set_ScaleY(1.9f);
 }
 
 _bool CGray::Detect_Player()

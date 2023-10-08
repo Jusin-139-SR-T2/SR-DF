@@ -91,36 +91,6 @@
     <Filter Include="02. GameObject\05. Effect\01. MonsterEffect\01. Dazed">
       <UniqueIdentifier>{9b780b3c-b100-4169-b025-a876d4d3045f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. StateBar">
-      <UniqueIdentifier>{3a43f6e3-9552-4345-a7d8-08b9a487927f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. StateBar\00. MonsterHPBar">
-      <UniqueIdentifier>{f31eb1bb-4301-4550-9591-7eff850daef5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. Attack">
-      <UniqueIdentifier>{991e437e-41de-4176-bfac-7b802c5b1401}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. Attack\00. AttackPull">
-      <UniqueIdentifier>{57f63927-f895-4a93-bb3b-6e9a097ca300}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. Attack\01. Attack">
-      <UniqueIdentifier>{7185b2ec-c6fb-454c-84e3-c0679bc31543}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. Attack\01. Attack\00. Attack">
-      <UniqueIdentifier>{b9425aa7-480e-45bd-ab4c-da3116e15bd9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. Attack\01. Attack\01. Hand">
-      <UniqueIdentifier>{76788cb0-7aaa-4c17-9a17-8da2bd0b6c7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. Attack\01. Attack\02. Gun">
-      <UniqueIdentifier>{678468bd-3c73-4262-964d-cb315a734672}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. Attack\01. Attack\03. SteelPipe">
-      <UniqueIdentifier>{f2289398-9a12-49b2-a75c-7a69587da0fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. Attack\01. Attack\04. Bullet">
-      <UniqueIdentifier>{5bd2f1fe-db61-48c8-b19c-7b53dd34029c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Lighter\01. CeilingLighter">
       <UniqueIdentifier>{d2f211d2-f5ae-419c-bc37-862eb89e188f}</UniqueIdentifier>
     </Filter>
@@ -159,6 +129,33 @@
     </Filter>
     <Filter Include="04. UI\01. Player">
       <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Attack">
+      <UniqueIdentifier>{991e437e-41de-4176-bfac-7b802c5b1401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Attack\00. AttackPull">
+      <UniqueIdentifier>{57f63927-f895-4a93-bb3b-6e9a097ca300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Attack\01. Attack">
+      <UniqueIdentifier>{7185b2ec-c6fb-454c-84e3-c0679bc31543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Attack\01. Attack\00. Attack">
+      <UniqueIdentifier>{b9425aa7-480e-45bd-ab4c-da3116e15bd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Attack\01. Attack\01. Hand">
+      <UniqueIdentifier>{76788cb0-7aaa-4c17-9a17-8da2bd0b6c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Attack\01. Attack\02. Gun">
+      <UniqueIdentifier>{678468bd-3c73-4262-964d-cb315a734672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Attack\01. Attack\03. SteelPipe">
+      <UniqueIdentifier>{f2289398-9a12-49b2-a75c-7a69587da0fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Attack\01. Attack\04. Bullet">
+      <UniqueIdentifier>{5bd2f1fe-db61-48c8-b19c-7b53dd34029c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Monster\02. Attack">
+      <UniqueIdentifier>{67886598-b0dc-4b95-bd60-0d930a3e0d4b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +255,12 @@
     <ClInclude Include="Header\BlackBoard_Player.h">
       <Filter>03. BlackBoard</Filter>
     </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterPunch.h">
+      <Filter>02. GameObject\01. Monster\02. Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -339,13 +342,13 @@
       <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
     </ClCompile>
     <ClCompile Include="Code\Attack.cpp">
-      <Filter>02. GameObject\07. Attack\01. Attack\00. Attack</Filter>
+      <Filter>02. GameObject\06. Attack\01. Attack\00. Attack</Filter>
     </ClCompile>
     <ClCompile Include="Code\AttackPool.cpp">
-      <Filter>02. GameObject\07. Attack\00. AttackPull</Filter>
+      <Filter>02. GameObject\06. Attack\00. AttackPull</Filter>
     </ClCompile>
     <ClCompile Include="Code\Bullet.cpp">
-      <Filter>02. GameObject\07. Attack\01. Attack\04. Bullet</Filter>
+      <Filter>02. GameObject\06. Attack\01. Attack\04. Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceBuilding.cpp">
       <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
@@ -361,6 +364,12 @@
     </ClCompile>
     <ClCompile Include="Code\BlackBoard_Player.cpp">
       <Filter>03. BlackBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterPunch.cpp">
+      <Filter>02. GameObject\01. Monster\02. Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

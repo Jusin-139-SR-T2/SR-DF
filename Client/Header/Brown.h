@@ -49,6 +49,7 @@ private:
 	void				Height_On_Terrain();
 	HRESULT				Add_Component();
 	virtual void		Free();
+	void				Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 
 	// Get, Set 함수 만들기 --------------------------------------------------
 public: 
@@ -74,10 +75,10 @@ private:
 	// 함수 -----------------------------------------------------------------
 	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
 	_float		Calc_Distance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
-	void		Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
 	HRESULT		Make_AttackCollider();
 	HRESULT		Reset_AttackCollider();
+	
 
 	//임시변수 
 	PlayerHit   m_PlayerState;
@@ -107,8 +108,8 @@ private:
 	// 속도조절 
 	_float		m_fRunSpeed = 3.0f;					// 뛰어오는 속도
 	_float		m_fWalkSpeed = 2.0f;				// 걷는속도
-	_float		m_fInchSpeed = 7.f;					// 앞으로 전진하며 무빙하는 속도 
-	_float		m_fStrafingSpeed = 8.f;				// 옆으로 무빙하는  속도 
+	_float		m_fInchSpeed = 8.f;					// 앞으로 전진하며 무빙하는 속도 
+	_float		m_fStrafingSpeed = 7.f;				// 옆으로 무빙하는  속도 
 	_float		m_fNormalAttackSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
 	_float		m_fHeavAttackSpeed = 4.f;			// 강공격때 뛰어오는 속도 
 
@@ -159,7 +160,8 @@ public:
 		RUN, WALK, INCHFORWARD, STRAFING, 
 		JUMP, 
 		NORMALATTACK, HEAVY_ATTACK,
-		GOHOME };
+		GOHOME 
+	};
 
 private:
 	STATE_SET<STATE_OBJ, void(CBrown*, float)> m_tState_Obj;				//AI
