@@ -51,6 +51,7 @@
     <ClInclude Include="Header\SnowParticle.h" />
     <ClInclude Include="Header\ThrowPipe.h" />
     <ClInclude Include="Header\UI.h" />
+    <ClInclude Include="MonsterPunch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\BlackBoard_Player.cpp" />
@@ -91,6 +92,7 @@
     <ClCompile Include="Code\SnowParticle.cpp" />
     <ClCompile Include="Code\ThrowPipe.cpp" />
     <ClCompile Include="Code\UI.cpp" />
+    <ClCompile Include="MonsterPunch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

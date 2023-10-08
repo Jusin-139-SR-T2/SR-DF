@@ -54,7 +54,7 @@ private:
 	// 함수 ----------
 	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
 	_float		Calc_Distance();					// 몬스터와 플레이어 사이의 거리 체크하는 함수 
-	void		FaceTurn(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
+	void		Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 
 	// 변수 ----------
 	_float		m_fCheck = 0;						//Taunt 등 프레임 돌리는횟수 지정

@@ -355,6 +355,7 @@ HRESULT CLoading::Loading_For_Texture()
 
 #pragma region Projectile
 	Load_Texture(L"./Resource/Texture/Monster/Projectile/ThrowPipe_%d.png", TEX_NORMAL, L"Projectile", L"ThrowPipe", _range<_uint>(0U, 11U)); // Bomb
+	Load_Texture(L"./Resource/Texture/idk/Circle.png", TEX_NORMAL, L"Debug", L"Sphere"); // Bomb
 
 
 #pragma endregion

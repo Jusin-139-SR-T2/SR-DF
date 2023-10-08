@@ -76,6 +76,8 @@ private:
 	void		Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 
 	HRESULT		Make_AttackCollider();
+	HRESULT		Reset_AttackCollider();
+	
 
 	//임시변수 
 	PlayerHit   m_PlayerState;
@@ -105,9 +107,9 @@ private:
 	// 속도조절 
 	_float		m_fRunSpeed = 2.0f;					// 뛰어오는 속도
 	_float		m_fWalkSpeed = 1.0f;				// 걷는속도
-	_float		m_fInchSpeed = 7.f;					// 앞으로 전진하며 무빙하는 속도 
-	_float		m_fStrafingSpeed = 8.f;				// 옆으로 무빙하는  속도 
-	_float		m_fBasiCPlayerLighterSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
+	_float		m_fInchSpeed = 9.f;					// 앞으로 전진하며 무빙하는 속도 
+	_float		m_fStrafingSpeed = 7.f;				// 옆으로 무빙하는  속도 
+	_float		m_fNormalAttackSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
 	_float		m_fHeavAttackSpeed = 4.f;			// 강공격때 뛰어오는 속도 
 
 	// 사거리 , 시야각
@@ -157,7 +159,8 @@ public:
 		RUN, WALK, INCHFORWARD, STRAFING, 
 		JUMP, 
 		NORMALATTACK, HEAVY_ATTACK,
-		GOHOME };
+		GOHOME 
+	};
 
 private:
 	STATE_SET<STATE_OBJ, void(CBrown*, float)> m_tState_Obj;				//AI

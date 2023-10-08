@@ -41,8 +41,8 @@ HRESULT CPlayer::Ready_GameObject()
     m_pTransformComp->Set_Pos({ 10.f, 0.f, 10.f });
     m_pTransformComp->Readjust_Transform();
     //m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-    //FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-    //pShape->fRadius = 2.f;
+    FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+    pShape->fRadius = 0.5f;
 
     /*FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
     pShape->fRadius = 5.f;*/
