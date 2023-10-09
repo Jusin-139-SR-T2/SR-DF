@@ -201,7 +201,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;$(SolutionDir)Reference\Header\RapidJson\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -221,7 +221,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;$(SolutionDir)Reference\Header\RapidJson\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -243,7 +243,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;$(SolutionDir)Reference\Header\RapidJson\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -268,7 +268,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;$(SolutionDir)Reference\Header\RapidJson\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

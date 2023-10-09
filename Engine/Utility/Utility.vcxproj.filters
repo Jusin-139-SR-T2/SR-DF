@@ -167,6 +167,12 @@
     <ClInclude Include="Header\BlackBoardPtr.h">
       <Filter>11. BlackBoardMgr\BlackBoard</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Serialize\Serialize_Core.h">
+      <Filter>12. Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Serialize\Serialize_BaseClass.h">
+      <Filter>12. Serialize</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -450,6 +456,9 @@
     </Filter>
     <Filter Include="11. BlackBoardMgr\BlackBoard">
       <UniqueIdentifier>{2da6d0c2-3ef6-48b8-b94f-ce3803fa6a4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="12. Serialize">
+      <UniqueIdentifier>{2984b8d3-3b75-4f5f-8f2c-32c406a5573e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

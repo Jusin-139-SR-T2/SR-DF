@@ -28,7 +28,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Tool\Bin\Export\$(Configuratio
       <AdditionalLibraryDirectories>$(SolutionDir)Reference\Library\Engine\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)Reference\Library\FMod\core\$(PlatformTarget)\;$(SolutionDir)Reference\Library\FMod\fsbank\$(PlatformTarget)\;$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\;$(SolutionDir)Reference\Header\Boost_1_83_0\libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\;Header\;..\Header\;$(SolutionDIr)Base\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;Header\;..\Header\;$(SolutionDIr)Base\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;$(SolutionDir)Reference\Header\RapidJson\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>

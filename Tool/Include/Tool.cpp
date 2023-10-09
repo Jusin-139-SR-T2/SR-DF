@@ -17,6 +17,9 @@
 
 #define MAX_LOADSTRING 100
 
+// 콘솔창 키고 싶으면 이거 1로 설정
+#define _TEST_CONSOLE 1
+
 // 전역 변수: 어플리케이션에서 윈도우를 제어할 때는 창을 제어한다.
 HINSTANCE g_hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
@@ -43,7 +46,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: 여기에 코드를 입력합니다.
+#ifdef _DEBUG
+#if _TEST_CONSOLE
+    // 디버그용 콘솔창
+    if (::AllocConsole() == TRUE)
+    {
+        FILE* nfp[3];
+        freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
+        freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
+        freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
+        std::ios::sync_with_stdio();
+    }
+#endif
+#endif // _DEBUG
 
     // 전역 문자열을 초기화합니다.
     //LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -120,6 +135,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         MSG_BOX("MainApp Destroy Failed");
         return FALSE;
     }
+
+#ifdef _DEBUG
+#if _TEST_CONSOLE
+    // 콘솔 사용 해제
+    FreeConsole();
+#endif
+#endif // _DEBUG
 
     //_CrtDumpMemoryLeaks(); 메모리 누수 잡는 코드 지금은 없어도 잘 됨
     return (int) msg.wParam;

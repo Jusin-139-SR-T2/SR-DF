@@ -78,7 +78,7 @@ void CTerrain::Render_GameObject()
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-   m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 }
 
 HRESULT CTerrain::Add_Component()

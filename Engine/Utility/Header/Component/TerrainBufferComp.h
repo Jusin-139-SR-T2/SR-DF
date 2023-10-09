@@ -34,6 +34,9 @@ private:
 public:
 	virtual HRESULT		Ready_Buffer(const _tchar* pFileName, const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv);
 	virtual void		Render_Buffer();
+	virtual HRESULT		Ready_Component() override;
+	virtual void		LateUpdate_Component() override;
+	virtual void		Render_Component() override;
 
 public:
 	const _vec3* Get_VtxPos() const { return m_pPos; }
@@ -56,16 +59,9 @@ private:
 	vector<_int>	m_vHeightMap;
 
 private:
-	_vec3* m_pPos;
+	_vec3* m_pPos;						// 버텍스 저장용 배열 포인터
 
-
-	// CVIBufferComp을(를) 통해 상속됨
-	virtual HRESULT Ready_Component() override;
-
-	virtual void LateUpdate_Component() override;
-
-	virtual void Render_Component() override;
-
+private:
 };
 
 END
