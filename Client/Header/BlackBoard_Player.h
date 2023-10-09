@@ -53,6 +53,5 @@ public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 private:
 	GAUGE<_float>		m_fHP;
 	GAUGE<_float>		m_fStamina;
-
 };
 

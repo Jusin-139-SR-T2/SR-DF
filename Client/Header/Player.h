@@ -141,32 +141,6 @@ public:// 플레이어 상태 값
 	// TEST
 	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향 
 
-public:
-	// 키프레임 구조체
-	struct Keyframe
-	{
-		char name[64];			// 키프레임 이름 (표시용)
-
-		bool isEaseIn;			// Ease In 설정 (True 또는 False)
-		bool isEaseOut;			// Ease Out 설정 (True 또는 False)
-
-		float time;				// 키프레임의 시간 (0.0f ~ MaxTime 범위)
-		float value;			// 애니메이션 값 (크기, 회전, 이동 등)
-		float color[3];			// 키프레임 색상 (R, G, B)
-		int texureframe;		// 텍스처 변경 값
-
-		OBJECT_TYPE m_eObjectType; // 타입을 부여할 그릇 (ex : 한손, 양손)
-		OBJECT_NAME m_eObjectName; // 이름을 부여할 그릇 (ex : 권총, 쇠파이프)
-
-		int type;				// 애니메이션 타입 (0: 크기, 1: 회전, 2: 이동)
-
-		_vec3	vScale = { 0.f, 0.f, 0.f };			// 크기를 담을 그릇
-		_vec3	vRot = { 0.f, 0.f, 0.f };			// 회전을 담을 그릇
-		_vec3	vPos = { 0.f, 0.f, 0.f };			// 위치를 담을 그릇
-
-		_vec2	vKeyFramePos = { 0.00000000f, 0.00000000f };		// 툴에서의 해당 키프레임 위치
-	};
-
 private: // 플레이어의 상태 머신
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
 
@@ -253,10 +227,10 @@ private: // 스위치
 	_bool		bRightPunch = true;		// 오른주먹 On/Off
 
 	// 방어
-	_bool		bShieldOn = true;		// 방어 On/Off
-	_bool		bShield = true;			// 방어 가능 여부
+	_bool		bShieldOn = true;		// 쉴드 On/Off
 
 	// 플레이어 행동 여부
+	_bool		bShield = true;			// 쉴드 가능 여부
 	_bool		bChargingReady = true;	// 차징 가능 여부
 	_bool		bChargeAttack = false;	// 일반 공격에서 차징 공격으로 변경
 	_bool		bFootAttack = false;	// 발차기 여부
@@ -276,10 +250,11 @@ private:
 	_float		fDash = 20.f;				// 플레이어 대쉬
 	_float		fDownDash = 0.f;			// 플레이어 대쉬할때 높이
 	_float		fFullChage = 0.f;			// 풀차징 프레임
+	_float		fShieldFrame = 0.f;			// 쉴드시 프레임
 	_float		fChageTime = 0.f;			// 차징 전환 시간
 	_float		fFullChargeTime = 7.f;		// 풀자징 시간
-	_float		fTextureChangeTime = 0.f;	// 텍스처 변경 시간
-	_float		fCurChangeTime = 5.f;		// 현재 변경 시간
+	_float		fCurrentTime = 0.f;			// 현재 시간
+	_float		fCurChangeTime = 1.f;		// 시간 속도 조절(배율)
 	_float		fMaxChangeTime = 3.f;		// 변경될 최대 시간
 
 	// 플레이어 상태
@@ -352,7 +327,7 @@ private:
 
 private:
 	// 애니메이션 타임 라인
-	std::vector<Keyframe> timeline;
+	std::vector<KEYFRAME> timeline;
 };
 
 /*	현재 키 설명

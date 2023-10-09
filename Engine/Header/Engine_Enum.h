@@ -84,5 +84,14 @@ namespace Engine
 	{
 
 	};
+
+	// (10_09_19:18)성희 추가 : 애니메이션 타입
+	enum KEYTYPE
+	{
+		KEYTYPE_NONE,
+		KEYTYPE_LEFTHAND,
+		KEYTYPE_RIGHTHAND,
+		KEYTYPE_END
+	};
 }
 #endif // Engine_Enum_h__

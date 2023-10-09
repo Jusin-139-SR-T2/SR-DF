@@ -52,13 +52,13 @@ HRESULT CMyTexture::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pAnimationTool = dynamic_cast<CImguiAnimationTool*>
-		(CImguiMgr::GetInstance()->Get_MapImguiWin()[L"AnimationTool"]);
+	//m_pAnimationTool = dynamic_cast<CImguiAnimationTool*>
+	//	(CImguiMgr::GetInstance()->Get_MapImguiWin()[L"AnimationTool"]);
 
-	if (m_pAnimationTool->Get_Animation()->empty())
-	{
-		m_vecAnimationInfo = m_pAnimationTool->Get_Animation();
-	}
+	//if (m_pAnimationTool->Get_Animation()->empty())
+	//{
+	//	m_vecAnimationInfo = m_pAnimationTool->Get_Animation();
+	//}
 
 	m_fSizeX = 1280;
 	m_fSizeY = 720;

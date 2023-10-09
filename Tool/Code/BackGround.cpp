@@ -60,9 +60,11 @@ HRESULT CBackGround::Ready_GameObject()
 	m_pAnimationTool = dynamic_cast<CImguiAnimationTool*>
 		(CImguiMgr::GetInstance()->Get_MapImguiWin()[L"AnimationTool"]);
 
+	m_eCurType = m_pAnimationTool->Get_CurType();
+
 	if (m_pAnimationTool->Get_Animation()->empty())
 	{
-		m_vecAnimationInfo = m_pAnimationTool->Get_Animation();
+		m_vecAnimation[*m_eCurType] = m_pAnimationTool->Get_Animation();
 	}	
 
 	m_pTransformComp->Set_Pos({ 0.f, 0.f, 0.f });	// 이미지 위치
@@ -81,7 +83,7 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 	KeyInput();
 
 	// 비었는지 검사
-	if (!m_vecAnimationInfo->empty())
+	if (!m_vecAnimation[*m_eCurType]->empty())
 	{
 		// 프레임 재생 여부
 		if (m_pAnimationTool->Get_FramePlaying())
@@ -90,7 +92,7 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 
 
 			// 현재 프레임이 최대 프레임에 도달한 경우
-			if (m_pAnimationTool->Get_currentTime() > (*m_vecAnimationInfo)[m_vecAnimationInfo->size() - 1].time)
+			if (m_pAnimationTool->Get_currentTime() > (*m_vecAnimation[*m_eCurType])[m_vecAnimation[*m_eCurType]->size() - 1].time)
 			{
 				// 현재 프레임 초기화
 				//m_pAnimationTool->Get_currentTime() = 0.f;
@@ -107,18 +109,18 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 		}
 	}
 
-	if (!m_vecAnimationInfo->empty()) // 비었는지 체크
+	if (!m_vecAnimation[*m_eCurType]->empty()) // 비었는지 체크
 	{
 		//if (m_pAnimationTool->Get_FramePlaying()) // 재생 버튼을 눌렀을 경우만
 		//{
 			if (m_pAnimationTool->Get_currentTime() >= 0.f &&
-				m_pAnimationTool->Get_currentTime() <= m_vecAnimationInfo->back().time)
+				m_pAnimationTool->Get_currentTime() <= m_vecAnimation[*m_eCurType]->back().time)
 			{
-				//m_eAnimationInfo = m_vecAnimationInfo[(int)m_iFrameCount].front();
+				//m_eAnimationInfo = m_vecAnimation[(int)m_iFrameCount].front();
 				_uint iFrameIndex = 0U;
-				for (_uint i = m_vecAnimationInfo->size() - 1; i > 0; i--)
+				for (_uint i = m_vecAnimation[*m_eCurType]->size() - 1; i > 0; i--)
 				{
-					if ((*m_vecAnimationInfo)[i].time <= m_pAnimationTool->Get_currentTime())
+					if ((*m_vecAnimation[*m_eCurType])[i].time <= m_pAnimationTool->Get_currentTime())
 					{
 						iFrameIndex = i;
 						break;
@@ -126,69 +128,97 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 				}
 
 				// Constant
-				//m_fSizeX = (*m_vecAnimationInfo)[iFrameIndex].vScale.x;
-				//m_fSizeY = (*m_vecAnimationInfo)[iFrameIndex].vScale.y;
+				//m_fSizeX = (*m_vecAnimation[*m_eCurType])[iFrameIndex].vScale.x;
+				//m_fSizeY = (*m_vecAnimation[*m_eCurType])[iFrameIndex].vScale.y;
 
 				//m_fX = m_fSizeX * 0.5f; // 중점위치 
 				//m_fY = m_fSizeY * 0.5f;
 
-				//m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x,
-				//							(*m_vecAnimationInfo)[iFrameIndex].vPos.y,
+				//m_pTransformComp->Set_Pos({ (*m_vecAnimation[*m_eCurType])[iFrameIndex].vPos.x,
+				//							(*m_vecAnimation[*m_eCurType])[iFrameIndex].vPos.y,
 				//							0.f });	// 이미지 위치
 
 				//m_pTransformComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });	// 이미지 크기
 
 
 				// Linear
-				if (iFrameIndex + 1U < m_vecAnimationInfo->size())
+				if (iFrameIndex + 1U < m_vecAnimation[*m_eCurType]->size())
 				{
 					// 키 프레임간 시간 변화율
-					fFrameTimeDelta = (*m_vecAnimationInfo)[iFrameIndex + 1U].time - (*m_vecAnimationInfo)[iFrameIndex].time;
+					fFrameTimeDelta = (*m_vecAnimation[*m_eCurType])[iFrameIndex + 1U].time - (*m_vecAnimation[*m_eCurType])[iFrameIndex].time;
 					// 현재 키 프레임시간부터 현재 시간 변화율
-					fCurFrameTimeDelta = (m_pAnimationTool->Get_currentTime() - (*m_vecAnimationInfo)[iFrameIndex].time);
+					fCurFrameTimeDelta = (m_pAnimationTool->Get_currentTime() - (*m_vecAnimation[*m_eCurType])[iFrameIndex].time);
 
-					fSizeX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vScale.x - (*m_vecAnimationInfo)[iFrameIndex].vScale.x;
+					fSizeX_Delta = (*m_vecAnimation[*m_eCurType])[iFrameIndex + 1U].vScale.x - (*m_vecAnimation[*m_eCurType])[iFrameIndex].vScale.x;
 					fSizeX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-					fSizeY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vScale.y - (*m_vecAnimationInfo)[iFrameIndex].vScale.y;
+					fSizeY_Delta = (*m_vecAnimation[*m_eCurType])[iFrameIndex + 1U].vScale.y - (*m_vecAnimation[*m_eCurType])[iFrameIndex].vScale.y;
 					fSizeY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
 
-					fRotX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.x - (*m_vecAnimationInfo)[iFrameIndex].vRot.x;
+					fRotX_Delta = (*m_vecAnimation[*m_eCurType])[iFrameIndex + 1U].vRot.x - (*m_vecAnimation[*m_eCurType])[iFrameIndex].vRot.x;
 					fRotX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-					fRotY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.y - (*m_vecAnimationInfo)[iFrameIndex].vRot.y;
+					fRotY_Delta = (*m_vecAnimation[*m_eCurType])[iFrameIndex + 1U].vRot.y - (*m_vecAnimation[*m_eCurType])[iFrameIndex].vRot.y;
 					fRotY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-					fRotZ_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vRot.z - (*m_vecAnimationInfo)[iFrameIndex].vRot.z;
+					fRotZ_Delta = (*m_vecAnimation[*m_eCurType])[iFrameIndex + 1U].vRot.z - (*m_vecAnimation[*m_eCurType])[iFrameIndex].vRot.z;
 					fRotZ_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
 
-					fPosX_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vPos.x - (*m_vecAnimationInfo)[iFrameIndex].vPos.x;
+					fPosX_Delta = (*m_vecAnimation[*m_eCurType])[iFrameIndex + 1U].vPos.x - (*m_vecAnimation[*m_eCurType])[iFrameIndex].vPos.x;
 					fPosX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-					fPosY_Delta = (*m_vecAnimationInfo)[iFrameIndex + 1U].vPos.y - (*m_vecAnimationInfo)[iFrameIndex].vPos.y;
+					fPosY_Delta = (*m_vecAnimation[*m_eCurType])[iFrameIndex + 1U].vPos.y - (*m_vecAnimation[*m_eCurType])[iFrameIndex].vPos.y;
 					fPosY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
 
-					m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x + fPosX_Delta,
-												(*m_vecAnimationInfo)[iFrameIndex].vPos.y + fPosY_Delta,
+					m_pTransformComp->Set_Pos({ (*m_vecAnimation[*m_eCurType])[iFrameIndex].vPos.x + fPosX_Delta,
+												(*m_vecAnimation[*m_eCurType])[iFrameIndex].vPos.y + fPosY_Delta,
 												0.f });	// 이미지 위치
 
-					m_pTransformComp->Set_Scale({ (*m_vecAnimationInfo)[iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
-												  (*m_vecAnimationInfo)[iFrameIndex].vScale.y + fSizeY_Delta,
+					m_pTransformComp->Set_Scale({ (*m_vecAnimation[*m_eCurType])[iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
+												  (*m_vecAnimation[*m_eCurType])[iFrameIndex].vScale.y + fSizeY_Delta,
 												  1.f });
 
-					m_pTransformComp->Set_Rotation({ (*m_vecAnimationInfo)[iFrameIndex].vRot.x + fRotX_Delta, 	// 이미지 회전
-													 (*m_vecAnimationInfo)[iFrameIndex].vRot.y + fRotY_Delta,
-													 (*m_vecAnimationInfo)[iFrameIndex].vRot.z + fRotZ_Delta });
-				
-					TextureNum = (*m_vecAnimationInfo)[iFrameIndex].texureframe;
+					m_pTransformComp->Set_Rotation({ (*m_vecAnimation[*m_eCurType])[iFrameIndex].vRot.x + fRotX_Delta, 	// 이미지 회전
+													 (*m_vecAnimation[*m_eCurType])[iFrameIndex].vRot.y + fRotY_Delta,
+													 (*m_vecAnimation[*m_eCurType])[iFrameIndex].vRot.z + fRotZ_Delta });
+					
+					// 현재 키타입
+					switch (*m_eCurType)
+					{
+						case KEYTYPE_LEFTHAND:
+						{
+							TextureNum[KEYTYPE_LEFTHAND] = (*m_vecAnimation[*m_eCurType])[iFrameIndex].texureframe;
+							break;
+						}
+						case KEYTYPE_RIGHTHAND:
+						{
+							TextureNum[KEYTYPE_RIGHTHAND] = (*m_vecAnimation[*m_eCurType])[iFrameIndex].texureframe;
+							break;
+						}
+					}
+					
 				}
 				else
 				{
-					m_pTransformComp->Set_Scale({ (*m_vecAnimationInfo)[iFrameIndex].vScale.x, 	// 이미지 크기
-												  (*m_vecAnimationInfo)[iFrameIndex].vScale.y,
+					m_pTransformComp->Set_Scale({ (*m_vecAnimation[*m_eCurType])[iFrameIndex].vScale.x, 	// 이미지 크기
+												  (*m_vecAnimation[*m_eCurType])[iFrameIndex].vScale.y,
 												  1.f });
 
-					m_pTransformComp->Set_Pos({ (*m_vecAnimationInfo)[iFrameIndex].vPos.x,
-												(*m_vecAnimationInfo)[iFrameIndex].vPos.y,
+					m_pTransformComp->Set_Pos({ (*m_vecAnimation[*m_eCurType])[iFrameIndex].vPos.x,
+												(*m_vecAnimation[*m_eCurType])[iFrameIndex].vPos.y,
 												0.f });	// 이미지 위치
 
-					TextureNum = (*m_vecAnimationInfo)[iFrameIndex].texureframe;
+					// 현재 키타입
+					switch (*m_eCurType)
+					{
+					case KEYTYPE_LEFTHAND:
+					{
+						TextureNum[KEYTYPE_LEFTHAND] = (*m_vecAnimation[*m_eCurType])[iFrameIndex].texureframe;
+						break;
+					}
+					case KEYTYPE_RIGHTHAND:
+					{
+						TextureNum[KEYTYPE_RIGHTHAND] = (*m_vecAnimation[*m_eCurType])[iFrameIndex].texureframe;
+						break;
+					}
+					}
+					
 				}
 				
 			}
@@ -222,10 +252,10 @@ void CBackGround::Render_GameObject()
 	// 위의 두개만 쓰면 텍스처 행렬과 부모 행렬을 별개로 두고 계산할 수 있음.
 	// 
 	// 이제부터 Render_Texture 함수 안에서 자동으로 텍스처의 행렬이 디바이스에 들어간다.(SetTransform(D3DTS_WORLD, 텍스처 행렬))
-	//m_pLeftHandTextureComp->Render_Texture(0, true);
-	//m_pBufferComp->Render_Buffer();
+	m_pLeftHandTextureComp->Render_Texture(TextureNum[KEYTYPE_LEFTHAND], true);
+	m_pBufferComp->Render_Buffer();
 
-	m_pRightHandTextureComp->Render_Texture(TextureNum, true);
+	m_pRightHandTextureComp->Render_Texture(TextureNum[KEYTYPE_RIGHTHAND], true);
 	m_pBufferComp->Render_Buffer();
 
 	// 이건 부모 행렬을 텍스처 행렬에 그대로 쓰는 방법, 텍스처 별개의 행렬이 필요없을 때 사용
@@ -336,15 +366,15 @@ void CBackGround::LoadAnimationFromFile(const char* fileName)
 		return;
 	}
 
-	m_vecAnimationInfo->clear();
-	Keyframe keyframe;
+	m_vecAnimation[*m_eCurType]->clear();
+	KEYFRAME keyframe;
 
 	while (file >> keyframe.time >> keyframe.value >> keyframe.type >>
 		keyframe.isEaseIn >> keyframe.isEaseOut >>
 		keyframe.vScale.x >> keyframe.vScale.y >> keyframe.vScale.z >>
 		keyframe.vRot.x >> keyframe.vRot.y >> keyframe.vRot.z >>
 		keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z) {
-		m_vecAnimationInfo->push_back(keyframe);
+		m_vecAnimation[*m_eCurType]->push_back(keyframe);
 	}
 
 	file.close();
