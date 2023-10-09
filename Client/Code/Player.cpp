@@ -136,6 +136,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     // 상태 업데이트(체크)
     State_Update(fTimeDelta);
 
+    Interpolation(m_fRightFrame);
+
     // 지형 타기
     Height_On_Terrain();
 
@@ -263,9 +265,9 @@ HRESULT CPlayer::Add_Component()
 
     // 텍스처 매니저
     // 왼손
-    m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Left_Hand");
+    m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Left_Hand");
     // 오른손
-    m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Right_Hand");
+    m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
 
     // 물리 세계 등록
     m_pColliderComp->EnterToPhysics(0);
@@ -765,7 +767,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
     // 마우스 좌클릭 (누르고 있을 때)
     if (Engine::IsMouse_Pressing(DIM_LB))
     {
-        Charge(fTimeDelta);
+        //Charge(fTimeDelta);
     }
 
     // 차징이 안켜졌을 때
@@ -1479,7 +1481,7 @@ void CPlayer::Left_Hand(float fTimeDelta)
     if (m_tLeftHand_State.IsState_Entered())
     {
         // 기본 왼손 출력
-        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Left_Hand");
+        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Left_Hand");
         m_fLeftMaxFrame = 2.f;  // 최대 프레임 설정
         bRighter = false;       // 라이터 Off
 
@@ -1528,7 +1530,7 @@ void CPlayer::Left_OpenHand(float fTimeDelta)
     if (m_tLeftHand_State.IsState_Entered())
     {
         // 왼손 오픈 핸드로 변경
-        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Single", L"OpenHand");
+        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"OpenHand");
     }
 
     if (m_tLeftHand_State.Can_Update())
@@ -1547,7 +1549,7 @@ void CPlayer::Left_RunHand(float fTimeDelta)
     if (m_tLeftHand_State.IsState_Entered())
     {
         // 왼손 뛰는 손으로 변경
-        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Single", L"Left_RunHand");
+        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Left_RunHand");
     }
 
     if (m_tLeftHand_State.Can_Update())
@@ -1566,7 +1568,7 @@ void CPlayer::Left_Righter(float fTimeDelta)
     if (m_tLeftHand_State.IsState_Entered())
     {
         // 왼손을 라이터로 변경
-        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Righter");
+        m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Righter");
         m_fLeftMaxFrame = 6.f; // 최대 프레임 지정
     }
 
@@ -1629,7 +1631,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 기본 오른손 출력
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Right_Hand");
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
         m_fRightMaxFrame = 2.f; // 최대 프레임 설정
         fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
@@ -1645,7 +1647,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
         if (m_ePlayerState == STATE_PLAYER::CHARGING)
         {
             // 차징 텍스처로 변경
-            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"RightHand_Charging");
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"RightHand_Charging");
             m_fRightMaxFrame = 2.f;  // 최대 프레임 지정
             fRightFrameSpeed = 5.f;  // 프레임 속도 지정 (공격 속도)
             bShield = false;         // 방어 불가능
@@ -1654,7 +1656,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
         if (m_ePlayerState == STATE_PLAYER::THROW_AWAY)
         {
             // 버리는 텍스처로 변경
-            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"UnderThrow_RightHand");
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"UnderThrow_RightHand");
             m_fRightMaxFrame = 0.f;  // 최대 프레임 지정
             fRightFrameSpeed = 4.f;  // 프레임 속도 지정 (공격 속도)
             bShield = false;         // 방어 불가능
@@ -1680,7 +1682,7 @@ void CPlayer::Right_RunHand(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 오른손 뛰는 손으로 변경
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Single", L"Right_RunHand");
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_RunHand");
         bShield = false; // 방어 불가
     }
 
@@ -1700,7 +1702,7 @@ void CPlayer::Right_Gun(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 오른손 총
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Gun");
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun");
         m_fRightMaxFrame = 5.f; // 최대 프레임 지정
         fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = false;        // 방어 불가
@@ -1718,14 +1720,14 @@ void CPlayer::Right_Gun(float fTimeDelta)
         if (!bSpinOn)
         {
             // 오른손 총
-            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Gun");
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun");
             m_fRightMaxFrame = 3.f; // 최대 프레임 지정
         }
         // 총 회전이 켜져있을 경우
         if (bSpinOn)
         {
             // 오른손 총 회전
-            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Gun_Spin");
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun_Spin");
             m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         }
     }
@@ -1741,7 +1743,7 @@ void CPlayer::Right_Thompson(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 오른손 톰슨 기관총
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Thompson");
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Thompson");
         m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         fRightFrameSpeed = 35.f;// 프레임 속도 지정 (공격 속도)
         bShield = false;        // 방어 불가
@@ -1763,7 +1765,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 오른손 쇠파이프
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Steel_Pipe");
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe");
         m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         fRightFrameSpeed = 5.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
@@ -1783,7 +1785,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
         if (m_ePlayerState == STATE_PLAYER::CHARGING)
         {
             // 차징 텍스처로 변경
-            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Steel_Pipe_Charging");
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe_Charging");
             m_fRightMaxFrame = 5.f; // 최대 프레임 지정
             fRightFrameSpeed = 8.f;// 프레임 속도 지정 (공격 속도)
             bShield = false;         // 방어 불가능
@@ -1801,7 +1803,7 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 오른손 맥주병
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"BeerBottle");
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"BeerBottle");
         m_fRightMaxFrame = 5.f; // 최대 프레임 지정
         fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = false;        // 방어 불가
@@ -1823,7 +1825,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 오른손 프라이팬
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"FryingPan");
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
         m_fRightMaxFrame = 5.f; // 최대 프레임 지정
         fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
@@ -1835,7 +1837,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
         if (m_ePlayerState == STATE_PLAYER::CHARGING)
         {
             // 차징 텍스처로 변경
-            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"FryingPan_Charging");
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan_Charging");
             m_fRightMaxFrame = 4.f; // 최대 프레임 지정
             fRightFrameSpeed = 9.f;// 프레임 속도 지정 (공격 속도)
             bShield = false;         // 방어 불가능
@@ -1853,7 +1855,7 @@ void CPlayer::Right_Kick(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 오른손 발차기
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player_Multi", L"Kick");
+        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Kick");
         m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         fRightFrameSpeed = 7.f; // 프레임 속도 지정 (공격 속도)
         bShield = false;        // 방어 불가
@@ -1893,14 +1895,16 @@ void CPlayer::LoadAnimationFromFile(const char* fileName)
         keyframe.isEaseIn >> keyframe.isEaseOut >> keyframe.texureframe >>
         keyframe.vScale.x >> keyframe.vScale.y >> keyframe.vScale.z >>
         keyframe.vRot.x >> keyframe.vRot.y >> keyframe.vRot.z >>
-        keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z) {
+        keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z >>
+        keyframe.vKeyFramePos.x >> keyframe.vKeyFramePos.y)
+    {
         timeline.push_back(keyframe);
     }
 
     file.close();
 }
 
-void CPlayer::Interpolation(float _fFrame)
+void CPlayer::Interpolation(float& _fFrame)
 {
     if (!timeline.empty()) // 비었는지 체크
     {
@@ -1981,4 +1985,10 @@ void CPlayer::Interpolation(float _fFrame)
 
         }
     }
+
+#if _TEST_CONSOLE
+    cout << _fFrame << endl;
+#endif // _TEST_CONSOLE
+
+    
 }

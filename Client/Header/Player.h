@@ -163,6 +163,8 @@ public:
 		_vec3	vScale = { 0.f, 0.f, 0.f };			// 크기를 담을 그릇
 		_vec3	vRot = { 0.f, 0.f, 0.f };			// 회전을 담을 그릇
 		_vec3	vPos = { 0.f, 0.f, 0.f };			// 위치를 담을 그릇
+
+		_vec2	vKeyFramePos = { 0.00000000f, 0.00000000f };		// 툴에서의 해당 키프레임 위치
 	};
 
 private: // 플레이어의 상태 머신
@@ -210,7 +212,7 @@ private: // 함수
 	void				Dash(const _float& fTimeDelta);
 	//void				Hand_Check();								// 플레이어 손 상태 체크
 	void				LoadAnimationFromFile(const char* fileName);// 애니메이션 불러오기
-	void				Interpolation(float _fFrame);
+	void				Interpolation(float& _fFrame);
 
 	//// ==============================양손 주먹=============================
 	//void				Two_Hand();

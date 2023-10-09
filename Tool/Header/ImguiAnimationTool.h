@@ -325,16 +325,16 @@ private: // 애니메이션 툴 변수
 
 #pragma region 최소, 최대 값
 	// 크기
-	float	fMin_Scale = -1200.1f;	// 최소
-	float	fMax_Scale = 1200.f;	// 최대
+	float	fMin_Scale = -5000.1f;	// 최소
+	float	fMax_Scale = 5000.1f;	// 최대
 
 	// 회전
 	float	fMin_Rot = -180.f;		// 최소
 	float	fMax_Rot = 180.f;	// 최대
 
 	// 이동
-	float	fMin_Pos = -1000.f;		// 최소
-	float	fMax_Pos = 1000.f;	// 최대
+	float	fMin_Pos = -5000.1f;		// 최소
+	float	fMax_Pos = 5000.1f;	// 최대
 
 	// 시간
 	float	fMin_Time = 0.f;	// 최소
