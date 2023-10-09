@@ -589,41 +589,44 @@ void CImguiAnimationTool::RenderTimeline()
     // 현재 변경 모드 표시
     switch (eEditMode)
     {
-    case EDITMODE_NONE:
-    {
-        textColor = { 1.f, 1.f, 1.f, 1.f };
-        ImGui::TextColored(textColor, u8"변경[OFF]");
-        break;
-    }
-    case EDITMODE_SCALE:
-    {
-        ImGui::TextColored(textColor, u8"크기 변경[ON]");
-        break;
-    }
-    case EDITMODE_ROTATION:
-    {
-        ImGui::TextColored(textColor, u8"회전 변경[ON]");
-        break;
-    }
-    case EDITMODE_TRANSLATION:
-    {
-        ImGui::TextColored(textColor, u8"이동 변경[ON]");
-        break;
-    }
-    case EDITMODE_TIME_VALUE:
-    {
-        ImGui::TextColored(textColor, u8"시간 및 벨류 변경[ON]");
-        break;
-    }
-    case EDITMODE_TEXTURE:
-    {
-        ImGui::TextColored(textColor, u8"텍스처 변경[ON]");
-        break;
-    }
+        case EDITMODE_NONE:
+        {
+            textColor = { 1.f, 1.f, 1.f, 1.f };
+            ImGui::TextColored(textColor, u8"변경[OFF]");
+            break;
+        }
+        case EDITMODE_SCALE:
+        {
+            ImGui::TextColored(textColor, u8"크기 변경[ON]");
+            break;
+        }
+        case EDITMODE_ROTATION:
+        {
+            ImGui::TextColored(textColor, u8"회전 변경[ON]");
+            break;
+        }
+        case EDITMODE_TRANSLATION:
+        {
+            ImGui::TextColored(textColor, u8"이동 변경[ON]");
+            break;
+        }
+        case EDITMODE_TIME_VALUE:
+        {
+            ImGui::TextColored(textColor, u8"시간 및 벨류 변경[ON]");
+            break;
+        }
+        case EDITMODE_TEXTURE:
+        {
+            ImGui::TextColored(textColor, u8"텍스처 변경[ON]");
+            break;
+        }
     default:
         break;
     }
 
+    ImVec4 textColor2 = { 1.0f, 1.0f, 1.0f, 1.0f }; // 텍스트 컬러 (RGBA)
+    ImGui::SameLine(920.f); // 위치
+    ImGui::TextColored(textColor2, u8"현재 변경 값 : %f", vValueSize);
 
 #pragma endregion
 
@@ -1783,14 +1786,12 @@ void CImguiAnimationTool::SelectKeyframeValueChange()
             // "Up" 방향키 : y이동 Plus
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_W)))
             {
-                keyframe.vPos.x += vValueSize;
                 keyframe.vPos.y += vValueSize;
                 //keyframe.vPos.z += vValueSize;
             }
             // "Down" 방향키 : y이동 Minus
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_S)))
             {
-                keyframe.vPos.x -= vValueSize;
                 keyframe.vPos.y -= vValueSize;
                 //keyframe.vPos.z -= vValueSize;
             }
@@ -1798,14 +1799,12 @@ void CImguiAnimationTool::SelectKeyframeValueChange()
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_A)))
             {
                 keyframe.vPos.x -= vValueSize;
-                keyframe.vPos.y -= vValueSize;
                 //keyframe.vPos.z -= vValueSize;
             }
             // "Right" 방향키 : x이동 Plus
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_D)))
             {
                 keyframe.vPos.x += vValueSize;
-                keyframe.vPos.y += vValueSize;
                 //keyframe.vPos.z += vValueSize;
             }
 
@@ -2188,6 +2187,24 @@ void CImguiAnimationTool::KeyInput()
         timeline.clear();
     }
 
+    // "F6" 키 : 속성 값 변경 사이즈 조절 초기화
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F6)))
+    {
+        vValueSize = 1.f;
+    }
+
+    // "F7" 키 : 속성 값 변경 사이즈 조절 Minus
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F7)))
+    {
+        vValueSize -= 1.f;
+    }
+
+    // "F8" 키 : 속성 값 변경 사이즈 조절 Plus
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F8)))
+    {
+        vValueSize += 1.f;
+    }
+
     // "P" 키 : 변경 모드 초기화(없음)
     if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_P)))
     {
@@ -2229,7 +2246,6 @@ void CImguiAnimationTool::KeyInput()
             }
         }
     }
-
 }
 
 void CImguiAnimationTool::KeyframeList()

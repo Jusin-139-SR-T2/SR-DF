@@ -216,14 +216,14 @@ void CBackGround::Render_GameObject()
 	// 위의 두개만 쓰면 텍스처 행렬과 부모 행렬을 별개로 두고 계산할 수 있음.
 
 		// 텍스처의 트랜스폼을 월드 행렬, DYNAMIC으로 설정시 수동으로 해줄 필요가 없음
-	m_pLeftHandTextureComp->Readjust_Transform();
+	//m_pLeftHandTextureComp->Readjust_Transform();
 	// 텍스처 행렬 * 부모(게임오브젝트)의 행렬
 	//m_pLeftHandTextureComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
 	// 위의 두개만 쓰면 텍스처 행렬과 부모 행렬을 별개로 두고 계산할 수 있음.
 	// 
 	// 이제부터 Render_Texture 함수 안에서 자동으로 텍스처의 행렬이 디바이스에 들어간다.(SetTransform(D3DTS_WORLD, 텍스처 행렬))
-	m_pLeftHandTextureComp->Render_Texture(0, true);
-	m_pBufferComp->Render_Buffer();
+	//m_pLeftHandTextureComp->Render_Texture(0, true);
+	//m_pBufferComp->Render_Buffer();
 
 	m_pRightHandTextureComp->Render_Texture(TextureNum, true);
 	m_pBufferComp->Render_Buffer();

@@ -18,7 +18,7 @@ public:
 		: m_pBlackBoard(nullptr)
 	{}
 	explicit FBlackBoardPtr(const FBlackBoardPtr<T>& rhs) {}
-	virtual ~FBlackBoardPtr()
+	~FBlackBoardPtr()
 	{
 		// 이미 만료된 것은 해제코드 작동을 안하니 중복 해제해도 문제 없음
 		// RefCount 감소
