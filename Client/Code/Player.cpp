@@ -1131,7 +1131,7 @@ void CPlayer::Right_Object()
     // ¿À¸¥¼Õ
     switch (m_eObjectName)
     {
-            // ±ÇÃÑ
+        // ±ÇÃÑ
         case CPlayer::OBJECT_NAME::GUN:
         {
             // ¿À¸¥¼Õ ±ÇÃÑ (ÇÑ¼Õ)
