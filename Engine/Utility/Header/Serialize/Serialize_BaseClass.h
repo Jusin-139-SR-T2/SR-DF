@@ -124,6 +124,8 @@ public:
 		vInvOffset.x = doc["invoffset"]["x"].GetFloat();
 		vInvOffset.y = doc["invoffset"]["y"].GetFloat();
 		vInvOffset.z = doc["invoffset"]["z"].GetFloat();
+
+		return true;
 	}
 };
 

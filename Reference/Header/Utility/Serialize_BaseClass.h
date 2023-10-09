@@ -60,8 +60,9 @@ class ENGINE_DLL FSerialize_Terrain
 public:
 	FSeialize_Header			tHeader;
 	FSeialize_Vector3			vVertexCount;	// 버텍스 개수
-	FSeialize_Vector3			vInvOffset;		// 중점, 역버전
 	FSeialize_Vector3			vScale;			// 스케일, 정점간 너비
+	FSeialize_Vector3			vInvOffset;		// 중점, 역버전
+	
 
 	void Parse_RapidJSON(Document& doc, StringBuffer& strBuf, _bool bPrettyWriter = false) const
 	{
@@ -102,6 +103,29 @@ public:
 			Writer<StringBuffer> writer(strBuf);
 			doc.Accept(writer);
 		}
+	}
+
+	_bool Receive_ByRapidJSON(const string& strJSON)
+	{
+		Document doc;
+		doc.Parse(strJSON.c_str());
+
+		tHeader.strName = doc["name"].GetString();
+		tHeader.strType = static_cast<ESERIALIZE_TYPE>(doc["type"].GetInt());
+
+		vVertexCount.x = doc["vertex"]["x"].GetFloat();
+		vVertexCount.y = doc["vertex"]["y"].GetFloat();
+		vVertexCount.z = doc["vertex"]["z"].GetFloat();
+
+		vScale.x = doc["scale"]["x"].GetFloat();
+		vScale.y = doc["scale"]["y"].GetFloat();
+		vScale.z = doc["scale"]["z"].GetFloat();
+
+		vInvOffset.x = doc["invoffset"]["x"].GetFloat();
+		vInvOffset.y = doc["invoffset"]["y"].GetFloat();
+		vInvOffset.z = doc["invoffset"]["z"].GetFloat();
+
+		return true;
 	}
 };
 
