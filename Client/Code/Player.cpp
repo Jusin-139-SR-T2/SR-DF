@@ -58,6 +58,7 @@ HRESULT CPlayer::Ready_GameObject()
     m_pLeftHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 
     // 오른손
+    m_eRIGHTState = CPlayer::STATE_RIGHTHAND::NONE;
     m_fSizeX = 300;
     m_fSizeY = 300;
 
@@ -114,6 +115,8 @@ HRESULT CPlayer::Ready_GameObject()
 
     // 플레이어 상태 (초기값)
     m_ePlayerState = STATE_PLAYER::NONE;
+    m_gHp.Max = 100.f;
+    m_gHp.Cur = 100.f;
 
     // 프레임 상태 (초기값)
     bLeftFrameOn = true;
@@ -276,8 +279,8 @@ HRESULT CPlayer::Add_Component()
     m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
     m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
     // 충돌 레이어, 마스크 설정
-    m_pColliderComp->Set_CollisionLayer(ELAYER_PLAYER);
-    m_pColliderComp->Set_CollisionMask(ELAYER_MONSTER | ELAYER_FACTORY_FOOD);
+    m_pColliderComp->Set_CollisionLayer(LAYER_PLAYER);
+    m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_ITEM);
     // 플레이어가 shift로 대쉬를 하거나 공격을 했을때만 몬스터와 충돌이 허용됨. 
 
     return S_OK;
@@ -750,7 +753,8 @@ void CPlayer::Update_BlackBoard()
     CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
 
     // 여기서부터 블랙보드의 정보를 업데이트 한다.
-    pBlackBoard->Get_HP().Cur = m_pTransformComp->Get_Pos().x;
+    pBlackBoard->Get_HP().Cur = m_gHp.Cur;
+
 }
 
 bool CPlayer::Attack_Input(const _float& fTimeDelta)
@@ -1064,6 +1068,7 @@ void CPlayer::Two_Hand()
     m_eObjectName = OBJECT_NAME::NONE; // 오브젝트 없음
 
     // 오른손 주먹
+    m_eRIGHTState = STATE_RIGHTHAND::HAND;
     m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND);
     bRightHandFist = true; // 오른손 주먹 상태On
 
@@ -1101,6 +1106,7 @@ void CPlayer::Two_Object()
     case CPlayer::OBJECT_NAME::THOMPSON:
     {
         // 오른손 톰슨 기관총 (양손)
+        m_eRIGHTState = STATE_RIGHTHAND::THOMPSON;
         m_tRightHand_State.Set_State(STATE_RIGHTHAND::THOMPSON);
         // 왼손 없음
         m_tLeftHand_State.Set_State(STATE_LEFTHAND::NONE);
@@ -1124,6 +1130,7 @@ void CPlayer::Right_Object()
         case CPlayer::OBJECT_NAME::GUN:
         {
             // 오른손 권총 (한손)
+            m_eRIGHTState = STATE_RIGHTHAND::GUN;
             m_tRightHand_State.Set_State(STATE_RIGHTHAND::GUN);
             // 왼손 없음
             m_eLeftState = STATE_LEFTHAND::NONE;
@@ -1135,6 +1142,7 @@ void CPlayer::Right_Object()
         case CPlayer::OBJECT_NAME::STEELPIPE:
         {
             // 오른손 쇠파이프
+            m_eRIGHTState = STATE_RIGHTHAND::STEELPIPE;
             m_tRightHand_State.Set_State(STATE_RIGHTHAND::STEELPIPE);
             // 왼손 오픈 핸드
             m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
@@ -1146,6 +1154,7 @@ void CPlayer::Right_Object()
         case CPlayer::OBJECT_NAME::BEERBOTLE:
         {
             // 오른손 맥주병
+            m_eRIGHTState = STATE_RIGHTHAND::BEERBOTLE;
             m_tRightHand_State.Set_State(STATE_RIGHTHAND::BEERBOTLE);
             // 왼손 오픈 핸드
             m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
@@ -1157,6 +1166,7 @@ void CPlayer::Right_Object()
         case CPlayer::OBJECT_NAME::FRYINGPAN:
         {
             // 오른손 프라이팬
+            m_eRIGHTState = STATE_RIGHTHAND::FRYINGPAN;
             m_tRightHand_State.Set_State(STATE_RIGHTHAND::FRYINGPAN);
             // 왼손 오픈 핸드
             m_eLeftState = STATE_LEFTHAND::OPEN_HAND;
@@ -1263,6 +1273,7 @@ void CPlayer::Hand_Check()
 #pragma region 플레이어가 뛰고 있는 경우
     else if (m_ePlayerState == STATE_PLAYER::RUN)
     {
+            m_eRIGHTState = STATE_RIGHTHAND::RUN_HAND;
         // 라이터를 켠 채로 뛰는 경우
         if (bRighter)
         {
@@ -1856,6 +1867,7 @@ void CPlayer::Right_Kick(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 오른손 발차기
+        m_eRIGHTState = STATE_RIGHTHAND::KICK;
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Kick");
         m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         fRightFrameSpeed = 7.f; // 프레임 속도 지정 (공격 속도)

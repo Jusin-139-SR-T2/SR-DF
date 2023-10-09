@@ -14,9 +14,11 @@
 #include "SnowParticle.h"
 #include "FireWork.h"
 
-#include "Awareness.h"
-#include "Dazed.h"
-
+//test
+#include "RedLaser.h"
+#include "FallingStone.h"
+#include "SlowThunder.h"
+#include "EnergyBall.h"
 
 class CStage : public Engine::CScene
 {

@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "Player.h"
 
 BEGIN(Engine)
 
@@ -16,6 +17,8 @@ class CMonsterPunch : public Engine::CGameObject
 {
 	DERIVED_CLASS(CGameObject, CMonsterPunch)
 
+	PUBLIC enum class TYPE { NORMAL, HEAVY, TYPE_END };
+
 private:
 	explicit CMonsterPunch(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CMonsterPunch(const CMonsterPunch& rhs);
@@ -27,7 +30,8 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CMonsterPunch* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CMonsterPunch* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
+								_float _x, _float _y, _float _z, TYPE _option);
 
 private:
 	HRESULT				Add_Component();
@@ -54,7 +58,12 @@ protected:
 
 
 private:
-	_float m_fAge;
-	_float m_fLifeTime;
+	_float			m_fAge;
+	_float			m_fLifeTime;
+	GAUGE<_float>	PlayerHp;
+	TYPE			m_eAttackType;
 
 };
+
+//플레이어 = -20 : 주먹
+// 91 84 76 69 61 

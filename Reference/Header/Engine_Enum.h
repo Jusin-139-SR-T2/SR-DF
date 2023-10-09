@@ -59,17 +59,6 @@ namespace Engine
 		EBIT_FLAG32_31 = 1UL << 31,
 	};
 	 
-	// 나중에 정리하겠지만 지금은 일단 충돌해야하는애들 떄려박아서 테스트 돌리겠습니다. //소영 
-	enum ELAYER : unsigned long
-	{
-		ELAYER_PLAYER = EBIT_FLAG32_0,
-		ELAYER_MONSTER = EBIT_FLAG32_1,
-		ELAYER_WALL = EBIT_FLAG32_2,
-		ELAYER_FACTORY_FOOD = EBIT_FLAG32_3, 
-		ELAYER_PROJECTILE = EBIT_FLAG32_4, // 투사체 
-		//ELAYER_FACTORY_FOOD_SLIDING = EBIT_FLAG32_4;
-		//ELAYER_FACTORY_WEAPON = EBIT_FLAG32_0;
-	};
 
 	enum ECOLLISION_LAYER : unsigned long // 10_08_08:42 : 성희 수정 - ELAYER와 이름이 같아 재정의되는 오류 수정 ( ex : ELAYER_PLAYER -> LAYER_PLAYER )
 	{
@@ -77,6 +66,9 @@ namespace Engine
 		LAYER_MONSTER = EBIT_FLAG32_1,
 		LAYER_WALL = EBIT_FLAG32_2,
 		LAYER_ITEM = EBIT_FLAG32_3,
+		LAYER_PROJECTILE = EBIT_FLAG32_4, //몬스터 투사체 
+		LAYER_BOSSMONSTER = EBIT_FLAG32_5 
+
 	};
 
 	// 아 귀찮아 안해
@@ -84,5 +76,7 @@ namespace Engine
 	{
 
 	};
+
+	enum MonsterPhase	{ Phase1, Phase2, Phase_End	};
 }
 #endif // Engine_Enum_h__

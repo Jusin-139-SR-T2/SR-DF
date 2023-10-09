@@ -2,7 +2,6 @@
 
 #include "BlackBoard.h"
 
-
 class CPlayer;
 
 /// <summary>
@@ -21,6 +20,7 @@ struct FBlackBoard_PlayerInit
 class CBlackBoard_Player : public CBlackBoard
 {
 	DERIVED_CLASS(CBlackBoard, CBlackBoard_Player)
+	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
 
 protected:
 	explicit CBlackBoard_Player();
@@ -38,8 +38,6 @@ protected:
 	// 초기화용 구조체를 만들어 매개변수로 받게 한다.
 	virtual HRESULT Ready_BlackBoard(const FBlackBoard_PlayerInit& tInit);
 
-
-
 public:		// 플레이어에 대한 정보만 얻을 때는 
 	GETSET_EX1(CPlayer*, m_pPlayer, Player, GET)
 
@@ -51,8 +49,10 @@ public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX2(GAUGE<_float>, m_fStamina, Stamina, GET_C_REF, GET_REF)
 
 private:
-	GAUGE<_float>		m_fHP;
-	GAUGE<_float>		m_fStamina;
-
+	GAUGE<_float>			m_fHP;
+	GAUGE<_float>			m_fStamina;
+	//CPlayer::STATE_RIGHTHAND m_ePlayer;
+	//CPlayer::TATE_RIGHTHAND m_ePlayerRightHand;
+		
 };
 

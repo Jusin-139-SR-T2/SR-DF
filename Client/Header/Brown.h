@@ -1,16 +1,19 @@
 #pragma once
-#include "GameObject.h"
-#include "Player.h"
 
+#include "AceMonster.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "Engine_Macro.h"
 
 #include "BlackBoard_Monster.h"
 #include "BlackBoardPtr.h"
+#include "Player.h"
+
+#include "MonsterPunch.h"
 
 #include "Awareness.h"
-#include "MonsterPunch.h"
+//임시용 
+#include "FallingStone.h"
 
 
 BEGIN(Engine)
@@ -23,11 +26,12 @@ class CColliderComponent;
 
 END
 
-enum PlayerHit {PUNCH, PISTOL, TOMSON, RUN, }; //임시용 
+//임시용 
+class CMonsterPuch;
 
-class CBrown : public Engine::CGameObject
+class CBrown : public CAceMonster
 {
-	DERIVED_CLASS(CGameObject, CBrown)
+	DERIVED_CLASS(CAceMonster, CBrown)
 
 private:
 	explicit CBrown(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -63,7 +67,9 @@ public:
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+
 	GETSET_EX2(_bool, m_fBrownAwareness, Awareness, GET, SET)
+	GETSET_EX2(_int, m_iHP, MonsterHP, GET, SET)
 		
 	// 충돌 -----------------------------------------------------------------
 protected: 
@@ -73,21 +79,23 @@ protected:
 	PRIVATE FCollisionBox* pShape;
 
 	// BlackBoard
-public:
-	void		Update_BlackBoard();
 
 private:
-	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster;
+	void	Update_InternalData();
 
+protected: //보류
+	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster; // 블랙보드 몬스터 - 
+	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player;	// 블랙보드 플레이어
 
-	// 상태머신 셋팅 ---------------------------------------------------------
+private:
+	CPlayer::STATE_RIGHTHAND pPlayerRightState;
+
+	void Right_Setting();
 private:
 	// 함수 -----------------------------------------------------------------
-	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
-	_float		Calc_Distance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
 	HRESULT     Get_PlayerPos(const _float& fTimeDelta); // 플레이어 dynamic_cast용도 	
-
-	PlayerHit   m_PlayerState;
+	_bool		Detect_Player();						// 몬스터 시야각내에 플레이어가 있는지 체크
+	_float		Calc_Distance();						// 몬스터와 플레이어 사이의 거리 체크하는 함수 
 
 	// 변수 -----------------------------------------------------------------
 	wchar_t		debugString[100];
@@ -140,6 +148,7 @@ private:
 	_bool		m_ComboAttack = false;
 	_bool		m_AgeTime = false;
 	_bool		m_AttackOnce = false;
+	_int		iLuck = 0;
 
 	// 상태머신 enum --------------------------------------------------
 public: 
@@ -202,8 +211,8 @@ private:
 
 	// 죽음 
 	void AI_Chopped(float fDeltaTime); // 뒤에서 플레이어가 기습공격했을경우 Sleep으로 들어감 
-	void AI_Headless(float fDeltaTime); // 총류로 머리를 맞았을경우 
-	void AI_Death(float fDeltaTime); // hp 0인상태 
+	void AI_Headless(float fDeltaTime); //ok // 총류로 머리를 맞았을경우 
+	void AI_Death(float fDeltaTime); //ok // hp 0인상태 
 
 	// 복귀
 	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 

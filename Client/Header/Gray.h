@@ -1,6 +1,6 @@
-
 #pragma once
-#include "GameObject.h"
+
+#include "AceMonster.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "Engine_Macro.h"
@@ -18,9 +18,9 @@ class CColliderComponent;
 
 END
 
-class CGray : public Engine::CGameObject
+class CGray : public CAceMonster
 {
-	DERIVED_CLASS(CGameObject, CGray)
+	DERIVED_CLASS(CAceMonster, CGray)
 
 private:
 	explicit CGray(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -132,7 +132,6 @@ public:
 		GOHOME
 	
 		//미구현 리스트 
-
 	};
 
 	// 행동 상태머신

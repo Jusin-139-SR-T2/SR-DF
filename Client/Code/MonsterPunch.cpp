@@ -30,6 +30,8 @@ HRESULT CMonsterPunch::Ready_GameObject()
 
 	m_fLifeTime = 0.5f;
 	m_fAge = 0.f;
+
+	PlayerHp = 0.f;
 	return S_OK;
 }
 
@@ -71,7 +73,7 @@ void CMonsterPunch::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 }
 
-CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
+CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, TYPE _option)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -85,6 +87,7 @@ CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _
 
 	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
+	pInstance->m_eAttackType = _option;
 
 	return pInstance;
 }
@@ -108,8 +111,8 @@ HRESULT CMonsterPunch::Add_Component()
 	m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
 
 	// 충돌 레이어, 마스크 설정
-	m_pColliderComp->Set_CollisionLayer(ELAYER_PROJECTILE); // 이 클래스가 속할 충돌레이어 
-	m_pColliderComp->Set_CollisionMask(ELAYER_PLAYER); // 얘랑 충돌해야하는 레이어들 
+	m_pColliderComp->Set_CollisionLayer(LAYER_PROJECTILE); // 이 클래스가 속할 충돌레이어 
+	m_pColliderComp->Set_CollisionMask(LAYER_PLAYER); // 얘랑 충돌해야하는 레이어들 
 
 	return S_OK;
 }
@@ -128,13 +131,31 @@ void CMonsterPunch::OnCollision(CGameObject* pDst)
 {
 
 
+
 }
 
 void CMonsterPunch::OnCollisionEntered(CGameObject* pDst)
 {
-	OutputDebugString(L"★★★★★★★★★★★★★★ Debug Attack과 충돌 ★★★★★★★★★★★★★★★★★\n");
+	OutputDebugString(L"★★★★★★★★ Debug Attack과 충돌 ★★★★★★★★\n");
 
-	Set_Dead(); 
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
+	PlayerHp = pPlayer->Get_PlayerHP();
+
+	switch (m_eAttackType)
+	{
+	case CMonsterPunch::TYPE::NORMAL:
+		PlayerHp.Cur -= 7.f;
+		break;
+
+	case CMonsterPunch::TYPE::HEAVY:
+		PlayerHp.Cur -= 12.f;
+		break;
+	}
+
+	pPlayer->Set_PlayerHP(PlayerHp);
+
+	Set_Dead();
+	
 	// 충돌하면 바로 근접공격이 사라져야함 
 }
 
