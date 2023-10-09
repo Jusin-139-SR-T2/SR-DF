@@ -67,42 +67,42 @@ HRESULT CLogo::Ready_Prototype()
 
 #pragma region 싱글 텍스처
 	// 왼손 달리기
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/LeftRunHand.png", TEX_NORMAL, L"Player", L"Left_RunHand"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RunHand/LeftHand_Run (%d).png", TEX_NORMAL, L"Player", L"Left_RunHand", _range<_uint>(0U, 0U)), E_FAIL);
 	// 오른손 달리기
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightRunHand.png", TEX_NORMAL, L"Player", L"Right_RunHand"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RunHand/RightHand_Run (%d).png", TEX_NORMAL, L"Player", L"Right_RunHand", _range<_uint>(0U, 0U)), E_FAIL);
 	// 오픈 핸드 [오른손이 무언가를 할 때 아무것도 아닌상태] (왼손)
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/OpenHand.png", TEX_NORMAL, L"Player", L"OpenHand"), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/OpenHand/OpenHand (%d).png", TEX_NORMAL, L"Player", L"OpenHand", _range<_uint>(0U, 0U)), E_FAIL);
 #pragma endregion
 
 #pragma region 멀티 텍스처
 	// 왼손
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/LeftHand%d.png", TEX_NORMAL, L"Player", L"Left_Hand", _range<_uint>(0U, 2U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/LeftHand/LeftHand (%d).png", TEX_NORMAL, L"Player", L"Left_Hand", _range<_uint>(0U, 1U)), E_FAIL);
 	// 오른손
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightHand%d.png", TEX_NORMAL, L"Player", L"Right_Hand", _range<_uint>(0U, 2U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightHand/RightHand (%d).png", TEX_NORMAL, L"Player", L"Right_Hand", _range<_uint>(0U, 1U)), E_FAIL);
 	// 주먹 차징 (오른손)
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightHand_Charging%d.png", TEX_NORMAL, L"Player", L"RightHand_Charging", _range<_uint>(0U, 1U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightHand_Charging/RightHand_Charging (%d).png", TEX_NORMAL, L"Player", L"RightHand_Charging", _range<_uint>(0U, 1U)), E_FAIL);
 	// 버리기 (오른손)
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/UnderThrowRightHand%d.png", TEX_NORMAL, L"Player", L"UnderThrow_RightHand", _range<_uint>(0U, 0U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/ThrowHand/UnderThrowRightHand (%d).png", TEX_NORMAL, L"Player", L"UnderThrow_RightHand", _range<_uint>(0U, 0U)), E_FAIL);
 	// 쇠파이프
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Steel_Pipe%d.png", TEX_NORMAL, L"Player", L"Steel_Pipe", _range<_uint>(0U, 4U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Steel_Pipe/Steel_Pipe (%d).png", TEX_NORMAL, L"Player", L"Steel_Pipe", _range<_uint>(0U, 3U)), E_FAIL);
 	// 쇠파이프 차징
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Steel_Pipe_Charging%d.png", TEX_NORMAL, L"Player", L"Steel_Pipe_Charging", _range<_uint>(0U, 3U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Steel_Pipe_Charging/Steel_Pipe_Charging (%d).png", TEX_NORMAL, L"Player", L"Steel_Pipe_Charging", _range<_uint>(0U, 3U)), E_FAIL);
 	// 프라이팬
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/FryingPan%d.png", TEX_NORMAL, L"Player", L"FryingPan", _range<_uint>(0U, 5U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/FryingPan/FryingPan (%d).png", TEX_NORMAL, L"Player", L"FryingPan", _range<_uint>(0U, 4U)), E_FAIL);
 	// 프라이팬 차징
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/FryingPan_Charging%d.png", TEX_NORMAL, L"Player", L"FryingPan_Charging", _range<_uint>(0U, 3U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/FryingPan_Charging/FryingPan_Charging (%d).png", TEX_NORMAL, L"Player", L"FryingPan_Charging", _range<_uint>(0U, 3U)), E_FAIL);
 	// 라이터
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Zippo_%d.png", TEX_NORMAL, L"Player", L"Righter", _range<_uint>(0U, 5U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Zippo/Zippo (%d).png", TEX_NORMAL, L"Player", L"Righter", _range<_uint>(0U, 5U)), E_FAIL);
 	// 플레이어 총
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Gun%d.png", TEX_NORMAL, L"Player", L"Gun", _range<_uint>(0U, 3U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Gun/Gun (%d).png", TEX_NORMAL, L"Player", L"Gun", _range<_uint>(0U, 3U)), E_FAIL);
 	// 플레이어 총 회전
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Spin%d.png", TEX_NORMAL, L"Player", L"Gun_Spin", _range<_uint>(0U, 3U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Gun/Spin (%d).png", TEX_NORMAL, L"Player", L"Gun_Spin", _range<_uint>(0U, 3U)), E_FAIL);
 	// 플레이어 톰슨 기관총
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Thompson%d.png", TEX_NORMAL, L"Player", L"Thompson", _range<_uint>(0U, 3U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Thompson/Thompson (%d).png", TEX_NORMAL, L"Player", L"Thompson", _range<_uint>(0U, 3U)), E_FAIL);
 	// 맥주병
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/BeerBottle%d.png", TEX_NORMAL, L"Player", L"BeerBottle", _range<_uint>(0U, 4U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/BeerBottle/BeerBottle (%d).png", TEX_NORMAL, L"Player", L"BeerBottle", _range<_uint>(0U, 4U)), E_FAIL);
 	// 발차기
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/PlayerKick_%d.png", TEX_NORMAL, L"Player", L"Kick", _range<_uint>(0U, 3U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/PlayerKick/PlayerKick (%d).png", TEX_NORMAL, L"Player", L"Kick", _range<_uint>(0U, 2U)), E_FAIL);
 #pragma endregion
 
 	// 배경 사이즈 (클라이언트 비율에 맞는 텍스처 찾기)
