@@ -484,7 +484,7 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
         // 쉴드를 했을 경우
         if (!bRighter && bShieldOn)
         {
-            m_fLeftFrame = m_fLeftMaxFrame; // 쉴드 모션
+            m_fLeftFrame = fShieldFrame; // 쉴드 모션
         }
         else
         {
@@ -550,12 +550,13 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
         // 쉴드를 했을 경우
         if (bShieldOn)
         {
-            m_fRightFrame = m_fRightMaxFrame; // 쉴드 모션
+            m_fRightFrame = fShieldFrame; // 쉴드 모션
         }
         else // 쉴드를 안했을 경우
         {
-            // 시간마다 텍스처 변경 시간을 채워준다.
-            fTextureChangeTime += fCurChangeTime * fTimeDelta;
+            // 현재 시간
+            fCurrentTime += fCurChangeTime * fTimeDelta;
+
             // 오른손 프레임 증가
             Interpolation(m_fRightFrame);
 
@@ -575,71 +576,75 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
                 Two_Hand(); // 맨 주먹으로 돌아가기 (나중에 이전상태로 돌아가게 해야함)
             }
 
+            //if (!timeline.empty())
+            //{
+            //    // 현재 시간이 최대 변경시간 보다 크거나 같을 경우(변경하고 싶은 시간이 됐을 때)
+            //    if (fCurrentTime >= timeline[timeline.size() - 1].time)
+            //    {
+            //        // 플레이어 상태 초기화
+            //        m_ePlayerState = STATE_PLAYER::NONE;
+            //        fCurrentTime = 0.f; // 텍스처 변경시간 초기화
+            //        m_fRightFrame = 0.f; // 오른손 프레임 초기화
+            //        bRightFrameOn = false; // 오른손 프레임Off
+            //    }
+            //}
+
             if (!timeline.empty())
             {
-                // 현재 텍스처 변경 시간이 최대 변경시간 보다 크거나 같을 경우(변경하고 싶은 시간이 됐을 때)
-                if (fTextureChangeTime >= timeline[timeline.size() - 1].time)
+                // 오른손 프레임이 최대 프레임에 도달했을 경우
+                if (fCurrentTime >= m_fRightMaxFrame)
                 {
-                    // 플레이어 상태 초기화
-                    m_ePlayerState = STATE_PLAYER::NONE;
-                    fTextureChangeTime = 0.f; // 텍스처 변경시간 초기화
-                    m_fRightFrame = 0.f; // 오른손 프레임 초기화
-                    bRightFrameOn = false; // 오른손 프레임Off
-                }
-            }
-
-            // 오른손 프레임이 최대 프레임에 도달했을 경우
-            if (m_fRightFrame >= m_fRightMaxFrame)
-            {
-                // 만약 최대프레임인데 버리는 중일 경우
-                if (m_ePlayerState == STATE_PLAYER::THROW_AWAY)
-                {
-                    // (현재 프레임) 오른손을 Throw 이미지로 고정
-                    m_fRightFrame = m_fRightMaxFrame;
-
-                    // 시간마다 텍스처 변경 시간을 채워준다.
-                    fTextureChangeTime += fCurChangeTime * fTimeDelta;
-                }
-                else // 버리는 중이 아닐 경우
-                {
-                    // 플레이어 상태가 차징일 경우
-                    if (m_ePlayerState == STATE_PLAYER::CHARGING)
+                    // 만약 최대프레임인데 버리는 중일 경우
+                    if (m_ePlayerState == STATE_PLAYER::THROW_AWAY)
                     {
-                        m_ePlayerState = STATE_PLAYER::NONE; // 플레이어 상태 : 초기화
-                        fChageTime = 0.f; // 차징 시간 초기화
+                        // (현재 프레임) 오른손을 Throw 이미지로 고정
+                        m_fRightFrame = m_fRightMaxFrame;
+
+                        // 시간마다 텍스처 변경 시간을 채워준다.
+                        fCurrentTime += fCurChangeTime * fTimeDelta;
                     }
-                    else
+                    else // 버리는 중이 아닐 경우
                     {
-                        // 양손이 주먹 상태 일경우
-                        if (bLeftHandFist && bRightHandFist)
+                        // 플레이어 상태가 차징일 경우
+                        if (m_ePlayerState == STATE_PLAYER::CHARGING)
                         {
-                            // 오른손 프레임이 왼손 프레임보다 클 경우
-                            if (m_fRightFrame > m_fRightMaxFrame)
+                            m_ePlayerState = STATE_PLAYER::NONE; // 플레이어 상태 : 초기화
+                            fChageTime = 0.f; // 차징 시간 초기화
+                        }
+                        else
+                        {
+                            // 양손이 주먹 상태 일경우
+                            if (bLeftHandFist && bRightHandFist)
                             {
-                                bRightPunch = false;  // 오른손 주먹 Off
-                                bLeftPunch = true;    // 왼손 주먹 On
+                                // 오른손 프레임이 다 돌았을 경우
+                                if (m_fRightFrame > m_fRightMaxFrame)
+                                {
+                                    bRightPunch = false;  // 오른손 주먹 Off
+                                    bLeftPunch = true;    // 왼손 주먹 On
+                                }
                             }
+                        }
+
+                        // 오른손 프레임 초기화
+                        m_fRightFrame = 0;
+                        fCurrentTime = 0.f;
+                        bRightFrameOn = false; // 오른손 프레임Off
+
+                        // 권총이 회전중이였을 때
+                        if (bSpinOn)
+                        {
+                            // 회전 Off
+                            bSpinOn = false;
+
+                            // 권총으로 다시 돌아가기
+                            bGunOn = true;
+
+                            // 최대 프레임을 권총 기준으로 다시 맞춰놓기
+                            m_fRightMaxFrame = 4.f;
                         }
                     }
 
-                    // 오른손 프레임 초기화
-                    m_fRightFrame = 0;
-                    bRightFrameOn = false; // 오른손 프레임Off
-
-                    // 권총이 회전중이였을 때
-                    if (bSpinOn)
-                    {
-                        // 회전 Off
-                        bSpinOn = false;
-
-                        // 권총으로 다시 돌아가기
-                        bGunOn = true;
-
-                        // 최대 프레임을 권총 기준으로 다시 맞춰놓기
-                        m_fRightMaxFrame = 4.f;
-                    }
                 }
-
             }
         }
     }
@@ -1644,7 +1649,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
     {
         // 기본 오른손 출력
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
-        m_fRightMaxFrame = 2.f; // 최대 프레임 설정
+        //m_fRightMaxFrame = 2.f; // 최대 프레임 설정
         fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
 
@@ -1660,7 +1665,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
         {
             // 차징 텍스처로 변경
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"RightHand_Charging");
-            m_fRightMaxFrame = 2.f;  // 최대 프레임 지정
+            //m_fRightMaxFrame = 2.f;  // 최대 프레임 지정
             fRightFrameSpeed = 5.f;  // 프레임 속도 지정 (공격 속도)
             bShield = false;         // 방어 불가능
         }
@@ -1669,17 +1674,17 @@ void CPlayer::Right_Hand(float fTimeDelta)
         {
             // 버리는 텍스처로 변경
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"UnderThrow_RightHand");
-            m_fRightMaxFrame = 0.f;  // 최대 프레임 지정
+            //m_fRightMaxFrame = 0.f;  // 최대 프레임 지정
             fRightFrameSpeed = 4.f;  // 프레임 속도 지정 (공격 속도)
             bShield = false;         // 방어 불가능
         }
 
         // 현재 텍스처 변경 시간이 최대 변경시간 보다 크거나 같을 경우(변경하고 싶은 시간이 됐을 때)
-        if (fTextureChangeTime >= fMaxChangeTime)
+        if (fCurrentTime >= fMaxChangeTime)
         {
             // 플레이어 상태 초기화
             m_ePlayerState = STATE_PLAYER::NONE;
-            fTextureChangeTime = 0.f; // 텍스처 변경시간 초기화
+            fCurrentTime = 0.f; // 텍스처 변경시간 초기화
         }
     }
 
@@ -1715,7 +1720,7 @@ void CPlayer::Right_Gun(float fTimeDelta)
     {
         // 오른손 총
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun");
-        m_fRightMaxFrame = 5.f; // 최대 프레임 지정
+        //m_fRightMaxFrame = 5.f; // 최대 프레임 지정
         fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = false;        // 방어 불가
     }
@@ -1733,14 +1738,14 @@ void CPlayer::Right_Gun(float fTimeDelta)
         {
             // 오른손 총
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun");
-            m_fRightMaxFrame = 3.f; // 최대 프레임 지정
+            //m_fRightMaxFrame = 3.f; // 최대 프레임 지정
         }
         // 총 회전이 켜져있을 경우
         if (bSpinOn)
         {
             // 오른손 총 회전
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun_Spin");
-            m_fRightMaxFrame = 4.f; // 최대 프레임 지정
+            //m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         }
     }
 
@@ -1756,7 +1761,7 @@ void CPlayer::Right_Thompson(float fTimeDelta)
     {
         // 오른손 톰슨 기관총
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Thompson");
-        m_fRightMaxFrame = 4.f; // 최대 프레임 지정
+        //m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         fRightFrameSpeed = 35.f;// 프레임 속도 지정 (공격 속도)
         bShield = false;        // 방어 불가
     }
@@ -1778,7 +1783,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
     {
         // 오른손 쇠파이프
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe");
-        m_fRightMaxFrame = 4.f; // 최대 프레임 지정
+        //m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         fRightFrameSpeed = 5.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
 
@@ -1798,7 +1803,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
         {
             // 차징 텍스처로 변경
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe_Charging");
-            m_fRightMaxFrame = 5.f; // 최대 프레임 지정
+            //m_fRightMaxFrame = 5.f; // 최대 프레임 지정
             fRightFrameSpeed = 8.f;// 프레임 속도 지정 (공격 속도)
             bShield = false;         // 방어 불가능
         }
@@ -1816,7 +1821,7 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
     {
         // 오른손 맥주병
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"BeerBottle");
-        m_fRightMaxFrame = 5.f; // 최대 프레임 지정
+        //m_fRightMaxFrame = 5.f; // 최대 프레임 지정
         fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = false;        // 방어 불가
     }
@@ -1838,7 +1843,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
     {
         // 오른손 프라이팬
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
-        m_fRightMaxFrame = 5.f; // 최대 프레임 지정
+        //m_fRightMaxFrame = 5.f; // 최대 프레임 지정
         fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
     }
@@ -1850,7 +1855,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
         {
             // 차징 텍스처로 변경
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan_Charging");
-            m_fRightMaxFrame = 4.f; // 최대 프레임 지정
+            //m_fRightMaxFrame = 4.f; // 최대 프레임 지정
             fRightFrameSpeed = 9.f;// 프레임 속도 지정 (공격 속도)
             bShield = false;         // 방어 불가능
         }
@@ -1869,7 +1874,7 @@ void CPlayer::Right_Kick(float fTimeDelta)
         // 오른손 발차기
         m_eRIGHTState = STATE_RIGHTHAND::KICK;
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Kick");
-        m_fRightMaxFrame = 4.f; // 최대 프레임 지정
+        //m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         fRightFrameSpeed = 7.f; // 프레임 속도 지정 (공격 속도)
         bShield = false;        // 방어 불가
     }
@@ -1902,10 +1907,19 @@ void CPlayer::LoadAnimationFromFile(const char* fileName)
     }
 
     timeline.clear();
-    Keyframe keyframe;
+    KEYFRAME keyframe;
 
-    while (file >> keyframe.time >> keyframe.value >> keyframe.type >>
-        keyframe.isEaseIn >> keyframe.isEaseOut >> keyframe.texureframe >>
+    while (file >>
+        keyframe.time >>
+        keyframe.value >>
+        keyframe.type >>
+        keyframe.isEaseIn >>
+        keyframe.isEaseOut >>
+        keyframe.bChargePossible >>
+        keyframe.bShieldPossible >>
+        keyframe.texureframe >>
+        keyframe.iFullChargeFrame >>
+        keyframe.iShieldFrame >>
         keyframe.vScale.x >> keyframe.vScale.y >> keyframe.vScale.z >>
         keyframe.vRot.x >> keyframe.vRot.y >> keyframe.vRot.z >>
         keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z >>
@@ -1923,8 +1937,8 @@ void CPlayer::Interpolation(float& _fFrame)
     {
         if (bRightFrameOn) // 오른손 프레임 On
         {
-            if (fTextureChangeTime >= 0.f &&
-                fTextureChangeTime <= timeline.back().time)
+            if (fCurrentTime >= 0.f &&
+                fCurrentTime <= timeline.back().time)
             {
                 // 프레임 0으로 초기화
                 _uint iFrameIndex = 0U;
@@ -1932,7 +1946,7 @@ void CPlayer::Interpolation(float& _fFrame)
                 // 사이즈의 끝에서부터 시작해서 찾기
                 for (_uint i = timeline.size() - 1; i > 0; i--)
                 {
-                    if ((timeline)[i].time <= fTextureChangeTime)
+                    if ((timeline)[i].time <= fCurrentTime)
                     {
                         iFrameIndex = i;
                         break;
@@ -1946,7 +1960,7 @@ void CPlayer::Interpolation(float& _fFrame)
                     fFrameTimeDelta = (timeline)[iFrameIndex + 1U].time - (timeline)[iFrameIndex].time;
 
                     // 현재 키 프레임시간부터 현재 시간 변화율
-                    fCurFrameTimeDelta = (fTextureChangeTime - (timeline)[iFrameIndex].time);
+                    fCurFrameTimeDelta = (fCurrentTime - (timeline)[iFrameIndex].time);
 
                     fSizeX_Delta = (timeline)[iFrameIndex + 1U].vScale.x - (timeline)[iFrameIndex].vScale.x;
                     fSizeX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
@@ -1993,10 +2007,24 @@ void CPlayer::Interpolation(float& _fFrame)
                     // 텍스처 번호
                     _fFrame = (timeline)[iFrameIndex].texureframe;
                 }
-
-            }
-
+            }    
         }
+        #pragma region 첫번째 키프레임으로 설정할 값들
+        // 쉴드가능 여부
+        bShield = timeline[0].bShieldPossible;
+        // 쉴드시 프레임 설정
+        fShieldFrame = timeline[0].iShieldFrame;
+
+        // 차징가능 여부
+        bChargingReady = timeline[0].bChargePossible;
+        // 차징시 프레임 설정
+        fFullChage = timeline[0].iFullChargeFrame;
+        #pragma endregion
+
+        #pragma region 마지막 키프레임으로 설정할 값들
+        // 최대 프레임 설정
+        m_fRightMaxFrame = timeline.back().time;
+        #pragma endregion    
     }
 
 #if _TEST_CONSOLE

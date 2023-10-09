@@ -42,7 +42,7 @@ private:
 	CTextureComponent* m_pTextureComp = nullptr;
 	CColliderComponent* m_pColliderComp = nullptr;
 	CTransformComponent* m_pTransformComp = nullptr;
-	CTransformComponent* m_pPlayerTransformcomp = nullptr; //플레이어용도 
+	CTransformComponent* m_pPlayerTransformcomp = nullptr; //플레이어용도
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)

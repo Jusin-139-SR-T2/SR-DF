@@ -43,5 +43,7 @@ HRESULT CBlackBoard_Player::Ready_BlackBoard(const FBlackBoard_PlayerInit& tInit
 {
     m_pPlayer = tInit.pPlayer;
 
+
+
     return S_OK;
 }

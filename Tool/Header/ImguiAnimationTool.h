@@ -2,25 +2,6 @@
 
 #include "ImguiWin.h"
 
-
-enum class OBJ_TYPE // 오브젝트의 타입
-{ 
-	NONE,
-	TWO_HAND,
-	TWO_OBJECT,
-	RIGHT_OBJECT
-};
-
-enum class OBJ_NAME // 오브젝트의 이름
-{	
-	NONE,
-	GUN,
-	THOMPSON,
-	STEELPIPE,
-	BEERBOTLE,
-	FRYINGPAN
-};
-
 // 게임 로직 오브젝트의 유형 (Enum)
 enum OBJECTTYPE 
 {
@@ -53,31 +34,6 @@ enum EDITMODE
 };
 
 EDITMODE eEditMode = EDITMODE_NONE; // 변경할 모드 변수
-
-// 키프레임 구조체
-struct Keyframe 
-{
-	char name[64];			// 키프레임 이름 (표시용)
-	
-	bool isEaseIn;			// Ease In 설정 (True 또는 False)
-	bool isEaseOut;			// Ease Out 설정 (True 또는 False)
-
-	float time;				// 키프레임의 시간 (0.0f ~ MaxTime 범위)
-	float value;			// 애니메이션 값 (크기, 회전, 이동 등)
-	float color[3];			// 키프레임 색상 (R, G, B)
-	int texureframe;		// 텍스처 변경 값
-
-	OBJ_TYPE m_eObjectType; // 타입을 부여할 그릇 (ex : 한손, 양손)
-	OBJ_NAME m_eObjectName; // 이름을 부여할 그릇 (ex : 권총, 쇠파이프)
-
-	int type;				// 애니메이션 타입 (0: 크기, 1: 회전, 2: 이동)
-	
-	_vec3	vScale = { 0.f, 0.f, 0.f };			// 크기를 담을 그릇
-	_vec3	vRot = { 0.f, 0.f, 0.f };			// 회전을 담을 그릇
-	_vec3	vPos = { 0.f, 0.f, 0.f };			// 위치를 담을 그릇
-
-	_vec2	vKeyFramePos = { 0.00000000f, 0.00000000f };		// 툴에서의 해당 키프레임 위치
-};
 
 // 자동 애니메이션 생성시 최소 및 최대 값을 입력 받는 구조체
 struct AnimationProperties {
@@ -121,7 +77,13 @@ public:
 	void AddImage(const std::string& imagePath);
 
 	// 애니메이션 정보 벡터 넘겨주기
-	std::vector<Keyframe>* Get_Animation() { return &timeline; }
+	std::vector<KEYFRAME>* Get_Animation() { return &timeline[m_iCurType]; }
+	
+	KEYTYPE* Get_CurType() {
+		return &m_iCurType;
+	} void Set_CurType(KEYTYPE value) {
+		m_iCurType = value;
+	}
 
 	//std::string	OpenImageFileDialog();
 	//HRESULT OpenImageFileDialog(const _tchar* folderPath, LPDIRECT3DDEVICE9 pGraphicDev);
@@ -171,9 +133,6 @@ public:
 	// 선형 보간 함수
 	float Lerp(float a, float b, float t);
 
-	//
-	void DrawSelectedKeyframeEditor(Keyframe& selectedKeyframe);
-
 	_vec3 Lerp(const _vec3& a, const _vec3& b, float t);
 
 	_float Lerp2(const _float& a, const _float& b, float t);
@@ -182,11 +141,11 @@ public: // 애니메이션 함수
 	// 오브젝트 설정 및 관리 함수
 	void ObjectSetting();
 
-	// // 데이터 로드 함수
-	void LoadObjectInforamtionData();
+	// 데이터 로드 함수
+	//void LoadObjectInforamtionData();
 
 	// 데이터 저장 함수
-	void SaveObjectInformationData();
+	//void SaveObjectInformationData();
 
 	// 파일명 제거 함수
 	void PathRemoveFileSpec(TCHAR* path);
@@ -208,7 +167,7 @@ public: // 애니메이션 함수
 
 	// 키프레임 자동 생성 함수
 	void CreateKeyframesWithLinearInterpolation(
-		std::vector<Keyframe>& timeline, float minTime, float maxTime,
+		std::vector<Engine::KEYFRAME>& timeline, float minTime, float maxTime,
 		_float minValue, _float maxValue,
 		_vec3 minscaleValue, _vec3 maxscaleValue,
 		_vec3 minrotationValue, _vec3 maxrotationValue,
@@ -244,6 +203,9 @@ public: // 애니메이션 함수
 	// 우클릭으로 키프레임 삭제하는 함수
 	void KeyframeDeleteMouseR();
 
+	// 현재 선택한 키프레임 값을 변경하는 함수 (창)
+	void DrawSelectedKeyframeEditor(KEYFRAME& selectedKeyframe);
+
 public:
 	virtual HRESULT Ready_ImguiWin() override;
 	virtual _int	Update_ImguiWin(const _float& fTimeDelta) override;
@@ -273,7 +235,7 @@ private:
 	vector<MYANIMATIONINFO>	m_vecAnimationInfo;
 
 	// 애니메이션 정보를 담을 벡터
-	vector<Keyframe>	m_vecAnimationKeyframe;
+	vector<KEYFRAME>	m_vecAnimationKeyframe;
 
 	// 파일을 담을 맵
 	map<wstring, vector<wstring>> m_MapFile;
@@ -312,8 +274,12 @@ private: // 멤버 변수
 
 private: // 애니메이션 툴 변수
 
+	// 애니메이션의 타입 (왼손, 오른손)
+	KEYTYPE m_iCurType = KEYTYPE_RIGHTHAND;
+
 	// 애니메이션 타임 라인
-	std::vector<Keyframe> timeline;
+	std::vector<KEYFRAME> timeline[KEYTYPE_END];
+
 
 	// 애니메이션 타임라인
 	float currentTime = 0.0f; // 현재 시간 값
@@ -358,6 +324,13 @@ private: // 애니메이션 툴 변수
 
 	_float numKeyframes = 0.f;
 #pragma endregion
+
+	//
+	bool m_bChargePossible;	// 차지 가능 여부
+	bool m_bShieldPossible;	// 방어 가능 여부
+
+	float m_fFullChargeFrame;	// 풀차지시 프레임
+	float m_fShieldFrame;		// 쉴드시 프레임
 
 #pragma region 애니메이션 타임 라인
 

@@ -49,10 +49,7 @@ public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX2(GAUGE<_float>, m_fStamina, Stamina, GET_C_REF, GET_REF)
 
 private:
-	GAUGE<_float>			m_fHP;
-	GAUGE<_float>			m_fStamina;
-	//CPlayer::STATE_RIGHTHAND m_ePlayer;
-	//CPlayer::TATE_RIGHTHAND m_ePlayerRightHand;
-		
+	GAUGE<_float>		m_fHP;
+	GAUGE<_float>		m_fStamina;
 };
 

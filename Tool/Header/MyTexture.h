@@ -62,7 +62,7 @@ private:
 	CImguiAnimationTool* m_pAnimationTool; //오류
 
 	// 애니메이션 값
-	std::vector<Keyframe>* m_vecAnimationInfo; //오류
+	std::vector<KEYFRAME>* m_vecAnimationInfo; //오류
 
 
 	_float fFrameTimeDelta, fCurFrameTimeDelta;	//dt

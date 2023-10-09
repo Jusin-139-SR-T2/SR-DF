@@ -217,16 +217,16 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Header\MainApp.h">
-      <Filter>00. MainApp</Filter>
+      <Filter>00. =====MainApp=====</Filter>
     </ClInclude>
     <ClInclude Include="Header\Logo.h">
-      <Filter>01. Scene\00. Logo</Filter>
+      <Filter>01. =====Scene=====\00. Logo</Filter>
     </ClInclude>
     <ClInclude Include="Header\Loading.h">
-      <Filter>01. Scene\02. Loading</Filter>
+      <Filter>01. =====Scene=====\02. Loading</Filter>
     </ClInclude>
     <ClInclude Include="Header\Stage.h">
-      <Filter>01. Scene\01. Stage</Filter>
+      <Filter>01. =====Scene=====\01. Stage</Filter>
     </ClInclude>
     <ClInclude Include="Header\BackGround.h">
       <Filter>03..Object\97. Background</Filter>
@@ -244,7 +244,7 @@
       <Filter>02. AceGameObject\00. AceUnit\00. Player</Filter>
     </ClInclude>
     <ClInclude Include="Header\TitleLogo.h">
-      <Filter>01. Scene\00. Logo\TitleLogo</Filter>
+      <Filter>01. =====Scene=====\00. Logo\TitleLogo</Filter>
     </ClInclude>
     <ClInclude Include="Header\Gray.h">
       <Filter>02. AceGameObject\00. AceUnit\01. Monster\00. Unit\2. Gray</Filter>
@@ -342,16 +342,16 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Code\MainApp.cpp">
-      <Filter>00. MainApp</Filter>
+      <Filter>00. =====MainApp=====</Filter>
     </ClCompile>
     <ClCompile Include="Code\Logo.cpp">
-      <Filter>01. Scene\00. Logo</Filter>
+      <Filter>01. =====Scene=====\00. Logo</Filter>
     </ClCompile>
     <ClCompile Include="Code\Loading.cpp">
-      <Filter>01. Scene\02. Loading</Filter>
+      <Filter>01. =====Scene=====\02. Loading</Filter>
     </ClCompile>
     <ClCompile Include="Code\Stage.cpp">
-      <Filter>01. Scene\01. Stage</Filter>
+      <Filter>01. =====Scene=====\01. Stage</Filter>
     </ClCompile>
     <ClCompile Include="Code\Terrain.cpp">
       <Filter>03..Object\97. Background</Filter>
@@ -366,7 +366,7 @@
       <Filter>03..Object\98. SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="Code\TitleLogo.cpp">
-      <Filter>01. Scene\00. Logo\TitleLogo</Filter>
+      <Filter>01. =====Scene=====\00. Logo\TitleLogo</Filter>
     </ClCompile>
     <ClCompile Include="Code\Gray.cpp">
       <Filter>02. AceGameObject\00. AceUnit\01. Monster\00. Unit\2. Gray</Filter>
