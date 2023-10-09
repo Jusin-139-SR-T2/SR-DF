@@ -111,7 +111,7 @@ HRESULT CMultiStateTexture::Insert_TextureAsync(const _tchar* pFilePath, TEXTURE
 	case TEX_NORMAL:
 	{
 		//FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, pFilePath, (LPDIRECT3DTEXTURE9*)&vecTexture[iIndex]), E_FAIL);
-		FAILED_CHECK_RETURN(D3DXCreateTextureFromFileEx(m_pGraphicDev, pFilePath, D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0, D3DFMT_DXT3, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, nullptr, nullptr, (LPDIRECT3DTEXTURE9*)&vecTexture[iIndex]), E_FAIL);
+		FAILED_CHECK_RETURN(D3DXCreateTextureFromFileEx(m_pGraphicDev, pFilePath, D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0, D3DFMT_DXT1, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, nullptr, nullptr, (LPDIRECT3DTEXTURE9*)&vecTexture[iIndex]), E_FAIL);
 		break;
 	}
 	case TEX_CUBE:

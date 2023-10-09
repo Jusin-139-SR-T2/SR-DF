@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;Header\Physics\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;Header\Physics\;Header\Serialize\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -101,6 +101,7 @@
 xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Physics\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+xcopy "Header\Serialize\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 %(Command)</Command>
     </PostBuildEvent>
@@ -113,7 +114,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;Header\Physics\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;Header\Physics\;Header\Serialize\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +129,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Physics\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+xcopy "Header\Serialize\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 %(Command)</Command>
     </PostBuildEvent>
@@ -138,7 +140,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;Header\Physics\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;Header\Physics\;Header\Serialize\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,6 +153,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Physics\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+xcopy "Header\Serialize\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 %(Command)</Command>
     </PostBuildEvent>
@@ -163,7 +166,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;Header\Physics\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\System\Header\;Header\Component\;Header\Data\;Header\Physics\;Header\Serialize\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -178,6 +181,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 xcopy "Header\Component\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Data\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 xcopy "Header\Physics\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
+xcopy "Header\Serialize\*.*" "$(SolutionDir)Reference\Header\$(TargetName)\" /y
 attrib +r "$(SolutionDir)Reference\Header\*.*" /s
 %(Command)</Command>
     </PostBuildEvent>
@@ -226,6 +230,8 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClInclude Include="Header\Component\MeshColComp.h" />
     <ClInclude Include="Header\Data\PHY_Box.h" />
     <ClInclude Include="Header\Data\PHY_Capsule.h" />
+    <ClInclude Include="Header\Serialize\Serialize_BaseClass.h" />
+    <ClInclude Include="Header\Serialize\Serialize_Core.h" />
     <ClInclude Include="Header\TextureMgr.h" />
     <ClInclude Include="Header\Data\Texture.h" />
     <ClInclude Include="Header\Data\MultiStateTexture.h" />
