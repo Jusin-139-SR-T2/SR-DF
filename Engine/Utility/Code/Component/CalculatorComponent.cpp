@@ -40,13 +40,17 @@ void CCalculatorComponent::Free()
 	SUPER::Free();
 }
 
-_float CCalculatorComponent::Compute_HeightOnTerrain(const _vec3* pPos, const _vec3* pTerrainVtxPos, const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv)
+_float CCalculatorComponent::Compute_HeightOnTerrain(
+	const _vec3* pPos, const _vec3* pTerrainVtxPos,
+	const _ulong& dwCntX, const _ulong& dwCntZ,
+	const _vec3& vScale, const _vec3& vInvOffet)
 {
 	// 지형의 높이를 계산하는 함수
-	_ulong	dwIndex = _ulong(pPos->z / dwVtxItv) * dwCntX + _ulong(pPos->x / dwVtxItv);
+	_ulong	dwIndex = _ulong((pPos->z + vInvOffet.z) / vScale.z) * dwCntX 
+								+ _ulong((pPos->x + vInvOffet.x) / vScale.x);
 
-	_float	fRatioX = _float(pPos->x - pTerrainVtxPos[dwIndex + dwCntX].x) / dwVtxItv;
-	_float	fRatioZ = _float(pTerrainVtxPos[dwIndex + dwCntX].z - pPos->z) / dwVtxItv;
+	_float	fRatioX = _float(pPos->x - pTerrainVtxPos[dwIndex + dwCntX].x) / vScale.x;
+	_float	fRatioZ = _float(pTerrainVtxPos[dwIndex + dwCntX].z - pPos->z) / vScale.z;
 
 	D3DXPLANE	Plane;
 

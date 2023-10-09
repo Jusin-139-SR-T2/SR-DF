@@ -6,6 +6,12 @@
 #include "Serialize_Core.h"
 #include "Serialize_BaseClass.h"
 
+const string g_strSceneExt = ".ascene";
+const string g_strTerrainExt = ".aterrain";
+const string g_strObjectExt = ".aobject";
+const string g_strLightExt = ".alight";
+const string g_strCameraExt = ".acamera";
+
 class CImguiWin_MapTool : public CImguiWin
 {
 	DERIVED_CLASS(CImguiWin, CImguiWin_MapTool)
@@ -58,7 +64,7 @@ private:
 private:	// °èÃþ °ü·Ã
 
 	using pair_string_vector = pair<string, vector<string>>;
-	string						m_strSceneExt = ".ascene";
+	
 	string						m_strSceneName = u8"¾À";			// ¾À ÀÌ¸§
 	_bool						m_bScene_Loaded = false;
 

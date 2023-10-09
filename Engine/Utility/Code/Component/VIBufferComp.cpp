@@ -32,6 +32,9 @@ CVIBufferComp::~CVIBufferComp()
 
 HRESULT CVIBufferComp::Ready_Buffer()
 {
+    Safe_Release(m_pVB);
+    Safe_Release(m_pIB);
+
     FAILED_CHECK_RETURN(m_pGraphicDev->CreateVertexBuffer(m_dwVtxCnt * m_dwVtxSize,	// 생성할 버퍼의 크기
         0,		// 생성하고자 하는 버텍스 버퍼의 종류(0인 경우 정적 버퍼, D3DUSAGE_DYNAMIC)
         m_dwFVF,	// 버텍스 속성 옵션

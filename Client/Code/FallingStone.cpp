@@ -139,7 +139,13 @@ void CFallingStone::Height_On_Terrain()
 	CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
 	NULL_CHECK(pTerrainBufferComp);
 
-	_float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
+	_float	fHeight = m_pCalculatorComp->
+		Compute_HeightOnTerrain(&vPos,
+		pTerrainBufferComp->Get_VtxPos(),
+		pTerrainBufferComp->Get_VertexCountX() + 1U,
+		pTerrainBufferComp->Get_VertexCountZ() + 1U,
+		pTerrainBufferComp->Get_Scale(),
+		pTerrainBufferComp->Get_InvOffset());
 
 	m_pTransformComp->Set_Pos(vPos.x, fHeight + 0.2f, vPos.z);
 }
@@ -199,7 +205,12 @@ void CFallingStone::Falling(const _float& fTimeDelta)
 	NULL_CHECK(pTerrainBufferComp);
 
 	//지형으로부터 높이 
-	_float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
+	_float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
+		pTerrainBufferComp->Get_VtxPos(),
+		pTerrainBufferComp->Get_VertexCountX() + 1U,
+		pTerrainBufferComp->Get_VertexCountZ() + 1U,
+		pTerrainBufferComp->Get_Scale(),
+		pTerrainBufferComp->Get_InvOffset());
 
 	_float Delta = vPos.y - fHeight;
 

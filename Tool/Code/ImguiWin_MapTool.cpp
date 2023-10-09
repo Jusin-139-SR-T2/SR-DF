@@ -573,13 +573,13 @@ void CImguiWin_MapTool::Export_ParsedTerrain(const FSerialize_Terrain& tTerrain)
 
     string strJson = buffer.GetString();
     string strPath = "../Client/Resource/Data/Terrain/";
-    string strFileName = "Test";
-    ofstream outputFile(strPath + strFileName + m_strSceneExt);
+    string strFileName = "Terrain1";
+    ofstream outputFile(strPath + strFileName + g_strTerrainExt);
     if (outputFile.is_open())
     {
         outputFile << strJson;
         outputFile.close();
-        cout << string("Test") << "파일 저장함\n";
+        cout << string("Terrain1") << "파일 저장함\n";
     }
     else
     {
@@ -587,7 +587,7 @@ void CImguiWin_MapTool::Export_ParsedTerrain(const FSerialize_Terrain& tTerrain)
     }
 
     // 파일 읽기 테스트
-    ifstream inputFile(strPath + strFileName + m_strSceneExt);
+    ifstream inputFile(strPath + strFileName + g_strTerrainExt);
     if (inputFile.is_open())
     {
         // 문자열 쉽게 읽어오는 반복자
@@ -599,6 +599,9 @@ void CImguiWin_MapTool::Export_ParsedTerrain(const FSerialize_Terrain& tTerrain)
     {
         cerr << "파일을 불러들일 수 없소!\n";
     }
+
+    /*const_cast<FSerialize_Terrain&>(tTerrain).Receive_ByRapidJSON(strJson, false);
+    cout << strJson << "\n";*/
 }
 
 void CImguiWin_MapTool::Set_Button_ActiveColor()
