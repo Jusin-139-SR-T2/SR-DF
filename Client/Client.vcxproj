@@ -19,11 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AceGameObject.h" />
+    <ClInclude Include="AceUnit.h" />
+    <ClInclude Include="AttackUnion.h" />
+    <ClInclude Include="Header\EnergyBall.h" />
+    <ClInclude Include="Header\FallingStone.h" />
     <ClInclude Include="Header\BlackBoard_Monster.h" />
     <ClInclude Include="Header\BlackBoard_Player.h" />
     <ClInclude Include="Header\Awareness.h" />
     <ClInclude Include="Header\AceBuilding.h" />
-    <ClInclude Include="Header\Dazed.h" />
+    <ClInclude Include="Header\RedLaser.h" />
     <ClInclude Include="Header\FireWork.h" />
     <ClInclude Include="Header\AceInteraction.h" />
     <ClInclude Include="Header\AceFood.h" />
@@ -53,8 +58,15 @@
     <ClInclude Include="Header\ThrowPipe.h" />
     <ClInclude Include="Header\UI.h" />
     <ClInclude Include="Header\MonsterPunch.h" />
+    <ClInclude Include="Header\SlowThunder.h" />
+    <ClInclude Include="AceMonster.h" />
+    <ClInclude Include="NormalBullet.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AceGameObject.cpp" />
+    <ClCompile Include="AceUnit.cpp" />
+    <ClCompile Include="AttackUnion.cpp" />
+    <ClCompile Include="Code\FallingStone.cpp" />
     <ClCompile Include="Code\BlackBoard_Monster.cpp" />
     <ClCompile Include="Code\BlackBoard_Player.cpp" />
     <ClCompile Include="Code\Awareness.cpp" />
@@ -77,7 +89,8 @@
     <ClCompile Include="Code\UI_Player.cpp" />
     <ClCompile Include="Code\Gray.cpp" />
     <ClCompile Include="Code\FireWork.cpp" />
-    <ClCompile Include="Code\Dazed.cpp" />
+    <ClCompile Include="Code\RedLaser.cpp" />
+    <ClCompile Include="Code\EnergyBall.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -95,6 +108,9 @@
     <ClCompile Include="Code\ThrowPipe.cpp" />
     <ClCompile Include="Code\UI.cpp" />
     <ClCompile Include="Code\MonsterPunch.cpp" />
+    <ClCompile Include="Code\SlowThunder.cpp" />
+    <ClCompile Include="AceMonster.cpp" />
+    <ClCompile Include="NormalBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

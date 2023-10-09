@@ -46,10 +46,11 @@ HRESULT CBrown::Ready_GameObject()
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
     pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-    pShape->vHalfSize = { 1.f, 2.f, 0.3f };
+    pShape->vHalfSize = { 1.f, 0.7f, 0.3f };
 
     // INFO
     m_iHP = m_iMaxHP;
+    pPlayerRightState = CPlayer::STATE_RIGHTHAND::NONE;
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE);
@@ -129,8 +130,10 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     // 지형타기 
     Height_On_Terrain(); 
 
+    
     // 빌보드
     Billboard(fTimeDelta);
+
 
      //상태머신
     m_fFrame += m_fFrameSpeed * fTimeDelta;
@@ -156,29 +159,21 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         m_tState_Obj.Set_State(STATE_OBJ::NORMALATTACK);
     }
 
-    //if (Engine::IsKey_Pressing(DIK_J))
-    //{
-    //    m_iHP = 0; // 피격 기믹 확인용 
-    //    m_tState_Obj.Set_State(STATE_OBJ::DEATH);
-    //}
-    //
+    if (Engine::IsKey_Pressing(DIK_P))
+    {
+        Right_Setting();
+        swprintf_s(debugString, L"Brown - 변수 확인 pPlayerRightState = %d\n", pPlayerRightState);
+        OutputDebugStringW(debugString);
+    }
+    
 
-   // if (Engine::IsKey_Pressing(DIK_J))
-   // {
-   //     _vec3 vRight = m_pTransformComp->Get_Right();
-   // 
-   //     D3DXVec3Normalize(&vRight, &vRight);
-   // 
-   //     m_pTransformComp->Move_Pos(&vRight, fTimeDelta, 2.f);
-   // }
+     if (Engine::IsKey_Pressing(DIK_J))
+     {
+         Engine::Add_GameObject(L"GameLogic", CFallingStone::Create(m_pGraphicDev,
+             m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 10.f, m_pTransformComp->Get_Pos().z));
 
-   // if (Engine::IsKey_Pressing(DIK_H))
-   // {
-   //     _vec3 vLook = m_pTransformComp->Get_Look();
-   //     D3DXVec3Normalize(&vLook, &vLook);
-   //     m_pTransformComp->Move_Pos(&vLook, fTimeDelta, 2.f);
-   //
-   // }
+     }
+
 
 #pragma endregion 
 
@@ -229,8 +224,8 @@ HRESULT CBrown::Add_Component()
     m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
     
     // 충돌 레이어, 마스크 설정
-    m_pColliderComp->Set_CollisionLayer(ELAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
-    m_pColliderComp->Set_CollisionMask(ELAYER_PLAYER | ELAYER_PROJECTILE); // 얘랑 충돌해야하는 레이어들 
+    m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
     return S_OK;
 }
@@ -248,46 +243,97 @@ void CBrown::Free()
 
 void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중 
 {
-    //OutputDebugString(L"▶Brown 충돌중 \n");
+    OutputDebugString(L"▶Brown 충돌중 \n");
 
-    // 플레이어가 공격을 한것인지 인지해야함. 기본적으로 Collision을 갖고있음. 
+    if (0 == m_iHP)
+    {
+        //플레이어와 충돌한거라면 
+        switch (pPlayerRightState)
+        {
+        case CPlayer::STATE_RIGHTHAND::HAND:
+                m_tState_Obj.Set_State(STATE_OBJ::HIT);
+            break;
+
+        case CPlayer::STATE_RIGHTHAND::RUN_HAND:
+            m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+            break;
+
+        case CPlayer::STATE_RIGHTHAND::GUN:
+            m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+            break;
+
+        case CPlayer::STATE_RIGHTHAND::THOMPSON:
+            m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+            break;
+
+        case CPlayer::STATE_RIGHTHAND::STEELPIPE:
+            m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+            break;
+
+        case CPlayer::STATE_RIGHTHAND::BEERBOTLE:
+            m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+            break;
+
+        case CPlayer::STATE_RIGHTHAND::FRYINGPAN:
+            m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+            break;
+
+        case CPlayer::STATE_RIGHTHAND::KICK:
+            m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+            break;
+        }
+
+        //충돌체와 충돌한거라면 
+    }
 }
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
-    //OutputDebugString(L"▶Brown 충돌시작 \n");
+    Right_Setting();
+
+    OutputDebugString(L"▶Brown 충돌 \n");
     // 플레이어 무기상태, 플레이어가 공격했을때가 필요함 여기에 변화 
     // 디폴트로 일단 넣어둠 
-    m_iHP -= 1;
    
-    //충돌체가 해야겠는데?  얘가 충돌 하기엔.. 지가맞은것도 ..
-    //m_tState_Obj.Set_State(STATE_OBJ::HIT);
+    //충돌한게 플레이어라면 
+    _int iCombo = (rand() % 2) + 1;
 
-    //
-    //switch (m_PlayerState)
-    //{
-    //case PUNCH:
-    //    m_iHP -= 1;
-    //    m_tState_Obj.Set_State(STATE_OBJ::HIT);
-    //    break;
+    switch (pPlayerRightState)
+    {
+    case CPlayer::STATE_RIGHTHAND::HAND:
+        break;
 
-    //case PISTOL:
-    //    m_iHP -= 100;
-    //    m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-    //    break;
+    case CPlayer::STATE_RIGHTHAND::RUN_HAND:
+        break;
 
-    //case TOMSON:
-    //    m_iHP -= 100;
-    //    m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-    //    break;
+    case CPlayer::STATE_RIGHTHAND::GUN:
+        break;
 
-    //case RUN:
-    //    m_iHP -= 1;
-    //    m_tState_Obj.Set_State(STATE_OBJ::FALLING);
-    //    break;
+    case CPlayer::STATE_RIGHTHAND::THOMPSON:
+        m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+        break;
 
-    //}
+    case CPlayer::STATE_RIGHTHAND::STEELPIPE:
+        break;
 
+    case CPlayer::STATE_RIGHTHAND::BEERBOTLE:
+        //m_iHp -= 20;
+        break;
+
+    case CPlayer::STATE_RIGHTHAND::FRYINGPAN:
+        // m_iHp -= 25;
+        break;
+
+    case CPlayer::STATE_RIGHTHAND::KICK:
+        // m_iHp -= 15;
+        break;
+    }
+
+    //충돌한게 투사체라면
+
+
+    swprintf_s(debugString, L"Brown - 변수 확인 m_iHP = %f\n", m_iHP);
+    OutputDebugStringW(debugString);
 }
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
@@ -296,30 +342,29 @@ void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때
 
 }
 
+
+
 #pragma endregion 
 
 #pragma region BlackBoard
-
-void CBrown::Update_BlackBoard()
-{ // 블랙보드 연결 대기, 안전 코드로 필수
-    if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+void CBrown::Update_InternalData()
+{
+    // 블랙보드 연결 대기, 안전 코드로 필수
+    if (!m_wpBlackBoard_Player.Get_BlackBoard())
     {
-        m_wpBlackBoard_Monster.Set_BlackBoard(Engine::Get_BlackBoard(L"MonsterUnion"));
+        m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"Player"));
         // 연결 실패
-        if (!m_wpBlackBoard_Monster.Get_BlackBoard())
-        {
-            MSG_BOX("MONSTER BLACKBOARD CONNECT FAILED");
+        if (!m_wpBlackBoard_Player.Get_BlackBoard())
             return;
-        }
     }
 
     // 안전 코드를 거치면 일반 포인터로 접근 허용.
-    CBlackBoard_Monster* pBlackBoard = m_wpBlackBoard_Monster.Get_BlackBoard();
+    CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
 
-    // 여기서부터 블랙보드의 정보를 업데이트 한다.
-//    pBlackBoard->Get_HP().Cur = m_pTransformComp->Get_Pos().x;
-    pBlackBoard->Get_BrownAwareness().Cur = m_fBrownAwareness;
+    // 여기서부터 블랙보드의 정보를 얻어온다.
+
 }
+
 
 #pragma endregion 
 
@@ -373,13 +418,19 @@ float CBrown::Calc_Distance()
     return fDistance;
 }
 
+void CBrown::Right_Setting()
+{
+    CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
+    pPlayerRightState = pPlayer->Get_PlayerRightHand();
+}
+
 HRESULT CBrown::Get_PlayerPos(const _float& fTimeDelta)
 {
     m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
     NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
     m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-
+    
     return S_OK;
 }
 
@@ -397,6 +448,7 @@ void CBrown::Height_On_Terrain()
 }
 
 #pragma endregion 
+
 #pragma region 상태머신 : idle ~ Death
 
 //------------------ AI ---------------------------
@@ -924,6 +976,7 @@ void CBrown::AI_Headless(float fDeltaTime)
     {
         if (m_fFrame > m_fFrameEnd)
         {
+            m_fFrame = m_fFrameEnd - 1;
             Set_Dead();
         }
     }
@@ -949,6 +1002,7 @@ void CBrown::AI_Death(float fDeltaTime)
     {
         if (m_fFrame>m_fFrameEnd)
         {
+            m_fFrame = m_fFrameEnd - 1;
             Set_Dead();
         }
     }
@@ -1210,7 +1264,8 @@ void CBrown::Attack(float fDeltaTime)
 
                 _vec3 vDirPos = m_pTransformComp->Get_Pos() + vLook * 2;
 
-                Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev, vDirPos.x, vDirPos.y, vDirPos.z));
+                Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev, vDirPos.x, vDirPos.y, vDirPos.z,
+                    CMonsterPunch::TYPE::NORMAL));
                 
                 m_AttackOnce = true;
             }
@@ -1229,7 +1284,8 @@ void CBrown::Attack(float fDeltaTime)
 
                 _vec3 vDirPos = m_pTransformComp->Get_Pos() + vLook * 2;
 
-                Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev, vDirPos.x, vDirPos.y, vDirPos.z));
+                Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev, 
+                    vDirPos.x, vDirPos.y, vDirPos.z, CMonsterPunch::TYPE::HEAVY));
 
                 m_AttackOnce = true;
             }

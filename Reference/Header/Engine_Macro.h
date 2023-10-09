@@ -314,10 +314,6 @@ namespace Engine
 #define DXCOLOR_TURQUOISE     D3DCOLOR_ARGB(255,  64, 224, 208) // 터키스색
 #define DXCOLOR_LIME          D3DCOLOR_ARGB(255,   0, 255,   0) // 라임색
 
-
-
-
-
 }
 
 

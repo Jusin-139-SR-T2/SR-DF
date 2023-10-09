@@ -1,21 +1,27 @@
 #pragma once
-
-#include "GameObject.h"
+#include "AceMonster.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "Engine_Macro.h"
+
+#include "MonsterPunch.h"
+
+#include "Awareness.h"
+#include "FallingStone.h"
 
 BEGIN(Engine)
 
 class CRcBufferComp;
 class CTextureComponent;
 class CTransformComponent;
+class CCalculatorComponent;
+class CColliderComponent;
 
 END
 
-class CBoss : public Engine::CGameObject
+class CBoss : public CAceMonster
 {
-	DERIVED_CLASS(CGameObject, CBoss)
+	DERIVED_CLASS(CAceMonster, CBoss)
 
 private:
 	explicit CBoss(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -33,6 +39,7 @@ public:
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
 	CTextureComponent* m_pTextureComp = nullptr;
+	CColliderComponent* m_pColliderComp = nullptr;
 	CTransformComponent* m_pTransformComp = nullptr;
 	CTransformComponent* m_pPlayerTransformcomp = nullptr;
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
@@ -46,6 +53,7 @@ private:
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 
@@ -161,3 +169,27 @@ private:
 	// 액션키는 CPP쪽에 만들음
 };
 
+//기술설명
+
+/*
+RedLaser = 플레이어 점프 넣어주세요 피해야함 
+
+1 phase 
+- GetOuttaHere 사운드 재생 
+- 보스가 구르면서 총만쏨 
+
+2 phase 
+- FallingStone : 일정시간간격으로 계속해서 소환
+- SlowThunder : 플레이어 반경 2Radius 내에서 무작위 위치에 소환되는 Thunder	/ 단순히 소환되고 프레임다돌면 set_dead인데 닿으면 매우아픔
+- Fire : 2초간 플레이어를 따라다니지만 이후에는 이동방향으로 계속 직진 수명은 약 4초 벽에닿아도 소멸
+
+3 phase 
+- YourLate 사운드 재생
+-> 보스 자버프 획득 공이속 증가 / 총알 회복 
+- 패턴은 유도 패턴 + 일반패턴 이 합쳐져서 나옴
+- EnergyBall(유도) + RedLaser(일반)
+- SlowThunder(일반) + Fire(반쯤 유도)
+- Stone(일반) + Laser(일반) + Fire(반쯤 유도)
+- 전멸기 : Holy랑 충돌하고있어야 살수있음 30초 쿨타임 
+
+*/

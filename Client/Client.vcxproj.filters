@@ -22,9 +22,6 @@
     <Filter Include="01. Scene\00. Logo">
       <UniqueIdentifier>{178dc53e-edc9-41c8-bcce-5adf592f8322}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject">
-      <UniqueIdentifier>{b9328527-1891-4c78-b6fb-acffe510992c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\01. Stage">
       <UniqueIdentifier>{fc095743-119a-4028-80d8-9edcfed409a6}</UniqueIdentifier>
     </Filter>
@@ -34,134 +31,176 @@
     <Filter Include="01. Scene\00. Logo\TitleLogo">
       <UniqueIdentifier>{b7dbd553-426e-4b8a-be54-78c84d2dcda3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\99. Camera">
-      <UniqueIdentifier>{0797d297-9d79-482d-a140-a0eeed17df7c}</UniqueIdentifier>
+    <Filter Include="02. AceGameObject">
+      <UniqueIdentifier>{b9328527-1891-4c78-b6fb-acffe510992c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\98. SkyBox">
-      <UniqueIdentifier>{a9160d5a-8cce-47e1-9945-51c70300831b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\97. Background">
-      <UniqueIdentifier>{d35c5bcf-69e7-4085-984f-bd63dd96fcf2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\02. AceObjectFactory">
-      <UniqueIdentifier>{5e61b933-9702-4f06-a920-205389efb9c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\02. AceObjectFactory\02. Ace_Throw">
-      <UniqueIdentifier>{6e596035-6b1e-41fb-ba9a-b9f1bc6013d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\02. AceObjectFactory\01. Ace_Weapon">
-      <UniqueIdentifier>{54cb2c41-b362-4f49-a71b-ee5222bd28c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\02. AceObjectFactory\00. Ace_Food">
-      <UniqueIdentifier>{8b0db644-e262-44d7-b6a1-4b79dd271bf1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\02. AceObjectFactory\03. Ace_Interaction">
-      <UniqueIdentifier>{4229125e-a6f5-44e9-937f-86a8eac35fab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Lighter">
-      <UniqueIdentifier>{e350700e-8895-4112-89d7-93342261724e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\04. Particle">
-      <UniqueIdentifier>{3f2cfdea-5e85-4333-874f-bc9351297fed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\04. Particle\00. Snow">
-      <UniqueIdentifier>{a8602073-922e-4493-ad1c-9fc6fabd3a13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Lighter\00. PlayerLighter">
-      <UniqueIdentifier>{aa69537c-df32-4a2e-b2c2-06149ae88894}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\04. Particle\01. FireWork">
-      <UniqueIdentifier>{8ab2be83-6fa5-4fde-9971-970b4bffbbeb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\05. Effect">
-      <UniqueIdentifier>{263b8407-b440-45ab-b485-5cf2a9ff6021}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\05. Effect\00. PlayerEffect">
-      <UniqueIdentifier>{8e8a9b06-2670-4c7b-bc2d-a3d33c4f6e3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\05. Effect\01. MonsterEffect">
-      <UniqueIdentifier>{c9bf29c9-754c-4e39-bb16-5ee8fc3da956}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\05. Effect\02. EnvironmentEffect">
-      <UniqueIdentifier>{fd8cc5e2-fc85-4595-a9ef-b170321da5c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\05. Effect\01. MonsterEffect\00. Awareness">
-      <UniqueIdentifier>{e5d83c0d-5126-43f7-bb72-1c56d159e4e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\05. Effect\01. MonsterEffect\01. Dazed">
-      <UniqueIdentifier>{9b780b3c-b100-4169-b025-a876d4d3045f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Lighter\01. CeilingLighter">
-      <UniqueIdentifier>{d2f211d2-f5ae-419c-bc37-862eb89e188f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\02. AceObjectFactory\04. Ace_Building">
-      <UniqueIdentifier>{46d2f07e-70eb-4b8c-977b-bfe73d40833b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\00. Player">
-      <UniqueIdentifier>{bc0ac8bd-4f3c-451a-8bc9-b114015fcac7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. Monster">
-      <UniqueIdentifier>{ca20878f-440d-4f76-8475-43445d0d468e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. Monster\00. Unit">
-      <UniqueIdentifier>{b4bc9501-6768-4b29-a589-85e139c5ffd6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. Monster\00. Unit\1. Brown">
-      <UniqueIdentifier>{87d5e720-2bd3-483a-b7e8-6547cbc4e5de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. Monster\00. Unit\2. Gray">
-      <UniqueIdentifier>{b4564e30-93d5-4921-aece-d6c92f134a71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. Monster\00. Unit\3. Boss">
-      <UniqueIdentifier>{0892c965-3e19-4427-9a57-578fe6b596b1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. Monster\01. Projectile">
-      <UniqueIdentifier>{72c05c56-eb63-4ae5-ab12-37f9bfb2c626}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. Monster\01. Projectile\00. Gray_ThrowPipe">
-      <UniqueIdentifier>{b5c2064b-46d6-415d-a18d-ca7a5e1f369f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. BlackBoard">
+    <Filter Include="04. BlackBoard">
       <UniqueIdentifier>{c309ba83-28a7-447b-a829-249506d301bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. UI">
-      <UniqueIdentifier>{73c6059c-b0b0-48ab-ba48-db6bbc94e26c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. UI\01. Player">
-      <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Attack">
-      <UniqueIdentifier>{991e437e-41de-4176-bfac-7b802c5b1401}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Attack\00. AttackPull">
-      <UniqueIdentifier>{57f63927-f895-4a93-bb3b-6e9a097ca300}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Attack\01. Attack">
-      <UniqueIdentifier>{7185b2ec-c6fb-454c-84e3-c0679bc31543}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Attack\01. Attack\00. Attack">
-      <UniqueIdentifier>{b9425aa7-480e-45bd-ab4c-da3116e15bd9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Attack\01. Attack\01. Hand">
-      <UniqueIdentifier>{76788cb0-7aaa-4c17-9a17-8da2bd0b6c7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Attack\01. Attack\02. Gun">
-      <UniqueIdentifier>{678468bd-3c73-4262-964d-cb315a734672}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Attack\01. Attack\03. SteelPipe">
-      <UniqueIdentifier>{f2289398-9a12-49b2-a75c-7a69587da0fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Attack\01. Attack\04. Bullet">
-      <UniqueIdentifier>{5bd2f1fe-db61-48c8-b19c-7b53dd34029c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. Monster\02. Attack">
-      <UniqueIdentifier>{67886598-b0dc-4b95-bd60-0d930a3e0d4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. BlackBoard\0. Player">
+    <Filter Include="04. BlackBoard\0. Player">
       <UniqueIdentifier>{d47f6f5c-fd84-4254-91e1-51f4d5adf5e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. BlackBoard\1. Monster">
+    <Filter Include="04. BlackBoard\1. Monster">
       <UniqueIdentifier>{fee4b291-3060-41d3-9272-9146cd714457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. UI">
+      <UniqueIdentifier>{73c6059c-b0b0-48ab-ba48-db6bbc94e26c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. UI\01. Player">
+      <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object">
+      <UniqueIdentifier>{9e9c32f1-9261-4a9e-a064-25a0d834a711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\99. Camera">
+      <UniqueIdentifier>{0797d297-9d79-482d-a140-a0eeed17df7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\98. SkyBox">
+      <UniqueIdentifier>{a9160d5a-8cce-47e1-9945-51c70300831b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\97. Background">
+      <UniqueIdentifier>{d35c5bcf-69e7-4085-984f-bd63dd96fcf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\05. Effect">
+      <UniqueIdentifier>{263b8407-b440-45ab-b485-5cf2a9ff6021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\05. Effect\00. PlayerEffect">
+      <UniqueIdentifier>{8e8a9b06-2670-4c7b-bc2d-a3d33c4f6e3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\05. Effect\01. MonsterEffect">
+      <UniqueIdentifier>{c9bf29c9-754c-4e39-bb16-5ee8fc3da956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\05. Effect\01. MonsterEffect\00. Awareness">
+      <UniqueIdentifier>{e5d83c0d-5126-43f7-bb72-1c56d159e4e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\05. Effect\02. EnvironmentEffect">
+      <UniqueIdentifier>{fd8cc5e2-fc85-4595-a9ef-b170321da5c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\04. Particle">
+      <UniqueIdentifier>{3f2cfdea-5e85-4333-874f-bc9351297fed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\04. Particle\00. Snow">
+      <UniqueIdentifier>{a8602073-922e-4493-ad1c-9fc6fabd3a13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\04. Particle\01. FireWork">
+      <UniqueIdentifier>{8ab2be83-6fa5-4fde-9971-970b4bffbbeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\03. Lighter">
+      <UniqueIdentifier>{e350700e-8895-4112-89d7-93342261724e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\03. Lighter\00. PlayerLighter">
+      <UniqueIdentifier>{aa69537c-df32-4a2e-b2c2-06149ae88894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..Object\03. Lighter\01. CeilingLighter">
+      <UniqueIdentifier>{d2f211d2-f5ae-419c-bc37-862eb89e188f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit">
+      <UniqueIdentifier>{fb417669-bd67-49e7-8798-c4734d3750ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\01. Monster">
+      <UniqueIdentifier>{ca20878f-440d-4f76-8475-43445d0d468e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\01. Monster\00. Unit">
+      <UniqueIdentifier>{b4bc9501-6768-4b29-a589-85e139c5ffd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\01. Monster\00. Unit\1. Brown">
+      <UniqueIdentifier>{87d5e720-2bd3-483a-b7e8-6547cbc4e5de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\01. Monster\00. Unit\2. Gray">
+      <UniqueIdentifier>{b4564e30-93d5-4921-aece-d6c92f134a71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\01. Monster\00. Unit\3. Boss">
+      <UniqueIdentifier>{0892c965-3e19-4427-9a57-578fe6b596b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\00. Player">
+      <UniqueIdentifier>{bc0ac8bd-4f3c-451a-8bc9-b114015fcac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\01. AceItem">
+      <UniqueIdentifier>{5e61b933-9702-4f06-a920-205389efb9c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\01. AceItem\02. Ace_Throw">
+      <UniqueIdentifier>{6e596035-6b1e-41fb-ba9a-b9f1bc6013d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\01. AceItem\01. Ace_Weapon">
+      <UniqueIdentifier>{54cb2c41-b362-4f49-a71b-ee5222bd28c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\01. AceItem\00. Ace_Food">
+      <UniqueIdentifier>{8b0db644-e262-44d7-b6a1-4b79dd271bf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\01. AceItem\03. Ace_Interaction">
+      <UniqueIdentifier>{4229125e-a6f5-44e9-937f-86a8eac35fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\01. AceItem\04. Ace_Building">
+      <UniqueIdentifier>{46d2f07e-70eb-4b8c-977b-bfe73d40833b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion">
+      <UniqueIdentifier>{4d7235d5-ebba-485f-bdeb-70a9af708dcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack">
+      <UniqueIdentifier>{991e437e-41de-4176-bfac-7b802c5b1401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack\00. AttackPull">
+      <UniqueIdentifier>{57f63927-f895-4a93-bb3b-6e9a097ca300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack">
+      <UniqueIdentifier>{7185b2ec-c6fb-454c-84e3-c0679bc31543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\00. Attack">
+      <UniqueIdentifier>{b9425aa7-480e-45bd-ab4c-da3116e15bd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\01. Hand">
+      <UniqueIdentifier>{76788cb0-7aaa-4c17-9a17-8da2bd0b6c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\02. Gun">
+      <UniqueIdentifier>{678468bd-3c73-4262-964d-cb315a734672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\03. SteelPipe">
+      <UniqueIdentifier>{f2289398-9a12-49b2-a75c-7a69587da0fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\04. Bullet">
+      <UniqueIdentifier>{5bd2f1fe-db61-48c8-b19c-7b53dd34029c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\02. MonsterAttack">
+      <UniqueIdentifier>{67886598-b0dc-4b95-bd60-0d930a3e0d4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern">
+      <UniqueIdentifier>{a6fbbee4-2614-4bc4-b48b-da816c3ee0f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\00. RedLaser">
+      <UniqueIdentifier>{9b780b3c-b100-4169-b025-a876d4d3045f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\01. FallingStone">
+      <UniqueIdentifier>{66d396d5-0825-4189-9328-31d61fd220dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\02. Fire">
+      <UniqueIdentifier>{d527cbb1-8a4f-4208-9c95-64b9123dcce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\03. SlowThunder">
+      <UniqueIdentifier>{12a08efc-5fb1-4771-81aa-3aebefe5c278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\04. EnergyBall">
+      <UniqueIdentifier>{03c60648-d638-470b-8a49-7b0a100ac9d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\05. BlueBuff">
+      <UniqueIdentifier>{a437a66f-0789-47c5-b932-5090023df07a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\01. Projectile">
+      <UniqueIdentifier>{72c05c56-eb63-4ae5-ab12-37f9bfb2c626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\01. Projectile\00. Gray_ThrowPipe">
+      <UniqueIdentifier>{b5c2064b-46d6-415d-a18d-ca7a5e1f369f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet">
+      <UniqueIdentifier>{1dfb8921-ad1e-4dbb-8166-806bfb3d4c03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet\00. NormalBullet">
+      <UniqueIdentifier>{e60acab2-e16c-49b6-b969-471a55aaddd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet\01. TompsonBullet">
+      <UniqueIdentifier>{dadcd146-ea2b-4e31-a501-0a15cd60d9c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. AceGameObject\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet\02. ShotGunBullet">
+      <UniqueIdentifier>{54511645-7e53-4d72-9f4d-cd4a74a6465c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -190,85 +229,109 @@
       <Filter>01. Scene\01. Stage</Filter>
     </ClInclude>
     <ClInclude Include="Header\BackGround.h">
-      <Filter>02. GameObject\97. Background</Filter>
+      <Filter>03..Object\97. Background</Filter>
     </ClInclude>
     <ClInclude Include="Header\Terrain.h">
-      <Filter>02. GameObject\97. Background</Filter>
+      <Filter>03..Object\97. Background</Filter>
     </ClInclude>
     <ClInclude Include="Header\DynamicCamera.h">
-      <Filter>02. GameObject\99. Camera</Filter>
+      <Filter>03..Object\99. Camera</Filter>
     </ClInclude>
     <ClInclude Include="Header\SkyBox.h">
-      <Filter>02. GameObject\98. SkyBox</Filter>
+      <Filter>03..Object\98. SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="Header\Player.h">
-      <Filter>02. GameObject\00. Player</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\00. Player</Filter>
     </ClInclude>
     <ClInclude Include="Header\TitleLogo.h">
       <Filter>01. Scene\00. Logo\TitleLogo</Filter>
     </ClInclude>
     <ClInclude Include="Header\Gray.h">
-      <Filter>02. GameObject\01. Monster\00. Unit\2. Gray</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\01. Monster\00. Unit\2. Gray</Filter>
     </ClInclude>
     <ClInclude Include="Header\Boss.h">
-      <Filter>02. GameObject\01. Monster\00. Unit\3. Boss</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
     </ClInclude>
     <ClInclude Include="Header\Brown.h">
-      <Filter>02. GameObject\01. Monster\00. Unit\1. Brown</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\01. Monster\00. Unit\1. Brown</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceFood.h">
-      <Filter>02. GameObject\02. AceObjectFactory\00. Ace_Food</Filter>
+      <Filter>02. AceGameObject\01. AceItem\00. Ace_Food</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceObjectFactory.h">
-      <Filter>02. GameObject\02. AceObjectFactory</Filter>
+      <Filter>02. AceGameObject\01. AceItem</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceWeapon.h">
-      <Filter>02. GameObject\02. AceObjectFactory\01. Ace_Weapon</Filter>
+      <Filter>02. AceGameObject\01. AceItem\01. Ace_Weapon</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceThrow.h">
-      <Filter>02. GameObject\02. AceObjectFactory\02. Ace_Throw</Filter>
+      <Filter>02. AceGameObject\01. AceItem\02. Ace_Throw</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceInteraction.h">
-      <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
+      <Filter>02. AceGameObject\01. AceItem\03. Ace_Interaction</Filter>
     </ClInclude>
     <ClInclude Include="Header\SnowParticle.h">
-      <Filter>02. GameObject\04. Particle\00. Snow</Filter>
+      <Filter>03..Object\04. Particle\00. Snow</Filter>
     </ClInclude>
     <ClInclude Include="Header\PlayerLighter.h">
-      <Filter>02. GameObject\03. Lighter\00. PlayerLighter</Filter>
+      <Filter>03..Object\03. Lighter\00. PlayerLighter</Filter>
     </ClInclude>
     <ClInclude Include="Header\FireWork.h">
-      <Filter>02. GameObject\04. Particle\01. FireWork</Filter>
+      <Filter>03..Object\04. Particle\01. FireWork</Filter>
     </ClInclude>
     <ClInclude Include="Header\Awareness.h">
-      <Filter>02. GameObject\05. Effect\01. MonsterEffect\00. Awareness</Filter>
+      <Filter>03..Object\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Dazed.h">
-      <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
+    <ClInclude Include="Header\RedLaser.h">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\00. RedLaser</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceBuilding.h">
-      <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
+      <Filter>02. AceGameObject\01. AceItem\04. Ace_Building</Filter>
     </ClInclude>
     <ClInclude Include="Header\ThrowPipe.h">
-      <Filter>02. GameObject\01. Monster\01. Projectile\00. Gray_ThrowPipe</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\01. Projectile\00. Gray_ThrowPipe</Filter>
     </ClInclude>
     <ClInclude Include="Header\UI_Player.h">
-      <Filter>04. UI\01. Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>05. UI\01. Player</Filter>
     </ClInclude>
     <ClInclude Include="Header\UI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Header\MonsterPunch.h">
-      <Filter>02. GameObject\01. Monster\02. Attack</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\02. MonsterAttack</Filter>
     </ClInclude>
     <ClInclude Include="Header\BlackBoard_Player.h">
-      <Filter>03. BlackBoard\0. Player</Filter>
+      <Filter>04. BlackBoard\0. Player</Filter>
     </ClInclude>
     <ClInclude Include="Header\BlackBoard_Monster.h">
-      <Filter>03. BlackBoard\1. Monster</Filter>
+      <Filter>04. BlackBoard\1. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\FallingStone.h">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\01. FallingStone</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\SlowThunder.h">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\03. SlowThunder</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\EnergyBall.h">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\04. EnergyBall</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>05. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AceGameObject.h">
+      <Filter>02. AceGameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="AceMonster.h">
+      <Filter>02. AceGameObject\00. AceUnit\01. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="AceUnit.h">
+      <Filter>02. AceGameObject\00. AceUnit</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackUnion.h">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalBullet.h">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet\00. NormalBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -291,97 +354,121 @@
       <Filter>01. Scene\01. Stage</Filter>
     </ClCompile>
     <ClCompile Include="Code\Terrain.cpp">
-      <Filter>02. GameObject\97. Background</Filter>
+      <Filter>03..Object\97. Background</Filter>
     </ClCompile>
     <ClCompile Include="Code\BackGround.cpp">
-      <Filter>02. GameObject\97. Background</Filter>
+      <Filter>03..Object\97. Background</Filter>
     </ClCompile>
     <ClCompile Include="Code\DynamicCamera.cpp">
-      <Filter>02. GameObject\99. Camera</Filter>
+      <Filter>03..Object\99. Camera</Filter>
     </ClCompile>
     <ClCompile Include="Code\SkyBox.cpp">
-      <Filter>02. GameObject\98. SkyBox</Filter>
+      <Filter>03..Object\98. SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="Code\TitleLogo.cpp">
       <Filter>01. Scene\00. Logo\TitleLogo</Filter>
     </ClCompile>
     <ClCompile Include="Code\Gray.cpp">
-      <Filter>02. GameObject\01. Monster\00. Unit\2. Gray</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\01. Monster\00. Unit\2. Gray</Filter>
     </ClCompile>
     <ClCompile Include="Code\Boss.cpp">
-      <Filter>02. GameObject\01. Monster\00. Unit\3. Boss</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
     </ClCompile>
     <ClCompile Include="Code\Brown.cpp">
-      <Filter>02. GameObject\01. Monster\00. Unit\1. Brown</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\01. Monster\00. Unit\1. Brown</Filter>
     </ClCompile>
     <ClCompile Include="Code\TitleLogo.cpp">
       <Filter>01. Scene\00. Logo\TitleLogo</Filter>
     </ClCompile>
     <ClCompile Include="Code\Player.cpp">
-      <Filter>02. GameObject\00. Player</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\00. Player</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceFood.cpp">
-      <Filter>02. GameObject\02. AceObjectFactory\00. Ace_Food</Filter>
+      <Filter>02. AceGameObject\01. AceItem\00. Ace_Food</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceObjectFactory.cpp">
-      <Filter>02. GameObject\02. AceObjectFactory</Filter>
+      <Filter>02. AceGameObject\01. AceItem</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceWeapon.cpp">
-      <Filter>02. GameObject\02. AceObjectFactory\01. Ace_Weapon</Filter>
+      <Filter>02. AceGameObject\01. AceItem\01. Ace_Weapon</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceThrow.cpp">
-      <Filter>02. GameObject\02. AceObjectFactory\02. Ace_Throw</Filter>
+      <Filter>02. AceGameObject\01. AceItem\02. Ace_Throw</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceInteraction.cpp">
-      <Filter>02. GameObject\02. AceObjectFactory\03. Ace_Interaction</Filter>
+      <Filter>02. AceGameObject\01. AceItem\03. Ace_Interaction</Filter>
     </ClCompile>
     <ClCompile Include="Code\SnowParticle.cpp">
-      <Filter>02. GameObject\04. Particle\00. Snow</Filter>
+      <Filter>03..Object\04. Particle\00. Snow</Filter>
     </ClCompile>
     <ClCompile Include="Code\PlayerLighter.cpp">
-      <Filter>02. GameObject\03. Lighter\00. PlayerLighter</Filter>
+      <Filter>03..Object\03. Lighter\00. PlayerLighter</Filter>
     </ClCompile>
     <ClCompile Include="Code\FireWork.cpp">
-      <Filter>02. GameObject\04. Particle\01. FireWork</Filter>
+      <Filter>03..Object\04. Particle\01. FireWork</Filter>
     </ClCompile>
     <ClCompile Include="Code\Awareness.cpp">
-      <Filter>02. GameObject\05. Effect\01. MonsterEffect\00. Awareness</Filter>
+      <Filter>03..Object\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Dazed.cpp">
-      <Filter>02. GameObject\05. Effect\01. MonsterEffect\01. Dazed</Filter>
+    <ClCompile Include="Code\RedLaser.cpp">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\00. RedLaser</Filter>
     </ClCompile>
     <ClCompile Include="Code\Attack.cpp">
-      <Filter>02. GameObject\06. Attack\01. Attack\00. Attack</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\00. Attack</Filter>
     </ClCompile>
     <ClCompile Include="Code\AttackPool.cpp">
-      <Filter>02. GameObject\06. Attack\00. AttackPull</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack\00. AttackPull</Filter>
     </ClCompile>
     <ClCompile Include="Code\Bullet.cpp">
-      <Filter>02. GameObject\06. Attack\01. Attack\04. Bullet</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\04. Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceBuilding.cpp">
-      <Filter>02. GameObject\02. AceObjectFactory\04. Ace_Building</Filter>
+      <Filter>02. AceGameObject\01. AceItem\04. Ace_Building</Filter>
     </ClCompile>
     <ClCompile Include="Code\ThrowPipe.cpp">
-      <Filter>02. GameObject\01. Monster\01. Projectile\00. Gray_ThrowPipe</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\01. Projectile\00. Gray_ThrowPipe</Filter>
     </ClCompile>
     <ClCompile Include="Code\UI_Player.cpp">
-      <Filter>04. UI\01. Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\UI.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>05. UI\01. Player</Filter>
     </ClCompile>
     <ClCompile Include="Code\UI.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Code\MonsterPunch.cpp">
-      <Filter>02. GameObject\01. Monster\02. Attack</Filter>
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\02. MonsterAttack</Filter>
     </ClCompile>
     <ClCompile Include="Code\BlackBoard_Player.cpp">
-      <Filter>03. BlackBoard\0. Player</Filter>
+      <Filter>04. BlackBoard\0. Player</Filter>
     </ClCompile>
     <ClCompile Include="Code\BlackBoard_Monster.cpp">
-      <Filter>03. BlackBoard\1. Monster</Filter>
+      <Filter>04. BlackBoard\1. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\FallingStone.cpp">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\01. FallingStone</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\SlowThunder.cpp">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\03. SlowThunder</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\EnergyBall.cpp">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\03. BossPattern\04. EnergyBall</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>05. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AceGameObject.cpp">
+      <Filter>02. AceGameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="AceMonster.cpp">
+      <Filter>02. AceGameObject\00. AceUnit\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="AceUnit.cpp">
+      <Filter>02. AceGameObject\00. AceUnit</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackUnion.cpp">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalBullet.cpp">
+      <Filter>02. AceGameObject\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet\00. NormalBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

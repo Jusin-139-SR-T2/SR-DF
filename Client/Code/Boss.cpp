@@ -40,11 +40,12 @@ HRESULT CBoss::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
+    m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });
     m_fFrame = 0;
     m_fFrameEnd = 0;
     m_fFrameSpeed = 10.f;
     m_fCheck = 0;
+
     // INFO
     m_iHP = 40;         // 체력
     m_iAttack = 10;     // 공격력
@@ -166,7 +167,7 @@ void CBoss::Height_On_Terrain()
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
 
-    m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.f, vPos.z);
+    m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.2f, vPos.z);
 }
 
 HRESULT CBoss::Add_Component()
@@ -174,9 +175,22 @@ HRESULT CBoss::Add_Component()
     NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-
-    // 몬스터 텍스처
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_BossTextureComp"), E_FAIL);
+    
+    // 콜라이더 컴포넌트
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
+
+    // 물리 세계 등록
+    m_pColliderComp->EnterToPhysics(0);
+
+    // 충돌 함수 연결
+    m_pColliderComp->Set_Collision_Event<ThisClass>(this, &ThisClass::OnCollision);
+    m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
+    m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
+
+    // 충돌 레이어, 마스크 설정
+    m_pColliderComp->Set_CollisionLayer(LAYER_BOSSMONSTER); // 이 클래스가 속할 충돌레이어 
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_MONSTER | LAYER_WALL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
     return S_OK;
 }
@@ -197,8 +211,6 @@ void CBoss::Billboard(const _float& fTimeDelta)
     _float rad = atan2f(vDir.x, vDir.z);
 
     m_pTransformComp->Set_RotationY(rad);
-
-    m_pTransformComp->Set_ScaleY(1.9f);
 }
 
 _bool CBoss::Detect_Player()
@@ -506,7 +518,6 @@ void CBoss::AI_Side_Ready(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        m_pTransformComp->Set_Scale({1.1f, 1.0f, 1.0f});
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"SideReady");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }

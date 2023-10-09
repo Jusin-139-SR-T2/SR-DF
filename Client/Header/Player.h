@@ -1,14 +1,12 @@
 #pragma once
 
-#include "GameObject.h"
-
+#include "AceUnit.h"
 #include "Engine_Macro.h"
-
-//임시용
-#include "AceFood.h" 
 
 #include "BlackBoard_Player.h"
 #include "BlackBoardPtr.h"
+//임시용
+#include "AceFood.h" 
 
 BEGIN(Engine)
 
@@ -24,9 +22,9 @@ END
 class CDynamicCamera;
 class CPlayerLighter;
 
-class CPlayer : public Engine::CGameObject
+class CPlayer : public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CPlayer)
+	DERIVED_CLASS(CAceUnit, CPlayer)
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CPlayer(const CPlayer& rhs);
@@ -141,6 +139,11 @@ public:// 플레이어 상태 값
 	// TEST
 	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향 
 
+	//몬스터가 필요한거 가져가는중 
+	STATE_RIGHTHAND	m_eRIGHTState;	// 오른손상태
+	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)	// 라이터 조명
+	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)	// 플레이어 hp용도 
+	
 public:
 	// 키프레임 구조체
 	struct Keyframe
