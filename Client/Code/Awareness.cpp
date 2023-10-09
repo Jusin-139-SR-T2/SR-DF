@@ -22,14 +22,18 @@ HRESULT CAwareness::Ready_GameObject()
 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
 
-	m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
+	m_pTransformComp->Set_Scale({ 0.3f, 0.5f, 1.f });
 
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
 	m_fFrame = 0;
+
+	m_fAge = 0.f;
+	m_fLifeTime = 1.f;
+	
 	//Brown일떄
-	//m_fFrameSpeed = 2.f;
+	m_fFrameSpeed = 2.f;
+	
 	//Gray
-	m_fFrameSpeed = 3.f;
+	//m_fFrameSpeed = 3.f;
 
 	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 
@@ -44,6 +48,25 @@ _int CAwareness::Update_GameObject(const _float& fTimeDelta)
 	// 몬스터 상태 Taunt로 바뀌면 바로 set_dead로 가기 
 	Billboard();
 
+	//Owner 지정으로 알아보기
+
+	m_fFrame += fTimeDelta * m_fFrameSpeed;
+
+	if (m_fFrame > m_fFrameEnd)
+	{
+		m_fFrame = m_fFrameEnd - 1;
+		m_bTrigger = TRUE;
+	}
+
+	if (m_bTrigger)
+		m_fAge += fTimeDelta * 1.f;
+	
+
+	if (m_fAge > m_fLifeTime)
+	{
+		m_bTrigger = FALSE;
+		Set_Dead();
+	}
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
 	return S_OK;

@@ -45,13 +45,10 @@ public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+	GETSET_EX2(CGameObject*, m_pTarget, Target, GET, SET)
 
-// BlackBoard -------------------------------
-private:
-	void	Update_InternalData();
+	CGameObject* m_pTarget = nullptr;
 
-protected:
-	FBlackBoardPtr<CBlackBoard_Monster>	m_wpBlackBoard_Monster;	// 블랙보드 플레이어
 
 private:
 	_float m_fFrame;
@@ -63,6 +60,11 @@ private:
 	_float 	m_fBrownAwareness;
 	_float 	m_fGrayAwareness;
 	_float 	m_fBossAwareness;
+
+	_bool m_bTrigger = FALSE;
+	_float m_fAge;
+	_float m_fLifeTime;
+	wchar_t		debugString[100];
 };
 	
 

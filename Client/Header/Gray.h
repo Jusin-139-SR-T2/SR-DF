@@ -6,6 +6,7 @@
 #include "Engine_Macro.h"
 
 #include "ThrowPipe.h"
+#include "Awareness.h"
 
 BEGIN(Engine)
 
@@ -47,6 +48,7 @@ private:
 	HRESULT				Add_Component();
 	virtual void		Free();
 	void				Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
+	void				RenderSplitImages();
 
 	// Get, Set 함수 
 public:
@@ -70,6 +72,8 @@ private:
 	HRESULT     Get_PlayerPos(); // 플레이어 dynamic_cast용도 
 	
 	// 변수 ----------
+	wchar_t		debugString[100];					//디버깅 글자 나오는WACHAR
+
 	_float		m_fCheck = 0;						//Taunt 등 프레임 돌리는횟수 지정
 	_int		m_iHP;								// 몬스터 현재 hp 
 	_int		m_iPreHP;							// 이전 HP 저장용도 
@@ -113,8 +117,9 @@ private:
 	_vec3		vPatrolPointZero;
 	
 	//스위치 on/off 
-	_bool		m_bGoHome = false;
+	_bool		m_bArrive = false;
 	_bool		m_AttackOnce = false;
+	_bool		m_bBillboard = false;
 
 public:
 	// 목표 상태머신(AI)
@@ -169,16 +174,16 @@ private:
 
 	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 
 	void AI_GoHome(float fDeltaTime); // 파이프 들고 대각선으로 걍 떄리는거
-	//void AI_Block(float fDeltaTime); //플레이어가 공격하면 막기함
+	void AI_Block(float fDeltaTime); //플레이어가 공격하면 막기함
 
-	//void AI_CrotchHit( float fDeltaTime); // 앉기 + 피격
-	//void AI_FacePunch(float fDeltaTime); //얼굴 피격
-	//void AI_Falling(float fDeltaTime); //떨어지고 일어나는것
-	//void AI_Dazed(float fDeltaTime); //일정피 이하가 되면 나오는상태
-	//void AI_Chopped(float fDeltaTime); //뒤돌고 있을때 손날치기 -> sleep 
-	//void AI_HeadShot(float fDeltaTime); // 주먹이나 기타 무기로 헤드샷
-	//void AI_Headless(float fDeltaTime); //총으로 헤드어택
-	//void AI_Death(float fDeltaTime); //일반공격으로 죽는상태 
+	void AI_CrotchHit( float fDeltaTime); // 앉기 + 피격
+	void AI_FacePunch(float fDeltaTime); //얼굴 피격
+	void AI_Falling(float fDeltaTime); //떨어지고 일어나는것
+	void AI_Dazed(float fDeltaTime); //일정피 이하가 되면 나오는상태
+	void AI_Chopped(float fDeltaTime); //뒤돌고 있을때 손날치기 -> sleep 
+	void AI_HeadShot(float fDeltaTime); // 주먹이나 기타 무기로 헤드샷
+	void AI_Headless(float fDeltaTime); //총으로 헤드어택
+	void AI_Death(float fDeltaTime); //일반공격으로 죽는상태 
 
 #pragma endregion
 

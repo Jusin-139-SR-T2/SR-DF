@@ -397,7 +397,6 @@ void CBrown::Height_On_Terrain()
 }
 
 #pragma endregion 
-
 #pragma region 상태머신 : idle ~ Death
 
 //------------------ AI ---------------------------
@@ -441,7 +440,7 @@ void CBrown::AI_Suspicious(float fDeltaTime)
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         // 투사체 발사 
         Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
-            m_pTransformComp->Get_Pos().x + 0.2f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z));
+            m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z));
 
     }
 

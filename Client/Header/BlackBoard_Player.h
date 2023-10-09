@@ -46,9 +46,6 @@ public:		// 플레이어에 대한 정보만 얻을 때는
 private:
 	CPlayer*			m_pPlayer = nullptr;
 
-
-
-
 public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX2(GAUGE<_float>, m_fHP, HP, GET_C_REF, GET_REF)
 	GETSET_EX2(GAUGE<_float>, m_fStamina, Stamina, GET_C_REF, GET_REF)

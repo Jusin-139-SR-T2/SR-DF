@@ -63,6 +63,7 @@ public:
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+	GETSET_EX2(_bool, m_fBrownAwareness, Awareness, GET, SET)
 		
 	// 충돌 -----------------------------------------------------------------
 protected: 
@@ -105,7 +106,7 @@ private:
 	_float		m_fLifeTime = 0.f;
 
 	// 몬스터 인식 관련 
-	_float		m_fBrownAwareness = 0;					// 의심게이지 숫자 
+	_float		m_fBrownAwareness = 0;				// 의심게이지 숫자 
 	_float		m_fMaxAwareness = 15.f;				// 의심게이지 max -> 추격으로 변함 
 	_float		m_fConsider = 10.f;					// 플레이어 놓친뒤에 주변정찰 게이지 
 	_float		m_fMaxConsider = 10.f;				// 플레이어 놓친뒤에 주변정찰 게이지 

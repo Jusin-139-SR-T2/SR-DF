@@ -9,6 +9,7 @@ class CBoss;
 /// <summary>
 /// 이니셜라이즈용 구조체
 /// </summary>
+
 struct FBlackBoard_MonsterInit
 {
 	CBrown* pBrown;

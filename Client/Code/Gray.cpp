@@ -78,16 +78,16 @@ HRESULT CGray::Ready_GameObject()
     m_tState_Obj.Add_Func(STATE_OBJ::RECONNAISSANCE, &CGray::AI_Reconnaissance);
     m_tState_Obj.Add_Func(STATE_OBJ::GOHOME, &CGray::AI_GoHome);
 
-    //m_tState_Obj.Add_Func(STATE_OBJ::BLOCK, &CGray::AI_Block);
-    //m_tState_Obj.Add_Func(STATE_OBJ::CROTCHHIT, &CGray::AI_CrotchHit);
-    //m_tState_Obj.Add_Func(STATE_OBJ::HEADSHOT, &CGray::AI_HeadShot);
-    //m_tState_Obj.Add_Func(STATE_OBJ::HEADLESS, &CGray::AI_Headless);
-    //m_tState_Obj.Add_Func(STATE_OBJ::DEATH, &CGray::AI_Death);
+    m_tState_Obj.Add_Func(STATE_OBJ::BLOCK, &CGray::AI_Block);
+    m_tState_Obj.Add_Func(STATE_OBJ::CROTCHHIT, &CGray::AI_CrotchHit);
+    m_tState_Obj.Add_Func(STATE_OBJ::HEADSHOT, &CGray::AI_HeadShot);
+    m_tState_Obj.Add_Func(STATE_OBJ::HEADLESS, &CGray::AI_Headless);
+    m_tState_Obj.Add_Func(STATE_OBJ::DEATH, &CGray::AI_Death);
 
-    //m_tState_Obj.Add_Func(STATE_OBJ::DAZED, &CGray::AI_Dazed);
-    //m_tState_Obj.Add_Func(STATE_OBJ::CHOPPED, &CGray::AI_Chopped);
-    //m_tState_Obj.Add_Func(STATE_OBJ::HEADLESS, &CGray::AI_Headless);
-    //m_tState_Obj.Add_Func(STATE_OBJ::DEATH, &CGray::AI_Death);
+    m_tState_Obj.Add_Func(STATE_OBJ::DAZED, &CGray::AI_Dazed);
+    m_tState_Obj.Add_Func(STATE_OBJ::CHOPPED, &CGray::AI_Chopped);
+    m_tState_Obj.Add_Func(STATE_OBJ::HEADLESS, &CGray::AI_Headless);
+    m_tState_Obj.Add_Func(STATE_OBJ::DEATH, &CGray::AI_Death);
 
 #pragma endregion
 
@@ -135,7 +135,8 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     Height_On_Terrain(); 
 
     // 빌보드 
-    Billboard(fTimeDelta);
+    if(m_bBillboard)
+        Billboard(fTimeDelta);
 
     // 상태머신-------------------------------------
     m_fFrame += m_fFrameSpeed * fTimeDelta;
@@ -155,6 +156,8 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
             m_fCheck += 1;
     }
 
+    
+
 #pragma region 테스트 장소 
 
     // ---------- 테스트 빌드 ---------------------
@@ -165,7 +168,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 
     if (Engine::IsKey_Pressing(DIK_H))
     {
-        m_iHP = 50; // 피격 기믹 확인용 
+        RenderSplitImages();
     }
     // --------------------------------------------
 
@@ -255,6 +258,19 @@ void CGray::Billboard(const _float& fTimeDelta)
     _float rad = atan2f(vDir.x, vDir.z);
 
     m_pTransformComp->Set_RotationY(rad);
+}
+
+void CGray::RenderSplitImages()
+{
+    _vec3 MonsterLook = m_pTransformComp->Get_Look();
+    _vec3 PlayerLook = m_pPlayerTransformcomp->Get_Look();
+
+    _float DotProduct = D3DXVec3Dot(&MonsterLook, &PlayerLook);
+
+    //if(DotProduct)
+
+    swprintf_s(debugString, L"Brown - 변수 확인 DotProduct = %f\n", DotProduct);
+    OutputDebugStringW(debugString);
 }
 
 _bool CGray::Detect_Player()
@@ -355,6 +371,7 @@ void CGray::AI_Suspicious(float fDeltaTime)
     {
         OutputDebugString(L"▷Gray - 상태머신 : Suspicious 진입  \n");
         // idle상태 그대로 이어서 텍스처 유지 
+        m_bBillboard = true;
         Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
             m_pTransformComp->Get_Pos().x + 0.2f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z));
 
@@ -471,6 +488,7 @@ void CGray::AI_Reconnaissance(float fDeltaTime)
         if (Detect_Player())
         {
             m_fGrayAwareness += fDeltaTime * 4.f; // 이전보다 더 빠르게 증가할것 
+
             if (m_fGrayAwareness >= m_fMaxAwareness)
             {
                 m_fGrayAwareness = m_fMaxAwareness;
@@ -481,7 +499,7 @@ void CGray::AI_Reconnaissance(float fDeltaTime)
         if (0 >= m_fConsider)
         {
             m_fConsider = 10.f; // 다시 초기 셋팅으로 
-            m_tState_Obj.Set_State(STATE_OBJ::IDLE);
+            m_tState_Obj.Set_State(STATE_OBJ::GOHOME);
         }
     }
 
@@ -496,6 +514,9 @@ void CGray::AI_GoHome(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
+        m_fFrameSpeed = 14.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"WalkNorth");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
@@ -504,9 +525,11 @@ void CGray::AI_GoHome(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::GOHOME].Act();
 
-        // 조건 - 처음 위치로 돌아갈때까지 
-        m_bGoHome = true;
-        m_tState_Obj.Set_State(STATE_OBJ::WALK);
+        if (m_bArrive && m_fFrame > m_fFrameEnd) // 프레임 다 돌면 
+        {
+            m_bArrive = false;
+            m_tState_Obj.Set_State(STATE_OBJ::IDLE);
+        }
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -661,52 +684,25 @@ void CGray::AI_Walk(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        if (FALSE == m_bGoHome)
-        {
-            OutputDebugString(L"▷Gray - 상태머신 : Walk 돌입   \n");
+        
+        OutputDebugString(L"▷Gray - 상태머신 : Walk 돌입   \n");
 
-            m_fFrameSpeed = 10.f;
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Walk");
-            m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-        }
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Walk");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        
     }
 
     if (m_tState_Obj.Can_Update())
     {
-        if (TRUE == m_bGoHome)
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::WALK].Act();
+
+        if (m_fFrame > m_fFrameEnd)
         {
-            // 플레이어가 바라보는 몬스터 : 플레이어 - 몬스터 
-            _vec3 vDirect = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
-            
-            if (vDirect.z >= 0) // 패트롤 가는곳이 플레이어 기준 +z면 등보이며 걸어가기 
-            {
-                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"WalkNorth");
-                m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-            }
-            else if (vDirect.z < 0) // 패트롤 가는곳이 플레이어 기준 -z면 그냥 걸어가기 
-            {
-                m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Walk");
-                m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-            }
-
-            _float fDistance = D3DXVec3Length(&vDirect);
-
-            if (2.f >= fDistance)
-            {
-                m_bGoHome = false;
-                m_tState_Obj.Set_State(STATE_OBJ::IDLE);
-            }
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
-        else if (FALSE == m_bGoHome)
-        {
-            if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
-                m_mapActionKey[ACTION_KEY::WALK].Act();
-
-            if (m_fFrame > m_fFrameEnd)
-            {
-                m_tState_Obj.Set_State(STATE_OBJ::REST);
-            }
-        }
+        
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -811,6 +807,7 @@ void CGray::AI_UpRightRun(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
+        OutputDebugString(L"▷Gray - 상태머신 : UpRightRun 진입   \n");
         m_fFrameSpeed = 13.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"UpRightRun");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -829,7 +826,7 @@ void CGray::AI_UpRightRun(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-
+        OutputDebugString(L"▷Gray - 상태머신 : UpRightRun 끝   \n");
     }
 }
 
@@ -837,6 +834,7 @@ void CGray::AI_Frighten(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
+        OutputDebugString(L"▷Gray - 상태머신 : Frighten 진입   \n");
         m_fFrameSpeed = 12.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Frighten");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -855,14 +853,16 @@ void CGray::AI_Frighten(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-
+        OutputDebugString(L"▷Gray - 상태머신 : Frighten 끝   \n");
     }
+    
 }
 
 void CGray::AI_Attack(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
+        OutputDebugString(L"▷Gray - 상태머신 : Attack 진입   \n");
         m_fFrameSpeed = 10.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Attack");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -881,7 +881,7 @@ void CGray::AI_Attack(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-
+        OutputDebugString(L"▷Gray - 상태머신 : Attack 끝   \n");
     }
 }
 
@@ -889,6 +889,7 @@ void CGray::AI_HeavyAttack(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
+        OutputDebugString(L"▷Gray - 상태머신 : HeavyAttack 진입   \n");
         m_fFrameSpeed = 10.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"HeavyAttack");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -907,12 +908,34 @@ void CGray::AI_HeavyAttack(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-
+        OutputDebugString(L"▷Gray - 상태머신 : HeavyAttack 끝   \n");
     }
 }
-/*
+
 void CGray::AI_Block(float fDeltaTime)
 {
+    if (m_tState_Obj.IsState_Entered())
+    {
+        OutputDebugString(L"▷Gray - 상태머신 : Block 진입   \n");
+        m_fFrameSpeed = 10.f;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Block");
+        m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+    }
+
+    if (m_tState_Obj.Can_Update())
+    {
+        //행동이 IDLE일때 WALK 가상키 누르기 
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::GOHOME].Act();
+
+        // 조건 - 처음 위치로 돌아갈때까지 
+        m_tState_Obj.Set_State(STATE_OBJ::WALK);
+    }
+
+    if (m_tState_Obj.IsState_Exit())
+    {
+        OutputDebugString(L"▷Gray - 상태머신 : HeavyAttack 끝   \n");
+    }
 }
 
 void CGray::AI_CrotchHit(float fDeltaTime)
@@ -946,7 +969,7 @@ void CGray::AI_Headless(float fDeltaTime)
 void CGray::AI_Death(float fDeltaTime)
 {
 }
-*/
+
 
 #pragma endregion
 
@@ -955,6 +978,7 @@ void CGray::Idle(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
+        //OutputDebugString(L"▷Gray - 행동머신 : Idle 진입   \n");
     }
 
     if (m_tState_Act.Can_Update())
@@ -994,7 +1018,7 @@ void CGray::Idle(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit()) // 가끔 필요할때가 있어서 - 찾아보기 
     {
-
+        //OutputDebugString(L"▷Gray - 행동머신 : Idle 끝   \n");
     }
 }
 
@@ -1002,11 +1026,14 @@ void CGray::Approach(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
+        //OutputDebugString(L"▷Gray - 행동머신 : Approach 진입   \n");
     }
 
     // 실행
     {
-        
+        if (Calc_Distance() > m_fMonsterSightDistance) // 시야밖은 recon으로 - 우선사항 
+            m_tState_Obj.Set_State(STATE_OBJ::RECONNAISSANCE);
+
         m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
         vDir = vPlayerPos - m_pTransformComp->Get_Pos();
@@ -1028,6 +1055,7 @@ void CGray::Approach(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
+        //OutputDebugString(L"▷Gray - 행동머신 : Approach 끝   \n");
     }
 }
 
@@ -1038,7 +1066,10 @@ void CGray::SideMoving(float fDeltaTime)
     }
 
     // 실행
-    {
+    {   
+        if (Calc_Distance() > m_fMonsterSightDistance) // 시야밖은 recon으로
+            m_tState_Obj.Set_State(STATE_OBJ::RECONNAISSANCE);
+        
         _vec3 Right = m_pTransformComp->Get_Right();
         D3DXVec3Normalize(&Right, &Right);
         
@@ -1071,6 +1102,9 @@ void CGray::SuddenAttack(float fDeltaTime)
 
     // 실행
     {
+        if (Calc_Distance() > m_fMonsterSightDistance) // 시야밖은 recon으로
+            m_tState_Obj.Set_State(STATE_OBJ::RECONNAISSANCE);
+
         m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
 
             vDir = vPlayerPos - m_pTransformComp->Get_Pos();
@@ -1134,18 +1168,22 @@ void CGray::GoHome(float fDeltaTime)
 
     // 실행
     {
-        // 몬스터 - zero 바라보는 벡터 생성
         _vec3 vDirect = vPatrolPointZero - m_pTransformComp->Get_Pos();
-        
+
         _float fDistance = D3DXVec3Length(&vDirect);
-        
+
         D3DXVec3Normalize(&vDirect, &vDirect);
 
-        if(2.f >= fDistance)
+        if (2.f >= fDistance)
+        {
+            m_bArrive = true;
             m_tState_Act.Set_State(STATE_ACT::IDLE);
+        }
         else
+        {
+            //OutputDebugString(L"▷Brown - 기존 패트롤 포인트 복귀중   \n");
             m_pTransformComp->Move_Pos(&vDirect, fDeltaTime, m_fSideWalkSpeed);
-        
+        }
     }
 
     // 조건
