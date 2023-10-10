@@ -84,7 +84,7 @@ HRESULT CScene_AnimationTool::Ready_Prototype()
 	// ¿À¸¥¼Õ
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightHand/RightHand (%d).png", TEX_NORMAL, L"Player", L"Right_Hand", _range<_uint>(0U, 1U)), E_FAIL);
 	// ÁÖ¸Ô Â÷Â¡ (¿À¸¥¼Õ)
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightHand_Charging/RightHand_Charging (%d).png", TEX_NORMAL, L"Player", L"RightHand_Charging", _range<_uint>(0U, 1U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightHand_Charging/RightHand_Charging (%d).png", TEX_NORMAL, L"Player", L"RightHand_Charging", _range<_uint>(0U, 2U)), E_FAIL);
 	// ¹ö¸®±â (¿À¸¥¼Õ)
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/ThrowHand/UnderThrowRightHand (%d).png", TEX_NORMAL, L"Player", L"UnderThrow_RightHand", _range<_uint>(0U, 0U)), E_FAIL);
 	// ¼èÆÄÀÌÇÁ
@@ -92,7 +92,7 @@ HRESULT CScene_AnimationTool::Ready_Prototype()
 	// ¼èÆÄÀÌÇÁ Â÷Â¡
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Steel_Pipe_Charging/Steel_Pipe_Charging (%d).png", TEX_NORMAL, L"Player", L"Steel_Pipe_Charging", _range<_uint>(0U, 3U)), E_FAIL);
 	// ÇÁ¶óÀÌÆÒ
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/FryingPan/FryingPan (%d).png", TEX_NORMAL, L"Player", L"FryingPan", _range<_uint>(0U, 4U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/FryingPan/FryingPan (%d).png", TEX_NORMAL, L"Player", L"FryingPan", _range<_uint>(0U, 3U)), E_FAIL);
 	// ÇÁ¶óÀÌÆÒ Â÷Â¡
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/FryingPan_Charging/FryingPan_Charging (%d).png", TEX_NORMAL, L"Player", L"FryingPan_Charging", _range<_uint>(0U, 3U)), E_FAIL);
 	// ¶óÀÌÅÍ
@@ -100,7 +100,7 @@ HRESULT CScene_AnimationTool::Ready_Prototype()
 	// ÇÃ·¹ÀÌ¾î ÃÑ
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Gun/Gun (%d).png", TEX_NORMAL, L"Player", L"Gun", _range<_uint>(0U, 3U)), E_FAIL);
 	// ÇÃ·¹ÀÌ¾î ÃÑ È¸Àü
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Gun/Spin (%d).png", TEX_NORMAL, L"Player", L"Gun_Spin", _range<_uint>(0U, 3U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/GunSpin/Spin (%d).png", TEX_NORMAL, L"Player", L"Gun_Spin", _range<_uint>(0U, 3U)), E_FAIL);
 	// ÇÃ·¹ÀÌ¾î Åè½¼ ±â°üÃÑ
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Thompson/Thompson (%d).png", TEX_NORMAL, L"Player", L"Thompson", _range<_uint>(0U, 3U)), E_FAIL);
 	// ¸ÆÁÖº´
