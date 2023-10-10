@@ -23,6 +23,8 @@ namespace Engine
 
 	enum MOUSEMOVESTATE {	DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };
 
+	enum MonsterPhase { Phase1, Phase2, Phase_End };
+
 	enum EBIT_FLAG_32 : unsigned long
 	{
 		EBIT_FLAG32_0 = 1UL << 0,
@@ -86,6 +88,5 @@ namespace Engine
 		KEYTYPE_END
 	};
 
-	enum MonsterPhase	{ Phase1, Phase2, Phase_End	};
 }
 #endif // Engine_Enum_h__

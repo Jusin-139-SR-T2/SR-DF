@@ -107,5 +107,5 @@ void CUI_Player::Update_InternalData()
 	CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
 	
 	// 여기서부터 블랙보드의 정보를 얻어온다.
-	m_fHp = pBlackBoard->Get_HP().Get_Percent();
+	m_fHp = pBlackBoard->Get_HP().Cur;
 }

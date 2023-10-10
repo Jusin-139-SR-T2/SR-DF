@@ -24,7 +24,7 @@ _int CAceGameObject::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	return S_OK();
+	return 0;
 }
 
 void CAceGameObject::LateUpdate_GameObject()

@@ -43,7 +43,7 @@ HRESULT CRedLaser::Ready_GameObject()
 	m_fFrameSpeed = 10.f;	
 	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 
-	m_pTransformComp->Set_Scale({ 10.f, 1.f, 1.f });
+	m_pTransformComp->Set_Scale({ 10.f, 2.f, 1.f });
 
 	// 충돌용
 	m_pTransformComp->Readjust_Transform();
@@ -123,6 +123,19 @@ void CRedLaser::Free()
 void CRedLaser::OnCollision(CGameObject* pDst) //pDst랑 dynamic_cast 해서 구분지어다가 합시당  
 {
 	OutputDebugString(L"▶RedLaser 충돌 \n");
+
+	CollideName = pDst->Get_ObjectName();
+
+	if (L"Player" == CollideName)
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
+		GAUGE<_float> PlayerHp = pPlayer->Get_PlayerHP();
+
+		PlayerHp.Cur -= 2.f;
+
+		pPlayer->Set_PlayerHP(PlayerHp);
+
+	}
 }
 
 void CRedLaser::OnCollisionEntered(CGameObject* pDst)

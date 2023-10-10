@@ -63,6 +63,9 @@ private:
 
 	_float m_fFrameCnt;
 	_vec3 m_vOrigin;	
+
+	wstring CollideName;
+
 };
 
 

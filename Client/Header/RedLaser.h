@@ -28,7 +28,8 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CRedLaser* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CRedLaser* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
+								_float _x, _float _y, _float _z);
 
 private:
 	HRESULT				Add_Component();
@@ -59,6 +60,6 @@ private:
 	_float m_fFrameSpeed;
 
 	_vec3 m_vOrigin;
-	
+	wstring CollideName;
 };
 

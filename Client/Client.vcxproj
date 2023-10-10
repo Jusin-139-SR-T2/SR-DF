@@ -22,6 +22,8 @@
     <ClInclude Include="AceGameObject.h" />
     <ClInclude Include="AceUnit.h" />
     <ClInclude Include="AttackUnion.h" />
+    <ClInclude Include="BlueBuff.h" />
+    <ClInclude Include="SpawnFire.h" />
     <ClInclude Include="Header\EnergyBall.h" />
     <ClInclude Include="Header\FallingStone.h" />
     <ClInclude Include="Header\BlackBoard_Monster.h" />
@@ -66,6 +68,7 @@
     <ClCompile Include="AceGameObject.cpp" />
     <ClCompile Include="AceUnit.cpp" />
     <ClCompile Include="AttackUnion.cpp" />
+    <ClCompile Include="BlueBuff.cpp" />
     <ClCompile Include="Code\FallingStone.cpp" />
     <ClCompile Include="Code\BlackBoard_Monster.cpp" />
     <ClCompile Include="Code\BlackBoard_Player.cpp" />
@@ -91,6 +94,7 @@
     <ClCompile Include="Code\FireWork.cpp" />
     <ClCompile Include="Code\RedLaser.cpp" />
     <ClCompile Include="Code\EnergyBall.cpp" />
+    <ClCompile Include="SpawnFire.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

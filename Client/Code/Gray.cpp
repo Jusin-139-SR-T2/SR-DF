@@ -135,8 +135,8 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     Height_On_Terrain(); 
 
     // 빌보드 
-    if(m_bBillboard)
-        Billboard(fTimeDelta);
+    //if(m_bBillboard)
+    Billboard(fTimeDelta);
 
     // 상태머신-------------------------------------
     m_fFrame += m_fFrameSpeed * fTimeDelta;
@@ -373,7 +373,7 @@ void CGray::AI_Suspicious(float fDeltaTime)
         // idle상태 그대로 이어서 텍스처 유지 
         m_bBillboard = true;
         Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
-            m_pTransformComp->Get_Pos().x + 0.2f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z));
+            m_pTransformComp->Get_Pos().x + 0.2f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::GRAY));
 
     }
 

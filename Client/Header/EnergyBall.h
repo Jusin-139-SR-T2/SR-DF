@@ -15,6 +15,8 @@ class CCalculatorComponent;
 
 END
 
+class CPlayer;
+
 class CEnergyBall : public Engine::CGameObject
 {
 	DERIVED_CLASS(CGameObject, CEnergyBall)
@@ -66,16 +68,18 @@ private:
 	_float m_fFrameCnt;
 	_vec3 m_vOrigin;
 
-	_float m_fMovingSpeed; // 일반 추격스피드 
-	_float m_fEnforceMovingSpeed; //3페이지 전용 추격스피드 
+	_float m_fMovingSpeed; 
 
 	_float m_fAge;
-	_float m_fLifeTime; // 일반 수명
-	_float m_fEnforceLifeTime; //3페이지 전용 수명 
+	_float m_fLifeTime; 
 
+	_vec3 Dir;
 	MonsterPhase m_eCurrPhase;
 
-	void Follow_Player(const _float fTimeDelta);
+	HRESULT Follow_Player(const _float fTimeDelta, MonsterPhase _phase);
+	void Value_Setting(_float _x, _float _y, _float _z, MonsterPhase _phase);
+
+	wstring CollideName;
 };
 
 

@@ -139,8 +139,9 @@ public:// 플레이어 상태 값
 	// TEST
 	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향 
 
+	// 소영 추가 ---------------- 
 	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
-	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 라이터 조명
+	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
 	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
 
 private: // 플레이어의 상태 머신

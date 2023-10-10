@@ -20,24 +20,17 @@ HRESULT CAwareness::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
-
-	m_pTransformComp->Set_Scale({ 0.3f, 0.5f, 1.f });
+	m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
 
 	m_fFrame = 0;
 
 	m_fAge = 0.f;
 	m_fLifeTime = 1.f;
-	
-	//Brown일떄
-	m_fFrameSpeed = 2.f;
-	
-	//Gray
-	//m_fFrameSpeed = 3.f;
 
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
 	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 
-	//m_pTransformComp->Set_Pos(m_pBossTransformcomp->Get_Pos());
+	
 	return S_OK;
 }
 
@@ -90,7 +83,7 @@ void CAwareness::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CAwareness* CAwareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
+CAwareness* CAwareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAwareness::TYPE pType)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -104,6 +97,8 @@ CAwareness* CAwareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float 
 
 	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
+	pInstance->m_eType = pType;
+	pInstance->Set_Speed(pType);
 
 	return pInstance;
 }
@@ -137,4 +132,20 @@ HRESULT CAwareness::Billboard()
 	m_pTransformComp->Set_RotationY(rad - D3DX_PI);
 
 	return S_OK;
+}
+
+void CAwareness::Set_Speed(CAwareness::TYPE pType)
+{
+	switch (pType)
+	{
+	case CAwareness::TYPE::BROWN:
+		m_fFrameSpeed = 2.f;
+		break;
+	case CAwareness::TYPE::GRAY:
+		m_fFrameSpeed = 3.f;
+		break;
+	case CAwareness::TYPE::BOSS:
+		m_fFrameSpeed = 4.f;
+		break;
+	}
 }

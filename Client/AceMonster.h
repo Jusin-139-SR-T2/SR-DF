@@ -3,9 +3,9 @@
 
 // Team Agent 추가예정  
 
-class CAceMonster : public CAceGameObject
+class CAceMonster : public CAceUnit
 {
-	DERIVED_CLASS(CAceGameObject, CAceUnit)
+	DERIVED_CLASS(CAceUnit, CAceMonster)
 
 protected:
 	explicit CAceMonster(LPDIRECT3DDEVICE9 pGraphicDev);

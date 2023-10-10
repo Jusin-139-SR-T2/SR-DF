@@ -10,7 +10,7 @@
 
 BEGIN(Engine)
 
-	class CRcBufferComp;
+class CRcBufferComp;
 class CTextureComponent;
 class CTransformComponent;
 
@@ -19,6 +19,8 @@ END
 class CAwareness : public Engine::CGameObject
 {
 	DERIVED_CLASS(CGameObject, CAwareness)
+
+	PUBLIC enum class TYPE {BROWN, GRAY, BOSS, TYPE_END};
 
 private:
 	explicit CAwareness(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -31,7 +33,7 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CAwareness* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CAwareness* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAwareness::TYPE pType);
 
 private:
 	HRESULT				Add_Component();
@@ -61,6 +63,9 @@ private:
 	_float m_fAge;
 	_float m_fLifeTime;
 	wchar_t		debugString[100];
+
+	CAwareness::TYPE m_eType;
+	void Set_Speed(CAwareness::TYPE pType);
 };
 	
 

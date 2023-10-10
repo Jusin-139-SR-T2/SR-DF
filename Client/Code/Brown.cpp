@@ -134,7 +134,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     // 빌보드
     Billboard(fTimeDelta);
 
-
      //상태머신
     m_fFrame += m_fFrameSpeed * fTimeDelta;
     
@@ -185,7 +184,8 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     return S_OK;
 }
 
-#pragma region 기본 환경설정 
+#pragma region 기본 override 
+
 void CBrown::LateUpdate_GameObject()
 {
     SUPER::LateUpdate_GameObject();
@@ -332,8 +332,8 @@ void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입
     //충돌한게 투사체라면
 
 
-    swprintf_s(debugString, L"Brown - 변수 확인 m_iHP = %f\n", m_iHP);
-    OutputDebugStringW(debugString);
+    //swprintf_s(debugString, L"Brown - 변수 확인 m_iHP = %f\n", m_iHP);
+   // OutputDebugStringW(debugString);
 }
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
@@ -465,19 +465,15 @@ void CBrown::AI_Idle(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        // 조건 - 플레이어가 시야각으로 들어오면 
         if (Detect_Player())
         {
             m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
         }
-
-        // 플레이어가 총으로 쏘았을 때
-        // Get_Player()->Get_m_pRightHandComp()->Get_VecTexture()->front()
-        // Get_Player()->Get_PlayerGunState()
     }
 
     if (m_tState_Obj.IsState_Exit())
     {
+        m_bArrive = FALSE;
           //OutputDebugString(L"▷Brown - 상태머신 : idle 끝 \n");
     }
 }
@@ -490,9 +486,9 @@ void CBrown::AI_Suspicious(float fDeltaTime)
 
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Suspicious");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-        // 투사체 발사 
+        // ? ! 생성 
         Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
-            m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z));
+            m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BROWN));
 
     }
 
@@ -1066,7 +1062,7 @@ void CBrown::AI_GoHome(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE)) // 현재 액션키가 IDLE 이므로 
             m_mapActionKey[ACTION_KEY::GOHOME].Act(); // 액션키 누르기 
      
-        if (m_bArrive && m_fFrame > m_fFrameEnd) // 프레임 다 돌면 
+        if (m_bArrive && (m_fFrame > m_fFrameEnd)) // 프레임 다 돌면 
         {
             m_bArrive = false;
             m_tState_Obj.Set_State(STATE_OBJ::IDLE);
@@ -1329,7 +1325,7 @@ void CBrown::GoHome(float fDeltaTime)
         else
         {
             //OutputDebugString(L"▷Brown - 기존 패트롤 포인트 복귀중   \n");
-            m_pTransformComp->Move_Pos(&vDirect, fDeltaTime, m_fRunDistance);
+            m_pTransformComp->Move_Pos(&vDirect, fDeltaTime, m_fStrafingSpeed);
         }
     }
 
@@ -1340,7 +1336,7 @@ void CBrown::GoHome(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-        ////OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
+        ////OutputDebugString(L"▷Brown - 행동머신 : GOHOME 끝   \n");
     }
 }
 

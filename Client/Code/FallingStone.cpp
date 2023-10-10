@@ -56,7 +56,7 @@ HRESULT CFallingStone::Ready_GameObject()
 	m_fFrame = 0;
 	m_fFrameSpeed = 3.f;
 	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-	m_fFallingSpeed = 5.f;
+	m_fFallingSpeed = 7.f;
 	m_fAge = 0.f;
 	m_fLifeTime = 1.f;
 
@@ -72,19 +72,7 @@ _int CFallingStone::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	//중복코드 있지만 개선할시간없으니 픽스합니다. 
-
-	if (!m_bCollision)
-	{
-		if (TRUE == m_bFall)
-		{
-			Falling(fTimeDelta);
-		}
-		else if (FALSE == m_bFall)
-		{
-			Height_On_Terrain();
-		}
-	}
+	Falling(fTimeDelta);
 
 	m_fFrame += m_fFrameSpeed * fTimeDelta;
 
@@ -130,19 +118,6 @@ void CFallingStone::Render_GameObject()
 }
 
 #pragma region 기본셋팅 
-
-void CFallingStone::Height_On_Terrain()
-{
-	_vec3		vPos;
-	m_pTransformComp->Get_Info(INFO_POS, &vPos);
-
-	CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
-	NULL_CHECK(pTerrainBufferComp);
-
-	_float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
-
-	m_pTransformComp->Set_Pos(vPos.x, fHeight + 0.2f, vPos.z);
-}
 
 HRESULT CFallingStone::Add_Component()
 {
@@ -192,18 +167,7 @@ HRESULT CFallingStone::Billboard()
 
 void CFallingStone::Falling(const _float& fTimeDelta)
 {
-	_vec3		vPos;
-	m_pTransformComp->Get_Info(INFO_POS, &vPos);
-
-	CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
-	NULL_CHECK(pTerrainBufferComp);
-
-	//지형으로부터 높이 
-	_float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos, pTerrainBufferComp->Get_VtxPos());
-
-	_float Delta = vPos.y - fHeight;
-
-	if (Delta < 0.7f)
+	if (m_pTransformComp->Get_Pos().y < 0.7f)
 	{
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"FallingStone");
 		m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -226,6 +190,21 @@ void CFallingStone::OnCollisionEntered(CGameObject* pDst)
 	m_bOld = TRUE;
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"FallingStone");
 	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+
+	CollideName = pDst->Get_ObjectName();
+
+	//if (L"Player" == CollideName)
+	//{
+	//	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
+	//	GAUGE<_float> PlayerHp = pPlayer->Get_PlayerHP();
+
+	//	PlayerHp.Cur -= 4.f;
+
+	//	pPlayer->Set_PlayerHP(PlayerHp);
+
+	//	Set_Dead();
+	//}
+
 }
 
 void CFallingStone::OnCollisionExited(CGameObject* pDst)

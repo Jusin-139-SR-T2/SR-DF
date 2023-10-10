@@ -16,21 +16,6 @@
     <Filter Include="00. =====MainApp=====">
       <UniqueIdentifier>{4ae978a9-9eaa-4fbd-a172-a087d0a17d27}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. =====Scene=====">
-      <UniqueIdentifier>{e77dec83-b28c-45a7-8a61-091430f38a67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. =====Scene=====\00. Logo">
-      <UniqueIdentifier>{178dc53e-edc9-41c8-bcce-5adf592f8322}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. =====Scene=====\00. Logo\TitleLogo">
-      <UniqueIdentifier>{b7dbd553-426e-4b8a-be54-78c84d2dcda3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. =====Scene=====\01. Stage">
-      <UniqueIdentifier>{fc095743-119a-4028-80d8-9edcfed409a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. =====Scene=====\02. Loading">
-      <UniqueIdentifier>{171166f6-c6c9-4809-9b50-9ba3511144ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. =====AceGameObject=====">
       <UniqueIdentifier>{b9328527-1891-4c78-b6fb-acffe510992c}</UniqueIdentifier>
     </Filter>
@@ -142,6 +127,21 @@
     <Filter Include="02. =====AceGameObject=====\01. AceItem\04. Ace_Building">
       <UniqueIdentifier>{46d2f07e-70eb-4b8c-977b-bfe73d40833b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. =====BlackBoard=====">
+      <UniqueIdentifier>{c309ba83-28a7-447b-a829-249506d301bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. =====BlackBoard=====\0. Player">
+      <UniqueIdentifier>{d47f6f5c-fd84-4254-91e1-51f4d5adf5e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. =====BlackBoard=====\1. Monster">
+      <UniqueIdentifier>{fee4b291-3060-41d3-9272-9146cd714457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====">
+      <UniqueIdentifier>{73c6059c-b0b0-48ab-ba48-db6bbc94e26c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====\01. Player">
+      <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
+    </Filter>
     <Filter Include="03..=====Object=====">
       <UniqueIdentifier>{9e9c32f1-9261-4a9e-a064-25a0d834a711}</UniqueIdentifier>
     </Filter>
@@ -187,20 +187,20 @@
     <Filter Include="03..=====Object=====\03. Lighter\01. CeilingLighter">
       <UniqueIdentifier>{d2f211d2-f5ae-419c-bc37-862eb89e188f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. =====BlackBoard=====">
-      <UniqueIdentifier>{c309ba83-28a7-447b-a829-249506d301bc}</UniqueIdentifier>
+    <Filter Include="01. =====Scene=====">
+      <UniqueIdentifier>{e77dec83-b28c-45a7-8a61-091430f38a67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. =====BlackBoard=====\0. Player">
-      <UniqueIdentifier>{d47f6f5c-fd84-4254-91e1-51f4d5adf5e6}</UniqueIdentifier>
+    <Filter Include="01. =====Scene=====\00. Logo">
+      <UniqueIdentifier>{178dc53e-edc9-41c8-bcce-5adf592f8322}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. =====BlackBoard=====\1. Monster">
-      <UniqueIdentifier>{fee4b291-3060-41d3-9272-9146cd714457}</UniqueIdentifier>
+    <Filter Include="01. =====Scene=====\00. Logo\TitleLogo">
+      <UniqueIdentifier>{b7dbd553-426e-4b8a-be54-78c84d2dcda3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. =====UI=====">
-      <UniqueIdentifier>{73c6059c-b0b0-48ab-ba48-db6bbc94e26c}</UniqueIdentifier>
+    <Filter Include="01. =====Scene=====\01. Stage">
+      <UniqueIdentifier>{fc095743-119a-4028-80d8-9edcfed409a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. =====UI=====\01. Player">
-      <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
+    <Filter Include="01. =====Scene=====\02. Loading">
+      <UniqueIdentifier>{171166f6-c6c9-4809-9b50-9ba3511144ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -277,10 +277,7 @@
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\00. Gray_ThrowPipe</Filter>
     </ClInclude>
     <ClInclude Include="Header\UI_Player.h">
-      <Filter>05. =====UI=====\01. Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>05. =====AceUI=====\01. Player</Filter>
     </ClInclude>
     <ClInclude Include="Header\MonsterPunch.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack</Filter>
@@ -333,6 +330,15 @@
     <ClInclude Include="Header\TitleLogo.h">
       <Filter>01. =====Scene=====\00. Logo\TitleLogo</Filter>
     </ClInclude>
+    <ClInclude Include="SpawnFire.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossPattern\02. Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>05. =====AceUI=====</Filter>
+    </ClInclude>
+    <ClInclude Include="BlueBuff.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossPattern\05. BlueBuff</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -361,9 +367,6 @@
     </ClCompile>
     <ClCompile Include="Code\Brown.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\1. Brown</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\TitleLogo.cpp">
-      <Filter>01. Scene\00. Logo\TitleLogo</Filter>
     </ClCompile>
     <ClCompile Include="Code\Player.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player</Filter>
@@ -414,10 +417,7 @@
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\00. Gray_ThrowPipe</Filter>
     </ClCompile>
     <ClCompile Include="Code\UI_Player.cpp">
-      <Filter>05. =====UI=====\01. Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\UI.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>05. =====AceUI=====\01. Player</Filter>
     </ClCompile>
     <ClCompile Include="Code\MonsterPunch.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack</Filter>
@@ -469,6 +469,18 @@
     </ClCompile>
     <ClCompile Include="Code\Stage.cpp">
       <Filter>01. =====Scene=====\01. Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnFire.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossPattern\02. Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI.cpp">
+      <Filter>05. =====AceUI=====</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\TitleLogo.cpp">
+      <Filter>01. =====Scene=====\00. Logo\TitleLogo</Filter>
+    </ClCompile>
+    <ClCompile Include="BlueBuff.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossPattern\05. BlueBuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

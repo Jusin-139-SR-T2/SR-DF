@@ -19,6 +19,8 @@
 #include "FallingStone.h"
 #include "SlowThunder.h"
 #include "EnergyBall.h"
+#include "SpawnFire.h"
+#include "BlueBuff.h"
 
 class CStage : public Engine::CScene
 {

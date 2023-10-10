@@ -162,11 +162,19 @@ void CSlowThunder::OnCollision(CGameObject* pDst)
 
 void CSlowThunder::OnCollisionEntered(CGameObject* pDst)
 {
-	OutputDebugString(L"▶SlowThunder 충돌 \n");/*
-	m_bCollision = true;
-	m_bOld = TRUE;
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"FallingStone");
-	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());*/
+	OutputDebugString(L"▶SlowThunder 충돌 \n");
+
+	if (L"Player" == CollideName)
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
+		GAUGE<_float> PlayerHp = pPlayer->Get_PlayerHP();
+
+		PlayerHp.Cur -= 7.f;
+
+		pPlayer->Set_PlayerHP(PlayerHp);
+
+		Set_Dead();
+	}
 }
 
 void CSlowThunder::OnCollisionExited(CGameObject* pDst)

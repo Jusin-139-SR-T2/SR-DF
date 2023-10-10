@@ -12,8 +12,6 @@
 #include "MonsterPunch.h"
 
 #include "Awareness.h"
-//юс╫ц©К 
-#include "FallingStone.h"
 
 
 BEGIN(Engine)
