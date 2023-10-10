@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "AceUnit.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -14,9 +14,9 @@ class CCalculatorComponent;
 
 END
 
-class CSlowThunder : public Engine::CGameObject
+class CSlowThunder : public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CSlowThunder)
+	DERIVED_CLASS(CAceUnit, CSlowThunder)
 
 private:
 	explicit CSlowThunder(LPDIRECT3DDEVICE9 pGraphicDev);

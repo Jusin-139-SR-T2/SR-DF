@@ -2,12 +2,12 @@
 #include "BlueBuff.h"
 
 CBlueBuff::CBlueBuff(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:Base(pGraphicDev)
 {
 }
 
 CBlueBuff::CBlueBuff(const CBlueBuff& rhs)
-	: CGameObject(rhs)
+	: Base(rhs)
 {
 }
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "AceUnit.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -17,9 +17,9 @@ END
 
 class CPlayer;
 
-class CEnergyBall : public Engine::CGameObject
+class CEnergyBall : public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CEnergyBall)
+	DERIVED_CLASS(CAceUnit, CEnergyBall)
 
 private:
 	explicit CEnergyBall(LPDIRECT3DDEVICE9 pGraphicDev);

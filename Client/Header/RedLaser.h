@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "AceUnit.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -13,9 +13,9 @@ class CColliderComponent;
 
 END
 
-class CRedLaser : public Engine::CGameObject
+class CRedLaser : public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CRedLaser)
+	DERIVED_CLASS(CAceUnit, CRedLaser)
 
 private:
 	explicit CRedLaser(LPDIRECT3DDEVICE9 pGraphicDev);

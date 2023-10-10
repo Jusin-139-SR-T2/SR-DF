@@ -2,12 +2,12 @@
 #include "RedLaser.h"
 
 CRedLaser::CRedLaser(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:Base(pGraphicDev)
 {
 }
 
 CRedLaser::CRedLaser(const CRedLaser& rhs)
-	: CGameObject(rhs)
+	: Base(rhs)
 {
 }
 

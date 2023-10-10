@@ -16,14 +16,14 @@ END
 class CPlayer;
 class CBoss;
 
-class CBlueBuff : public CAceUnit
+class CBossBullet : public CAceUnit
 {
-	DERIVED_CLASS(CAceUnit, CBlueBuff)
+	DERIVED_CLASS(CAceUnit, CBossBullet)
 
 private:
-	explicit CBlueBuff(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CBlueBuff(const CBlueBuff& rhs);
-	virtual ~CBlueBuff();
+	explicit CBossBullet(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CBossBullet(const CBossBullet& rhs);
+	virtual ~CBossBullet();
 
 public:
 	virtual HRESULT		Ready_GameObject() override;
@@ -31,7 +31,7 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CBlueBuff* Create(LPDIRECT3DDEVICE9 pGraphicDev,
+	static CBossBullet* Create(LPDIRECT3DDEVICE9 pGraphicDev,
 		_float _x, _float _y, _float _z, MonsterPhase _CurrPhase);
 
 private:
@@ -46,9 +46,9 @@ private:
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
-	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
-	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-	
+		GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
+		GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+
 private:
 	_float m_fFrame;
 	_float m_fFrameEnd;

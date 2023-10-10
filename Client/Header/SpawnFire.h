@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "AceUnit.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -17,9 +17,9 @@ END
 
 class CPlayer;
 
-class CSpawnFire : public Engine::CGameObject
+class CSpawnFire : public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CSpawnFire)
+	DERIVED_CLASS(CAceUnit, CSpawnFire)
 
 private:
 	explicit CSpawnFire(LPDIRECT3DDEVICE9 pGraphicDev);

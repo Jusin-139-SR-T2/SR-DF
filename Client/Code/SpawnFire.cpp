@@ -2,12 +2,12 @@
 #include "SpawnFire.h"
 
 CSpawnFire::CSpawnFire(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:Base(pGraphicDev)
 {
 }
 
 CSpawnFire::CSpawnFire(const CSpawnFire& rhs)
-	: CGameObject(rhs)
+	: Base(rhs)
 {
 }
 

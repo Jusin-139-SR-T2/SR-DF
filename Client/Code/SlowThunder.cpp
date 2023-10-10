@@ -2,12 +2,12 @@
 #include "SlowThunder.h"
 
 CSlowThunder::CSlowThunder(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:Base(pGraphicDev)
 {
 }
 
 CSlowThunder::CSlowThunder(const CSlowThunder& rhs)
-	: CGameObject(rhs)
+	: Base(rhs)
 {
 }
 

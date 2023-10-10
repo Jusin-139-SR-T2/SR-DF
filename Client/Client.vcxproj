@@ -19,11 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AceGameObject.h" />
-    <ClInclude Include="AceUnit.h" />
-    <ClInclude Include="AttackUnion.h" />
-    <ClInclude Include="BlueBuff.h" />
-    <ClInclude Include="SpawnFire.h" />
+    <ClInclude Include="BossBullet.h" />
+    <ClInclude Include="Header\AceGameObject.h" />
+    <ClInclude Include="Header\AceUnit.h" />
+    <ClInclude Include="Header\AttackUnion.h" />
+    <ClInclude Include="Header\BlueBuff.h" />
+    <ClInclude Include="Header\SpawnFire.h" />
     <ClInclude Include="Header\EnergyBall.h" />
     <ClInclude Include="Header\FallingStone.h" />
     <ClInclude Include="Header\BlackBoard_Monster.h" />
@@ -61,15 +62,16 @@
     <ClInclude Include="Header\UI.h" />
     <ClInclude Include="Header\MonsterPunch.h" />
     <ClInclude Include="Header\SlowThunder.h" />
-    <ClInclude Include="AceMonster.h" />
-    <ClInclude Include="NormalBullet.h" />
+    <ClInclude Include="Header\AceMonster.h" />
+    <ClInclude Include="Header\NormalBullet.h" />
     <ClInclude Include="Header\PlayerBullet.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AceGameObject.cpp" />
-    <ClCompile Include="AceUnit.cpp" />
-    <ClCompile Include="AttackUnion.cpp" />
-    <ClCompile Include="BlueBuff.cpp" />
+    <ClCompile Include="BossBullet.cpp" />
+    <ClCompile Include="Code\AceGameObject.cpp" />
+    <ClCompile Include="Code\AceUnit.cpp" />
+    <ClCompile Include="Code\AttackUnion.cpp" />
+    <ClCompile Include="Code\BlueBuff.cpp" />
     <ClCompile Include="Code\FallingStone.cpp" />
     <ClCompile Include="Code\BlackBoard_Monster.cpp" />
     <ClCompile Include="Code\BlackBoard_Player.cpp" />
@@ -95,7 +97,7 @@
     <ClCompile Include="Code\FireWork.cpp" />
     <ClCompile Include="Code\RedLaser.cpp" />
     <ClCompile Include="Code\EnergyBall.cpp" />
-    <ClCompile Include="SpawnFire.cpp" />
+    <ClCompile Include="Code\SpawnFire.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -114,8 +116,8 @@
     <ClCompile Include="Code\UI.cpp" />
     <ClCompile Include="Code\MonsterPunch.cpp" />
     <ClCompile Include="Code\SlowThunder.cpp" />
-    <ClCompile Include="AceMonster.cpp" />
-    <ClCompile Include="NormalBullet.cpp" />
+    <ClCompile Include="Code\AceMonster.cpp" />
+    <ClCompile Include="Code\NormalBullet.cpp" />
     <ClCompile Include="Code\PlayerBullet.cpp" />
   </ItemGroup>
   <ItemGroup>

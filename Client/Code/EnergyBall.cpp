@@ -2,12 +2,12 @@
 #include "EnergyBall.h"
 
 CEnergyBall::CEnergyBall(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:Base(pGraphicDev)
 {
 }
 
 CEnergyBall::CEnergyBall(const CEnergyBall& rhs)
-	: CGameObject(rhs)
+	: Base(rhs)
 {
 }
 

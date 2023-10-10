@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "AceUnit.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -16,9 +16,9 @@ END
 
 class CPlayer;
 
-class CFallingStone : public Engine::CGameObject
+class CFallingStone : public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CFallingStone)
+	DERIVED_CLASS(CAceUnit, CFallingStone)
 
 private:
 	explicit CFallingStone(LPDIRECT3DDEVICE9 pGraphicDev);

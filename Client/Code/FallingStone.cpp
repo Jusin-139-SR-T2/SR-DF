@@ -2,12 +2,12 @@
 #include "FallingStone.h"
 
 CFallingStone::CFallingStone(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:Base(pGraphicDev)
 {
 }
 
 CFallingStone::CFallingStone(const CFallingStone& rhs)
-	: CGameObject(rhs)
+	: Base(rhs)
 {
 }
 
