@@ -9,7 +9,7 @@ BEGIN(Engine)
 /// 팀을 식별할 수 있게 지원하는 인터페이스
 /// 인터페이스이지만 왠만한 것들은 구현을 해놓고 쓴다.
 /// </summary>
-class ENGINE_DLL ITeamAgent abstract
+class ITeamAgent abstract
 {
 public:
 	static const BYTE TEAM_END = (BYTE)255U;		// 마지막 팀 ID
