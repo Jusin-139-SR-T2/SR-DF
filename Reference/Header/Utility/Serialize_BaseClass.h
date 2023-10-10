@@ -105,13 +105,13 @@ public:
 		}
 	}
 
-	_bool Receive_ByRapidJSON(const string& strJSON)
+	_bool Receive_ByRapidJSON(string& strJSON)
 	{
 		Document doc;
 		doc.Parse(strJSON.c_str());
 
-		tHeader.strName = doc["name"].GetString();
-		tHeader.strType = static_cast<ESERIALIZE_TYPE>(doc["type"].GetInt());
+		tHeader.strName = doc["header"]["name"].GetString();
+		tHeader.strType = static_cast<ESERIALIZE_TYPE>(doc["header"]["type"].GetInt());
 
 		vVertexCount.x = doc["vertex"]["x"].GetFloat();
 		vVertexCount.y = doc["vertex"]["y"].GetFloat();

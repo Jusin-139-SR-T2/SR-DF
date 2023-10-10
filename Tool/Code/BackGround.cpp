@@ -66,6 +66,7 @@ HRESULT CBackGround::Ready_GameObject()
 	{
 		m_vecAnimation[*m_eCurType] = m_pAnimationTool->Get_Animation();
 	}	
+	m_fPriority[0] = -1.f;
 
 	m_pTransformComp->Set_Pos({ 0.f, 0.f, 0.f });	// 이미지 위치
 	m_pTransformComp->Set_Scale({ 100.f, 100.f, 1.f });	// 이미지 크기
@@ -118,7 +119,7 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 			{
 				//m_eAnimationInfo = m_vecAnimation[(int)m_iFrameCount].front();
 				_uint iFrameIndex = 0U;
-				for (_uint i = m_vecAnimation[*m_eCurType]->size() - 1; i > 0; i--)
+				for (_uint i = m_vecAnimation[*m_eCurType]->size() - 1; i >= 0; i--)
 				{
 					if ((*m_vecAnimation[*m_eCurType])[i].time <= m_pAnimationTool->Get_currentTime())
 					{
@@ -250,7 +251,7 @@ void CBackGround::Render_GameObject()
 	// 텍스처 행렬 * 부모(게임오브젝트)의 행렬
 	//m_pLeftHandTextureComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
 	// 위의 두개만 쓰면 텍스처 행렬과 부모 행렬을 별개로 두고 계산할 수 있음.
-	// 
+	
 	// 이제부터 Render_Texture 함수 안에서 자동으로 텍스처의 행렬이 디바이스에 들어간다.(SetTransform(D3DTS_WORLD, 텍스처 행렬))
 	m_pLeftHandTextureComp->Render_Texture(TextureNum[KEYTYPE_LEFTHAND], true);
 	m_pBufferComp->Render_Buffer();
@@ -273,12 +274,24 @@ void CBackGround::Render_GameObject()
 
 void CBackGround::KeyInput()
 {
-	// 손
+	// 오른손
 	if (Engine::IsKey_Pressed(DIK_1))
 	{
 		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
 	}
 
+	// 왼손
+	if (Engine::IsKey_Pressed(DIK_O))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Left_Hand");
+	}
+
+	// 오른손 차징
+	if (Engine::IsKey_Pressed(DIK_J))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"RightHand_Charging");
+	}
+	
 	// 권총
 	if (Engine::IsKey_Pressed(DIK_2))
 	{
@@ -334,13 +347,13 @@ void CBackGround::KeyInput()
 	}
 
 	// 권총 회전
-	if (Engine::IsKey_Pressed(DIK_R))
+	if (Engine::IsKey_Pressed(DIK_U))
 	{
 		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun_Spin");
 	}
 
 	// 라이터
-	if (Engine::IsKey_Pressed(DIK_V))
+	if (Engine::IsKey_Pressed(DIK_Y))
 	{
 		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Righter");
 	}

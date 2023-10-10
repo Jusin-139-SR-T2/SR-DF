@@ -599,6 +599,9 @@ void CImguiWin_MapTool::Export_ParsedTerrain(const FSerialize_Terrain& tTerrain)
     {
         cerr << "파일을 불러들일 수 없소!\n";
     }
+
+    const_cast<FSerialize_Terrain&>(tTerrain).Receive_ByRapidJSON(strJson);
+    int t = 0;
 }
 
 void CImguiWin_MapTool::Set_Button_ActiveColor()

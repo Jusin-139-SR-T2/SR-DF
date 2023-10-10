@@ -54,8 +54,8 @@ HRESULT CPlayer::Ready_GameObject()
     m_fX = -200.f; // 중점위치 
     m_fY = -280.f;
     
-    m_pLeftHandComp->Set_Pos({ m_fX, m_fY, 0.f });	// 이미지 위치
-    m_pLeftHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
+    m_pLeftHandComp->Set_Pos({ -300.f, -363.f, 0.f });	// 이미지 위치
+    m_pLeftHandComp->Set_Scale({ 1495, 1588, 1.f });						// 이미지 크기
 
     // 오른손
     m_eRIGHTState = CPlayer::STATE_RIGHTHAND::NONE;
@@ -64,7 +64,7 @@ HRESULT CPlayer::Ready_GameObject()
 
     m_fX = -m_fX; // 중점위치
 
-    m_pRightHandComp->Set_Pos({ m_fX, m_fY, 0.f });	// 이미지 위치
+    m_pRightHandComp->Set_Pos({ 0.f, 0.f, 0.f });	// 이미지 위치
     m_pRightHandComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });						// 이미지 크기
 #pragma endregion
 
@@ -136,10 +136,11 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     // 키보드 입력
     Keyboard_Input(fTimeDelta);
 
+    // 선형 보간
+    Interpolation();
+
     // 상태 업데이트(체크)
     State_Update(fTimeDelta);
-
-    Interpolation(m_fRightFrame);
 
     // 지형 타기
     Height_On_Terrain();
@@ -291,6 +292,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     _vec3	vLook;
 
     m_pTransformComp->Get_Info(INFO_LOOK, &vLook);
+
     vLook = { vLook.x, 0.f, vLook.z };
 
     _vec3 vInverse = (-m_pCamera->Get_At());
@@ -424,11 +426,10 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         m_eObjectName = OBJECT_NAME::FRYINGPAN;
     }
 
-    // 스핀 (장전)
-    if (Engine::IsKey_Pressed(DIK_R) && m_eObjectName == OBJECT_NAME::GUN)
+    // 점프
+    if (Engine::IsKey_Pressed(DIK_SPACE))
     {
-        bRightFrameOn = true;
-        bSpinOn = true;
+
     }
 
     // 발차기
@@ -446,7 +447,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         if (!bRighter)  // 라이터가 꺼져있을 경우
         {
             bRighter = true;        // 라이터 켜주기
-            m_fLeftMaxFrame = 6.f;  // 최대 프레임 설정
+            //m_fLeftMaxFrame = 6.f;  // 최대 프레임 설정
             m_eLeftState = STATE_LEFTHAND::RIGHTER; // 왼손 상태 라이터로
         }
         else // 라이터가 켜져있을 경우
@@ -463,6 +464,20 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         bRightFrameOn = true;
     }
 
+    // 공격 프레임 확인
+    if (Engine::IsKey_Pressed(DIK_0))
+    {
+        if (bDBugFrame)
+        {
+            bDBugFrame = false;
+        }
+        else
+        {
+            bDBugFrame = true;
+        }
+        
+    }
+    
     // 오브젝트 상호작용 // 소영 추가 
     /*if (Engine::IsKey_Pressed(DIK_E) && Picking_On_Object_Local())
     {
@@ -491,14 +506,14 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
             // 라이터 되돌리기가 꺼져있을 경우
             if (!bBackRighter)
             {
-                // 현재 프레임을 시간(프레임)마다 증가시키기
-                m_fLeftFrame += fLeftFrameSpeed * fTimeDelta;
+                // 현재 시간
+                fCurrentTime += fCurChangeTime * fTimeDelta;
 
                 // 양손이 주먹 상태 일경우
                 if (bLeftHandFist && bRightHandFist)
                 {
                     // 왼손 프레임이 오른손 프레임보다 클 경우
-                    if (m_fLeftFrame > m_fLeftMaxFrame)
+                    if (fCurrentTime > m_fLeftMaxFrame)
                     {
                         bLeftPunch = false;  // 왼손 주먹 Off
                         bRightPunch = true;    // 오른손 주먹 On
@@ -506,13 +521,13 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
                 }
 
                 // 현재 프레임이 최대 프레임에 도달한 경우
-                if (m_fLeftFrame >= m_fLeftMaxFrame)
+                if (fCurrentTime >= m_fLeftMaxFrame)
                 {
                     // 만약 최대프레임인데 라이터가 켜져있을 경우
                     if (bRighter)
                     {
                         // (현재 프레임) 라이터를 켜져있는 이미지로 고정
-                        m_fLeftFrame = 5.f;
+                        m_fLeftFrame = m_fLeftMaxFrame;
                         m_PlayerLighter->Set_m_bLightOn(true);
                     }
                     else // 라이터가 안켜져있을 경우
@@ -528,7 +543,7 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
             else // 라이터 되돌리기On
             {
                 // 현재 프레임을 시간(프레임)마다 감소시키기
-                m_fLeftFrame -= fLeftFrameSpeed * fTimeDelta;
+                m_fLeftFrame -= fCurChangeTime * fTimeDelta;
 
                 // 왼손 프레임이 0에 도달했을 경우
                 if (m_fLeftFrame <= 0.f)
@@ -554,11 +569,12 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
         }
         else // 쉴드를 안했을 경우
         {
+            // 오른손 프레임 증가
+            //Interpolation(m_fRightFrame);
+
             // 현재 시간
             fCurrentTime += fCurChangeTime * fTimeDelta;
 
-            // 오른손 프레임 증가
-            Interpolation(m_fRightFrame);
 
             // 차징 공격이 켜지고, 현재 프레임이 풀 차징 프레임에 도달했을 경우
             if (bChargeAttack &&
@@ -570,7 +586,7 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
 
             // 플레이어 발차기 중 프레임이 다 돌았을 경우
             if (m_ePlayerState == STATE_PLAYER::KICK &&
-                m_fRightFrame > m_fRightMaxFrame)
+                fCurrentTime > m_fRightMaxFrame)
             {
                 m_ePlayerState = STATE_PLAYER::NONE; // 플레이어 상태 초기화
                 Two_Hand(); // 맨 주먹으로 돌아가기 (나중에 이전상태로 돌아가게 해야함)
@@ -589,7 +605,7 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
             //    }
             //}
 
-            if (!timeline.empty())
+            if (!timeline[KEYTYPE_END].empty())
             {
                 // 오른손 프레임이 최대 프레임에 도달했을 경우
                 if (fCurrentTime >= m_fRightMaxFrame)
@@ -617,7 +633,7 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
                             if (bLeftHandFist && bRightHandFist)
                             {
                                 // 오른손 프레임이 다 돌았을 경우
-                                if (m_fRightFrame > m_fRightMaxFrame)
+                                if (fCurrentTime > m_fRightMaxFrame)
                                 {
                                     bRightPunch = false;  // 오른손 주먹 Off
                                     bLeftPunch = true;    // 왼손 주먹 On
@@ -625,23 +641,26 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
                             }
                         }
 
-                        // 오른손 프레임 초기화
-                        m_fRightFrame = 0;
-                        fCurrentTime = 0.f;
-                        bRightFrameOn = false; // 오른손 프레임Off
-
-                        // 권총이 회전중이였을 때
-                        if (bSpinOn)
+                        if (!bSpinOn)
                         {
-                            // 회전 Off
-                            bSpinOn = false;
-
-                            // 권총으로 다시 돌아가기
-                            bGunOn = true;
-
-                            // 최대 프레임을 권총 기준으로 다시 맞춰놓기
-                            m_fRightMaxFrame = 4.f;
+                            // 오른손 프레임 초기화
+                            m_fRightFrame = 0;
+                            fCurrentTime = 0.f;
+                            bRightFrameOn = false; // 오른손 프레임Off
                         }
+
+                        //// 권총이 회전중이였을 때
+                        //if (bSpinOn)
+                        //{
+                        //    // 회전 Off
+                        //    bSpinOn = false;
+
+                        //    // 권총으로 다시 돌아가기
+                        //    bGunOn = true;
+
+                        //    // 최대 프레임을 권총 기준으로 다시 맞춰놓기
+                        //    m_fRightMaxFrame = 4.f;
+                        //}
                     }
 
                 }
@@ -801,6 +820,15 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
             else // 나머지
             {
                 bRightFrameOn = true;
+                
+                // 권총이면 총알 발사
+                if (m_tRightHand_State.Get_State() == STATE_RIGHTHAND::GUN ||
+                    m_tRightHand_State.Get_State() == STATE_RIGHTHAND::THOMPSON)
+                {
+                    // 총알 발사 (디바이스, 생성 위치, 투사체 속도)
+                    Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
+                        m_pTransformComp->Get_Pos(), 300.f));
+                }
             }
         }
     }
@@ -1217,6 +1245,13 @@ void CPlayer::Hand_Check()
     if (m_tRightState_Old.Get_State() != m_tRightHand_State.Get_State())
     {
         bGetAnimation = true; // 새로운 애니메이션 불러오기 On
+        
+        // 새로운 상태가 권총일 경우
+        if (m_tRightHand_State.Get_State() == STATE_RIGHTHAND::GUN)
+        {
+            bRightFrameOn = true; // 오른손 프레임On
+            bSpinOn = true; // 회전On
+        }
     }
 
     // 플레이어의 현재 상태를 저장
@@ -1499,12 +1534,15 @@ void CPlayer::Left_Hand(float fTimeDelta)
     {
         // 기본 왼손 출력
         m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Left_Hand");
-        m_fLeftMaxFrame = 2.f;  // 최대 프레임 설정
+        //m_fLeftMaxFrame = 2.f;  // 최대 프레임 설정
         bRighter = false;       // 라이터 Off
 
-        // 주먹 작업 진행중
-        //bLeftFrameOn = false;   // 왼손 프레임 Off
-        //bLeftHandFist = true;   // 왼손 주먹상태On
+        // 애니메이션 불러오기
+        if (bGetAnimation)
+        {
+            LeftLoadAnimationFromFile("LeftFist");
+            //bGetAnimation = false; // Off
+        }
     }
 
     if (m_tLeftHand_State.Can_Update())
@@ -1548,6 +1586,11 @@ void CPlayer::Left_OpenHand(float fTimeDelta)
     {
         // 왼손 오픈 핸드로 변경
         m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"OpenHand");
+
+        //bGetAnimation = false;
+        bLeftFrameOn = false;
+        m_fLeftFrame = 0.f;
+        m_fLeftMaxFrame = 0.f;
     }
 
     if (m_tLeftHand_State.Can_Update())
@@ -1586,19 +1629,25 @@ void CPlayer::Left_Righter(float fTimeDelta)
     {
         // 왼손을 라이터로 변경
         m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Righter");
-        m_fLeftMaxFrame = 6.f; // 최대 프레임 지정
+        
+        // 애니메이션 불러오기
+        if (bGetAnimation)
+        {
+            LeftLoadAnimationFromFile("Righter");
+            bGetAnimation = false; // Off
+        }
     }
 
     if (m_tLeftHand_State.Can_Update())
     {
         // 현재 프레임이 최대 프레임보다 크거나 같을 경우(애니메이션을 다 돌았을 때)
-        if (m_fLeftFrame >= m_fLeftMaxFrame)
+        if (fCurrentTime >= m_fLeftMaxFrame)
         {
             if (bRighter)
             {
                 // 프레임 재생 Off
-                //bLeftFrameOn = false;
-                //m_fLeftFrame = m_fLeftMaxFrame - 1.f;
+                bLeftFrameOn = false;
+                fCurrentTime = m_fLeftMaxFrame;
             }
             else // 라이터가 꺼졌을 경우
             {
@@ -1650,14 +1699,17 @@ void CPlayer::Right_Hand(float fTimeDelta)
         // 기본 오른손 출력
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
         //m_fRightMaxFrame = 2.f; // 최대 프레임 설정
-        fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
+        //fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
 
-        // 주먹 작업 진행중
-        //bRightFrameOn = false;   // 오른손 프레임 Off
-        //bRightHandFist = true;  // 오른손 주먹상태On
+        // 애니메이션 불러오기
+        if (bGetAnimation)
+        {
+            RightLoadAnimationFromFile("RightFist");
+            //bGetAnimation = false; // Off
+        }
     }
-
+    
     if (m_tRightHand_State.Can_Update())
     {
         // 플레이어가 차징 상태일 경우
@@ -1665,9 +1717,19 @@ void CPlayer::Right_Hand(float fTimeDelta)
         {
             // 차징 텍스처로 변경
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"RightHand_Charging");
-            //m_fRightMaxFrame = 2.f;  // 최대 프레임 지정
-            fRightFrameSpeed = 5.f;  // 프레임 속도 지정 (공격 속도)
-            bShield = false;         // 방어 불가능
+
+            // 불러오기 On
+            bGetAnimation = true;
+            // 방어 불가능
+            bShield = false;
+
+            // 애니메이션 불러오기
+            if (bGetAnimation)
+            {
+                RightLoadAnimationFromFile("RightHand_Charging");
+                bGetAnimation = false; // Off
+            }
+
         }
         // 플레이어가 버리는 중 일경우
         if (m_ePlayerState == STATE_PLAYER::THROW_AWAY)
@@ -1684,7 +1746,10 @@ void CPlayer::Right_Hand(float fTimeDelta)
         {
             // 플레이어 상태 초기화
             m_ePlayerState = STATE_PLAYER::NONE;
-            fCurrentTime = 0.f; // 텍스처 변경시간 초기화
+            //fCurrentTime = 0.f; // 텍스처 변경시간 초기화
+
+            // 불러오기 On
+            bGetAnimation = true;
         }
     }
 
@@ -1718,34 +1783,38 @@ void CPlayer::Right_Gun(float fTimeDelta)
 {
     if (m_tRightHand_State.IsState_Entered())
     {
-        // 오른손 총
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun");
-        //m_fRightMaxFrame = 5.f; // 최대 프레임 지정
-        fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = false;        // 방어 불가
+
+        // 총 회전이 켜질 경우
+        if (bSpinOn)
+        {
+            //// 불러오기 ON
+            //bGetAnimation = true;
+
+            // 오른손 총 회전 이미지
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun_Spin");
+
+            // 애니메이션 불러오기
+            if (bGetAnimation)
+            {
+                RightLoadAnimationFromFile("GunSpin");
+                bGetAnimation = false; // Off
+            }
+        }
+
     }
 
     if (m_tRightHand_State.Can_Update())
     {
-        // 현재 프레임이 최대 프레임보다 크거나 같을 경우(애니메이션을 다 돌았을 때)
-        if (m_fRightFrame >= m_fRightMaxFrame)
+        // 총 회전이 다 돌았을 경우
+        if (fCurrentTime >= m_fRightMaxFrame)
         {
-            // 총 회전 Off
-            bSpinOn = false;
-        }
-        // 총 회전이 꺼져있을 경우
-        if (!bSpinOn)
-        {
-            // 오른손 총
+            // 오른손 총 불러오기
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun");
-            //m_fRightMaxFrame = 3.f; // 최대 프레임 지정
-        }
-        // 총 회전이 켜져있을 경우
-        if (bSpinOn)
-        {
-            // 오른손 총 회전
-            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun_Spin");
-            //m_fRightMaxFrame = 4.f; // 최대 프레임 지정
+            RightLoadAnimationFromFile("Gun");
+            fCurChangeTime = 1.5f; // 프레임 속도
+
+            bSpinOn = false; // 총 회전 끄기
         }
     }
 
@@ -1762,8 +1831,15 @@ void CPlayer::Right_Thompson(float fTimeDelta)
         // 오른손 톰슨 기관총
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Thompson");
         //m_fRightMaxFrame = 4.f; // 최대 프레임 지정
-        fRightFrameSpeed = 35.f;// 프레임 속도 지정 (공격 속도)
+        //fRightFrameSpeed = 35.f;// 프레임 속도 지정 (공격 속도)
         bShield = false;        // 방어 불가
+
+        // 애니메이션 불러오기
+        if (bGetAnimation)
+        {
+            RightLoadAnimationFromFile("Thompson");
+            bGetAnimation = false; // Off
+        }
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -1784,13 +1860,13 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
         // 오른손 쇠파이프
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe");
         //m_fRightMaxFrame = 4.f; // 최대 프레임 지정
-        fRightFrameSpeed = 5.f;// 프레임 속도 지정 (공격 속도)
+        //fRightFrameSpeed = 5.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
 
         // 애니메이션 불러오기
         if (bGetAnimation)
         {
-            LoadAnimationFromFile("Steel_Pipe");
+            RightLoadAnimationFromFile("Steel_Pipe");
             bGetAnimation = false; // Off
         }
         
@@ -1804,8 +1880,15 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
             // 차징 텍스처로 변경
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe_Charging");
             //m_fRightMaxFrame = 5.f; // 최대 프레임 지정
-            fRightFrameSpeed = 8.f;// 프레임 속도 지정 (공격 속도)
+            //fRightFrameSpeed = 8.f;// 프레임 속도 지정 (공격 속도)
             bShield = false;         // 방어 불가능
+
+            //// 애니메이션 불러오기
+            //if (bGetAnimation)
+            //{
+                //LoadAnimationFromFile("Steel_Pipe_Charging");
+                //bGetAnimation = false; // Off
+            //}
         }
     }
 
@@ -1822,7 +1905,13 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
         // 오른손 맥주병
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"BeerBottle");
         //m_fRightMaxFrame = 5.f; // 최대 프레임 지정
-        fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
+        //fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
+        // 애니메이션 불러오기
+        if (bGetAnimation)
+        {
+            RightLoadAnimationFromFile("Steel_Pipe");
+            bGetAnimation = false; // Off
+        }
         bShield = false;        // 방어 불가
     }
 
@@ -1844,8 +1933,15 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
         // 오른손 프라이팬
         m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
         //m_fRightMaxFrame = 5.f; // 최대 프레임 지정
-        fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
+        //fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
         bShield = true;         // 방어 가능
+
+        // 애니메이션 불러오기
+        if (bGetAnimation)
+        {
+            RightLoadAnimationFromFile("FryingPan");
+            bGetAnimation = false; // Off
+        }
     }
 
     if (m_tRightHand_State.Can_Update())
@@ -1892,8 +1988,8 @@ void CPlayer::Right_Kick(float fTimeDelta)
 
 #pragma endregion
 
-// 애니메이션 불러오기
-void CPlayer::LoadAnimationFromFile(const char* fileName)
+// 왼손 애니메이션 불러오기
+void CPlayer::LeftLoadAnimationFromFile(const char* fileName)
 {
     // .dat 파일 확장자를 추가한 파일 이름 생성
     std::string datFileName = "../Data/" + std::string(fileName) + ".dat";
@@ -1906,7 +2002,7 @@ void CPlayer::LoadAnimationFromFile(const char* fileName)
         return;
     }
 
-    timeline.clear();
+    timeline[KEYTYPE_LEFTHAND].clear();
     KEYFRAME keyframe;
 
     while (file >>
@@ -1925,110 +2021,219 @@ void CPlayer::LoadAnimationFromFile(const char* fileName)
         keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z >>
         keyframe.vKeyFramePos.x >> keyframe.vKeyFramePos.y)
     {
-        timeline.push_back(keyframe);
+        timeline[KEYTYPE_LEFTHAND].push_back(keyframe);
     }
+
+
 
     file.close();
+
+#pragma region 마지막 키프레임으로 설정할 값들
+    // 최대 프레임 설정
+    m_fLeftMaxFrame = timeline[KEYTYPE_LEFTHAND].back().time;
+#pragma endregion  
 }
 
-void CPlayer::Interpolation(float& _fFrame)
+// 오른손 애니메이션 불러오기
+void CPlayer::RightLoadAnimationFromFile(const char* fileName)
 {
-    if (!timeline.empty()) // 비었는지 체크
-    {
-        if (bRightFrameOn) // 오른손 프레임 On
-        {
-            if (fCurrentTime >= 0.f &&
-                fCurrentTime <= timeline.back().time)
-            {
-                // 프레임 0으로 초기화
-                _uint iFrameIndex = 0U;
+    // .dat 파일 확장자를 추가한 파일 이름 생성
+    std::string datFileName = "../Data/" + std::string(fileName) + ".dat";
 
-                // 사이즈의 끝에서부터 시작해서 찾기
-                for (_uint i = timeline.size() - 1; i > 0; i--)
-                {
-                    if ((timeline)[i].time <= fCurrentTime)
-                    {
-                        iFrameIndex = i;
-                        break;
-                    }
-                }
+    // 파일을 UTF-8로 열기
+    std::ifstream file(datFileName.c_str(), std::ios::in | std::ios::binary);
 
-                // Linear
-                if (iFrameIndex + 1U < timeline.size())
-                {
-                    // 키 프레임간 시간 변화율
-                    fFrameTimeDelta = (timeline)[iFrameIndex + 1U].time - (timeline)[iFrameIndex].time;
-
-                    // 현재 키 프레임시간부터 현재 시간 변화율
-                    fCurFrameTimeDelta = (fCurrentTime - (timeline)[iFrameIndex].time);
-
-                    fSizeX_Delta = (timeline)[iFrameIndex + 1U].vScale.x - (timeline)[iFrameIndex].vScale.x;
-                    fSizeX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-                    fSizeY_Delta = (timeline)[iFrameIndex + 1U].vScale.y - (timeline)[iFrameIndex].vScale.y;
-                    fSizeY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-
-                    fRotX_Delta = (timeline)[iFrameIndex + 1U].vRot.x - (timeline)[iFrameIndex].vRot.x;
-                    fRotX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-                    fRotY_Delta = (timeline)[iFrameIndex + 1U].vRot.y - (timeline)[iFrameIndex].vRot.y;
-                    fRotY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-                    fRotZ_Delta = (timeline)[iFrameIndex + 1U].vRot.z - (timeline)[iFrameIndex].vRot.z;
-                    fRotZ_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-
-                    fPosX_Delta = (timeline)[iFrameIndex + 1U].vPos.x - (timeline)[iFrameIndex].vPos.x;
-                    fPosX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-                    fPosY_Delta = (timeline)[iFrameIndex + 1U].vPos.y - (timeline)[iFrameIndex].vPos.y;
-                    fPosY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
-
-                    m_pRightHandComp->Set_Pos({ (timeline)[iFrameIndex].vPos.x + fPosX_Delta,
-                                                (timeline)[iFrameIndex].vPos.y + fPosY_Delta,
-                                                0.f });	// 이미지 위치
-
-                    m_pRightHandComp->Set_Scale({ (timeline)[iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
-                                                  (timeline)[iFrameIndex].vScale.y + fSizeY_Delta,
-                                                  1.f });
-
-                    m_pRightHandComp->Set_Rotation({ (timeline)[iFrameIndex].vRot.x + fRotX_Delta, 	// 이미지 회전
-                                                     (timeline)[iFrameIndex].vRot.y + fRotY_Delta,
-                                                     (timeline)[iFrameIndex].vRot.z + fRotZ_Delta });
-
-                    // 텍스처 번호
-                    _fFrame = (timeline)[iFrameIndex].texureframe;
-                }
-                else
-                {
-                    m_pRightHandComp->Set_Scale({ (timeline)[iFrameIndex].vScale.x, 	// 이미지 크기
-                                                  (timeline)[iFrameIndex].vScale.y,
-                                                  1.f });
-
-                    m_pRightHandComp->Set_Pos({ (timeline)[iFrameIndex].vPos.x,
-                                                (timeline)[iFrameIndex].vPos.y,
-                                                0.f });	// 이미지 위치
-
-                    // 텍스처 번호
-                    _fFrame = (timeline)[iFrameIndex].texureframe;
-                }
-            }    
-        }
-        #pragma region 첫번째 키프레임으로 설정할 값들
-        // 쉴드가능 여부
-        bShield = timeline[0].bShieldPossible;
-        // 쉴드시 프레임 설정
-        fShieldFrame = timeline[0].iShieldFrame;
-
-        // 차징가능 여부
-        bChargingReady = timeline[0].bChargePossible;
-        // 차징시 프레임 설정
-        fFullChage = timeline[0].iFullChargeFrame;
-        #pragma endregion
-
-        #pragma region 마지막 키프레임으로 설정할 값들
-        // 최대 프레임 설정
-        m_fRightMaxFrame = timeline.back().time;
-        #pragma endregion    
+    if (!file.is_open()) {
+        // 파일을 열 수 없을 때의 오류 처리
+        return;
     }
 
+    timeline[KEYTYPE_RIGHTHAND].clear();
+    KEYFRAME keyframe;
+
+    while (file >>
+        keyframe.time >>
+        keyframe.value >>
+        keyframe.type >>
+        keyframe.isEaseIn >>
+        keyframe.isEaseOut >>
+        keyframe.bChargePossible >>
+        keyframe.bShieldPossible >>
+        keyframe.texureframe >>
+        keyframe.iFullChargeFrame >>
+        keyframe.iShieldFrame >>
+        keyframe.vScale.x >> keyframe.vScale.y >> keyframe.vScale.z >>
+        keyframe.vRot.x >> keyframe.vRot.y >> keyframe.vRot.z >>
+        keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z >>
+        keyframe.vKeyFramePos.x >> keyframe.vKeyFramePos.y)
+    {
+        timeline[KEYTYPE_RIGHTHAND].push_back(keyframe);
+    }
+
+
+
+    file.close();
+
+#pragma region 마지막 키프레임으로 설정할 값들
+    // 최대 프레임 설정
+    m_fRightMaxFrame = timeline[KEYTYPE_RIGHTHAND].back().time;
+#pragma endregion  
+}
+
+void CPlayer::Interpolation()
+{
+    for (int i = 0; i < KEYTYPE_END; i++) // 키타입 순회
+    {
+        if (!timeline[i].empty()) // 해당 키타입이 비었는지 체크
+        {
+            //if (bRightHandOn) // 오른손 출력 On
+            {
+                if (fCurrentTime >= 0.f &&
+                    fCurrentTime <= timeline[i].back().time)
+                {
+                    // 프레임 0으로 초기화
+                    _uint iFrameIndex = 0U;
+
+                    // 사이즈의 끝에서부터 시작해서 찾기
+                    for (_uint j = timeline[i].size() - 1; j >= 0; j--)
+                    {
+                        if ((timeline)[i][j].time <= fCurrentTime)
+                        {
+                            iFrameIndex = j;
+                            break;
+                        }
+                    }
+
+                    // Linear
+                    if (iFrameIndex + 1U < timeline[i].size())
+                    {
+                        // 키 프레임간 시간 변화율
+                        fFrameTimeDelta = (timeline)[i][iFrameIndex + 1U].time - (timeline)[i][iFrameIndex].time;
+
+                        // 현재 키 프레임시간부터 현재 시간 변화율
+                        fCurFrameTimeDelta = (fCurrentTime - (timeline)[i][iFrameIndex].time);
+
+                        fSizeX_Delta = (timeline)[i][iFrameIndex + 1U].vScale.x - (timeline)[i][iFrameIndex].vScale.x;
+                        fSizeX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+                        fSizeY_Delta = (timeline)[i][iFrameIndex + 1U].vScale.y - (timeline)[i][iFrameIndex].vScale.y;
+                        fSizeY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+
+                        fRotX_Delta = (timeline)[i][iFrameIndex + 1U].vRot.x - (timeline)[i][iFrameIndex].vRot.x;
+                        fRotX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+                        fRotY_Delta = (timeline)[i][iFrameIndex + 1U].vRot.y - (timeline)[i][iFrameIndex].vRot.y;
+                        fRotY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+                        fRotZ_Delta = (timeline)[i][iFrameIndex + 1U].vRot.z - (timeline)[i][iFrameIndex].vRot.z;
+                        fRotZ_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+
+                        fPosX_Delta = (timeline)[i][iFrameIndex + 1U].vPos.x - (timeline)[i][iFrameIndex].vPos.x;
+                        fPosX_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+                        fPosY_Delta = (timeline)[i][iFrameIndex + 1U].vPos.y - (timeline)[i][iFrameIndex].vPos.y;
+                        fPosY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
+
+                        if (i == KEYTYPE_LEFTHAND) // 왼손
+                        {
+                            m_pLeftHandComp->Set_Pos({ (timeline)[i][iFrameIndex].vPos.x + fPosX_Delta,
+                            (timeline)[i][iFrameIndex].vPos.y + fPosY_Delta,
+                            0.f });	// 이미지 위치
+
+                            m_pLeftHandComp->Set_Scale({ (timeline)[i][iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
+                                                          (timeline)[i][iFrameIndex].vScale.y + fSizeY_Delta,
+                                                          1.f });
+
+                            m_pLeftHandComp->Set_Rotation({ (timeline)[i][iFrameIndex].vRot.x + fRotX_Delta, 	// 이미지 회전
+                                                             (timeline)[i][iFrameIndex].vRot.y + fRotY_Delta,
+                                                             (timeline)[i][iFrameIndex].vRot.z + fRotZ_Delta });
+
+                            // 텍스처 번호
+                            m_fLeftFrame = (timeline)[i][iFrameIndex].texureframe;
+                        }
+                        else if(i == KEYTYPE_RIGHTHAND) // 오른손
+                        {
+                            m_pRightHandComp->Set_Pos({ (timeline)[i][iFrameIndex].vPos.x + fPosX_Delta,
+                            (timeline)[i][iFrameIndex].vPos.y + fPosY_Delta,
+                            0.f });	// 이미지 위치
+
+                            m_pRightHandComp->Set_Scale({ (timeline)[i][iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
+                                                          (timeline)[i][iFrameIndex].vScale.y + fSizeY_Delta,
+                                                          1.f });
+
+                            m_pRightHandComp->Set_Rotation({ (timeline)[i][iFrameIndex].vRot.x + fRotX_Delta, 	// 이미지 회전
+                                                             (timeline)[i][iFrameIndex].vRot.y + fRotY_Delta,
+                                                             (timeline)[i][iFrameIndex].vRot.z + fRotZ_Delta });
+
+
+                            // 텍스처 번호
+                            m_fRightFrame = (timeline)[i][iFrameIndex].texureframe;
+                        }
+                    }
+                    else
+                    {
+                        if (i == KEYTYPE_LEFTHAND) // 왼손
+                        {
+                            m_pLeftHandComp->Set_Scale({ (timeline)[i][iFrameIndex].vScale.x, 	// 이미지 크기
+                              (timeline)[i][iFrameIndex].vScale.y,
+                              1.f });
+
+                            m_pLeftHandComp->Set_Rotation({ (timeline)[i][iFrameIndex].vRot.x, 	// 이미지 회전
+                                 (timeline)[i][iFrameIndex].vRot.y,
+                                 (timeline)[i][iFrameIndex].vRot.z});
+
+
+                            m_pLeftHandComp->Set_Pos({ (timeline)[i][iFrameIndex].vPos.x,
+                                                        (timeline)[i][iFrameIndex].vPos.y,
+                                                        0.f });	// 이미지 위치
+
+                            // 텍스처 번호
+                            m_fLeftFrame = (timeline)[i][iFrameIndex].texureframe;
+                        }
+                        else if (i == KEYTYPE_RIGHTHAND) // 오른손
+                        {
+                            m_pRightHandComp->Set_Scale({ (timeline)[i][iFrameIndex].vScale.x, 	// 이미지 크기
+                                                          (timeline)[i][iFrameIndex].vScale.y,
+                                                          1.f });
+
+                            m_pRightHandComp->Set_Rotation({ (timeline)[i][iFrameIndex].vRot.x, 	// 이미지 회전
+                            (timeline)[i][iFrameIndex].vRot.y,
+                            (timeline)[i][iFrameIndex].vRot.z });
+
+                            m_pRightHandComp->Set_Pos({ (timeline)[i][iFrameIndex].vPos.x,
+                                                        (timeline)[i][iFrameIndex].vPos.y,
+                                                        0.f });	// 이미지 위치
+
+                            // 텍스처 번호
+                            m_fRightFrame = (timeline)[i][iFrameIndex].texureframe;
+                        }
+
+                    }
+                }
+            }
+
+            // 현재 순환중인 i가 오른손 타입일 경우만
+            if (i == KEYTYPE_RIGHTHAND)
+            {
+                #pragma region (오른손) 첫번째 키프레임으로 설정할 값들
+                // 쉴드가능 여부
+                bShield = timeline[KEYTYPE_RIGHTHAND][0].bShieldPossible;
+                // 쉴드시 프레임 설정
+                fShieldFrame = timeline[KEYTYPE_RIGHTHAND][0].iShieldFrame;
+
+                // 차징가능 여부
+                bChargingReady = timeline[KEYTYPE_RIGHTHAND][0].bChargePossible;
+                // 차징시 프레임 설정
+                fFullChage = timeline[KEYTYPE_RIGHTHAND][0].iFullChargeFrame;
+                #pragma endregion
+            }
+
+            //#pragma region 마지막 키프레임으로 설정할 값들
+            //// 최대 프레임 설정
+            ////m_fRightMaxFrame = timeline.back().time;
+            //#pragma endregion   
+        }
+    }
+    
 #if _TEST_CONSOLE
-    cout << _fFrame << endl;
+    //cout << _fFrame << endl;
+    //cout << timeline.back().time << endl;
 #endif // _TEST_CONSOLE
 
     

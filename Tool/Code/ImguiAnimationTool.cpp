@@ -1481,7 +1481,9 @@ void CImguiAnimationTool::CreateKeyframesWithLinearInterpolation(
     _float minValue, _float maxValue,
     _vec3 minscaleValue, _vec3 maxscaleValue,
     _vec3 minrotationValue, _vec3 maxrotationValue,
-    _vec3 mintranslationValue, _vec3 maxtranslationValue, int numKeyframes)
+    _vec3 mintranslationValue, _vec3 maxtranslationValue,
+    _float _minTexture, _float _maxTexture,
+    int numKeyframes)
 {
     if (numKeyframes < 2) {
         // 최소 2개 이상의 키프레임이 필요합니다.
@@ -1494,22 +1496,25 @@ void CImguiAnimationTool::CreateKeyframesWithLinearInterpolation(
     // 첫 번째와 마지막 키프레임을 수동으로 추가
     KEYFRAME firstKeyframe;
 
-    // 값 보간
+    // 최소 값 보간
     firstKeyframe.time = minTime;
     firstKeyframe.value = minValue;
     firstKeyframe.vScale = minscaleValue;
     firstKeyframe.vRot = minrotationValue;
     firstKeyframe.vPos = mintranslationValue;
+    firstKeyframe.texureframe = _minTexture;
+
     timeline.push_back(firstKeyframe);
 
     KEYFRAME lastKeyframe;
 
-    // 값 보간
+    // 최대 값 보간
     lastKeyframe.time = maxTime;
     lastKeyframe.value = maxValue;
     lastKeyframe.vScale = maxscaleValue;
     lastKeyframe.vRot = maxrotationValue;
     lastKeyframe.vPos = maxtranslationValue;
+    lastKeyframe.texureframe = _maxTexture;
 
     timeline.push_back(lastKeyframe);
 
@@ -1525,16 +1530,21 @@ void CImguiAnimationTool::CreateKeyframesWithLinearInterpolation(
 
         _vec3 translation = Lerp(mintranslationValue, maxtranslationValue, t);
 
+        _float ftime = Lerp2(minTime, maxTime, t);
+
         _float value = Lerp2(minValue, maxValue, t);
+
+        _int iTexture = Lerp2(_minTexture, _maxTexture, t);
 
         KEYFRAME keyframe;
 
         // 값 보간
-        keyframe.time = time;
+        keyframe.time = ftime;
         keyframe.value = value;
         keyframe.vScale = scale;
         keyframe.vRot = rotation;
         keyframe.vPos = translation;
+        keyframe.texureframe = iTexture;
 
         timeline.push_back(keyframe);
     }
@@ -2454,22 +2464,59 @@ void CImguiAnimationTool::KeyframeRender_ValueChange()
 
 void CImguiAnimationTool::KeyframeAutomaticGeneration()
 {
-    ImGui::Begin("Generate");
+    ImGui::Begin(u8"키프레임 자동 생성");
 
-    ImGui::Text(u8"키프레임 자동 생성");
+    ImGui::Text(u8"키프레임 자동 생성 세팅");
 
     // 입력값을 받는 UI 요소 생성
-    ImGui::InputFloat2("Min, Max Time", _v2Time);
-    ImGui::InputFloat2("Min, Max Value", _v2Value);
-    ImGui::InputFloat3("Min Scale", minScale);
-    ImGui::InputFloat3("Max Scale", maxScale);
-    ImGui::InputFloat3("Min Rot", minRot);
-    ImGui::InputFloat3("Max Rot", maxRot);
-    ImGui::InputFloat3("Min Pos", minPos);
-    ImGui::InputFloat3("Max Pos", maxPos);
-    ImGui::InputFloat("KeyFrame", &numKeyframes);
+    ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::SeparatorText(u8"시간 설정");
+    ImGui::InputFloat2(u8"시작/끝 시간 입력", _v2Time);
+    ImGui::Separator();
 
-    if (ImGui::Button("Generate Keyframes")) {
+    //ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::SeparatorText(u8"벨류 설정");
+    ImGui::InputFloat2(u8"시작/끝 벨류 입력", _v2Value);
+    ImGui::Separator();
+
+    ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::SeparatorText(u8"크기 설정");
+    ImGui::InputFloat3(u8"시작 프레임 크기 입력", minScale);
+
+    //ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::InputFloat3(u8"끝 프레임 크기 입력", maxScale);
+    ImGui::Separator();
+
+    ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::SeparatorText(u8"회전 설정");
+    ImGui::InputFloat3(u8"시작 프레임 회전 입력", minRot);
+
+    //ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::InputFloat3(u8"끝 프레임 회전 입력", maxRot);
+    ImGui::Separator();
+
+    ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::SeparatorText(u8"이동 설정");
+    ImGui::InputFloat3(u8"시작 프레임 이동 입력", minPos);
+
+    //ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::InputFloat3(u8"끝 프레임 이동 입력", maxPos);
+    ImGui::Separator();
+
+    ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::SeparatorText(u8"텍스처 설정");
+    ImGui::InputFloat(u8"시작 프레임 텍스처 입력", &fMin_Texture);
+
+    //ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::InputFloat(u8"끝 프레임 텍스처 입력", &fMax_Texture);
+    ImGui::Separator();
+
+    ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::SeparatorText(u8"원하는 키프레임 수 설정");
+    ImGui::InputFloat(u8"키프레임 수 입력", &numKeyframes);
+    ImGui::Separator();
+
+    if (ImGui::Button(u8"자동 생성")) {
         // 버튼이 클릭되면 timeline 벡터를 비우고 CreateKeyframesWithLinearInterpolation 함수 호출
         timeline[m_iCurType].clear();
 
@@ -2479,6 +2526,7 @@ void CImguiAnimationTool::KeyframeAutomaticGeneration()
             minScale, maxScale,
             minRot, maxRot,
             minPos, maxPos,
+            fMin_Texture, fMax_Texture,
             numKeyframes);
     }
 
