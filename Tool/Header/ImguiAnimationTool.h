@@ -166,12 +166,17 @@ public: // 애니메이션 함수
 	void LoadAnimationFromFile(const char* fileName);
 
 	// 키프레임 자동 생성 함수
+	void KeyframeAutomaticGeneration();
+
+	// 키프레임 자동 생성 함수(선형 보간)
 	void CreateKeyframesWithLinearInterpolation(
 		std::vector<Engine::KEYFRAME>& timeline, float minTime, float maxTime,
 		_float minValue, _float maxValue,
 		_vec3 minscaleValue, _vec3 maxscaleValue,
 		_vec3 minrotationValue, _vec3 maxrotationValue,
-		_vec3 mintranslationValue, _vec3 maxtranslationValue, int numKeyframes);
+		_vec3 mintranslationValue, _vec3 maxtranslationValue,
+		_float _minTexture, _float _maxTexture,
+		int numKeyframes);
 
 	// 키프레임을 선택하여 해당 키프레임 수정
 	void HandleKeyframeClick();
@@ -197,8 +202,6 @@ public: // 애니메이션 함수
 	// 키프레임 랜더링 및 편집 (순서 UI중 가장 마지막)
 	void KeyframeRender_ValueChange();
 
-	// 키프레임 자동 생성 함수
-	void KeyframeAutomaticGeneration();
 
 	// 우클릭으로 키프레임 삭제하는 함수
 	void KeyframeDeleteMouseR();
@@ -321,6 +324,10 @@ private: // 애니메이션 툴 변수
 	_vec3 maxRot = { 0.f, 0.f, 0.f };
 	_vec3 minPos = { 0.f, 0.f, 0.f };
 	_vec3 maxPos = { 0.f, 0.f, 0.f };
+
+	// 텍스처 프레임
+	float	fMin_Texture = 0.f;	// 최소
+	float	fMax_Texture = 0.f;	// 최대
 
 	_float numKeyframes = 0.f;
 #pragma endregion
