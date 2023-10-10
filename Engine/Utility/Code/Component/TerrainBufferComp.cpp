@@ -1,9 +1,13 @@
 #include "TerrainBufferComp.h"
 
+#include "Serialize_BaseClass.h"
+
+
 CTerrainBufferComp::CTerrainBufferComp()
 	: m_dwCountX(0U), m_dwCountZ(0U)
 	, m_bHeightMap_Loaded(false)
 	, m_pPos(nullptr)
+	, m_vInvOffset(0.f, 0.f, 0.f), m_vScale(1.f, 1.f, 1.f)
 {
 }
 
@@ -12,6 +16,7 @@ CTerrainBufferComp::CTerrainBufferComp(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_dwCountX(0U), m_dwCountZ(0U)
 	, m_bHeightMap_Loaded(false)
 	, m_pPos(nullptr)
+	, m_vInvOffset(0.f, 0.f, 0.f), m_vScale(1.f, 1.f, 1.f)
 {
 }
 
@@ -21,6 +26,7 @@ CTerrainBufferComp::CTerrainBufferComp(const CTerrainBufferComp& rhs)
 	, m_bHeightMap_Loaded(rhs.m_bHeightMap_Loaded)
 	, m_vHeightMap(rhs.m_vHeightMap)
 	, m_pPos(rhs.m_pPos)
+	, m_vInvOffset(rhs.m_vInvOffset), m_vScale(rhs.m_vScale)
 {
 }
 
@@ -28,11 +34,28 @@ CTerrainBufferComp::~CTerrainBufferComp()
 {
 }
 
-CTerrainBufferComp* CTerrainBufferComp::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pFileName, const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv)
+CTerrainBufferComp* CTerrainBufferComp::Create(LPDIRECT3DDEVICE9 pGraphicDev, 
+	const _tchar* pFileName, 
+	const _ulong& dwCntX, const _ulong& dwCntZ, 
+	const _vec3& vScale, const _vec3& vInvOffset)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Buffer(pFileName, dwCntX, dwCntZ, dwVtxItv)))
+	if (FAILED(pInstance->Ready_Buffer(pFileName, dwCntX, dwCntZ, vScale, vInvOffset)))
+	{
+		Safe_Release(pInstance);
+		MSG_BOX("TerrainTex Create Failed");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CTerrainBufferComp* CTerrainBufferComp::Create(LPDIRECT3DDEVICE9 pGraphicDev, const char* pParsedFile, const _tchar* pFileName)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_Buffer(pParsedFile, pFileName)))
 	{
 		Safe_Release(pInstance);
 		MSG_BOX("TerrainTex Create Failed");
@@ -57,7 +80,7 @@ void CTerrainBufferComp::Free()
 }
 
 
-HRESULT CTerrainBufferComp::Ready_Buffer(const _tchar* pFileName, const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv)
+HRESULT CTerrainBufferComp::Ready_Buffer(const _tchar* pFileName, const _ulong& dwCntX, const _ulong& dwCntZ, const _vec3& vScale, const _vec3& vInvOffset)
 {
 #pragma region 버텍스 버퍼 방식
 
@@ -106,7 +129,8 @@ HRESULT CTerrainBufferComp::Ready_Buffer(const _tchar* pFileName, const _ulong& 
 	m_dwTriCnt = (dwCntX - 1) * (dwCntZ - 1) * 2;		// 128 x 128크기의 지형
 	m_dwVtxCnt = dwCntX * dwCntZ;						// 128 x 128크기의 점 개수
 	m_dwVtxSize = sizeof(VTXTEX);
-	m_fInterval = (_float)dwVtxItv;
+	m_vScale = vScale;
+	m_vInvOffset = vInvOffset;
 
 	m_dwIdxSize = sizeof(INDEX32);
 	m_IdxFmt = D3DFMT_INDEX32;
@@ -119,6 +143,11 @@ HRESULT CTerrainBufferComp::Ready_Buffer(const _tchar* pFileName, const _ulong& 
 	// 높이 맵을 얻어온다.
 	if (pFileName != L"")
 		Load_HeightMap(pFileName);
+	else
+	{
+		m_vHeightMap.resize(m_dwVtxCnt);
+		fill(m_vHeightMap.begin(), m_vHeightMap.end(), 0);
+	}
 
 	VTXTEX* pVertex = nullptr;
 
@@ -137,7 +166,9 @@ HRESULT CTerrainBufferComp::Ready_Buffer(const _tchar* pFileName, const _ulong& 
 			dwIndex = j + i * dwCntX;
 
 			if (m_bHeightMap_Loaded)
-				pVertex[dwIndex].vPosition = { (_float)j * m_fInterval, ((_float)m_vHeightMap[dwIndex] / 255.f) * 10.f * m_fInterval, (_float)i * m_fInterval };
+				pVertex[dwIndex].vPosition = { (_float)j * m_vScale.x - m_vInvOffset.x, 
+												((_float)m_vHeightMap[dwIndex] / 255.f) * m_vScale.y - m_vInvOffset.y,
+												(_float)i * m_vScale.z - m_vInvOffset.z };
 			else
 				pVertex[dwIndex].vPosition = { (_float)j, 0.f, (_float)i };
 
@@ -145,7 +176,8 @@ HRESULT CTerrainBufferComp::Ready_Buffer(const _tchar* pFileName, const _ulong& 
 
 			pVertex[dwIndex].vNormal = { 0.f, 0.f, 0.f };
 
-			pVertex[dwIndex].vTexUV = { ((_float)j / ((_float)dwCntX - 1)) * 20.f, ((_float)i / ((_float)dwCntZ - 1)) * 20.f};
+			pVertex[dwIndex].vTexUV = { ((_float)j / ((_float)dwCntX - 1)) * 20.f, 
+										((_float)i / ((_float)dwCntZ - 1)) * 20.f};
 		}
 	}
 
@@ -208,6 +240,32 @@ HRESULT CTerrainBufferComp::Ready_Buffer(const _tchar* pFileName, const _ulong& 
 	return S_OK;
 }
 
+HRESULT CTerrainBufferComp::Ready_Buffer(const char* pParsedFile, const _tchar* pHeightFile)
+{
+	FSerialize_Terrain tTerrain;
+	string strJson;
+
+	ifstream inputFile(pParsedFile);
+	if (inputFile.is_open())
+	{
+		// 문자열 쉽게 읽어오는 반복자
+		strJson = string(istreambuf_iterator<char>(inputFile), istreambuf_iterator<char>());
+		inputFile.close();
+		cout << "\n파일 불러옴!\n";
+	}
+	else
+	{
+		cerr << "파일을 불러들일 수 없소!\n";
+	}
+
+	tTerrain.Receive_ByRapidJSON(strJson);
+
+	Ready_Buffer(pHeightFile, tTerrain.vVertexCount.x, tTerrain.vVertexCount.z,
+		tTerrain.vScale, tTerrain.vInvOffset);
+
+	return S_OK;
+}
+
 void CTerrainBufferComp::Render_Buffer()
 {
 	SUPER::Render_Buffer();
@@ -258,6 +316,14 @@ HRESULT CTerrainBufferComp::Load_HeightMap(const _tchar* pFileName)
 		}
 	}
 	fin.close();
+
+	if (m_vHeightMap.capacity() - m_vHeightMap.size() > static_cast<size_t>(0))
+	{
+		for (size_t i = m_vHeightMap.size(); i < m_vHeightMap.capacity(); i++)
+		{
+			m_vHeightMap.push_back(0);
+		}
+	}
 
 	m_bHeightMap_Loaded = true;
 

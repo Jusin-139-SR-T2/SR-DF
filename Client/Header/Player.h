@@ -7,6 +7,7 @@
 #include "BlackBoardPtr.h"
 //임시용
 #include "AceFood.h" 
+#include "PlayerBullet.h"
 
 BEGIN(Engine)
 
@@ -100,8 +101,14 @@ public: // Get_Set
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
 	GETSET_EX2(CPlayerLighter*, m_PlayerLighter, PlayerLighter, GET, SET)	// 라이터 조명
+	
+		_bool* Get_DBugFrame() {
+		return &bDBugFrame;
+	} void Set_DBugFrame(_bool* value) {
+		bDBugFrame = value;
+	}	// 스위치
 
-
+		
 private: // 컴포넌트
 	// 기능
 	CRcBufferComp* m_pBufferComp = nullptr;					// Rc버퍼
@@ -126,7 +133,7 @@ private:
 
 public:// 플레이어 상태 값
 	// 플레이어
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY, DIE };
+	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY, DIE, JUMP, PLAYER_END };
 	// 왼손
 	enum class STATE_LEFTHAND { NONE, HAND, OPEN_HAND, RUN_HAND, RIGHTER, RUN_RIHGTER };
 	// 오른손
@@ -188,8 +195,9 @@ private: // 함수
 	void				Height_On_Terrain();						// 지형타기
 	void				Dash(const _float& fTimeDelta);
 	//void				Hand_Check();								// 플레이어 손 상태 체크
-	void				LoadAnimationFromFile(const char* fileName);// 애니메이션 불러오기
-	void				Interpolation(float& _fFrame);
+	void				LeftLoadAnimationFromFile(const char* fileName);// 애니메이션 불러오기
+	void				RightLoadAnimationFromFile(const char* fileName);// 애니메이션 불러오기
+	void				Interpolation();
 
 	//// ==============================양손 주먹=============================
 	//void				Two_Hand();
@@ -244,6 +252,9 @@ private: // 스위치
 
 	// Test
 	_bool		bBackRighter = false;
+
+	// 디버그 프레임
+	_bool		bDBugFrame = false;
 
 private:
 	_float		fRightFrameSpeed = 10.f;	// 오른손 프레임 속도
@@ -330,7 +341,7 @@ private:
 
 private:
 	// 애니메이션 타임 라인
-	std::vector<KEYFRAME> timeline;
+	std::vector<KEYFRAME> timeline[KEYTYPE_END];
 };
 
 /*	현재 키 설명

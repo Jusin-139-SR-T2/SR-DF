@@ -2,12 +2,14 @@
 
 #include "Serialize_Core.h"
 
+
+
 using namespace rapidjson;
 
 /// <summary>
 /// 컴포넌트가 가지는 직렬화 데이터
 /// </summary>
-class ENGINE_DLL FSerialize_Component
+class FSerialize_Component
 {
 public:
 	FSeialize_Header	tHeader;
@@ -19,7 +21,7 @@ public:
 /// <summary>
 /// 오브젝트가 가지는 직렬화 데이터
 /// </summary>
-class ENGINE_DLL FSerialize_GameObject
+class FSerialize_GameObject
 {
 public:
 	FSeialize_Header				tHeader;
@@ -41,7 +43,7 @@ public:
 /// <summary>
 /// 레이어가 가지는 직렬화 데이터
 /// </summary>
-class ENGINE_DLL FSerialize_Layer
+class FSerialize_Layer
 {
 public:
 	FSeialize_Header				tHeader;
@@ -54,14 +56,14 @@ public:
 /// <summary>
 /// 터레인이 가지는 직렬화 데이터
 /// </summary>
-class ENGINE_DLL FSerialize_Terrain
+class FSerialize_Terrain
 {
 	
 public:
 	FSeialize_Header			tHeader;
-	FSeialize_Vector3			vVertexCount;	// 버텍스 개수
-	FSeialize_Vector3			vScale;			// 스케일, 정점간 너비
-	FSeialize_Vector3			vInvOffset;		// 중점, 역버전
+	_vec3						vVertexCount;	// 버텍스 개수
+	_vec3						vScale;			// 스케일, 정점간 너비
+	_vec3						vInvOffset;		// 중점, 역버전
 	
 
 	void Parse_RapidJSON(Document& doc, StringBuffer& strBuf, _bool bPrettyWriter = false) const
@@ -71,26 +73,26 @@ public:
 
 		// FSer_Header 구성
 		Value header(kObjectType);
-		header.AddMember("type", Value().SetString(to_string(tHeader.strType).c_str(), doc.GetAllocator()), doc.GetAllocator());
+		header.AddMember("type", Value().SetInt(tHeader.strType), doc.GetAllocator());
 		header.AddMember("name", Value().SetString(tHeader.strName.c_str(), doc.GetAllocator()), doc.GetAllocator());
 		doc.AddMember("header", header, doc.GetAllocator());
 
 		Value vertex(kObjectType);
-		vertex.AddMember("x", Value().SetString(to_string(vVertexCount.x).c_str(), doc.GetAllocator()), doc.GetAllocator());
-		vertex.AddMember("y", Value().SetString(to_string(vVertexCount.y).c_str(), doc.GetAllocator()), doc.GetAllocator());
-		vertex.AddMember("z", Value().SetString(to_string(vVertexCount.z).c_str(), doc.GetAllocator()), doc.GetAllocator());
+		vertex.AddMember("x", Value().SetFloat(vVertexCount.x), doc.GetAllocator());
+		vertex.AddMember("y", Value().SetFloat(vVertexCount.y), doc.GetAllocator());
+		vertex.AddMember("z", Value().SetFloat(vVertexCount.z), doc.GetAllocator());
 		doc.AddMember("vertex", vertex, doc.GetAllocator());
 
 		Value scale(kObjectType);
-		scale.AddMember("x", Value().SetString(to_string(vScale.x).c_str(), doc.GetAllocator()), doc.GetAllocator());
-		scale.AddMember("y", Value().SetString(to_string(vScale.y).c_str(), doc.GetAllocator()), doc.GetAllocator());
-		scale.AddMember("z", Value().SetString(to_string(vScale.z).c_str(), doc.GetAllocator()), doc.GetAllocator());
+		scale.AddMember("x", Value().SetFloat(vScale.x), doc.GetAllocator());
+		scale.AddMember("y", Value().SetFloat(vScale.y), doc.GetAllocator());
+		scale.AddMember("z", Value().SetFloat(vScale.z), doc.GetAllocator());
 		doc.AddMember("scale", scale, doc.GetAllocator());
 
 		Value invoffset(kObjectType);
-		invoffset.AddMember("x", Value().SetString(to_string(vInvOffset.x).c_str(), doc.GetAllocator()), doc.GetAllocator());
-		invoffset.AddMember("y", Value().SetString(to_string(vInvOffset.y).c_str(), doc.GetAllocator()), doc.GetAllocator());
-		invoffset.AddMember("z", Value().SetString(to_string(vInvOffset.z).c_str(), doc.GetAllocator()), doc.GetAllocator());
+		invoffset.AddMember("x", Value().SetFloat(vInvOffset.x), doc.GetAllocator());
+		invoffset.AddMember("y", Value().SetFloat(vInvOffset.y), doc.GetAllocator());
+		invoffset.AddMember("z", Value().SetFloat(vInvOffset.z), doc.GetAllocator());
 		doc.AddMember("invoffset", invoffset, doc.GetAllocator());
 
 		if (bPrettyWriter)
@@ -105,13 +107,19 @@ public:
 		}
 	}
 
-	_bool Receive_ByRapidJSON(const string& strJSON)
+	_bool Receive_ByRapidJSON(string& strJSON, _bool bParseRewriteAble = false)
 	{
 		Document doc;
-		doc.Parse(strJSON.c_str());
+		if (bParseRewriteAble)
+			doc.ParseInsitu(const_cast<char*>(strJSON.c_str()));
+		else
+			doc.Parse(strJSON.c_str());
 
-		tHeader.strName = doc["name"].GetString();
-		tHeader.strType = static_cast<ESERIALIZE_TYPE>(doc["type"].GetInt());
+		if (doc.HasParseError())
+			return false;
+
+		tHeader.strType = static_cast<ESERIALIZE_TYPE>(doc["header"]["type"].GetInt());
+		tHeader.strName = doc["header"]["name"].GetString();
 
 		vVertexCount.x = doc["vertex"]["x"].GetFloat();
 		vVertexCount.y = doc["vertex"]["y"].GetFloat();
@@ -134,7 +142,7 @@ public:
 /// <summary>
 /// 씬이 가지는 직렬화 데이터
 /// </summary>
-class ENGINE_DLL FSerialize_Scene
+class FSerialize_Scene
 {
 public:
 	FSeialize_Header			tHeader;

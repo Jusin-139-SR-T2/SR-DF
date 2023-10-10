@@ -63,6 +63,7 @@
     <ClInclude Include="Header\SlowThunder.h" />
     <ClInclude Include="AceMonster.h" />
     <ClInclude Include="NormalBullet.h" />
+    <ClInclude Include="Header\PlayerBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AceGameObject.cpp" />
@@ -115,6 +116,7 @@
     <ClCompile Include="Code\SlowThunder.cpp" />
     <ClCompile Include="AceMonster.cpp" />
     <ClCompile Include="NormalBullet.cpp" />
+    <ClCompile Include="Code\PlayerBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

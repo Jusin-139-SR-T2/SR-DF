@@ -61,7 +61,7 @@ _uint CLoading::Loading_For_Stage()
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TriColBufferComp", CTriColorComp::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeBufferComp", CCubeBufferComp::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CalculatorComp", CCalculatorComponent::Create(m_pGraphicDev)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainBufferComp", CTerrainBufferComp::Create(m_pGraphicDev, L"./Resource/Texture/Terrain/FlatLand.bmp", VTXCNTX, VTXCNTZ, VTXITV)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainBuffer1Comp", CTerrainBufferComp::Create(m_pGraphicDev, "./Resource/Data/Terrain/Terrain1.aterrain", L"./Resource/Texture/Terrain/FlatLand.bmp")), E_FAIL);
 
 	// 텍스처 컴포넌트
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Tile", L"22")), E_FAIL);
@@ -125,7 +125,7 @@ HRESULT CLoading::Loading_For_Texture()
 	// 오른손
 	Load_Texture(L"./Resource/Texture/Player/RightHand/RightHand (%d).png", TEX_NORMAL, L"Player", L"Right_Hand", _range<_uint>(0U, 1U));
 	// 주먹 차징 (오른손)
-	Load_Texture(L"./Resource/Texture/Player/RightHand_Charging/RightHand_Charging (%d).png", TEX_NORMAL, L"Player", L"RightHand_Charging", _range<_uint>(0U, 1U));
+	Load_Texture(L"./Resource/Texture/Player/RightHand_Charging/RightHand_Charging (%d).png", TEX_NORMAL, L"Player", L"RightHand_Charging", _range<_uint>(0U, 2U));
 	// 버리기 (오른손)
 	Load_Texture(L"./Resource/Texture/Player/ThrowHand/UnderThrowRightHand (%d).png", TEX_NORMAL, L"Player", L"UnderThrow_RightHand", _range<_uint>(0U, 0U));
 	// 쇠파이프
@@ -133,7 +133,7 @@ HRESULT CLoading::Loading_For_Texture()
 	// 쇠파이프 차징
 	Load_Texture(L"./Resource/Texture/Player/Steel_Pipe_Charging/Steel_Pipe_Charging (%d).png", TEX_NORMAL, L"Player", L"Steel_Pipe_Charging", _range<_uint>(0U, 3U));
 	// 프라이팬
-	Load_Texture(L"./Resource/Texture/Player/FryingPan/FryingPan (%d).png", TEX_NORMAL, L"Player", L"FryingPan", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/Player/FryingPan/FryingPan (%d).png", TEX_NORMAL, L"Player", L"FryingPan", _range<_uint>(0U, 3U));
 	// 프라이팬 차징
 	Load_Texture(L"./Resource/Texture/Player/FryingPan_Charging/FryingPan_Charging (%d).png", TEX_NORMAL, L"Player", L"FryingPan_Charging", _range<_uint>(0U, 3U));
 	// 라이터
@@ -141,7 +141,7 @@ HRESULT CLoading::Loading_For_Texture()
 	// 플레이어 총
 	Load_Texture(L"./Resource/Texture/Player/Gun/Gun (%d).png", TEX_NORMAL, L"Player", L"Gun", _range<_uint>(0U, 3U));
 	// 플레이어 총 회전
-	Load_Texture(L"./Resource/Texture/Player/Gun/Spin (%d).png", TEX_NORMAL, L"Player", L"Gun_Spin", _range<_uint>(0U, 3U));
+	Load_Texture(L"./Resource/Texture/Player/GunSpin/Spin (%d).png", TEX_NORMAL, L"Player", L"Gun_Spin", _range<_uint>(0U, 3U));
 	// 플레이어 톰슨 기관총
 	Load_Texture(L"./Resource/Texture/Player/Thompson/Thompson (%d).png", TEX_NORMAL, L"Player", L"Thompson", _range<_uint>(0U, 3U));
 	// 맥주병

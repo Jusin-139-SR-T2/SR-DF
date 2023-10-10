@@ -202,6 +202,21 @@
     <Filter Include="01. =====Scene=====\02. Loading">
       <UniqueIdentifier>{171166f6-c6c9-4809-9b50-9ba3511144ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\00. Player">
+      <UniqueIdentifier>{39143734-bad6-402b-a7db-6e7b7c325723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack">
+      <UniqueIdentifier>{83156d89-845d-499d-ba93-6b15ceff343e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Fist">
+      <UniqueIdentifier>{62ff4301-9922-4291-bc8b-eea1daff7cf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe">
+      <UniqueIdentifier>{55463843-d047-4cec-8e44-950afc60c14b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\01. Bullet">
+      <UniqueIdentifier>{3d6a865c-53c8-44a9-b066-854f0cf7a583}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -227,9 +242,6 @@
     </ClInclude>
     <ClInclude Include="Header\SkyBox.h">
       <Filter>03..=====Object=====\98. SkyBox</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Player.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player</Filter>
     </ClInclude>
     <ClInclude Include="Header\Gray.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\2. Gray</Filter>
@@ -330,15 +342,6 @@
     <ClInclude Include="Header\TitleLogo.h">
       <Filter>01. =====Scene=====\00. Logo\TitleLogo</Filter>
     </ClInclude>
-    <ClInclude Include="SpawnFire.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossPattern\02. Fire</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>05. =====AceUI=====</Filter>
-    </ClInclude>
-    <ClInclude Include="BlueBuff.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossPattern\05. BlueBuff</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -367,6 +370,9 @@
     </ClCompile>
     <ClCompile Include="Code\Brown.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\1. Brown</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\TitleLogo.cpp">
+      <Filter>01. Scene\00. Logo\TitleLogo</Filter>
     </ClCompile>
     <ClCompile Include="Code\Player.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player</Filter>
@@ -469,18 +475,6 @@
     </ClCompile>
     <ClCompile Include="Code\Stage.cpp">
       <Filter>01. =====Scene=====\01. Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="SpawnFire.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossPattern\02. Fire</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\UI.cpp">
-      <Filter>05. =====AceUI=====</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\TitleLogo.cpp">
-      <Filter>01. =====Scene=====\00. Logo\TitleLogo</Filter>
-    </ClCompile>
-    <ClCompile Include="BlueBuff.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossPattern\05. BlueBuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

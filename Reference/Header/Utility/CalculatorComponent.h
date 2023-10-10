@@ -28,8 +28,8 @@ public:
 	HRESULT		Ready_Calculator();
 
 	_float		Compute_HeightOnTerrain(const _vec3* pPos, const _vec3* pTerrainVtxPos,
-										const _ulong& dwCntX = VTXCNTX, const _ulong& dwCntZ = VTXCNTZ,
-										const _ulong& dwVtxItv = 1);
+										const _ulong& dwCntX, const _ulong& dwCntZ,
+										const _vec3& vScale, const _vec3& vInvOffet);
 
 	// 마우스/타겟 : 로컬 피킹
 	_vec3		Picking_On_Object_Local(HWND hWnd,

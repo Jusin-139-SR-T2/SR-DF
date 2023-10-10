@@ -80,7 +80,7 @@ HRESULT CLogo::Ready_Prototype()
 	// 오른손
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightHand/RightHand (%d).png", TEX_NORMAL, L"Player", L"Right_Hand", _range<_uint>(0U, 1U)), E_FAIL);
 	// 주먹 차징 (오른손)
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightHand_Charging/RightHand_Charging (%d).png", TEX_NORMAL, L"Player", L"RightHand_Charging", _range<_uint>(0U, 1U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/RightHand_Charging/RightHand_Charging (%d).png", TEX_NORMAL, L"Player", L"RightHand_Charging", _range<_uint>(0U, 2U)), E_FAIL);
 	// 버리기 (오른손)
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/ThrowHand/UnderThrowRightHand (%d).png", TEX_NORMAL, L"Player", L"UnderThrow_RightHand", _range<_uint>(0U, 0U)), E_FAIL);
 	// 쇠파이프
@@ -88,7 +88,7 @@ HRESULT CLogo::Ready_Prototype()
 	// 쇠파이프 차징
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Steel_Pipe_Charging/Steel_Pipe_Charging (%d).png", TEX_NORMAL, L"Player", L"Steel_Pipe_Charging", _range<_uint>(0U, 3U)), E_FAIL);
 	// 프라이팬
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/FryingPan/FryingPan (%d).png", TEX_NORMAL, L"Player", L"FryingPan", _range<_uint>(0U, 4U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/FryingPan/FryingPan (%d).png", TEX_NORMAL, L"Player", L"FryingPan", _range<_uint>(0U, 3U)), E_FAIL);
 	// 프라이팬 차징
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/FryingPan_Charging/FryingPan_Charging (%d).png", TEX_NORMAL, L"Player", L"FryingPan_Charging", _range<_uint>(0U, 3U)), E_FAIL);
 	// 라이터
@@ -96,7 +96,7 @@ HRESULT CLogo::Ready_Prototype()
 	// 플레이어 총
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Gun/Gun (%d).png", TEX_NORMAL, L"Player", L"Gun", _range<_uint>(0U, 3U)), E_FAIL);
 	// 플레이어 총 회전
-	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Gun/Spin (%d).png", TEX_NORMAL, L"Player", L"Gun_Spin", _range<_uint>(0U, 3U)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/GunSpin/Spin (%d).png", TEX_NORMAL, L"Player", L"Gun_Spin", _range<_uint>(0U, 3U)), E_FAIL);
 	// 플레이어 톰슨 기관총
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Player/Thompson/Thompson (%d).png", TEX_NORMAL, L"Player", L"Thompson", _range<_uint>(0U, 3U)), E_FAIL);
 	// 맥주병
@@ -165,11 +165,11 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 	Engine::CLayer* pLayer = nullptr;
 	FAILED_CHECK_RETURN(Add_Layer(pLayerTag, pLayer = Engine::CLayer::Create(0.f)), E_FAIL);
 
-	// 배경생성
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", CBackGround::Create(m_pGraphicDev)), E_FAIL);
-
 	// 플레이어 텍스처 생성
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MyTexture", CMyTexture::Create(m_pGraphicDev)), E_FAIL);
+
+	// 배경생성
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", CBackGround::Create(m_pGraphicDev)), E_FAIL);
 
 	return S_OK;
 }
