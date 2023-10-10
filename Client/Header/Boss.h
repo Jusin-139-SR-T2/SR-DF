@@ -213,8 +213,6 @@ private:
 	//패턴쪽 AI 
 	void AI_Ph1_Laser(float fDeltaTime);
 
-	
-
 #pragma endregion
 
 #pragma region 행동 : AI 이후 넘어가는곳 
