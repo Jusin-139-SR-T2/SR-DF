@@ -12,6 +12,12 @@ const string g_strObjectExt = ".aobject";
 const string g_strLightExt = ".alight";
 const string g_strCameraExt = ".acamera";
 
+const string g_strDataPath = "../Client/Resource/Data/";
+const string g_strScenePath = g_strDataPath + "Scene/";
+const string g_strObjectPath = g_strDataPath + "Object/";
+const string g_strTerrainPath = g_strDataPath + "Terrain/";
+const string g_strLightPath = g_strDataPath + "Light/";
+
 class CImguiWin_MapTool : public CImguiWin
 {
 	DERIVED_CLASS(CImguiWin, CImguiWin_MapTool)
@@ -54,23 +60,68 @@ private:
 
 private:
 	void			Layout_Property(const ImGuiWindowFlags& iMain_Flags);
+	void			Layout_Property_Scene();
+	void			Layout_Property_Layer();
+	void			Layout_Property_Object();
+	void			Layout_Property_Light();
 
 private:
 	void			Layout_Viewer(const ImGuiWindowFlags& iMain_Flags);
 
 private:
+	enum ESELECTED_TYPE : _ulong
+	{
+		ESELECTED_TYPE_NONE,
+		ESELECTED_TYPE_SCENE,
+		ESELECTED_TYPE_LAYER,
+		ESELECTED_TYPE_OBJECT,
+		ESELECTED_TYPE_LIGHT
+	};
+	ESELECTED_TYPE				m_ePropertySelected_Type = ESELECTED_TYPE_NONE;
+
+
+private:
+
+
+private:	// 씬 추가
+	string						m_strAdd_SceneName;			// 씬 추가하기
+	vector<string>				m_vecSceneName;				// 씬 이름 표시하기용
+	_int						m_iSelected_Scene;			// Selectable에서 선택된 씬
+
+private:	// 레이어 정보
+	//vector<string>
 
 
 private:	// 계층 관련
+	struct FObjectProperty
+	{
+		string		strName;
 
-	using pair_string_vector = pair<string, vector<string>>;
+		_vec3		vPos;
+		_vec3		vRot;
+		_vec3		vScale;
+		_float		fPriority_Update;
+		_bool		fUsePriority_Update;
+		_float		fPriority_LateUpdate;
+		_bool		fUsePriority_LateUpdate;
+		_float		fPriority_Render;
+		_bool		fUsePriority_Render;
+	};
+	struct FLayerProperty
+	{
+		string						strName;
+		_float						fPriority;
+		vector<FObjectProperty>		vecObject;
+	};
 	
 	string						m_strSceneName = u8"씬";			// 씬 이름
 	_bool						m_bScene_Loaded = false;
 
-	vector<pair_string_vector>	m_vecHierarchi;					// 계층 이름, 레이어, 오브젝트
+	vector<FLayerProperty>		m_vecHierarchi;					// 계층 이름, 레이어, 오브젝트
 	_int						m_iSelectedHierarchi_Layer = -1;
+	_int						m_iSelectedHierarchi_Layer_Remain = -1;
 	_int						m_iSelectedHierarchi_Object = -1;
+	_int						m_iSelectedHierarchi_Object_Remain = -1;
 	char						m_arrAddLayer_Buf[256] = "";
 	_bool						m_bFocusedLayer_Edit = false;
 
@@ -88,8 +139,11 @@ private:	// 뷰 추가 레이아웃
 
 
 private:	// 터레인 관련
-	void			Apply_Terrain();
+	void			Apply_Terrain(const string& strTerrainName);
+	void			Serialize_Terrain(const string& strTerrainName);
 	void			Export_ParsedTerrain(const FSerialize_Terrain& tTerrain);
+	void			Import_ParsedTerrain(const FSerialize_Terrain& tTerrain);
+
 
 private:
 	enum EINPUT_TERRAIN

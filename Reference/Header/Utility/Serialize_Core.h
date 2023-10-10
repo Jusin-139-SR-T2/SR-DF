@@ -2,7 +2,13 @@
 
 #include "Engine_Define.h"
 
-
+enum ESERIALIZE_PROCESS : _uint
+{
+	ESERIALIZE_PROCESS_IMMEDIATE,
+	ESERIALIZE_PROCESS_INIT,
+	ESERIALIZE_PROCESS_UPDATE,
+	ESERIALIZE_PROCESS_END
+};
 
 enum ESERIALIZE_TYPE
 {
@@ -26,10 +32,3 @@ public:
 	string				strName;		// 이름 태그
 };
 
-class FSeialize_Vector3
-{
-public:
-	_float		x;
-	_float		y;
-	_float		z;
-};

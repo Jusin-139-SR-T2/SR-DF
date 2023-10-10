@@ -46,15 +46,19 @@ void CImguiWin_MapTool::Free()
 
 HRESULT CImguiWin_MapTool::Ready_ImguiWin()
 {
-    m_vecHierarchi.push_back(pair_string_vector(u8"Environment", vector<string>()));
-    m_vecHierarchi[0].second.push_back("Test1");
-    m_vecHierarchi[0].second.push_back("Test2");
-    m_vecHierarchi[0].second.push_back("Test3");
-    m_vecHierarchi.push_back(pair_string_vector(u8"GameLogic", vector<string>()));
-    m_vecHierarchi.push_back(pair_string_vector(u8"Camera", vector<string>()));
-    m_vecHierarchi.push_back(pair_string_vector(u8"UI", vector<string>()));
+    m_vecHierarchi.push_back(FLayerProperty({ u8"Environment", 0.0f, vector<FObjectProperty>() }));
+    m_vecHierarchi[0].vecObject.push_back(FObjectProperty({ "Test1" }));
+    m_vecHierarchi[0].vecObject.push_back(FObjectProperty({ "Test2" }));
+    m_vecHierarchi[0].vecObject.push_back(FObjectProperty({ "Test3" }));
+    m_vecHierarchi.push_back(FLayerProperty({ u8"GameLogic", 0.0f }));
+    m_vecHierarchi.push_back(FLayerProperty({ u8"Camera", 0.0f }));
+    m_vecHierarchi.push_back(FLayerProperty({ u8"UI", 0.0f }));
     //swap(m_vecHierarchi[1], m_vecHierarchi[3]);
 
+
+    // 씬 브라우저
+    m_strAdd_SceneName.reserve(20);
+    m_iSelected_Scene = -1;
 
     // 터레인 요소 초기화
     m_vecInput_Terrain.resize(EINPUT_TERRAIN_END);
@@ -147,7 +151,171 @@ void CImguiWin_MapTool::Layout_Browser_Scene()
 {
     if (ImGui::BeginTabItem(u8"씬"))
     {
+        _bool bAdd_Scene = false;
+        if (ImGui::Button(u8"추가하기"))
+        {
+            bAdd_Scene = true;
+        }
 
+        ImGui::SameLine();
+        if (ImGui::InputTextEx(u8"##InputSceneName", u8"Scene Name",
+            const_cast<char*>(m_strAdd_SceneName.c_str()),
+            m_strAdd_SceneName.capacity(),
+            ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            bAdd_Scene = true;
+        }
+
+        ImGui::SameLine();
+        ImGui::Dummy(ImVec2(100.f, 0.f));
+
+        ImGui::SameLine();
+        if (ImGui::Button(u8"씬 목록 저장하기"))
+        {
+            Document doc;
+            StringBuffer buffer;
+
+            // 씬 목록은 정해진 폴더에 파일로 저장한다.
+            for (size_t i = 0; i < m_vecSceneName.size(); i++)
+            {
+                FSerialize_Scene tScene;
+                tScene.tHeader.strType = ESERIALIZE_SCENE;
+                tScene.tHeader.strName = m_vecSceneName[i];
+                tScene.refTerrainName = tScene.tHeader.strName + "_Terrain";
+
+                // 레이어 파싱
+                for (size_t j = 0; j < m_vecHierarchi.size(); j++)
+                {
+                    FSerialize_Layer tLayer;
+                    tLayer.tHeader.strType = ESERIALIZE_LAYER;
+                    tLayer.tHeader.strName = m_vecHierarchi[j].strName;
+                    // 나중에 레이어 정보까지 파싱하는 거 넣기
+                    tLayer.fPriority = 0.f;
+                    tScene.vecLayer.push_back(tLayer);
+                    
+                    // 오브젝트 파싱
+                    for (size_t k = 0; k < m_vecHierarchi[j].vecObject.size(); k++)
+                    {
+                        FSerialize_GameObject tObject;
+                        tObject.tHeader.strType = ESERIALIZE_LAYER;
+                        tObject.tHeader.strName = m_vecHierarchi[j].vecObject[k].strName;
+                        // 여기부터 나중에 추가, 오브젝트의 정보
+                        //tObject.bTag.emplace();
+                    }
+                }
+
+
+                tScene.Parse_RapidJSON(doc, buffer, ESERIALIZE_PROCESS_IMMEDIATE, true);
+
+                ofstream ofs(g_strScenePath + tScene.tHeader.strName + g_strSceneExt);
+                if (ofs.is_open())
+                {
+                    ofs << buffer.GetString();
+                    ofs.close();
+                }
+                else
+                    cout << "파일을 열지 못함" << endl;
+
+
+                // 터레인 저장
+                Serialize_Terrain(tScene.refTerrainName);
+                
+                /*if (i == (size_t)0)
+                {
+                    
+                }
+                else if (i == m_vecSceneName.size() - (size_t)1)
+                {
+                    tScene.Parse_RapidJSON(doc, buffer, ESERIALIZE_PROCESS_UPDATE, true);
+                }
+                else
+                {
+                    tScene.Parse_RapidJSON(doc, buffer, ESERIALIZE_PROCESS_END, true);
+                }*/
+            }
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button(u8"씬 목록 로드하기"))
+        {
+            // 씬 목록은 정해진 폴더에서 로드한다.
+            _finddata_t fd;
+            intptr_t handle;
+            if ((handle = _findfirst((g_strScenePath + "*" + g_strSceneExt).c_str(), &fd)) == -1L)
+            {
+                cout << "폴더에 파일 없음!!" << endl;
+                m_vecSceneName.clear();
+            }
+            else
+            {
+                m_vecSceneName.clear();
+                m_iSelected_Scene = -1;
+
+                // 목록 로드
+                do
+                {
+                    string strName = fd.name;
+                    size_t extPos = strName.find_last_of('.');
+                    if (extPos == string::npos)
+                        break;
+
+                    m_vecSceneName.push_back(strName.substr((size_t)0, extPos));
+                } while (_findnext(handle, &fd) == S_OK);
+
+                // 로드된 목록으로 내용물까지 로드
+            }
+
+            _findclose(handle);
+        }
+
+        ImGui::SameLine();
+        ImGui::Dummy(ImVec2(100.f, 0.f));
+
+        ImGui::SameLine();
+        if (ImGui::Button(u8"선택 씬 로드하기"))
+        {
+            // 선택한 씬을 로드하도록 한다.
+            if (m_iSelected_Scene != -1)
+            {
+                m_strSceneName = m_vecSceneName[m_iSelected_Scene];
+                m_vecHierarchi.clear();
+
+                // 실제 씬의 레이어 정보를 로드한다.
+                
+            }
+        }
+
+
+        if (bAdd_Scene)
+        {
+            m_strAdd_SceneName = m_strAdd_SceneName.c_str();
+            auto iter = find_if(m_vecSceneName.begin(), m_vecSceneName.end(),
+                [this](string& rStr) {
+                    return rStr == m_strAdd_SceneName;
+                });
+            
+            if (iter == m_vecSceneName.end() && !m_strAdd_SceneName.empty())
+                m_vecSceneName.push_back(m_strAdd_SceneName);
+
+            m_strAdd_SceneName.clear();
+        }
+
+        ImGui::Separator();
+
+        for (_uint i = 0; i < static_cast<_uint>(m_vecSceneName.size()); i++)
+        {
+            bool bIsSelected_Scene = (m_iSelected_Scene == i);
+
+            if (ImGui::Selectable(m_vecSceneName[i].c_str(),
+                bIsSelected_Scene, ImGuiSelectableFlags_AllowDoubleClick))
+            {
+                if (bIsSelected_Scene)
+                {
+                    int t = 0;
+                }
+                m_iSelected_Scene = i;
+            }
+        }
 
         ImGui::EndTabItem();
     }
@@ -285,7 +453,7 @@ void CImguiWin_MapTool::Layout_Browser_Terrain()
         ImGui::Separator();
         if (ImGui::Button(u8"적용하기", ImVec2(60, 0)))
         {
-            Apply_Terrain();
+            Apply_Terrain(m_strSceneName + "_Terrain");
         }
 
 
@@ -338,31 +506,35 @@ void CImguiWin_MapTool::Layout_Hierarchy(const ImGuiWindowFlags& iMain_Flags)
         {
             bool bIsSelected_Layer = (m_iSelectedHierarchi_Layer == i);
 
-            if (ImGui::Selectable(m_vecHierarchi[i].first.c_str(),
+            if (ImGui::Selectable(m_vecHierarchi[i].strName.c_str(),
                 bIsSelected_Layer, ImGuiSelectableFlags_AllowDoubleClick))
             {
-                if (bIsSelected_Layer)
+                // 선택시 레이어 정보 출력
+                //if (bIsSelected_Layer)
                 {
-                    
+                    m_ePropertySelected_Type = ESELECTED_TYPE_LAYER;
                 }
                 m_iSelectedHierarchi_Layer = i;
                 m_iSelectedHierarchi_Object = -1;
             }
 
             ImGui::Indent();
-            for (_uint j = 0; j < m_vecHierarchi[i].second.size(); j++)
+            for (_uint j = 0; j < m_vecHierarchi[i].vecObject.size(); j++)
             {
                 bool bIsSelected_Object = (m_iSelectedHierarchi_Object == j);
 
-                if (ImGui::Selectable(m_vecHierarchi[i].second[j].c_str(),
+                if (ImGui::Selectable(m_vecHierarchi[i].vecObject[j].strName.c_str(),
                     bIsSelected_Object, ImGuiSelectableFlags_AllowDoubleClick))
                 {
-                    if (bIsSelected_Object)
+                    // 선택시 오브젝트 정보 출력
+                    //if (bIsSelected_Object)
                     {
-
+                        m_ePropertySelected_Type = ESELECTED_TYPE_OBJECT;
                     }
+
                     m_iSelectedHierarchi_Object = j;
                     m_iSelectedHierarchi_Layer = -1;
+                    m_iSelectedHierarchi_Layer_Remain = i;
                 }
             }
             ImGui::Unindent();
@@ -395,12 +567,12 @@ void CImguiWin_MapTool::Layout_Hierarchy(const ImGuiWindowFlags& iMain_Flags)
             if (strInput.length() > 0)
             {
                 auto iter = find_if(m_vecHierarchi.begin(), m_vecHierarchi.end(),
-                    [&strInput](pair_string_vector& pairDst) {
-                        return strInput == pairDst.first;
+                    [&strInput](FLayerProperty& Dst) {
+                        return strInput == Dst.strName;
                     });
                 if (iter == m_vecHierarchi.end())
                 {
-                    m_vecHierarchi.push_back(pair_string_vector(strInput, vector<string>()));
+                    m_vecHierarchi.push_back(FLayerProperty({strInput, 0.f}));
                 }
             }
             memset(m_arrAddLayer_Buf, 0, IM_ARRAYSIZE(m_arrAddLayer_Buf));
@@ -414,9 +586,213 @@ void CImguiWin_MapTool::Layout_Property(const ImGuiWindowFlags& iMain_Flags)
     // 계층
     if (ImGui::Begin(u8"속성", NULL, iMain_Flags))
     {
-
+        switch (m_ePropertySelected_Type)
+        {
+        case CImguiWin_MapTool::ESELECTED_TYPE_SCENE:
+            Layout_Property_Scene();
+            break;
+        case CImguiWin_MapTool::ESELECTED_TYPE_LAYER:
+            Layout_Property_Layer();
+            break;
+        case CImguiWin_MapTool::ESELECTED_TYPE_OBJECT:
+            Layout_Property_Object();
+            break;
+        case CImguiWin_MapTool::ESELECTED_TYPE_LIGHT:
+            Layout_Property_Light();
+            break;
+        }
 
     }   ImGui::End();
+}
+
+void CImguiWin_MapTool::Layout_Property_Scene()
+{
+    
+}
+
+void CImguiWin_MapTool::Layout_Property_Layer()
+{
+    if (ImGui::CollapsingHeader(u8"좌표")
+        && m_iSelectedHierarchi_Layer != -1)
+    {
+        // 이름
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"이름", ImVec2(60, 0));
+        Set_Button_ReturnColor();
+
+        // 입력부
+        m_vecHierarchi[m_iSelectedHierarchi_Layer].strName.reserve(20);
+        ImGui::SameLine();
+        ImGui::PushItemWidth(140.f);
+        if (ImGui::InputText("##Name", 
+            const_cast<char*>(m_vecHierarchi[m_iSelectedHierarchi_Layer].strName.c_str()),
+            m_vecHierarchi[m_iSelectedHierarchi_Layer].strName.capacity(),
+            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+
+        }
+        m_vecHierarchi[m_iSelectedHierarchi_Layer].strName = m_vecHierarchi[m_iSelectedHierarchi_Layer].strName;
+        ImGui::PopItemWidth();
+    }
+}
+
+void CImguiWin_MapTool::Layout_Property_Object()
+{
+    if (ImGui::CollapsingHeader(u8"이름")
+        && m_iSelectedHierarchi_Layer_Remain != -1 && m_iSelectedHierarchi_Object != -1)
+    {
+        // 이름
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"이름", ImVec2(60, 0));
+        Set_Button_ReturnColor();
+
+        // 입력부
+        m_vecHierarchi[m_iSelectedHierarchi_Object].strName.reserve(20);
+        ImGui::SameLine();
+        ImGui::PushItemWidth(140.f);
+        if (ImGui::InputText("##Name",
+            const_cast<char*>(m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].strName.c_str()),
+            m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].strName.capacity(),
+            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+
+        }
+        m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].strName = m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].strName;
+        ImGui::PopItemWidth();
+    }
+
+
+    ImGui::Separator();
+    if (ImGui::CollapsingHeader(u8"좌표")
+        && m_iSelectedHierarchi_Layer_Remain != -1 && m_iSelectedHierarchi_Object != -1)
+    {
+        // X
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"X", ImVec2(60, 0));
+        Set_Button_ReturnColor();
+
+        // Y
+        ImGui::SameLine();
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"Y", ImVec2(60, 0));
+        Set_Button_ReturnColor();
+
+        // Z
+        ImGui::SameLine();
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"Y", ImVec2(60, 0));
+        Set_Button_ReturnColor();
+        
+
+        ImGui::PushItemWidth((60.f + 6.f) * 3.f);
+        if (ImGui::InputFloat3("##Translate", 
+            m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].vPos,
+            "%.3f",
+            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+
+        }
+        ImGui::PopItemWidth();
+    }
+
+    if (ImGui::CollapsingHeader(u8"회전")
+        && m_iSelectedHierarchi_Layer_Remain != -1 && m_iSelectedHierarchi_Object != -1)
+    {
+        // X
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"X", ImVec2(30, 0));
+        Set_Button_ReturnColor();
+
+        // Y
+        ImGui::SameLine();
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"Y", ImVec2(30, 0));
+        Set_Button_ReturnColor();
+
+        // Z
+        ImGui::SameLine();
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"Y", ImVec2(30, 0));
+        Set_Button_ReturnColor();
+        
+        ImGui::PushItemWidth((60.f + 6.f) * 3.f);
+        if (ImGui::InputFloat3("##Rotate",
+            m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].vRot,
+            "%.3f",
+            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+
+        }
+        ImGui::PopItemWidth();
+    }
+
+    if (ImGui::CollapsingHeader(u8"크기")
+        && m_iSelectedHierarchi_Layer_Remain != -1 && m_iSelectedHierarchi_Object != -1)
+    {
+        // X
+        ImGui::SameLine();
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"X", ImVec2(30, 0));
+        Set_Button_ReturnColor();
+
+        // Y
+        ImGui::SameLine();
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"Y", ImVec2(30, 0));
+        Set_Button_ReturnColor();
+
+        // Z
+        ImGui::SameLine();
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"Y", ImVec2(30, 0));
+        Set_Button_ReturnColor();
+        
+        ImGui::PushItemWidth((60.f + 6.f) * 3.f);
+        if (ImGui::InputFloat3("##Scale",
+            m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].vScale,
+            "%.3f",
+            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+
+        }
+        ImGui::PopItemWidth();
+    }
+
+
+    ImGui::Separator();
+    if (ImGui::CollapsingHeader(u8"우선도"))
+    {
+        // X
+        ImGui::SameLine();
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"X", ImVec2(30, 0));
+        Set_Button_ReturnColor();
+
+        // Y
+        ImGui::SameLine();
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"Y", ImVec2(30, 0));
+        Set_Button_ReturnColor();
+
+        // Z
+        ImGui::SameLine();
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"Y", ImVec2(30, 0));
+        Set_Button_ReturnColor();
+
+        _vec3 test;
+        ImGui::PushItemWidth((60.f + 6.f) * 3.f);
+        if (ImGui::InputFloat3("##Scale", test, "%.3f",
+            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+
+        }
+        ImGui::PopItemWidth();
+    }
+}
+
+void CImguiWin_MapTool::Layout_Property_Light()
+{
 }
 
 void CImguiWin_MapTool::Layout_Viewer(const ImGuiWindowFlags& iMain_Flags)
@@ -541,14 +917,19 @@ void CImguiWin_MapTool::Layout_Viewer(const ImGuiWindowFlags& iMain_Flags)
     }   ImGui::End();
 }
 
-void CImguiWin_MapTool::Apply_Terrain()
+void CImguiWin_MapTool::Apply_Terrain(const string& strTerrainName)
 {
     // 적용버튼이 눌렸을 때 새로운 터레인을 제조하고 맵에 배치해준다.
 
+    
+}
+
+void CImguiWin_MapTool::Serialize_Terrain(const string& strTerrainName)
+{
     // 데이터 구성
     FSerialize_Terrain tTerrain;
     tTerrain.tHeader.strType = ESERIALIZE_TERRAIN;
-    tTerrain.tHeader.strName = "Terrain";
+    tTerrain.tHeader.strName = strTerrainName;
     tTerrain.vVertexCount.x = stof(m_vecInput_Terrain[EINPUT_TERRAIN_HORIZON]);
     tTerrain.vVertexCount.y = stof(m_vecInput_Terrain[EINPUT_TERRAIN_HEIGHT]);
     tTerrain.vVertexCount.z = stof(m_vecInput_Terrain[EINPUT_TERRAIN_VERTICLE]);
@@ -572,9 +953,7 @@ void CImguiWin_MapTool::Export_ParsedTerrain(const FSerialize_Terrain& tTerrain)
     tTerrain.Parse_RapidJSON(doc, buffer, true);
 
     string strJson = buffer.GetString();
-    string strPath = "../Client/Resource/Data/Terrain/";
-    string strFileName = "Terrain1";
-    ofstream outputFile(strPath + strFileName + g_strTerrainExt);
+    ofstream outputFile(g_strTerrainPath + tTerrain.tHeader.strName + g_strTerrainExt);
     if (outputFile.is_open())
     {
         outputFile << strJson;
@@ -585,20 +964,23 @@ void CImguiWin_MapTool::Export_ParsedTerrain(const FSerialize_Terrain& tTerrain)
     {
         cerr << "파일을 저장할 수 없소!\n";
     }
+}
 
+void CImguiWin_MapTool::Import_ParsedTerrain(const FSerialize_Terrain& tTerrain)
+{
     // 파일 읽기 테스트
-    ifstream inputFile(strPath + strFileName + g_strTerrainExt);
-    if (inputFile.is_open())
-    {
-        // 문자열 쉽게 읽어오는 반복자
-        string strIter(istreambuf_iterator<char>(inputFile), istreambuf_iterator<char>());
-        inputFile.close();
-        cout << strJson << "\n파일 불러옴!\n";
-    }
-    else
-    {
-        cerr << "파일을 불러들일 수 없소!\n";
-    }
+    //ifstream inputFile(strPath + strFileName + g_strTerrainExt);
+    //if (inputFile.is_open())
+    //{
+    //    // 문자열 쉽게 읽어오는 반복자
+    //    string strIter(istreambuf_iterator<char>(inputFile), istreambuf_iterator<char>());
+    //    inputFile.close();
+    //    cout << strJson << "\n파일 불러옴!\n";
+    //}
+    //else
+    //{
+    //    cerr << "파일을 불러들일 수 없소!\n";
+    //}
 
     /*const_cast<FSerialize_Terrain&>(tTerrain).Receive_ByRapidJSON(strJson, false);
     cout << strJson << "\n";*/

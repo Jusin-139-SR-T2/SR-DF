@@ -223,6 +223,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClInclude Include="Include\Tool.h" />
     <ClInclude Include="Header\PlayerAnimation.h" />
     <ClInclude Include="Header\Scene_MapTool.h" />
+    <ClInclude Include="Header\ProjectDataTable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\BackGround.cpp" />
@@ -259,6 +260,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClCompile Include="Include\Tool.cpp" />
     <ClCompile Include="Code\PlayerAnimation.cpp" />
     <ClCompile Include="Code\Scene_MapTool.cpp" />
+    <ClCompile Include="Code\ProjectDataTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Include\Tool.rc" />

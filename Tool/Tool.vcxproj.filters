@@ -43,6 +43,9 @@
     <Filter Include="02. ImguiMgr\01. AnimationTool\02. PlayerTexture">
       <UniqueIdentifier>{0e50d04c-cd0c-4087-b546-42c19e63c79f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. ImguiMgr\02. MapTool\ProjectDataTable">
+      <UniqueIdentifier>{a8ad23aa-249c-4f87-a9ce-0b0d1e49db8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\framework.h">
@@ -126,6 +129,9 @@
     <ClInclude Include="Header\ImguiWin_MapTool.h">
       <Filter>02. ImguiMgr\02. MapTool</Filter>
     </ClInclude>
+    <ClInclude Include="Header\ProjectDataTable.h">
+      <Filter>02. ImguiMgr\02. MapTool\ProjectDataTable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\framework.cpp">
@@ -199,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="Code\ImguiWin_MapTool.cpp">
       <Filter>02. ImguiMgr\02. MapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ProjectDataTable.cpp">
+      <Filter>02. ImguiMgr\02. MapTool\ProjectDataTable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
