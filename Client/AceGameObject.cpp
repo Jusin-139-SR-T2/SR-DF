@@ -2,12 +2,12 @@
 #include "AceGameObject.h"
 
 CAceGameObject::CAceGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	:Base(pGraphicDev)
+	: Base(pGraphicDev)
 {
 }
 
 CAceGameObject::CAceGameObject(const CAceGameObject& rhs)
-	:Base(rhs)
+	: Base(rhs)
 {
 }
 

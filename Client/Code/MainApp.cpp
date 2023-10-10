@@ -142,6 +142,10 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	// PhysicsMgr
 	FAILED_CHECK_RETURN(Engine::Ready_PhysicsMgr(1), E_FAIL);
 
+	// 팀 에이전트 팀 설정, A, B팀 서로 적대 관계 설정
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_ALPHA), static_cast<_int>(ETEAM_BETA), ERELATION_STATE::HOSTILE);
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BETA), static_cast<_int>(ETEAM_ALPHA), ERELATION_STATE::HOSTILE);
+
 	return S_OK;
 }
 

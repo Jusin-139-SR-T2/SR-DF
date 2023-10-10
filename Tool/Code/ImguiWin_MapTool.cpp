@@ -785,7 +785,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
         if (ImGui::InputFloat3("##Scale", test, "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
-
+            
         }
         ImGui::PopItemWidth();
     }

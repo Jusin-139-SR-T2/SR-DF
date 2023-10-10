@@ -23,6 +23,8 @@ namespace Engine
 
 	enum MOUSEMOVESTATE {	DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };
 
+	enum ETEAM_ID { ETEAM_ALPHA, ETEAM_BETA, ETEAM_GAMMA, ETEAM_DELTA };
+
 	enum EBIT_FLAG_32 : unsigned long
 	{
 		EBIT_FLAG32_0 = 1UL << 0,

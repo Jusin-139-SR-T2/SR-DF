@@ -25,7 +25,7 @@ enum ESERIALIZE_TYPE
 /// <summary>
 /// 모든 직렬화 데이터가 공통적으로 가지는 헤더 데이터
 /// </summary>
-class FSeialize_Header
+class ENGINE_DLL FSeialize_Header
 {
 public:
 	ESERIALIZE_TYPE		strType;		// 타입 태그

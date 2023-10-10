@@ -9,7 +9,7 @@ using namespace rapidjson;
 /// <summary>
 /// 컴포넌트가 가지는 직렬화 데이터
 /// </summary>
-class FSerialize_Component
+class ENGINE_DLL FSerialize_Component
 {
 public:
 	FSeialize_Header	tHeader;
@@ -21,7 +21,7 @@ public:
 /// <summary>
 /// 오브젝트가 가지는 직렬화 데이터
 /// </summary>
-class FSerialize_GameObject
+class ENGINE_DLL FSerialize_GameObject
 {
 public:
 	FSeialize_Header				tHeader;
@@ -52,7 +52,7 @@ public:
 /// <summary>
 /// 터레인이 가지는 직렬화 데이터
 /// </summary>
-class FSerialize_Terrain
+class ENGINE_DLL FSerialize_Terrain
 {
 	
 public:
@@ -136,7 +136,7 @@ public:
 /// <summary>
 /// 레이어가 가지는 직렬화 데이터
 /// </summary>
-class FSerialize_Layer
+class ENGINE_DLL FSerialize_Layer
 {
 public:
 	FSeialize_Header				tHeader;
@@ -147,7 +147,7 @@ public:
 /// <summary>
 /// 씬이 가지는 직렬화 데이터
 /// </summary>
-class FSerialize_Scene
+class ENGINE_DLL FSerialize_Scene
 {
 public:
 	FSeialize_Header			tHeader;
