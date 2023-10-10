@@ -173,6 +173,9 @@
     <ClInclude Include="Header\Serialize\Serialize_BaseClass.h">
       <Filter>12. Serialize</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Interface\ITeamAgent.h">
+      <Filter>13. Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Component\Component.cpp">
@@ -332,6 +335,9 @@
     <ClCompile Include="Code\BlackBoardPtr.cpp">
       <Filter>11. BlackBoardMgr\BlackBoard</Filter>
     </ClCompile>
+    <ClCompile Include="Header\Interface\ITeamAgent.cpp">
+      <Filter>13. Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">
@@ -459,6 +465,9 @@
     </Filter>
     <Filter Include="12. Serialize">
       <UniqueIdentifier>{2984b8d3-3b75-4f5f-8f2c-32c406a5573e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="13. Interface">
+      <UniqueIdentifier>{1a975760-1277-4df1-b742-bb90be0b888d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

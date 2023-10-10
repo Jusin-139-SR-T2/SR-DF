@@ -1,8 +1,13 @@
 #pragma once
 #include "GameObject.h"
+#include "ITeamAgent.h"
 
 
-class CAceGameObject : public Engine::CGameObject
+/// <summary>
+/// 폴른 에이스 전용 게임 오브젝트
+/// 팀 에이전트 인터페이스를 사용하여 팀을 설정 가능하다.
+/// </summary>
+class CAceGameObject : public Engine::CGameObject, public Engine::ITeamAgent
 {
 	DERIVED_CLASS(CGameObject, CAceGameObject)
 

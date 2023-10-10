@@ -23,6 +23,7 @@
 #include "ColliderComponent.h"
 #include "TextureComponent.h"
 #include "TransformComponent.h"
+#include "ITeamAgent.h"
 
 
 BEGIN(Engine)
