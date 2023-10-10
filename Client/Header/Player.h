@@ -132,13 +132,6 @@ private:
 //-------------------------------------------------------------------------------------------------
 
 public:// 플레이어 상태 값
-	// 플레이어
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY, DIE, JUMP, PLAYER_END };
-	// 왼손
-	enum class STATE_LEFTHAND { NONE, HAND, OPEN_HAND, RUN_HAND, RIGHTER, RUN_RIHGTER };
-	// 오른손
-	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
-
 	// TEST
 	enum class OBJECT_TYPE { NONE, TWO_HAND, TWO_OBJECT, RIGHT_OBJECT }; // 테스트(오브젝트)
 	enum class OBJECT_NAME { NONE, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN };
@@ -146,12 +139,13 @@ public:// 플레이어 상태 값
 	// TEST
 	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향 
 
-	// 소영 추가 ---------------- 
-	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
-	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
-	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
+private:
+	enum class EACTION_KEY : _uint { RIGHT, LEFT, UP, DOWN, RUN, PUNCH, SIZE };
+	ACTION_SET<EACTION_KEY>			m_tActionKey;
+
 
 private: // 플레이어의 상태 머신
+	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY, DIE, JUMP, PLAYER_END };
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
 
 	void Idle(float fTimeDelta);
@@ -164,6 +158,7 @@ private: // 플레이어의 상태 머신
 	void Die(float fTimeDelta);
 
 private: // 플레이어의 왼손 상태 머신
+	enum class STATE_LEFTHAND { NONE, HAND, OPEN_HAND, RUN_HAND, RIGHTER, RUN_RIHGTER };
 	STATE_SET<STATE_LEFTHAND, void(CPlayer*, float)> m_tLeftHand_State;
 
 	void	Left_None(float fTimeDelta);
@@ -174,8 +169,16 @@ private: // 플레이어의 왼손 상태 머신
 	void	Left_Righter(float fTimeDelta);
 
 private: // 플레이어의 오른손 상태 머신
+	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
 	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightHand_State;
 	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightState_Old;
+
+
+	// 소영 추가 ---------------- 
+	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
+	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
+	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
+
 
 	void	Right_None(float fTimeDelta);
 	void	Right_Hand(float fTimeDelta);
@@ -257,6 +260,12 @@ private: // 스위치
 	_bool		bDBugFrame = false;
 
 private:
+	struct FTest // 직관적인 이름과 맞는 기능들 및 변수들 구조체 만들기 (여러개)
+	{
+		float x;
+	};
+
+	FTest		tTest;
 	_float		fRightFrameSpeed = 10.f;	// 오른손 프레임 속도
 	_float		fLeftFrameSpeed = 10.f;		// 왼손 프레임 속도
 	_float		fStraightSpeed = 5.f;		// 플레이어 전진 속도
@@ -268,6 +277,8 @@ private:
 	_float		fChageTime = 0.f;			// 차징 전환 시간
 	_float		fFullChargeTime = 7.f;		// 풀자징 시간
 	_float		fCurrentTime = 0.f;			// 현재 시간
+	_float		fLeftCurrentTime = 0.f;		// 왼손 현재 시간
+	_float		fRightCurrentTime = 0.f;	// 오른손 현재 시간
 	_float		fCurChangeTime = 1.f;		// 시간 속도 조절(배율)
 	_float		fMaxChangeTime = 3.f;		// 변경될 최대 시간
 
