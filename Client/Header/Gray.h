@@ -1,13 +1,11 @@
 #pragma once
 
 #include "AceMonster.h"
-#include "Export_System.h"
-#include "Export_Utility.h"
-#include "Engine_Macro.h"
 
 #include "ThrowPipe.h"
-#include "Awareness.h"
 #include "MonsterPunch.h"
+
+#include "Awareness.h"
 
 BEGIN(Engine)
 
@@ -166,4 +164,8 @@ Speed 4 = walk, SideWalk
 Speed 5 = UpRight
 Speed 6 = run, frighten
 Speed 7
+
+swprintf_s(debugString, L"Gray - 변수 확인 m_fAwareness = %f\n", m_fAwareness);
+OutputDebugStringW(debugString);
+
 */

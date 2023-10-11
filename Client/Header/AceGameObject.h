@@ -23,4 +23,7 @@ protected:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() PURE;
 	virtual void		Free() override;
+
+protected:
+
 };

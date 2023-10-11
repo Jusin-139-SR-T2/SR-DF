@@ -1,21 +1,21 @@
 #include "stdafx.h"
-#include "SpawnFire.h"
+#include "RedThunder.h"
 
-CSpawnFire::CSpawnFire(LPDIRECT3DDEVICE9 pGraphicDev)
+CRedThunder::CRedThunder(LPDIRECT3DDEVICE9 pGraphicDev)
 	:Base(pGraphicDev)
 {
 }
 
-CSpawnFire::CSpawnFire(const CSpawnFire& rhs)
+CRedThunder::CRedThunder(const CRedThunder& rhs)
 	: Base(rhs)
 {
 }
 
-CSpawnFire::~CSpawnFire()
+CRedThunder::~CRedThunder()
 {
 }
 
-CSpawnFire* CSpawnFire::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CAceUnit* pOwner)
+CRedThunder* CRedThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -28,56 +28,53 @@ CSpawnFire* CSpawnFire::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float 
 	}
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-	pInstance->Value_Setting(_x, _y, _z, _CurrPhase);
 	pInstance->Set_Owner(pOwner);
 
 	return pInstance;
 }
 
-HRESULT CSpawnFire::Ready_GameObject()
+HRESULT CRedThunder::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	// 충돌용
 	m_pTransformComp->Readjust_Transform();
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-	pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 0.2f;
+	pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
+	pShape->vHalfSize = { 1.f, 2.f, 0.3f };
 
 	// 이미지 
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"FireEffect");
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"RedThunder");
 
 	// 프레임 및 사망시간 조정
 	m_tFrame.fFrame = 0;
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-	m_tFrame.fFrameSpeed = 2.f;
-	  
+	m_tFrame.fFrameSpeed = 6.f;
+
 	m_tFrame.fAge = 0.f;
-	m_tFrame.fLifeTime = 5.f;
+	m_tFrame.fLifeTime = 4.f;
 
 	// 크기조정
-	m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
+	m_pTransformComp->Set_Scale({ 3.f, 12.f, 1.f });
 
 	return S_OK;
 }
 
-_int CSpawnFire::Update_GameObject(const _float& fTimeDelta)
+_int CRedThunder::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
 	Update_PlayerPos();
 
 	m_tFrame.fFrame += fTimeDelta * m_tFrame.fFrameSpeed;
-	m_tFrame.fAge += fTimeDelta * 1.f;
 
-	//일렁이는 용도 프레임 
 	if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 	{
-		m_tFrame.fFrame = 0;
+		m_tFrame.fFrame = m_tFrame.fFrameEnd - 1.f;
+		Set_Dead();
 	}
 
-	if (m_tFrame.fAge > m_tFrame.fLifeTime)
-		Set_Dead();
+	Height_On_Terrain(6.f);
 
 	Billboard();
 
@@ -89,14 +86,12 @@ _int CSpawnFire::Update_GameObject(const _float& fTimeDelta)
 	return S_OK;
 }
 
-#pragma region 기본셋팅 
-
-void CSpawnFire::LateUpdate_GameObject()
+void CRedThunder::LateUpdate_GameObject()
 {
 	SUPER::LateUpdate_GameObject();
 }
 
-void CSpawnFire::Render_GameObject()
+void CRedThunder::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -109,14 +104,14 @@ void CSpawnFire::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CSpawnFire::Add_Component()
+HRESULT CRedThunder::Add_Component()
 {
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_Effect_BeamTextureComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 
 	// 콜라이더 컴포넌트
-	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
 
 	// 물리 세계 등록
 	m_pColliderComp->EnterToPhysics(0);
@@ -133,42 +128,22 @@ HRESULT CSpawnFire::Add_Component()
 	return S_OK;
 }
 
-void CSpawnFire::Free()
+void CRedThunder::Free()
 {
 	SUPER::Free();
 }
 
-#pragma endregion
+void CRedThunder::OnCollision(CGameObject* pDst)
+{
+	OutputDebugString(L"▶RedThunder 충돌 \n");
 
-#pragma region 충돌 
+	Change_PlayerHp(-6.f);
+}
 
-void CSpawnFire::OnCollision(CGameObject* pDst)
+void CRedThunder::OnCollisionEntered(CGameObject* pDst)
 {
 }
 
-void CSpawnFire::OnCollisionEntered(CGameObject* pDst)
+void CRedThunder::OnCollisionExited(CGameObject* pDst)
 {
-	OutputDebugString(L"▶SpawnFire 충돌 \n");
-
-	Change_PlayerHp(-3.f);
-}
-
-void CSpawnFire::OnCollisionExited(CGameObject* pDst)
-{
-}
-
-#pragma endregion
-
-void CSpawnFire::Value_Setting(_float _x, _float _y, _float _z, MonsterPhase _phase)
-{
-	switch (_phase)
-	{
-	case Engine::Phase1:
-		m_tFrame.fLifeTime = 5.f;
-		break;
-
-	case Engine::Phase2:
-		m_tFrame.fLifeTime = 7.f;
-		break;
-	}
 }

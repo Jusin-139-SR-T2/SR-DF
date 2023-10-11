@@ -159,6 +159,11 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     // 물리 업데이트 코드
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌체 이동
 
+    //플레이어 디버그용 코드 
+    //swprintf_s(debugString, L"Player - 변수 확인 m_gHp = %f\n", m_gHp.Cur);
+    //OutputDebugStringW(debugString);
+    
+
     //플레이어 뒤로 콜라가 생성되는 코드
     //if (Engine::IsKey_Pressed(DIK_BACK))
     //Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 

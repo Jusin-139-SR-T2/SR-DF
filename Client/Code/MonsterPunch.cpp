@@ -1,14 +1,13 @@
-
 #include "stdafx.h"
 #include "MonsterPunch.h"
 
 CMonsterPunch::CMonsterPunch(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+	: Base(pGraphicDev)
 {
 }
 
 CMonsterPunch::CMonsterPunch(const CMonsterPunch& rhs)
-	: CGameObject(rhs)
+	: Base(rhs)
 {
 }
 
@@ -20,7 +19,7 @@ HRESULT CMonsterPunch::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	// 충돌
+	// 충돌 - 구형 
 	m_pTransformComp->Readjust_Transform();
 	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
 	pShape->fRadius = 1.5f;
@@ -28,10 +27,6 @@ HRESULT CMonsterPunch::Ready_GameObject()
 	//디버그용 텍스쳐
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Debug", L"Sphere");
 
-	m_fLifeTime = 0.5f;
-	m_fAge = 0.f;
-
-	PlayerHp = 0.f;
 	return S_OK;
 }
 
@@ -39,16 +34,15 @@ _int CMonsterPunch::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	m_fAge += fTimeDelta * 1.f;
+	//충돌하지 않았을경우 없앤다. 
+	m_tFrame.fAge += fTimeDelta * 1.f;
 
-	if (m_fAge > m_fLifeTime)
+	if (m_tFrame.fAge > m_tFrame.fLifeTime)
 	{
 		Set_Dead();
 	}
 
-	//충돌하고 죽기도 하지만 충돌하지 않았다면 또 죽어야하기도 하다. 
-
-	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
+	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); 
 
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
@@ -62,16 +56,6 @@ void CMonsterPunch::LateUpdate_GameObject()
 
 void CMonsterPunch::Render_GameObject()
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
-
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-
-	m_pTextureComp->Render_Texture();
-	m_pBufferComp->Render_Buffer();
-
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 }
 
 CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, TYPE _option, CAceUnit* pOwner)
@@ -82,7 +66,7 @@ CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _
 	{
 		Safe_Release(pInstance);
 
-		MSG_BOX("ThrowPipe Create Failed");
+		MSG_BOX("MonsterPunch Create Failed");
 		return nullptr;
 	}
 
@@ -98,7 +82,6 @@ HRESULT CMonsterPunch::Add_Component()
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_ProjectileTextureComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
 
 	// -------------------- 충돌 세트 --------------------------
 	// 콜라이더 컴포넌트
@@ -123,37 +106,24 @@ void CMonsterPunch::Free()
 	SUPER::Free();
 }
 
-void CMonsterPunch::Billboard(const _float& fTimeDelta)
-{
-
-}
-
 void CMonsterPunch::OnCollision(CGameObject* pDst)
 {
-
-
-
 }
 
 void CMonsterPunch::OnCollisionEntered(CGameObject* pDst)
 {
-	OutputDebugString(L"★★★★★★★★ Debug Attack과 충돌 ★★★★★★★★\n");
-
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
-	PlayerHp = pPlayer->Get_PlayerHP();
+	OutputDebugString(L"★★★★★★★★ PunchAttack과 충돌 ★★★★★★★★\n");
 
 	switch (m_eAttackType)
 	{
 	case CMonsterPunch::TYPE::NORMAL:
-		PlayerHp.Cur -= 7.f;
+		Change_PlayerHp(-7.f);
 		break;
 
 	case CMonsterPunch::TYPE::HEAVY:
-		PlayerHp.Cur -= 12.f;
+		Change_PlayerHp(-12.f);
 		break;
 	}
-
-	pPlayer->Set_PlayerHP(PlayerHp);
 
 	Set_Dead();
 	

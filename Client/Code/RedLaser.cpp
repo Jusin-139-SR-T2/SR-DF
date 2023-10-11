@@ -15,7 +15,7 @@ CRedLaser::~CRedLaser()
 {
 }
 
-CRedLaser* CRedLaser::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
+CRedLaser* CRedLaser::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAceUnit* pOwner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -28,7 +28,7 @@ CRedLaser* CRedLaser::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y
 	}
 	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-	pInstance->m_vOrigin = { _x, _y, _z };
+	pInstance->Set_Owner(pOwner);
 
 	return pInstance;
 }
@@ -39,17 +39,16 @@ HRESULT CRedLaser::Ready_GameObject()
 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Razer"); //마우스는 역시 Razer
 
-	m_fFrame = 0;
-	m_fFrameSpeed = 10.f;	
-	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_pTransformComp->Set_Scale({ 10.f, 2.f, 1.f });
+	m_tFrame.fFrameSpeed = 10.f;
+	m_tFrame.fFrame = 0.f;
 
-	// 충돌용
+	// 충돌용 - BOX
 	m_pTransformComp->Readjust_Transform();
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 	pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-	pShape->vHalfSize = { 1.f, 0.7f, 0.3f };
+	pShape->vHalfSize = { 5.f, 0.7f, 0.3f };
 
 	return S_OK;
 }
@@ -58,11 +57,18 @@ _int CRedLaser::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	m_fFrame += m_fFrameSpeed * fTimeDelta;
+	Update_PlayerPos();
 
-	if (m_fFrame > m_fFrameEnd)
+	if (KnockBack)
 	{
-		m_fFrame = 0.f;
+		Knockback_Player(fTimeDelta, 6.f);
+	}
+
+	m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
+
+	if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
+	{
+		m_tFrame.fFrame = 0.f;
 	}
 
 	//물리 업데이트 코드
@@ -84,7 +90,7 @@ void CRedLaser::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
-	m_pTextureComp->Render_Texture(_ulong(m_fFrame));
+	m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
 	m_pBufferComp->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -120,28 +126,18 @@ void CRedLaser::Free()
 	SUPER::Free();
 }
 
-void CRedLaser::OnCollision(CGameObject* pDst) //pDst랑 dynamic_cast 해서 구분지어다가 합시당  
+void CRedLaser::OnCollision(CGameObject* pDst) 
 {
-	OutputDebugString(L"▶RedLaser 충돌 \n");
-
-	CollideName = pDst->Get_ObjectName();
-
-	if (L"Player" == CollideName)
-	{
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
-		GAUGE<_float> PlayerHp = pPlayer->Get_PlayerHP();
-
-		PlayerHp.Cur -= 2.f;
-
-		pPlayer->Set_PlayerHP(PlayerHp);
-
-	}
 }
 
 void CRedLaser::OnCollisionEntered(CGameObject* pDst)
 {
+	OutputDebugString(L"▶RedLaser 충돌 \n");
+	KnockBack = TRUE;
+	Change_PlayerHp(-3.f);
 }
 
 void CRedLaser::OnCollisionExited(CGameObject* pDst)
 {
+	KnockBack = FALSE;
 }

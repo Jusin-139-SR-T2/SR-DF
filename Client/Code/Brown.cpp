@@ -41,7 +41,7 @@ HRESULT CBrown::Ready_GameObject()
     m_tFrame.fFrame = 0.f;
     m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     m_tFrame.fFrameSpeed = 12.f;
-    m_tFrame.fCheck = 0.f;
+    m_tFrame.fRepeat = 0.f;
 
     // Status
     m_tStat.fAttackDistance = 12.f;
@@ -158,17 +158,20 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         m_tFrame.fFrame = 0.f;
     
         if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
-            m_tFrame.fCheck += 1;
+            m_tFrame.fRepeat += 1;
     }
 
 #pragma region 테스트 장소 
 
     //// 현재 피격 테스트중 
-    //if (Engine::IsKey_Pressed(DIK_B))
-    //{
-    //    m_gHp.Update(3.f);
-    //   // m_tState_Obj.Set_State(STATE_OBJ::NORMALATTACK);
-    //}
+    if (Engine::IsKey_Pressed(DIK_B))
+    {
+
+        Engine::Add_GameObject(L"GameLogic", CRedThunder::Create(m_pGraphicDev, 5.f, 15.f, 15.f, MonsterPhase::Phase1, this));
+        
+//        Engine::Add_GameObject(L"GameLogic", CRedLaser::Create(m_pGraphicDev,5.f, 1.f, 15.f, this));
+
+    }
 
     //if (Engine::IsKey_Pressed(DIK_P))
     //{
@@ -473,9 +476,9 @@ void CBrown::AI_Taunt(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        if (2 == m_tFrame.fCheck) // 도발 두번 하고 따라가기 
+        if (2 == m_tFrame.fRepeat) // 도발 두번 하고 따라가기 
         {
-            m_tFrame.fCheck = 0; //다른데도 쓰니까 0으로 되돌리기 
+            m_tFrame.fRepeat = 0; //다른데도 쓰니까 0으로 되돌리기 
             m_tState_Obj.Set_State(STATE_OBJ::CHASE); // AI = 추격모드
         }
 

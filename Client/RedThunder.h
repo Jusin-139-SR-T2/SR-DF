@@ -1,16 +1,14 @@
 #pragma once
 #include "AttackUnion.h"
 
-class CMonsterPunch : public CAttackUnion
+class CRedThunder : public CAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CMonsterPunch)
-
-	PUBLIC enum class TYPE { NORMAL, HEAVY, TYPE_END };
+	DERIVED_CLASS(CAttackUnion, CRedThunder)
 
 private:
-	explicit CMonsterPunch(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CMonsterPunch(const CMonsterPunch& rhs);
-	virtual ~CMonsterPunch();
+	explicit CRedThunder(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CRedThunder(const CRedThunder& rhs);
+	virtual ~CRedThunder();
 
 public:
 	virtual HRESULT		Ready_GameObject() override;
@@ -18,9 +16,8 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CMonsterPunch* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
-								_float _x, _float _y, _float _z, 
-								TYPE _option, CAceUnit* pOwner);
+	static CRedThunder* Create(LPDIRECT3DDEVICE9 pGraphicDev,
+		_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner);
 
 private:
 	HRESULT				Add_Component();
@@ -29,19 +26,16 @@ private:
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
-	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
+	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 
-	// 충돌 
+	// 충돌 -----------------------------------------------------------------
 protected:
 	virtual void	OnCollision(CGameObject* pDst);
 	virtual void	OnCollisionEntered(CGameObject* pDst);
 	virtual void	OnCollisionExited(CGameObject* pDst);
+	PRIVATE FCollisionBox* pShape;
 
 private:
-	TYPE			m_eAttackType;
-
 };
-
-//플레이어 = -20 : 주먹
-// 91 84 76 69 61 

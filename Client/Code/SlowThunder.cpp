@@ -15,7 +15,7 @@ CSlowThunder::~CSlowThunder()
 {
 }
 
-CSlowThunder* CSlowThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
+CSlowThunder* CSlowThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAceUnit* pOwner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -28,7 +28,7 @@ CSlowThunder* CSlowThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _fl
 	}
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-	pInstance->m_vOrigin = { _x, _y, _z };
+	pInstance->Set_Owner(pOwner);
 
 	return pInstance;
 }
@@ -36,8 +36,6 @@ CSlowThunder* CSlowThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _fl
 HRESULT CSlowThunder::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
-	srand((_uint)time(NULL));
 
 	// 충돌용
 	m_pTransformComp->Readjust_Transform();
@@ -49,10 +47,9 @@ HRESULT CSlowThunder::Ready_GameObject()
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"SlowThunder");
 
 	// 프레임 및 사망시간 조정
-	m_fFrame = 0;
-	m_fFrameSpeed = 8.f;
-	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-	m_fFrameCnt = 0.f;
+	m_tFrame.fFrame = 0;
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	m_tFrame.fFrameSpeed = 8.f;
 
 	// 크기조정
 	m_pTransformComp->Set_Scale({ 2.f, 2.f, 1.f });
@@ -64,20 +61,22 @@ _int CSlowThunder::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	m_fFrame += m_fFrameSpeed * fTimeDelta;
+	Update_PlayerPos();
 
-	if (m_fFrame > m_fFrameEnd)
+	m_tFrame.fFrame += fTimeDelta * m_tFrame.fFrameSpeed;
+
+	if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 	{
-		m_fFrameCnt += 1;
-		m_fFrame = 0;
+		m_tFrame.fRepeat += 1;
+		m_tFrame.fFrame = 0.f;
 
-		if (3 == m_fFrameCnt)
-			m_fFrame = m_fFrameEnd-1;
+		if (3 == m_tFrame.fRepeat)
+		{
+			m_tFrame.fFrame = m_tFrame.fFrameEnd - 1.f;
+			Set_Dead();
+		}
 	}
-
-	if (3 == m_fFrameCnt)
-		Set_Dead();
-
+	
 	Billboard();
 
 	//물리 업데이트 코드
@@ -99,7 +98,7 @@ void CSlowThunder::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
-	m_pTextureComp->Render_Texture(_ulong(m_fFrame));
+	m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
 	m_pBufferComp->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -137,23 +136,6 @@ void CSlowThunder::Free()
 	SUPER::Free();
 }
 
-HRESULT CSlowThunder::Billboard()
-{
-	// 몬스터가 플레이어 바라보는 벡터 
-	CTransformComponent* m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
-
-	_vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
-
-	D3DXVec3Normalize(&vDir, &vDir);
-
-	_float rad = atan2f(vDir.x, vDir.z);
-
-	m_pTransformComp->Set_RotationY(rad);
-
-	return S_OK;
-}
-
 #pragma endregion
 
 void CSlowThunder::OnCollision(CGameObject* pDst)
@@ -164,17 +146,7 @@ void CSlowThunder::OnCollisionEntered(CGameObject* pDst)
 {
 	OutputDebugString(L"▶SlowThunder 충돌 \n");
 
-	if (L"Player" == CollideName)
-	{
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
-		GAUGE<_float> PlayerHp = pPlayer->Get_PlayerHP();
-
-		PlayerHp.Cur -= 7.f;
-
-		pPlayer->Set_PlayerHP(PlayerHp);
-
-		Set_Dead();
-	}
+	Change_PlayerHp(-3.f);
 }
 
 void CSlowThunder::OnCollisionExited(CGameObject* pDst)

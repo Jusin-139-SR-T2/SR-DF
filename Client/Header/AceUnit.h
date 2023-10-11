@@ -1,8 +1,10 @@
 #pragma once
 #include "AceGameObject.h"
 
-// Team Agent 추가예정  
 
+/// <summary>
+/// Player, Monster, Attack이 모두 받아서 사용 
+/// </summary>
 class CAceUnit : public CAceGameObject
 {
 	DERIVED_CLASS(CAceGameObject, CAceUnit)

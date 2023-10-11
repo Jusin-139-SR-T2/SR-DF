@@ -15,7 +15,7 @@ CFallingStone::~CFallingStone()
 {
 }
 
-CFallingStone* CFallingStone::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
+CFallingStone* CFallingStone::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _pHASE, CAceUnit* pOwner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -28,7 +28,7 @@ CFallingStone* CFallingStone::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _
 	}
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-	pInstance->m_vOrigin = { _x, _y, _z };
+	pInstance->Set_Owner(pOwner);
 
 	return pInstance;
 }
@@ -53,12 +53,14 @@ HRESULT CFallingStone::Ready_GameObject()
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Stone2");
 
 	// 프레임 및 사망시간 조정
-	m_fFrame = 0;
-	m_fFrameSpeed = 3.f;
-	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	m_tFrame.fFrame = 0;
+	m_tFrame.fFrameSpeed = 1.5f;
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	
+	m_tFrame.fAge = 0.f;
+	m_tFrame.fLifeTime = 1.f;
+	
 	m_fFallingSpeed = 7.f;
-	m_fAge = 0.f;
-	m_fLifeTime = 1.f;
 
 	// 크기조정
 	m_pTransformComp->Set_Scale({ 2.f, 2.f, 1.f });
@@ -72,21 +74,21 @@ _int CFallingStone::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Falling(fTimeDelta);
-
-	m_fFrame += m_fFrameSpeed * fTimeDelta;
-
-	if (m_fFrame > m_fFrameEnd)
-	{
-		m_fFrame = m_fFrameEnd - 1;
-	}
+	Update_PlayerPos();
 	
-	if (m_bOld)
-	{
-		m_fAge += fTimeDelta * 1.f;
+	if(m_bFall)
+		Falling(fTimeDelta); //낙하 
 
-		if (m_fAge > m_fLifeTime)
+	// 안맞고 그냥 낙하해서 땅에 충돌 or 무언가에 충돌 
+	if (m_bCollision)
+	{
+		m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
+
+		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
+		{
+			m_tFrame.fFrame = m_tFrame.fFrameEnd - 1;
 			Set_Dead();
+		}
 	}
 
 	Billboard();
@@ -110,7 +112,7 @@ void CFallingStone::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
-	m_pTextureComp->Render_Texture(_ulong(m_fFrame));
+	m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
 	m_pBufferComp->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -148,30 +150,13 @@ void CFallingStone::Free()
 	SUPER::Free();
 }
 
-HRESULT CFallingStone::Billboard()
-{
-	// 몬스터가 플레이어 바라보는 벡터 
-	CTransformComponent* m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
-
-	_vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
-
-	D3DXVec3Normalize(&vDir, &vDir);
-
-	_float rad = atan2f(vDir.x, vDir.z);
-
-	m_pTransformComp->Set_RotationY(rad);
-
-	return S_OK;
-}
-
 void CFallingStone::Falling(const _float& fTimeDelta)
 {
-	if (m_pTransformComp->Get_Pos().y < 0.7f)
+	if (m_pTransformComp->Get_Pos().y < 0.5f)
 	{
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"FallingStone");
-		m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-		m_bFall = FALSE;
+		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+		m_bCollision = TRUE;
 	}
 	else
 		m_pTransformComp->Move_Pos(&vFall, fTimeDelta, m_fFallingSpeed);
@@ -186,25 +171,13 @@ void CFallingStone::OnCollision(CGameObject* pDst)
 void CFallingStone::OnCollisionEntered(CGameObject* pDst)
 {
 	OutputDebugString(L"▶FallingStone 충돌 \n");
-	m_bCollision = true;
-	m_bOld = TRUE;
+
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"FallingStone");
-	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	m_bCollision = TRUE; // 충돌한뒤 이미지 바꾸기용도 
+	m_bFall = FALSE; //충돌하면 더이상 떨어지지 말아야하므로 
 
-	CollideName = pDst->Get_ObjectName();
-
-	//if (L"Player" == CollideName)
-	//{
-	//	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
-	//	GAUGE<_float> PlayerHp = pPlayer->Get_PlayerHP();
-
-	//	PlayerHp.Cur -= 4.f;
-
-	//	pPlayer->Set_PlayerHP(PlayerHp);
-
-	//	Set_Dead();
-	//}
-
+	Change_PlayerHp(-2.f);
 }
 
 void CFallingStone::OnCollisionExited(CGameObject* pDst)

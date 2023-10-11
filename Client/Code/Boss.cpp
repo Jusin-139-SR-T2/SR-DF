@@ -380,7 +380,7 @@ void CBoss::Falling_Stone_Around()
         Engine::Add_GameObject(L"GameLogic", CFallingStone::Create(m_pGraphicDev,
             randomCenter.x, 
             randomCenter.y, 
-            randomCenter.z));
+            randomCenter.z, MonsterPhase::Phase1, this));
     }
 }
 
@@ -399,7 +399,7 @@ void CBoss::Pattern_Fire(_int number, _float radius)
         FirePos.z = Center.z + Radius * sinf(angle);
 
         Engine::Add_GameObject(L"GameLogic", CSpawnFire::Create(m_pGraphicDev,
-            FirePos.x, FirePos.y, FirePos.z , m_eCurrPhase ));
+            FirePos.x, FirePos.y, FirePos.z , m_eCurrPhase, this ));
     }
 }
 
@@ -411,7 +411,7 @@ void CBoss::Pattern_EnergyBall()
             m_pTransformComp->Get_Pos().x - 6.f + _float( 2 * i ),
             m_pTransformComp->Get_Pos().y,
             m_pTransformComp->Get_Pos().z + 1.f,
-            m_eCurrPhase));
+            m_eCurrPhase, this));
     }
 }
 
@@ -634,7 +634,7 @@ void CBoss::AI_Chase(float fDeltaTime)
                             //OutputDebugString(L"★ Brown 디버깅 : Chease - 2관문  \n");
                             Engine::Add_GameObject(L"GameLogic", CBlueBuff::Create(m_pGraphicDev, 
                                 m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y,
-                                m_pTransformComp->Get_Pos().z, m_eCurrPhase));
+                                m_pTransformComp->Get_Pos().z, m_eCurrPhase, this));
 
                             m_bCheck = FALSE; //한번만 발동
                         }
@@ -1064,7 +1064,7 @@ void CBoss::AI_Ph1_Laser(float fDeltaTime)
                Engine::Add_GameObject(L"GameLogic", CRedLaser::Create(m_pGraphicDev,
                    m_pTransformComp->Get_Pos().x, 
                    Get_RandomFloat(PosY - 1.f, PosY + 5.f),
-                   Get_RandomFloat(PosZ - 3.f, PosZ + 3.f) ));
+                   Get_RandomFloat(PosZ - 3.f, PosZ + 3.f), this ));
            }
 
             m_fConsider = 10.f; // 다시 초기 셋팅으로 

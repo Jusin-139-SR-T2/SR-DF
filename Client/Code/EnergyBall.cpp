@@ -15,7 +15,7 @@ CEnergyBall::~CEnergyBall()
 {
 }
 
-CEnergyBall* CEnergyBall::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _CurrPhase)
+CEnergyBall* CEnergyBall::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -29,6 +29,7 @@ CEnergyBall* CEnergyBall::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _floa
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
 	pInstance->Value_Setting(_x, _y, _z, _CurrPhase);
+	pInstance->Set_Owner(pOwner);
 
 	return pInstance;
 }
@@ -36,8 +37,6 @@ CEnergyBall* CEnergyBall::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _floa
 HRESULT CEnergyBall::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
-	srand((_uint)time(NULL));
 
 	// 충돌용
 	m_pTransformComp->Readjust_Transform();
@@ -49,11 +48,11 @@ HRESULT CEnergyBall::Ready_GameObject()
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"EnergyBall");
 
 	// 프레임 및 사망시간 조정
-	m_fFrame = 0;
-	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-	m_fFrameCnt = 0.f;
+	m_tFrame.fFrame = 0;
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	m_tFrame.fRepeat = 0.f;
 
-	m_fAge = 0.f;
+	m_tFrame.fAge = 0.f;
 
 	// 크기조정
 	m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
@@ -65,20 +64,22 @@ _int CEnergyBall::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	m_fFrame += fTimeDelta * m_fFrameSpeed;
-	m_fAge += fTimeDelta * 1.f;
+	Update_PlayerPos();
 
-	if (m_fFrame > m_fFrameEnd)
+	m_tFrame.fFrame += fTimeDelta * m_tFrame.fFrameSpeed;
+	m_tFrame.fAge += fTimeDelta * 1.f;
+
+	if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 	{
-		m_fFrame = 4;
+		m_tFrame.fFrame = 4;
 	}
 
-	if (m_fAge < 2.f)
-		Follow_Player(fTimeDelta, m_eCurrPhase);
+	if (m_tFrame.fAge < 2.f)
+		Follow_Player(fTimeDelta);
 	else
 		m_pTransformComp->Move_Pos(&Dir, fTimeDelta, m_fMovingSpeed);
 
-	if (m_fAge > m_fLifeTime)
+	if (m_tFrame.fAge > m_tFrame.fLifeTime)
 		Set_Dead();
 		
 	Billboard();
@@ -104,7 +105,7 @@ void CEnergyBall::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
-	m_pTextureComp->Render_Texture(_ulong(m_fFrame));
+	m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
 	m_pBufferComp->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -140,23 +141,6 @@ void CEnergyBall::Free()
 	SUPER::Free();
 }
 
-HRESULT CEnergyBall::Billboard()
-{
-	// 몬스터가 플레이어 바라보는 벡터 
-	CTransformComponent* m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
-
-	_vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
-
-	D3DXVec3Normalize(&vDir, &vDir);
-
-	_float rad = atan2f(vDir.x, vDir.z);
-
-	m_pTransformComp->Set_RotationY(rad);
-
-	return S_OK;
-}
-
 #pragma endregion
 
 #pragma region 충돌 
@@ -169,19 +153,7 @@ void CEnergyBall::OnCollisionEntered(CGameObject* pDst)
 {
 	OutputDebugString(L"▶EnergyBall 충돌 \n");
 
-	CollideName = pDst->Get_ObjectName();
-
-	if (L"Player" == CollideName)
-	{
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
-		GAUGE<_float> PlayerHp = pPlayer->Get_PlayerHP();
-
-		PlayerHp.Cur -= 15.f;
-
-		pPlayer->Set_PlayerHP(PlayerHp);
-
-		Set_Dead();
-	}
+	Change_PlayerHp(-5.f);
 
 }
 
@@ -190,10 +162,8 @@ void CEnergyBall::OnCollisionExited(CGameObject* pDst)
 }
 
 #pragma endregion
-HRESULT CEnergyBall::Follow_Player(const _float fTimeDelta, MonsterPhase _phase)
+HRESULT CEnergyBall::Follow_Player(const _float fTimeDelta)
 {
-	CTransformComponent* m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
 	// 이펙트가 플레이어를 보는 벡터 
 	Dir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
@@ -208,23 +178,18 @@ HRESULT CEnergyBall::Follow_Player(const _float fTimeDelta, MonsterPhase _phase)
 
 void CEnergyBall::Value_Setting(_float _x, _float _y, _float _z, MonsterPhase _phase)
 {
-	//값 넣어주기 
-	m_vOrigin = { _x, _y, _z };
-
-	m_eCurrPhase = _phase;
-
 	switch (_phase)
 	{
 	case Engine::Phase1:
-		m_fFrameSpeed = 6.f; 
+		m_tFrame.fFrameSpeed = 6.f;
 		m_fMovingSpeed = 3.f;
-		m_fLifeTime = 4.f;
+		m_tFrame.fLifeTime = 4.f;
 		break;
 
 	case Engine::Phase2:
-		m_fFrameSpeed = 8.f;
+		m_tFrame.fFrameSpeed = 8.f;
 		m_fMovingSpeed = 5.f;
-		m_fLifeTime = 4.f;
+		m_tFrame.fLifeTime = 4.f;
 		break;
 
 	}

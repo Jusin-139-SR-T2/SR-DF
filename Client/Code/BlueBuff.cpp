@@ -2,7 +2,7 @@
 #include "BlueBuff.h"
 
 CBlueBuff::CBlueBuff(LPDIRECT3DDEVICE9 pGraphicDev)
-	:Base(pGraphicDev)
+	: Base(pGraphicDev)
 {
 }
 
@@ -15,7 +15,7 @@ CBlueBuff::~CBlueBuff()
 {
 }
 
-CBlueBuff* CBlueBuff::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _CurrPhase)
+CBlueBuff* CBlueBuff::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -23,12 +23,12 @@ CBlueBuff* CBlueBuff::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y
 	{
 		Safe_Release(pInstance);
 
-		MSG_BOX("LightBeam Create Failed");
+		MSG_BOX("BlueBuff Create Failed");
 		return nullptr;
 	}
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-	pInstance->Value_Setting(_x, _y, _z, _CurrPhase);
+	pInstance->Set_Owner(pOwner);
 
 	return pInstance;
 }
@@ -41,9 +41,9 @@ HRESULT CBlueBuff::Ready_GameObject()
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Buff");
 
 	// 프레임 및 사망시간 조정
-	m_fFrame = 0;
-	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-	m_fFrameSpeed = 8.f;
+	m_tFrame.fFrame = 0;
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	m_tFrame.fFrameSpeed = 8.f;
 
 	// 크기조정
 	m_pTransformComp->Set_Scale({ 2.f, 2.f, 1.f });
@@ -55,17 +55,19 @@ _int CBlueBuff::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	CTransformComponent* m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Boss", L"Com_Transform"));
-	m_pTransformComp->Set_Pos(m_pPlayerTransformcomp->Get_Pos());
+	Update_PlayerPos();
 
-	m_fFrame += fTimeDelta * m_fFrameSpeed;
+	CTransformComponent* m_pBossTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Boss", L"Com_Transform"));
+	m_pTransformComp->Set_Pos(m_pBossTransformcomp->Get_Pos());
 
-	if (m_fFrame > m_fFrameEnd)
+	m_tFrame.fFrame += fTimeDelta * m_tFrame.fFrameSpeed;
+
+	if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 	{
-		m_fFrame = 0;
+		m_tFrame.fFrame = 0;
 	}
 
-	if (m_bBossDead)
+	if (m_pOwner->Get_IsDead()) // 보스가 죽으면 버프도 사라짐 
 		Set_Dead();
 
 	Billboard();
@@ -88,7 +90,7 @@ void CBlueBuff::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
-	m_pTextureComp->Render_Texture(_ulong(m_fFrame));
+	m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
 	m_pBufferComp->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -101,6 +103,8 @@ HRESULT CBlueBuff::Add_Component()
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_Effect_BeamTextureComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 
+	//얘는 충돌 없음 
+
 	return S_OK;
 }
 
@@ -109,27 +113,4 @@ void CBlueBuff::Free()
 	SUPER::Free();
 }
 
-HRESULT CBlueBuff::Billboard()
-{
-	// 몬스터가 플레이어 바라보는 벡터 
-	CTransformComponent* m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
-
-	_vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
-
-	D3DXVec3Normalize(&vDir, &vDir);
-
-	_float rad = atan2f(vDir.x, vDir.z);
-
-	m_pTransformComp->Set_RotationY(rad);
-
-	return S_OK;
-}
-
 #pragma endregion
-
-void CBlueBuff::Value_Setting(_float _x, _float _y, _float _z, MonsterPhase _phase)
-{
-	//값 넣어주기 
-
-}
