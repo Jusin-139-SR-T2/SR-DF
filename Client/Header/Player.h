@@ -235,6 +235,7 @@ private:
 	struct _LEFTHAND	// 왼손
 	{
 		_bool			bLeftHandOn = true;			// 왼손 출력 On/Off
+		_bool			bLeftFrameOn = false;
 
 		_float			fLeftFrameSpeed = 10.f;		// 왼손 프레임 속도
 		_float			fLeftFrame = 0.f;			// 왼손 프레임
@@ -242,6 +243,8 @@ private:
 
 	struct _RIGHTHAND	// 오른손
 	{
+		_bool			bRightFrameOn = false;
+		_bool			bPickUpState = false;
 
 		_float			fRightFrameSpeed = 10.f;	// 오른손 프레임 속도
 		_float			fRightFrame = 0.f;			// 오른손 프레임
