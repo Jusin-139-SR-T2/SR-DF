@@ -132,19 +132,19 @@ _int CBoss::Update_GameObject(const _float& fTimeDelta)
     m_fFrame += m_fFrameSpeed * fTimeDelta;
     m_fPatternAge += 1.f * fTimeDelta;
 
-    m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
-    m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
-    m_mapActionKey.Update();	// 액션키 초기화
-
-    if (m_fFrame > m_fFrameEnd)
-    {
-        m_fFrame = 0.f;
-
-        if (STATE_OBJ::WALK == m_tState_Obj.Get_State() ||
-            STATE_OBJ::RUN == m_tState_Obj.Get_State() ||
-            STATE_OBJ::SHOOTING == m_tState_Obj.Get_State())
-            m_fCheck += 1;
-    }
+    //m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
+    //m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
+    //m_mapActionKey.Update();	// 액션키 초기화
+    //
+    //if (m_fFrame > m_fFrameEnd)
+    //{
+    //    m_fFrame = 0.f;
+    //
+    //    if (STATE_OBJ::WALK == m_tState_Obj.Get_State() ||
+    //        STATE_OBJ::RUN == m_tState_Obj.Get_State() ||
+    //        STATE_OBJ::SHOOTING == m_tState_Obj.Get_State())
+    //        m_fCheck += 1;
+    //}
 
     if (m_fPatternAge > m_fPatternLifeTime)
     {
@@ -163,7 +163,7 @@ _int CBoss::Update_GameObject(const _float& fTimeDelta)
         m_gHp.Cur = 45.f;
         /*
         swprintf_s(debugString, L"BOSS - 변수 확인 m_tState_Obj = %d\n", m_tState_Obj);
-        OutputDebugStringW(debugString);*/
+        //OutputDebugStringW(debugString);*/
     }
 #pragma endregion 
 
@@ -201,7 +201,7 @@ HRESULT CBoss::Add_Component()
     NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_BossTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
     
     // 콜라이더 컴포넌트
     NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
@@ -353,7 +353,7 @@ void CBoss::Height_On_Terrain()
 // 1. 돌덩이 떨구기 - 플레이어 반경으로 
 void CBoss::Falling_Stone_Around()
 {
-    OutputDebugString(L"▷BOSS - 보스패턴 1 : 돌덩이 떨구기    \n");
+    //OutputDebugString(L"▷BOSS - 보스패턴 1 : 돌덩이 떨구기    \n");
     _vec3 m_pPlayerPos = m_pPlayerTransformcomp->Get_Pos();
     m_pPlayerPos.y = 15.f; // 떨어지기 시작하는 높이 고정 
 
@@ -428,7 +428,7 @@ void CBoss::AI_Idle(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : idle 돌입   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : idle 돌입   \n");
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"IdleReady");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -444,7 +444,7 @@ void CBoss::AI_Idle(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : idle 끝 \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : idle 끝 \n");
     }
 }
 
@@ -452,14 +452,14 @@ void CBoss::AI_Suspicious(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Suspicious 돌입   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Suspicious 돌입   \n");
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"BackIdle");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 
         Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
             m_pTransformComp->Get_Pos().x + 0.1f, 
             m_pTransformComp->Get_Pos().y + 1.3f, 
-            m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BOSS));
+            m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BOSS, this));
     }
 
     if (m_tState_Obj.Can_Update())
@@ -478,7 +478,7 @@ void CBoss::AI_Suspicious(float fDeltaTime)
         }
         else // 범위밖은 감소
         {
-            OutputDebugString(L"▶Brown - 변수체크 : 인지변수 감소중   \n");
+            //OutputDebugString(L"▶Brown - 변수체크 : 인지변수 감소중   \n");
             m_fBossAwareness -= fDeltaTime * 4.f;
 
             if (0 >= m_fBossAwareness)
@@ -491,7 +491,7 @@ void CBoss::AI_Suspicious(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Suspicious 끝   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Suspicious 끝   \n");
     }
 }
 
@@ -499,7 +499,7 @@ void CBoss::AI_Reloading(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Taunt - Reloading 돌입   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Taunt - Reloading 돌입   \n");
         m_fFrameSpeed = 7.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Reloading");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -515,7 +515,7 @@ void CBoss::AI_Reloading(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Taunt - Reloading 끝   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Taunt - Reloading 끝   \n");
     }
 }
 
@@ -523,7 +523,7 @@ void CBoss::AI_BackIdle(float fDeltaTime) //
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Reconnaissance - BackIdle 진입   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Reconnaissance - BackIdle 진입   \n");
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"BackIdle");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -553,7 +553,7 @@ void CBoss::AI_BackIdle(float fDeltaTime) //
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Reconnaissance - BackIdle 끝   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Reconnaissance - BackIdle 끝   \n");
     }
 }
 
@@ -561,7 +561,7 @@ void CBoss::AI_Chase(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 행동 : Chase 진입   \n");
+        //OutputDebugString(L"▷BOSS - 행동 : Chase 진입   \n");
         m_fFrameSpeed = 10.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"IdleReady");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -581,7 +581,7 @@ void CBoss::AI_Chase(float fDeltaTime)
             {
                 if (Engine::Phase_End == m_eCurrPhase) //기본phase
                 {
-                    OutputDebugString(L"★ Brown 디버깅 : Chease - 0관문   \n");
+                    //OutputDebugString(L"★ Brown 디버깅 : Chease - 0관문   \n");
                     if (m_fBasicRunDistance <= Calc_Distance()) // 사거리(9.f) 보다 뒤에 있어야 공격함 
                         m_tState_Obj.Set_State(STATE_OBJ::SHOOTING);
                     else if (m_fBasicRunDistance > Calc_Distance()) // 거리두기 - 뒤로 쭉 빠짐
@@ -589,7 +589,7 @@ void CBoss::AI_Chase(float fDeltaTime)
                 }
                 else if (Engine::Phase1 == m_eCurrPhase)// hp 80퍼 이하 - 1관문 시작 
                 {
-                    OutputDebugString(L"★ Brown 디버깅 : Chease - 1관문  \n");
+                    //OutputDebugString(L"★ Brown 디버깅 : Chease - 1관문  \n");
 
                     // 1. 시작부터 레이저 
                     if (m_bPH1_RedLaser) 
@@ -598,7 +598,7 @@ void CBoss::AI_Chase(float fDeltaTime)
                             m_bPH1_RedLaser = FALSE;
                         else
                         {
-                            OutputDebugString(L"★ Brown 디버깅 : Chease - 1관문 - RedLaser 발동  \n");
+                            //OutputDebugString(L"★ Brown 디버깅 : Chease - 1관문 - RedLaser 발동  \n");
                             m_tState_Obj.Set_State(STATE_OBJ::PH1_LASER);
                             m_bCheck = TRUE; //한번만 발동하는걸로 
                         }
@@ -631,8 +631,9 @@ void CBoss::AI_Chase(float fDeltaTime)
                             m_bPH2_Buff = FALSE;
                         else
                         {
-                            OutputDebugString(L"★ Brown 디버깅 : Chease - 2관문  \n");
-                            Engine::Add_GameObject(L"GameLogic", CBlueBuff::Create(m_pGraphicDev, m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y,
+                            //OutputDebugString(L"★ Brown 디버깅 : Chease - 2관문  \n");
+                            Engine::Add_GameObject(L"GameLogic", CBlueBuff::Create(m_pGraphicDev, 
+                                m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y,
                                 m_pTransformComp->Get_Pos().z, m_eCurrPhase));
 
                             m_bCheck = FALSE; //한번만 발동
@@ -684,8 +685,6 @@ void CBoss::AI_Chase(float fDeltaTime)
             }
         }
     }
-
-
     if (m_tState_Obj.IsState_Exit())
     {
 
@@ -851,7 +850,7 @@ void CBoss::AI_KeepDistance(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : KeepDistance 돌입   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : KeepDistance 돌입   \n");
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"NorthWalk");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 
@@ -876,14 +875,14 @@ void CBoss::AI_KeepDistance(float fDeltaTime)
         
         if (m_fFrame > m_fFrameEnd) // 범위를 벗어났다면 7.x
         {
-            OutputDebugString(L"★ Brown 디버깅 : KeepDistance - 범위보다 밖에 있어야 shooting으로 갈예정   \n");
+            //OutputDebugString(L"★ Brown 디버깅 : KeepDistance - 범위보다 밖에 있어야 shooting으로 갈예정   \n");
             m_tState_Obj.Set_State(STATE_OBJ::SHOOTING);
         }
     }
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : KeepDistance 끝   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : KeepDistance 끝   \n");
     }
 }
 
@@ -895,7 +894,7 @@ void CBoss::AI_Roll(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Roll 진입   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Roll 진입   \n");
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Roll");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
      
@@ -918,7 +917,7 @@ void CBoss::AI_Roll(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Roll 끝   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Roll 끝   \n");
     }
 }
 
@@ -952,7 +951,7 @@ void CBoss::AI_Shooting(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Shooting 돌입   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Shooting 돌입   \n");
             m_fFrameSpeed = 15.f;
         if(Engine::Phase2 == m_eCurrPhase)
             m_fFrameSpeed = 18.f;
@@ -964,7 +963,7 @@ void CBoss::AI_Shooting(float fDeltaTime)
     {
         if (4 <= m_fCheck)
         {
-            OutputDebugString(L"▷BOSS - 상태머신 : Shooting 3번 돌음 - cHASE 갈예정    \n");
+            //OutputDebugString(L"▷BOSS - 상태머신 : Shooting 3번 돌음 - cHASE 갈예정    \n");
             m_fCheck = 0;
             m_iBulletCnt -= 1; // 장전수 감소 
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
@@ -973,7 +972,7 @@ void CBoss::AI_Shooting(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Shooting 끝   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Shooting 끝   \n");
     }
 }
 
@@ -981,7 +980,7 @@ void CBoss::AI_GoHome(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷Boss - 상태머신 : GoHome 진입   \n");
+        //OutputDebugString(L"▷Boss - 상태머신 : GoHome 진입   \n");
         m_fFrameSpeed = 12.f;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"NorthWalk");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -1007,7 +1006,7 @@ void CBoss::AI_Reconnaissance(float fDeltaTime)
 {    //플레이어 놓쳐서 인지변수 0까지 내려갔을경우 
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Reconnaissance 진입   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Reconnaissance 진입   \n");
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1037,7 +1036,7 @@ void CBoss::AI_Reconnaissance(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Reconnaissance 끝   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Reconnaissance 끝   \n");
     }
 }
 
@@ -1045,7 +1044,7 @@ void CBoss::AI_Ph1_Laser(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Phase1 - Laser 진입   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Phase1 - Laser 진입   \n");
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"NorthWestWalk");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
@@ -1075,7 +1074,7 @@ void CBoss::AI_Ph1_Laser(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Phase1 - Laser  끝   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Phase1 - Laser  끝   \n");
     }
 }
 
@@ -1083,7 +1082,7 @@ void CBoss::AI_Track(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Track 진입   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Track 진입   \n");
         m_fConsider = 13.f; 
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Run");
         m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -1100,7 +1099,7 @@ void CBoss::AI_Track(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷BOSS - 상태머신 : Phase1 - Track  끝   \n");
+        //OutputDebugString(L"▷BOSS - 상태머신 : Phase1 - Track  끝   \n");
     }
 }
 
@@ -1111,7 +1110,7 @@ void CBoss::Idle(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered()) // 1차 bIsEnter false로 바꿈 
     {
-        OutputDebugString(L"▷BOSS - 행동 : Idle 진입   \n");
+        //OutputDebugString(L"▷BOSS - 행동 : Idle 진입   \n");
     }
 
     if (m_tState_Act.Can_Update())
@@ -1147,7 +1146,7 @@ void CBoss::Idle(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-        //OutputDebugString(L"▷BOSS - 행동 : Idle 끝   \n");
+        ////OutputDebugString(L"▷BOSS - 행동 : Idle 끝   \n");
     }
 }
 
@@ -1155,7 +1154,7 @@ void CBoss::Approaching(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-        OutputDebugString(L"▷BOSS - 행동 : Approaching 진입   \n");
+        //OutputDebugString(L"▷BOSS - 행동 : Approaching 진입   \n");
     }
 
     if (m_tState_Act.Can_Update())
@@ -1246,7 +1245,7 @@ void CBoss::GoHome(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-        OutputDebugString(L"▷Boss - 행동머신 : GoHome 진입   \n");
+        //OutputDebugString(L"▷Boss - 행동머신 : GoHome 진입   \n");
     }
 
     if (m_tState_Act.Can_Update())
@@ -1264,14 +1263,14 @@ void CBoss::GoHome(float fDeltaTime)
         }
         else
         {
-            //OutputDebugString(L"▷Brown - 기존 패트롤 포인트 복귀중   \n");
+            ////OutputDebugString(L"▷Brown - 기존 패트롤 포인트 복귀중   \n");
             m_pTransformComp->Move_Pos(&vDirect, fDeltaTime, m_fRollingSpeed);
         }
     }
 
     if (m_tState_Act.IsState_Exit())
     {
-        OutputDebugString(L"▷Boss - 행동 : GOHOME 끝   \n");
+        //OutputDebugString(L"▷Boss - 행동 : GOHOME 끝   \n");
     }
 }
 
@@ -1279,7 +1278,7 @@ void CBoss::KeepDistance(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-        OutputDebugString(L"▷Boss - 행동 : KEEP_DISTANCE 진입  \n");
+        //OutputDebugString(L"▷Boss - 행동 : KEEP_DISTANCE 진입  \n");
     }
 
     if (m_tState_Act.Can_Update()) //PA
@@ -1303,7 +1302,7 @@ void CBoss::KeepDistance(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-        OutputDebugString(L"▷Boss - 행동 : KEEP_DISTANCE 끝   \n");
+        //OutputDebugString(L"▷Boss - 행동 : KEEP_DISTANCE 끝   \n");
     }
 }
 
@@ -1311,7 +1310,7 @@ void CBoss::Phase1_LaserOn(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-        OutputDebugString(L"▷Boss - 행동 : Phase1 - Laser 진입  \n");
+        //OutputDebugString(L"▷Boss - 행동 : Phase1 - Laser 진입  \n");
     }
 
     if (m_tState_Act.Can_Update()) //PA
@@ -1327,7 +1326,7 @@ void CBoss::Phase1_LaserOn(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-        OutputDebugString(L"▷Boss - 행동 : Phase1 - Laser 끝   \n");
+        //OutputDebugString(L"▷Boss - 행동 : Phase1 - Laser 끝   \n");
     }
 }
 
@@ -1335,7 +1334,7 @@ void CBoss::Track(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-        OutputDebugString(L"▷Boss - 행동 : Track 진입  \n");
+        //OutputDebugString(L"▷Boss - 행동 : Track 진입  \n");
     }
 
     if (m_tState_Act.Can_Update()) //PA
@@ -1351,7 +1350,7 @@ void CBoss::Track(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-        OutputDebugString(L"▷Boss - 행동 : Track 끝   \n");
+        //OutputDebugString(L"▷Boss - 행동 : Track 끝   \n");
     }
 }
 

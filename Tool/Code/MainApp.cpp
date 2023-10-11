@@ -63,7 +63,9 @@ HRESULT CMainApp::Ready_MainApp()
 	FAILED_CHECK_RETURN(CImguiMgr::GetInstance()->Ready_Imgui(&m_pDeviceClass, &m_pGraphicDev), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Scene(m_pGraphicDev, &m_pManagementClass), E_FAIL);
 
-	
+	// 팀 에이전트 팀 설정, A, B팀 서로 적대 관계 설정
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_ALPHA), static_cast<_int>(ETEAM_BETA), ERELATION_STATE::HOSTILE);
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BETA), static_cast<_int>(ETEAM_ALPHA), ERELATION_STATE::HOSTILE);
 	
 	return S_OK;
 }

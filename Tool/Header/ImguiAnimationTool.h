@@ -429,4 +429,4 @@ private: // 애니메이션 툴 변수
 // "-" 키 : 재생 속도 -
 // "+" 키 : 재생 속도 +
 
-#pragma endrigion
+#pragma endregion

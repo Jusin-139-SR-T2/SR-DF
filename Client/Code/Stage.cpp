@@ -94,8 +94,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	// Monster - TEST중이라 상시로 서로 위치 바뀝니다. 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown", CBrown::Create(m_pGraphicDev, 3.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown2", CBrown::Create(m_pGraphicDev, 3.f, 1.f, 50.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray", CGray::Create(m_pGraphicDev, 35.f, 1.f, 25.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev, 60.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray2", CGray::Create(m_pGraphicDev, 35.f, 1.f, 50.f)), E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev, 60.f, 1.f, 25.f)), E_FAIL);
 
 
 	// =========================================
@@ -165,7 +167,7 @@ HRESULT CStage::Ready_Layer_Camera(const _tchar* pLayerTag)
 
 	// DynamicCamera
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", CDynamicCamera::Create(m_pGraphicDev,
-		&_vec3(0.f, 10.f, -10.f),
+		&_vec3(0.f, 5.f, -10.f),
 		&_vec3(0.f, 0.f, 1.f),
 		&_vec3(0.f, 1.f, 0.f))), E_FAIL);
 

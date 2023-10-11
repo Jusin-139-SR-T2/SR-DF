@@ -42,14 +42,6 @@ public:
 	static CBoss* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
 
 private:
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
-	CTransformComponent* m_pPlayerTransformcomp = nullptr;
-	CCalculatorComponent* m_pCalculatorComp = nullptr;
-
-private:
 	void				Height_On_Terrain();
 	HRESULT				Add_Component();
 	void				Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
@@ -62,6 +54,7 @@ public:
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+	
 	GETSET_EX2(_float, m_fBossAwareness, BossAwareness, GET, SET)   
 	GETSET_EX2(GAUGE<_float>, m_gHp, BossHP, GET, SET)   // 보스  hp용도 
 		// 충돌 -----------------------------------------------------------------

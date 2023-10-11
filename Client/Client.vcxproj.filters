@@ -357,8 +357,8 @@
     <ClInclude Include="Header\PlayerBullet.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\01. Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="BossBullet.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\00. BossBullet</Filter>
+    <ClInclude Include="Header\AceBoss.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -503,8 +503,8 @@
     <ClCompile Include="Code\PlayerBullet.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\01. Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="BossBullet.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\00. BossBullet</Filter>
+    <ClCompile Include="Code\AceBoss.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -307,7 +307,7 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	if (m_bOne)
 	{
 		// 카메라 위치 설정
-		m_vEye = { vPlayerPos.x,
+		m_vEye = { vPlayerPos.x,                                                                     
 				   vPlayerPos.y,
 				   vPlayerPos.z };
 

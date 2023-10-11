@@ -92,10 +92,9 @@ public:
 		return tRelation;
 	}
 };
+
 using ERELATION_STATE = ITeamAgent::ERELATION;
 
-ULONGLONG ITeamAgent::ID_COUNT = 0ULL;
-map<BYTE, map<BYTE, ERELATION_STATE>>	ITeamAgent::m_mapTeamRelation = map<BYTE, map<BYTE, ERELATION_STATE>>();
 
 END
 

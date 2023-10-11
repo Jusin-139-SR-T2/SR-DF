@@ -56,7 +56,7 @@ HRESULT CEnergyBall::Ready_GameObject()
 	m_fAge = 0.f;
 
 	// 크기조정
-	m_pTransformComp->Set_Scale({ 2.f, 2.f, 1.f });
+	m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
 
 	return S_OK;
 }

@@ -3,7 +3,6 @@
 
 CAwareness::CAwareness(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
-	, m_fBrownAwareness(0), m_fGrayAwareness(0), m_fBossAwareness(0)
 {
 }
 
@@ -26,6 +25,7 @@ HRESULT CAwareness::Ready_GameObject()
 
 	m_fAge = 0.f;
 	m_fLifeTime = 1.f;
+	m_fAwareness = 0.f;
 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
 	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
@@ -41,7 +41,14 @@ _int CAwareness::Update_GameObject(const _float& fTimeDelta)
 	// 몬스터 상태 Taunt로 바뀌면 바로 set_dead로 가기 
 	Billboard();
 
-	//Owner 지정으로 알아보기
+	//Update_InternalData();
+
+	/*if (Engine::IsKey_Pressed(DIK_P))
+	{
+		swprintf_s(debugString, L"변수 확인 Awareness = %f\n", m_fBrownAwareness);
+		OutputDebugStringW(debugString);
+	}
+	*///Owner 지정으로 알아보기
 
 	m_fFrame += fTimeDelta * m_fFrameSpeed;
 
@@ -52,14 +59,15 @@ _int CAwareness::Update_GameObject(const _float& fTimeDelta)
 	}
 
 	if (m_bTrigger)
-		m_fAge += fTimeDelta * 1.f;
-	
-
-	if (m_fAge > m_fLifeTime)
 	{
-		m_bTrigger = FALSE;
-		Set_Dead();
+		m_fAge += fTimeDelta * 1.f;
+
+		if (m_fAge > m_fLifeTime)
+		{
+			Set_Dead();
+		}
 	}
+
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
 	return S_OK;
@@ -83,7 +91,7 @@ void CAwareness::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CAwareness* CAwareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAwareness::TYPE pType)
+CAwareness* CAwareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAwareness::TYPE pType, CGameObject* powner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -99,6 +107,7 @@ CAwareness* CAwareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
 	pInstance->m_eType = pType;
 	pInstance->Set_Speed(pType);
+	pInstance->Set_Owner(powner);
 
 	return pInstance;
 }
@@ -148,4 +157,21 @@ void CAwareness::Set_Speed(CAwareness::TYPE pType)
 		m_fFrameSpeed = 4.f;
 		break;
 	}
+}
+
+void CAwareness::Update_InternalData()
+{
+	if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+	{
+		m_wpBlackBoard_Monster.Set_BlackBoard(Engine::Get_BlackBoard(L"Monster"));
+		// 연결 실패
+		if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+			return;
+	}
+
+	CBlackBoard_Monster* pBlackBoard = m_wpBlackBoard_Monster.Get_BlackBoard();
+
+	// 여기서부터 블랙보드의 정보를 얻어온다.
+	//m_fAwareness = pBlackBoard->Get_BrownAwareness().Cur;
+
 }
