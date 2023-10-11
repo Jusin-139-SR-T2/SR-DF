@@ -251,8 +251,8 @@ void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중
    {
    //case CPlayer::STATE_PLAYER::RUN:
    //    break;
-   // case CPlayer::STATE_PLAYER::DOWN:
-   //   m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
+    case CPlayer::STATE_PLAYER::DOWN:
+      m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
    //    break;
    //case CPlayer::STATE_PLAYER::ATTACK:
    //    break;
@@ -839,7 +839,7 @@ void CBrown::AI_CrotchHit(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"CrotchHit");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
-        m_tFrame.fLifeTime = 2.f; // 3초후 CHASE 진입 
+        m_tFrame.fLifeTime = 2.f; // 2초후 CHASE 진입 
     }
 
     if (m_tState_Obj.Can_Update())

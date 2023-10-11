@@ -43,6 +43,7 @@ HRESULT CGray::Ready_GameObject()
     m_tFrame.fFrameEnd= _float(m_pTextureComp->Get_VecTexture()->size());
     m_tFrame.fFrameSpeed= 12.f;
     m_tFrame.fCheck= 0.f;
+    m_tFrame.fAge = 0.f;
 
     //Status
     m_tStat.fAttackDistance = 13.f;
@@ -179,7 +180,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 
     if (Engine::IsKey_Pressing(DIK_H))
     {
-        _vec3 look    = m_pPlayerTransformcomp->Get_Look();
+        _vec3 look = m_pPlayerTransformcomp->Get_Look();
         _vec3 up = { 0, 1, 0 };
 
        _float dot =  acos(D3DXVec3Dot(&look, &up));
@@ -195,58 +196,10 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     {
         m_tFrame.fFrame = 0;
         m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
-    }
-    if (Engine::IsKey_Pressing(DIK_X))
-    {
-        m_tFrame.fFrame = 0;
-        m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-    }
-    if (Engine::IsKey_Pressing(DIK_C))
-    {
-        m_tFrame.fFrame = 0;
-        m_tState_Obj.Set_State(STATE_OBJ::FALLING);
-    }
-    if (Engine::IsKey_Pressing(DIK_V))
-    {
-        m_tFrame.fFrame = 0;
-        m_gHp.Cur = 25.f;
-        m_tState_Obj.Set_State(STATE_OBJ::DAZED);
-    }
-    if (Engine::IsKey_Pressing(DIK_B))
-    {
-        m_tFrame.fFrame = 0;
-        m_tState_Obj.Set_State(STATE_OBJ::CHOPPED);
-    }
-   if (Engine::IsKey_Pressing(DIK_N))
-   {
-       m_tFrame.fFrame = 0;
-       m_tState_Obj.Set_State(STATE_OBJ::HEADSHOT);
-   }
-   if (Engine::IsKey_Pressing(DIK_M))
-   {
-       m_tFrame.fFrame = 0;
-       m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-   }
-   if (Engine::IsKey_Pressing(DIK_E))
-   {
-       m_tFrame.fFrame = 0;
-       m_tState_Obj.Set_State(STATE_OBJ::DEATH);
-   }
-   if (Engine::IsKey_Pressing(DIK_R))
-   {
-       m_tFrame.fFrame = 0;
-       m_tState_Obj.Set_State(STATE_OBJ::HIT);
-   }
-            
+    }     
 
-   //swprintf_s(debugString, L"Gray - 변수 확인 HP = %f\n", m_gHp.Cur);
+   //swprintf_s(debugString, L"Gray - 변수 확인 HP = %f\n", m_gHp.Cur); //dazed에서 
    //OutputDebugStringW(debugString);
-    
-
-
-
-
-
 
 #pragma endregion 
 
@@ -942,13 +895,18 @@ void CGray::AI_CrotchHit(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Single", L"CrotchHit");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fLifeTime = 2.f; // 2초후 CHASE 진입 
     }
 
     if (m_tState_Obj.Can_Update())
     {
-        if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
+        m_tFrame.fAge += 1.f * fDeltaTime;
+
+        if (m_tFrame.fAge > m_tFrame.fLifeTime)
         {
-            m_tState_Obj.Set_State(STATE_OBJ::REST);
+            m_tFrame.fLifeTime = 0.f;
+            m_tFrame.fAge = 0.f;
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
 
