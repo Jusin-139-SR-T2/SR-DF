@@ -66,7 +66,7 @@
     <ClInclude Include="Header\AceMonster.h" />
     <ClInclude Include="Header\NormalBullet.h" />
     <ClInclude Include="Header\PlayerBullet.h" />
-    <ClInclude Include="RedThunder.h" />
+    <ClInclude Include="Header\RedThunder.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceBoss.cpp" />
@@ -122,7 +122,7 @@
     <ClCompile Include="Code\AceMonster.cpp" />
     <ClCompile Include="Code\NormalBullet.cpp" />
     <ClCompile Include="Code\PlayerBullet.cpp" />
-    <ClCompile Include="RedThunder.cpp" />
+    <ClCompile Include="Code\RedThunder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

@@ -366,7 +366,7 @@
     <ClInclude Include="Header\BossBullet.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\00. BossBullet</Filter>
     </ClInclude>
-    <ClInclude Include="RedThunder.h">
+    <ClInclude Include="Header\RedThunder.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\07. RedThunder</Filter>
     </ClInclude>
   </ItemGroup>
@@ -518,7 +518,7 @@
     <ClCompile Include="Code\BossBullet.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\00. BossBullet</Filter>
     </ClCompile>
-    <ClCompile Include="RedThunder.cpp">
+    <ClCompile Include="Code\RedThunder.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\07. RedThunder</Filter>
     </ClCompile>
   </ItemGroup>
