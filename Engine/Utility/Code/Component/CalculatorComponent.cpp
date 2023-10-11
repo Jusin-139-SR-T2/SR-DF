@@ -237,9 +237,9 @@ _vec3 CCalculatorComponent::Picking_On_Object_World(HWND hWnd, CRcBufferComp* pR
 	int dwCntX = 2;
 	int dwCntZ = 2;
 
-	for (_ulong i = 0; i < dwCntZ - 1; ++i)
+	for (_ulong i = 0; i < dwCntZ - 1UL; ++i)
 	{
-		for (_ulong j = 0; j < dwCntX - 1; ++j)
+		for (_ulong j = 0; j < dwCntX - 1UL; ++j)
 		{
 			_ulong	dwIndex = i * dwCntX + j;
 

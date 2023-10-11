@@ -300,7 +300,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClCompile Include="Code\Physics\PhysicsMgr.cpp" />
     <ClCompile Include="Code\Psystem.cpp" />
     <ClCompile Include="Code\Esystem.cpp" />
-    <ClCompile Include="Header\Interface\ITeamAgent.cpp" />
+    <ClCompile Include="Code\Interface\ITeamAgent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Header\Export_Utility.inl" />

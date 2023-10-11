@@ -13,6 +13,7 @@
 #include "Scene_MapTool.h"
 #include "Scene_TextureTool.h"
 #include "Scene_AnimationTool.h"
+#include "Scene_ProtoTool.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -151,6 +152,9 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 
 	NULL_CHECK_RETURN(pScene = CScene_TextureTool::Create(pGraphicDev), E_FAIL);
 	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"TextureTool"), E_FAIL);
+
+	NULL_CHECK_RETURN(pScene = CScene_ProtoTool::Create(pGraphicDev), E_FAIL);
+	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"ProtoTool"), E_FAIL);
 
 	// 씬을 설정한다.
 	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(L"AnimationTool"), E_FAIL);

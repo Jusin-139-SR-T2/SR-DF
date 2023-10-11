@@ -198,6 +198,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
   <ItemGroup>
     <ClInclude Include="Header\BackGround.h" />
     <ClInclude Include="Header\ImguiAnimationTool.h" />
+    <ClInclude Include="Header\ImguiWin_ProtoTool.h" />
     <ClInclude Include="Header\ImguiWin_Test.h" />
     <ClInclude Include="Header\Logo.h" />
     <ClInclude Include="Header\MainApp.h" />
@@ -207,6 +208,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClInclude Include="Header\ImguiWin_DockingSpace.h" />
     <ClInclude Include="Header\ImguiWin_MapTool.h" />
     <ClInclude Include="Header\Scene_AnimationTool.h" />
+    <ClInclude Include="Header\Scene_ProtoTool.h" />
     <ClInclude Include="Header\Scene_TextureTool.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
@@ -228,6 +230,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
   <ItemGroup>
     <ClCompile Include="Code\BackGround.cpp" />
     <ClCompile Include="Code\ImguiAnimationTool.cpp" />
+    <ClCompile Include="Code\ImguiWin_ProtoTool.cpp" />
     <ClCompile Include="Code\ImguiWin_Test.cpp" />
     <ClCompile Include="Code\MainApp.cpp" />
     <ClCompile Include="Code\Logo.cpp" />
@@ -237,6 +240,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClCompile Include="Code\ImguiWin_DockingSpace.cpp" />
     <ClCompile Include="Code\ImguiWin_MapTool.cpp" />
     <ClCompile Include="Code\Scene_AnimationTool.cpp" />
+    <ClCompile Include="Code\Scene_ProtoTool.cpp" />
     <ClCompile Include="Code\Scene_TextureTool.cpp" />
     <ClCompile Include="Imgui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>

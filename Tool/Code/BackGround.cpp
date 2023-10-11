@@ -119,7 +119,7 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 			{
 				//m_eAnimationInfo = m_vecAnimation[(int)m_iFrameCount].front();
 				_uint iFrameIndex = 0U;
-				for (_uint i = m_vecAnimation[*m_eCurType]->size() - 1; i >= 0; i--)
+				for (_uint i = m_vecAnimation[*m_eCurType]->size() - (_uint)1; i >= 0; i--)
 				{
 					if ((*m_vecAnimation[*m_eCurType])[i].time <= m_pAnimationTool->Get_currentTime())
 					{

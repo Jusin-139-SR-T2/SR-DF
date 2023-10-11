@@ -46,6 +46,18 @@
     <Filter Include="02. ImguiMgr\02. MapTool\ProjectDataTable">
       <UniqueIdentifier>{a8ad23aa-249c-4f87-a9ce-0b0d1e49db8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. ImguiMgr\03. TextureTool">
+      <UniqueIdentifier>{3ab04d4e-b0dd-4fcc-9755-dfa354172d05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. ImguiMgr\00. DockingSpace">
+      <UniqueIdentifier>{fe0f2112-9fd1-47d3-862b-24225a5b2e34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. ImguiMgr\99. Test">
+      <UniqueIdentifier>{6a34352e-1e7b-4b6a-a918-6f11ab9e78f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. ImguiMgr\04. ProtoTool">
+      <UniqueIdentifier>{2dc6065f-c977-4579-af7a-43c6ed2cae64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\framework.h">
@@ -96,9 +108,6 @@
     <ClInclude Include="Header\ImguiWin.h">
       <Filter>02. ImguiMgr</Filter>
     </ClInclude>
-    <ClInclude Include="Header\ImguiWin_Test.h">
-      <Filter>02. ImguiMgr</Filter>
-    </ClInclude>
     <ClInclude Include="Header\MyTexture.h">
       <Filter>02. ImguiMgr\01. AnimationTool\02. PlayerTexture</Filter>
     </ClInclude>
@@ -107,12 +116,6 @@
     </ClInclude>
     <ClInclude Include="Header\ImguiAnimationTool.h">
       <Filter>02. ImguiMgr\01. AnimationTool\00. MainTool</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ImguiWin_DockingSpace.h">
-      <Filter>02. ImguiMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ImguiWin_TextureTool.h">
-      <Filter>02. ImguiMgr</Filter>
     </ClInclude>
     <ClInclude Include="Header\Scene_MapTool.h">
       <Filter>01. Scene</Filter>
@@ -131,6 +134,21 @@
     </ClInclude>
     <ClInclude Include="Header\ProjectDataTable.h">
       <Filter>02. ImguiMgr\02. MapTool\ProjectDataTable</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ImguiWin_TextureTool.h">
+      <Filter>02. ImguiMgr\03. TextureTool</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ImguiWin_DockingSpace.h">
+      <Filter>02. ImguiMgr\00. DockingSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ImguiWin_Test.h">
+      <Filter>02. ImguiMgr\99. Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Scene_ProtoTool.h">
+      <Filter>01. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ImguiWin_ProtoTool.h">
+      <Filter>02. ImguiMgr\04. ProtoTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,9 +191,6 @@
     <ClCompile Include="Code\ImguiWin.cpp">
       <Filter>02. ImguiMgr</Filter>
     </ClCompile>
-    <ClCompile Include="Code\ImguiWin_Test.cpp">
-      <Filter>02. ImguiMgr</Filter>
-    </ClCompile>
     <ClCompile Include="Code\MyTexture.cpp">
       <Filter>02. ImguiMgr\01. AnimationTool\02. PlayerTexture</Filter>
     </ClCompile>
@@ -184,12 +199,6 @@
     </ClCompile>
     <ClCompile Include="Code\ImguiAnimationTool.cpp">
       <Filter>02. ImguiMgr\01. AnimationTool\00. MainTool</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\ImguiWin_DockingSpace.cpp">
-      <Filter>02. ImguiMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\ImguiWin_TextureTool.cpp">
-      <Filter>02. ImguiMgr</Filter>
     </ClCompile>
     <ClCompile Include="Code\Scene_MapTool.cpp">
       <Filter>01. Scene</Filter>
@@ -208,6 +217,21 @@
     </ClCompile>
     <ClCompile Include="Code\ProjectDataTable.cpp">
       <Filter>02. ImguiMgr\02. MapTool\ProjectDataTable</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ImguiWin_TextureTool.cpp">
+      <Filter>02. ImguiMgr\03. TextureTool</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ImguiWin_DockingSpace.cpp">
+      <Filter>02. ImguiMgr\00. DockingSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ImguiWin_Test.cpp">
+      <Filter>02. ImguiMgr\99. Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scene_ProtoTool.cpp">
+      <Filter>01. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ImguiWin_ProtoTool.cpp">
+      <Filter>02. ImguiMgr\04. ProtoTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

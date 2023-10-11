@@ -13,6 +13,7 @@
 #include "ImguiWin_TextureTool.h"
 #include "ImguiWin_DockingSpace.h"
 #include "ImguiWin_MapTool.h"
+#include "ImguiWin_ProtoTool.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
@@ -103,6 +104,7 @@ HRESULT CImguiMgr::Ready_Imgui(CGraphicDev** ppGraphicClass, LPDIRECT3DDEVICE9* 
 	m_mapImguiWin.emplace(L"MapTool", CImguiWin_MapTool::Create());
 	m_mapImguiWin.emplace(L"TextureTool", CImguiWin_TextureTool::Create());
 	m_mapImguiWin.emplace(L"AnimationTool", CImguiAnimationTool::Create());
+	m_mapImguiWin.emplace(L"ProtoTool", CImguiWin_ProtoTool::Create());
 
 	Sort_ImguiWin();
 
@@ -186,7 +188,7 @@ void CImguiMgr::ResetDevice(_uint dwResizeWidth, _uint dwResizeHeight)
 	// 뷰포트는 장치 초기화 후에 해줘야함.
 	if (Engine::IsReady_Renderer())
 	{
-		D3DXMatrixOrthoLH(Engine::Get_Renderer()->Get_MatOrthoProject(), dwResizeWidth, dwResizeHeight, 0.f, 100.f);
+		D3DXMatrixOrthoLH(Engine::Get_Renderer()->Get_MatOrthoProject(), (FLOAT)dwResizeWidth, (FLOAT)dwResizeHeight, 0.f, 100.f);
 		Engine::Get_Renderer()->Get_Viewport(0).Width = dwResizeWidth;
 		Engine::Get_Renderer()->Get_Viewport(0).Height = dwResizeHeight;
 	}

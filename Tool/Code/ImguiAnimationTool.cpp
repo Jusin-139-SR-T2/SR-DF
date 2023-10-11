@@ -163,7 +163,7 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
 
         if (ImGui::CollapsingHeader(u8"이미지 불러오기"))
         {
-            if (ImGui::ListBox("Image Paths", &selectedPathIndex, charImagePaths.data(), charImagePaths.size())) {
+            if (ImGui::ListBox("Image Paths", &selectedPathIndex, charImagePaths.data(), (int)charImagePaths.size())) {
 
                 // 선택한 이미지 경로를 사용하여 이미지를 로드하는 함수 호출
                 const std::string& selectedImagePath = imagePaths[selectedPathIndex];
@@ -325,7 +325,7 @@ wchar_t* CImguiAnimationTool::ConverCtoWC(char* str)
     _tchar* pStr;
     int strSize = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, NULL);
     pStr = new WCHAR[strSize];
-    MultiByteToWideChar(CP_ACP, 0, str, strlen(str) + 1, pStr, strSize);
+    MultiByteToWideChar(CP_ACP, 0, str, (_int)strlen(str) + (size_t)1, pStr, strSize);
 
     return pStr;
 }
@@ -341,7 +341,7 @@ char* CImguiAnimationTool::ConverWCtoC(wchar_t* str)
 
 string CImguiAnimationTool::WstringToUTF8(const wstring& wstr)
 {
-    int utf8Length = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, nullptr, 0, nullptr, nullptr);
+    int utf8Length = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), - 1, nullptr, 0, nullptr, nullptr);
     if (utf8Length == 0)
     {
 
@@ -521,7 +521,7 @@ void CImguiAnimationTool::RenderTimeline()
     // 시간 그래프
     float fFrame[100];
     for (int n = 0; n < 100; n++)
-        fFrame[n] = sinf(n * 0.2f + ImGui::GetTime() * playbackSpeed);
+        fFrame[n] = sinf(n * 0.2f + (_float)ImGui::GetTime() * playbackSpeed);
     ImGui::PlotLines(u8"시간 그래프", fFrame, 100);
     ImGui::PopItemWidth();
     ImGui::SameLine();
@@ -1534,7 +1534,7 @@ void CImguiAnimationTool::CreateKeyframesWithLinearInterpolation(
 
         _float value = Lerp2(minValue, maxValue, t);
 
-        _int iTexture = Lerp2(_minTexture, _maxTexture, t);
+        _int iTexture = (_int)Lerp2(_minTexture, _maxTexture, t);
 
         KEYFRAME keyframe;
 
@@ -1680,7 +1680,7 @@ void CImguiAnimationTool::HandleKeyframeClick()
         // 타임라인의 시작 위치와 끝 위치를 계산합니다.
         ImVec2 windowPos = ImGui::GetWindowPos();
         ImVec2 timelineStartPos = windowPos + ImGui::GetCursorScreenPos();
-        ImVec2 timelineEndPos = timelineStartPos + ImVec2(timeline[m_iCurType].size() * 30, 20); // 키프레임 버튼 간격은 30, 높이는 20으로 가정합니다.
+        ImVec2 timelineEndPos = timelineStartPos + ImVec2((_float)timeline[m_iCurType].size() * 30.f, 20.f); // 키프레임 버튼 간격은 30, 높이는 20으로 가정합니다.
 
         // 마우스 클릭 위치가 타임라인 영역 내에 있는지 확인합니다.
        // if (mousePos.x >= timelineStartPos.x && mousePos.x <= timelineEndPos.x &&
@@ -1689,7 +1689,7 @@ void CImguiAnimationTool::HandleKeyframeClick()
             // 각 키프레임 버튼을 클릭 여부를 확인하고 선택합니다.
             for (int i = 0; i < timeline[m_iCurType].size(); ++i)
             {
-                ImVec2 keyframeButtonPos = timelineStartPos + ImVec2(i * 30, 0); // 키프레임 버튼 간격은 30, 높이는 20으로 가정합니다.
+                ImVec2 keyframeButtonPos = timelineStartPos + ImVec2((_float)i * 30.f, 0); // 키프레임 버튼 간격은 30, 높이는 20으로 가정합니다.
                 ImVec2 keyframeButtonEndPos = keyframeButtonPos + ImVec2(20, 20); // 버튼 너비와 높이는 20으로 가정합니다.
 
                 // 클릭한 위치가 해당 키프레임 버튼의 영역에 포함되는지 확인합니다.
@@ -1902,13 +1902,13 @@ void CImguiAnimationTool::SelectKeyframeValueChange()
             // "Up" 방향키 : 텍스처 Plus
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_RightBracket)))
             {
-                keyframe.texureframe += vValueSize;
+                keyframe.texureframe += (_int)vValueSize;
                 //keyframe.vPos.z += vValueSize;
             }
             // "Down" 방향키 : 텍스처 Minus
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_LeftBracket)))
             {
-                keyframe.texureframe -= vValueSize;
+                keyframe.texureframe -= (_int)vValueSize;
                 //keyframe.vPos.z -= vValueSize;
             }
 
@@ -2261,7 +2261,7 @@ void CImguiAnimationTool::KeyInput()
         // 현재 키프레임이 0보다 작지 않을 경우만
         if (closestKeyframeIndex > 0)
         {
-            closestKeyframeIndex -= 1.f;
+            closestKeyframeIndex -= (_int)1.f;
         }
 
         if (!timeline[m_iCurType].empty()) // 애니메이션이 있고
