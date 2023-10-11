@@ -64,8 +64,8 @@ HRESULT CPlayer::Ready_GameObject()
 
 #pragma region 초기 상태 세팅 (현재 상태)  
     m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);           // 플레이어 
-    m_tLeftHand_State.Set_State(STATE_LEFTHAND::HAND);       // 왼손  
-    m_tRightHand_State.Set_State(STATE_RIGHTHAND::HAND);;    // 오른손
+    m_tLeftHand_State.Set_State(STATE_LEFTHAND::NONE);       // 왼손  
+    m_tRightHand_State.Set_State(STATE_RIGHTHAND::NONE);;    // 오른손
 #pragma endregion
 
 
@@ -107,7 +107,7 @@ HRESULT CPlayer::Ready_GameObject()
 #pragma endregion
 
     // Tset (오브젝트 받아오는거)
-    m_eObjectType = OBJECT_TYPE::TWO_HAND; // 초기상태 : 양손 주먹
+    m_eObjectType = OBJECT_TYPE::NONE; // 초기상태 : 양손 주먹
     m_eObjectName = OBJECT_NAME::NONE; // 초기상태 : 없음
 
     return S_OK;
@@ -473,50 +473,54 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
 #pragma region 왼손 프레임On
 if (!timeline[KEYTYPE_LEFTHAND].empty())
 {
-    // 라이터 되돌리기가 꺼져있을 경우
-    if (!bBackRighter)
+    if (m_tLeftHand.bLeftFrameOn)
     {
-        // 선형 보간
-        //Interpolation();
 
-        // 현재 시간
-        m_tTime.fLeftCurrentTime += m_tTime.fLeftChangeTime * fTimeDelta;
-
-        // 현재 프레임이 최대 프레임에 도달한 경우
-        if (m_tTime.fCurrentTime >= m_tTime.fLeftMaxTime)
+        // 라이터 되돌리기가 꺼져있을 경우
+        if (!bBackRighter)
         {
-            // 양손이 주먹인데 프레임이 최대 프레임에 도달한 경우
-            if (m_tLeftHand_State.Get_State() == STATE_LEFTHAND::HAND &&
-                m_tRightHand_State.Get_State() == STATE_RIGHTHAND::HAND)
-            {
-            }
+            // 선형 보간
+            //Interpolation();
 
-            // 만약 최대프레임인데 라이터가 켜져있을 경우
-            if (bRighter)
+            // 현재 시간
+            m_tTime.fLeftCurrentTime += m_tTime.fLeftChangeTime * fTimeDelta;
+
+            // 현재 프레임이 최대 프레임에 도달한 경우
+            if (m_tTime.fRightCurrentTime >= m_tTime.fLeftMaxTime)
             {
-                // (현재 프레임) 라이터를 켜져있는 이미지(마지막)로 고정
-                m_tLeftHand.fLeftFrame = timeline[KEYTYPE_LEFTHAND].back().texureframe;
-                m_PlayerLighter->Set_m_bLightOn(true);
-            }
-            else // 라이터가 안켜져있을 경우
-            {
-                // 현재 프레임 초기화
-                m_tLeftHand.fLeftFrame = 0.f;
+                // 양손이 주먹인데 프레임이 최대 프레임에 도달한 경우
+                if (m_tLeftHand_State.Get_State() == STATE_LEFTHAND::HAND &&
+                    m_tRightHand_State.Get_State() == STATE_RIGHTHAND::HAND)
+                {
+                }
+
+                // 만약 최대프레임인데 라이터가 켜져있을 경우
+                if (bRighter)
+                {
+                    // (현재 프레임) 라이터를 켜져있는 이미지(마지막)로 고정
+                    m_tLeftHand.fLeftFrame = timeline[KEYTYPE_LEFTHAND].back().texureframe;
+                    m_PlayerLighter->Set_m_bLightOn(true);
+                }
+                else // 라이터가 안켜져있을 경우
+                {
+                    // 현재 프레임 초기화
+                    m_tLeftHand.fLeftFrame = 0.f;
+                }
             }
         }
-    }
-    else // 라이터 되돌리기On
-    {
-        // 현재 프레임을 시간(프레임)마다 감소시키기
-        m_tLeftHand.fLeftFrame -= m_tTime.fLeftChangeTime * fTimeDelta;
-
-        // 왼손 프레임이 0에 도달했을 경우
-        if (m_tLeftHand.fLeftFrame <= 0.f)
+        else // 라이터 되돌리기On
         {
-            m_tLeftHand.fLeftFrame = 0.f;
-            bRighter = false;
-            bBackRighter = false;
-            m_PlayerLighter->Set_m_bLightOn(false);
+            // 현재 프레임을 시간(프레임)마다 감소시키기
+            m_tLeftHand.fLeftFrame -= m_tTime.fLeftChangeTime * fTimeDelta;
+
+            // 왼손 프레임이 0에 도달했을 경우
+            if (m_tLeftHand.fLeftFrame <= 0.f)
+            {
+                m_tLeftHand.fLeftFrame = 0.f;
+                bRighter = false;
+                bBackRighter = false;
+                m_PlayerLighter->Set_m_bLightOn(false);
+            }
         }
     }
 }
@@ -525,63 +529,66 @@ if (!timeline[KEYTYPE_LEFTHAND].empty())
 #pragma region 오른손 프레임On (왼손과 동일)
 if (!timeline[KEYTYPE_RIGHTHAND].empty())
 {
-    // 현재 시간
-    m_tTime.fRightCurrentTime += m_tTime.fRightChangeTime * fTimeDelta;
-
-    // 차징 공격이 켜지고, 현재 프레임이 풀 차징 프레임에 도달했을 경우
-    if (bChargeAttack &&
-        m_tTime.fRightCurrentTime >= timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].time)
+    if (m_tRightHand.bRightFrameOn)
     {
-        // 현재 시간과 텍스처 이미지를 풀 차징에 고정
-        m_tRightHand.fRightFrame = timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].texureframe;
-        m_tTime.fRightCurrentTime = timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].time;
-    }
+        // 현재 시간
+        m_tTime.fRightCurrentTime += m_tTime.fRightChangeTime * fTimeDelta;
 
-    // 플레이어 발차기 중 프레임이 다 돌았을 경우
-    if (m_tRightHand_State.Get_State() == STATE_RIGHTHAND::KICK &&
-        m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
-    {
-        m_tPlayer_State.Set_State(STATE_PLAYER::NONE); // 플레이어 상태 초기화
-        Two_Hand(); // 맨 주먹으로 돌아가기 (나중에 이전상태로 돌아가게 해야함)
-    }
-
-    // 오른손 프레임이 최대 프레임에 도달했을 경우
-    if (m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
-    {
-        // 만약 최대프레임인데 버리는 중일 경우
-        if (m_tPlayer_State.Get_State() == STATE_PLAYER::THROW_AWAY)
+        // 차징 공격이 켜지고, 현재 프레임이 풀 차징 프레임에 도달했을 경우
+        if (bChargeAttack &&
+            m_tTime.fRightCurrentTime >= timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].time)
         {
-            // (현재 프레임) 오른손을 Throw 이미지로 고정
-            m_tRightHand.fRightFrame = timeline[KEYTYPE_RIGHTHAND].back().texureframe;
-
-            // 시간마다 텍스처 변경 시간을 채워준다.
-            m_tTime.fRightCurrentTime += m_tTime.fRightChangeTime * fTimeDelta;
+            // 현재 시간과 텍스처 이미지를 풀 차징에 고정
+            m_tRightHand.fRightFrame = timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].texureframe;
+            m_tTime.fRightCurrentTime = timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].time;
         }
-        else // 버리는 중이 아닐 경우
-        {
-            // 플레이어 상태가 차징일 경우
-            if (m_tPlayer_State.Get_State() == STATE_PLAYER::CHARGING)
-            {
-                m_tPlayer_State.Set_State(STATE_PLAYER::NONE); // 플레이어 상태 : 초기화
-                fChageTime = 0.f; // 차징 시간 초기화
-            }
-            else
-            {
-                // 양손이 주먹 상태 일경우
-                if (m_tLeftHand_State.Get_State() == STATE_LEFTHAND::HAND &&
-                    m_tRightHand_State.Get_State() == STATE_RIGHTHAND::HAND)
-                {
-                    // 오른손 프레임이 다 돌았을 경우
-                    if (m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
-                    {
 
+        // 플레이어 발차기 중 프레임이 다 돌았을 경우
+        if (m_tRightHand_State.Get_State() == STATE_RIGHTHAND::KICK &&
+            m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
+        {
+            m_tPlayer_State.Set_State(STATE_PLAYER::NONE); // 플레이어 상태 초기화
+            Two_Hand(); // 맨 주먹으로 돌아가기 (나중에 이전상태로 돌아가게 해야함)
+        }
+
+        // 오른손 프레임이 최대 프레임에 도달했을 경우
+        if (m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
+        {
+            // 만약 최대프레임인데 버리는 중일 경우
+            if (m_tPlayer_State.Get_State() == STATE_PLAYER::THROW_AWAY)
+            {
+                // (현재 프레임) 오른손을 Throw 이미지로 고정
+                m_tRightHand.fRightFrame = timeline[KEYTYPE_RIGHTHAND].back().texureframe;
+
+                // 시간마다 텍스처 변경 시간을 채워준다.
+                m_tTime.fRightCurrentTime += m_tTime.fRightChangeTime * fTimeDelta;
+            }
+            else // 버리는 중이 아닐 경우
+            {
+                // 플레이어 상태가 차징일 경우
+                if (m_tPlayer_State.Get_State() == STATE_PLAYER::CHARGING)
+                {
+                    m_tPlayer_State.Set_State(STATE_PLAYER::NONE); // 플레이어 상태 : 초기화
+                    fChageTime = 0.f; // 차징 시간 초기화
+                }
+                else
+                {
+                    // 양손이 주먹 상태 일경우
+                    if (m_tLeftHand_State.Get_State() == STATE_LEFTHAND::HAND &&
+                        m_tRightHand_State.Get_State() == STATE_RIGHTHAND::HAND)
+                    {
+                        // 오른손 프레임이 다 돌았을 경우
+                        if (m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
+                        {
+
+                        }
                     }
                 }
-            }
 
-            // 오른손 프레임 초기화
-            m_tRightHand.fRightFrame = 0;
-            m_tTime.fRightCurrentTime = 0.f;
+                // 오른손 프레임 초기화
+                m_tRightHand.fRightFrame = 0;
+                m_tTime.fRightCurrentTime = 0.f;
+            }
         }
     }
 }
@@ -736,11 +743,11 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                 {
                     if (bLeftPunch)
                     {
-
+                        m_tLeftHand.bLeftFrameOn = true;
                     }
                     if (bRightPunch)
                     {
-
+                        m_tRightHand.bRightFrameOn = true;
                     }
                 }
                 else // 나머지 공격
@@ -1158,14 +1165,28 @@ void CPlayer::Hand_Check()
     // 플레이어의 손이 기존 상태가 아닐경우
     if (m_tRightState_Old.Get_State() != m_tRightHand_State.Get_State())
     {
+        m_tTime.fLeftCurrentTime = 0.f;
+        m_tTime.fRightCurrentTime = 0.f;
         bGetAnimation = true; // 새로운 애니메이션 불러오기 On
         
+        m_tRightHand.bRightFrameOn = true;
+        m_tRightHand.bPickUpState = true;
+
         // 새로운 상태가 권총일 경우
         if (m_tRightHand_State.Get_State() == STATE_RIGHTHAND::GUN)
         {
             bSpinOn = true; // 회전On
         }
+
+        // 새로운 상태가 주먹일 경우
+        if (m_tRightHand_State.Get_State() == STATE_RIGHTHAND::HAND)
+        {
+            m_tLeftHand.bLeftFrameOn = true;
+        }
     }
+
+    // 플레이어의 현재 상태를 저장
+    m_tRightState_Old.Set_State(m_tRightHand_State.Get_State());
 
     // 플레이어가 안뛰고있는 경우
     if (m_tPlayer_State.Get_State() != STATE_PLAYER::RUN)
@@ -1242,8 +1263,6 @@ void CPlayer::Hand_Check()
     }
 #pragma endregion
 
-    // 플레이어의 현재 상태를 저장
-    m_tRightState_Old.Set_State(m_tRightHand_State.Get_State());
 }
 
 void CPlayer::State_Update(float fTimeDelta)
@@ -1605,12 +1624,12 @@ void CPlayer::Left_Righter(float fTimeDelta)
     if (m_tLeftHand_State.Can_Update())
     {
         // 현재 프레임이 최대 프레임보다 크거나 같을 경우(애니메이션을 다 돌았을 때)
-        if (m_tTime.fCurrentTime >= m_tTime.fLeftMaxTime)
+        if (m_tTime.fRightCurrentTime >= m_tTime.fLeftMaxTime)
         {
             if (bRighter)
             {
                 // 프레임 재생 Off
-                m_tTime.fCurrentTime = m_tTime.fLeftMaxTime;
+                m_tTime.fRightCurrentTime = m_tTime.fLeftMaxTime;
             }
             else // 라이터가 꺼졌을 경우
             {
@@ -1668,13 +1687,10 @@ void CPlayer::Right_Hand(float fTimeDelta)
         // 처음 꺼내는 애니메이션
         if (m_tRightState_Old.Get_State() != m_tRightHand_State.Get_State())
         {
-
+            // 기본 출력
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
+            RightLoadAnimationFromFile("RightHandPickUp");
         }
-
-        // 기본 오른손 출력
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
-        //m_fRightMaxFrame = 2.f; // 최대 프레임 설정
-        //fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
 
         // 플레이어의 상태가 공격일경우 애니메이션 변경
         if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
@@ -1690,6 +1706,13 @@ void CPlayer::Right_Hand(float fTimeDelta)
     
     if (m_tRightHand_State.Can_Update())
     {
+        if (m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
+        {
+            // 불러오기
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
+            RightLoadAnimationFromFile("RightFist");
+        }
+
         // 플레이어가 차징 상태일 경우
         if (m_tPlayer_State.Get_State() == STATE_PLAYER::CHARGING)
         {
@@ -1704,6 +1727,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
             {
                 RightLoadAnimationFromFile("RightHand_Charging");
                 bGetAnimation = false; // Off
+
             }
 
         }
@@ -1717,11 +1741,11 @@ void CPlayer::Right_Hand(float fTimeDelta)
         }
 
         // 현재 텍스처 변경 시간이 최대 변경시간 보다 크거나 같을 경우(변경하고 싶은 시간이 됐을 때)
-        if (m_tTime.fCurrentTime >= m_tTime.fMaxChangeTime)
+        if (m_tTime.fRightCurrentTime >= m_tTime.fMaxChangeTime)
         {
             // 플레이어 상태 초기화
             m_tPlayer_State.Set_State(STATE_PLAYER::NONE);
-            //fCurrentTime = 0.f; // 텍스처 변경시간 초기화
+            //fRightCurrentTime = 0.f; // 텍스처 변경시간 초기화
 
             // 불러오기 On
             bGetAnimation = true;
@@ -1741,7 +1765,12 @@ void CPlayer::Right_RunHand(float fTimeDelta)
         // 처음 꺼내는 애니메이션
         if (m_tRightState_Old.Get_State() != m_tRightHand_State.Get_State())
         {
-
+            //// 애니메이션 불러오기
+            //if (bGetAnimation)
+            //{
+            //    RightLoadAnimationFromFile("GunPickUp");
+            //    bGetAnimation = false; // Off
+            //}
         }
 
         // 오른손 뛰는 손으로 변경
@@ -1770,45 +1799,46 @@ void CPlayer::Right_Gun(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 처음 꺼내는 애니메이션
-        if (m_tRightState_Old.Get_State() != m_tRightHand_State.Get_State())
+        if (m_tRightHand.bPickUpState)
         {
-
-        }
-        // 총 회전이 켜질 경우
-        if (bSpinOn)
-        {
-            //// 불러오기 ON
-            //bGetAnimation = true;
-
             // 오른손 총 회전 이미지
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun_Spin");
 
             // 애니메이션 불러오기
             if (bGetAnimation)
             {
-                RightLoadAnimationFromFile("GunSpin");
+                RightLoadAnimationFromFile("GunPickUp");
                 bGetAnimation = false; // Off
             }
+        }
+        // 총 회전이 켜질 경우
+        if (bSpinOn)
+        {
+
         }
 
     }
 
     if (m_tRightHand_State.Can_Update())
     {
-        // 플레이어의 상태가 공격일경우 애니메이션 변경
-        if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
-        {
-
-        }
         // 총 회전이 다 돌았을 경우
-        if (m_tTime.fCurrentTime >= m_tTime.fRightMaxTime)
+        if (m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
         {
+            m_tRightHand.bPickUpState = false;
+
             // 오른손 총 불러오기
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun");
             RightLoadAnimationFromFile("Gun");
             m_tTime.fCurChangeTime = 1.5f; // 프레임 속도
 
             bSpinOn = false; // 총 회전 끄기
+            bGetAnimation = false; // Off
+        }
+
+        // 플레이어의 상태가 공격일경우 애니메이션 변경
+        if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
+        {
+
         }
     }
 
@@ -1825,25 +1855,25 @@ void CPlayer::Right_Thompson(float fTimeDelta)
         // 처음 꺼내는 애니메이션
         if (m_tRightState_Old.Get_State() != m_tRightHand_State.Get_State())
         {
-
+            // 기본 출력
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Thompson");
+            RightLoadAnimationFromFile("ThompsonPickUp");
         }
 
-        // 오른손 톰슨 기관총
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Thompson");
         //m_fRightMaxFrame = 4.f; // 최대 프레임 지정
         //fRightFrameSpeed = 35.f;// 프레임 속도 지정 (공격 속도)
 
-        // 애니메이션 불러오기
-        if (bGetAnimation)
-        {
-            RightLoadAnimationFromFile("Thompson");
-            bGetAnimation = false; // Off
-        }
     }
 
     if (m_tRightHand_State.Can_Update())
     {
-
+        if (m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
+        {
+            // 불러오기
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Thompson");
+            RightLoadAnimationFromFile("Thompson");
+            bGetAnimation = false; // Off
+        }
     }
 
     if (m_tRightHand_State.IsState_Exit())
@@ -1859,24 +1889,22 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
         // 처음 꺼내는 애니메이션
         if (m_tRightState_Old.Get_State() != m_tRightHand_State.Get_State())
         {
-
+            // 오른손 쇠파이프
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe");
+            RightLoadAnimationFromFile("Steel_PipePickUp");
         }
-
-        // 오른손 쇠파이프
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe");
-        //m_fRightMaxFrame = 4.f; // 최대 프레임 지정
-        //fRightFrameSpeed = 5.f;// 프레임 속도 지정 (공격 속도)
-
-        // 애니메이션 불러오기
-        if (bGetAnimation)
-        {
-            RightLoadAnimationFromFile("Steel_Pipe");
-            bGetAnimation = false; // Off
-        }  
     }
 
     if (m_tRightHand_State.Can_Update())
     {
+        if (m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
+        {
+            // 불러오기
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe");
+            RightLoadAnimationFromFile("Steel_Pipe");
+            bGetAnimation = false; // Off
+        }
+
         // 플레이어가 차징 상태일 경우
         if (m_tPlayer_State.Get_State() == STATE_PLAYER::CHARGING)
         {
@@ -1907,24 +1935,21 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
         // 처음 꺼내는 애니메이션
         if (m_tRightState_Old.Get_State() != m_tRightHand_State.Get_State())
         {
-
-        }
-
-        // 오른손 맥주병
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"BeerBottle");
-        //m_fRightMaxFrame = 5.f; // 최대 프레임 지정
-        //fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
-        // 애니메이션 불러오기
-        if (bGetAnimation)
-        {
-            RightLoadAnimationFromFile("Steel_Pipe");
-            bGetAnimation = false; // Off
+            // 오른손 맥주병
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"BeerBottle");
+            RightLoadAnimationFromFile("Steel_PipePickUp");
         }
     }
 
     if (m_tRightHand_State.Can_Update())
     {
-
+        if (m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
+        {
+            // 불러오기
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"BeerBottle");
+            RightLoadAnimationFromFile("Steel_Pipe");
+            bGetAnimation = false; // Off
+        }
     }
 
     if (m_tRightHand_State.IsState_Exit())
@@ -1940,24 +1965,22 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
         // 처음 꺼내는 애니메이션
         if (m_tRightState_Old.Get_State() != m_tRightHand_State.Get_State())
         {
-
-        }
-
-        // 오른손 프라이팬
-        m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
-        //m_fRightMaxFrame = 5.f; // 최대 프레임 지정
-        //fRightFrameSpeed = 10.f;// 프레임 속도 지정 (공격 속도)
-
-        // 애니메이션 불러오기
-        if (bGetAnimation)
-        {
-            RightLoadAnimationFromFile("FryingPan");
-            bGetAnimation = false; // Off
+            // 오른손 프라이팬
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
+            RightLoadAnimationFromFile("FryingPanPickUp");
         }
     }
 
     if (m_tRightHand_State.Can_Update())
     {
+        if (m_tTime.fRightCurrentTime >= m_tTime.fRightMaxTime)
+        {
+            // 불러오기
+            m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
+            RightLoadAnimationFromFile("FryingPan");
+            bGetAnimation = false; // Off
+        }
+
         // 플레이어가 차징 상태일 경우
         if (m_tPlayer_State.Get_State() == STATE_PLAYER::CHARGING)
         {
