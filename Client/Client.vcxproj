@@ -19,8 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AceBoss.h" />
-    <ClInclude Include="BossBullet.h" />
+    <ClInclude Include="Header\AceBoss.h" />
     <ClInclude Include="Header\AceGameObject.h" />
     <ClInclude Include="Header\AceUnit.h" />
     <ClInclude Include="Header\AttackUnion.h" />
@@ -68,8 +67,7 @@
     <ClInclude Include="Header\PlayerBullet.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AceBoss.cpp" />
-    <ClCompile Include="BossBullet.cpp" />
+    <ClCompile Include="Code\AceBoss.cpp" />
     <ClCompile Include="Code\AceGameObject.cpp" />
     <ClCompile Include="Code\AceUnit.cpp" />
     <ClCompile Include="Code\AttackUnion.cpp" />

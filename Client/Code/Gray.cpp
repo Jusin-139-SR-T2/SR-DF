@@ -186,7 +186,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 
        swprintf_s(debugString, L"Brown - 변수 확인 dot = %f\n", cos(dot));
 
-       OutputDebugStringW(debugString);
+       //OutputDebugStringW(debugString);
     }
     // --------------------------------------------
 
@@ -428,7 +428,7 @@ void CGray::AI_Taunt(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-        OutputDebugString(L"▷Gray - 상태머신 : Taunt 진입  \n");
+        //OutputDebugString(L"▷Gray - 상태머신 : Taunt 진입  \n");
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Taunt");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 12.f;
@@ -449,7 +449,7 @@ void CGray::AI_Taunt(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-        OutputDebugString(L"▷Gray - 상태머신 : Taunt 끝  \n");
+        //OutputDebugString(L"▷Gray - 상태머신 : Taunt 끝  \n");
     }
 }
 
@@ -1246,7 +1246,7 @@ void CGray::SideMoving(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-        OutputDebugString(L"▷Gray - 행동머신 : Side - KeepEYE  OR  SideWalk 진입   \n");
+        //OutputDebugString(L"▷Gray - 행동머신 : Side - KeepEYE  OR  SideWalk 진입   \n");
     }
 
     // 실행
@@ -1272,7 +1272,7 @@ void CGray::SideMoving(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-        OutputDebugString(L"▷Gray - 행동머신 : Side - KeepEYE  OR  SideWalk 끝   \n");
+        //OutputDebugString(L"▷Gray - 행동머신 : Side - KeepEYE  OR  SideWalk 끝   \n");
     }
 }
 
@@ -1280,7 +1280,7 @@ void CGray::SuddenAttack(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-        OutputDebugString(L"▷Gray - 행동머신 : Sudden - Upright  OR  Frighten 진입   \n");
+        //OutputDebugString(L"▷Gray - 행동머신 : Sudden - Upright  OR  Frighten 진입   \n");
     }
 
     // 실행
@@ -1304,7 +1304,7 @@ void CGray::SuddenAttack(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-        OutputDebugString(L"▷Gray - 행동머신 : Sudden - Upright  OR  Frighten 끝   \n");
+        //OutputDebugString(L"▷Gray - 행동머신 : Sudden - Upright  OR  Frighten 끝   \n");
     }
 }
 
@@ -1312,7 +1312,7 @@ void CGray::Attack(float fDeltaTime)
 {
     if (m_tState_Act.IsState_Entered())
     {
-        OutputDebugString(L"▷Gray - 행동머신 : Attack 진입   \n");
+        //OutputDebugString(L"▷Gray - 행동머신 : Attack 진입   \n");
     }
 
     // 실행
@@ -1349,7 +1349,7 @@ void CGray::Attack(float fDeltaTime)
 
     if (m_tState_Act.IsState_Exit())
     {
-        OutputDebugString(L"▷Gray - 행동머신 : Attack 끝   \n");
+        //OutputDebugString(L"▷Gray - 행동머신 : Attack 끝   \n");
     }
 }
 

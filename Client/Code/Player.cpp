@@ -108,6 +108,12 @@ HRESULT CPlayer::Ready_GameObject()
     m_tRightHand_State.Add_Func(STATE_RIGHTHAND::KICK, &ThisClass::Right_Kick);             // 발차기
 #pragma endregion
 
+#pragma region 액션 키
+    for (size_t i = 0; i < static_cast<size_t>(EACTION_KEY::SIZE); i++)
+        m_tActionKey.Add_Action(static_cast<EACTION_KEY>(i));
+    
+#pragma endregion
+
 
     // Tset (오브젝트 받아오는거)
     m_eObjectType = OBJECT_TYPE::TWO_HAND; // 초기상태 : 양손 주먹
@@ -136,7 +142,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     // 키보드 입력
     Keyboard_Input(fTimeDelta);
 
-    // 선형 보간
     Interpolation();
 
     // 상태 업데이트(체크)
@@ -171,6 +176,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     // 블랙보드 연동하기
     Update_BlackBoard();
+
+    m_tActionKey.Update();
 
     // 랜더 그룹 지정, 현재상태 : 알파 테스트
     Engine::Add_RenderGroup(RENDER_UI, this);
@@ -310,6 +317,13 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
             fStraightSpeed = 10.f;
             // 플레이어 상태 : 달리기
             m_ePlayerState = STATE_PLAYER::RUN;
+            m_tActionKey[EACTION_KEY::RUN].Act();
+        }
+
+        if (m_tActionKey[EACTION_KEY::RUN].IsOnAct())
+        {
+            // 조건 추가
+            // Move 함수
         }
 
         D3DXVec3Normalize(&vLook, &vLook);
@@ -506,13 +520,16 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
             // 라이터 되돌리기가 꺼져있을 경우
             if (!bBackRighter)
             {
+                // 선형 보간
+                //Interpolation();
+
                 // 현재 시간
                 fCurrentTime += fCurChangeTime * fTimeDelta;
 
                 // 양손이 주먹 상태 일경우
                 if (bLeftHandFist && bRightHandFist)
                 {
-                    // 왼손 프레임이 오른손 프레임보다 클 경우
+                    // 왼손 프레임이 최대 프레임보다 클 경우
                     if (fCurrentTime > m_fLeftMaxFrame)
                     {
                         bLeftPunch = false;  // 왼손 주먹 Off
@@ -562,6 +579,9 @@ void CPlayer::FrameManage(const _float& fTimeDelta)
 #pragma region 오른손 프레임On (왼손과 동일)
     if (bRightFrameOn)
     {
+        // 선형 보간
+        //Interpolation();
+
         // 쉴드를 했을 경우
         if (bShieldOn)
         {
@@ -2086,7 +2106,7 @@ void CPlayer::RightLoadAnimationFromFile(const char* fileName)
 #pragma endregion  
 }
 
-void CPlayer::Interpolation()
+void CPlayer::Interpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
 {
     for (int i = 0; i < KEYTYPE_END; i++) // 키타입 순회
     {

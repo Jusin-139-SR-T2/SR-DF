@@ -157,8 +157,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     {
         m_tFrame.fFrame = 0.f;
     
-        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State()
-            || STATE_OBJ::DEATH == m_tState_Obj.Get_State())
+        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
             m_tFrame.fCheck += 1;
     }
 
@@ -174,7 +173,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     //if (Engine::IsKey_Pressed(DIK_P))
     //{
     //    swprintf_s(debugString, L"Brown - 변수 확인 fAwareness = %f\n", m_tStat.fAwareness);
-    //    OutputDebugStringW(debugString);
+    //    //OutputDebugStringW(debugString);
     //}
 
 #pragma endregion 
@@ -244,7 +243,7 @@ void CBrown::Free()
 
 void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중 
 {
-    OutputDebugString(L"▶Brown 충돌중 \n");
+    //OutputDebugString(L"▶Brown 충돌중 \n");
 
    // if(ePlayerState)
 
@@ -252,9 +251,9 @@ void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중
    {
    //case CPlayer::STATE_PLAYER::RUN:
    //    break;
-    case CPlayer::STATE_PLAYER::DOWN:
-      m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
-       break;
+   // case CPlayer::STATE_PLAYER::DOWN:
+   //   m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
+   //    break;
    //case CPlayer::STATE_PLAYER::ATTACK:
    //    break;
    //case CPlayer::STATE_PLAYER::CHARGING:
@@ -266,40 +265,40 @@ void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중
    }
 
 
-    //플레이어와 충돌한거라면 
-    switch (ePlayerRighthand)
-    {
-    case CPlayer::STATE_RIGHTHAND::HAND:
-        break;
+    ////플레이어와 충돌한거라면 
+    //switch (ePlayerRighthand)
+    //{
+    //case CPlayer::STATE_RIGHTHAND::HAND:
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::RUN_HAND:
-        m_tState_Obj.Set_State(STATE_OBJ::FALLING);
-        break;
+    //case CPlayer::STATE_RIGHTHAND::RUN_HAND:
+    //    m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::GUN:
-        m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-        break;
+    //case CPlayer::STATE_RIGHTHAND::GUN:
+    //    m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::THOMPSON:
-        m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-        break;
+    //case CPlayer::STATE_RIGHTHAND::THOMPSON:
+    //    m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::STEELPIPE:
-        m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-        break;
+    //case CPlayer::STATE_RIGHTHAND::STEELPIPE:
+    //    m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::BEERBOTLE:
-        m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-        break;
+    //case CPlayer::STATE_RIGHTHAND::BEERBOTLE:
+    //    m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::FRYINGPAN:
-        m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-        break;
+    //case CPlayer::STATE_RIGHTHAND::FRYINGPAN:
+    //    m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::KICK:
-        m_tState_Obj.Set_State(STATE_OBJ::FALLING);
-        break;
-    }
+    //case CPlayer::STATE_RIGHTHAND::KICK:
+    //    m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+    //    break;
+    //}
 
         //충돌체와 충돌한거라면 
 
@@ -307,45 +306,45 @@ void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
-    OutputDebugString(L"▶Brown 충돌 \n");
+    //OutputDebugString(L"▶Brown 충돌 \n");
     // 플레이어 무기상태, 플레이어가 공격했을때가 필요함 여기에 변화 
     // 디폴트로 일단 넣어둠 
    
-    //충돌한게 플레이어라면 
-    _int iCombo = (rand() % 2) + 1;
+    ////충돌한게 플레이어라면 
+    //_int iCombo = (rand() % 2) + 1;
 
-    switch (ePlayerRighthand)
-    {
-    case CPlayer::STATE_RIGHTHAND::HAND:
-        break;
+    //switch (ePlayerRighthand)
+    //{
+    //case CPlayer::STATE_RIGHTHAND::HAND:
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::RUN_HAND:
-        break;
+    //case CPlayer::STATE_RIGHTHAND::RUN_HAND:
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::GUN:
-        break;
+    //case CPlayer::STATE_RIGHTHAND::GUN:
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::THOMPSON:
-        m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-        break;
+    //case CPlayer::STATE_RIGHTHAND::THOMPSON:
+    //    m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::STEELPIPE:
-        break;
+    //case CPlayer::STATE_RIGHTHAND::STEELPIPE:
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::BEERBOTLE:
-        break;
+    //case CPlayer::STATE_RIGHTHAND::BEERBOTLE:
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::FRYINGPAN:
-        break;
+    //case CPlayer::STATE_RIGHTHAND::FRYINGPAN:
+    //    break;
 
-    case CPlayer::STATE_RIGHTHAND::KICK:
-        break;
-    }
+    //case CPlayer::STATE_RIGHTHAND::KICK:
+    //    break;
+    //}
 
     //충돌한게 투사체라면
 
 
-   // OutputDebugStringW(debugString);
+   // //OutputDebugStringW(debugString);
 }
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
