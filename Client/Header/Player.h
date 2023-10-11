@@ -101,13 +101,16 @@ public: // Get_Set
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
 	GETSET_EX2(CPlayerLighter*, m_PlayerLighter, PlayerLighter, GET, SET)	// 라이터 조명
-	
+
 	// 플레이어 오른손 상태값
 	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
+	// 플레이어 상태값
+	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, THROW_AWAY, DIE, JUMP, PLAYER_END };
 
 	// 소영 추가 ---------------- 
 	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
 	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
+	GETSET_EX2(STATE_PLAYER, ePlayerState, PlayerState, GET, SET)	// 라이터 조명
 	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
 
 		_bool* Get_DBugFrame() {
@@ -152,13 +155,13 @@ private:
 	ACTION_SET<EACTION_KEY>			m_tActionKey;
 
 public:
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY, DIE, JUMP, PLAYER_END };
-	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
+	//enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY, DIE, JUMP, PLAYER_END };
+	//enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
 	enum class STATE_LEFTHAND { NONE, HAND, OPEN_HAND, RUN_HAND, RIGHTER, RUN_RIHGTER };
 
 private: // 플레이어의 상태 머신
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, THROW_AWAY, DIE, JUMP, PLAYER_END };
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
+	STATE_PLAYER ePlayerState;
 
 	void Idle(float fTimeDelta);
 	void Move(float fTimeDelta);
