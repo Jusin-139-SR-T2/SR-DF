@@ -46,6 +46,9 @@
     <Filter Include="02. ImguiMgr\02. MapTool\ProjectDataTable">
       <UniqueIdentifier>{a8ad23aa-249c-4f87-a9ce-0b0d1e49db8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject">
+      <UniqueIdentifier>{88729cf0-3b27-4b9e-994d-521b4a76ca8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\framework.h">
@@ -132,6 +135,9 @@
     <ClInclude Include="Header\ProjectDataTable.h">
       <Filter>02. ImguiMgr\02. MapTool\ProjectDataTable</Filter>
     </ClInclude>
+    <ClInclude Include="Header\AceGameObject.h">
+      <Filter>03. GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\framework.cpp">
@@ -208,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="Code\ProjectDataTable.cpp">
       <Filter>02. ImguiMgr\02. MapTool\ProjectDataTable</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AceGameObject.cpp">
+      <Filter>03. GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

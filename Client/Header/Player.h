@@ -102,10 +102,18 @@ public: // Get_Set
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
 	GETSET_EX2(CPlayerLighter*, m_PlayerLighter, PlayerLighter, GET, SET)	// 라이터 조명
 	
+	// 플레이어 오른손 상태값
+	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
+
+	// 소영 추가 ---------------- 
+	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
+	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
+	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
+
 		_bool* Get_DBugFrame() {
-		return &bDBugFrame;
+		return &bDbugFrame;
 	} void Set_DBugFrame(_bool* value) {
-		bDBugFrame = value;
+		bDbugFrame = value;
 	}	// 스위치
 
 		
@@ -140,12 +148,12 @@ public:// 플레이어 상태 값
 	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향 
 
 private:
-	enum class EACTION_KEY : _uint { RIGHT, LEFT, UP, DOWN, RUN, PUNCH, SIZE };
+	enum class EACTION_KEY : _uint { RIGHT, LEFT, UP, DOWN, RUN, ATTACK, JUMP, SIT, SIZE };
 	ACTION_SET<EACTION_KEY>			m_tActionKey;
 
 
 private: // 플레이어의 상태 머신
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY, DIE, JUMP, PLAYER_END };
+	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, THROW_AWAY, DIE, JUMP, PLAYER_END };
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
 
 	void Idle(float fTimeDelta);
@@ -169,16 +177,8 @@ private: // 플레이어의 왼손 상태 머신
 	void	Left_Righter(float fTimeDelta);
 
 private: // 플레이어의 오른손 상태 머신
-	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
 	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightHand_State;
 	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightState_Old;
-
-
-	// 소영 추가 ---------------- 
-	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
-	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
-	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
-
 
 	void	Right_None(float fTimeDelta);
 	void	Right_Hand(float fTimeDelta);
@@ -200,34 +200,16 @@ private: // 함수
 	//void				Hand_Check();								// 플레이어 손 상태 체크
 	void				LeftLoadAnimationFromFile(const char* fileName);// 애니메이션 불러오기
 	void				RightLoadAnimationFromFile(const char* fileName);// 애니메이션 불러오기
-	void				Interpolation();
-
-	//// ==============================양손 주먹=============================
-	//void				Two_Hand();
-	//// ====================================================================
-	//
-	//// ===========================양손 오브젝트============================
-	//void				Two_Object();
-	//// ====================================================================
-	//
-	//// ===========================한손 오브젝트============================
-	//void				Right_Object();
-	//// ====================================================================
+	void				LeftInterpolation();
+	void				RightInterpolation();
 
 private:
 	void State_Update(float fTimeDelta);	// 상태 업데이트(상태 체크)
 
 private: // 스위치
-	_bool		bAttackOn = false;		// 공격 On/Off
-	_bool		bLeftFrameOn = false;	// 왼손 프레임 On/Off
-	_bool		bRightFrameOn = false;	// 오른손 프레임 On/Off
-	_bool		bGunOn = false;			// 총 On/Off
 	_bool		bSpinOn = false;		// 총 회전 On/Off
 	_bool		bRighter = false;		// 라이터 On/Off
-	_bool		bRighterSwitch = false; // 라이터 스위치 On/Off
-	_bool		bLeftHandOn = true;		// 왼손 출력 On/Off
 	_bool		bRightHandOn = true;	// 오른손 출력 On/Off
-	_bool		bLightOn = false;		// 라이터 조명 On/Off
 	_bool		bGetAnimation = false;	// 애니메이션 불러오기 On/Off
 
 	// 대쉬
@@ -235,56 +217,73 @@ private: // 스위치
 	_bool		bDashChange = false;	// 대쉬 증감 On/Off
 
 	// 주먹 공격
-	_bool		bLeftHandFist = true;	// 왼손 주먹상태
-	_bool		bRightHandFist = true;	// 오른손 주먹상태
 	_bool		bLeftPunch = false;		// 왼주먹 On/Off
 	_bool		bRightPunch = true;		// 오른주먹 On/Off
 
-	// 방어
 	_bool		bShieldOn = true;		// 쉴드 On/Off
-
-	// 플레이어 행동 여부
-	_bool		bShield = true;			// 쉴드 가능 여부
-	_bool		bChargingReady = true;	// 차징 가능 여부
 	_bool		bChargeAttack = false;	// 일반 공격에서 차징 공격으로 변경
-	_bool		bFootAttack = false;	// 발차기 여부
-	_bool		bRunOn = false;			// 플레이어가 뛰는지 여부
-	_bool		bDead = false;			// 플레이어 사망 여부
-	//_bool		bMove = false;			// 플레이어가 움직이는지 여부
-	//_bool		bMouse_Button = false;	// 마우스 클릭 여부
-
-	// Test
-	_bool		bBackRighter = false;
-
-	// 디버그 프레임
-	_bool		bDBugFrame = false;
+	_bool		bBackRighter = false;	// 라이터 되돌리기
+	_bool		bDbugFrame = false;		// 디버그 프레임
 
 private:
-	struct FTest // 직관적인 이름과 맞는 기능들 및 변수들 구조체 만들기 (여러개)
+	struct _LEFTHAND	// 왼손
 	{
-		float x;
+		_bool			bLeftHandOn = true;			// 왼손 출력 On/Off
+
+		_float			fLeftFrameSpeed = 10.f;		// 왼손 프레임 속도
+		_float			fLeftFrame = 0.f;			// 왼손 프레임
 	};
 
-	FTest		tTest;
-	_float		fRightFrameSpeed = 10.f;	// 오른손 프레임 속도
-	_float		fLeftFrameSpeed = 10.f;		// 왼손 프레임 속도
-	_float		fStraightSpeed = 5.f;		// 플레이어 전진 속도
-	_float		fSpeed = 5.f;				// 플레이어 속도
-	_float		fDash = 20.f;				// 플레이어 대쉬
-	_float		fDownDash = 0.f;			// 플레이어 대쉬할때 높이
-	_float		fFullChage = 0.f;			// 풀차징 프레임
-	_float		fShieldFrame = 0.f;			// 쉴드시 프레임
+	struct _RIGHTHAND	// 오른손
+	{
+
+		_float			fRightFrameSpeed = 10.f;	// 오른손 프레임 속도
+		_float			fRightFrame = 0.f;			// 오른손 프레임
+
+		_uint			iFullChargingIndex = 0.f;	// 풀차지시 인덱스
+		_uint			iShieldIndex = 0.f;			// 쉴드시 인덱스
+	};
+
+	struct _PLAYER	// 플레이어
+	{
+		_float		fStraightSpeed = 5.f;		// 플레이어 전진 속도
+		_float		fSpeed = 5.f;				// 플레이어 속도
+	};
+
+	struct _DASH	// 대쉬
+	{
+		_float		fDash = 20.f;				// 플레이어 대쉬
+		_float		fDownDash = 0.f;			// 플레이어 대쉬할때 높이
+	};
+
+	struct _TIME	// 시간
+	{
+		_float		fCurrentTime = 0.f;			// 현재 시간
+		_float		fCurChangeTime = 1.f;		// 시간 속도 조절(배율)
+
+		_float		fLeftCurrentTime = 0.f;		// 왼손 현재 시간
+		_float		fLeftMaxTime = 0.f;			// 왼손 최대 시간
+		_float		fLeftChangeTime = 1.f;		// 시간 속도 조절(배율)
+
+		_float		fRightCurrentTime = 0.f;	// 오른손 현재 시간
+		_float		fRightMaxTime = 0.f;		// 오른손 최대 시간
+		_float		fRightChangeTime = 1.f;		// 시간 속도 조절(배율)
+
+		_float		fMaxChangeTime = 3.f;		// 변경될 최대 시간
+	};
+
+
+
+	_PLAYER			m_tPlayer;		// 플레이어
+	_LEFTHAND		m_tLeftHand;	// 플레이어 왼손
+	_RIGHTHAND		m_tRightHand;	// 플레이어 오른손
+	_DASH			m_tDash;		// 대쉬
+	_TIME			m_tTime;		// 시간
+
+	GAUGE<_float>		m_fChage;	// 차지
+
 	_float		fChageTime = 0.f;			// 차징 전환 시간
 	_float		fFullChargeTime = 7.f;		// 풀자징 시간
-	_float		fCurrentTime = 0.f;			// 현재 시간
-	_float		fLeftCurrentTime = 0.f;		// 왼손 현재 시간
-	_float		fRightCurrentTime = 0.f;	// 오른손 현재 시간
-	_float		fCurChangeTime = 1.f;		// 시간 속도 조절(배율)
-	_float		fMaxChangeTime = 3.f;		// 변경될 최대 시간
-
-	// 플레이어 상태
-	STATE_PLAYER	m_ePlayerState;	// 플레이어
-	STATE_LEFTHAND	m_eLeftState;	// 왼손
 
 	// Test
 	OBJECT_TYPE m_eObjectType;	// 오브젝트 타입
@@ -297,62 +296,28 @@ private:
 	CPlayerLighter* m_PlayerLighter;
 
 private:
+		// 애니메이션 타임 라인
+		std::vector<KEYFRAME> timeline[KEYTYPE_END];
+
+private:
 	_long			dwMouseMove = 0;		// 마우스 무브
 
-	_float			m_fLeftFrame = 0.f;		// 왼손 현재 프레임
-	_float			m_fLeftMaxFrame = 0.f;	// 왼손 최대 프레임
-
-	_float			m_fRightFrame = 0.f;	// 오른손 현재 프레임
-	_float			m_fRightMaxFrame = 0.f; // 오른손 최대 프레임
 
 private:
 	virtual void		Free();
 
 protected:
 	CDynamicCamera* m_pCamera = nullptr;
-	_vec3	m_vCameraAt;
-	_vec3	m_vPlayerLook;
-	_float	fDot;
-	_vec3	vLook = { 0.f, 0.f, 1.f };
-	_vec3	m_vPlayerPos;
-
-protected:
-	_matrix		m_matRot;
-	_matrix		m_ViewMatrix, m_ProjMatrix;	// 요거 차후 제거 예정, 직교, 뷰포트가 렌더러에 종속적으로 바뀜
-
-private: //빛
-	//HRESULT			SetUp_Material();
-	_bool			bTorch = false;
-
-		
-private: // 쿼터니언
-	_long dwMouseMoveX;
-	_long dwMouseMoveY;
-
-	D3DXQUATERNION	m_quaternion;	// 쿼터니온 변수
-
-private:
-	_float	m_fX, m_fY, m_fSizeX, m_fSizeY;
 
 private: // 보간 변수
 	// dt 값
 	_float fFrameTimeDelta, fCurFrameTimeDelta;
-
 	// 크기
 	_float fSizeX_Delta, fSizeY_Delta;
-
 	// 회전
 	_float fRotX_Delta, fRotY_Delta, fRotZ_Delta;
-
 	// 이동
 	_float fPosX_Delta, fPosY_Delta;
-
-private:
-	CGameObject* m_pPlayer;
-
-private:
-	// 애니메이션 타임 라인
-	std::vector<KEYFRAME> timeline[KEYTYPE_END];
 };
 
 /*	현재 키 설명
@@ -396,3 +361,9 @@ MouseRB : 가드 (가드가 가능한 상태만)
 ========================================
 
 */
+
+//private: // 쿼터니언
+	//_long dwMouseMoveX;
+	//_long dwMouseMoveY;
+
+	//D3DXQUATERNION	m_quaternion;	// 쿼터니온 변수

@@ -150,7 +150,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;ENGINE_EXPORTS;__IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;__IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
       <AdditionalIncludeDirectories>.\;Header\;Include\;Imgui\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\RapidJson\</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -174,7 +174,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;__IMGUI;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
       <AdditionalIncludeDirectories>.\;Header\;Include\;Imgui\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\RapidJson\</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -196,6 +196,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Header\AceGameObject.h" />
     <ClInclude Include="Header\BackGround.h" />
     <ClInclude Include="Header\ImguiAnimationTool.h" />
     <ClInclude Include="Header\ImguiWin_Test.h" />
@@ -226,6 +227,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClInclude Include="Header\ProjectDataTable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\AceGameObject.cpp" />
     <ClCompile Include="Code\BackGround.cpp" />
     <ClCompile Include="Code\ImguiAnimationTool.cpp" />
     <ClCompile Include="Code\ImguiWin_Test.cpp" />

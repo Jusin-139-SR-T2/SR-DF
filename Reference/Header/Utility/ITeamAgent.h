@@ -93,7 +93,8 @@ public:
 	}
 };
 
+using ERELATION_STATE = ITeamAgent::ERELATION;
+
 
 END
 
-using ERELATION_STATE = ITeamAgent::ERELATION;
