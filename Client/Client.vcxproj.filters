@@ -360,6 +360,9 @@
     <ClInclude Include="BossBullet.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\00. BossBullet</Filter>
     </ClInclude>
+    <ClInclude Include="AceBoss.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -505,6 +508,9 @@
     </ClCompile>
     <ClCompile Include="BossBullet.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\00. BossBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="AceBoss.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

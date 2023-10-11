@@ -31,7 +31,7 @@ public:
 	virtual void		Render_GameObject() override;
 
 	static CMonsterPunch* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
-								_float _x, _float _y, _float _z, TYPE _option);
+								_float _x, _float _y, _float _z, TYPE _option, CAceUnit* pOwner);
 
 private:
 	HRESULT				Add_Component();

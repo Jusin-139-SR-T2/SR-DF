@@ -167,7 +167,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     //    if ((*iter) != this) // 자기자신을 죽이지 않는 보안코드 삽입 
     //        (*iter)->Set_Dead();
     //}
-
+        // 현재 피격 테스트중 
 
     // 블랙보드 연동하기
     Update_BlackBoard();

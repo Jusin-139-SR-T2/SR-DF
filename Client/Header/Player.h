@@ -146,11 +146,6 @@ public:// 플레이어 상태 값
 	// TEST
 	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향 
 
-	// 소영 추가 ---------------- 
-	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
-	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
-	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
-
 private: // 플레이어의 상태 머신
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
 
@@ -285,6 +280,13 @@ private:
 	// 라이터 조명
 	CPlayerLighter* m_PlayerLighter;
 
+	// 소영 추가 ---------------- 
+public:
+	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
+	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
+	GETSET_EX2(STATE_PLAYER, m_ePlayerState, PlayerState, GET, SET)   // 플레이어 상태 받아오는용도
+	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
+
 private:
 	_long			dwMouseMove = 0;		// 마우스 무브
 
@@ -315,6 +317,8 @@ private: //빛
 
 		
 private: // 쿼터니언
+
+	_tchar						debugString[100];
 	_long dwMouseMoveX;
 	_long dwMouseMoveY;
 
