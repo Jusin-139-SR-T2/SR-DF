@@ -91,5 +91,18 @@ namespace Engine
 		KEYTYPE_END
 	};
 
+	enum EGO_CLASS
+	{
+		ECLASS_NONE,
+		ECLASS_PLAYER,
+		ECLASS_BROWN,
+		ECLASS_GREY,
+		ECLASS_BOSS,
+		ECLASS_FOOD,
+		ECLASS_WEAPON,
+		ECLASS_THROW,
+		ECLASS_INTERACTION,
+		ECLASS_BUILDING,
+	};
 }
 #endif // Engine_Enum_h__

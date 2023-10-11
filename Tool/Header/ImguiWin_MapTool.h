@@ -112,7 +112,7 @@ private:	// °èÃþ °ü·Ã
 
 		_vec3		vPos = { 0.f,0.f,0.f };
 		_vec3		vRot = { 0.f,0.f,0.f };
-		_vec3		vScale = { 0.f,0.f,0.f };
+		_vec3		vScale = { 1.f,1.f,1.f };
 		_float		fPriority[EPRIORITY_OBJECT_END] = { 0.f, 0.f, 0.f };
 		_bool		bUsePriority[EPRIORITY_OBJECT_END] = { true, true, true };
 	};

@@ -734,7 +734,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
             "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            Clamp_Vec3Translate(m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vPos, 100000.f);
+            Clamp_Vec3Translate(m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vPos, 10000.f);
             bIsEdited = true;
         }
         if (ImGui::SliderFloat3("##TranslateSlider",
