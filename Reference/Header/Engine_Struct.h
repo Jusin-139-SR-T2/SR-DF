@@ -479,20 +479,21 @@ namespace Engine
 	// 키프레임 구조체
 	struct KEYFRAME
 	{
-		char name[64] = "";				// 키프레임 이름 (표시용)
+		char name[64] = "";					// 키프레임 이름 (표시용)
 
-		bool isEaseIn = false;			// Ease In 설정 (True 또는 False)
-		bool isEaseOut = false;			// Ease Out 설정 (True 또는 False)
+		bool isEaseIn = false;				// Ease In 설정 (True 또는 False)
+		bool isEaseOut = false;				// Ease Out 설정 (True 또는 False)
 
-		bool bChargePossible = false;	// 차지 가능 여부
-		bool bShieldPossible = false;	// 방어 가능 여부
+		bool bChargePossible = false;		// 차지 가능 여부
+		bool bShieldPossible = false;		// 방어 가능 여부
 
-		float time = 0.f;				// 키프레임의 시간 (0.0f ~ MaxTime 범위)
-		float value = 0.f;				// 애니메이션 값 (크기, 회전, 이동 등)
+		bool bFullChargeKeyframe = false;	// 풀차지시 프레임
+		bool bShieldKeyFrame = false;		// 쉴드시 프레임
 
-		int texureframe = 0;			// 텍스처 변경 값
-		int iFullChargeFrame = 0;		// 풀차지시 프레임
-		int iShieldFrame = 0;			// 쉴드시 프레임
+		float time = 0.f;					// 키프레임의 시간 (0.0f ~ MaxTime 범위)
+		float value = 0.f;					// 애니메이션 값 (크기, 회전, 이동 등)
+
+		int texureframe = 0;				// 텍스처 변경 값
 
 		OBJ_TYPE m_eObjectType = OBJ_TYPE::NONE; // 타입을 부여할 그릇 (ex : 한손, 양손)
 		OBJ_NAME m_eObjectName = OBJ_NAME::NONE; // 이름을 부여할 그릇 (ex : 권총, 쇠파이프)

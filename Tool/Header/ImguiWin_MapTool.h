@@ -48,6 +48,9 @@ private:
 
 
 private:
+	void			Warning();
+
+private:
 	void			Layout_Browser(const ImGuiWindowFlags& iMain_Flags);
 	void			Layout_Browser_Scene();
 	void			Layout_Browser_Terrain();
@@ -56,7 +59,7 @@ private:
 	void			Layout_Browser_Camera();
 
 private:
-	void			Layout_Hierarchy(const ImGuiWindowFlags& iMain_Flags);
+	void			Layout_Hierarchi(const ImGuiWindowFlags& iMain_Flags);
 
 private:
 	void			Layout_Property(const ImGuiWindowFlags& iMain_Flags);
@@ -80,7 +83,6 @@ private:
 	ESELECTED_TYPE				m_ePropertySelected_Type = ESELECTED_TYPE_NONE;
 
 
-private:
 
 
 private:	// 씬 추가
@@ -92,28 +94,46 @@ private:	// 레이어 정보
 	//vector<string>
 
 
+private:
+	
+
 private:	// 계층 관련
+	enum EPRIORITY_OBJECT : _ulong
+	{
+		EPRIORITY_OBJECT_UPDATE,
+		EPRIORITY_OBJECT_LATE,
+		EPRIORITY_OBJECT_RENDER,
+		EPRIORITY_OBJECT_END
+	};
 	struct FObjectProperty
 	{
-		string		strName;
+		string		strName = "";
+		string		strObjectID = "";
 
-		_vec3		vPos;
-		_vec3		vRot;
-		_vec3		vScale;
-		_float		fPriority_Update;
-		_bool		fUsePriority_Update;
-		_float		fPriority_LateUpdate;
-		_bool		fUsePriority_LateUpdate;
-		_float		fPriority_Render;
-		_bool		fUsePriority_Render;
+		_vec3		vPos = { 0.f,0.f,0.f };
+		_vec3		vRot = { 0.f,0.f,0.f };
+		_vec3		vScale = { 1.f,1.f,1.f };
+		_float		fPriority[EPRIORITY_OBJECT_END] = { 0.f, 0.f, 0.f };
+		_bool		bUsePriority[EPRIORITY_OBJECT_END] = { true, true, true };
 	};
 	struct FLayerProperty
 	{
-		string						strName;
-		_float						fPriority;
+		string						strName = "";
+		_float						fPriority = 0.f;
 		vector<FObjectProperty>		vecObject;
 	};
+
+private:
+	void			Reset_Hierarchi()
+	{
+		m_iSelectedHierarchi_Layer = -1;
+		m_iSelectedHierarchi_Layer_Remain = -1;
+		m_iSelectedHierarchi_Object = -1;
+		m_iSelectedHierarchi_Object_Remain = -1;
+		m_ePropertySelected_Type = ESELECTED_TYPE_NONE;
+	}
 	
+private:
 	string						m_strSceneName = u8"씬";			// 씬 이름
 	_bool						m_bScene_Loaded = false;
 
@@ -145,6 +165,9 @@ private:	// 터레인 관련
 	void			Import_ParsedTerrain(const FSerialize_Terrain& tTerrain);
 
 
+private:	// 속성 관련
+	_bool			m_bInput_Warning = false;
+
 private:
 	enum EINPUT_TERRAIN
 	{
@@ -166,6 +189,58 @@ private:	// 유틸리티
 	void			Set_Button_ActiveColor();
 	void			Set_Button_NonActiveColor();
 	void			Set_Button_ReturnColor();
+
+	void			Clamp_Vec3Translate(_vec3& vTranslate, _float fValue)
+	{
+		if (vTranslate.x < -fValue)
+			vTranslate.x = -fValue;
+		else if (vTranslate.x > fValue)
+			vTranslate.x = fValue;
+
+		if (vTranslate.y < -fValue)
+			vTranslate.y = -fValue;
+		else if (vTranslate.y > fValue)
+			vTranslate.y = fValue;
+
+		if (vTranslate.z < -fValue)
+			vTranslate.z = -fValue;
+		else if (vTranslate.z > fValue)
+			vTranslate.z = fValue;
+	}
+	void			Clamp_Vec3Rot(_vec3& vRot, _float fValue)
+	{
+		if (vRot.x < -fValue)
+			vRot.x = -fValue;
+		else if (vRot.x > fValue)
+			vRot.x = fValue;
+
+		if (vRot.y < -fValue)
+			vRot.y = -fValue;
+		else if (vRot.y > fValue)
+			vRot.y = fValue;
+
+		if (vRot.z < -fValue)
+			vRot.z = -fValue;
+		else if (vRot.z > fValue)
+			vRot.z = fValue;
+	}
+	void			Clamp_Vec3Scale(_vec3& vScale, _float fValue)
+	{
+		if (vScale.x < -fValue)
+			vScale.x = -fValue;
+		else if (vScale.x > fValue)
+			vScale.x = fValue;
+
+		if (vScale.y < -fValue)
+			vScale.y = -fValue;
+		else if (vScale.y > fValue)
+			vScale.y = fValue;
+
+		if (vScale.z < -fValue)
+			vScale.z = -fValue;
+		else if (vScale.z > fValue)
+			vScale.z = fValue;
+	}
 
 	static int InputTextCallback(ImGuiInputTextCallbackData* data)
 	{

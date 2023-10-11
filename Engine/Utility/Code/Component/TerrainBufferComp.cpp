@@ -260,7 +260,7 @@ HRESULT CTerrainBufferComp::Ready_Buffer(const char* pParsedFile, const _tchar* 
 
 	tTerrain.Receive_ByRapidJSON(strJson);
 
-	Ready_Buffer(pHeightFile, tTerrain.vVertexCount.x, tTerrain.vVertexCount.z,
+	Ready_Buffer(pHeightFile, static_cast<_ulong>(tTerrain.vVertexCount.x), static_cast<_ulong>(tTerrain.vVertexCount.z),
 		tTerrain.vScale, tTerrain.vInvOffset);
 
 	return S_OK;

@@ -163,7 +163,7 @@ _int CImguiAnimationTool::Update_ImguiWin(const _float& fTimeDelta)
 
         if (ImGui::CollapsingHeader(u8"이미지 불러오기"))
         {
-            if (ImGui::ListBox("Image Paths", &selectedPathIndex, charImagePaths.data(), charImagePaths.size())) {
+            if (ImGui::ListBox("Image Paths", &selectedPathIndex, charImagePaths.data(), (int)charImagePaths.size())) {
 
                 // 선택한 이미지 경로를 사용하여 이미지를 로드하는 함수 호출
                 const std::string& selectedImagePath = imagePaths[selectedPathIndex];
@@ -325,7 +325,7 @@ wchar_t* CImguiAnimationTool::ConverCtoWC(char* str)
     _tchar* pStr;
     int strSize = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, NULL);
     pStr = new WCHAR[strSize];
-    MultiByteToWideChar(CP_ACP, 0, str, strlen(str) + 1, pStr, strSize);
+    MultiByteToWideChar(CP_ACP, 0, str, (_int)strlen(str) + (size_t)1, pStr, strSize);
 
     return pStr;
 }
@@ -341,7 +341,7 @@ char* CImguiAnimationTool::ConverWCtoC(wchar_t* str)
 
 string CImguiAnimationTool::WstringToUTF8(const wstring& wstr)
 {
-    int utf8Length = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, nullptr, 0, nullptr, nullptr);
+    int utf8Length = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), - 1, nullptr, 0, nullptr, nullptr);
     if (utf8Length == 0)
     {
 
@@ -521,7 +521,7 @@ void CImguiAnimationTool::RenderTimeline()
     // 시간 그래프
     float fFrame[100];
     for (int n = 0; n < 100; n++)
-        fFrame[n] = sinf(n * 0.2f + ImGui::GetTime() * playbackSpeed);
+        fFrame[n] = sinf(n * 0.2f + (_float)ImGui::GetTime() * playbackSpeed);
     ImGui::PlotLines(u8"시간 그래프", fFrame, 100);
     ImGui::PopItemWidth();
     ImGui::SameLine();
@@ -589,37 +589,37 @@ void CImguiAnimationTool::RenderTimeline()
     // 현재 변경 모드 표시
     switch (eEditMode)
     {
-        case EDITMODE_NONE:
-        {
-            textColor = { 1.f, 1.f, 1.f, 1.f };
-            ImGui::TextColored(textColor, u8"변경[OFF]");
-            break;
-        }
-        case EDITMODE_SCALE:
-        {
-            ImGui::TextColored(textColor, u8"크기 변경[ON]");
-            break;
-        }
-        case EDITMODE_ROTATION:
-        {
-            ImGui::TextColored(textColor, u8"회전 변경[ON]");
-            break;
-        }
-        case EDITMODE_TRANSLATION:
-        {
-            ImGui::TextColored(textColor, u8"이동 변경[ON]");
-            break;
-        }
-        case EDITMODE_TIME_VALUE:
-        {
-            ImGui::TextColored(textColor, u8"시간 및 벨류 변경[ON]");
-            break;
-        }
-        case EDITMODE_TEXTURE:
-        {
-            ImGui::TextColored(textColor, u8"텍스처 변경[ON]");
-            break;
-        }
+    case EDITMODE_NONE:
+    {
+        textColor = { 1.f, 1.f, 1.f, 1.f };
+        ImGui::TextColored(textColor, u8"변경[OFF]");
+        break;
+    }
+    case EDITMODE_SCALE:
+    {
+        ImGui::TextColored(textColor, u8"크기 변경[ON]");
+        break;
+    }
+    case EDITMODE_ROTATION:
+    {
+        ImGui::TextColored(textColor, u8"회전 변경[ON]");
+        break;
+    }
+    case EDITMODE_TRANSLATION:
+    {
+        ImGui::TextColored(textColor, u8"이동 변경[ON]");
+        break;
+    }
+    case EDITMODE_TIME_VALUE:
+    {
+        ImGui::TextColored(textColor, u8"시간 및 벨류 변경[ON]");
+        break;
+    }
+    case EDITMODE_TEXTURE:
+    {
+        ImGui::TextColored(textColor, u8"텍스처 변경[ON]");
+        break;
+    }
     default:
         break;
     }
@@ -1043,9 +1043,9 @@ void CImguiAnimationTool::SaveAnimationToFile(const char* fileName)
             << keyframe.isEaseOut << " "
             << keyframe.bChargePossible << " "
             << keyframe.bShieldPossible << " "
+            << keyframe.bFullChargeKeyframe << " "
+            << keyframe.bShieldKeyFrame << " "
             << keyframe.texureframe << " "
-            << keyframe.iFullChargeFrame << " "
-            << keyframe.iShieldFrame << " "
             << keyframe.vScale.x << " " << keyframe.vScale.y << " " << keyframe.vScale.z << " "
             << keyframe.vRot.x << " " << keyframe.vRot.y << " " << keyframe.vRot.z << " "
             << keyframe.vPos.x << " " << keyframe.vPos.y << " " << keyframe.vPos.z << " "
@@ -1083,8 +1083,8 @@ void CImguiAnimationTool::LoadAnimationFromFile(const char* fileName)
         keyframe.bChargePossible >>
         keyframe.bShieldPossible >>
         keyframe.texureframe >>
-        keyframe.iFullChargeFrame >>
-        keyframe.iShieldFrame >>
+        keyframe.bFullChargeKeyframe >>
+        keyframe.bShieldKeyFrame >>
         keyframe.vScale.x >> keyframe.vScale.y >> keyframe.vScale.z >>
         keyframe.vRot.x >> keyframe.vRot.y >> keyframe.vRot.z >>
         keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z >>
@@ -1436,7 +1436,7 @@ void CImguiAnimationTool::DrawSelectedKeyframeEditor(KEYFRAME& selectedKeyframe)
 
     // 차징 입력 필드의 가로 길이를 조절
     ImGui::PushItemWidth(80);
-    ImGui::InputInt(u8"쉴드시 프레임", &selectedKeyframe.iShieldFrame);
+    ImGui::Checkbox(u8"쉴드시 키프레임", &selectedKeyframe.bShieldKeyFrame);
     ImGui::PopItemWidth();
 
     ImGui::Dummy(ImVec2(0, 5)); // 공백
@@ -1448,7 +1448,7 @@ void CImguiAnimationTool::DrawSelectedKeyframeEditor(KEYFRAME& selectedKeyframe)
 
     // 차징 입력 필드의 가로 길이를 조절
     ImGui::PushItemWidth(80);
-    ImGui::InputInt(u8"차징시 프레임", &selectedKeyframe.iFullChargeFrame);
+    ImGui::Checkbox(u8"풀차징시 키프레임", &selectedKeyframe.bFullChargeKeyframe);
     ImGui::PopItemWidth();
 
 #pragma endregion
@@ -1534,7 +1534,7 @@ void CImguiAnimationTool::CreateKeyframesWithLinearInterpolation(
 
         _float value = Lerp2(minValue, maxValue, t);
 
-        _int iTexture = Lerp2(_minTexture, _maxTexture, t);
+        _int iTexture = (_int)Lerp2(_minTexture, _maxTexture, t);
 
         KEYFRAME keyframe;
 
@@ -1680,7 +1680,7 @@ void CImguiAnimationTool::HandleKeyframeClick()
         // 타임라인의 시작 위치와 끝 위치를 계산합니다.
         ImVec2 windowPos = ImGui::GetWindowPos();
         ImVec2 timelineStartPos = windowPos + ImGui::GetCursorScreenPos();
-        ImVec2 timelineEndPos = timelineStartPos + ImVec2(timeline[m_iCurType].size() * 30, 20); // 키프레임 버튼 간격은 30, 높이는 20으로 가정합니다.
+        ImVec2 timelineEndPos = timelineStartPos + ImVec2((_float)timeline[m_iCurType].size() * 30.f, 20.f); // 키프레임 버튼 간격은 30, 높이는 20으로 가정합니다.
 
         // 마우스 클릭 위치가 타임라인 영역 내에 있는지 확인합니다.
        // if (mousePos.x >= timelineStartPos.x && mousePos.x <= timelineEndPos.x &&
@@ -1689,7 +1689,7 @@ void CImguiAnimationTool::HandleKeyframeClick()
             // 각 키프레임 버튼을 클릭 여부를 확인하고 선택합니다.
             for (int i = 0; i < timeline[m_iCurType].size(); ++i)
             {
-                ImVec2 keyframeButtonPos = timelineStartPos + ImVec2(i * 30, 0); // 키프레임 버튼 간격은 30, 높이는 20으로 가정합니다.
+                ImVec2 keyframeButtonPos = timelineStartPos + ImVec2((_float)i * 30.f, 0); // 키프레임 버튼 간격은 30, 높이는 20으로 가정합니다.
                 ImVec2 keyframeButtonEndPos = keyframeButtonPos + ImVec2(20, 20); // 버튼 너비와 높이는 20으로 가정합니다.
 
                 // 클릭한 위치가 해당 키프레임 버튼의 영역에 포함되는지 확인합니다.
@@ -1902,13 +1902,13 @@ void CImguiAnimationTool::SelectKeyframeValueChange()
             // "Up" 방향키 : 텍스처 Plus
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_RightBracket)))
             {
-                keyframe.texureframe += vValueSize;
+                keyframe.texureframe += (_int)vValueSize;
                 //keyframe.vPos.z += vValueSize;
             }
             // "Down" 방향키 : 텍스처 Minus
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_LeftBracket)))
             {
-                keyframe.texureframe -= vValueSize;
+                keyframe.texureframe -= (_int)vValueSize;
                 //keyframe.vPos.z -= vValueSize;
             }
 
@@ -1940,39 +1940,39 @@ void CImguiAnimationTool::SelectKeyframeMouseL()
         {
 
 
-                // 인덱스 값 초기화
-                closestKeyframeIndex = -1;
+            // 인덱스 값 초기화
+            closestKeyframeIndex = -1;
 
-                // 가장 가까운 키프레임을 찾을 때 초기 거리를 설정하고, 나중에 더 작은 거리를 발견하면 업데이트.
-                _float closestDistance = FLT_MAX; // 가장 큰 부동 소수점 (초기 최소 거리 값 성정)
+            // 가장 가까운 키프레임을 찾을 때 초기 거리를 설정하고, 나중에 더 작은 거리를 발견하면 업데이트.
+            _float closestDistance = FLT_MAX; // 가장 큰 부동 소수점 (초기 최소 거리 값 성정)
 
-                for (int i = 0; i < timeline[m_iCurType].size(); ++i)
+            for (int i = 0; i < timeline[m_iCurType].size(); ++i)
+            {
+                KEYFRAME& keyframe = timeline[m_iCurType][i];
+
+                // 키프레임의 위치
+                float keyframeX = keyframe.vKeyFramePos.x;
+                float keyframeY = keyframe.vKeyFramePos.y;
+
+                // 마우스 좌표와 키프레임 위치 간의 거리 계산
+                float distance = std::sqrt((mouseX - keyframeX) * (mouseX - keyframeX) +
+                    (mouseY - keyframeY) * (mouseY - keyframeY));
+
+                // 타임 라인 상의 키프레임 위치를 계산
+                float xPos = timelinePos.x + (keyframe.time / 20.0f) * timelineSize.x;
+                float yPos = timelinePos.y + timelineSize.y - timelineSize.y * keyframe.value;
+
+                // 가장 가까운 키프레임 찾기
+                if (distance < closestDistance)
                 {
-                    KEYFRAME& keyframe = timeline[m_iCurType][i];
-
-                    // 키프레임의 위치
-                    float keyframeX = keyframe.vKeyFramePos.x;
-                    float keyframeY = keyframe.vKeyFramePos.y;
-
-                    // 마우스 좌표와 키프레임 위치 간의 거리 계산
-                    float distance = std::sqrt((mouseX - keyframeX) * (mouseX - keyframeX) +
-                        (mouseY - keyframeY) * (mouseY - keyframeY));
-
-                    // 타임 라인 상의 키프레임 위치를 계산
-                    float xPos = timelinePos.x + (keyframe.time / 20.0f) * timelineSize.x;
-                    float yPos = timelinePos.y + timelineSize.y - timelineSize.y * keyframe.value;
-
-                    // 가장 가까운 키프레임 찾기
-                    if (distance < closestDistance)
+                    // 해당 키프레임의 위치 안에 마우스가 있는지 판단
+                    if (mouseX >= xPos - 5.0f && mouseY >= yPos - 5.0f &&
+                        mouseX <= xPos + 5.0f && mouseY <= yPos + 5.0f)
                     {
-                        // 해당 키프레임의 위치 안에 마우스가 있는지 판단
-                        if (mouseX >= xPos - 5.0f && mouseY >= yPos - 5.0f &&
-                            mouseX <= xPos + 5.0f && mouseY <= yPos + 5.0f)
-                        {
-                            closestDistance = distance;
-                            closestKeyframeIndex = i; // 현재 선택한 인덱스를 마우스가 클릭한 인덱스로 설정
-                        }
+                        closestDistance = distance;
+                        closestKeyframeIndex = i; // 현재 선택한 인덱스를 마우스가 클릭한 인덱스로 설정
                     }
+                }
             }
 
         }
@@ -2057,7 +2057,7 @@ void CImguiAnimationTool::KeyInput()
         {
             float dist = fabsf(currentTime - timeline[m_iCurType][i].time);
 
-            if (dist < minDist) 
+            if (dist < minDist)
             {
                 minDist = dist;
                 insertIndex = i;
@@ -2261,7 +2261,7 @@ void CImguiAnimationTool::KeyInput()
         // 현재 키프레임이 0보다 작지 않을 경우만
         if (closestKeyframeIndex > 0)
         {
-            closestKeyframeIndex -= 1.f;
+            closestKeyframeIndex -= (_int)1.f;
         }
 
         if (!timeline[m_iCurType].empty()) // 애니메이션이 있고

@@ -13,6 +13,7 @@
 #include "Scene_MapTool.h"
 #include "Scene_TextureTool.h"
 #include "Scene_AnimationTool.h"
+#include "Scene_ProtoTool.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -62,7 +63,9 @@ HRESULT CMainApp::Ready_MainApp()
 	FAILED_CHECK_RETURN(CImguiMgr::GetInstance()->Ready_Imgui(&m_pDeviceClass, &m_pGraphicDev), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Scene(m_pGraphicDev, &m_pManagementClass), E_FAIL);
 
-	
+	// 팀 에이전트 팀 설정, A, B팀 서로 적대 관계 설정
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_ALPHA), static_cast<_int>(ETEAM_BETA), ERELATION_STATE::HOSTILE);
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BETA), static_cast<_int>(ETEAM_ALPHA), ERELATION_STATE::HOSTILE);
 	
 	return S_OK;
 }
@@ -151,6 +154,9 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 
 	NULL_CHECK_RETURN(pScene = CScene_TextureTool::Create(pGraphicDev), E_FAIL);
 	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"TextureTool"), E_FAIL);
+
+	NULL_CHECK_RETURN(pScene = CScene_ProtoTool::Create(pGraphicDev), E_FAIL);
+	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"ProtoTool"), E_FAIL);
 
 	// 씬을 설정한다.
 	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(L"AnimationTool"), E_FAIL);

@@ -217,7 +217,7 @@ public:
 	GETSET_EX1(LPDIRECT3DTEXTURE9, m_pTexture, Texture, GET_REF)
 	GETSET_EX2(_bool, isPlaying, FramePlaying, GET, SET)
 	GETSET_EX2(_float, currentTime, currentTime, GET, SET)
-	GETSET_EX2(_float, bRepetition, Repetition, GET, SET)
+	GETSET_EX2(_int, bRepetition, Repetition, GET, SET)
 		
 protected:
 	virtual void Free();

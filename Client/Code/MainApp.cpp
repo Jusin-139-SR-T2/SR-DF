@@ -6,7 +6,6 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-
 CMainApp::CMainApp()
 	: m_pDeviceClass(nullptr), m_pGraphicDev(nullptr), m_pManagementClass(nullptr)
 {

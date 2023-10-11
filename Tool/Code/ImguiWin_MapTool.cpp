@@ -118,14 +118,34 @@ _int CImguiWin_MapTool::Update_ImguiWin(const _float& fTimeDelta)
         //ShowDockingDisabledMessage();
     }
 
+    Warning();
     Layout_Browser(iMain_Flags);
-    Layout_Hierarchy(iMain_Flags);
+    Layout_Hierarchi(iMain_Flags);
     Layout_Property(iMain_Flags);
     Layout_Viewer(iMain_Flags);
 
     ImGui::End();
 
     return 0;
+}
+
+void CImguiWin_MapTool::Warning()
+{
+    if (m_bInput_Warning)
+    {
+        ImGui::OpenPopup(u8"이름이 중복됨!");
+        if (ImGui::BeginPopupModal(u8"이름이 중복됨!", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            ImGui::Text(u8"레이어 안의 오브젝트와 이름이 중복됨!");
+
+            if (ImGui::Button("Ok", ImVec2(120, 0)))
+            {
+                ImGui::CloseCurrentPopup();
+                m_bInput_Warning = false;
+            }
+        }
+        ImGui::EndPopup();
+    }
 }
 
 void CImguiWin_MapTool::Layout_Browser(const ImGuiWindowFlags& iMain_Flags)
@@ -160,7 +180,7 @@ void CImguiWin_MapTool::Layout_Browser_Scene()
         ImGui::SameLine();
         if (ImGui::InputTextEx(u8"##InputSceneName", u8"Scene Name",
             const_cast<char*>(m_strAdd_SceneName.c_str()),
-            m_strAdd_SceneName.capacity(),
+            (_int)m_strAdd_SceneName.capacity(),
             ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
         {
             bAdd_Scene = true;
@@ -263,6 +283,8 @@ void CImguiWin_MapTool::Layout_Browser_Scene()
                 } while (_findnext(handle, &fd) == S_OK);
 
                 // 로드된 목록으로 내용물까지 로드
+                
+                
             }
 
             _findclose(handle);
@@ -277,6 +299,9 @@ void CImguiWin_MapTool::Layout_Browser_Scene()
             // 선택한 씬을 로드하도록 한다.
             if (m_iSelected_Scene != -1)
             {
+                // 씬 로드시 관련 변수 리셋
+                Reset_Hierarchi();
+
                 m_strSceneName = m_vecSceneName[m_iSelected_Scene];
                 m_vecHierarchi.clear();
 
@@ -285,7 +310,7 @@ void CImguiWin_MapTool::Layout_Browser_Scene()
             }
         }
 
-
+        // 실제 씬을 메모리에 적재하기
         if (bAdd_Scene)
         {
             m_strAdd_SceneName = m_strAdd_SceneName.c_str();
@@ -335,7 +360,7 @@ void CImguiWin_MapTool::Layout_Browser_Terrain()
         ImGui::SameLine();
         if (ImGui::InputTextEx(u8"##InputText_Terrain1", u8"X",
             const_cast<char*>(m_vecInput_Terrain[EINPUT_TERRAIN_HORIZON].c_str()),
-            m_vecInput_Terrain[EINPUT_TERRAIN_HORIZON].capacity(),
+            (_int)m_vecInput_Terrain[EINPUT_TERRAIN_HORIZON].capacity(),
             ImVec2(100, 0),
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -352,7 +377,7 @@ void CImguiWin_MapTool::Layout_Browser_Terrain()
         ImGui::SameLine();
         if (ImGui::InputTextEx(u8"##InputText_Terrain2", u8"Y",
             const_cast<char*>(m_vecInput_Terrain[EINPUT_TERRAIN_VERTICLE].c_str()),
-            m_vecInput_Terrain[EINPUT_TERRAIN_VERTICLE].capacity(),
+            (_int)m_vecInput_Terrain[EINPUT_TERRAIN_VERTICLE].capacity(),
             ImVec2(100, 0),
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -369,7 +394,7 @@ void CImguiWin_MapTool::Layout_Browser_Terrain()
         ImGui::SameLine();
         if (ImGui::InputTextEx(u8"##InputText_Terrain3", u8"Z",
             const_cast<char*>(m_vecInput_Terrain[EINPUT_TERRAIN_HEIGHT].c_str()),
-            m_vecInput_Terrain[EINPUT_TERRAIN_HEIGHT].capacity(),
+            (_int)m_vecInput_Terrain[EINPUT_TERRAIN_HEIGHT].capacity(),
             ImVec2(100, 0),
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -385,7 +410,7 @@ void CImguiWin_MapTool::Layout_Browser_Terrain()
         ImGui::SameLine();
         if (ImGui::InputTextEx(u8"##InputText_Terrain4-1", u8"X",
             const_cast<char*>(m_vecInput_Terrain[EINPUT_TERRAIN_OFFSET_X].c_str()),
-            m_vecInput_Terrain[EINPUT_TERRAIN_OFFSET_X].capacity(),
+            (_int)m_vecInput_Terrain[EINPUT_TERRAIN_OFFSET_X].capacity(),
             ImVec2(100, 0),
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -395,7 +420,7 @@ void CImguiWin_MapTool::Layout_Browser_Terrain()
         ImGui::SameLine();
         if (ImGui::InputTextEx(u8"##InputText_Terrain4-2", u8"Y",
             const_cast<char*>(m_vecInput_Terrain[EINPUT_TERRAIN_OFFSET_Y].c_str()),
-            m_vecInput_Terrain[EINPUT_TERRAIN_OFFSET_Y].capacity(),
+            (_int)m_vecInput_Terrain[EINPUT_TERRAIN_OFFSET_Y].capacity(),
             ImVec2(100, 0),
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -405,7 +430,7 @@ void CImguiWin_MapTool::Layout_Browser_Terrain()
         ImGui::SameLine();
         if (ImGui::InputTextEx(u8"##InputText_Terrain4-3", u8"Z",
             const_cast<char*>(m_vecInput_Terrain[EINPUT_TERRAIN_OFFSET_Z].c_str()),
-            m_vecInput_Terrain[EINPUT_TERRAIN_OFFSET_Z].capacity(),
+            (_int)m_vecInput_Terrain[EINPUT_TERRAIN_OFFSET_Z].capacity(),
             ImVec2(100, 0),
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -422,7 +447,7 @@ void CImguiWin_MapTool::Layout_Browser_Terrain()
         ImGui::SameLine();
         if (ImGui::InputTextEx(u8"##InputText_Terrain5-1", u8"X",
             const_cast<char*>(m_vecInput_Terrain[EINPUT_TERRAIN_SCALE_X].c_str()),
-            m_vecInput_Terrain[EINPUT_TERRAIN_SCALE_X].capacity(),
+            (_int)m_vecInput_Terrain[EINPUT_TERRAIN_SCALE_X].capacity(),
             ImVec2(100, 0),
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -432,7 +457,7 @@ void CImguiWin_MapTool::Layout_Browser_Terrain()
         ImGui::SameLine();
         if (ImGui::InputTextEx(u8"##InputText_Terrain5-2", u8"Y",
             const_cast<char*>(m_vecInput_Terrain[EINPUT_TERRAIN_SCALE_Y].c_str()),
-            m_vecInput_Terrain[EINPUT_TERRAIN_SCALE_Y].capacity(),
+            (_int)m_vecInput_Terrain[EINPUT_TERRAIN_SCALE_Y].capacity(),
             ImVec2(100, 0),
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -442,7 +467,7 @@ void CImguiWin_MapTool::Layout_Browser_Terrain()
         ImGui::SameLine();
         if (ImGui::InputTextEx(u8"##InputText_Terrain5-3", u8"Z",
             const_cast<char*>(m_vecInput_Terrain[EINPUT_TERRAIN_SCALE_Z].c_str()),
-            m_vecInput_Terrain[EINPUT_TERRAIN_SCALE_Z].capacity(),
+            (_int)m_vecInput_Terrain[EINPUT_TERRAIN_SCALE_Z].capacity(),
             ImVec2(100, 0),
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -492,7 +517,7 @@ void CImguiWin_MapTool::Layout_Browser_Camera()
     }
 }
 
-void CImguiWin_MapTool::Layout_Hierarchy(const ImGuiWindowFlags& iMain_Flags)
+void CImguiWin_MapTool::Layout_Hierarchi(const ImGuiWindowFlags& iMain_Flags)
 {
     // 계층
     if (ImGui::Begin(u8"계층", NULL, iMain_Flags))
@@ -638,8 +663,12 @@ void CImguiWin_MapTool::Layout_Property_Layer()
 
 void CImguiWin_MapTool::Layout_Property_Object()
 {
+    _uint iHierarchi_Layer = m_iSelectedHierarchi_Layer_Remain;
+    _uint iHierarchi_Object = m_iSelectedHierarchi_Object;
+    _bool bIsEdited = false;    // 에딧되었을 때 변화 이벤트
+
     if (ImGui::CollapsingHeader(u8"이름")
-        && m_iSelectedHierarchi_Layer_Remain != -1 && m_iSelectedHierarchi_Object != -1)
+        && iHierarchi_Layer != -1 && iHierarchi_Object != -1)
     {
         // 이름
         Set_Button_NonActiveColor();
@@ -647,24 +676,39 @@ void CImguiWin_MapTool::Layout_Property_Object()
         Set_Button_ReturnColor();
 
         // 입력부
-        m_vecHierarchi[m_iSelectedHierarchi_Object].strName.reserve(20);
+        m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].strName.reserve(20);
+        char  strInput[20] = {};
+        strcpy_s(strInput, m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].strName.c_str());
+            
         ImGui::SameLine();
         ImGui::PushItemWidth(140.f);
         if (ImGui::InputText("##Name",
-            const_cast<char*>(m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].strName.c_str()),
-            m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].strName.capacity(),
-            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
+            strInput, IM_ARRAYSIZE(strInput),
+            ImGuiInputTextFlags_EnterReturnsTrue))
         {
+            string strCheck = strInput;
+            auto iter = find_if(m_vecHierarchi[iHierarchi_Layer].vecObject.begin(), m_vecHierarchi[iHierarchi_Layer].vecObject.end(),
+                [&strInput](FObjectProperty& refObject) {
+                    return refObject.strName == strInput;
+                });
 
+            if (iter == m_vecHierarchi[iHierarchi_Layer].vecObject.end())
+                m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].strName = strInput;
+            else
+            {
+                // 자기 자신이름은 경고 내보내지 않음
+                if (m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].strName != strInput)
+                    m_bInput_Warning = true;
+            }
         }
-        m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].strName = m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].strName;
+        
         ImGui::PopItemWidth();
     }
 
 
     ImGui::Separator();
     if (ImGui::CollapsingHeader(u8"좌표")
-        && m_iSelectedHierarchi_Layer_Remain != -1 && m_iSelectedHierarchi_Object != -1)
+        && iHierarchi_Layer != -1 && iHierarchi_Object != -1)
     {
         // X
         Set_Button_NonActiveColor();
@@ -686,74 +730,94 @@ void CImguiWin_MapTool::Layout_Property_Object()
 
         ImGui::PushItemWidth((60.f + 6.f) * 3.f);
         if (ImGui::InputFloat3("##Translate", 
-            m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].vPos,
+            m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vPos,
             "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
-
+            Clamp_Vec3Translate(m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vPos, 10000.f);
+            bIsEdited = true;
+        }
+        if (ImGui::SliderFloat3("##TranslateSlider",
+            m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vPos,
+            -10000.f, 10000.f))
+        {
+            bIsEdited = true;
         }
         ImGui::PopItemWidth();
     }
 
     if (ImGui::CollapsingHeader(u8"회전")
-        && m_iSelectedHierarchi_Layer_Remain != -1 && m_iSelectedHierarchi_Object != -1)
+        && iHierarchi_Layer != -1 && iHierarchi_Object != -1)
     {
         // X
         Set_Button_NonActiveColor();
-        ImGui::Button(u8"X", ImVec2(30, 0));
+        ImGui::Button(u8"X", ImVec2(60, 0));
         Set_Button_ReturnColor();
 
         // Y
         ImGui::SameLine();
         Set_Button_NonActiveColor();
-        ImGui::Button(u8"Y", ImVec2(30, 0));
+        ImGui::Button(u8"Y", ImVec2(60, 0));
         Set_Button_ReturnColor();
 
         // Z
         ImGui::SameLine();
         Set_Button_NonActiveColor();
-        ImGui::Button(u8"Y", ImVec2(30, 0));
+        ImGui::Button(u8"Y", ImVec2(60, 0));
         Set_Button_ReturnColor();
         
         ImGui::PushItemWidth((60.f + 6.f) * 3.f);
         if (ImGui::InputFloat3("##Rotate",
-            m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].vRot,
+            m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vRot,
             "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
-
+            Clamp_Vec3Rot(m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vRot, 360.f);
+            bIsEdited = true;
+        }
+        if (ImGui::SliderFloat3("##RoateSlider",
+            m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vRot,
+            -360.f, 360.f))
+        {
+            bIsEdited = true;
         }
         ImGui::PopItemWidth();
     }
 
     if (ImGui::CollapsingHeader(u8"크기")
-        && m_iSelectedHierarchi_Layer_Remain != -1 && m_iSelectedHierarchi_Object != -1)
+        && iHierarchi_Layer != -1 && iHierarchi_Object != -1)
     {
         // X
-        ImGui::SameLine();
         Set_Button_NonActiveColor();
-        ImGui::Button(u8"X", ImVec2(30, 0));
+        ImGui::Button(u8"X", ImVec2(60, 0));
         Set_Button_ReturnColor();
 
         // Y
         ImGui::SameLine();
         Set_Button_NonActiveColor();
-        ImGui::Button(u8"Y", ImVec2(30, 0));
+        ImGui::Button(u8"Y", ImVec2(60, 0));
         Set_Button_ReturnColor();
 
         // Z
         ImGui::SameLine();
         Set_Button_NonActiveColor();
-        ImGui::Button(u8"Y", ImVec2(30, 0));
+        ImGui::Button(u8"Y", ImVec2(60, 0));
         Set_Button_ReturnColor();
         
         ImGui::PushItemWidth((60.f + 6.f) * 3.f);
         if (ImGui::InputFloat3("##Scale",
-            m_vecHierarchi[m_iSelectedHierarchi_Layer_Remain].vecObject[m_iSelectedHierarchi_Object].vScale,
+            m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vScale,
             "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
-
+            Clamp_Vec3Scale(m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vScale, 1000.f);
+            bIsEdited = true;
+        }
+        if (ImGui::SliderFloat3("##ScaleSlider",
+            m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].vScale,
+            -1000.f, 1000.f))
+        {
+            bIsEdited = true;
         }
         ImGui::PopItemWidth();
     }
@@ -762,32 +826,66 @@ void CImguiWin_MapTool::Layout_Property_Object()
     ImGui::Separator();
     if (ImGui::CollapsingHeader(u8"우선도"))
     {
-        // X
-        ImGui::SameLine();
+        // Update
         Set_Button_NonActiveColor();
-        ImGui::Button(u8"X", ImVec2(30, 0));
+        ImGui::Button(u8"Update", ImVec2(60, 0));
         Set_Button_ReturnColor();
 
-        // Y
+        ImGui::PushItemWidth(60.f);
         ImGui::SameLine();
-        Set_Button_NonActiveColor();
-        ImGui::Button(u8"Y", ImVec2(30, 0));
-        Set_Button_ReturnColor();
-
-        // Z
-        ImGui::SameLine();
-        Set_Button_NonActiveColor();
-        ImGui::Button(u8"Y", ImVec2(30, 0));
-        Set_Button_ReturnColor();
-
-        _vec3 test;
-        ImGui::PushItemWidth((60.f + 6.f) * 3.f);
-        if (ImGui::InputFloat3("##Scale", test, "%.3f",
+        if (ImGui::InputFloat("##PriorityUpdate",
+            &m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].fPriority[EPRIORITY_OBJECT_UPDATE],
+            0.f, 0.f, "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
             
         }
         ImGui::PopItemWidth();
+
+        ImGui::SameLine();
+        ImGui::Checkbox(u8"Use##Update",
+            &m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].bUsePriority[EPRIORITY_OBJECT_UPDATE]);
+        
+
+        // LateUpdate
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"Late", ImVec2(60, 0));
+        Set_Button_ReturnColor();
+
+        ImGui::PushItemWidth(60.f);
+        ImGui::SameLine();
+        if (ImGui::InputFloat("##PriorityLate",
+            &m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].fPriority[EPRIORITY_OBJECT_LATE],
+            0.f, 0.f, "%.3f",
+            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            
+        }
+        ImGui::PopItemWidth();
+
+        ImGui::SameLine();
+        ImGui::Checkbox(u8"Use##Late",
+            &m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].bUsePriority[EPRIORITY_OBJECT_LATE]);
+
+        // Render
+        Set_Button_NonActiveColor();
+        ImGui::Button(u8"Render", ImVec2(60, 0));
+        Set_Button_ReturnColor();
+
+        ImGui::PushItemWidth(60.f);
+        ImGui::SameLine();
+        if (ImGui::InputFloat("##PriorityRender", 
+            &m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].fPriority[EPRIORITY_OBJECT_RENDER],
+            0.f, 0.f, "%.3f",
+            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            
+        }
+        ImGui::PopItemWidth();
+
+        ImGui::SameLine();
+        ImGui::Checkbox(u8"Use##Render",
+            &m_vecHierarchi[iHierarchi_Layer].vecObject[iHierarchi_Object].bUsePriority[EPRIORITY_OBJECT_RENDER]);
     }
 }
 

@@ -2,18 +2,19 @@
 
 #include "Scene.h"
 
+
 /// <summary>
-/// ¸ÊÅø Àü¿ë ¾À
+/// ÇÁ·ÎÅä Åø Àü¿ë ¾À
 /// </summary>
-class CScene_MapTool : public Engine::CScene
+class CScene_ProtoTool : public CScene
 {
-	DERIVED_CLASS(CScene, CScene_MapTool)
+	DERIVED_CLASS(CScene, CScene_ProtoTool)
 private:
-	explicit CScene_MapTool(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CScene_MapTool();
+	explicit CScene_ProtoTool(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CScene_ProtoTool();
 
 public:
-	static CScene_MapTool* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CScene_ProtoTool* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 private:
 	virtual void		Free();
 
@@ -25,8 +26,5 @@ public:
 
 protected:
 	virtual HRESULT		Ready_Layer_Completed();
-
-
-
 };
 

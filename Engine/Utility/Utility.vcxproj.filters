@@ -335,7 +335,7 @@
     <ClCompile Include="Code\BlackBoardPtr.cpp">
       <Filter>11. BlackBoardMgr\BlackBoard</Filter>
     </ClCompile>
-    <ClCompile Include="Header\Interface\ITeamAgent.cpp">
+    <ClCompile Include="Code\Interface\ITeamAgent.cpp">
       <Filter>13. Interface</Filter>
     </ClCompile>
   </ItemGroup>

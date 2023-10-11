@@ -25,7 +25,7 @@ class ENGINE_DLL FSerialize_GameObject
 {
 public:
 	FSeialize_Header				tHeader;
-	string							strID;						// 실제 오브젝트의 원본 이름
+	EGO_CLASS						strID;						// 실제 오브젝트의 원본 태그
 
 	set<string>						bTag;						// 태그
 
@@ -44,7 +44,105 @@ public:
 };
 
 
+class ENGINE_DLL FSerialize_Proto
+{
+public:
+	FSeialize_Header				tHeader;
+	EGO_CLASS						eID;
 
+	_vec3							vPos;
+	_vec3							vRot;
+	_vec3							vScale;
+
+	void Parse_RapidJSON(Document& doc, StringBuffer& strBuf,
+		const ESERIALIZE_PROCESS eProcess,
+		const _bool bPrettyWriter = false) const
+	{
+		Document::AllocatorType& allocator = doc.GetAllocator();
+
+		// JSON 문서 구성
+		if (eProcess == ESERIALIZE_PROCESS_INIT
+			|| eProcess == ESERIALIZE_PROCESS_IMMEDIATE)
+			doc.SetObject();
+
+		// 씬 헤더
+		Value header(kObjectType);
+		header.AddMember("type", Value().SetInt(tHeader.strType), allocator);
+		header.AddMember("name", Value().SetString(tHeader.strName.c_str(), allocator), allocator);
+		doc.AddMember("header", header, allocator);
+
+		// 클래스 타입
+		doc.AddMember("class", Value().SetInt(eID), allocator);
+
+		// 위치
+		Value pos(kObjectType);
+		pos.AddMember("x", Value().SetFloat(vPos.x), allocator);
+		pos.AddMember("y", Value().SetFloat(vPos.y), allocator);
+		pos.AddMember("z", Value().SetFloat(vPos.z), allocator);
+		doc.AddMember("pos", pos, allocator);
+
+		// 회전
+		Value rot(kObjectType);
+		rot.AddMember("x", Value().SetFloat(vRot.x), allocator);
+		rot.AddMember("y", Value().SetFloat(vRot.y), allocator);
+		rot.AddMember("z", Value().SetFloat(vRot.z), allocator);
+		doc.AddMember("rot", rot, allocator);
+
+		// 크기
+		Value scale(kObjectType);
+		scale.AddMember("x", Value().SetFloat(vScale.x), allocator);
+		scale.AddMember("y", Value().SetFloat(vScale.y), allocator);
+		scale.AddMember("z", Value().SetFloat(vScale.z), allocator);
+		doc.AddMember("scale", scale, allocator);
+
+
+		if (eProcess == ESERIALIZE_PROCESS_END
+			|| eProcess == ESERIALIZE_PROCESS_IMMEDIATE)
+		{
+			if (bPrettyWriter)
+			{
+				PrettyWriter<StringBuffer> writer(strBuf);
+				doc.Accept(writer);
+			}
+			else
+			{
+				Writer<StringBuffer> writer(strBuf);
+				doc.Accept(writer);
+			}
+		}
+	}
+
+	_bool Receive_ByRapidJSON(string& strJSON, _bool bParseRewriteAble = false)
+	{
+		Document doc;
+		if (bParseRewriteAble)
+			doc.ParseInsitu(const_cast<char*>(strJSON.c_str()));
+		else
+			doc.Parse(strJSON.c_str());
+
+		if (doc.HasParseError())
+			return false;
+
+		tHeader.strType = static_cast<ESERIALIZE_TYPE>(doc["header"]["type"].GetInt());
+		tHeader.strName = doc["header"]["name"].GetString();
+
+		eID = static_cast<EGO_CLASS>(doc["class"].GetInt());
+
+		vPos.x = doc["pos"]["x"].GetFloat();
+		vPos.y = doc["pos"]["y"].GetFloat();
+		vPos.z = doc["pos"]["z"].GetFloat();
+
+		vRot.x = doc["rot"]["x"].GetFloat();
+		vRot.y = doc["rot"]["y"].GetFloat();
+		vRot.z = doc["rot"]["z"].GetFloat();
+
+		vScale.x = doc["scale"]["x"].GetFloat();
+		vScale.y = doc["scale"]["y"].GetFloat();
+		vScale.z = doc["scale"]["z"].GetFloat();
+
+		return true;
+	}
+};
 
 
 
@@ -204,7 +302,7 @@ public:
 
 				// 오브젝트 식별자
 				Value gameobject_ID(kObjectType);
-				gameobject.AddMember("ID", Value().SetString(vecLayer[i].vecGameObject[j].strID.c_str(), allocator), allocator);
+				gameobject.AddMember("ID", Value().SetInt(vecLayer[i].vecGameObject[j].strID), allocator);
 
 
 				// 태그 이름 배열로 넣기
