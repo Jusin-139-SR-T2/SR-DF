@@ -33,7 +33,7 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CAwareness* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAwareness::TYPE pType);
+	static CAwareness* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAwareness::TYPE pType, CGameObject* pOwner);
 
 private:
 	HRESULT				Add_Component();
@@ -49,23 +49,26 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
 private:
-	_float m_fFrame;
-	_float m_fFrameEnd;
-	_float m_fFrameSpeed;
-	_vec3 vPlayerPos;
 	HRESULT Billboard();
-
-	_float 	m_fBrownAwareness;
-	_float 	m_fGrayAwareness;
-	_float 	m_fBossAwareness;
-
-	_bool m_bTrigger = FALSE;
-	_float m_fAge;
-	_float m_fLifeTime;
-	wchar_t		debugString[100];
+	_float		m_fFrame;
+	_float		m_fFrameEnd;
+	_float		m_fFrameSpeed;
+	_vec3		vPlayerPos;
+	_float 		m_fAwareness;
+	_bool		m_bTrigger = FALSE;
+	_float		m_fAge;
+	_float		m_fLifeTime;
+	_tchar		debugString[100];
 
 	CAwareness::TYPE m_eType;
 	void Set_Speed(CAwareness::TYPE pType);
+
+	//블랙보드용 
+private:
+	void	Update_InternalData();
+
+protected:
+	FBlackBoardPtr<CBlackBoard_Monster>	m_wpBlackBoard_Monster;	// 블랙보드
 };
 	
 

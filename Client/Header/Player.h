@@ -151,6 +151,10 @@ private:
 	enum class EACTION_KEY : _uint { RIGHT, LEFT, UP, DOWN, RUN, ATTACK, JUMP, SIT, SIZE };
 	ACTION_SET<EACTION_KEY>			m_tActionKey;
 
+public:
+	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, KICK, THROW_AWAY, DIE, JUMP, PLAYER_END };
+	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
+	enum class STATE_LEFTHAND { NONE, HAND, OPEN_HAND, RUN_HAND, RIGHTER, RUN_RIHGTER };
 
 private: // 플레이어의 상태 머신
 	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, THROW_AWAY, DIE, JUMP, PLAYER_END };
@@ -166,7 +170,6 @@ private: // 플레이어의 상태 머신
 	void Die(float fTimeDelta);
 
 private: // 플레이어의 왼손 상태 머신
-	enum class STATE_LEFTHAND { NONE, HAND, OPEN_HAND, RUN_HAND, RIGHTER, RUN_RIHGTER };
 	STATE_SET<STATE_LEFTHAND, void(CPlayer*, float)> m_tLeftHand_State;
 
 	void	Left_None(float fTimeDelta);

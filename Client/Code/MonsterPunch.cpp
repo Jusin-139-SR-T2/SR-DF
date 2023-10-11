@@ -45,6 +45,7 @@ _int CMonsterPunch::Update_GameObject(const _float& fTimeDelta)
 	{
 		Set_Dead();
 	}
+
 	//충돌하고 죽기도 하지만 충돌하지 않았다면 또 죽어야하기도 하다. 
 
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
@@ -73,7 +74,7 @@ void CMonsterPunch::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 }
 
-CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, TYPE _option)
+CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, TYPE _option, CAceUnit* pOwner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -88,7 +89,7 @@ CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _
 	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
 	pInstance->m_eAttackType = _option;
-
+	pInstance->Set_Owner(pOwner);
 	return pInstance;
 }
 

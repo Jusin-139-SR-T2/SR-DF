@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "BlackBoard_Monster.h"
+#include "Brown.h"
+#include "Boss.h"
+#include "Gray.h"
 
 CBlackBoard_Monster::CBlackBoard_Monster()
 	: Base()

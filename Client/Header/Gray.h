@@ -7,6 +7,7 @@
 
 #include "ThrowPipe.h"
 #include "Awareness.h"
+#include "MonsterPunch.h"
 
 BEGIN(Engine)
 
@@ -36,19 +37,9 @@ public:
 	static CGray* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
 
 private:
-	CRcBufferComp*			m_pBufferComp = nullptr;
-	CTextureComponent*		m_pTextureComp = nullptr;
-	CColliderComponent*		m_pColliderComp = nullptr;
-	CTransformComponent*	m_pTransformComp = nullptr;
-	CCalculatorComponent*	m_pCalculatorComp = nullptr;
-	CTransformComponent*	m_pPlayerTransformcomp = nullptr;
-
-private:
-	void				Height_On_Terrain();
+	void				RenderSplitImages();
 	HRESULT				Add_Component();
 	virtual void		Free();
-	void				Billboard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
-	void				RenderSplitImages();
 
 	// Get, Set 함수 
 public:
@@ -65,98 +56,63 @@ protected:
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionBox* pShape;
 
+#pragma region 상태머신 enum셋팅
+
+public:
+	// 목표 상태머신(AI)
+	enum class STATE_OBJ {
+		IDLE, SUSPICIOUS, YOUDIE, TAUNT, CHASE, REST,			//추격
+		RUN, WALK, KEEPEYE, SIDEWALK, FRIGHTEN, UPRIGHTRUN,		//견제
+		THROW, ATTACK,   HEAVYATTACK,							//공격
+		RECONNAISSANCE, GOHOME,									//복귀
+		BLOCK,													//막기
+		CROTCHHIT, FACEPUNCH, FALLING, HIT,						//피격
+		DAZED, DEATH, CHOPPED, HEADSHOT, HEADLESS				//사망
+		
+		//미구현 리스트 
+	};
+
+	// 행동 상태머신
+	enum class STATE_ACT {
+		IDLE, APPROACH, SUDDENATTACK, SIDEMOVING, ATTACK,
+		GOHOME
+	};
+
+	//가상키 
+	enum class ACTION_KEY {
+		IDLE, RUN, WALK, KEEPEYE, SIDEWALK,
+		UPRIGHT, FRIGHTEN, BASIC_ATTACK, HEAVY_ATTACK,
+		GOHOME
+	};
+
+#pragma endregion 
+
 private:
-	// 함수 ----------					
-	_bool		Detect_Player();					// 몬스터 시야각내에 플레이어가 있는지 체크
-	_float		Calc_Distance();					// 몬스터와 플레이어 사이의 거리 체크하는 함수 
-	HRESULT     Get_PlayerPos(); // 플레이어 dynamic_cast용도 
-	
-	// 변수 ----------
-	wchar_t		debugString[100];					//디버깅 글자 나오는WACHAR
-
-	_float		m_fCheck = 0;						//Taunt 등 프레임 돌리는횟수 지정
-	_int		m_iHP;								// 몬스터 현재 hp 
-	_int		m_iPreHP;							// 이전 HP 저장용도 
-	_int		m_iDazedHP = 25;					// 몬스터 기절하는 hp
-	_int		m_iMaxHP = 100;						// 몬스터 최대 hp 
-	_int		m_iAttack = 15;						// 몬스터 공격력
-
-	_float		m_fFrame = 0.f;						// 이미지 돌리기위한 프레임변수 
-	_float		m_fFrameEnd;						// 이미지마다 변수 넣어줘야함 
-	_float		m_fFrameSpeed;						// 프레임 돌리는 속도
-
-	// 몬스터 인식 관련 
-	_float		m_fGrayAwareness = 0;					// 의심게이지 숫자 
-	_float		m_fMaxAwareness = 15.f;				// 의심게이지 max -> 추격으로 변함 
-	_float		m_fConsider = 10.f;					// 플레이어 놓친뒤에 주변정찰 게이지 
-	_float		m_fMaxConsider = 10.f;				// 플레이어 놓친뒤에 주변정찰 게이지 
-
-	// 속도조절 
-	_float		m_fRunSpeed = 2.0f;					// 뛰어오는 속도
-	_float		m_fWalkSpeed = 1.0f;				// 걷는속도
-	_float		m_fKeepEyeSpeed = 2.f;				// 옆으로 무빙하는  속도 
-	_float		m_fSideWalkSpeed = 3.f;				// 옆으로 무빙하는  속도 
-
-	_float		m_fUprightSpeed = 2.5f;				// 파이프들고 달려오는 속도 
-	_float		m_fThrowSpeed = 4.f;				// 투사체 스피드 
-
-	_float		m_fBasiCPlayerLighterSpeed = 3.f;			// 일반공격때 뛰어오는 속도 
-	_float		m_fHeavAttackSpeed = 4.f;			// 강공격때 뛰어오는 속도 
-
-	// 사거리 , 시야각
-	_float		m_fMonsterFov = 80;					//시야각 - 반각 기준
-	_float		m_fMonsterSightDistance = 13.f;		// 몬스터가 포착하는 사거리 
+	// 사거리 
 	_float		m_fRunDistance = 8.f;				// 사거리 ~ Run 사이 =  run
 	_float		m_fWalkDistance = 7.5f;				// run~walk 사이 = walk
 	_float		m_fEyesOnYouDistance = 6.f;			// Eyes ~ Walk = 옆으로 무빙 
 	_float		m_fCloseToYouDistance = 2.f;		// Close ~ Eyes = 
 
-	// 위치 조절 
-	_vec3		vPlayerPos;							// 플레이어 위치 벡터
+	// 위치 조절 - 돌려쓰는용도 
 	_vec3		vDir;								// 몬스터가 플레이어 바라보는 벡터  
-	_vec3		vPatrolPointZero;
 	
 	//스위치 on/off 
-	_bool		m_bArrive = false;
-	_bool		m_AttackOnce = false;
-	_bool		m_bBillboard = false;
-
-public:
-	// 목표 상태머신(AI)
-	enum class STATE_OBJ { 
-		IDLE,		SUSPICIOUS,     REST,		CHASE,	  RECONNAISSANCE,
-		YOUDIE,		TAUNT,			SIDEWALK,   KEEPEYE,  RUN,				 WALK, 
-		THROW,		ATTACK,			UPRIGHTRUN, FRIGHTEN, HEAVYATTACK,		 BLOCK,
-		CROTCHHIT,  FACEPUNCH,		FALLING,	DAZED,	  CHOPPED,
-		HEADSHOT,	HEADLESS,		DEATH, 
-		GOHOME
-	
-		//미구현 리스트 
-	};
-
-	// 행동 상태머신
-	enum class STATE_ACT { IDLE, APPROACH, SUDDENATTACK, SIDEMOVING, ATTACK,
-						   GOHOME};
-
-	// 행동키
-	enum class ACTION_KEY {
-		IDLE, RUN, WALK, KEEPEYE, SIDEWALK, 
-		UPRIGHT, FRIGHTEN, BASIC_ATTACK, HEAVY_ATTACK, 
-		GOHOME
-	};
+	_bool		m_bArrive = FALSE; // 집에 도착 여부 
+	_bool		m_AttackOnce = FALSE;
 
 private:
+	//상태머신 등록 
 	STATE_SET<STATE_OBJ, void(CGray*, float)> m_tState_Obj;				//AI
 	STATE_SET<STATE_ACT, void(CGray*, float)> m_tState_Act;				// 행동
-	ACTION_SET<ACTION_KEY> m_mapActionKey;								//가상 조작키 
+	ACTION_SET<ACTION_KEY> m_mapActionKey;
 
 #pragma region AI 
 
 	void AI_Idle(float fDeltaTime); // 처음 서있는 용도 
-
 	void AI_Suspicious(float fDeltaTime); // 견제값 추가용 
-	void AI_Taunt(float fDeltaTime); //도발
 	void AI_YouDie(float fDeltaTime); //도발
+	void AI_Taunt(float fDeltaTime); //도발
 	void AI_Chase(float fDeltaTime); //  거리비교 움직임 시작
 	void AI_Rest(float fDeltaTime); // idle ready상태 - 중간중간 넣기용 
 
@@ -164,8 +120,8 @@ private:
 	void AI_Walk(float fDeltaTime); //일반적인 걷기 
 	void AI_KeepEye(float fDeltaTime); //플레이어 주시한채로 백스탭밟기 느리게 
 	void AI_SideWalk(float fDeltaTime); //플레이어 주시한채로 옆으로 걸음 - 조금 빠르게 walk 
-	void AI_UpRightRun(float fDeltaTime); //파이프 들고 공격하러 달려오는상태
 	void AI_Frighten(float fDeltaTime); //점프해서 때림 - 점프하는것 여기에  공격이 바로 연타되어야할듯
+	void AI_UpRightRun(float fDeltaTime); //파이프 들고 공격하러 달려오는상태
 
 	void AI_Throw(float fDeltaTime); //파이프 던짐 
 	void AI_Attack(float fDeltaTime); // 파이프 들고 대각선으로 걍 떄리는거
@@ -173,20 +129,23 @@ private:
 
 	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 
 	void AI_GoHome(float fDeltaTime); // 파이프 들고 대각선으로 걍 떄리는거
+	
 	void AI_Block(float fDeltaTime); //플레이어가 공격하면 막기함
 
 	void AI_CrotchHit( float fDeltaTime); // 앉기 + 피격
 	void AI_FacePunch(float fDeltaTime); //얼굴 피격
 	void AI_Falling(float fDeltaTime); //떨어지고 일어나는것
+	void AI_Hit(float fDeltaTime); //일정피 이하가 되면 나오는상태
+	
 	void AI_Dazed(float fDeltaTime); //일정피 이하가 되면 나오는상태
+	void AI_Death(float fDeltaTime); //일반공격으로 죽는상태 
 	void AI_Chopped(float fDeltaTime); //뒤돌고 있을때 손날치기 -> sleep 
 	void AI_HeadShot(float fDeltaTime); // 주먹이나 기타 무기로 헤드샷
 	void AI_Headless(float fDeltaTime); //총으로 헤드어택
-	void AI_Death(float fDeltaTime); //일반공격으로 죽는상태 
 
 #pragma endregion
 
-#pragma region 행동 : AI 이후 넘어가는곳 
+#pragma region AI 행동 
 
 	void Idle(float fDeltaTime);
 	void Approach(float fDeltaTime); // RUN + WALK 
@@ -198,3 +157,13 @@ private:
 #pragma endregion
 };
 
+/* SPEED 정리
+
+Speed 1 
+Speed 2 
+Speed 3 = GoHome,KEEP EYE
+Speed 4 = walk, SideWalk
+Speed 5 = UpRight
+Speed 6 = run, frighten
+Speed 7
+*/
