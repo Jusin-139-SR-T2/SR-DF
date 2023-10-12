@@ -390,7 +390,7 @@ void CAceBoss::AI_Suspicious(float fDeltaTime)
 		m_tFrame.fFrameSpeed = 10.f;
 
 		Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
-		m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BROWN, this));
+		m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BOSS, this));
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -509,7 +509,7 @@ void CAceBoss::AI_Chase(float fDeltaTime)
 		}
 		else if (Engine::MonsterPhase::Phase1 == m_ePhase)
 		{
-			_int HP = m_gHp.Cur;
+			_int HP = _int(m_gHp.Cur);
 
 			if (!m_bPhaseStart) //1회용 설치기 
 			{
@@ -547,7 +547,7 @@ void CAceBoss::AI_Chase(float fDeltaTime)
 		}
 		else if (Engine::MonsterPhase::Phase2 == m_ePhase)
 		{
-			_int HP = m_gHp.Cur;
+			_int HP = _int(m_gHp.Cur);
 
 			if (m_bPhaseStart) // 관문 시작스킬 
 			{

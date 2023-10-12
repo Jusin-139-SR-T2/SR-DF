@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Brown.h"
 #include "Gray.h"
-#include "Boss.h"
+#include "AceBoss.h"
 #include "AceFood.h"
 #include "AceWeapon.h"
 #include "AceThrow.h"

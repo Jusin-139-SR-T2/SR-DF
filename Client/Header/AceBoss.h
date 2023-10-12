@@ -90,7 +90,6 @@ protected:
 	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster; // 업로드 및 다운로드용 
 	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player; //플레이어꺼에서 필요한거있으면 다운로드용 
 
-	
 private:
 	// 변수 
 	MonsterPhase	m_ePhase;

@@ -47,6 +47,8 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 
+	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
+
 	// Ãæµ¹
 protected:
 	virtual void	OnCollision(CGameObject* pDst);
