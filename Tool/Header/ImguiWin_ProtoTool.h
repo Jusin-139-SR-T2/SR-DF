@@ -57,11 +57,13 @@ private:
 	struct FProtoData
 	{
 		EGO_CLASS						eID = ECLASS_NONE;			// 프로토타입의 원본
+		string							strTextureGroupKey = "";	// 텍스처 그룹 키
+		string							strTextureKey = "";			// 텍스처 키
+
 		_vec3							vPos = { 0.f, 0.f, 0.f };
 		_vec3							vRot = { 0.f, 0.f, 0.f };
 		_vec3							vScale = { 1.f, 1.f, 1.f };
-		string							strTextureGroupKey = "";
-		string							strTextureKey = "";
+		
 		map<string, FComponentData>		mapComponent;
 	};
 
@@ -69,7 +71,7 @@ private:
 	void Save_Protos();
 	void Export_Proto(const FSerialize_Proto& tProto);
 	void Load_Protos();
-	void Import_Proto(FSerialize_Proto& tProto);
+	void Import_Proto(const string& strName, FSerialize_Proto& tProtoSerial, FProtoData& tProtoData);
 
 private:	// 프로토
 	_bool						m_bLoadProto_Init = false;
@@ -79,6 +81,20 @@ private:	// 프로토
 	string						m_strCur_Component = "";		// 현재 선택된 컴포넌트 키
 
 	ESELECTED_TYPE				m_eSelected_Type = ESELECTED_TYPE_NONE;
+
+	// 콤보박스 전용 오브젝트 선택
+	vector<string>				m_vecObject_Type = {
+		"None",
+		"Player",
+		"Brown",
+		"Grey",
+		"Boss",
+		"Boss",
+		"Weapon",
+		"Throw",
+		"Interaction",
+		"Building",
+	};
 
 private:	// 유틸리티
 	void			Set_Button_ActiveColor();

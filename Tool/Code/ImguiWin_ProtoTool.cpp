@@ -215,9 +215,28 @@ void CImguiWin_ProtoTool::Layout_Property(const ImGuiWindowFlags& iMain_Flags)
 
             FProtoData& refObject = m_mapProtoData[m_strCur_Proto];
             _bool bIsEdited = false;    // 에딧되었을 때 변화 이벤트
+
+
+            // 오브젝트 타입
+            if (ImGui::CollapsingHeader(u8"오브젝트 타입"))
+            {
+                if (ImGui::BeginCombo(u8"##ComboObjectType", m_vecObject_Type[refObject.eID].c_str()))
+                {
+                    for (size_t i = 0; i < m_vecObject_Type.size(); i++)
+                    {
+                        if (ImGui::Selectable(m_vecObject_Type[i].c_str(),
+                            static_cast<EGO_CLASS>(i) == refObject.eID))
+                        {
+                            refObject.eID = static_cast<EGO_CLASS>(i);
+                        }
+                    }
+                    
+                    ImGui::EndCombo();
+                }
+            }
             
             // 위치
-            if (ImGui::CollapsingHeader(u8"좌표"))
+            if (ImGui::CollapsingHeader(u8"이동"))
             {
                 // X
                 Set_Button_NonActiveColor();
@@ -364,6 +383,7 @@ void CImguiWin_ProtoTool::Save_Protos()
     // 씬 목록은 정해진 폴더에 파일로 저장한다.
     for (auto iter = m_mapProtoData.begin(); iter != m_mapProtoData.end(); ++iter)
     {
+        // 직렬화
         FSerialize_Proto tProto;
         tProto.tHeader.strType = ESERIALIZE_PROTO;
         tProto.tHeader.strName = (*iter).first;
@@ -371,8 +391,6 @@ void CImguiWin_ProtoTool::Save_Protos()
         tProto.vPos = (*iter).second.vPos;
         tProto.vRot = (*iter).second.vRot;
         tProto.vScale = (*iter).second.vScale;
-
-        //tProto.Parse_RapidJSON(doc, buffer, ESERIALIZE_PROCESS_IMMEDIATE, true);
 
         // 프로토 저장
         Export_Proto(tProto);
@@ -403,7 +421,7 @@ void CImguiWin_ProtoTool::Export_Proto(const FSerialize_Proto& tProto)
 
 void CImguiWin_ProtoTool::Load_Protos()
 {
-    // 프로토타입들은 정해진 폴더에서 로드한다.
+    // 폴더 순회로 데이터를 얻어냄
     _finddata_t fd;
     intptr_t handle;
     if ((handle = _findfirst((g_strProtoPath + "*" + g_strProtoExt).c_str(), &fd)) == -1L)
@@ -428,31 +446,11 @@ void CImguiWin_ProtoTool::Load_Protos()
             if (strName.substr(extPos) == g_strProtoExt)
             {
                 FSerialize_Proto tProtoSerial;
+                FProtoData tProtoData;
 
-                string strJson;
-                ifstream inputFile(g_strProtoPath + strName);
-                if (inputFile.is_open())
-                {
-                    // 문자열 쉽게 읽어오는 반복자
-                    strJson = string(istreambuf_iterator<char>(inputFile), istreambuf_iterator<char>());
-                    inputFile.close();
-                    cout << "\n파일 불러옴!\n";
+                Import_Proto(strName, tProtoSerial, tProtoData);
 
-                    if (tProtoSerial.Receive_ByRapidJSON(strJson))
-                    {
-                        FProtoData tProtoData;
-                        tProtoData.eID = tProtoSerial.eID;
-                        tProtoData.vPos = tProtoSerial.vPos;
-                        tProtoData.vRot = tProtoSerial.vRot;
-                        tProtoData.vScale = tProtoSerial.vScale;
-
-                        m_mapProtoData.emplace(strName.substr((size_t)0, extPos), tProtoData);
-                    }
-                }
-                else
-                {
-                    cerr << "파일을 불러들일 수 없소!\n";
-                }
+                m_mapProtoData.emplace(strName.substr((size_t)0, extPos), tProtoData);
             }
             
         } while (_findnext(handle, &fd) == S_OK);
@@ -461,9 +459,30 @@ void CImguiWin_ProtoTool::Load_Protos()
     _findclose(handle);
 }
 
-void CImguiWin_ProtoTool::Import_Proto(FSerialize_Proto& tProto)
+void CImguiWin_ProtoTool::Import_Proto(const string& strName, FSerialize_Proto& tProtoSerial, FProtoData& tProtoData)
 {
-    
+    string strJson;
+    ifstream inputFile(g_strProtoPath + strName);
+    if (inputFile.is_open())
+    {
+        // 문자열 쉽게 읽어오는 반복자
+        strJson = string(istreambuf_iterator<char>(inputFile), istreambuf_iterator<char>());
+        inputFile.close();
+        cout << "\n파일 불러옴!\n";
+
+        // 파싱 성공시 툴전용 Data에 전달
+        if (tProtoSerial.Receive_ByRapidJSON(strJson))
+        {
+            tProtoData.eID = tProtoSerial.eID;
+            tProtoData.vPos = tProtoSerial.vPos;
+            tProtoData.vRot = tProtoSerial.vRot;
+            tProtoData.vScale = tProtoSerial.vScale;
+        }
+    }
+    else
+    {
+        cerr << "파일을 불러들일 수 없소!\n";
+    }
 }
 
 void CImguiWin_ProtoTool::Set_Button_ActiveColor()

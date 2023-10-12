@@ -1,23 +1,25 @@
 {
     "header": {
         "type": 1,
-        "name": "cqwecrqwerc"
+        "name": "asdfafsd"
     },
-    "terrain": "cqwecrqwerc_Terrain",
+    "terrain": "asdfafsd",
     "layers": [
         {
             "header": {
                 "type": 2,
-                "name": "afasdvz"
+                "name": "asdfsdf"
             },
-            "priority": 0.0
+            "priority": 0.0,
+            "objects": []
         },
         {
             "header": {
                 "type": 2,
-                "name": "afsdfadf"
+                "name": "asdf"
             },
-            "priority": 0.0
+            "priority": 0.0,
+            "objects": []
         }
     ]
 }

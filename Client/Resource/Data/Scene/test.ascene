@@ -1,0 +1,17 @@
+{
+    "header": {
+        "type": 1,
+        "name": "test"
+    },
+    "terrain": "test",
+    "layers": [
+        {
+            "header": {
+                "type": 2,
+                "name": "Environment"
+            },
+            "priority": 0.0,
+            "objects": []
+        }
+    ]
+}

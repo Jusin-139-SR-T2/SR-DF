@@ -287,7 +287,7 @@ public:
 			// 우선도
 			layer.AddMember("priority", Value().SetFloat(vecLayer[i].fPriority), allocator);
 
-
+			Value arrObject(kArrayType);
 			for (size_t j = 0; j < vecLayer[i].vecGameObject.size(); j++)
 			{
 				Value gameobject(kObjectType);
@@ -334,8 +334,13 @@ public:
 
 				Value gameobject_priority6(kObjectType);
 				gameobject_priority6.AddMember("use_priority_render", Value().SetBool(vecLayer[i].vecGameObject[j].bUsePriority_Render), allocator);
+				
+				// 배열에 넣기
+				arrObject.PushBack(gameobject, allocator);
 			}
+			layer.AddMember("objects", arrObject, allocator);
 
+			// 배열에 넣기
 			arrLayer.PushBack(layer, allocator);
 		}
 		doc.AddMember("layers", arrLayer, allocator);
@@ -367,10 +372,58 @@ public:
 		if (doc.HasParseError())
 			return false;
 
+		if (!doc.IsObject())
+			return false;
+
 		tHeader.strType = static_cast<ESERIALIZE_TYPE>(doc["header"]["type"].GetInt());
 		tHeader.strName = doc["header"]["name"].GetString();
 
 		refTerrainName = doc["terrain"].GetString();
+
+		// 레이어 로드
+		if (doc.HasMember("layers") && doc["layers"].IsArray())
+		for (SizeType i = 0; i < doc["layers"].Size(); i++)
+		{
+			Value& layer = doc["layers"][i];
+			FSerialize_Layer layerSR;
+			layerSR.tHeader.strType = static_cast<ESERIALIZE_TYPE>(layer["header"]["type"].GetInt());
+			layerSR.tHeader.strName = layer["header"]["name"].GetString();
+
+			layerSR.fPriority = layer["priority"].GetFloat();
+
+			// 오브젝트 로드
+			if (layer.HasMember("objects") && layer["objects"].IsArray())
+			for (SizeType j = 0; j < layer["objects"].Size(); j++)
+			{
+				Value& object = layer["objects"][j];
+				FSerialize_GameObject gameobjectSR;
+				gameobjectSR.tHeader.strType = static_cast<ESERIALIZE_TYPE>(object["header"]["type"].GetInt());
+				gameobjectSR.tHeader.strName = object["header"]["name"].GetString();
+
+				gameobjectSR.vPos.x = object["pos"]["x"].GetFloat();
+				gameobjectSR.vPos.y = object["pos"]["y"].GetFloat();
+				gameobjectSR.vPos.z = object["pos"]["z"].GetFloat();
+
+				gameobjectSR.vRotation.x = object["rot"]["x"].GetFloat();
+				gameobjectSR.vRotation.y = object["rot"]["y"].GetFloat();
+				gameobjectSR.vRotation.z = object["rot"]["z"].GetFloat();
+
+				gameobjectSR.vScale.x = object["scale"]["x"].GetFloat();
+				gameobjectSR.vScale.y = object["scale"]["y"].GetFloat();
+				gameobjectSR.vScale.z = object["scale"]["z"].GetFloat();
+
+				gameobjectSR.fPriority_Update = object["priority_update"].GetFloat();
+				gameobjectSR.fPriority_LateUpdate = object["priority_late_update"].GetFloat();
+				gameobjectSR.fPriority_Render = object["priority_render"].GetFloat();
+
+				gameobjectSR.bUsePriority_Update = object["use_priority_update"].GetBool();
+				gameobjectSR.bUsePriority_LateUpdate = object["use_priority_late_update"].GetBool();
+				gameobjectSR.bUsePriority_Render = object["use_priority_render"].GetBool();
+
+				layerSR.vecGameObject.push_back(gameobjectSR);
+			}
+			vecLayer.push_back(layerSR);
+		}
 
 		return true;
 	}
