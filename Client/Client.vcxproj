@@ -43,7 +43,6 @@
     <ClInclude Include="Header\AceObjectFactory.h" />
     <ClInclude Include="Header\AceThrow.h" />
     <ClInclude Include="Header\AceWeapon.h" />
-    <ClInclude Include="Header\Boss.h" />
     <ClInclude Include="Header\Gray.h" />
     <ClInclude Include="Header\DynamicCamera.h" />
     <ClInclude Include="Header\BackGround.h" />
@@ -96,7 +95,6 @@
     <ClCompile Include="Code\AceObjectFactory.cpp" />
     <ClCompile Include="Code\AceThrow.cpp" />
     <ClCompile Include="Code\AceWeapon.cpp" />
-    <ClCompile Include="Code\Boss.cpp" />
     <ClCompile Include="Code\BackGround.cpp" />
     <ClCompile Include="Code\Loading.cpp" />
     <ClCompile Include="Code\MainApp.cpp" />

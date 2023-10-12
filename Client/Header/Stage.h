@@ -5,7 +5,6 @@
 #include "Player.h"
 #include "Brown.h"
 #include "Gray.h"
-#include "Boss.h"
 #include "AceBoss.h"
 #include "AceObjectFactory.h"
 #include "PlayerLighter.h"

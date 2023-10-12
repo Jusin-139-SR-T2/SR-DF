@@ -347,6 +347,7 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma endregion
 
 #pragma region Effect
+	Load_Texture(L"./Resource/Texture/Monster/Effect/Awareness/Awareness_15.png", TEX_NORMAL, L"Effect", L"MaxAware"); // 몬스터 공격 디버그용
 	Load_Texture(L"./Resource/Texture/Object/PoolBalls_0.png", TEX_NORMAL, L"Debug", L"Sphere"); // 몬스터 공격 디버그용
 	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/FallingStone1.png", TEX_NORMAL, L"Effect", L"Stone1");
 	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/FallingStone2.png", TEX_NORMAL, L"Effect", L"Stone2");

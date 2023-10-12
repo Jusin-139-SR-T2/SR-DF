@@ -264,9 +264,6 @@
     <ClInclude Include="Header\Gray.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\2. Gray</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Boss.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Brown.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\1. Brown</Filter>
     </ClInclude>
@@ -415,9 +412,6 @@
     </ClCompile>
     <ClCompile Include="Code\Gray.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\2. Gray</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Boss.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
     </ClCompile>
     <ClCompile Include="Code\Brown.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\1. Brown</Filter>
