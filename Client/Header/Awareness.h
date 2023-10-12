@@ -41,20 +41,23 @@ private:
 	HRESULT Set_Speed(CAwareness::TYPE pType, CGameObject* pOwner);
 	CAwareness::TYPE m_eType;
 
+public:
+	void Update_Awareness(CAwareness::TYPE pType);
+
 	_vec3		vPlayerPos;
 	_bool		m_bTrigger = FALSE;
-	_bool		m_bBossConnect = FALSE;
-	_bool		m_bMissTarget = FALSE;
 
 	_float m_fAwareness = 0.f; // 현재값
 	_float m_fMaxAwareness = 0.f; // max값
 	_float m_fAwarenessPrev = 0.f; // 이전값
+	_bool		m_bBossConnect = FALSE;
+	_bool		m_bMissTarget = FALSE;
+
 
 	CBrown*		pBrown = nullptr;
 	CGray*		pGray = nullptr;
 	CAceBoss*	pBoss = nullptr;
 
-	void Update_Awareness(CAwareness::TYPE pType);
 	//블랙보드
 private:
 	void	Update_BlackBoard(); // 블랙보드로부터 데이터를 받아오는용도 
