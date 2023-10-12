@@ -44,15 +44,14 @@ public:
 	void						Height_On_Terrain(_float Height);
 	void						Billboard();
 
-public: //플레이어 관련 셋팅 
+public: 
 	void						Change_PlayerHp(_float pAttack);
-	HRESULT						Update_PlayerPos();
 	void						Knockback_Player(const _float& fTimeDelta, _float fSpeed);
-	GAUGE<_float>				PlayerHp; //플레이어 HP 임시저장용 변수 
 
 protected:
-	MonsterPhase				m_CurrPahse;
-	_tchar						debugString[100];
-	FRAME						m_tFrame;
-
+	_tchar						debugString[100];	//디버그용 string
+	MonsterPhase				m_CurrPahse;		// 강화패턴 적용시 
+	GAUGE<_float>				PlayerHp;			// 플레이어 HP 임시저장용 변수 
+	FRAME						m_tFrame;			// 프레임구조체 
+	_vec3						vPlayerPos;			//플레이어 위치 벡터 
 };

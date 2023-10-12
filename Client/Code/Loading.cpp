@@ -77,6 +77,7 @@ _uint CLoading::Loading_For_Stage()
 	
 	// 오브젝트 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Food", L"Cola")), E_FAIL);
+	
 	// 충돌 컴포넌트
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderSphereComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::SPHERE)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderBoxComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::BOX)), E_FAIL);
@@ -215,9 +216,9 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma region Boss Monster
 	// Monster Texture - Boss - Single
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Stand/Idle_NorthWest.png", TEX_NORMAL, L"Boss_Single", L"Idle_NorthWest");
+	Load_Texture(L"./Resource/Texture/Monster/Boss/Stand/Idle_SouthWest.png", TEX_NORMAL, L"Boss_Single", L"Idle_SouthWest");
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Stand/Idle_North.png", TEX_NORMAL, L"Boss_Single", L"Idle_North");
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Stand/Idle_South.png", TEX_NORMAL, L"Boss_Single", L"Idle_South");
-	Load_Texture(L"./Resource/Texture/Monster/Boss/Stand/Idle_SouthWest.png", TEX_NORMAL, L"Boss_Single", L"Idle_SouthWest");
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Stand/Idle_West.png", TEX_NORMAL, L"Boss_Single", L"Idle_West");
 	
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Single/Pre_Attack.png", TEX_NORMAL, L"Boss_Single", L"Pre_Attack");
@@ -225,24 +226,25 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Single/BackIdle.png", TEX_NORMAL, L"Boss_Single", L"BackIdle");
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Single/Hit_A.png", TEX_NORMAL, L"Boss_Single", L"Hit_A");
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Single/Hit_B.png", TEX_NORMAL, L"Boss_Single", L"Hit_B");
+	Load_Texture(L"./Resource/Texture/Monster/Boss/Single/Chase.png", TEX_NORMAL, L"Boss_Single", L"Chase");
 	
 	// Monster Texture - Boss - Multi
 	Load_Texture(L"./Resource/Texture/Monster/Boss/NorthWestWalk/NorthWestWalk_%d.png", TEX_NORMAL, L"Boss_Multi", L"NorthWestWalk", _range<_uint>(0U, 19U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/CloseAttack/CloseAttack_%d.png", TEX_NORMAL, L"Boss_Multi", L"CloseAttack", _range<_uint>(0U, 5U));
+	//Load_Texture(L"./Resource/Texture/Monster/Boss/NorthWalk/NorthWalk_%d.png", TEX_NORMAL, L"Boss_Multi", L"NorthWalk", _range<_uint>(0U, 26U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Reloading/Reloading_%d.png", TEX_NORMAL, L"Boss_Multi", L"Reloading", _range<_uint>(0U, 17U)); 
 	Load_Texture(L"./Resource/Texture/Monster/Boss/IdleReady/IdleReady_%d.png", TEX_NORMAL, L"Boss_Multi", L"IdleReady", _range<_uint>(0U, 7U));
-	//Load_Texture(L"./Resource/Texture/Monster/Boss/NorthWalk/NorthWalk_%d.png", TEX_NORMAL, L"Boss_Multi", L"NorthWalk", _range<_uint>(0U, 26U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/FacePunch/FacePunch_%d.png", TEX_NORMAL, L"Boss_Multi", L"FacePunch", _range<_uint>(0U, 7U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Shooting/Shooting_%d.png", TEX_NORMAL, L"Boss_Multi", L"Shooting", _range<_uint>(0U, 8U));
-	Load_Texture(L"./Resource/Texture/Monster/Boss/Evasion/Evasion_%d.png", TEX_NORMAL, L"Boss_Multi", L"Evasion", _range<_uint>(0U, 3U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Falling/Falling_%d.png", TEX_NORMAL, L"Boss_Multi", L"Falling", _range<_uint>(0U, 10U));
+	Load_Texture(L"./Resource/Texture/Monster/Boss/Evasion/Evasion_%d.png", TEX_NORMAL, L"Boss_Multi", L"Evasion", _range<_uint>(0U, 3U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Dazed/Dazed_%d.png", TEX_NORMAL, L"Boss_Multi", L"Dazed", _range<_uint>(0U, 13U));
+	Load_Texture(L"./Resource/Texture/Monster/Boss/Button/SetOn_%d.png", TEX_NORMAL, L"Boss_Multi", L"SetOn", _range<_uint>(0U, 3U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Death/Death_%d.png", TEX_NORMAL, L"Boss_Multi", L"Death", _range<_uint>(0U, 9U));
+	Load_Texture(L"./Resource/Texture/Monster/Boss/Shout/Shout_%d.png", TEX_NORMAL, L"Boss_Multi", L"Shout", _range<_uint>(0U, 3U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Running/Run_%d.png", TEX_NORMAL, L"Boss_Multi", L"Run", _range<_uint>(0U, 9U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Roll/Roll_%d.png", TEX_NORMAL, L"Boss_Multi", L"Roll", _range<_uint>(0U, 19U));
 	Load_Texture(L"./Resource/Texture/Monster/Boss/Walk/Walk_%d.png", TEX_NORMAL, L"Boss_Multi", L"Walk", _range<_uint>(0U, 28U));
-	Load_Texture(L"./Resource/Texture/Monster/Boss/Button/SetOn_%d.png", TEX_NORMAL, L"Boss_Multi", L"SetOn", _range<_uint>(0U, 3U));
-	Load_Texture(L"./Resource/Texture/Monster/Boss/Shout/Shout_%d.png", TEX_NORMAL, L"Boss_Multi", L"Shout", _range<_uint>(0U, 3U));
 
 #pragma endregion
 

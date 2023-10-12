@@ -18,6 +18,13 @@
 #include "BlueBuff.h"
 #include "RedThunder.h"
 
+typedef struct BossDistance
+{
+	//_flaot fCloseAtk = 3.f; 
+	_int a = 0;
+};
+
+
 class CAceBoss : public CAceMonster
 {
 	DERIVED_CLASS(CAceMonster, CAceBoss)
@@ -66,6 +73,7 @@ protected:
 private:
 	MonsterPhase m_ePhase;
 
+	//거리조절 
 
 	//조명 컨트롤역할 - 블랙보드 연결 완료 
 	_bool m_bLightOn = FALSE;

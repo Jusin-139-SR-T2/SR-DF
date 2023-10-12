@@ -23,7 +23,7 @@ namespace Engine
 
 	enum MOUSEMOVESTATE {	DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };
 
-	enum MonsterPhase { Phase1, Phase2, Phase_End };
+	enum MonsterPhase { Intro, Phase1, Phase2, Phase_End };
 
 	enum ETEAM_ID { ETEAM_ALPHA, ETEAM_BETA, ETEAM_GAMMA, ETEAM_DELTA };
 

@@ -57,8 +57,6 @@ _int CRedLaser::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Update_PlayerPos();
-
 	if (KnockBack)
 	{
 		Knockback_Player(fTimeDelta, 6.f);

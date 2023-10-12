@@ -65,7 +65,7 @@ _int CSpawnFire::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Update_PlayerPos();
+	Billboard();
 
 	m_tFrame.fFrame += fTimeDelta * m_tFrame.fFrameSpeed;
 	m_tFrame.fAge += fTimeDelta * 1.f;
@@ -79,7 +79,6 @@ _int CSpawnFire::Update_GameObject(const _float& fTimeDelta)
 	if (m_tFrame.fAge > m_tFrame.fLifeTime)
 		Set_Dead();
 
-	Billboard();
 
 	//물리 업데이트 코드
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 

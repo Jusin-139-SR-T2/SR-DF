@@ -27,7 +27,6 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_tStat.fAwareness = 0.f;
 	m_tStat.fMaxAwareness = 15.f;
 
-
 	// Status
 	m_tStat.fAttackDistance = 16.f;
 	m_tStat.fAttackFov = 90.f;
@@ -40,8 +39,11 @@ HRESULT CAceBoss::Ready_GameObject()
 	pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
 	pShape->vHalfSize = { 1.f, 0.7f, 0.3f };
 	
-	//블랙보드 등록 
+	// 블랙보드 등록 
 	Engine::Add_BlackBoard(L"MonsterUnion", CBlackBoard_Monster::Create());
+
+	// Phase
+	m_ePhase = Engine::MonsterPhase::Intro;
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
 	m_tState_Obj.Set_State(STATE_OBJ::IDLE);
@@ -379,7 +381,7 @@ void CAceBoss::AI_Rest(float fDeltaTime)
 	if (m_tState_Obj.IsState_Entered())
 	{
 		OutputDebugString(L"▷BOSS - 상태머신 : Rest 돌입   \n");
-		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"IdleReady");
+		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"IdleReady"); // ♣ 이미지 바꾸기 ? 
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
 	}
@@ -405,7 +407,7 @@ void CAceBoss::AI_Reloading(float fDeltaTime)
 		OutputDebugString(L"▷BOSS - 상태머신 : Reloading 돌입   \n");
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Reloading");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-		m_tFrame.fFrameSpeed = 7.f;
+		m_tFrame.fFrameSpeed = 8.f;
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -424,6 +426,34 @@ void CAceBoss::AI_Reloading(float fDeltaTime)
 
 void CAceBoss::AI_Chase(float fDeltaTime)
 {
+	if (m_tState_Obj.IsState_Entered())
+	{
+		OutputDebugString(L"▷BOSS - 상태머신 : Chase 돌입   \n");
+		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Chase");
+		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+		m_tFrame.fFrameSpeed = 10.f;
+	}
+
+	if (m_tState_Obj.Can_Update())
+	{
+		if (Engine::MonsterPhase::Intro == m_ePhase)
+		{
+
+		}
+		else if (Engine::MonsterPhase::Phase1 == m_ePhase)
+		{
+
+		}
+		else if (Engine::MonsterPhase::Phase2 == m_ePhase)
+		{
+
+		}
+	}
+
+	if (m_tState_Obj.IsState_Exit())
+	{
+		OutputDebugString(L"▷BOSS - 상태머신 : Chase 끝   \n");
+	}
 }
 
 void CAceBoss::AI_Run(float fDeltaTime)

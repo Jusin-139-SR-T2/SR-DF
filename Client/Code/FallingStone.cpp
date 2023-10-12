@@ -74,7 +74,7 @@ _int CFallingStone::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Update_PlayerPos();
+	Billboard();
 	
 	if(m_bFall)
 		Falling(fTimeDelta); //낙하 
@@ -91,7 +91,6 @@ _int CFallingStone::Update_GameObject(const _float& fTimeDelta)
 		}
 	}
 
-	Billboard();
 
 	//물리 업데이트 코드
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 

@@ -25,6 +25,11 @@ HRESULT CAttackUnion::Ready_GameObject()
 
 _int CAttackUnion::Update_GameObject(const _float& fTimeDelta)
 {
+    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
+
+    vPlayerPos = m_pPlayerTransformcomp->Get_Pos();
+
     SUPER::Update_GameObject(fTimeDelta);
 
     return S_OK;
@@ -67,7 +72,7 @@ void CAttackUnion::Height_On_Terrain(_float Height)
 void CAttackUnion::Billboard()
 {
     // 몬스터가 플레이어 바라보는 벡터 
-    _vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
+    _vec3 vDir = vPlayerPos - m_pTransformComp->Get_Pos();
 
     D3DXVec3Normalize(&vDir, &vDir);
 
@@ -76,20 +81,13 @@ void CAttackUnion::Billboard()
     m_pTransformComp->Set_RotationY(rad);
 }
 
-HRESULT CAttackUnion::Update_PlayerPos()
-{
-    m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
-    
-    return S_OK;
-}
-
 
 void CAttackUnion::Knockback_Player(const _float& fTimeDelta, _float fSpeed)
 {
     // 공격체가 플레이어 바라보는 방향 
     // 애초에 플레이어 뒤를 가리키는 벡터이므로 순수 속력만 넣어주면된다. 
-    _vec3 Dir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
+
+    _vec3 Dir = vPlayerPos - m_pTransformComp->Get_Pos();
     D3DXVec3Normalize(&Dir, &Dir);
 
     m_pPlayerTransformcomp->Move_Pos(&Dir, fTimeDelta, fSpeed);
@@ -110,7 +108,5 @@ void CAttackUnion::Change_PlayerHp(_float pAttack)
 
     pPlayer->Set_PlayerHP(PlayerHp);
 }
-
-
 
 #pragma endregion

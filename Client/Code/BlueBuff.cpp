@@ -55,7 +55,7 @@ _int CBlueBuff::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Update_PlayerPos();
+	Billboard();
 
 	CTransformComponent* m_pBossTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Boss", L"Com_Transform"));
 	m_pTransformComp->Set_Pos(m_pBossTransformcomp->Get_Pos());
@@ -70,7 +70,6 @@ _int CBlueBuff::Update_GameObject(const _float& fTimeDelta)
 	if (m_pOwner->Get_IsDead()) // 보스가 죽으면 버프도 사라짐 
 		Set_Dead();
 
-	Billboard();
 
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
