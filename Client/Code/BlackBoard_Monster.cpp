@@ -9,6 +9,7 @@ CBlackBoard_Monster::CBlackBoard_Monster()
 	, m_fBrownAwareness(GAUGE<_float>(15.f))
 	, m_fGrayAwareness(GAUGE<_float>(15.f))
 	, m_fBossAwareness(GAUGE<_float>(15.f))
+    , m_bLightOn(FALSE)
 {
     
 }

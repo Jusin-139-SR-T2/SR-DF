@@ -1,5 +1,9 @@
 #pragma once
 #include "AceMonster.h"
+#include "BossLight.h"
+
+#include "BlackBoard_Monster.h"
+#include "BlackBoardPtr.h"
 
 //공격 헤더 
 #include "MonsterPunch.h"
@@ -49,10 +53,22 @@ protected:
 	virtual void	OnCollisionEntered(CGameObject* pDst);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionBox* pShape;
+	
+	//블랙보드 - Add BlackBoard에서 추가한 BoardName과 업로드, 다운로드 이름이 모두 같아야한다. 
+private:
+	void	Update_InternalData(); // 블랙보드로 데이터를 올린다. 
+	void	Update_BlackBoard(); // 블랙보드로부터 데이터를 받아오는용도 
+
+protected:
+	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster;
 
 	// 필요한 변수 
 private:
 	MonsterPhase m_ePhase;
+
+
+	//조명 컨트롤역할 - 블랙보드 연결 완료 
+	_bool m_bLightOn = FALSE;
 
 #pragma region 상태머신 enum셋팅
 
@@ -61,7 +77,7 @@ public:
 	enum class STATE_OBJ {
 		IDLE, SUSPICIOUS, REST, CHASE,				// 경계	  (SUS = BACKIDLE)
 		RELOADING, RUN, WALK,						// 추격
-		PRE_ATTACK, SIDE_READY, ROLL,				// 전조 
+		PRE_ATTACK, SIDE_READY, ROLL, SHOUT,				// 전조 
 		CLOSEATTACK,  SHOOT, SKILLATTACK,			// 공격
 		HIT, DAZED, FACEPUNCH, FALLING,	EVASION,	// 피격
 		DEATH,										// 죽음
@@ -106,6 +122,7 @@ private:
 	void AI_PreAttack(float fDeltaTime); // 근접공격 전조 
 	void AI_SideReady(float fDeltaTime); // 벽에 등지고 총잡은듯 포즈 
 	void AI_Roll(float fDeltaTime); // 옆으로 구르기 
+	void AI_Shout(float fDeltaTime); // 옆으로 구르기 
 
 	// 공격
 	void AI_CloseAttack(float fDeltaTime); // 근접공격 - 개머리판으로 후리기  

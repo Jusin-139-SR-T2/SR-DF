@@ -223,6 +223,9 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\07. RedThunder">
       <UniqueIdentifier>{183704e4-8a54-4252-abe8-38f528c42570}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03..=====Object=====\03. Lighter\02. BossLight">
+      <UniqueIdentifier>{f8e91869-d1e5-48e5-bc3c-bde6614fb620}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -368,6 +371,9 @@
     </ClInclude>
     <ClInclude Include="Header\RedThunder.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\07. RedThunder</Filter>
+    </ClInclude>
+    <ClInclude Include="BossLight.h">
+      <Filter>03..=====Object=====\03. Lighter\02. BossLight</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -520,6 +526,9 @@
     </ClCompile>
     <ClCompile Include="Code\RedThunder.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\07. RedThunder</Filter>
+    </ClCompile>
+    <ClCompile Include="BossLight.cpp">
+      <Filter>03..=====Object=====\03. Lighter\02. BossLight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

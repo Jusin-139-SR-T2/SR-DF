@@ -1,24 +1,12 @@
 #pragma once
-#include "GameObject.h"
-
-#include "Export_System.h"
-#include "Export_Utility.h"
-
+#include "AttackUnion.h"
 #include "BlackBoard_Monster.h"
 #include "BlackBoardPtr.h"
 #include "BlackBoardMgr.h"
 
-BEGIN(Engine)
-
-class CRcBufferComp;
-class CTextureComponent;
-class CTransformComponent;
-
-END
-
-class CAwareness : public Engine::CGameObject
+class CAwareness : public CAttackUnion
 {
-	DERIVED_CLASS(CGameObject, CAwareness)
+	DERIVED_CLASS(CAttackUnion, CAwareness)
 
 	PUBLIC enum class TYPE {BROWN, GRAY, BOSS, TYPE_END};
 
@@ -38,10 +26,7 @@ public:
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
-
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
+	HRESULT Billboard_Aware();
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -49,7 +34,6 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
 private:
-	HRESULT Billboard();
 	_float		m_fFrame;
 	_float		m_fFrameEnd;
 	_float		m_fFrameSpeed;
@@ -65,10 +49,16 @@ private:
 
 	//블랙보드용 
 private:
-	void	Update_InternalData();
+	void	Update_BlackBoard(); // 블랙보드로부터 데이터를 받아오는용도 
 
 protected:
 	FBlackBoardPtr<CBlackBoard_Monster>	m_wpBlackBoard_Monster;	// 블랙보드
+
+private:
+	GAUGE<_float> m_fBossAwareness;
+	_float m_fBossAwarenessPrevCur;
+	_bool m_bBossConnect = FALSE;
+	_bool m_bMissTarget = FALSE;
 };
 	
 
