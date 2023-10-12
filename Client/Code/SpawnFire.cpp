@@ -56,7 +56,7 @@ HRESULT CSpawnFire::Ready_GameObject()
 	m_tFrame.fLifeTime = 5.f;
 
 	// 크기조정
-	m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 1.f });
+	m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
 
 	return S_OK;
 }
@@ -116,6 +116,10 @@ HRESULT CSpawnFire::Add_Component()
 
 	// 콜라이더 컴포넌트
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+
+	// 값 연동
+	//m_pOwner = dynamic_cast
+
 
 	// 물리 세계 등록
 	m_pColliderComp->EnterToPhysics(0);

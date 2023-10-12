@@ -49,7 +49,7 @@ void CAceMonster::Free()
 
 _float CAceMonster::Calc_Distance()
 {
-    // 플레이어 위치 - 몬스터 위치 = 몬스터가 플레이어 바라보는 벡터
+    // 몬스터가 플레이어 바라보는 벡터 -> 길이 계산용  
     _float fDistance = D3DXVec3Length(&(m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos()));
 
     return fDistance;

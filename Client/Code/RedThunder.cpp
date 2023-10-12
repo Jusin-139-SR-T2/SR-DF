@@ -23,7 +23,7 @@ CRedThunder* CRedThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _floa
 	{
 		Safe_Release(pInstance);
 
-		MSG_BOX("LightBeam Create Failed");
+		MSG_BOX("RedThunder Create Failed");
 		return nullptr;
 	}
 

@@ -78,7 +78,11 @@ _int CAwareness::Update_GameObject(const _float& fTimeDelta)
 		if (m_fBossAwarenessPrevCur < m_fBossAwareness.Cur) // 증가할때 
 			m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
 
-		
+		if (m_fBossAwareness.Cur > m_fBossAwareness.Max)
+		{
+			m_fBossAwareness.Cur = m_fBossAwareness.Max - 1.f;
+			m_bTrigger = TRUE;
+		}
 	}
 	else //BROWN + GRAY - 변경해야함 
 	{
@@ -128,7 +132,7 @@ void CAwareness::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	if(m_bBossConnect)
-		m_pTextureComp->Render_Texture(m_fBossAwareness.Cur);
+		m_pTextureComp->Render_Texture(_uint(m_fBossAwareness.Cur));
 	else
 		m_pTextureComp->Render_Texture(_ulong(m_fFrame));
 

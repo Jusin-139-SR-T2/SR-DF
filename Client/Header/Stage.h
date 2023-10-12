@@ -23,6 +23,7 @@
 #include "SpawnFire.h"
 #include "BlueBuff.h"
 #include "BossLight.h"
+#include "Barrier.h"
 
 class CStage : public Engine::CScene
 {

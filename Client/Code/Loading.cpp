@@ -348,8 +348,8 @@ HRESULT CLoading::Loading_For_Texture()
 
 #pragma region Effect
 	Load_Texture(L"./Resource/Texture/Object/PoolBalls_0.png", TEX_NORMAL, L"Debug", L"Sphere"); // 몬스터 공격 디버그용
-	Load_Texture(L"./Resource/Texture/Object/PoolBalls_0.png", TEX_NORMAL, L"Debug", L"Sphere"); // 몬스터 공격 디버그용
 	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/FallingStone1.png", TEX_NORMAL, L"Effect", L"Stone1");
+	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/FallingStone2.png", TEX_NORMAL, L"Effect", L"Stone2");
 
 	Load_Texture(L"./Resource/Texture/Monster/Effect/SlowThunder/SlowThunder_%d.png", TEX_NORMAL, L"Effect", L"SlowThunder", _range<_uint>(0U, 5U)); 
 	Load_Texture(L"./Resource/Texture/Monster/Effect/MissTarget/MissTarget_%d.png", TEX_NORMAL, L"Effect", L"MissTarget", _range<_uint>(0U, 14U)); 
@@ -358,6 +358,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Effect/Awareness/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 15U));
 	Load_Texture(L"./Resource/Texture/Monster/Effect/FireEffect/Fire_%d.png", TEX_NORMAL, L"Effect", L"FireEffect", _range<_uint>(0U, 5U)); 
 	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/Stone_%d.png", TEX_NORMAL, L"Effect", L"FallingStone", _range<_uint>(0U, 3U)); 
+	Load_Texture(L"./Resource/Texture/Monster/Effect/Barrier/Barrier_%d.png", TEX_NORMAL, L"Effect", L"Barrier", _range<_uint>(0U, 7U)); 
 	Load_Texture(L"./Resource/Texture/Monster/Effect/GreenBuff/Buff_%d.png", TEX_NORMAL, L"Effect", L"Buff", _range<_uint>(0U, 7U));  
 	Load_Texture(L"./Resource/Texture/Monster/Effect/Razer/Razer_%d.png", TEX_NORMAL, L"Effect", L"Razer", _range<_uint>(0U, 18U)); 
 	Load_Texture(L"./Resource/Texture/Monster/Effect/Holy/Holy_%d.png", TEX_NORMAL, L"Effect", L"Holy", _range<_uint>(0U, 3U)); 

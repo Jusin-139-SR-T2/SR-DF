@@ -54,13 +54,13 @@ HRESULT CFallingStone::Ready_GameObject()
 
 	// 프레임 및 사망시간 조정
 	m_tFrame.fFrame = 0;
-	m_tFrame.fFrameSpeed = 1.5f;
+	m_tFrame.fFrameSpeed = 3.f;
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	
 	m_tFrame.fAge = 0.f;
 	m_tFrame.fLifeTime = 1.f;
 	
-	m_fFallingSpeed = 7.f;
+	m_fFallingSpeed = 6.f;
 
 	// 크기조정
 	m_pTransformComp->Set_Scale({ 2.f, 2.f, 1.f });

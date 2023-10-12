@@ -101,6 +101,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev, 60.f, 1.f, 25.f)), E_FAIL);
 
 	// 스킬 실험실
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Barrier", CBarrier::Create(m_pGraphicDev, 5.f, 1.f, 15.f)), E_FAIL);
 
 
 	// =========================================

@@ -20,9 +20,27 @@
 
 typedef struct BossDistance
 {
-	//_flaot fCloseAtk = 3.f; 
-	_int a = 0;
-};
+	_float TotalDist = 18.f;
+	
+	// Intro Phase
+	_float INTRO_WalkDist			= 18.f; // 15초과			= walk
+	_float INTRO_ShootDist			= 15.f; // 2 초과 15 이하    = Shoot
+	_float INTRO_CloseAtkDist		= 2.f;	// 2 이하			= CloseAtk
+
+	// Phase1 
+	_float Ph1_RunDist				= 13.f; // 13 초과			= run
+	_float Ph1_ShootDist			= 5.f;	// 5 초과 ~ 13이하	= shoot
+	_float Ph1_RollDist				= 5.f;	// 2초과 5이하		= roll + shoot
+	_float Ph1_CloseAtkDist			= 2.f;	// 2 이하			= CloseAtk
+
+	// Phase2
+	_float Ph2_RunDist				= 15.f;	// 15 초과  			= run 
+	_float Ph2_SideReadyDist		= 12.f;	// 12 이상 15 미만	= SideReady -> Shoot
+	_float Ph2_RollDist				= 8.f;	//  8 이상 12 미만	= Roll + Shoot
+	_float Ph2_ShootDist			= 8.f;	//  2 이상 8미만		= Shoot
+	_float Ph2_CloseAtkDist			= 2.f;	//  2미만			= PreAtk -> CloseAtk
+	
+}DISTANCE;
 
 
 class CAceBoss : public CAceMonster
@@ -44,6 +62,7 @@ public:
 
 private:
 	HRESULT				Add_Component();
+	void				Change_Phase();
 	virtual void		Free();
 
 public:
@@ -52,6 +71,7 @@ public:
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
+	
 	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
 
 	// 충돌 
@@ -67,16 +87,30 @@ private:
 	void	Update_BlackBoard(); // 블랙보드로부터 데이터를 받아오는용도 
 
 protected:
-	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster;
+	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster; // 업로드 및 다운로드용 
+	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player; //플레이어꺼에서 필요한거있으면 다운로드용 
 
-	// 필요한 변수 
+	
 private:
-	MonsterPhase m_ePhase;
+	// 변수 
+	MonsterPhase	m_ePhase;
+	DISTANCE		m_tDistance;
 
-	//거리조절 
+	_vec3			vDir; //돌려쓰는 벡터용도 
+	_float			m_fTriggerHP;
+	_bool			m_bPhaseStart = FALSE;
+	_float			m_fSideAge = 0.f;
+	_float			m_fSideTime = 1.5f;
 
-	//조명 컨트롤역할 - 블랙보드 연결 완료 
+	//공격 컨트롤 
+	_bool m_AttackOnce = FALSE;
+	_bool m_bBuffActive = FALSE;
+
+	// 조명관련 - 블랙보드 연동 
 	_bool m_bLightOn = FALSE;
+	void LightControl(const _float& fTimeDelta);
+
+
 
 #pragma region 상태머신 enum셋팅
 
@@ -85,25 +119,37 @@ public:
 	enum class STATE_OBJ {
 		IDLE, SUSPICIOUS, REST, CHASE,				// 경계	  (SUS = BACKIDLE)
 		RELOADING, RUN, WALK,						// 추격
-		PRE_ATTACK, SIDE_READY, ROLL, SHOUT,				// 전조 
-		CLOSEATTACK,  SHOOT, SKILLATTACK,			// 공격
+		PRE_ATTACK, SIDE_READY, ROLL, SHOUT,		// 전조 
+		CLOSEATTACK,  SHOOTING, HEAVYSHOOT, 
+		PHASE1_INSTALL, PHASE2_INSTALL, PHASE2_BUFF,
+		FALLING_STONE, ENERGY_BALL, 
+		RED_THUNDER, ROUND_FIRE,
 		HIT, DAZED, FACEPUNCH, FALLING,	EVASION,	// 피격
-		DEATH,										// 죽음
-		RECONNAISSANCE, GOHOME						// 복귀
+		DEATH										// 죽음
+		// 보스는 보스맵 전체가 시야범위이므로 벗어나지않음. 
 	};
 
 	// 행동 상태머신
 	enum class STATE_ACT {
-		IDLE, APPROACH, MOVING, ATTACK, SKILL, GOHOME
+		IDLE, 
+		APPROACH,			// RUN + WALK 
+		MOVING,				// ROLL
+		ATTACK,				// CLOSEATTACK
+		SHOOT,				//
+		INSTALL, BUFF,		// 관문별 1회성 스킬 
+		SKILL_STONE, SKILL_ENERGYBALL,
+		SKILL_THUNDER, SKILL_FIRE
 	};
 
 	// 액션키
 	enum class ACTION_KEY {
 		IDLE,
-		RUN, WALK, ROLL, 
-		ATTACK, SHOOT,
-		SKILL_LASER, SKILL_STONE, SKILL_FIRE, SKILL_THUNDER, SKILL_ENERGYBALL, SKILL_BUFF,//스킬
-		GOHOME
+		RUN, WALK, ROLL,
+		CLOSEATK,
+		ATTACK,  // ??버그임?? 
+		SHOOT,
+		SKILL_LASER, SKILL_STONE, SKILL_ENERGYBALL,
+		SKILL_BUFF, SKILL_THUNDER, SKILL_FIRE //스킬
 	};
 
 private:
@@ -127,41 +173,51 @@ private:
 	void AI_Reloading(float fDeltaTime); // 총알 재장전
 
 	//전조
-	void AI_PreAttack(float fDeltaTime); // 근접공격 전조 
+	void AI_PreAttack(float fDeltaTime); // 근접공격 전조  
 	void AI_SideReady(float fDeltaTime); // 벽에 등지고 총잡은듯 포즈 
 	void AI_Roll(float fDeltaTime); // 옆으로 구르기 
-	void AI_Shout(float fDeltaTime); // 옆으로 구르기 
 
 	// 공격
 	void AI_CloseAttack(float fDeltaTime); // 근접공격 - 개머리판으로 후리기  
 	void AI_Shoot(float fDeltaTime); // 총으로 쏘는공격 
+	void AI_HeavyShoot(float fDeltaTime); // 총으로 쏘는공격 
 	
-	// 스킬
-	void AI_SkillAttack(float fDeltaTime); // 스킬 공격
+	void AI_InstallPh1(float fDeltaTime); // 1관문 설치기
+	void AI_InstallPh2(float fDeltaTime); // 2관문 설치기
+	void AI_SkillBuff(float fDeltaTime); // 2관문 기본버프 장착 - Shout 
+	
+	void AI_SkillStone(float fDeltaTime); // 1관문 스킬 - stone
+	void AI_SkillEnergyBall(float fDeltaTime); // 1관문 스킬 - ball 
+	void AI_SkillThunder(float fDeltaTime); // 2관문 스킬
+	void AI_SkillFire(float fDeltaTime); // 2관문 스킬
 	
 	// 피격
 	void AI_Hit(float fDeltaTime); // 맞은 히트판정 
 	void AI_Dazed(float fDeltaTime); // hp 일정이상 닳은 상태 
 	void AI_Falling(float fDeltaTime); // 발차기 맞았을경우 
-	void AI_Evasion(float fDeltaTime); // 나름회피기 - 스킬 전조로 바꿀지도 ? 음   
 	void AI_FacePunch(float fDeltaTime); // 얼굴에 맞았을경우 
 
 	// 죽음 
 	void AI_Death(float fDeltaTime); //ok // hp 0인상태 
-
-	// 복귀
-	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 
-	void AI_GoHome(float fDeltaTime);		 // 정찰마치고 원위치 복귀중 
 
 #pragma endregion
 
 #pragma region 행동 : AI 이후 넘어가는곳 
 	void Idle(float fDeltaTime);
 	void Approach(float fDeltaTime);		// AI_Run + AI_Walk
-	void Moving(float fDeltaTime);			// AI_InchForward + AI_Strafing
-	void Attack(float fDeltaTime);			// AI_NORMALATTACK + AI_HeavyAttack
-	void Skill(float fDeltaTime);			// 각종 Skill처리 
-	void GoHome(float fDeltaTime);			// Gohome
+	void Moving(float fDeltaTime);			// ROLL
+	void Attack(float fDeltaTime);			// CloseATK
+	void Shoot(float fDeltaTime);			// Shoot
+	
+	void LaserInstall(float fDeltaTime);	// 레이저 설치
+	void BuffActive(float fDeltaTime);		// 버프 추가  
+
+	void SkillStone(float fDeltaTime);		// 스킬  
+	void SkillEnergyBall(float fDeltaTime);	// 스킬  
+	void SkillThunder(float fDeltaTime);	// 스킬  
+	void SkillFire(float fDeltaTime);		// 스킬  
+
+
 #pragma endregion
 
 };
@@ -169,24 +225,18 @@ private:
 
 /* SPEED 정리
 
-Speed 1 =
-Speed 2 =
-Speed 3 =
-Speed 3.5 = WALK
-Speed 4 =
-Speed 5 = RUN
-Speed 6 = GoHome
-Speed 7 = Strafing
-Speed 8 = Inch
-Speed 9 =
-
 디버그 라인
 
 OutputDebugString(L"▶ : 충돌 관련 디버그
 OutputDebugString(L"▷ : 상태머신 관련 디버그
-OutputDebugString(L"★★★★★  중요 디버그라인 
+OutputDebugString(L"★★★★★  중요 디버그라인 \n");
 
 swprintf_s(debugString, L"Boss - 변수 확인 m_fAwareness = %f\n", m_fAwareness);
 OutputDebugStringW(debugString);
+
+10단위 
+phase1 = energyball
+phase2 = thunder 
+
 
 */

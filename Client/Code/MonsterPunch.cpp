@@ -22,7 +22,7 @@ HRESULT CMonsterPunch::Ready_GameObject()
 	// 충돌 - 구형 
 	m_pTransformComp->Readjust_Transform();
 	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 1.5f;
+	pShape->fRadius = 2.f;
 
 	//디버그용 텍스쳐
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Debug", L"Sphere");
@@ -95,7 +95,7 @@ HRESULT CMonsterPunch::Add_Component()
 	m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
 
 	// 충돌 레이어, 마스크 설정
-	m_pColliderComp->Set_CollisionLayer(LAYER_PROJECTILE); // 이 클래스가 속할 충돌레이어 
+	m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER_ATTACK); // 이 클래스가 속할 충돌레이어 
 	m_pColliderComp->Set_CollisionMask(LAYER_PLAYER); // 얘랑 충돌해야하는 레이어들 
 
 	return S_OK;
@@ -112,7 +112,7 @@ void CMonsterPunch::OnCollision(CGameObject* pDst)
 
 void CMonsterPunch::OnCollisionEntered(CGameObject* pDst)
 {
-	OutputDebugString(L"★★★★★★★★ PunchAttack과 충돌 ★★★★★★★★\n");
+	OutputDebugString(L"=================================== PunchAttack과 충돌 =================================== \n");
 
 	switch (m_eAttackType)
 	{
