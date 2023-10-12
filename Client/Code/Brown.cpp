@@ -420,9 +420,9 @@ void CBrown::AI_Suspicious(float fDeltaTime)
 
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Suspicious");
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-        // ? ! »ý¼º 
-       //Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
-       //    m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BROWN, this));
+
+       Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
+           m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BROWN, this));
     }
 
     if (m_tState_Obj.Can_Update())

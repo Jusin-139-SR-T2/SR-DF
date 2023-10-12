@@ -71,9 +71,9 @@ public:
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-	
-	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
 
+	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
+	
 	// 충돌 
 protected:
 	virtual void	OnCollision(CGameObject* pDst);
@@ -109,6 +109,7 @@ private:
 	_bool m_bLightOn = FALSE;
 	void LightControl(const _float& fTimeDelta);
 
+	_float m_fAwareness;
 
 
 #pragma region 상태머신 enum셋팅

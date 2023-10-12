@@ -28,9 +28,9 @@ public:
 	static CAwareness* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAwareness::TYPE pType, CGameObject* pOwner);
 
 private:
+	HRESULT				Billboard_Aware();
 	HRESULT				Add_Component();
 	virtual void		Free();
-	HRESULT				Billboard_Aware();
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -38,25 +38,22 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
 private:
-	HRESULT Set_Speed(CAwareness::TYPE pType, CGameObject* pOwner);
 	CAwareness::TYPE m_eType;
 
 public:
-	void Update_Awareness(CAwareness::TYPE pType);
+	_bool		m_bTrigger = FALSE; // 변수 다 채웠을때 
+	_bool		m_bMissTarget = FALSE; // 플레이어 포착 못했을 때 
 
-	_vec3		vPlayerPos;
-	_bool		m_bTrigger = FALSE;
-
-	_float m_fAwareness = 0.f; // 현재값
-	_float m_fMaxAwareness = 0.f; // max값
-	_float m_fAwarenessPrev = 0.f; // 이전값
-	_bool		m_bBossConnect = FALSE;
-	_bool		m_bMissTarget = FALSE;
-
+	_float		m_fAwareness = 0.f; // 현재값
+	_float		m_fMaxAwareness = 0.f; // max값
+	_float		m_fAwarenessPrev = 0.f; // 이전값
 
 	CBrown*		pBrown = nullptr;
 	CGray*		pGray = nullptr;
 	CAceBoss*	pBoss = nullptr;
+	CGameObject* pObject = nullptr;
+
+	HRESULT Update_Awareness();
 
 	//블랙보드
 private:

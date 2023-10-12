@@ -25,7 +25,7 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_tFrame.fFrameSpeed = 12.f;
 	m_tFrame.fRepeat = 0.f;
-	m_tStat.fAwareness = 0.f;
+	m_fAwareness = m_tStat.fAwareness = 0.f;
 	m_tStat.fMaxAwareness = 15.f;
 
 	// 조명관련
@@ -389,8 +389,8 @@ void CAceBoss::AI_Suspicious(float fDeltaTime)
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
 
-		//Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
-		//m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BOSS, this));
+		Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
+		m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BOSS, this));
 	}
 
 	if (m_tState_Obj.Can_Update())
