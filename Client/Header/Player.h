@@ -23,6 +23,18 @@ END
 class CDynamicCamera;
 class CPlayerLighter;
 
+/// <summary>
+/// 플레이어 생성용 구조체
+/// vPos, vRot, vScale, fPriority[3]
+/// </summary>
+struct FPlayer_Create
+{
+	_vec3 vPos = { 0.f, 0.f, 0.f };
+	_vec3 vRot = { 0.f, 0.f, 0.f };
+	_vec3 vScale = { 1.f, 1.f, 1.f };
+	_float fPriority[static_cast<_uint>(EPRIORITY_TYPE::SIZE)] = {0.f, 0.f, 0.f};
+};
+
 class CPlayer : public CAceUnit
 {
 	DERIVED_CLASS(CAceUnit, CPlayer)
@@ -32,7 +44,7 @@ private:
 	virtual ~CPlayer();
 
 public:
-	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FPlayer_Create& tCreate);
 
 public:
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
@@ -44,6 +56,7 @@ public:
 
 	// =============================상태 추가==============================
 	virtual HRESULT		Ready_GameObject() override;
+	virtual HRESULT		Ready_GameObject(const FPlayer_Create& tCreate);
 	// ====================================================================
 private:
 	// ============================손 상태 체크============================
@@ -184,8 +197,8 @@ private: // 플레이어의 왼손 상태 머신
 
 private: // 플레이어의 오른손 상태 머신
 	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightHand_State;
-	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightState_Old;
-
+	//STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightState_Old;
+	STATE_RIGHTHAND m_eRightState_Old;
 	void	Right_None(float fTimeDelta);
 	void	Right_Hand(float fTimeDelta);
 	void	Right_RunHand(float fTimeDelta);
@@ -197,15 +210,15 @@ private: // 플레이어의 오른손 상태 머신
 	void	Right_Kick(float fTimeDelta);
 
 private: // 함수
-	HRESULT				Add_Component();							// 컴포넌트 추가
-	//bool				Keyboard_Input(const _float& fTimeDelta);	// 키보드 입력
-	bool				Attack_Input(const _float& fTimeDelta);		// 공격 입력(마우스)
-	void				Mouse_Move();								// 마우스 움직임
-	void				Height_On_Terrain();						// 지형타기
+	HRESULT				Add_Component();									// 컴포넌트 추가
+	//bool				Keyboard_Input(const _float& fTimeDelta);			// 키보드 입력
+	bool				Attack_Input(const _float& fTimeDelta);				// 공격 입력(마우스)
+	void				Mouse_Move();										// 마우스 움직임
+	void				Height_On_Terrain();								// 지형타기
 	void				Dash(const _float& fTimeDelta);
-	//void				Hand_Check();								// 플레이어 손 상태 체크
-	void				LeftLoadAnimationFromFile(const char* fileName);// 애니메이션 불러오기
-	void				RightLoadAnimationFromFile(const char* fileName);// 애니메이션 불러오기
+	//void				Hand_Check();										// 플레이어 손 상태 체크
+	void				LeftLoadAnimationFromFile(const char* fileName);	// 애니메이션 불러오기
+	void				RightLoadAnimationFromFile(const char* fileName);	// 애니메이션 불러오기
 	void				LeftInterpolation();
 	void				RightInterpolation();
 
@@ -216,7 +229,8 @@ private: // 스위치
 	_bool		bSpinOn = false;		// 총 회전 On/Off
 	_bool		bRighter = false;		// 라이터 On/Off
 	_bool		bRightHandOn = true;	// 오른손 출력 On/Off
-	_bool		bGetAnimation = false;	// 애니메이션 불러오기 On/Off
+	_bool		bRightGetAnimation = false;	// 애니메이션 불러오기 On/Off
+	_bool		bLeftGetAnimation = false;	// 애니메이션 불러오기 On/Off
 
 	// 대쉬
 	_bool		bDashOn = false;		// 플레이어 대쉬 여부
@@ -246,7 +260,7 @@ private:
 		_bool			bRightFrameOn = false;
 		_bool			bPickUpState = false;
 
-		_float			fRightFrameSpeed = 10.f;	// 오른손 프레임 속도
+		_float			fRightFrameSpeed = 1.f;		// 오른손 프레임 속도
 		_float			fRightFrame = 0.f;			// 오른손 프레임
 
 		_uint			iFullChargingIndex = 0.f;	// 풀차지시 인덱스

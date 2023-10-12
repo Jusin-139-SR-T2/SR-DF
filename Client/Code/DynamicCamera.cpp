@@ -258,7 +258,8 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 {
 	// 플레이어 Trans 컴포넌트 받아오기
 	pPlayerTransCom = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-	//NULL_CHECK_RETURN(pPlayerTransCom, -1); // NULL
+	if (pPlayerTransCom == nullptr)
+		return;
 
 	_vec3	vPlayerPos;				// 플레이어 위치
 	_vec3	vPlayerLook;			// 플레이어가 바라보는 곳

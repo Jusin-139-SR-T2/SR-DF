@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "EnergyBall.h"
 
+#include "Player.h"
+
 CEnergyBall::CEnergyBall(LPDIRECT3DDEVICE9 pGraphicDev)
 	:Base(pGraphicDev)
 {

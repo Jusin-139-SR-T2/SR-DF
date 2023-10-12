@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "RedLaser.h"
 
+#include "Player.h"
+
 CRedLaser::CRedLaser(LPDIRECT3DDEVICE9 pGraphicDev)
 	:Base(pGraphicDev)
 {

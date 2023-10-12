@@ -38,7 +38,7 @@ public:
 
 
 private:
-	ImGuiStyle		m_pStyle;
+	ImGuiStyle				m_pStyle;
 
 	_bool					m_bOpt_FullScreen;
 	_bool					m_bOpt_Padding;
@@ -71,80 +71,6 @@ private:
 private:
 	void			Layout_Viewer(const ImGuiWindowFlags& iMain_Flags);
 
-private:
-	enum ESELECTED_TYPE : _ulong
-	{
-		ESELECTED_TYPE_NONE,
-		ESELECTED_TYPE_SCENE,
-		ESELECTED_TYPE_LAYER,
-		ESELECTED_TYPE_OBJECT,
-		ESELECTED_TYPE_LIGHT
-	};
-	ESELECTED_TYPE				m_ePropertySelected_Type = ESELECTED_TYPE_NONE;
-
-
-
-
-private:	// 씬 추가
-	string						m_strAdd_SceneName;			// 씬 추가하기
-	vector<string>				m_vecSceneName;				// 씬 이름 표시하기용
-	_int						m_iSelected_Scene;			// Selectable에서 선택된 씬
-
-private:	// 레이어 정보
-	//vector<string>
-
-
-private:
-	
-
-private:	// 계층 관련
-	enum EPRIORITY_OBJECT : _ulong
-	{
-		EPRIORITY_OBJECT_UPDATE,
-		EPRIORITY_OBJECT_LATE,
-		EPRIORITY_OBJECT_RENDER,
-		EPRIORITY_OBJECT_END
-	};
-	struct FObjectProperty
-	{
-		string		strName = "";
-		string		strObjectID = "";
-
-		_vec3		vPos = { 0.f,0.f,0.f };
-		_vec3		vRot = { 0.f,0.f,0.f };
-		_vec3		vScale = { 1.f,1.f,1.f };
-		_float		fPriority[EPRIORITY_OBJECT_END] = { 0.f, 0.f, 0.f };
-		_bool		bUsePriority[EPRIORITY_OBJECT_END] = { true, true, true };
-	};
-	struct FLayerProperty
-	{
-		string						strName = "";
-		_float						fPriority = 0.f;
-		vector<FObjectProperty>		vecObject;
-	};
-
-private:
-	void			Reset_Hierarchi()
-	{
-		m_iSelectedHierarchi_Layer = -1;
-		m_iSelectedHierarchi_Layer_Remain = -1;
-		m_iSelectedHierarchi_Object = -1;
-		m_iSelectedHierarchi_Object_Remain = -1;
-		m_ePropertySelected_Type = ESELECTED_TYPE_NONE;
-	}
-	
-private:
-	string						m_strSceneName = u8"씬";			// 씬 이름
-	_bool						m_bScene_Loaded = false;
-
-	vector<FLayerProperty>		m_vecHierarchi;					// 계층 이름, 레이어, 오브젝트
-	_int						m_iSelectedHierarchi_Layer = -1;
-	_int						m_iSelectedHierarchi_Layer_Remain = -1;
-	_int						m_iSelectedHierarchi_Object = -1;
-	_int						m_iSelectedHierarchi_Object_Remain = -1;
-	char						m_arrAddLayer_Buf[256] = "";
-	_bool						m_bFocusedLayer_Edit = false;
-
 private:	// 뷰 추가 레이아웃
 	vector<string>	m_vecCoord_Item = { u8"월드", u8"로컬", u8"오일러" };
 	_uint			m_iIndex_CoordItem = 0;
@@ -158,31 +84,113 @@ private:	// 뷰 추가 레이아웃
 	_bool			m_bSnap_Active = false;
 
 
-private:	// 터레인 관련
+private:	// 선택 타입
+	enum ESELECTED_TYPE : _ulong
+	{
+		ESELECTED_TYPE_NONE,
+		ESELECTED_TYPE_SCENE,
+		ESELECTED_TYPE_LAYER,
+		ESELECTED_TYPE_OBJECT,
+		ESELECTED_TYPE_LIGHT
+	};
+	ESELECTED_TYPE				m_eSelectedProperty_Type = ESELECTED_TYPE_NONE;
+
+private:	// 계층 관련 정의부
+	enum EPRIORITY_OBJECT : _ulong
+	{
+		EPRIORITY_OBJECT_UPDATE,
+		EPRIORITY_OBJECT_LATE,
+		EPRIORITY_OBJECT_RENDER,
+		EPRIORITY_OBJECT_END
+	};
+	struct FObjectData
+	{
+		string		strName = "";
+		string		strObjectID = "";
+
+		_vec3		vPos = { 0.f,0.f,0.f };
+		_vec3		vRot = { 0.f,0.f,0.f };
+		_vec3		vScale = { 1.f,1.f,1.f };
+		_float		fPriority[EPRIORITY_OBJECT_END] = { 0.f, 0.f, 0.f };
+		_bool		bUsePriority[EPRIORITY_OBJECT_END] = { true, true, true };
+	};
+	struct FLayerData
+	{
+		string						strName = "";
+		_float						fPriority = 0.f;
+		vector<FObjectData>		vecObject;
+	};
+	struct FTerrainData
+	{
+		string			strName = "";
+		_vec3			vVertexCnt = { 0.f, 0.f, 0.f };
+		_vec3			vScale = { 1.f, 1.f, 1.f };
+		_vec3			vOffset = { 0.f, 0.f, 0.f };
+	};
+	struct FSceneData
+	{
+		string						strName = "";
+		FTerrainData				tTerrain;
+		vector<FLayerData>		vecLayer;
+	};
+
+private:
+	void			Reset_Hierarchi()
+	{
+		m_iSelected_Layer = -1;
+		m_iSelected_Layer_Remain = -1;
+		m_iSelected_Object = -1;
+		m_iSelected_Object_Remain = -1;
+		m_eSelectedProperty_Type = ESELECTED_TYPE_NONE;
+	}
+	
+private:
+	// 목록에 있는 씬 모두 저장
+	void			Save_SceneAll();
+	// 선택 씬만 저장
+	void			Save_Scene() {}
+	void			Export_Scene(const FSerialize_Scene& tSceneSerial);
+	// 전체 씬 로드
+	void			Load_SceneAll();
+	void			Import_Scene(const string& strName, FSerialize_Scene& tSceneSerial, FSceneData& tSceneData);
+
+	// 오브젝트 파싱 관련
+	void			Save_Object();
+	void			Export_Object();
+	void			Load_Object();
+	void			Import_Object();
+
+private:
+	_bool						m_bScene_Init = true;
+
+	string						m_strAdd_SceneName;				// 씬 추가하기
+	_int						m_iSelected_Scene = -1;			// 선택된 씬
+	_int						m_iLoaded_Scene = -1;			// 실제 로드된 씬
+	_bool						m_bScene_Loaded = false;
+
+	vector<FSceneData>			m_vecScene;					// 씬, 레이어, 오브젝트
+	_int						m_iSelected_Layer = -1;
+	_int						m_iSelected_Layer_Remain = -1;
+	_int						m_iSelected_Object = -1;
+	_int						m_iSelected_Object_Remain = -1;
+
+	char						m_arrAddLayer_Buf[256] = "";
+	_bool						m_bFocusedLayer_Edit = false;
+
+
+private:			// 터레인 관련
 	void			Apply_Terrain(const string& strTerrainName);
-	void			Serialize_Terrain(const string& strTerrainName);
-	void			Export_ParsedTerrain(const FSerialize_Terrain& tTerrain);
-	void			Import_ParsedTerrain(const FSerialize_Terrain& tTerrain);
+	void			Save_Terrain(const _int iSelected_Scene);
+	void			Export_Terrain(const FSerialize_Terrain& tTerrain);
+	void			Load_Terrain(const _int iSelected_Scene, const string& strName);
+	void			Import_Terrain(const _int iSelected_Scene, const string& strName, FSerialize_Terrain& tTerrain);
 
 
 private:	// 속성 관련
 	_bool			m_bInput_Warning = false;
 
-private:
-	enum EINPUT_TERRAIN
-	{
-		EINPUT_TERRAIN_HORIZON,
-		EINPUT_TERRAIN_VERTICLE,
-		EINPUT_TERRAIN_HEIGHT,
-		EINPUT_TERRAIN_OFFSET_X,
-		EINPUT_TERRAIN_OFFSET_Y,
-		EINPUT_TERRAIN_OFFSET_Z,
-		EINPUT_TERRAIN_SCALE_X,
-		EINPUT_TERRAIN_SCALE_Y,
-		EINPUT_TERRAIN_SCALE_Z,
-		EINPUT_TERRAIN_END
-	};
-	vector<string>	m_vecInput_Terrain;
+
+	
 
 
 private:	// 유틸리티
@@ -190,56 +198,22 @@ private:	// 유틸리티
 	void			Set_Button_NonActiveColor();
 	void			Set_Button_ReturnColor();
 
-	void			Clamp_Vec3Translate(_vec3& vTranslate, _float fValue)
+	void			Clamp_Vec3(_vec3& vVec, _float fValue)
 	{
-		if (vTranslate.x < -fValue)
-			vTranslate.x = -fValue;
-		else if (vTranslate.x > fValue)
-			vTranslate.x = fValue;
+		if (vVec.x < -fValue)
+			vVec.x = -fValue;
+		else if (vVec.x > fValue)
+			vVec.x = fValue;
 
-		if (vTranslate.y < -fValue)
-			vTranslate.y = -fValue;
-		else if (vTranslate.y > fValue)
-			vTranslate.y = fValue;
+		if (vVec.y < -fValue)
+			vVec.y = -fValue;
+		else if (vVec.y > fValue)
+			vVec.y = fValue;
 
-		if (vTranslate.z < -fValue)
-			vTranslate.z = -fValue;
-		else if (vTranslate.z > fValue)
-			vTranslate.z = fValue;
-	}
-	void			Clamp_Vec3Rot(_vec3& vRot, _float fValue)
-	{
-		if (vRot.x < -fValue)
-			vRot.x = -fValue;
-		else if (vRot.x > fValue)
-			vRot.x = fValue;
-
-		if (vRot.y < -fValue)
-			vRot.y = -fValue;
-		else if (vRot.y > fValue)
-			vRot.y = fValue;
-
-		if (vRot.z < -fValue)
-			vRot.z = -fValue;
-		else if (vRot.z > fValue)
-			vRot.z = fValue;
-	}
-	void			Clamp_Vec3Scale(_vec3& vScale, _float fValue)
-	{
-		if (vScale.x < -fValue)
-			vScale.x = -fValue;
-		else if (vScale.x > fValue)
-			vScale.x = fValue;
-
-		if (vScale.y < -fValue)
-			vScale.y = -fValue;
-		else if (vScale.y > fValue)
-			vScale.y = fValue;
-
-		if (vScale.z < -fValue)
-			vScale.z = -fValue;
-		else if (vScale.z > fValue)
-			vScale.z = fValue;
+		if (vVec.z < -fValue)
+			vVec.z = -fValue;
+		else if (vVec.z > fValue)
+			vVec.z = fValue;
 	}
 
 	static int InputTextCallback(ImGuiInputTextCallbackData* data)

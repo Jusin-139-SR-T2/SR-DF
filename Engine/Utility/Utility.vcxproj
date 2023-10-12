@@ -284,6 +284,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClCompile Include="Code\Component\MeshColComp.cpp" />
     <ClCompile Include="Code\Data\PHY_Box.cpp" />
     <ClCompile Include="Code\Data\PHY_Capsule.cpp" />
+    <ClCompile Include="Code\Serialize\Serialize_BaseClass.cpp" />
     <ClCompile Include="Code\TextureMgr.cpp" />
     <ClCompile Include="Code\Data\Texture.cpp" />
     <ClCompile Include="Code\Data\MultiStateTexture.cpp" />

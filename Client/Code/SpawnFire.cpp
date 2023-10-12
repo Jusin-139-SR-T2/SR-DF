@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "SpawnFire.h"
 
+#include "Player.h"
+
 CSpawnFire::CSpawnFire(LPDIRECT3DDEVICE9 pGraphicDev)
 	:Base(pGraphicDev)
 {

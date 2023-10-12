@@ -18,6 +18,25 @@ CStage::~CStage()
 
 }
 
+CStage* CStage::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_Scene()))
+	{
+		Safe_Release(pInstance);
+		MSG_BOX("Stage Create Failed");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+void CStage::Free()
+{
+	SUPER::Free();
+}
+
 HRESULT CStage::Ready_Scene()
 {
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Environment"), E_FAIL);
@@ -86,7 +105,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	Engine::CGameObject*		pGameObject = nullptr;
 
 	// Player
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", CPlayer::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", CPlayer::Create(m_pGraphicDev, { {10.f, 10.f, 10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, {0.f, 0.f, 0.f} })), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PlayerLighter", CPlayerLighter::Create(m_pGraphicDev)), E_FAIL);
 
 	// Bullet
@@ -211,21 +230,4 @@ HRESULT CStage::Ready_Layer_Completed()
 	return S_OK;
 }
 
-CStage * CStage::Create(LPDIRECT3DDEVICE9 pGraphicDev)
-{
-	ThisClass*	pInstance = new ThisClass(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Scene()))
-	{
-		Safe_Release(pInstance);
-		MSG_BOX("Stage Create Failed");
-		return nullptr;
-	}
-
-	return pInstance;
-}
-
-void CStage::Free()
-{
-	SUPER::Free();
-}

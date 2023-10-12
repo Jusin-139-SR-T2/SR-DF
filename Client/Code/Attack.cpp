@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 //#include "Attack.h"
 //
 //CAttack::CAttack(LPDIRECT3DDEVICE9 pGraphicDev)

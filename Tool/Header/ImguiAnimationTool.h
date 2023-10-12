@@ -288,8 +288,13 @@ private: // 애니메이션 툴 변수
 	float currentTime = 0.0f; // 현재 시간 값
 	float MaxTime = 20.f;
 	float fDisplayTime = 1.f;	// 눈금마다의 시간 값 표시
+
 	_bool isDraggingTimeline = false;
 	_bool isPlaying = false;		// 재생 여부
+
+	_bool m_bRendomValue = false; // 벨류 값 랜덤으로 주기
+	_bool m_bIndividualTexture = false; // 텍스처 값 순차적으로 주기
+
 	float playbackSpeed = 1.0f; // 재생 속도
 
 #pragma region 최소, 최대 값

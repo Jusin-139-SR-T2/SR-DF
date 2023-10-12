@@ -94,6 +94,25 @@ void Engine::CGameObject::Compute_ViewZ(const _vec3* pPos)
     //m_fViewZ = D3DXVec3Length(&(vCamPos - *pPos));
 }
 
+HRESULT CGameObject::Delete_Component(CComponent* pComponent)
+{
+    for (size_t i = 0; i <= (size_t)ID_STATIC; i++)
+    {
+        auto iter = find_if(m_mapComponent[i].begin(), m_mapComponent[i].end(),
+            [&pComponent](auto& pairComp) {
+                return pairComp.second == pComponent;
+            });
+        if (iter == m_mapComponent[i].end())
+            continue;
+
+        m_mapComponent[i].erase(iter);
+        Safe_Release(pComponent);
+        pComponent = nullptr;
+    }
+
+    return S_OK;
+}
+
 CComponent* CGameObject::Find_Component(const _tchar* pComponentTag, COMPONENTID eID)
 {
     // 내부적으로 컴포넌트를 태그를 통해 찾도록 지원하는 함수

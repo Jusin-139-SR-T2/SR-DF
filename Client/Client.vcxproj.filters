@@ -229,6 +229,12 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\08. Barrier">
       <UniqueIdentifier>{486efba1-aad5-4c7f-8169-b6f4ee4bd088}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. =====Scene=====\03. ParsedScene">
+      <UniqueIdentifier>{e9f6b375-abee-4f0d-a9ac-0ece3a290be9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..=====Object=====\00. AbstractFactory">
+      <UniqueIdentifier>{4f024727-c272-4abe-9d81-b80cc7dd40cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -377,6 +383,12 @@
     </ClInclude>
     <ClInclude Include="BossLight.h">
       <Filter>03..=====Object=====\03. Lighter\02. BossLight</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Scene_Parsed.h">
+      <Filter>01. =====Scene=====\03. ParsedScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\AbsFac_GameObject.h">
+      <Filter>03..=====Object=====\00. AbstractFactory</Filter>
     </ClInclude>
     <ClInclude Include="Barrier.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\08. Barrier</Filter>
@@ -535,6 +547,12 @@
     </ClCompile>
     <ClCompile Include="BossLight.cpp">
       <Filter>03..=====Object=====\03. Lighter\02. BossLight</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scene_Parsed.cpp">
+      <Filter>01. =====Scene=====\03. ParsedScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AbsFac_GameObject.cpp">
+      <Filter>03..=====Object=====\00. AbstractFactory</Filter>
     </ClCompile>
     <ClCompile Include="Barrier.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\08. Barrier</Filter>

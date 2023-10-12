@@ -1,3 +1,4 @@
+#include "stdafx.h"
 //#include "Bullet.h"
 //
 //CBullet::CBullet(LPDIRECT3DDEVICE9 pGraphicDev)
