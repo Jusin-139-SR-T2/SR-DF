@@ -37,8 +37,9 @@ public:
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
-private:
+public:
 	HRESULT Set_Speed(CAwareness::TYPE pType, CGameObject* pOwner);
+	void Update_Awareness(CAwareness::TYPE pType);
 	CAwareness::TYPE m_eType;
 
 	_vec3		vPlayerPos;
@@ -46,15 +47,14 @@ private:
 	_bool		m_bBossConnect = FALSE;
 	_bool		m_bMissTarget = FALSE;
 
-	_float m_fAwareness = 0.f; // 현재값
-	_float m_fMaxAwareness = 0.f; // max값
-	_float m_fAwarenessPrev = 0.f; // 이전값
+	_float		m_fAwareness = 0.f; // 현재값
+	_float		m_fMaxAwareness = 0.f; // max값
+	_float		m_fAwarenessPrev = 0.f; // 이전값
 
 	CBrown*		pBrown = nullptr;
 	CGray*		pGray = nullptr;
 	CAceBoss*	pBoss = nullptr;
 
-	void Update_Awareness(CAwareness::TYPE pType);
 	//블랙보드
 private:
 	void	Update_BlackBoard(); // 블랙보드로부터 데이터를 받아오는용도 
