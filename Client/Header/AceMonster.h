@@ -24,20 +24,6 @@ typedef struct tag_Monster_Info
 	_vec3		vPatrolPointZero;					//초기 시작포인트 
 }MONSTER;
 
-typedef struct Frame
-{
-	//   m_tFrame
-	_float		fFrame = 0.f;
-	_float		fFrameEnd = 0.f;
-	_float		fFrameSpeed = 0.f;
-	_float		fCheck = 0;						//Taunt 등 돌리는횟수
-
-	_float		fAge = 0.f;
-	_float		fLifeTime = 0.f;
-
-}FRAME;
-
-
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -74,7 +60,7 @@ protected:
 	_vec3						vPlayerPos;			
 	_tchar						debugString[100];
 
-public:
+protected:
 	CRcBufferComp*				m_pBufferComp = nullptr; 
 	CTextureComponent*			m_pTextureComp = nullptr;
 	CColliderComponent*			m_pColliderComp = nullptr;
@@ -88,5 +74,53 @@ public:
 	HRESULT						Get_PlayerPos();
 	void						Height_On_Terrain();
 	void						Billboard(const _float& fTimeDelta); 
+
+	//제작함수 리스트 - 스킬 셋팅할때 사용중 
+public:
+	// vector형으로 min과 max사이의 값중 랜덤으로 out에 저장 
+	void Get_RandomVector(_vec3* out, _vec3* min, _vec3* max)
+	{
+		out->x = Get_RandomFloat(min->x, max->x);
+		out->y = Get_RandomFloat(min->y, max->y);
+		out->z = Get_RandomFloat(min->z, max->z);
+	}
+
+	//low~high 사이의 값으로 return 
+	_float Get_RandomFloat(_float lowBound, _float hightBound)
+	{
+		if (lowBound >= hightBound)
+			return lowBound;
+
+		_float f = (rand() % 10000) * 0.0001f;
+
+		return (f * (hightBound - lowBound)) + lowBound;
+	}
+
+	// center기준 radius 내의 랜덤위치 out에 저장 
+	void GetRandomPointInCircle(_vec3* out, _vec3* center, float radius)
+	{
+		_float angle = static_cast<_float>(rand()) / RAND_MAX * 2 * D3DX_PI;
+		_float r = static_cast<_float>(rand()) / RAND_MAX * radius;
+
+		// 극좌표를 직교 좌표로 변환
+		out->x = center->x + r * cosf(angle);
+		out->y = center->y;
+		out->z = center->z + r * sinf(angle);
+	}
+
+	// Center기준 radius만큼 떨어진위치에 원을 그리면서 위치하게 하는데 number갯수만큼 만든다. 
+	// ex. number4, radius2일경우 반지름이2인 원을 그리고 각각 동서남북으로 위치하게된다. 
+	void GetCirclePos(_vec3* Out, _vec3* Center, _int _number, _float _radius)
+	{
+	    for (_int i = 0; i < _number; ++i)
+	    {
+	        _float angle = static_cast<_float>(i) / static_cast<_float>(_number) * D3DX_PI * 2.0f;
+	        Out->x = Center->x + _radius * cosf(angle);
+	        Out->y = Center->y;
+	        Out->z = Center->z + _radius * sinf(angle);
+	
+	    }
+	}
+
 
 };

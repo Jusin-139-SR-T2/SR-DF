@@ -1,22 +1,9 @@
 #pragma once
-#include "AceUnit.h"
+#include "AttackUnion.h"
 
-#include "Export_System.h"
-#include "Export_Utility.h"
-
-BEGIN(Engine)
-
-class CRcBufferComp;
-class CTextureComponent;
-class CColliderComponent;
-class CTransformComponent;
-class CCalculatorComponent;
-
-END
-
-class CSlowThunder : public CAceUnit
+class CSlowThunder : public CAttackUnion
 {
-	DERIVED_CLASS(CAceUnit, CSlowThunder)
+	DERIVED_CLASS(CAttackUnion, CSlowThunder)
 
 private:
 	explicit CSlowThunder(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -29,18 +16,11 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CSlowThunder* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CSlowThunder* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAceUnit* pOwner);
 
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
-	HRESULT				Billboard();
-
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
-	CCalculatorComponent* m_pCalculatorComp = nullptr;
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -57,14 +37,6 @@ protected:
 	PRIVATE FCollisionSphere* pShape;
 
 private:
-	_float m_fFrame;
-	_float m_fFrameEnd;
-	_float m_fFrameSpeed;
-
-	_float m_fFrameCnt;
-	_vec3 m_vOrigin;	
-
-	wstring CollideName;
 
 };
 

@@ -1,24 +1,9 @@
 #pragma once
-#include "AceUnit.h"
+#include "AttackUnion.h"
 
-#include "Export_System.h"
-#include "Export_Utility.h"
-#include "Engine_Enum.h"
-
-BEGIN(Engine)
-
-class CRcBufferComp;
-class CTextureComponent;
-class CColliderComponent;
-class CTransformComponent;
-
-END
-
-class CPlayer;
-
-class CFallingStone : public CAceUnit
+class CFallingStone : public CAttackUnion
 {
-	DERIVED_CLASS(CAceUnit, CFallingStone)
+	DERIVED_CLASS(CAttackUnion, CFallingStone)
 
 private:
 	explicit CFallingStone(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -31,17 +16,11 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CFallingStone* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CFallingStone* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _pHASE, CAceUnit* pOwner);
 
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
-	HRESULT				Billboard();
-
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -57,23 +36,10 @@ protected:
 	PRIVATE FCollisionSphere* pShape;
 
 private:
-	_float m_fFrame;
-	_float m_fFrameEnd;
-	_float m_fFrameSpeed;
-
-	_vec3 m_vOrigin;
-	_vec3 vFall;
-
-	_float m_fFallingSpeed;
-	_bool m_bFall = TRUE; 
-
-	_float m_fAge;
-	_float m_fLifeTime;
-
-	_bool m_bOld = FALSE;
-	_bool m_bCollision = FALSE;
-	void Falling(const _float& fTimeDelta);
-
-	wstring CollideName;
+	_vec3 vFall;				// 떨어지는 방향 
+	_float m_fFallingSpeed;		// 떨어지는 스피드 
+	_bool m_bCollision = FALSE; //충돌해서 시간흐르는용도 
+	_bool m_bFall = TRUE;
+	void Falling(const _float& fTimeDelta); // 떨어지는 함수 
 };
 

@@ -42,7 +42,7 @@ HRESULT CGray::Ready_GameObject()
     m_tFrame.fFrame = 0.f;
     m_tFrame.fFrameEnd= _float(m_pTextureComp->Get_VecTexture()->size());
     m_tFrame.fFrameSpeed= 12.f;
-    m_tFrame.fCheck= 0.f;
+    m_tFrame.fRepeat= 0.f;
     m_tFrame.fAge = 0.f;
 
     //Status
@@ -166,7 +166,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
             STATE_OBJ::KEEPEYE == m_tState_Obj.Get_State() ||
             STATE_OBJ::SIDEWALK == m_tState_Obj.Get_State()
             )
-            m_tFrame.fCheck += 1;
+            m_tFrame.fRepeat += 1;
     }
 
 
@@ -175,7 +175,8 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     // ---------- 테스트 빌드 ---------------------
     if (Engine::IsKey_Pressing(DIK_G))
     {
-        m_tState_Obj.Set_State(STATE_OBJ::FRIGHTEN);
+        m_gHp.Cur = 25.f;
+        m_tState_Obj.Set_State(STATE_OBJ::ATTACK);
     }
 
     if (Engine::IsKey_Pressing(DIK_H))
@@ -392,9 +393,9 @@ void CGray::AI_Taunt(float fDeltaTime)
         // 조건 - 플레이어가 시야각으로 들어오면 
         if (Detect_Player())
         {
-            if (2 == m_tFrame.fCheck) // 도발 두번 하고 따라가기 
+            if (2 == m_tFrame.fRepeat) // 도발 두번 하고 따라가기 
             {
-                m_tFrame.fCheck = 0; //다른데도 쓰니까 0으로 되돌리기 
+                m_tFrame.fRepeat = 0; //다른데도 쓰니까 0으로 되돌리기 
                 m_tState_Obj.Set_State(STATE_OBJ::CHASE); // AI = 추격모드
             }
         }
@@ -501,6 +502,8 @@ void CGray::AI_Chase(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Rest");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 8.f;
+
+        m_AttackOnce = FALSE;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -708,11 +711,11 @@ void CGray::AI_SideWalk(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::SIDEWALK].Act();
 
-        if (2 == m_tFrame.fCheck)
+        if (2 == m_tFrame.fRepeat)
         {
             if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
             {
-                m_tFrame.fCheck = 0.f;
+                m_tFrame.fRepeat = 0.f;
                 m_tState_Obj.Set_State(STATE_OBJ::REST);
             }
         }
@@ -1004,8 +1007,9 @@ void CGray::AI_Dazed(float fDeltaTime)
     if (m_tState_Obj.Can_Update())
     {
         if (m_gHp.Update(fDeltaTime * 5.f, 40.f, TRUE)) // 증가값, 도달하면 bool반환 
-        {
-            m_gHp.Cur = 40.f;
+        { 
+            // ☞ 체크해야합니당. 
+            //  m_gHp.Cur = 40.f;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
@@ -1287,6 +1291,7 @@ void CGray::Attack(float fDeltaTime)
                 Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev,
                     vDirPos.x, vDirPos.y, vDirPos.z,
                     CMonsterPunch::TYPE::NORMAL, this));
+
                 m_AttackOnce = true;
             }
         }
@@ -1298,6 +1303,7 @@ void CGray::Attack(float fDeltaTime)
                 Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev,
                     vDirPos.x, vDirPos.y, vDirPos.z,
                     CMonsterPunch::TYPE::HEAVY, this));
+
                 m_AttackOnce = true;
             }
         }

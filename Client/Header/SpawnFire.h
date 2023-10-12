@@ -1,25 +1,9 @@
 #pragma once
-#include "AceUnit.h"
+#include "AttackUnion.h"
 
-#include "Export_System.h"
-#include "Export_Utility.h"
-#include "Engine_Enum.h"
-
-BEGIN(Engine)
-
-class CRcBufferComp;
-class CTextureComponent;
-class CColliderComponent;
-class CTransformComponent;
-class CCalculatorComponent;
-
-END
-
-class CPlayer;
-
-class CSpawnFire : public CAceUnit
+class CSpawnFire : public CAttackUnion
 {
-	DERIVED_CLASS(CAceUnit, CSpawnFire)
+	DERIVED_CLASS(CAttackUnion, CSpawnFire)
 
 private:
 	explicit CSpawnFire(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -33,18 +17,11 @@ public:
 	virtual void		Render_GameObject() override;
 
 	static CSpawnFire* Create(LPDIRECT3DDEVICE9 pGraphicDev,
-		_float _x, _float _y, _float _z, MonsterPhase _CurrPhase);
+		_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CAceUnit* pOwner);
 
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
-	HRESULT				Billboard();
-
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
-	CCalculatorComponent* m_pCalculatorComp = nullptr;
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -61,22 +38,12 @@ protected:
 	PRIVATE FCollisionSphere* pShape;
 
 private:
-	HRESULT		Follow_Player(const _float fTimeDelta, MonsterPhase _phase);
 	void		Value_Setting(_float _x, _float _y, _float _z, MonsterPhase _phase);
 
 private:
-	_float			m_fFrame;
-	_float			m_fFrameEnd;
-	_float			m_fFrameSpeed;
-	_float			m_fFrameCnt;
-	_vec3			m_vOrigin;
 	_float			m_fMovingSpeed;
-	_float			m_fAge;
-	_float			m_fLifeTime;
-
 	_vec3			Dir;
 	MonsterPhase	m_eCurrPhase;
-	wstring			CollideName;
 };
 
 

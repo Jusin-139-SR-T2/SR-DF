@@ -1,6 +1,5 @@
 #pragma once
-
-#include "GameObject.h"
+#include "AceGameObject.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -11,9 +10,9 @@ class CTransformComponent;
 
 END
 
-class CPlayerLighter : public Engine::CGameObject
+class CPlayerLighter : public CAceGameObject
 {
-	DERIVED_CLASS(CGameObject, CPlayerLighter)
+	DERIVED_CLASS(CAceGameObject, CPlayerLighter)
 
 private:
 	explicit CPlayerLighter(LPDIRECT3DDEVICE9 pGraphicDev);

@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BossLight.h" />
     <ClInclude Include="Header\AbsFac_GameObject.h" />
     <ClInclude Include="Header\AceBoss.h" />
     <ClInclude Include="Header\AceGameObject.h" />
     <ClInclude Include="Header\AceUnit.h" />
     <ClInclude Include="Header\AttackUnion.h" />
     <ClInclude Include="Header\BlueBuff.h" />
+    <ClInclude Include="Header\BossBullet.h" />
     <ClInclude Include="Header\SpawnFire.h" />
     <ClInclude Include="Header\EnergyBall.h" />
     <ClInclude Include="Header\FallingStone.h" />
@@ -66,15 +68,18 @@
     <ClInclude Include="Header\AceMonster.h" />
     <ClInclude Include="Header\NormalBullet.h" />
     <ClInclude Include="Header\PlayerBullet.h" />
+    <ClInclude Include="Header\RedThunder.h" />
     <ClInclude Include="Header\Scene_Parsed.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BossLight.cpp" />
     <ClCompile Include="Code\AbsFac_GameObject.cpp" />
     <ClCompile Include="Code\AceBoss.cpp" />
     <ClCompile Include="Code\AceGameObject.cpp" />
     <ClCompile Include="Code\AceUnit.cpp" />
     <ClCompile Include="Code\AttackUnion.cpp" />
     <ClCompile Include="Code\BlueBuff.cpp" />
+    <ClCompile Include="Code\BossBullet.cpp" />
     <ClCompile Include="Code\FallingStone.cpp" />
     <ClCompile Include="Code\BlackBoard_Monster.cpp" />
     <ClCompile Include="Code\BlackBoard_Player.cpp" />
@@ -122,6 +127,7 @@
     <ClCompile Include="Code\AceMonster.cpp" />
     <ClCompile Include="Code\NormalBullet.cpp" />
     <ClCompile Include="Code\PlayerBullet.cpp" />
+    <ClCompile Include="Code\RedThunder.cpp" />
     <ClCompile Include="Code\Scene_Parsed.cpp" />
   </ItemGroup>
   <ItemGroup>

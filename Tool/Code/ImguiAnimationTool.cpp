@@ -1518,10 +1518,25 @@ void CImguiAnimationTool::CreateKeyframesWithLinearInterpolation(
 
     timeline.push_back(lastKeyframe);
 
+
+    int num_decimal_places = 2; // 소수점 단위 설정
+
+    // 소수점 단위 표현
+    int multiplier = static_cast<int>(pow(10, num_decimal_places));
+
+
     // 중간 키프레임 생성 및 보간
-    for (int i = 1; i < numKeyframes - 1; ++i) {
+    for (int i = 1; i < numKeyframes - 1; ++i) 
+    {
         float time = i * timeStep;
         float t = time;  // 시간을 보간 계수로 사용
+
+        int itextureRange = _maxTexture - _minTexture + 1; // 텍스처 범위 계산
+        int iTextureNum = _minTexture + (i % itextureRange); // 현재 인덱스에 따라 텍스처 값 설정
+
+        // 매 키프레임마다 순차적으로 증가 및 감소한 값을 생성하여 추가
+        float step = (maxValue - minValue) / (numKeyframes - 1); // 증가/감소 단계
+
 
         // 각각의 속성에 대해 보간값을 계산
         _vec3 scale = Lerp(minscaleValue, maxscaleValue, t);
@@ -1540,13 +1555,40 @@ void CImguiAnimationTool::CreateKeyframesWithLinearInterpolation(
 
         // 값 보간
         keyframe.time = ftime;
-        keyframe.value = value;
+
+        if (m_bRendomValue)
+        {
+            // 순차적으로 증가 및 감소한 소수점 값 생성
+            if (i < numKeyframes / 2) 
+            {
+                keyframe.value = minValue + i * step; // 최소값에서 증가
+            }
+            else
+            {
+                keyframe.value = maxValue - (i - numKeyframes / 2) * step; // 최대값에서 감소
+            }
+        }
+        else
+        {
+            keyframe.value = value;
+        }
+
+
         keyframe.vScale = scale;
         keyframe.vRot = rotation;
         keyframe.vPos = translation;
-        keyframe.texureframe = iTexture;
 
-        timeline.push_back(keyframe);
+        if (m_bIndividualTexture)
+        {
+            keyframe.texureframe = iTextureNum;
+        }
+        else
+        {
+            keyframe.texureframe = iTexture;
+        }
+
+        // 기존 timeline 벡터에 키프레임을 이어서 추가
+        timeline.emplace_back(keyframe);
     }
 
     // 시간에 따라 키프레임 정렬
@@ -2516,9 +2558,19 @@ void CImguiAnimationTool::KeyframeAutomaticGeneration()
     ImGui::InputFloat(u8"키프레임 수 입력", &numKeyframes);
     ImGui::Separator();
 
+    ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::SeparatorText(u8"개별 텍스처 설정");
+    ImGui::Checkbox(u8"개별 텍스처", &m_bIndividualTexture);
+    ImGui::Separator();
+
+    ImGui::Dummy(ImVec2(0, 5)); // 공백
+    ImGui::SeparatorText(u8"랜덤 벨류 설정");
+    ImGui::Checkbox(u8"랜덤 벨류", &m_bRendomValue);
+    ImGui::Separator();
+
     if (ImGui::Button(u8"자동 생성")) {
         // 버튼이 클릭되면 timeline 벡터를 비우고 CreateKeyframesWithLinearInterpolation 함수 호출
-        timeline[m_iCurType].clear();
+        //timeline[m_iCurType].clear();
 
         CreateKeyframesWithLinearInterpolation(timeline[m_iCurType],
             _v2Time.x, _v2Time.y,

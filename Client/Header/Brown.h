@@ -8,6 +8,14 @@
 #include "MonsterPunch.h"
 #include "Awareness.h"
 
+//디버깅용 
+#include "RedLaser.h"
+#include "FallingStone.h"
+#include "SlowThunder.h"
+#include "EnergyBall.h"
+#include "SpawnFire.h"
+#include "BlueBuff.h"
+#include "RedThunder.h"
 
 BEGIN(Engine)
 
@@ -40,7 +48,7 @@ private:
 	HRESULT				Add_Component();
 	virtual void		Free();
 
-	// Get, Set 함수 만들기 --------------------------------------------------
+	// Get, Set 함수 만들기 
 public: 
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
@@ -50,17 +58,18 @@ public:
 	
 	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
 		
-	// 충돌 -------------
+	// 충돌 
 protected: 
 	virtual void	OnCollision(CGameObject* pDst);
 	virtual void	OnCollisionEntered(CGameObject* pDst);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionBox* pShape;
 
+	//블랙보드
 private:
 	void	Update_InternalData();
 
-protected: //블랙보드 
+protected:  
 	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster; // 블랙보드 몬스터 
 	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player;	// 블랙보드 플레이어
 
@@ -182,7 +191,7 @@ Speed 9 =
 OutputDebugString(L"▶ : 충돌 관련 디버그 
 OutputDebugString(L"▷ : 상태머신 관련 디버그 
 
-// 변수값이랑 같이 
 swprintf_s(debugString, L"Brown - 변수 확인 m_fAwareness = %f\n", m_fAwareness);
 OutputDebugStringW(debugString);
+
 */

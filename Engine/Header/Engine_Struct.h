@@ -81,6 +81,21 @@ namespace Engine
 
 	}Attribute;
 
+	typedef struct Frame
+	{
+		//Frame
+		_float		fFrame = 0.f;
+		_float		fFrameEnd = 0.f;
+		_float		fFrameSpeed = 0.f;
+
+		//Repeat
+		_float		fRepeat = 0;
+
+		//LifeTime
+		_float		fAge = 0.f;
+		_float		fLifeTime = 0.f;
+
+	}FRAME;
 
 	typedef struct tagBoundingBox
 	{

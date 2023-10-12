@@ -1,21 +1,9 @@
 #pragma once
-#include "AceUnit.h"
+#include "AttackUnion.h"
 
-#include "Export_System.h"
-#include "Export_Utility.h"
-
-BEGIN(Engine)
-
-class CRcBufferComp;
-class CTextureComponent;
-class CTransformComponent;
-class CColliderComponent;
-
-END
-
-class CRedLaser : public CAceUnit
+class CRedLaser : public CAttackUnion
 {
-	DERIVED_CLASS(CAceUnit, CRedLaser)
+	DERIVED_CLASS(CAttackUnion, CRedLaser)
 
 private:
 	explicit CRedLaser(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -29,16 +17,11 @@ public:
 	virtual void		Render_GameObject() override;
 
 	static CRedLaser* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
-								_float _x, _float _y, _float _z);
+								_float _x, _float _y, _float _z, CAceUnit* pOwner);
 
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
-
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -55,11 +38,6 @@ protected:
 
 	//º¯¼ö
 private:
-	_float m_fFrame;
-	_float m_fFrameEnd;
-	_float m_fFrameSpeed;
-
-	_vec3 m_vOrigin;
-	wstring CollideName;
+	_bool KnockBack = FALSE;
 };
 
