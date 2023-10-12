@@ -338,6 +338,9 @@
     <ClCompile Include="Code\Interface\ITeamAgent.cpp">
       <Filter>13. Interface</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Serialize\Serialize_BaseClass.cpp">
+      <Filter>12. Serialize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. BaseClass">

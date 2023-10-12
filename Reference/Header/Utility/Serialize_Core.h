@@ -2,6 +2,8 @@
 
 #include "Engine_Define.h"
 
+BEGIN(Engine)
+
 enum ESERIALIZE_PROCESS : _uint
 {
 	ESERIALIZE_PROCESS_IMMEDIATE,
@@ -29,7 +31,8 @@ enum ESERIALIZE_TYPE
 class ENGINE_DLL FSeialize_Header
 {
 public:
-	ESERIALIZE_TYPE		strType;		// 타입 태그
-	string				strName;		// 이름 태그
+	ESERIALIZE_TYPE		eType = static_cast<ESERIALIZE_TYPE>(0);		// 타입 태그
+	string				strName = "";		// 이름 태그
 };
 
+END

@@ -23,6 +23,18 @@ END
 class CDynamicCamera;
 class CPlayerLighter;
 
+/// <summary>
+/// 플레이어 생성용 구조체
+/// vPos, vRot, vScale, fPriority[3]
+/// </summary>
+struct FPlayer_Create
+{
+	_vec3 vPos = { 0.f, 0.f, 0.f };
+	_vec3 vRot = { 0.f, 0.f, 0.f };
+	_vec3 vScale = { 1.f, 1.f, 1.f };
+	_float fPriority[static_cast<_uint>(EPRIORITY_TYPE::SIZE)] = {0.f, 0.f, 0.f};
+};
+
 class CPlayer : public CAceUnit
 {
 	DERIVED_CLASS(CAceUnit, CPlayer)
@@ -32,7 +44,7 @@ private:
 	virtual ~CPlayer();
 
 public:
-	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FPlayer_Create& tCreate);
 
 public:
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
@@ -44,6 +56,7 @@ public:
 
 	// =============================상태 추가==============================
 	virtual HRESULT		Ready_GameObject() override;
+	virtual HRESULT		Ready_GameObject(const FPlayer_Create& tCreate);
 	// ====================================================================
 private:
 	// ============================손 상태 체크============================

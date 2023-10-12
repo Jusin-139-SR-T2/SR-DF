@@ -967,7 +967,7 @@ void CImguiWin_MapTool::Save_SceneAll()
         FSceneData& tSceneData = m_vecScene[i];
 
         FSerialize_Scene tSceneSerial;
-        tSceneSerial.tHeader.strType = ESERIALIZE_SCENE;
+        tSceneSerial.tHeader.eType = ESERIALIZE_SCENE;
         tSceneSerial.tHeader.strName = tSceneData.strName;
         tSceneSerial.refTerrainName = tSceneData.strName;
 
@@ -977,7 +977,7 @@ void CImguiWin_MapTool::Save_SceneAll()
             FLayerData& tLayerData = tSceneData.vecLayer[j];
 
             FSerialize_Layer tLayerSerial;
-            tLayerSerial.tHeader.strType = ESERIALIZE_LAYER;
+            tLayerSerial.tHeader.eType = ESERIALIZE_LAYER;
             tLayerSerial.tHeader.strName = tLayerData.strName;
             tLayerSerial.fPriority = tLayerData.fPriority;
             // 완료시 씬에 직렬화 추가
@@ -989,7 +989,7 @@ void CImguiWin_MapTool::Save_SceneAll()
                 FObjectData& tObjectData = tLayerData.vecObject[k];
 
                 FSerialize_GameObject tObject;
-                tObject.tHeader.strType = ESERIALIZE_LAYER;
+                tObject.tHeader.eType = ESERIALIZE_LAYER;
                 tObject.tHeader.strName = tObjectData.strName;
                 // 완료시 레이어에 직렬화 추가
                 tLayerSerial.vecGameObject.push_back(tObject);
@@ -1133,7 +1133,7 @@ void CImguiWin_MapTool::Save_Terrain(const _int iSelected_Scene)
 
     // 데이터 구성
     FSerialize_Terrain tTerrainSerial;
-    tTerrainSerial.tHeader.strType = ESERIALIZE_TERRAIN;
+    tTerrainSerial.tHeader.eType = ESERIALIZE_TERRAIN;
     tTerrainSerial.tHeader.strName = tTerrain.strName;
     tTerrainSerial.vVertexCount = tTerrain.vVertexCnt;
     tTerrainSerial.vScale = tTerrain.vScale;

@@ -152,7 +152,7 @@ void CMainApp::Render_FrameRate()
 {
 	_float fFrameRate = Engine::Get_FrameRate(L"Frame");
 	_float fTimeDelta = Engine::Get_TimeDelta(L"Timer_FPS");
-	_float fResultFrameRate = static_cast<int>(fFrameRate / (fTimeDelta * fFrameRate));
+	_float fResultFrameRate = static_cast<_float>(fFrameRate / (fTimeDelta * fFrameRate));
 
 	wstringstream ss;
 	ss << fResultFrameRate;

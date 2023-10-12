@@ -48,6 +48,8 @@ protected:
 	template <typename T>
 	T* Set_DefaultComponent_FromProto(COMPONENTID eID, const _tchar* pComponentTag, const _tchar* pProtoTag);
 
+	//HRESULT			Delete_Component(COMPONENTID eID, const _tchar* pComponentTag);
+	HRESULT			Delete_Component(CComponent* pComponent);
 protected:
 	_unmap<wstring, CComponent*>		m_mapComponent[ID_END];
 	LPDIRECT3DDEVICE9						m_pGraphicDev;

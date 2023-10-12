@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "SlowThunder.h"
 
+#include "Player.h"
+
 CSlowThunder::CSlowThunder(LPDIRECT3DDEVICE9 pGraphicDev)
 	:Base(pGraphicDev)
 {

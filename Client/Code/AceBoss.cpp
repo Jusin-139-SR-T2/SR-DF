@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "AceBoss.h"
 
 CAceBoss::CAceBoss(LPDIRECT3DDEVICE9 pGraphicDev)

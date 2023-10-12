@@ -2,6 +2,9 @@
 
 #include "Serialize_BaseClass.h"
 
+#include "Export_System.h"
+#include "Export_Utility.h"
+
 
 CTerrainBufferComp::CTerrainBufferComp()
 	: m_dwCountX(0U), m_dwCountZ(0U)
@@ -136,6 +139,8 @@ HRESULT CTerrainBufferComp::Ready_Buffer(const _tchar* pFileName, const _ulong& 
 	m_IdxFmt = D3DFMT_INDEX32;
 
 	m_pPos = new _vec3[m_dwVtxCnt];
+
+	
 
 	// 여기서 위에서 입력한 내용을 토대로 버퍼의 크기를 확보한다.
 	FAILED_CHECK_RETURN(CVIBufferComp::Ready_Buffer(), E_FAIL);

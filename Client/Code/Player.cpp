@@ -51,8 +51,8 @@ HRESULT CPlayer::Ready_GameObject()
     m_gHp.Cur = m_gHp.Max;
     m_fChage.Max = 0.f;
 
-    // 플레이어 위치 세팅
-    m_pTransformComp->Set_Pos({ 10.f, 0.f, 10.f });
+    // 플레이어 행렬 초기화
+    m_pTransformComp->Set_Pos({ 10.f, 10.f, 10.f });
     m_pTransformComp->Readjust_Transform();
 
     m_pLeftHandComp->Set_Pos({ -300.f, -363.f, 0.f });	                        // 이미지 위치
@@ -77,7 +77,6 @@ HRESULT CPlayer::Ready_GameObject()
     m_tPlayer_State.Add_Func(STATE_PLAYER::ATTACK, &ThisClass::Attack);     // 공격
     m_tPlayer_State.Add_Func(STATE_PLAYER::DIE, &ThisClass::Die);           // 죽음
 #pragma endregion
-
 
 #pragma region 플레이어의 왼손 상태 추가
     m_tLeftHand_State.Add_Func(STATE_LEFTHAND::NONE, &ThisClass::Left_None);                // 왼손 없음
@@ -109,6 +108,24 @@ HRESULT CPlayer::Ready_GameObject()
     // Tset (오브젝트 받아오는거)
     m_eObjectType = OBJECT_TYPE::TWO_HAND; // 초기상태 : 양손 주먹
     m_eObjectName = OBJECT_NAME::NONE; // 초기상태 : 없음
+
+    return S_OK;
+}
+
+HRESULT CPlayer::Ready_GameObject(const FPlayer_Create& tCreate)
+{
+    FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
+
+    for (_uint i = 0; i < static_cast<_uint>(EPRIORITY_TYPE::SIZE); i++)
+    {
+        m_fPriority[i] = tCreate.fPriority[i];
+    }
+    m_pTransformComp->Set_Pos(tCreate.vPos);
+    m_pTransformComp->Set_Rotation(tCreate.vRot);
+    m_pTransformComp->Set_Scale(tCreate.vScale);
+
+    // 플레이어 행렬 초기화
+    m_pTransformComp->Readjust_Transform();
 
     return S_OK;
 }
@@ -260,6 +277,9 @@ HRESULT CPlayer::Add_Component()
 
 bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
 {
+    if (m_pCamera == nullptr)
+        return false;
+
     _vec3	vLook;
 
     m_pTransformComp->Get_Info(INFO_LOOK, &vLook);
@@ -796,6 +816,9 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
 // 마우스 움직임
 void CPlayer::Mouse_Move()
 {
+    if (m_pCamera == nullptr)
+        return;
+
 #pragma region 1인칭
     if (m_pCamera->Get_One())
     {
@@ -918,7 +941,7 @@ void CPlayer::Mouse_Move()
 #pragma endregion
 }
 
-CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FPlayer_Create& tCreate)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -943,7 +966,8 @@ void CPlayer::Height_On_Terrain()
     _vec3		vPos = m_pTransformComp->Get_Pos();
 
     CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
-    NULL_CHECK(pTerrainBufferComp);
+    if (nullptr == pTerrainBufferComp)
+        return;
 
     _float	fHeight = m_pCalculatorComp->
         Compute_HeightOnTerrain(&vPos, 

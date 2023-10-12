@@ -23,7 +23,7 @@ private:
 	CComponent*		Find_Prototype(const _tchar* pProtoTag);
 
 private:
-	_unmap<const _tchar*, CComponent*>		m_mapProto;
+	_unmap<wstring, CComponent*>		m_mapProto;
 
 public:
 	virtual void	Free();

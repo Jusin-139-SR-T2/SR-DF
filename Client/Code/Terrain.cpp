@@ -35,6 +35,21 @@ CTerrain* CTerrain::Create(LPDIRECT3DDEVICE9 pGraphicDev)
     return pInstance;
 }
 
+CTerrain* CTerrain::Create(LPDIRECT3DDEVICE9 pGraphicDev, const char* pTerrainFileName)
+{
+    ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+    if (FAILED(pInstance->Ready_GameObject(pTerrainFileName)))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("Player Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
+}
+
 void CTerrain::Free()
 {
     SUPER::Free();
@@ -46,6 +61,24 @@ HRESULT CTerrain::Ready_GameObject()
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_pTransformComp->Set_ScaleX(1.f);
+
+    return S_OK;
+}
+
+HRESULT CTerrain::Ready_GameObject(const char* pTerrainFileName)
+{
+    FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
+
+    string strTerrainName = pTerrainFileName;
+    wstring strConvert(strTerrainName.begin(), strTerrainName.end());
+
+    Engine::Ready_Proto((L"Proto_" + strConvert + L"TerrainBufferComp").c_str(),
+        CTerrainBufferComp::Create(m_pGraphicDev, ("./Resource/Data/Terrain/" + strTerrainName + ".aterrain").c_str(),
+            L"./Resource/Texture/Terrain/FlatLand.bmp"));
+
+    Delete_Component(m_pBufferComp);
+    m_pBufferComp = Set_DefaultComponent_FromProto<CTerrainBufferComp>(
+            ID_STATIC, L"Com_Buffer", (L"Proto_" + strConvert + L"TerrainBufferComp").c_str());
 
     return S_OK;
 }
@@ -83,7 +116,7 @@ void CTerrain::Render_GameObject()
 
 HRESULT CTerrain::Add_Component()
 {
-    NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CTerrainBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_TerrainBuffer1Comp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CTerrainBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_TerrainBufferComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_TerrainTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 

@@ -385,7 +385,7 @@ void CImguiWin_ProtoTool::Save_Protos()
     {
         // Á÷·ÄÈ­
         FSerialize_Proto tProto;
-        tProto.tHeader.strType = ESERIALIZE_PROTO;
+        tProto.tHeader.eType = ESERIALIZE_PROTO;
         tProto.tHeader.strName = (*iter).first;
         tProto.eID = (*iter).second.eID;
         tProto.vPos = (*iter).second.vPos;

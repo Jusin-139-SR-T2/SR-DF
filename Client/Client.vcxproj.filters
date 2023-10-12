@@ -220,6 +220,12 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\03. BossAttack\00. BossBullet">
       <UniqueIdentifier>{373d549e-1107-4cd5-85d8-e72a46f764bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. =====Scene=====\03. ParsedScene">
+      <UniqueIdentifier>{e9f6b375-abee-4f0d-a9ac-0ece3a290be9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..=====Object=====\00. AbstractFactory">
+      <UniqueIdentifier>{4f024727-c272-4abe-9d81-b80cc7dd40cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -359,6 +365,12 @@
     </ClInclude>
     <ClInclude Include="Header\AceBoss.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Scene_Parsed.h">
+      <Filter>01. =====Scene=====\03. ParsedScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\AbsFac_GameObject.h">
+      <Filter>03..=====Object=====\00. AbstractFactory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -505,6 +517,12 @@
     </ClCompile>
     <ClCompile Include="Code\AceBoss.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scene_Parsed.cpp">
+      <Filter>01. =====Scene=====\03. ParsedScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AbsFac_GameObject.cpp">
+      <Filter>03..=====Object=====\00. AbstractFactory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

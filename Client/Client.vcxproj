@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\AbsFac_GameObject.h" />
     <ClInclude Include="Header\AceBoss.h" />
     <ClInclude Include="Header\AceGameObject.h" />
     <ClInclude Include="Header\AceUnit.h" />
@@ -65,8 +66,10 @@
     <ClInclude Include="Header\AceMonster.h" />
     <ClInclude Include="Header\NormalBullet.h" />
     <ClInclude Include="Header\PlayerBullet.h" />
+    <ClInclude Include="Header\Scene_Parsed.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\AbsFac_GameObject.cpp" />
     <ClCompile Include="Code\AceBoss.cpp" />
     <ClCompile Include="Code\AceGameObject.cpp" />
     <ClCompile Include="Code\AceUnit.cpp" />
@@ -119,6 +122,7 @@
     <ClCompile Include="Code\AceMonster.cpp" />
     <ClCompile Include="Code\NormalBullet.cpp" />
     <ClCompile Include="Code\PlayerBullet.cpp" />
+    <ClCompile Include="Code\Scene_Parsed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />
@@ -226,6 +230,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;$(SolutionDir)Reference\Header\RapidJson\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinFilesInUnityFile>2</MinFilesInUnityFile>
+      <MinUnityFiles>1</MinUnityFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -246,6 +252,8 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;$(SolutionDir)Reference\Header\RapidJson\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinFilesInUnityFile>2</MinFilesInUnityFile>
+      <MinUnityFiles>1</MinUnityFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -268,6 +276,8 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;$(SolutionDir)Reference\Header\RapidJson\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinFilesInUnityFile>2</MinFilesInUnityFile>
+      <MinUnityFiles>1</MinUnityFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -293,6 +303,8 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\;Header\;Include\;$(SolutionDir)Base\;$(SolutionDir)Reference\Header\;$(SolutionDir)Reference\Header\System\;$(SolutionDir)Reference\Header\Utility\;$(SolutionDir)Reference\Header\FMod\core\;$(SolutionDir)Reference\Header\FMod\fsbank\;$(SolutionDir)Reference\Header\FMod\studio\;$(SolutionDir)Reference\Header\Boost_1_83_0\;$(SolutionDir)Reference\Header\RapidJson\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinFilesInUnityFile>2</MinFilesInUnityFile>
+      <MinUnityFiles>1</MinUnityFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
