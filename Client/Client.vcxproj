@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BossLight.h" />
     <ClInclude Include="Header\AceBoss.h" />
     <ClInclude Include="Header\AceGameObject.h" />
     <ClInclude Include="Header\AceUnit.h" />
@@ -69,6 +70,7 @@
     <ClInclude Include="Header\RedThunder.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BossLight.cpp" />
     <ClCompile Include="Code\AceBoss.cpp" />
     <ClCompile Include="Code\AceGameObject.cpp" />
     <ClCompile Include="Code\AceUnit.cpp" />

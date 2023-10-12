@@ -24,6 +24,9 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_tFrame.fFrameSpeed = 12.f;
 	m_tFrame.fRepeat = 0.f;
+	m_tStat.fAwareness = 0.f;
+	m_tStat.fMaxAwareness = 15.f;
+
 
 	// Status
 	m_tStat.fAttackDistance = 16.f;
@@ -36,6 +39,9 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 	pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
 	pShape->vHalfSize = { 1.f, 0.7f, 0.3f };
+	
+	//블랙보드 등록 
+	Engine::Add_BlackBoard(L"MonsterUnion", CBlackBoard_Monster::Create());
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
 	m_tState_Obj.Set_State(STATE_OBJ::IDLE);
@@ -55,6 +61,7 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_tState_Obj.Add_Func(STATE_OBJ::PRE_ATTACK, &CAceBoss::AI_PreAttack);
 	m_tState_Obj.Add_Func(STATE_OBJ::SIDE_READY, &CAceBoss::AI_SideReady);
 	m_tState_Obj.Add_Func(STATE_OBJ::ROLL, &CAceBoss::AI_Roll);
+	m_tState_Obj.Add_Func(STATE_OBJ::SHOUT, &CAceBoss::AI_Shout);
 
 	// 공격
 	m_tState_Obj.Add_Func(STATE_OBJ::CLOSEATTACK, &CAceBoss::AI_CloseAttack);
@@ -123,6 +130,7 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	// 빌보드
 	Billboard(fTimeDelta);
 
+
 	//상태머신
 	m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
 
@@ -138,26 +146,31 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	        STATE_OBJ::SHOOT == m_tState_Obj.Get_State())
 			m_tFrame.fRepeat += 1;
 	}
-	#pragma region 테스트 장소 
 
-    if (Engine::IsKey_Pressing(DIK_N))
+
+#pragma region 테스트 장소 
+
+    if (Engine::IsKey_Pressed(DIK_N))
     {
-        m_gHp.Cur = 75.f;
+		m_bLightOn  = !m_bLightOn;
     }
 
     if (Engine::IsKey_Pressing(DIK_M))
     {
 		Engine::Add_GameObject(L"GameLogic", CRedThunder::Create(m_pGraphicDev, 5.f, 15.f, 15.f, MonsterPhase::Phase1, this));
-		/*
+		
         swprintf_s(debugString, L"BOSS - 변수 확인 m_tState_Obj = %d\n", m_tState_Obj);
-        //OutputDebugStringW(debugString);*/
+        //OutputDebugStringW(debugString);
     }
+
 #pragma endregion 
 
-	//물리 업데이트 코드
-	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 
+	Update_InternalData();
 
-	// Renderer -----------------------------------
+	//물리 업데이트 코드 - 콜라이더 위치 업데이트 
+	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); 
+
+	// Renderer 
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
 	return S_OK;
@@ -248,20 +261,63 @@ void CAceBoss::OnCollisionExited(CGameObject* pDst)
 
 #pragma endregion 
 
+#pragma region 블랙보드 
+
+void CAceBoss::Update_InternalData()
+{  
+	// 블랙보드 연결 대기, 안전 코드로 필수
+	if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+	{
+		m_wpBlackBoard_Monster.Set_BlackBoard(Engine::Get_BlackBoard(L"MonsterUnion"));
+		// 연결 실패
+		if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+			return;
+	}
+
+	// 안전 코드를 거치면 일반 포인터로 접근 허용.
+	CBlackBoard_Monster* pBlackBoard = m_wpBlackBoard_Monster.Get_BlackBoard();
+
+	// 여기서부터 블랙보드의 정보를 업데이트 한다.
+	pBlackBoard->Set_ControlLight(m_bLightOn) ;
+	pBlackBoard->Get_BossAwareness().Cur = m_tStat.fAwareness;
+}
+
+void CAceBoss::Update_BlackBoard()
+{
+	//// 블랙보드 연결 대기, 안전 코드로 필수
+	//if (!m_wpBlackBoard_Player.Get_BlackBoard())
+	//{
+	//	m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"BossLight"));
+	//	// 연결 실패
+	//	if (!m_wpBlackBoard_Player.Get_BlackBoard())
+	//		return;
+	//}
+
+	//// 안전 코드를 거치면 일반 포인터로 접근 허용.
+	//CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
+
+	//// 여기서부터 블랙보드의 정보를 얻어온다.
+	//m_fHp = pBlackBoard->Get_HP().Cur;
+}
+
+#pragma endregion 
+
 #pragma region 상태머신 : idle ~ Death
 
 void CAceBoss::AI_Idle(float fDeltaTime)
-{ if (m_tState_Obj.IsState_Entered())
+{
+	if (m_tState_Obj.IsState_Entered())
     {
-        //OutputDebugString(L"▷BOSS - 상태머신 : idle 돌입   \n");
+        OutputDebugString(L"▷BOSS - 상태머신 : idle 돌입   \n");
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"IdleReady");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+
+		Engine::Add_GameObject(L"GameLogic", CBossLight::Create(m_pGraphicDev, this));
     }
 
     if (m_tState_Obj.Can_Update())
     {
-        // 조건 - 플레이어가 시야각으로 들어오면 
         if (Detect_Player())
         {
             m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
@@ -270,16 +326,100 @@ void CAceBoss::AI_Idle(float fDeltaTime)
 
     if (m_tState_Obj.IsState_Exit())
     {
-        //OutputDebugString(L"▷BOSS - 상태머신 : idle 끝 \n");
+        OutputDebugString(L"▷BOSS - 상태머신 : idle 끝 \n");
     }
 }
 
 void CAceBoss::AI_Suspicious(float fDeltaTime)
 {
+	if (m_tState_Obj.IsState_Entered())
+	{
+		OutputDebugString(L"▷BOSS - 상태머신 : Suspicious 돌입   \n");
+
+		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"BackIdle");
+		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+		m_tFrame.fFrameSpeed = 10.f;
+
+		Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
+		m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BROWN, this));
+	}
+
+	if (m_tState_Obj.Can_Update())
+	{
+		if (Detect_Player()) 
+		{
+			m_tStat.fAwareness += fDeltaTime * 4.f;
+
+			if (m_tStat.fMaxAwareness <= m_tStat.fAwareness)
+			{
+				m_tStat.fAwareness = m_tStat.fMaxAwareness; 
+				m_tState_Obj.Set_State(STATE_OBJ::RELOADING);
+			}
+		}
+		else 
+		{
+			m_tStat.fAwareness -= fDeltaTime * 2.f;
+
+			if (0 >= m_tStat.fAwareness)
+			{
+				m_tStat.fAwareness = 0.f;
+				m_tState_Obj.Set_State(STATE_OBJ::IDLE);
+			}
+		}
+	};
+
+	if (m_tState_Obj.IsState_Exit())
+	{
+		OutputDebugString(L"▷BOSS - 상태머신 : Suspicious 끝   \n");
+	}
 }
 
 void CAceBoss::AI_Rest(float fDeltaTime)
 {
+	if (m_tState_Obj.IsState_Entered())
+	{
+		OutputDebugString(L"▷BOSS - 상태머신 : Rest 돌입   \n");
+		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"IdleReady");
+		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+		m_tFrame.fFrameSpeed = 10.f;
+	}
+
+	if (m_tState_Obj.Can_Update())
+	{
+		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
+		{
+			m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+		}
+	}
+
+	if (m_tState_Obj.IsState_Exit())
+	{
+		OutputDebugString(L"▷BOSS - 상태머신 : Rest 끝 \n");
+	}
+}
+
+void CAceBoss::AI_Reloading(float fDeltaTime)
+{
+	if (m_tState_Obj.IsState_Entered())
+	{
+		OutputDebugString(L"▷BOSS - 상태머신 : Reloading 돌입   \n");
+		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Reloading");
+		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+		m_tFrame.fFrameSpeed = 7.f;
+	}
+
+	if (m_tState_Obj.Can_Update())
+	{
+		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
+		{
+			m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+		}
+	}
+
+	if (m_tState_Obj.IsState_Exit())
+	{
+		OutputDebugString(L"▷BOSS - 상태머신 : Reloading 끝   \n");
+	}
 }
 
 void CAceBoss::AI_Chase(float fDeltaTime)
@@ -294,10 +434,6 @@ void CAceBoss::AI_Walk(float fDeltaTime)
 {
 }
 
-void CAceBoss::AI_Reloading(float fDeltaTime)
-{
-}
-
 void CAceBoss::AI_PreAttack(float fDeltaTime)
 {
 }
@@ -307,6 +443,10 @@ void CAceBoss::AI_SideReady(float fDeltaTime)
 }
 
 void CAceBoss::AI_Roll(float fDeltaTime)
+{
+}
+
+void CAceBoss::AI_Shout(float fDeltaTime)
 {
 }
 

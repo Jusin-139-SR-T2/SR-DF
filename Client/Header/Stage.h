@@ -6,6 +6,7 @@
 #include "Brown.h"
 #include "Gray.h"
 #include "Boss.h"
+#include "AceBoss.h"
 #include "AceObjectFactory.h"
 #include "PlayerLighter.h"
 #include "Bullet.h"
@@ -21,6 +22,7 @@
 #include "EnergyBall.h"
 #include "SpawnFire.h"
 #include "BlueBuff.h"
+#include "BossLight.h"
 
 class CStage : public Engine::CScene
 {

@@ -93,10 +93,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bullet", CBullet::Create(m_pGraphicDev)), E_FAIL);
 
 	// Monster - TEST중이라 상시로 서로 위치 바뀝니다. 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown", CBrown::Create(m_pGraphicDev, 3.f, 1.f, 25.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown2", CBrown::Create(m_pGraphicDev, 3.f, 1.f, 50.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CAceBoss::Create(m_pGraphicDev, 5.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown2", CBrown::Create(m_pGraphicDev, 5.f, 1.f, 50.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray", CGray::Create(m_pGraphicDev, 35.f, 1.f, 25.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray2", CGray::Create(m_pGraphicDev, 35.f, 1.f, 50.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown", CBrown::Create(m_pGraphicDev, 60.f, 1.f, 25.f)), E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev, 60.f, 1.f, 25.f)), E_FAIL);
 
 	// 스킬 실험실
