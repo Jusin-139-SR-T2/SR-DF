@@ -2,6 +2,7 @@
 #include "AceObjectFactory.h"
 #include "GameObject.h"
 
+#include "Serialize_BaseClass.h"
 
 BEGIN(Engine)
 
@@ -27,21 +28,27 @@ private:
 	virtual ~CAceFood();
 
 public:
-	PRIVATE virtual HRESULT		Ready_GameObject() override { return S_OK; }
+	static CAceFood* Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
+	static CAceFood* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial);
+
+private:
+	virtual void		Free();
+
+public:
+	PRIVATE virtual HRESULT		Ready_GameObject() override;
 	PUBLIC	virtual HRESULT		Ready_GameObject(const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
+	PUBLIC	virtual HRESULT		Ready_GameObject(const FSerialize_GameObject& tObjectSerial);
+
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
-	static CAceFood*	Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
+	
+protected:
+	virtual void		OnCollision(CGameObject* pDst);
+	virtual void		OnCollisionEntered(CGameObject* pDst);
+	virtual void		OnCollisionExited(CGameObject* pDst);
 
 protected:
-	virtual void	OnCollision(CGameObject* pDst);
-	virtual void	OnCollisionEntered(CGameObject* pDst);
-	virtual void	OnCollisionExited(CGameObject* pDst);
-
-private: 
-	virtual void		Free();
-
 	HRESULT				Add_Component(); // 컴포넌트 추가 
 	HRESULT				BillBoard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	void				Height_On_Terrain(); // 지형타기 

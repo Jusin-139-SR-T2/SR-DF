@@ -52,6 +52,11 @@ void CManagement::Add_GameObject(const _tchar* pLayerTag, CGameObject* const pOb
 	m_pScene_Current->Add_GameObject(pLayerTag, pObj);
 }
 
+void CManagement::Add_Layer(const _tchar* pLayerTag, CLayer* const pLayer)
+{
+	m_pScene_Current->Add_Layer(pLayerTag, pLayer);
+}
+
 HRESULT CManagement::Ready_Management(const EMANAGE_SCENE eType)
 {
 	m_eSceneProcess = eType;

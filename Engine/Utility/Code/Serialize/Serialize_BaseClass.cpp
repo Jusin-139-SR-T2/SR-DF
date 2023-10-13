@@ -194,23 +194,23 @@ void FSerialize_Scene::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 		for (size_t j = 0; j < vecLayer[i].vecGameObject.size(); j++)
 		{
 			Value gameobject(kObjectType);
-
+			const FSerialize_GameObject& tObjectSerial = vecLayer[i].vecGameObject[j];
 
 			// 오브젝트 헤더
 			Value gameobject_header(kObjectType);
-			gameobject_header.AddMember("type", Value().SetInt(vecLayer[i].vecGameObject[j].tHeader.eType), allocator);
-			gameobject_header.AddMember("name", Value().SetString(vecLayer[i].vecGameObject[j].tHeader.strName.c_str(), allocator), allocator);
+			gameobject_header.AddMember("type", Value().SetInt(tObjectSerial.tHeader.eType), allocator);
+			gameobject_header.AddMember("name", Value().SetString(tObjectSerial.tHeader.strName.c_str(), allocator), allocator);
 			gameobject.AddMember("header", gameobject_header, allocator);
 
 
 			// 오브젝트 식별자
 			Value gameobject_ID(kObjectType);
-			gameobject.AddMember("ID", Value().SetInt(vecLayer[i].vecGameObject[j].strID), allocator);
+			gameobject.AddMember("ID", Value().SetInt(tObjectSerial.eID), allocator);
 
 
 			// 태그 이름 배열로 넣기
 			Value arrtag(kArrayType);
-			for (const auto& tagItem : vecLayer[i].vecGameObject[j].bTag)
+			for (const auto& tagItem : tObjectSerial.bTag)
 			{
 				Value tag(kObjectType);
 				tag.AddMember("name", Value().SetString(tagItem.c_str(), allocator), allocator);
@@ -218,25 +218,32 @@ void FSerialize_Scene::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 			}
 			gameobject.AddMember("tags", arrtag, allocator);
 
-
 			// 우선도 설정
-			Value gameobject_priority1(kObjectType);
-			gameobject_priority1.AddMember("priority_update", Value().SetFloat(vecLayer[i].vecGameObject[j].fPriority_Update), allocator);
+			gameobject.AddMember("priority_update", Value().SetFloat(tObjectSerial.fPriority_Update), allocator);
+			gameobject.AddMember("use_priority_update", Value().SetBool(tObjectSerial.bUsePriority_Update), allocator);
+			gameobject.AddMember("priority_late_update", Value().SetFloat(tObjectSerial.fPriority_LateUpdate), allocator);
+			gameobject.AddMember("use_priority_late_update", Value().SetBool(tObjectSerial.bUsePriority_LateUpdate), allocator);
+			gameobject.AddMember("priority_render", Value().SetFloat(tObjectSerial.fPriority_Render), allocator);
+			gameobject.AddMember("use_priority_render", Value().SetBool(tObjectSerial.bUsePriority_Render), allocator);
 
-			Value gameobject_priority2(kObjectType);
-			gameobject_priority2.AddMember("use_priority_update", Value().SetBool(vecLayer[i].vecGameObject[j].bUsePriority_Update), allocator);
 
-			Value gameobject_priority3(kObjectType);
-			gameobject_priority3.AddMember("priority_late_update", Value().SetFloat(vecLayer[i].vecGameObject[j].fPriority_LateUpdate), allocator);
+			Value gameobject_pos(kObjectType);
+			gameobject_pos.AddMember("x", Value().SetFloat(tObjectSerial.vPos.x), allocator);
+			gameobject_pos.AddMember("y", Value().SetFloat(tObjectSerial.vPos.y), allocator);
+			gameobject_pos.AddMember("z", Value().SetFloat(tObjectSerial.vPos.z), allocator);
+			gameobject.AddMember("pos", gameobject_pos, allocator);
 
-			Value gameobject_priority4(kObjectType);
-			gameobject_priority4.AddMember("use_priority_late_update", Value().SetBool(vecLayer[i].vecGameObject[j].bUsePriority_LateUpdate), allocator);
+			Value gameobject_rot(kObjectType);
+			gameobject_rot.AddMember("x", Value().SetFloat(tObjectSerial.vRotation.x), allocator);
+			gameobject_rot.AddMember("y", Value().SetFloat(tObjectSerial.vRotation.y), allocator);
+			gameobject_rot.AddMember("z", Value().SetFloat(tObjectSerial.vRotation.z), allocator);
+			gameobject.AddMember("rot", gameobject_rot, allocator);
 
-			Value gameobject_priority5(kObjectType);
-			gameobject_priority5.AddMember("priority_render", Value().SetFloat(vecLayer[i].vecGameObject[j].fPriority_Render), allocator);
-
-			Value gameobject_priority6(kObjectType);
-			gameobject_priority6.AddMember("use_priority_render", Value().SetBool(vecLayer[i].vecGameObject[j].bUsePriority_Render), allocator);
+			Value gameobject_scale(kObjectType);
+			gameobject_scale.AddMember("x", Value().SetFloat(tObjectSerial.vScale.x), allocator);
+			gameobject_scale.AddMember("y", Value().SetFloat(tObjectSerial.vScale.y), allocator);
+			gameobject_scale.AddMember("z", Value().SetFloat(tObjectSerial.vScale.z), allocator);
+			gameobject.AddMember("scale", gameobject_scale, allocator);
 
 			// 배열에 넣기
 			arrObject.PushBack(gameobject, allocator);
@@ -302,6 +309,8 @@ _bool FSerialize_Scene::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 			FSerialize_GameObject gameobjectSR;
 			gameobjectSR.tHeader.eType = static_cast<ESERIALIZE_TYPE>(object["header"]["type"].GetInt());
 			gameobjectSR.tHeader.strName = object["header"]["name"].GetString();
+
+			gameobjectSR.eID = static_cast<EGO_CLASS>(object["ID"].GetInt());
 
 			gameobjectSR.vPos.x = object["pos"]["x"].GetFloat();
 			gameobjectSR.vPos.y = object["pos"]["y"].GetFloat();

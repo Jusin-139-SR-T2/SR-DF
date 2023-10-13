@@ -3,6 +3,8 @@
 #include "AceObjectFactory.h"
 #include "GameObject.h"
 
+#include "Serialize_BaseClass.h"
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -25,14 +27,21 @@ private:
 	virtual ~CAceWeapon();
 
 public:
+	static CAceWeapon* Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
+	static CAceWeapon* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial );
+
+private:
+	virtual void		Free();
+
+public:
 	virtual HRESULT		Ready_GameObject() override;
+	virtual HRESULT		Ready_GameObject(const FSerialize_GameObject& tObjectSerial);
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
-	static CAceWeapon* Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
+	
 
 private: // 함수 
-	virtual void		Free();
 	HRESULT				Add_Component();
 	HRESULT				BillBoard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	void				Height_On_Terrain();

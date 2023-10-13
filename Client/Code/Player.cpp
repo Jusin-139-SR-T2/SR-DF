@@ -112,17 +112,24 @@ HRESULT CPlayer::Ready_GameObject()
     return S_OK;
 }
 
-HRESULT CPlayer::Ready_GameObject(const FPlayer_Create& tCreate)
+HRESULT CPlayer::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
 {
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
-    for (_uint i = 0; i < static_cast<_uint>(EPRIORITY_TYPE::SIZE); i++)
-    {
-        m_fPriority[i] = tCreate.fPriority[i];
-    }
-    m_pTransformComp->Set_Pos(tCreate.vPos);
-    m_pTransformComp->Set_Rotation(tCreate.vRot);
-    m_pTransformComp->Set_Scale(tCreate.vScale);
+    m_pTransformComp->Set_Pos(tObjectSerial.vPos);
+    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
+    Set_ObjectName(strConvName);
+
+    m_fPriority[0] = tObjectSerial.fPriority_Update;
+    m_fPriority[1] = tObjectSerial.fPriority_LateUpdate;
+    m_fPriority[2] = tObjectSerial.fPriority_Render;
+
+    m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
+    m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
+    m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     // 플레이어 행렬 초기화
     m_pTransformComp->Readjust_Transform();
@@ -970,11 +977,26 @@ void CPlayer::Mouse_Move()
 #pragma endregion
 }
 
-CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FPlayer_Create& tCreate)
+CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
 
     if (FAILED(pInstance->Ready_GameObject()))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("Player Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
+}
+
+CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial)
+{
+    ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+    if (FAILED(pInstance->Ready_GameObject(tObjectSerial)))
     {
         Safe_Release(pInstance);
 

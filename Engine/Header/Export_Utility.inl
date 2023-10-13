@@ -43,7 +43,10 @@ void			Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj)
 	CManagement::GetInstance()->Add_GameObject(pLayerTag, pObj);
 }
 
-
+void			Add_Layer(const _tchar* pLayerTag, CLayer* const pLayer)
+{
+	CManagement::GetInstance()->Add_Layer(pLayerTag, pLayer);
+}
 
 
 

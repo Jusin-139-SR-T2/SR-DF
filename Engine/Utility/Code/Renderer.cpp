@@ -84,6 +84,8 @@ void CRenderer::Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev)
 // + 성희 추가
 void CRenderer::Render_AlphaTest(LPDIRECT3DDEVICE9& pGraphicDev)
 {
+	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);						// Z버퍼 ON
+	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 160);
@@ -96,6 +98,9 @@ void CRenderer::Render_AlphaTest(LPDIRECT3DDEVICE9& pGraphicDev)
 
 void CRenderer::Render_NonAlpha(LPDIRECT3DDEVICE9& pGraphicDev)
 {
+	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);						// Z버퍼 ON
+	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
 	for (auto& iter : m_RenderGroup[RENDER_NONALPHA])
 		iter->Render_GameObject();
 }

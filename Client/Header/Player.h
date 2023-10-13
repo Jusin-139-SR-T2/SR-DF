@@ -9,6 +9,8 @@
 #include "AceFood.h" 
 #include "PlayerBullet.h"
 
+#include "Serialize_BaseClass.h"
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -44,7 +46,8 @@ private:
 	virtual ~CPlayer();
 
 public:
-	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FPlayer_Create& tCreate);
+	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial);
 
 public:
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
@@ -56,7 +59,7 @@ public:
 
 	// =============================상태 추가==============================
 	virtual HRESULT		Ready_GameObject() override;
-	virtual HRESULT		Ready_GameObject(const FPlayer_Create& tCreate);
+	virtual HRESULT		Ready_GameObject(const FSerialize_GameObject& tObjectSerial);
 	// ====================================================================
 private:
 	// ============================손 상태 체크============================

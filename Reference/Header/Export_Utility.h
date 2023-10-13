@@ -43,6 +43,7 @@ inline void			Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev);
 
 // 게임 런타임용 오브젝트 생성기
 inline void			Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj);
+inline void			Add_Layer(const _tchar* pLayerTag, CLayer* const pLayer);
 
 
 // ProtoMgr

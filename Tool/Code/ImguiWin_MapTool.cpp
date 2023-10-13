@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <iostream>
 #include <fstream>
+#include <CubeObject.h>
 
 CImguiWin_MapTool::CImguiWin_MapTool()
 {
@@ -59,6 +60,25 @@ HRESULT CImguiWin_MapTool::Ready_ImguiWin()
     // 씬 브라우저
     m_strAdd_SceneName.reserve(20);
 
+    D3DXMatrixIdentity(&m_matView);
+    D3DXMatrixIdentity(&m_matProj);
+
+    ZeroMemory(m_vCamTranslate, sizeof(_vec3[INFO_END]));
+
+    m_vCamTranslate[INFO_RIGHT] = { 0.f, 0.f, 0.f };
+    m_vCamTranslate[INFO_UP] = { 0.f, 1.f, 0.f };
+    m_vCamTranslate[INFO_LOOK] = { 10.f, 10.f, 10.f };
+    m_vCamTranslate[INFO_POS] = { 0.f, 10.f, 0.f };
+
+    // 뷰 행렬을 만들어 장치에게 넘겨 놓는다.
+    D3DXMatrixLookAtLH(&m_matView, &Get_Pos(), &Get_Look(), &Get_Up());
+    CImguiMgr::GetInstance()->Get_GraphicDev()->SetTransform(D3DTS_VIEW, &m_matView);
+
+    // 투영 변환 행렬은 한번 만들어주면 다시 안만들어 주어도 된다.
+    // 다만 옵션이 바뀌면 만들어 주어야 한다.
+    D3DXMatrixPerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
+    CImguiMgr::GetInstance()->Get_GraphicDev()->SetTransform(D3DTS_PROJECTION, &m_matProj);
+
 	return S_OK;
 }
 
@@ -102,6 +122,9 @@ _int CImguiWin_MapTool::Update_ImguiWin(const _float& fTimeDelta)
             ImGui::DockBuilderFinish(dockspace_id);
             
             m_bFirstLoop = false;
+
+            // 프로토 타입들은 항상 탭에 들어오면 로드한다.
+            Load_ProtoAll();
 
             if (m_bScene_Init)
             {
@@ -215,6 +238,9 @@ void CImguiWin_MapTool::Layout_Browser_Scene()
 
                 // 로드된 씬의 번호를 입력해준다.
                 m_iLoaded_Scene = m_iSelected_Scene;
+
+                // 계층에 맞게 물체를 생성해준다.
+                Load_ObjectToScene();
 
                 // 터레인 정보로 로드한다.
                 Load_Terrain(m_iLoaded_Scene, m_vecScene[m_iLoaded_Scene].strName);
@@ -424,6 +450,36 @@ void CImguiWin_MapTool::Layout_Browser_Object()
 {
     if (ImGui::BeginTabItem(u8"오브젝트"))
     {
+        // 모든 프로토를 들여온다.
+        if (ImGui::Button(u8"프로토 다시 로드하기"))
+        {
+            Load_ProtoAll();
+        }
+
+        ImGui::SameLine();
+        ImGui::Dummy(ImVec2(100.f, 0.f));
+
+        ImGui::SameLine();
+        // 선택 씬 편집용으로 로드
+        if (ImGui::Button(u8"선택 레이어에 추가하기"))
+        {
+            // 선택한 씬을 로드하도록 한다.
+            Add_Object();
+        }
+
+        ImGui::Separator();
+
+        // 프로토 셀렉터
+        for (size_t i = 0; i < m_vecProto.size(); i++)
+        {
+            bool bIsSelected_Proto = (m_iSelected_Proto == i);
+
+            if (ImGui::Selectable(m_vecProto[i].strName.c_str(),
+                bIsSelected_Proto, ImGuiSelectableFlags_AllowDoubleClick))
+            {
+                m_iSelected_Proto = i;
+            }
+        }
 
         ImGui::EndTabItem();
     }
@@ -479,6 +535,7 @@ void CImguiWin_MapTool::Layout_Hierarchi(const ImGuiWindowFlags& iMain_Flags)
                 }
                 m_iSelected_Layer = i;
                 m_iSelected_Object = -1;
+                m_iSelected_Layer_Remain = i;
             }
 
             ImGui::Indent();
@@ -605,17 +662,17 @@ void CImguiWin_MapTool::Layout_Property_Layer()
 
 void CImguiWin_MapTool::Layout_Property_Object()
 {
-    _uint iSelected_Scene = m_iLoaded_Scene;
-    _uint iHierarchi_Layer = m_iSelected_Layer_Remain;
-    _uint iHierarchi_Object = m_iSelected_Object;
+    _int iSelected_Scene = m_iLoaded_Scene;
+    _int iSelected_Layer = m_iSelected_Layer_Remain;
+    _int iSelected_Object = m_iSelected_Object;
     
     _bool bIsEdited = false;    // 에딧되었을 때 변화 이벤트
 
-    if (iHierarchi_Layer == -1 && iHierarchi_Object == -1 && iSelected_Scene == -1)
+    if (iSelected_Layer == -1 && iSelected_Object == -1 && iSelected_Scene == -1)
         return;
 
     vector<FLayerData>& vecLayer = m_vecScene[iSelected_Scene].vecLayer;
-    vector<FObjectData>& vecObject = vecLayer[iHierarchi_Layer].vecObject;
+    vector<FObjectData>& vecObject = vecLayer[iSelected_Layer].vecObject;
 
     if (ImGui::CollapsingHeader(u8"이름"))
     {
@@ -625,9 +682,9 @@ void CImguiWin_MapTool::Layout_Property_Object()
         Set_Button_ReturnColor();
 
         // 입력부
-        vecObject[iHierarchi_Object].strName.reserve(20);
+        vecObject[iSelected_Object].strName.reserve(20);
         char  strInput[20] = {};
-        strcpy_s(strInput, vecObject[iHierarchi_Object].strName.c_str());
+        strcpy_s(strInput, vecObject[iSelected_Object].strName.c_str());
             
         ImGui::SameLine();
         ImGui::PushItemWidth(140.f);
@@ -642,11 +699,11 @@ void CImguiWin_MapTool::Layout_Property_Object()
                 });
 
             if (iter == vecObject.end())
-                vecObject[iHierarchi_Object].strName = strInput;
+                vecObject[iSelected_Object].strName = strInput;
             else
             {
                 // 자기 자신이름은 경고 내보내지 않음
-                if (vecObject[iHierarchi_Object].strName != strInput)
+                if (vecObject[iSelected_Object].strName != strInput)
                     m_bInput_Warning = true;
             }
         }
@@ -656,8 +713,9 @@ void CImguiWin_MapTool::Layout_Property_Object()
 
 
     ImGui::Separator();
-    if (ImGui::CollapsingHeader(u8"좌표"))
+    if (ImGui::CollapsingHeader(u8"트랜스폼"))
     {
+        ImGui::Text(u8"이동");
         // X
         Set_Button_NonActiveColor();
         ImGui::Button(u8"X", ImVec2(60, 0));
@@ -672,29 +730,31 @@ void CImguiWin_MapTool::Layout_Property_Object()
         // Z
         ImGui::SameLine();
         Set_Button_NonActiveColor();
-        ImGui::Button(u8"Y", ImVec2(60, 0));
+        ImGui::Button(u8"Z", ImVec2(60, 0));
         Set_Button_ReturnColor();
         
 
         ImGui::PushItemWidth((60.f + 6.f) * 3.f);
         if (ImGui::InputFloat3("##Translate", 
-            vecObject[iHierarchi_Object].vPos, "%.3f",
+            vecObject[iSelected_Object].vPos, "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            Clamp_Vec3(vecObject[iHierarchi_Object].vPos, 10000.f);
+            Clamp_Vec3(vecObject[iSelected_Object].vPos, 10000.f);
             bIsEdited = true;
         }
         if (ImGui::SliderFloat3("##TranslateSlider",
-            vecObject[iHierarchi_Object].vPos,
+            vecObject[iSelected_Object].vPos,
             -10000.f, 10000.f))
         {
             bIsEdited = true;
         }
         ImGui::PopItemWidth();
-    }
 
-    if (ImGui::CollapsingHeader(u8"회전"))
-    {
+
+        ImGui::Separator();//--------------------------------------------------
+
+
+        ImGui::Text(u8"회전");
         // X
         Set_Button_NonActiveColor();
         ImGui::Button(u8"X", ImVec2(60, 0));
@@ -709,28 +769,30 @@ void CImguiWin_MapTool::Layout_Property_Object()
         // Z
         ImGui::SameLine();
         Set_Button_NonActiveColor();
-        ImGui::Button(u8"Y", ImVec2(60, 0));
+        ImGui::Button(u8"Z", ImVec2(60, 0));
         Set_Button_ReturnColor();
         
         ImGui::PushItemWidth((60.f + 6.f) * 3.f);
         if (ImGui::InputFloat3("##Rotate",
-            vecObject[iHierarchi_Object].vRot, "%.3f",
+            vecObject[iSelected_Object].vRot, "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            Clamp_Vec3(vecObject[iHierarchi_Object].vRot, 360.f);
+            Clamp_Vec3(vecObject[iSelected_Object].vRot, 360.f);
             bIsEdited = true;
         }
         if (ImGui::SliderFloat3("##RoateSlider",
-            vecObject[iHierarchi_Object].vRot,
+            vecObject[iSelected_Object].vRot,
             -360.f, 360.f))
         {
             bIsEdited = true;
         }
         ImGui::PopItemWidth();
-    }
 
-    if (ImGui::CollapsingHeader(u8"크기"))
-    {
+
+        ImGui::Separator();//--------------------------------------------------
+
+
+        ImGui::Text(u8"크기");
         // X
         Set_Button_NonActiveColor();
         ImGui::Button(u8"X", ImVec2(60, 0));
@@ -745,20 +807,20 @@ void CImguiWin_MapTool::Layout_Property_Object()
         // Z
         ImGui::SameLine();
         Set_Button_NonActiveColor();
-        ImGui::Button(u8"Y", ImVec2(60, 0));
+        ImGui::Button(u8"Z", ImVec2(60, 0));
         Set_Button_ReturnColor();
         
         ImGui::PushItemWidth((60.f + 6.f) * 3.f);
         if (ImGui::InputFloat3("##Scale",
-            vecObject[iHierarchi_Object].vScale,
+            vecObject[iSelected_Object].vScale,
             "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            Clamp_Vec3(vecObject[iHierarchi_Object].vScale, 1000.f);
+            Clamp_Vec3(vecObject[iSelected_Object].vScale, 1000.f);
             bIsEdited = true;
         }
         if (ImGui::SliderFloat3("##ScaleSlider",
-            vecObject[iHierarchi_Object].vScale,
+            vecObject[iSelected_Object].vScale,
             -1000.f, 1000.f))
         {
             bIsEdited = true;
@@ -778,7 +840,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
         ImGui::PushItemWidth(60.f);
         ImGui::SameLine();
         if (ImGui::InputFloat("##PriorityUpdate",
-            &vecObject[iHierarchi_Object].fPriority[EPRIORITY_OBJECT_UPDATE],
+            &vecObject[iSelected_Object].fPriority[EPRIORITY_OBJECT_UPDATE],
             0.f, 0.f, "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -788,7 +850,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
 
         ImGui::SameLine();
         ImGui::Checkbox(u8"Use##Update",
-            &vecObject[iHierarchi_Object].bUsePriority[EPRIORITY_OBJECT_UPDATE]);
+            &vecObject[iSelected_Object].bUsePriority[EPRIORITY_OBJECT_UPDATE]);
         
 
         // LateUpdate
@@ -799,7 +861,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
         ImGui::PushItemWidth(60.f);
         ImGui::SameLine();
         if (ImGui::InputFloat("##PriorityLate",
-            &vecObject[iHierarchi_Object].fPriority[EPRIORITY_OBJECT_LATE],
+            &vecObject[iSelected_Object].fPriority[EPRIORITY_OBJECT_LATE],
             0.f, 0.f, "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -809,7 +871,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
 
         ImGui::SameLine();
         ImGui::Checkbox(u8"Use##Late",
-            &vecObject[iHierarchi_Object].bUsePriority[EPRIORITY_OBJECT_LATE]);
+            &vecObject[iSelected_Object].bUsePriority[EPRIORITY_OBJECT_LATE]);
 
         // Render
         Set_Button_NonActiveColor();
@@ -819,7 +881,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
         ImGui::PushItemWidth(60.f);
         ImGui::SameLine();
         if (ImGui::InputFloat("##PriorityRender", 
-            &vecObject[iHierarchi_Object].fPriority[EPRIORITY_OBJECT_RENDER],
+            &vecObject[iSelected_Object].fPriority[EPRIORITY_OBJECT_RENDER],
             0.f, 0.f, "%.3f",
             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
         {
@@ -829,7 +891,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
 
         ImGui::SameLine();
         ImGui::Checkbox(u8"Use##Render",
-            &vecObject[iHierarchi_Object].bUsePriority[EPRIORITY_OBJECT_RENDER]);
+            &vecObject[iSelected_Object].bUsePriority[EPRIORITY_OBJECT_RENDER]);
     }
 }
 
@@ -842,6 +904,8 @@ void CImguiWin_MapTool::Layout_Viewer(const ImGuiWindowFlags& iMain_Flags)
     // 뷰어
     if (ImGui::Begin(u8"뷰어", NULL, iMain_Flags | ImGuiWindowFlags_NoNavFocus))
     {
+        
+
         // 마진 없애기
         ImGuiStyle& style = ImGui::GetStyle();
         style.ItemSpacing = ImVec2(0, 2);
@@ -956,7 +1020,94 @@ void CImguiWin_MapTool::Layout_Viewer(const ImGuiWindowFlags& iMain_Flags)
             ImVec2((1.f - clipSize.x) * 0.5f, (1.f - clipSize.y) * 0.5f),
             ImVec2(clipSize.x + (1.f - clipSize.x) * 0.5f, clipSize.y + (1.f - clipSize.y) * 0.5f));
 
+        if (ImGui::IsItemHovered())
+        {
+            Input_Camera();
+        }
+
+        // 뷰 행렬을 만들어 장치에게 넘겨 놓는다.
+        D3DXMatrixLookAtLH(&m_matView, &Get_Pos(), &Get_Look(), &Get_Up());
+        CImguiMgr::GetInstance()->Get_GraphicDev()->SetTransform(D3DTS_VIEW, &m_matView);
+
+        // 카메라 업데이트
+        D3DXMatrixPerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
+        CImguiMgr::GetInstance()->Get_GraphicDev()->SetTransform(D3DTS_PROJECTION, &m_matProj);
+
     }   ImGui::End();
+}
+
+void CImguiWin_MapTool::Load_ObjectToScene()
+{
+    if (m_iLoaded_Scene == -1)
+        return;
+
+    // 현재 로드된 씬이 있다면 실제 씬에 메모리를 적재하여 물체를 생성한다.
+
+    FSceneData& tSceneData = m_vecScene[m_iLoaded_Scene];
+
+
+    for (size_t i = 0; i < tSceneData.vecLayer.size(); i++)
+    {
+        FLayerData& tLayerData = tSceneData.vecLayer[i];
+
+        Create_LayerToScene(tLayerData);
+
+        for (size_t j = 0; j < tLayerData.vecObject.size(); j++)
+        {
+            FObjectData& tObjectData = tLayerData.vecObject[j];
+            wstring strConvert(tLayerData.strName.begin(), tLayerData.strName.end());
+
+            Factory_GameObject(strConvert.c_str(), tObjectData.eObjectID, tObjectData);
+        }
+    }
+}
+
+void CImguiWin_MapTool::Create_LayerToScene(const FLayerData& tLayerData)
+{
+    wstring strConvert(tLayerData.strName.begin(), tLayerData.strName.end());
+
+    Engine::Add_Layer(strConvert.c_str(), Engine::CLayer::Create(tLayerData.fPriority));
+}
+
+void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, const FObjectData& tObjectData)
+{
+    switch (eClassID)
+    {
+    case Engine::ECLASS_NONE:
+        
+        break;
+    case Engine::ECLASS_PLAYER:
+        
+        break;
+    case Engine::ECLASS_BROWN:
+
+        break;
+    case Engine::ECLASS_GREY:
+
+        break;
+    case Engine::ECLASS_BOSS:
+
+        break;
+    case Engine::ECLASS_FOOD:
+
+        break;
+    case Engine::ECLASS_WEAPON:
+
+        break;
+    case Engine::ECLASS_THROW:
+
+        break;
+    case Engine::ECLASS_INTERACTION:
+
+        break;
+    case Engine::ECLASS_BUILDING:
+        Engine::Add_GameObject(pLayerTag, 
+            static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
+                tObjectData.vPos, tObjectData.vRot, tObjectData.vScale)));
+        break;
+    default:
+        break;
+    }
 }
 
 void CImguiWin_MapTool::Save_SceneAll()
@@ -980,23 +1131,35 @@ void CImguiWin_MapTool::Save_SceneAll()
             tLayerSerial.tHeader.eType = ESERIALIZE_LAYER;
             tLayerSerial.tHeader.strName = tLayerData.strName;
             tLayerSerial.fPriority = tLayerData.fPriority;
-            // 완료시 씬에 직렬화 추가
-            tSceneSerial.vecLayer.push_back(tLayerSerial);
-
+            
             // 오브젝트 파싱
             for (size_t k = 0; k < tLayerData.vecObject.size(); k++)
             {
                 FObjectData& tObjectData = tLayerData.vecObject[k];
 
-                FSerialize_GameObject tObject;
-                tObject.tHeader.eType = ESERIALIZE_LAYER;
-                tObject.tHeader.strName = tObjectData.strName;
-                // 완료시 레이어에 직렬화 추가
-                tLayerSerial.vecGameObject.push_back(tObject);
+                FSerialize_GameObject tObjectSerial;
+                tObjectSerial.tHeader.eType = ESERIALIZE_OBJECT;
+                tObjectSerial.tHeader.strName = tObjectData.strName;
 
-                // 여기부터 나중에 추가, 오브젝트의 정보
-                //tObject.bTag.emplace();
+                tObjectSerial.eID = tObjectData.eObjectID;
+
+                tObjectSerial.fPriority_Update = tObjectData.fPriority[0];
+                tObjectSerial.fPriority_LateUpdate = tObjectData.fPriority[1];
+                tObjectSerial.fPriority_Render = tObjectData.fPriority[2];
+
+                tObjectSerial.bUsePriority_Update = tObjectData.bUsePriority[0];
+                tObjectSerial.bUsePriority_LateUpdate = tObjectData.bUsePriority[1];
+                tObjectSerial.bUsePriority_Render = tObjectData.bUsePriority[2];
+
+                tObjectSerial.vPos = tObjectData.vPos;
+                tObjectSerial.vRotation = tObjectData.vRot;
+                tObjectSerial.vScale = tObjectData.vScale;
+
+                // 완료시 레이어에 직렬화 추가
+                tLayerSerial.vecGameObject.push_back(tObjectSerial);
             }
+            // 완료시 씬에 직렬화 추가
+            tSceneSerial.vecLayer.push_back(tLayerSerial);
         }
 
         // 각 씬 별로 파일을 내보냄
@@ -1034,12 +1197,12 @@ void CImguiWin_MapTool::Load_SceneAll()
     {
         cout << "폴더에 파일 없음!!" << endl;
         m_vecScene.clear();
+        Reset_Hierarchi();
     }
     else
     {
         m_vecScene.clear();
-        m_iSelected_Scene = -1;
-        m_iLoaded_Scene = -1;
+        Reset_Hierarchi();
 
         // 목록 로드
         do
@@ -1092,6 +1255,10 @@ void CImguiWin_MapTool::Import_Scene(const string& strName, FSerialize_Scene& tS
                     FSerialize_GameObject& tObjectSerial = tLayerSerial.vecGameObject[j];
                     FObjectData tObjectData;
 
+                    tObjectData.strName = tObjectSerial.tHeader.strName;
+
+                    tObjectData.eObjectID = tObjectSerial.eID;
+
                     tObjectData.fPriority[EPRIORITY_OBJECT_UPDATE] = tObjectSerial.fPriority_Update;
                     tObjectData.fPriority[EPRIORITY_OBJECT_LATE] = tObjectSerial.fPriority_LateUpdate;
                     tObjectData.fPriority[EPRIORITY_OBJECT_RENDER] = tObjectSerial.fPriority_Render;
@@ -1116,6 +1283,72 @@ void CImguiWin_MapTool::Import_Scene(const string& strName, FSerialize_Scene& tS
     }
     else
         cerr << "파일을 불러들일 수 없소!\n";
+}
+
+void CImguiWin_MapTool::Load_ProtoAll()
+{
+    // 씬 목록은 정해진 폴더에서 로드한다.
+    _finddata_t fd;
+    intptr_t handle;
+    if ((handle = _findfirst((g_strProtoPath + "*" + g_strProtoExt).c_str(), &fd)) == -1L)
+    {
+        cout << "폴더에 파일 없음!!" << endl;
+        m_vecProto.clear();
+    }
+    else
+    {
+        m_vecProto.clear();
+        m_iSelected_Proto = -1;
+
+        // 목록 로드
+        do
+        {
+            string strName = fd.name;
+            size_t extPos = strName.find_last_of('.');
+            if (extPos == string::npos)
+                continue;
+
+            // 확장자 체크 후 로드한다.
+            if (strName.substr(extPos) == g_strProtoExt)
+            {
+                FSerialize_Proto tProtoSerial;
+                FProtoData tProtoData;
+
+                Import_Proto(strName.substr((size_t)0, extPos), tProtoSerial, tProtoData);
+            }
+        } while (_findnext(handle, &fd) == S_OK);
+    }
+
+    _findclose(handle);
+}
+
+void CImguiWin_MapTool::Import_Proto(const string& strName, FSerialize_Proto& tProtoSerial, FProtoData& tProtoData)
+{
+    string strJson;
+    ifstream inputFile(g_strProtoPath + strName + g_strProtoExt);
+    if (inputFile.is_open())
+    {
+        // 문자열 쉽게 읽어오는 반복자
+        strJson = string(istreambuf_iterator<char>(inputFile), istreambuf_iterator<char>());
+        inputFile.close();
+        cout << "\n파일 불러옴!\n";
+
+        // 파싱 성공시 툴전용 Data에 전달
+        if (tProtoSerial.Receive_ByRapidJSON(strJson))
+        {
+            tProtoData.strName = tProtoSerial.tHeader.strName;
+            tProtoData.eID = tProtoSerial.eID;
+            tProtoData.vPos = tProtoSerial.vPos;
+            tProtoData.vRot = tProtoSerial.vRot;
+            tProtoData.vScale = tProtoSerial.vScale;
+
+            m_vecProto.push_back(tProtoData);
+        }
+    }
+    else
+    {
+        cerr << "파일을 불러들일 수 없소!\n";
+    }
 }
 
 void CImguiWin_MapTool::Apply_Terrain(const string& strTerrainName)
@@ -1170,15 +1403,12 @@ void CImguiWin_MapTool::Load_Terrain(const _int iSelected_Scene, const string& s
     if (iSelected_Scene == -1)
         return;
 
-    FTerrainData& tTerrain = m_vecScene[iSelected_Scene].tTerrain;
-
     // 폴더 순회로 데이터를 얻어냄
     _finddata_t fd;
     intptr_t handle;
     if ((handle = _findfirst((g_strTerrainPath + "*" + g_strTerrainExt).c_str(), &fd)) == -1L)
     {
         cout << "폴더에 파일 없음!!" << endl;
-        tTerrain = {};
     }
     // 터레인 관련 데이터가 없다면 로드하지 않고 새로운 데이터를 사용하여 만든다.
     else
@@ -1187,12 +1417,12 @@ void CImguiWin_MapTool::Load_Terrain(const _int iSelected_Scene, const string& s
         do
         {
             string strFdName = fd.name;
-            size_t extPos = strName.find_last_of('.');
+            size_t extPos = strFdName.find_last_of('.');
             if (extPos == string::npos)
                 break;
 
             // 로드하려는 이름과 파일이름 확인 후 파일 로드
-            if (strFdName == strName)
+            if (strFdName.substr((size_t)0, extPos) == strName)
             {
                 FSerialize_Terrain tTerrainSerial;
 
@@ -1213,7 +1443,7 @@ void CImguiWin_MapTool::Import_Terrain(const _int iSelected_Scene, const string&
     FTerrainData& tTerrain = m_vecScene[iSelected_Scene].tTerrain;
 
     string strJson;
-    ifstream inputFile(g_strTerrainPath + strName);
+    ifstream inputFile(g_strTerrainPath + strName + g_strTerrainExt);
     if (inputFile.is_open())
     {
         // 문자열 쉽게 읽어오는 반복자
@@ -1233,6 +1463,56 @@ void CImguiWin_MapTool::Import_Terrain(const _int iSelected_Scene, const string&
     else
     {
         cerr << "파일을 불러들일 수 없소!\n";
+    }
+}
+
+void CImguiWin_MapTool::Add_Object()
+{
+    if (m_iLoaded_Scene == -1 || m_iSelected_Layer_Remain == -1 || m_iSelected_Proto == -1)
+        return;
+
+    // 추가할 때 프로토의 기본 이름을 따른다.
+    // 이후 속성 탭에서 수정하는 방식을 따른다.
+    
+    const FProtoData& tProtoData = m_vecProto[m_iSelected_Proto];
+    FObjectData tObjectData;
+
+    tObjectData.eObjectID = tProtoData.eID;
+    tObjectData.vRot = tProtoData.vRot;
+    tObjectData.vScale = tProtoData.vScale;
+    tObjectData.strName = tProtoData.strName;
+
+    FLayerData& tLayerData = m_vecScene[m_iLoaded_Scene].vecLayer[m_iSelected_Layer_Remain];
+
+    auto iter = find_if(tLayerData.vecObject.begin(), tLayerData.vecObject.end(),
+        [&tObjectData](FObjectData& tDstObjectData) {
+            return tObjectData.strName == tDstObjectData.strName;
+        });
+    if (iter == tLayerData.vecObject.end())
+        tLayerData.vecObject.push_back(tObjectData);
+    // 같은 이름이 있으면 이름에 숫자를 붙여 추가한다.
+    else
+    {
+        _uint i = 0;
+        while(true)
+        {
+            stringstream ss;
+            ss << i;
+            string strAdd = tObjectData.strName + ss.str();
+
+            auto iterRe = find_if(tLayerData.vecObject.begin(), tLayerData.vecObject.end(),
+                [&strAdd](FObjectData& tDstObjectData) {
+                    return strAdd == tDstObjectData.strName;
+                });
+            if (iterRe == tLayerData.vecObject.end())
+            {
+                tObjectData.strName = strAdd;
+                tLayerData.vecObject.push_back(tObjectData);
+                break;
+            }
+
+            ++i;
+        }
     }
 }
 
@@ -1268,6 +1548,117 @@ void CImguiWin_MapTool::Set_Button_ReturnColor()
     ImGui::GetStyle().Colors[ImGuiCol_Button] = m_pStyle.Colors[ImGuiCol_Button];
     ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered] = m_pStyle.Colors[ImGuiCol_ButtonHovered];
     ImGui::GetStyle().Colors[ImGuiCol_ButtonActive] = m_pStyle.Colors[ImGuiCol_ButtonActive];
+}
+
+_bool CImguiWin_MapTool::Check_ObjectName_InLayer()
+{
+    return _bool();
+}
+
+void CImguiWin_MapTool::Input_Camera()
+{
+    // 간단하게 설명.
+    // 카메라는 마우스 가운데 클릭으로 뷰 기준 이동
+    
+
+    // 마우스 우클릭으로 뷰 기준 회전을 한다.
+    if (ImGui::IsMouseDragging(ImGuiMouseButton_Middle))
+    {
+        ImVec2 fDelta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Middle);
+        
+        _vec3 vLook = Get_Look() - Get_Pos();
+        D3DXVec3Normalize(&vLook, &vLook);
+        _vec3 vRight, vUp;
+        
+        //D3DXVec3Cross(&vLook, &vRight);
+    }
+
+    if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+    {
+        m_fDrag = ImGui::GetMouseDragDelta(ImGuiMouseButton_Right);
+    }
+
+    // 마우스 우클릭시 WASD로 카메라 자체를 이동시킬 수 있다.
+    if (ImGui::IsMouseDown(ImGuiMouseButton_Right))
+    {
+        _vec3 vUp = Get_Up();
+        _vec3 vLook = Get_Look() - Get_Pos();
+        _vec3 vRight;
+
+        D3DXVec3Normalize(&vLook, &vLook);
+        
+        D3DXVec3Cross(&vRight, &vUp, &vLook);
+        D3DXVec3Normalize(&vRight, &vRight);
+
+        D3DXVec3Cross(&vUp, &vLook, &vRight);
+        D3DXVec3Normalize(&vUp, &vUp);
+
+
+        ImVec2 fDelta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Right);
+        m_fDrag -= fDelta;
+        cout << m_fDrag.x << ", " << m_fDrag.y << endl;
+        if (ImGui::IsMouseDragging(ImGuiMouseButton_Right))
+        {
+            // x가 UpVector기준으로 회전, y가 RightVector기준으로 회전
+            _matrix matRotX, matRotY, matResult;
+            _vec4 vResult;
+            D3DXMatrixRotationAxis(&matRotX, &vUp, D3DXToRadian(m_fDrag.x * 0.034f));
+            D3DXMatrixRotationAxis(&matRotY, &vRight, D3DXToRadian(m_fDrag.y * 0.034f));
+
+            matResult = matRotX * matRotY;
+
+            D3DXVec3Transform(&vResult, &vLook, &matResult);
+
+            vLook = { vResult.x, vResult.y, vResult.z };
+
+            Get_Look() = vLook * D3DXVec3Length(&(Get_Look() - Get_Pos()));
+
+            vUp = Get_Up();
+            vLook = Get_Look() - Get_Pos();
+
+            D3DXVec3Normalize(&vLook, &vLook);
+
+            D3DXVec3Cross(&vRight, &vUp, &vLook);
+            D3DXVec3Normalize(&vRight, &vRight);
+
+            D3DXVec3Cross(&vUp, &vLook, &vRight);
+            D3DXVec3Normalize(&vUp, &vUp);
+        }
+
+        // Look 기준으로 화면을 이동
+        if (ImGui::IsKeyDown(ImGuiKey_W))
+        {
+            Get_Pos() += vLook * 3.f;
+            Get_Look() += vLook * 3.f;
+        }
+        else if (ImGui::IsKeyDown(ImGuiKey_S))
+        {
+            Get_Pos() -= vLook * 3.f;
+            Get_Look() -= vLook * 3.f;
+        }
+        else if (ImGui::IsKeyDown(ImGuiKey_A))
+        {
+            Get_Pos() -= vRight * 3.f;
+            Get_Look() -= vRight * 3.f;
+        }
+        else if (ImGui::IsKeyDown(ImGuiKey_D))
+        {
+            Get_Pos() += vRight * 3.f;
+            Get_Look() += vRight * 3.f;
+        }
+        else if (ImGui::IsKeyDown(ImGuiKey_Q))
+        {
+            Get_Pos() -= vUp * 3.f;
+            Get_Look() -= vUp * 3.f;
+        }
+        else if (ImGui::IsKeyDown(ImGuiKey_E))
+        {
+            Get_Pos() += vUp * 3.f;
+            Get_Look() += vUp * 3.f;
+        }
+    }
+
+    // 
 }
 
 

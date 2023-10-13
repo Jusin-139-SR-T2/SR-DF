@@ -5,29 +5,29 @@
 
 
 
-class FComponentData
-{
-public:
-
-};
-
-class FObjectData
-{
-public:
-	vector<FComponentData>		m_vecComponent;
-};
-
-class FLayerData
-{
-public:
-	vector<FObjectData>			m_vecObject;
-};
-
-class FSceneData
-{
-public:
-	vector<FLayerData>			m_vecTable;
-};
+//class FComponentData
+//{
+//public:
+//
+//};
+//
+//class FObjectData
+//{
+//public:
+//	vector<FComponentData>		m_vecComponent;
+//};
+//
+//class FLayerData
+//{
+//public:
+//	vector<FObjectData>			m_vecObject;
+//};
+//
+//class FSceneData
+//{
+//public:
+//	vector<FLayerData>			m_vecTable;
+//};
 
 
 class CProjectDataTable : public CBase
@@ -47,6 +47,6 @@ public:
 	void			Load_Project();
 
 private:
-	map<string, FSceneData>		m_mapTable;
+	//map<string, FSceneData>		m_mapTable;
 };
 

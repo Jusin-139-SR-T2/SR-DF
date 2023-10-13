@@ -134,7 +134,7 @@ HRESULT CScene_Parsed::Ready_Layer_Completed()
 
     Add_GameObject(L"UI", CUI_Player::Create(m_pGraphicDev));
 
-    Add_GameObject(L"GameLogic", CPlayer::Create(m_pGraphicDev, { {10.f, 10.f, 10.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, {0.f, 0.f, 0.f} }));
+    Add_GameObject(L"GameLogic", CPlayer::Create(m_pGraphicDev));
 
     return S_OK;
 }

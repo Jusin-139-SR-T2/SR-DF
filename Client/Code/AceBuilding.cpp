@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "AceBuilding.h"
 
+
+
 CAceBuilding::CAceBuilding(LPDIRECT3DDEVICE9 pGraphicDev)
     : CGameObject(pGraphicDev)
 {
@@ -36,9 +38,46 @@ CAceBuilding* CAceBuilding::Create(LPDIRECT3DDEVICE9 pGraphicDev,
     return pInstance;
 }
 
+CAceBuilding* CAceBuilding::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial)
+{
+    ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+    if (FAILED(pInstance->Ready_GameObject(tObjectSerial)))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("FoodObject Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
+}
+
 HRESULT CAceBuilding::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    return S_OK;
+}
+
+HRESULT CAceBuilding::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
+{
+    FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
+
+    m_pTransformComp->Set_Pos(tObjectSerial.vPos);
+    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
+    Set_ObjectName(strConvName);
+
+    m_fPriority[0] =  tObjectSerial.fPriority_Update;
+    m_fPriority[1] = tObjectSerial.fPriority_LateUpdate;
+    m_fPriority[2] = tObjectSerial.fPriority_Render;
+
+    m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
+    m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
+    m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     return S_OK;
 }
@@ -92,7 +131,8 @@ void CAceBuilding::Height_On_Terrain()
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
     CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
-    NULL_CHECK(pTerrainBufferComp);
+    if (pTerrainBufferComp == nullptr)
+        return;
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
         pTerrainBufferComp->Get_VtxPos(),

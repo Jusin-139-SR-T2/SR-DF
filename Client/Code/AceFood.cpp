@@ -33,6 +33,24 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
     return pInstance;
 }
 
+CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial)
+{
+    ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+    if (!pInstance)
+        return nullptr;
+
+    if (FAILED(pInstance->Ready_GameObject(tObjectSerial)))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("FoodObject Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
+}
+
 // Collision - 트리거 발동용 (event방식)
 void CAceFood::OnCollision(CGameObject* pDst) // 계속 충돌중 
 {
@@ -51,6 +69,13 @@ void CAceFood::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때
     Set_Dead();
 }
 
+HRESULT CAceFood::Ready_GameObject()
+{
+    FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    return S_OK;
+}
+
 HRESULT CAceFood::Ready_GameObject(const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
@@ -63,6 +88,28 @@ HRESULT CAceFood::Ready_GameObject(const _tchar* pObjTag, const _float _fx, cons
 
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
+
+    return S_OK;
+}
+
+HRESULT CAceFood::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
+{
+    FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
+
+    m_pTransformComp->Set_Pos(tObjectSerial.vPos);
+    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
+    Set_ObjectName(strConvName);
+
+    m_fPriority[0] = tObjectSerial.fPriority_Update;
+    m_fPriority[1] = tObjectSerial.fPriority_LateUpdate;
+    m_fPriority[2] = tObjectSerial.fPriority_Render;
+
+    m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
+    m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
+    m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     return S_OK;
 }
@@ -141,7 +188,8 @@ void CAceFood::Height_On_Terrain()
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
     CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
-    NULL_CHECK(pTerrainBufferComp);
+    if (nullptr == pTerrainBufferComp)
+        return;
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
         pTerrainBufferComp->Get_VtxPos(),

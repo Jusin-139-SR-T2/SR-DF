@@ -28,6 +28,9 @@ public:
 	CGameObject*	Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
 	void			Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj);
 
+	// 툴에서 쓰이는 함수
+	void			Add_Layer(const _tchar* pLayerTag, CLayer* const pLayer);
+
 public:
 	HRESULT			Ready_Management(const EMANAGE_SCENE eType);
 	_int			Update_Scene(const _float& fTimeDelta);

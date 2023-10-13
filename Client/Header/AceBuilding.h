@@ -3,6 +3,8 @@
 #include "AceObjectFactory.h"
 #include "GameObject.h"
 
+#include "Serialize_BaseClass.h"
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -33,15 +35,19 @@ private:
 
 public:
 	virtual HRESULT		Ready_GameObject() override;
+	virtual HRESULT		Ready_GameObject(const FSerialize_GameObject& tObjectSerial);
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
+
 	static CAceBuilding* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
 		const _tchar* pObjTag, 
 		const _float _fx, 
 		const _float _fy, 
 		const _float _fz,
 		CAceObjectFactory::OBJECT_DIRECTION pDirection = CAceObjectFactory::OBJECT_DIRECTION::SOUTH);
+
+	static CAceBuilding* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial);
 
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;

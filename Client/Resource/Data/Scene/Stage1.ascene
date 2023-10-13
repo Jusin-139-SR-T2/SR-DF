@@ -19,7 +19,240 @@
                 "name": "GameLogic"
             },
             "priority": 0.0,
-            "objects": []
+            "objects": [
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 100.0,
+                        "y": 100.0,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest0"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 50.0,
+                        "y": 15.0,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 45.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 15.0,
+                        "y": 20.0,
+                        "z": 15.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest1"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -50.0,
+                        "y": 200.0,
+                        "z": 50.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 80.0,
+                        "y": 100.0,
+                        "z": 80.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest2"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 100.0,
+                        "y": 100.0,
+                        "z": 100.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 30.0,
+                        "y": 200.0,
+                        "z": 30.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest3"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest4"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Cola"
+                    },
+                    "ID": 5,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 10.0,
+                        "y": 0.0,
+                        "z": 10.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 3.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Cola0"
+                    },
+                    "ID": 5,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 5.0,
+                        "y": 0.0,
+                        "z": 5.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 3.0
+                    }
+                }
+            ]
         },
         {
             "header": {

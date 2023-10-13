@@ -7,6 +7,8 @@
 
 #include "Awareness.h"
 
+#include "Serialize_BaseClass.h"
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -27,17 +29,22 @@ private:
 	virtual ~CGray();
 
 public:
+	static CGray* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CGray* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject tObjectSerial);
+
+private:
+	virtual void		Free();
+
+public:
 	virtual HRESULT Ready_GameObject() override;
+	virtual HRESULT Ready_GameObject(const FSerialize_GameObject tObjectSerial);
 	virtual _int	Update_GameObject(const _float& fTimeDelta) override;
 	virtual void	LateUpdate_GameObject() override;
 	virtual void	Render_GameObject() override;
 
-	static CGray* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
-
 private:
-	void				RenderSplitImages();
 	HRESULT				Add_Component();
-	virtual void		Free();
+	void				RenderSplitImages();
 
 	// Get, Set ÇÔ¼ö 
 public:

@@ -128,7 +128,7 @@ void CAwareness::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	if(m_bBossConnect)
-		m_pTextureComp->Render_Texture(m_fBossAwareness.Cur);
+		m_pTextureComp->Render_Texture(static_cast<_uint>(m_fBossAwareness.Cur));
 	else
 		m_pTextureComp->Render_Texture(_ulong(m_fFrame));
 

@@ -6,6 +6,8 @@
 #include "Serialize_Core.h"
 #include "Serialize_BaseClass.h"
 
+#include "ImguiWin_ProtoTool.h"
+
 const string g_strSceneExt = ".ascene";
 const string g_strTerrainExt = ".aterrain";
 const string g_strObjectExt = ".aobject";
@@ -106,7 +108,7 @@ private:	// 계층 관련 정의부
 	struct FObjectData
 	{
 		string		strName = "";
-		string		strObjectID = "";
+		EGO_CLASS		eObjectID = ECLASS_NONE;
 
 		_vec3		vPos = { 0.f,0.f,0.f };
 		_vec3		vRot = { 0.f,0.f,0.f };
@@ -143,7 +145,11 @@ private:
 		m_iSelected_Object_Remain = -1;
 		m_eSelectedProperty_Type = ESELECTED_TYPE_NONE;
 	}
-	
+private:
+	void			Load_ObjectToScene();
+	void			Create_LayerToScene(const FLayerData& tLayerData);
+	void			Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, const FObjectData& tObjectData);
+
 private:
 	// 목록에 있는 씬 모두 저장
 	void			Save_SceneAll();
@@ -154,11 +160,9 @@ private:
 	void			Load_SceneAll();
 	void			Import_Scene(const string& strName, FSerialize_Scene& tSceneSerial, FSceneData& tSceneData);
 
-	// 오브젝트 파싱 관련
-	void			Save_Object();
-	void			Export_Object();
-	void			Load_Object();
-	void			Import_Object();
+	// 프로토 로드 관련
+	void			Load_ProtoAll();
+	void			Import_Proto(const string& strName, FSerialize_Proto& tProtoSerial, FProtoData& tProtoData);
 
 private:
 	_bool						m_bScene_Init = true;
@@ -185,12 +189,16 @@ private:			// 터레인 관련
 	void			Load_Terrain(const _int iSelected_Scene, const string& strName);
 	void			Import_Terrain(const _int iSelected_Scene, const string& strName, FSerialize_Terrain& tTerrain);
 
+private:			// 프로토 관련
+	void			Add_Object();
+
+private:
+	vector<FProtoData>			m_vecProto;
+	_int						m_iSelected_Proto = -1;
+
 
 private:	// 속성 관련
 	_bool			m_bInput_Warning = false;
-
-
-	
 
 
 private:	// 유틸리티
@@ -216,11 +224,38 @@ private:	// 유틸리티
 			vVec.z = fValue;
 	}
 
+	_bool			Check_ObjectName_InLayer();
+
 	static int InputTextCallback(ImGuiInputTextCallbackData* data)
 	{
 		if (data->EventChar != 0 && strlen(data->Buf) >= 10)
 			return 1;
 		return 0;
 	}
+
+public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
+	GETSET_EX2(_vec3, m_vCamTranslate[INFO_RIGHT], Right, GET_REF, SET_C)
+	GETSET_EX2(_vec3, m_vCamTranslate[INFO_UP], Up, GET_REF, SET_C)
+	GETSET_EX2(_vec3, m_vCamTranslate[INFO_LOOK], Look, GET_REF, SET_C)
+	GETSET_EX2(_vec3, m_vCamTranslate[INFO_POS], Pos, GET_REF, SET_C)
+
+private:		// 카메라
+	void			Input_Camera();
+
+	ImVec2			m_fDrag = { 0.f, 0.f };
+
+	_vec3			m_vCamTranslate[INFO_END];
+	_vec3			m_vRot = { 0.f, 0.f, 0.f };
+	_vec3			m_vScale = { 1.f, 1.f, 1.f };
+	_matrix			m_matView;
+
+	_matrix			m_matProj;
+
+	_float			m_fFov = D3DXToRadian(60.f);
+	_float			m_fAspect = (float)WINCX / WINCY;
+	_float			m_fNear = 0.1f;
+	_float			m_fFar = 1000.f;
+
+	
 };
 

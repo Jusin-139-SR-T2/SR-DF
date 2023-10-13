@@ -26,6 +26,7 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 HWND g_hWnd;
 UINT g_ResizeWidth = 0, g_ResizeHeight = 0;     // 창 변화시 사이즈를 변경해 주기 위한 변수
+_bool   g_bLockEsc;                             // 비정상적인 종료를 막기위한 락입니다.
 CMainApp* g_pMainApp = nullptr;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:

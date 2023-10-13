@@ -26,7 +26,7 @@ class ENGINE_DLL FSerialize_GameObject
 {
 public:
 	FSeialize_Header				tHeader;
-	EGO_CLASS						strID;						// 실제 오브젝트의 원본 태그
+	EGO_CLASS						eID;						// 실제 오브젝트의 원본 태그
 
 	set<string>						bTag;						// 태그
 
