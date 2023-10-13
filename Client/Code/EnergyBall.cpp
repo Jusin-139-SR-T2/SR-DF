@@ -44,7 +44,7 @@ HRESULT CEnergyBall::Ready_GameObject()
 	m_pTransformComp->Readjust_Transform();
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 	pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 0.5f;
+	pShape->fRadius = 0.4f;
 
 	// 이미지 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"EnergyBall");
@@ -57,7 +57,7 @@ HRESULT CEnergyBall::Ready_GameObject()
 	m_tFrame.fAge = 0.f;
 
 	// 크기조정
-	m_pTransformComp->Set_Scale({ 1.f, 1.f, 1.f });
+	m_pTransformComp->Set_Scale({ 0.7f, 0.7f, 0.7f });
 
 	return S_OK;
 }
@@ -76,7 +76,7 @@ _int CEnergyBall::Update_GameObject(const _float& fTimeDelta)
 		m_tFrame.fFrame = 4;
 	}
 
-	if (m_tFrame.fAge < 2.f)
+	if (m_tFrame.fAge < m_fGuideTime)
 		Follow_Player(fTimeDelta);
 	else
 		m_pTransformComp->Move_Pos(&Dir, fTimeDelta, m_fMovingSpeed);
@@ -185,12 +185,14 @@ void CEnergyBall::Value_Setting(_float _x, _float _y, _float _z, MonsterPhase _p
 		m_tFrame.fFrameSpeed = 6.f;
 		m_fMovingSpeed = 3.f;
 		m_tFrame.fLifeTime = 4.f;
+		m_fGuideTime = 2.f;
 		break;
 
 	case Engine::Phase2:
 		m_tFrame.fFrameSpeed = 8.f;
 		m_fMovingSpeed = 5.f;
-		m_tFrame.fLifeTime = 4.f;
+		m_fGuideTime = 3.f;
+		m_tFrame.fLifeTime = 6.f;
 		break;
 
 	}

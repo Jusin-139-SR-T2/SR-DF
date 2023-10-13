@@ -117,15 +117,17 @@ private:
 public:
 	// 목표 상태머신(AI)
 	enum class STATE_OBJ {
-		IDLE, SUSPICIOUS, REST, CHASE,				// 경계	  (SUS = BACKIDLE)
-		RELOADING, RUN, WALK,						// 추격
-		PRE_ATTACK, SIDE_READY, ROLL, SHOUT,		// 전조 
-		CLOSEATTACK,  SHOOTING, HEAVYSHOOT, 
-		PHASE1_INSTALL, PHASE2_INSTALL, PHASE2_BUFF,
-		FALLING_STONE, ENERGY_BALL, 
-		RED_THUNDER, ROUND_FIRE,
-		HIT, DAZED, FACEPUNCH, FALLING,	EVASION,	// 피격
-		DEATH										// 죽음
+		IDLE, SUSPICIOUS, REST, CHASE,					// 경계	  (SUS = BACKIDLE)
+		RELOADING, RUN, WALK,							// 추격
+		
+		PRE_ATTACK, SIDE_READY, ROLL, SHOUT,			// 전조 
+		CLOSEATTACK,  SHOOTING, HEAVYSHOOT,				// 공격
+		PHASE1_INSTALL, PHASE2_INSTALL, PHASE2_BUFF,	//스킬패턴
+		FALLING_STONE, ENERGY_BALL,						//스킬패턴
+		RED_THUNDER, ROUND_FIRE,						//스킬패턴
+		
+		HIT, DAZED, FACEPUNCH, FALLING,					// 피격
+		DEATH											// 죽음
 		// 보스는 보스맵 전체가 시야범위이므로 벗어나지않음. 
 	};
 

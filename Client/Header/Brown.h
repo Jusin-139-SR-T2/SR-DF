@@ -1,31 +1,10 @@
 #pragma once
 
 #include "AceMonster.h"
-
 #include "BlackBoard_Monster.h"
 #include "BlackBoardPtr.h"
-
-#include "MonsterPunch.h"
 #include "Awareness.h"
-
-//디버깅용 
-#include "RedLaser.h"
-#include "FallingStone.h"
-#include "SlowThunder.h"
-#include "EnergyBall.h"
-#include "SpawnFire.h"
-#include "BlueBuff.h"
-#include "RedThunder.h"
-
-BEGIN(Engine)
-
-class CRcBufferComp;
-class CTextureComponent;
-class CTransformComponent;
-class CCalculatorComponent;
-class CColliderComponent;
-
-END
+#include "MonsterPunch.h"
 
 class CBrown : public CAceMonster
 {
@@ -86,6 +65,10 @@ private:
 	_bool		m_bArrive = false;
 	_bool		m_AttackOnce = false;
 
+	// 플레이어 갖고오기
+	CPlayer::STATE_RIGHTHAND	m_ePlayerRighthand;
+	CPlayer::STATE_PLAYER		m_ePlayerState;
+
 #pragma region 상태머신 enum셋팅
 	
 public: 
@@ -104,14 +87,14 @@ public:
 
 	// 행동 상태머신
 	enum class STATE_ACT {
-		IDLE, APPROACH, MOVING, ATTACK, GOHOME
+		IDLE, APPROACH, MOVING, ATTACK, GOHOME, FALLING
 	};
 
 	// 행동키
 	enum class ACTION_KEY { 
 		IDLE, 
 		RUN, WALK, INCHFORWARD, STRAFING, 
-		JUMP, 
+		JUMP, BEPUSHED,
 		NORMALATTACK, HEAVY_ATTACK,
 		GOHOME 
 	};
@@ -165,6 +148,7 @@ private:
 	void Approach(float fDeltaTime);		// AI_Run + AI_Walk
 	void Moving(float fDeltaTime);			// AI_InchForward + AI_Strafing
 	void Attack(float fDeltaTime);			// AI_NORMALATTACK + AI_HeavyAttack
+	void Falling(float fDeltaTime);			// Gohome
 	void GoHome(float fDeltaTime);			// Gohome
 #pragma endregion
 

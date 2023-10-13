@@ -44,6 +44,7 @@ private:
 	HRESULT Follow_Player(const _float fTimeDelta);
 
 	_float m_fMovingSpeed; 
+	_float m_fGuideTime;
 	_vec3 Dir;
 };
 

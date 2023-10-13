@@ -142,22 +142,21 @@ HRESULT CAwareness::Billboard_Aware()
 
 HRESULT CAwareness::Update_Awareness()
 {
+	// 또 오류터지면 static으로 걍 고정
+
 	if (CAwareness::TYPE::BROWN == m_eType)
 	{
-		CBrown* pBrown = static_cast<CBrown*>(m_pOwner);
-		FAILED_CHECK_RETURN(pBrown, E_FAIL);
+		CBrown* pBrown = dynamic_cast<CBrown*>(m_pOwner);
 		m_fAwareness = pBrown->Get_Awareness();
 	}
 	else if (CAwareness::TYPE::GRAY == m_eType)
 	{
-		CGray* pGray = static_cast<CGray*>(m_pOwner);
-		FAILED_CHECK_RETURN(pGray, E_FAIL);
+		CGray* pGray = dynamic_cast<CGray*>(m_pOwner);
 		m_fAwareness = pGray->Get_Awareness();
 	}
 	else if (CAwareness::TYPE::BOSS == m_eType)
 	{
-		CAceBoss* pBoss = static_cast<CAceBoss*>(m_pOwner);
-		FAILED_CHECK_RETURN(pBoss, E_FAIL);
+		CAceBoss* pBoss = dynamic_cast<CAceBoss*>(m_pOwner);
 		m_fAwareness = pBoss->Get_Awareness();
 	}
 

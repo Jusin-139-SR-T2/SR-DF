@@ -289,7 +289,37 @@ void CGray::OnCollision(CGameObject* pDst)
 }
 void CGray::OnCollisionEntered(CGameObject* pDst)
 {
-    //OutputDebugString(L"▶Gray 충돌시작 \n");
+    wstring str1 = pDst->Get_ObjectName();
+    wstring str2 = L"Player";
+
+    if (str1.compare(str2) == 0)
+    {
+        // Kick or Run = Falling  , 총기류 , 기타 공격 
+        if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
+            m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+        else if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
+        {
+            if (0 == m_gHp.Cur)
+            {
+                if (Random_variable(50))
+                    m_tState_Obj.Set_State(STATE_OBJ::HEADSHOT);
+                else
+                    m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+            }
+            m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+        }
+        else
+        {
+            if (0 == m_gHp.Cur)
+            {
+                m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+            }
+            if (Random_variable(60))
+                m_tState_Obj.Set_State(STATE_OBJ::HIT);
+            else
+                m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+        }
+    }
 }
 
 void CGray::OnCollisionExited(CGameObject* pDst)
@@ -329,7 +359,9 @@ void CGray::AI_Suspicious(float fDeltaTime)
     {
         //OutputDebugString(L"▷Gray - 상태머신 : Suspicious 진입  \n");
        Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
-           m_pTransformComp->Get_Pos().x + 0.2f, m_pTransformComp->Get_Pos().y + 1.f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::GRAY, this));
+           m_pTransformComp->Get_Pos().x ,
+           m_pTransformComp->Get_Pos().y + 1.4f,
+           m_pTransformComp->Get_Pos().z, CAwareness::TYPE::GRAY, this));
 
     }
 
@@ -498,7 +530,7 @@ void CGray::AI_Chase(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
         //OutputDebugString(L"▷Gray - 상태머신 : Chase 진입  \n");
-
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Rest");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 8.f;
@@ -589,6 +621,8 @@ void CGray::AI_Rest(float fDeltaTime)
     {
         //일종의 숨고르기 구간임 
         //OutputDebugString(L"▷Gray - 상태머신 : Rest 돌입   \n");
+
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Rest");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;

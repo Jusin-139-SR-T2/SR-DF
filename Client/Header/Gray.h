@@ -1,21 +1,9 @@
 #pragma once
 
 #include "AceMonster.h"
-
+#include "Awareness.h"
 #include "ThrowPipe.h"
 #include "MonsterPunch.h"
-
-#include "Awareness.h"
-
-BEGIN(Engine)
-
-class CRcBufferComp;
-class CTextureComponent;
-class CTransformComponent;
-class CCalculatorComponent;
-class CColliderComponent;
-
-END
 
 class CGray : public CAceMonster
 {

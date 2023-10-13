@@ -30,7 +30,6 @@ HRESULT CAceMonster::Ready_GameObject()
 _int CAceMonster::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
-	Get_PlayerPos();
 
     return S_OK;
 }

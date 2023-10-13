@@ -110,7 +110,8 @@ HRESULT CBrown::Ready_GameObject()
     m_tState_Act.Add_Func(STATE_ACT::APPROACH, &CBrown::Approach);
     m_tState_Act.Add_Func(STATE_ACT::MOVING, &CBrown::Moving);
     m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CBrown::Attack);
-    m_tState_Act.Add_Func(STATE_ACT::GOHOME, &CBrown::GoHome);
+    m_tState_Act.Add_Func(STATE_ACT::GOHOME, &CBrown::Falling);
+    m_tState_Act.Add_Func(STATE_ACT::FALLING, &CBrown::GoHome);
     
 #pragma endregion
 
@@ -123,6 +124,7 @@ HRESULT CBrown::Ready_GameObject()
     m_mapActionKey.Add_Action(ACTION_KEY::NORMALATTACK);
     m_mapActionKey.Add_Action(ACTION_KEY::HEAVY_ATTACK);
     m_mapActionKey.Add_Action(ACTION_KEY::GOHOME);
+    m_mapActionKey.Add_Action(ACTION_KEY::BEPUSHED); // 밀침당했을때 
 
 #pragma endregion
 
@@ -246,108 +248,33 @@ void CBrown::Free()
 
 void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중 
 {
-    //OutputDebugString(L"▶Brown 충돌중 \n");
-
-   // if(ePlayerState)
-
-   switch (ePlayerState)
-   {
-   //case CPlayer::STATE_PLAYER::RUN:
-   //    break;
-    case CPlayer::STATE_PLAYER::DOWN:
-      m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
-   //    break;
-   //case CPlayer::STATE_PLAYER::ATTACK:
-   //    break;
-   //case CPlayer::STATE_PLAYER::CHARGING:
-   //    break;
-   //case CPlayer::STATE_PLAYER::KICK:
-   //    break;
-   //case CPlayer::STATE_PLAYER::THROW_AWAY:
-   //    break;
-   }
-
-
-    ////플레이어와 충돌한거라면 
-    //switch (ePlayerRighthand)
-    //{
-    //case CPlayer::STATE_RIGHTHAND::HAND:
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::RUN_HAND:
-    //    m_tState_Obj.Set_State(STATE_OBJ::FALLING);
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::GUN:
-    //    m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::THOMPSON:
-    //    m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::STEELPIPE:
-    //    m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::BEERBOTLE:
-    //    m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::FRYINGPAN:
-    //    m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::KICK:
-    //    m_tState_Obj.Set_State(STATE_OBJ::FALLING);
-    //    break;
-    //}
-
-        //충돌체와 충돌한거라면 
-
+    
 }
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
-    //OutputDebugString(L"▶Brown 충돌 \n");
-    // 플레이어 무기상태, 플레이어가 공격했을때가 필요함 여기에 변화 
-    // 디폴트로 일단 넣어둠 
-   
-    ////충돌한게 플레이어라면 
-    //_int iCombo = (rand() % 2) + 1;
+    wstring str1 = pDst->Get_ObjectName();
+    wstring str2 = L"Player";
 
-    //switch (ePlayerRighthand)
-    //{
-    //case CPlayer::STATE_RIGHTHAND::HAND:
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::RUN_HAND:
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::GUN:
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::THOMPSON:
-    //    m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::STEELPIPE:
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::BEERBOTLE:
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::FRYINGPAN:
-    //    break;
-
-    //case CPlayer::STATE_RIGHTHAND::KICK:
-    //    break;
-    //}
-
-    //충돌한게 투사체라면
-
-
-   // //OutputDebugStringW(debugString);
+    if (str1.compare(str2) == 0)
+    {
+        // Kick or Run = Falling  , 총기류 , 기타 공격 
+        if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
+            m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+        else if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
+            m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+        else
+        {
+            if (0 == m_gHp.Cur)
+            {
+                m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+            }
+            if (Random_variable(60))
+                m_tState_Obj.Set_State(STATE_OBJ::HIT);
+            else
+                m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+        }
+    }
 }
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
@@ -376,7 +303,6 @@ void CBrown::Update_InternalData()
     // 여기서부터 블랙보드의 정보를 업데이트 한다.
     //pBlackBoard->Get_BrownAwareness().Cur = m_tStat.fAwareness;
 }
-
 
 #pragma endregion 
 
@@ -422,7 +348,9 @@ void CBrown::AI_Suspicious(float fDeltaTime)
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 
        Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
-           m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BROWN, this));
+           m_pTransformComp->Get_Pos().x + 0.1f, 
+           m_pTransformComp->Get_Pos().y + 1.3f,
+           m_pTransformComp->Get_Pos().z, CAwareness::TYPE::BROWN, this));
     }
 
     if (m_tState_Obj.Can_Update())
@@ -497,6 +425,7 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
           //OutputDebugString(L"▷Brown - 상태머신 : Chease 돌입   \n");
        // m_pTransformComp->m_vScale.x = 0.5f;
         m_tFrame.fFrameSpeed = 10.f; //원상복귀 
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -572,9 +501,10 @@ void CBrown::AI_Rest(float fDeltaTime)
     {
           //OutputDebugString(L"▷Brown - 상태머신 : Rest 진입   \n");
 
-        m_tFrame.fFrameSpeed = 15.f;
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Rest");
-         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        m_tFrame.fFrameSpeed = 15.f;
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -746,7 +676,6 @@ void CBrown::AI_HeavyAttack(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        //행동이 IDLE일때 가상키 누르기 
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].Act();
 
@@ -798,9 +727,12 @@ void CBrown::AI_Falling(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::BEPUSHED].Act();
+
         if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
         {
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            m_tState_Obj.Set_State(STATE_OBJ::REST);
         }
     }
 
@@ -1041,44 +973,25 @@ void CBrown::Idle(float fDeltaTime)
     if (m_tState_Act.Can_Update())
     {
         if (m_mapActionKey[ACTION_KEY::RUN].IsOnAct())
-        {
-              //OutputDebugString(L"▷Brown - 가상키 : RUN 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::APPROACH);
-        }
         if (m_mapActionKey[ACTION_KEY::WALK].IsOnAct())
-        {
-              //OutputDebugString(L"▷Brown - 가상키 : WALK 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::APPROACH);
-        }
 
         if (m_mapActionKey[ACTION_KEY::INCHFORWARD].IsOnAct())
-        {
-              //OutputDebugString(L"▷Brown - 가상키 : INCHFORWARD 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::MOVING);
-        }
-
         if (m_mapActionKey[ACTION_KEY::STRAFING].IsOnAct())
-        {
-              //OutputDebugString(L"▷Brown - 가상키 : STRAFING 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::MOVING);
-        }
-        if (m_mapActionKey[ACTION_KEY::NORMALATTACK].IsOnAct())
-        {
-              //OutputDebugString(L"▷Brown - 가상키 : ATTACK 확인    \n");
-            m_tState_Act.Set_State(STATE_ACT::ATTACK);
-        }
 
-        if (m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].IsOnAct())
-        {
-              //OutputDebugString(L"▷Brown - 가상키 : HEAVY_ATTACK 확인    \n");
+        if (m_mapActionKey[ACTION_KEY::NORMALATTACK].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::ATTACK);
-        }
+        if (m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::ATTACK);
 
         if (m_mapActionKey[ACTION_KEY::GOHOME].IsOnAct())
-        {
-              //OutputDebugString(L"▷Brown - 가상키 : GoHome 확인    \n");
             m_tState_Act.Set_State(STATE_ACT::GOHOME);
-        }
+
+        if (m_mapActionKey[ACTION_KEY::BEPUSHED].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::FALLING);
 
     }
 
@@ -1221,6 +1134,28 @@ void CBrown::Attack(float fDeltaTime)
     if (m_tState_Act.IsState_Exit())
     {
         // //OutputDebugString(L"▷Brown - 행동머신 : MOVING 끝   \n");
+    }
+}
+
+void CBrown::Falling(float fDeltaTime)
+{
+    if (m_tState_Act.IsState_Entered())
+    {
+        //OutputDebugString(L"▷Brown - 행동머신 :FALLING 진입   \n");
+    }
+
+    // 실행
+    {
+        //플레이어가 몬스터 보는 벡터 
+        vDir = m_pTransformComp->Get_Pos() - m_pPlayerTransformcomp->Get_Pos();
+        D3DXVec3Normalize(&vDir, &vDir);
+
+        m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 10.f);
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+        ////OutputDebugString(L"▷Brown - 행동머신 : GOHOME 끝   \n");
     }
 }
 

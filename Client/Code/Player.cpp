@@ -670,19 +670,29 @@ _bool CPlayer::Picking_On_Object()
 void CPlayer::OnCollision(CGameObject* pDst)
 {
     // 충돌중일때
-    OutputDebugString(L"플레이어와 충돌중\n");
+   // OutputDebugString(L"플레이어와 충돌중\n");
 }
 
 void CPlayer::OnCollisionEntered(CGameObject* pDst)
 {
     // 처음 충돌했을때
-    OutputDebugString(L"플레이어와 충돌진입\n");
+    CBrown* pBrown = dynamic_cast<CBrown*>(pDst->Get_Owner());
+    if (FAILED(pBrown))
+    {
+        CGray* pBrown = dynamic_cast<CGray*>(pDst->Get_Owner());
+        OutputDebugString(L"플레이어 - Gray  충돌중\n");
+    }
+    else
+    {
+        OutputDebugString(L"플레이어 - Brown  충돌중\n");
+    }
+
 }
 
 void CPlayer::OnCollisionExited(CGameObject* pDst)
 {
     // 충돌에서 나갈때
-    OutputDebugString(L"플레이어와 충돌완료\n");
+   // OutputDebugString(L"플레이어와 충돌완료\n");
 }
 
 void CPlayer::Update_BlackBoard()

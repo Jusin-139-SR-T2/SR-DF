@@ -22,6 +22,8 @@ END
 
 class CDynamicCamera;
 class CPlayerLighter;
+class CBrown;
+class CGray;
 
 /// <summary>
 /// 플레이어 생성용 구조체

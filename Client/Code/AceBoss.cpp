@@ -274,6 +274,33 @@ void CAceBoss::OnCollision(CGameObject* pDst)
 }
 void CAceBoss::OnCollisionEntered(CGameObject* pDst)
 {
+	wstring str1 = pDst->Get_ObjectName();
+	wstring str2 = L"Player";
+
+	if (str1.compare(str2) == 0)
+	{
+		// Kick or Run = Falling  , 총기류 , 기타 공격 
+		if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
+			m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+		else if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
+		{
+			if (0 == m_gHp.Cur)
+				m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+			else
+				m_tState_Obj.Set_State(STATE_OBJ::HIT);
+		}
+		else
+		{
+			if (0 == m_gHp.Cur)
+			{
+				m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+			}
+			if (Random_variable(60))
+				m_tState_Obj.Set_State(STATE_OBJ::HIT);
+			else
+				m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+		}
+	}
 }
 
 void CAceBoss::OnCollisionExited(CGameObject* pDst)
@@ -456,6 +483,7 @@ void CAceBoss::AI_Rest(float fDeltaTime)
 	if (m_tState_Obj.IsState_Entered())
 	{
 		//OutputDebugString(L"▷BOSS - 상태머신 : Rest 돌입   \n");
+		m_tStat.fAwareness = m_tStat.fMaxAwareness;
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"IdleReady"); // ♣ 이미지 바꾸기 ? 
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
@@ -479,6 +507,7 @@ void CAceBoss::AI_Chase(float fDeltaTime)
 {
 	if (m_tState_Obj.IsState_Entered())
 	{
+		m_tStat.fAwareness = m_tStat.fMaxAwareness;
 		m_AttackOnce = FALSE;
 	}
 
@@ -1091,7 +1120,8 @@ void CAceBoss::AI_Hit(float fDeltaTime)
 			m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Hit_A");
 		else
 			m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Hit_B");
-		
+
+		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1144,17 +1174,14 @@ void CAceBoss::AI_Falling(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Falling");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
-
-		if (Engine::MonsterPhase::Phase2 == m_ePhase)
-			m_tFrame.fFrameSpeed = 12.f;
 	}
 
 	if (m_tState_Obj.Can_Update())
 	{
 		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 		{
-			m_tFrame.fFrame = m_tFrame.fFrameEnd - 1.f;
-
+			m_tFrame.fFrame = 0.f;
+			m_tState_Obj.Set_State(STATE_OBJ::REST);
 		}
 	}
 
@@ -1518,9 +1545,9 @@ void CAceBoss::SkillStone(float fDeltaTime)
 		{
 			_int iCnt = 0;
 
-			if (Engine::MonsterPhase::Phase1)
+			if (Engine::MonsterPhase::Phase1 == m_ePhase)
 				iCnt = 4;
-			else if (Engine::MonsterPhase::Phase2)
+			else if (Engine::MonsterPhase::Phase2 == m_ePhase)
 				iCnt = 6;
 
 			for (_int i = 0; i < iCnt; ++i)
@@ -1559,10 +1586,10 @@ void CAceBoss::SkillEnergyBall(float fDeltaTime)
 		{
 			_int iCnt = 0;
 
-			if (Engine::MonsterPhase::Phase1)
+			if (Engine::MonsterPhase::Phase1 == m_ePhase)
 				iCnt = 4;
-			else if (Engine::MonsterPhase::Phase2)
-				iCnt = 6;
+			else if (Engine::MonsterPhase::Phase2 == m_ePhase)
+				iCnt = 5;
 			
 			// 몬스터 위치에서 Right 벡터 방향으로 spacing 간격을 두고 소환 위치 계산
 			// 좌우 3개씩 총6개, 보스쪽은 없어서 일종의 딜타임이기도함
