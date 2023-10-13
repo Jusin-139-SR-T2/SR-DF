@@ -393,6 +393,9 @@
     <ClInclude Include="Header\PlayerAttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
     </ClInclude>
+    <ClInclude Include="Header\PlayerFist.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Fist</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -556,6 +559,9 @@
     </ClCompile>
     <ClCompile Include="Code\PlayerAttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerFist.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Fist</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

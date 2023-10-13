@@ -1,53 +1,52 @@
 #include "stdafx.h"
-
+#include "PlayerFist.h"
 #include "Player.h"
-#include "PlayerBullet.h"
 
-CPlayerBullet::CPlayerBullet(LPDIRECT3DDEVICE9 pGraphicDev)
+CPlayerFist::CPlayerFist(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CPlayerAttackUnion(pGraphicDev)
 {
 }
 
-CPlayerBullet::CPlayerBullet(const CPlayerBullet& rhs)
+CPlayerFist::CPlayerFist(const CPlayerFist& rhs)
 	: CPlayerAttackUnion(rhs)
 {
 }
 
-CPlayerBullet::~CPlayerBullet()
+CPlayerFist::~CPlayerFist()
 {
 }
 
-HRESULT CPlayerBullet::Ready_GameObject()
+HRESULT CPlayerFist::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	// 충돌
 	m_pTransformComp->Readjust_Transform();
 	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 0.5f;
+	pShape->fRadius = 10.f;
 
 	// 플레이어가 바라보는 쪽으로 날아가게함
 	m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
 	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
 	// 발사 방향 설정
-	m_tBullet.vDir = m_pPlayerTransformcomp->Get_Look();
+	m_tFist.vDir = m_pPlayerTransformcomp->Get_Look();
 
 	// 플레이어 받아오기
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
 	m_bDbugFrame = pPlayer->Get_DBugFrame();
 
 	// 데미지 설정
-	m_tBullet.fDamage = 101.f;
+	m_tFist.fDamage = 101.f;
 
 	return S_OK;
 }
 
-_int CPlayerBullet::Update_GameObject(const _float& fTimeDelta)
+_int CPlayerFist::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	m_pTransformComp->Move_Pos(&m_tBullet.vDir, fTimeDelta, m_tBullet.fMoveSpeed);
+	//m_pTransformComp->Move_Pos(&m_tFist.vDir, fTimeDelta, m_tFist.fMoveSpeed);
 
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 
@@ -56,24 +55,24 @@ _int CPlayerBullet::Update_GameObject(const _float& fTimeDelta)
 	return S_OK;
 }
 
-void CPlayerBullet::LateUpdate_GameObject()
+void CPlayerFist::LateUpdate_GameObject()
 {
 	SUPER::LateUpdate_GameObject();
 }
 
-void CPlayerBullet::Render_GameObject()
+void CPlayerFist::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-	
+
 	if (*m_bDbugFrame)
 	{
 		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
 		m_pBufferComp->Render_Buffer();
-		
+
 		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	}
 
@@ -81,7 +80,7 @@ void CPlayerBullet::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _float MoveSpeed, CAceUnit* _Owner)
+CPlayerFist* CPlayerFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAceUnit* _Owner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -95,13 +94,12 @@ CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, 
 
 	// 플레이어 위치에서 생성
 	pInstance->m_pTransformComp->Set_Pos(vPos.x, vPos.y, vPos.z);
-	pInstance->m_tBullet.fMoveSpeed = MoveSpeed; // 투사체 속도 설정
 	pInstance->Set_Owner(_Owner);
 
 	return pInstance;
 }
 
-HRESULT CPlayerBullet::Add_Component()
+HRESULT CPlayerFist::Add_Component()
 {
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
@@ -110,7 +108,7 @@ HRESULT CPlayerBullet::Add_Component()
 	// -------------------- 충돌 세트 --------------------------
 	// 콜라이더 컴포넌트
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
-	
+
 	// 물리 세계 등록
 	m_pColliderComp->EnterToPhysics(0);
 
@@ -121,33 +119,33 @@ HRESULT CPlayerBullet::Add_Component()
 
 	// 충돌 레이어, 마스크 설정
 	m_pColliderComp->Set_CollisionLayer(LAYER_PLAYER_ATTACK); // 이 클래스가 속할 충돌레이어 (플레이어 공격)
-	m_pColliderComp->Set_CollisionMask(LAYER_MONSTER ); // 얘랑 충돌해야하는 레이어들 (몬스터)
+	m_pColliderComp->Set_CollisionMask(LAYER_MONSTER); // 얘랑 충돌해야하는 레이어들 (몬스터)
 	m_pColliderComp->Get_CollisionMask();
 	return S_OK;
 }
 
-void CPlayerBullet::Free()
+void CPlayerFist::Free()
 {
 	SUPER::Free();
 }
 
-void CPlayerBullet::OnCollision(CGameObject* pDst)
+void CPlayerFist::OnCollision(CGameObject* pDst)
 {
 
 
 }
 
-void CPlayerBullet::OnCollisionEntered(CGameObject* pDst)
+void CPlayerFist::OnCollisionEntered(CGameObject* pDst)
 {
 	OutputDebugString(L"플레이어의 총알 충돌 \n");
 
 	// 몬스터 피해
-	Change_MonsterHp(-m_tBullet.fDamage, pDst);
+	Change_MonsterHp(-m_tFist.fDamage, pDst);
 
 	// 총알 삭제
 	Set_Dead(); //투사체는 사라짐 
 }
 
-void CPlayerBullet::OnCollisionExited(CGameObject* pDst)
+void CPlayerFist::OnCollisionExited(CGameObject* pDst)
 {
 }

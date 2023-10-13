@@ -8,6 +8,7 @@
 //임시용
 #include "AceFood.h" 
 #include "PlayerBullet.h"
+#include "PlayerFist.h"
 
 BEGIN(Engine)
 
@@ -120,12 +121,11 @@ public: // Get_Set
 	// 플레이어 오른손 상태값
 	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
 	// 플레이어 상태값
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, DOWN, ATTACK, CHARGING, THROW_AWAY, DIE, JUMP, PLAYER_END };
+	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, SITDOWN, ATTACK, CHARGING, THROW_AWAY, DIE, JUMP, PLAYER_END };
 
 	// 소영 추가 ---------------- 
 	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
 	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
-	GETSET_EX2(STATE_PLAYER, ePlayerState, PlayerState, GET, SET)	// 라이터 조명
 	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
 
 		_bool* Get_DBugFrame() {
@@ -186,6 +186,9 @@ private: // 플레이어의 상태 머신
 	void Kick(float fTimeDelta);
 	void Throw_Away(float fTimeDelta);
 	void Die(float fTimeDelta);
+
+public:
+	STATE_PLAYER Get_PlayerState() { return m_tPlayer_State.Get_State(); }
 
 private: // 플레이어의 왼손 상태 머신
 	STATE_SET<STATE_LEFTHAND, void(CPlayer*, float)> m_tLeftHand_State;
