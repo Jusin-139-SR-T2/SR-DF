@@ -191,7 +191,9 @@ HRESULT CLayer::Add_GameObject(const wstring pObjTag, CGameObject* pGameObject)
 
 CGameObject* CLayer::Get_GameObject(const wstring pObjTag)
 {
-	CGameObject* pObj = m_mapObject[pObjTag];
+	auto iter = m_mapObject.find(pObjTag);
+	if (iter != m_mapObject.end())
+		return (*iter).second;
 
-	return pObj;
+	return nullptr;
 }

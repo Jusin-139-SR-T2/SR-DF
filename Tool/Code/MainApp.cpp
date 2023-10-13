@@ -106,7 +106,9 @@ void CMainApp::Render_MainApp()
 	if ((result = Engine::Render_Begin(clear_col_dx)) >= 0)
 	{
 		// [오브젝트 렌더] 렌더러에 요청해서 그려야할 오브젝트들을 그린다.
+		m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
 		Engine::Render_Scene(m_pGraphicDev);
+		m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
 
 		CImguiMgr* pImguiMgr = CImguiMgr::GetInstance();
 		LPDIRECT3DSURFACE9 pBackBuffer = nullptr;
@@ -122,7 +124,11 @@ void CMainApp::Render_MainApp()
 		Safe_Release(pRenderTarget);
 
 		// [IMGUI 렌더]
-		CImguiMgr::GetInstance()->Render_Imgui();
+		if (Engine::IsKey_Pressing(DIK_LCONTROL) && Engine::IsKey_Pressed(DIK_T))
+			m_bRenderImgui = !m_bRenderImgui;
+
+		if (m_bRenderImgui)
+			CImguiMgr::GetInstance()->Render_Imgui();
 	}
 
 	// 추가 뷰포트 렌더

@@ -111,8 +111,14 @@ void CCubeObject::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 
+    
+
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+
+    DWORD dwTest = 0;
+    m_pGraphicDev->GetRenderState(D3DRS_ALPHABLENDENABLE, &dwTest);
+    m_pGraphicDev->GetRenderState(D3DRS_ALPHATESTENABLE, &dwTest);
 
     m_pTextureComp->Render_Texture(0);
     m_pCubeBufferComp->Render_Buffer();

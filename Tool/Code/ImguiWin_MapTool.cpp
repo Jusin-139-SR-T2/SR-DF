@@ -893,6 +893,26 @@ void CImguiWin_MapTool::Layout_Property_Object()
         ImGui::Checkbox(u8"Use##Render",
             &vecObject[iSelected_Object].bUsePriority[EPRIORITY_OBJECT_RENDER]);
     }
+
+    if (bIsEdited)
+    {
+        FLayerData& tLayerData = vecLayer[m_iSelected_Layer_Remain];
+        FObjectData& tObjectData = vecObject[m_iSelected_Object];
+        wstring strConvertLayer(tLayerData.strName.begin(), tLayerData.strName.end());
+        wstring strConvertObject(tObjectData.strName.begin(), tObjectData.strName.end());
+
+        CGameObject* pObj = Engine::Get_GameObject(strConvertLayer.c_str(), strConvertObject.c_str());
+        if (nullptr != pObj)
+        {
+            CCubeObject* pCube = dynamic_cast<CCubeObject*>(pObj);
+            if (pCube)
+            {
+                pCube->Get_TransformComponent()->Set_Pos(tObjectData.vPos);
+                pCube->Get_TransformComponent()->Set_Rotation(tObjectData.vRot);
+                pCube->Get_TransformComponent()->Set_Scale(tObjectData.vScale);
+            }
+        }
+    }
 }
 
 void CImguiWin_MapTool::Layout_Property_Light()
@@ -1101,10 +1121,14 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
 
         break;
     case Engine::ECLASS_BUILDING:
-        Engine::Add_GameObject(pLayerTag, 
-            static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
-                tObjectData.vPos, tObjectData.vRot, tObjectData.vScale)));
+    {
+        CGameObject* pObj = static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
+            tObjectData.vPos, tObjectData.vRot, tObjectData.vScale));
+        wstring strConvert(tObjectData.strName.begin(), tObjectData.strName.end());
+        pObj->Set_ObjectName(strConvert);
+        Engine::Add_GameObject(pLayerTag, pObj);
         break;
+    }
     default:
         break;
     }
@@ -1483,13 +1507,17 @@ void CImguiWin_MapTool::Add_Object()
     tObjectData.strName = tProtoData.strName;
 
     FLayerData& tLayerData = m_vecScene[m_iLoaded_Scene].vecLayer[m_iSelected_Layer_Remain];
+    _bool bAdded = false;
 
     auto iter = find_if(tLayerData.vecObject.begin(), tLayerData.vecObject.end(),
         [&tObjectData](FObjectData& tDstObjectData) {
             return tObjectData.strName == tDstObjectData.strName;
         });
     if (iter == tLayerData.vecObject.end())
+    {
         tLayerData.vecObject.push_back(tObjectData);
+        bAdded = true;
+    }
     // 같은 이름이 있으면 이름에 숫자를 붙여 추가한다.
     else
     {
@@ -1508,11 +1536,19 @@ void CImguiWin_MapTool::Add_Object()
             {
                 tObjectData.strName = strAdd;
                 tLayerData.vecObject.push_back(tObjectData);
+                bAdded = true;
+
                 break;
             }
 
             ++i;
         }
+    }
+
+    if (bAdded)
+    {
+        wstring strConvert(tLayerData.strName.begin(), tLayerData.strName.end());
+        Factory_GameObject(strConvert.c_str(), tObjectData.eObjectID, tObjectData);
     }
 }
 
@@ -1593,25 +1629,26 @@ void CImguiWin_MapTool::Input_Camera()
         D3DXVec3Cross(&vUp, &vLook, &vRight);
         D3DXVec3Normalize(&vUp, &vUp);
 
-
+        m_fPrevDrag = m_fDrag;
         ImVec2 fDelta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Right);
-        m_fDrag -= fDelta;
+        m_fDrag = fDelta;
         cout << m_fDrag.x << ", " << m_fDrag.y << endl;
         if (ImGui::IsMouseDragging(ImGuiMouseButton_Right))
         {
             // x가 UpVector기준으로 회전, y가 RightVector기준으로 회전
             _matrix matRotX, matRotY, matResult;
             _vec4 vResult;
-            D3DXMatrixRotationAxis(&matRotX, &vUp, D3DXToRadian(m_fDrag.x * 0.034f));
-            D3DXMatrixRotationAxis(&matRotY, &vRight, D3DXToRadian(m_fDrag.y * 0.034f));
+            D3DXMatrixRotationAxis(&matRotX, &vUp, D3DXToRadian((m_fDrag - m_fPrevDrag).x * 0.34f));
+            D3DXMatrixRotationAxis(&matRotY, &vRight, D3DXToRadian((m_fDrag - m_fPrevDrag).y * 0.34f));
 
             matResult = matRotX * matRotY;
 
             D3DXVec3Transform(&vResult, &vLook, &matResult);
 
             vLook = { vResult.x, vResult.y, vResult.z };
+            D3DXVec3Normalize(&vLook, &vLook);
 
-            Get_Look() = vLook * D3DXVec3Length(&(Get_Look() - Get_Pos()));
+            Get_Look() = Get_Pos() + vLook * D3DXVec3Length(&(Get_Look() - Get_Pos()));
 
             vUp = Get_Up();
             vLook = Get_Look() - Get_Pos();
@@ -1625,36 +1662,40 @@ void CImguiWin_MapTool::Input_Camera()
             D3DXVec3Normalize(&vUp, &vUp);
         }
 
+        _float fMul = 10.f;
+        if (ImGui::IsKeyDown(ImGuiKey_LeftShift))
+            fMul *= 2.f;
+
         // Look 기준으로 화면을 이동
         if (ImGui::IsKeyDown(ImGuiKey_W))
         {
-            Get_Pos() += vLook * 3.f;
-            Get_Look() += vLook * 3.f;
+            Get_Pos() += vLook * fMul * 0.034f;
+            Get_Look() += vLook * fMul * 0.034f;
         }
         else if (ImGui::IsKeyDown(ImGuiKey_S))
         {
-            Get_Pos() -= vLook * 3.f;
-            Get_Look() -= vLook * 3.f;
+            Get_Pos() -= vLook * fMul * 0.034f;
+            Get_Look() -= vLook * fMul * 0.034f;
         }
-        else if (ImGui::IsKeyDown(ImGuiKey_A))
+        if (ImGui::IsKeyDown(ImGuiKey_A))
         {
-            Get_Pos() -= vRight * 3.f;
-            Get_Look() -= vRight * 3.f;
+            Get_Pos() -= vRight * fMul * 0.034f;
+            Get_Look() -= vRight * fMul * 0.034f;
         }
         else if (ImGui::IsKeyDown(ImGuiKey_D))
         {
-            Get_Pos() += vRight * 3.f;
-            Get_Look() += vRight * 3.f;
+            Get_Pos() += vRight * fMul * 0.034f;
+            Get_Look() += vRight * fMul * 0.034f;
         }
-        else if (ImGui::IsKeyDown(ImGuiKey_Q))
+        if (ImGui::IsKeyDown(ImGuiKey_Q))
         {
-            Get_Pos() -= vUp * 3.f;
-            Get_Look() -= vUp * 3.f;
+            Get_Pos() -= vUp * fMul * 0.034f;
+            Get_Look() -= vUp * fMul * 0.034f;
         }
         else if (ImGui::IsKeyDown(ImGuiKey_E))
         {
-            Get_Pos() += vUp * 3.f;
-            Get_Look() += vUp * 3.f;
+            Get_Pos() += vUp * fMul * 0.034f;
+            Get_Look() += vUp * fMul * 0.034f;
         }
     }
 
