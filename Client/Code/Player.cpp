@@ -434,10 +434,14 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
             bRighter = true;        // 라이터 켜주기
             //m_fLeftMaxFrame = 6.f;  // 최대 프레임 설정
             m_tLeftHand_State.Set_State(STATE_LEFTHAND::RIGHTER); // 왼손 상태 라이터로
+            m_tLeftHand.fLeftFrame = 0.f;
+            m_tTime.fLeftCurrentTime = 0.f;
         }
         else // 라이터가 켜져있을 경우
         {
             bBackRighter = true; // 라이터 되돌리기On
+            m_tLeftHand.fLeftFrame = 0.f;
+            m_tTime.fLeftCurrentTime = 0.f;
         }
     }
 
@@ -484,51 +488,43 @@ if (!timeline[KEYTYPE_LEFTHAND].empty())
     if (m_tLeftHand.bLeftFrameOn)
     {
 
-        // 라이터 되돌리기가 꺼져있을 경우
-        if (!bBackRighter)
+        // 라이터 되돌리기가 켜져있을 경우
+        if (bBackRighter)
         {
-            // 선형 보간
-            //Interpolation();
-
-            // 현재 시간
-            m_tTime.fLeftCurrentTime += m_tTime.fLeftChangeTime * fTimeDelta;
-
-            // 현재 프레임이 최대 프레임에 도달한 경우
-            if (m_tTime.fLeftCurrentTime >= m_tTime.fLeftMaxTime)
-            {
-                // 양손이 주먹인데 프레임이 최대 프레임에 도달한 경우
-                if (m_tLeftHand_State.Get_State() == STATE_LEFTHAND::HAND &&
-                    m_tRightHand_State.Get_State() == STATE_RIGHTHAND::HAND)
-                {
-
-                }
-
-                // 만약 최대프레임인데 라이터가 켜져있을 경우
-                if (bRighter)
-                {
-                    // (현재 프레임) 라이터를 켜져있는 이미지(마지막)로 고정
-                    m_tLeftHand.fLeftFrame = timeline[KEYTYPE_LEFTHAND].back().texureframe;
-                    m_PlayerLighter->Set_m_bLightOn(true);
-                }
-                else // 라이터가 안켜져있을 경우
-                {
-                    // 현재 프레임 초기화
-                    m_tLeftHand.fLeftFrame = 0.f;
-                }
-            }
+            LeftLoadAnimationFromFile("BackRighter"); // 되돌리는 애니메이션
         }
-        else // 라이터 되돌리기On
-        {
-            // 현재 프레임을 시간(프레임)마다 감소시키기
-            m_tLeftHand.fLeftFrame -= m_tTime.fLeftChangeTime * fTimeDelta;
+        // 현재 시간
+        m_tTime.fLeftCurrentTime += m_tTime.fLeftChangeTime * fTimeDelta;
 
-            // 왼손 프레임이 0에 도달했을 경우
-            if (m_tLeftHand.fLeftFrame <= 0.f)
+        // 현재 프레임이 최대 프레임에 도달한 경우
+        if (m_tTime.fLeftCurrentTime >= m_tTime.fLeftMaxTime)
+        {
+            // 양손이 주먹인데 프레임이 최대 프레임에 도달한 경우
+            if (m_tLeftHand_State.Get_State() == STATE_LEFTHAND::HAND &&
+                m_tRightHand_State.Get_State() == STATE_RIGHTHAND::HAND)
             {
+
+            }
+
+            // 만약 최대프레임인데 라이터가 켜져있을 경우
+            if (bRighter)
+            {
+                // (현재 프레임) 라이터를 켜져있는 이미지(마지막)로 고정
+                m_tLeftHand.fLeftFrame = timeline[KEYTYPE_LEFTHAND].back().texureframe;
+                m_PlayerLighter->Set_m_bLightOn(true);
+            }
+            else // 라이터가 안켜져있을 경우
+            {
+                // 현재 프레임 초기화
                 m_tLeftHand.fLeftFrame = 0.f;
+            }
+            // 라이터 되돌리기가 켜져있을 경우
+            if (bBackRighter)
+            {
                 bRighter = false;
                 bBackRighter = false;
                 m_PlayerLighter->Set_m_bLightOn(false);
+                m_tLeftHand_State.Set_State(STATE_LEFTHAND::NONE); // 왼손 상태 초기화
             }
         }
     }
@@ -1755,7 +1751,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
         {
             // 총알 발사 (디바이스, 생성 위치, 투사체 속도)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                                    m_pTransformComp->Get_Pos(), 300.f));
+                                    m_pTransformComp->Get_Pos(), 300.f, this));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
 
@@ -1872,7 +1868,7 @@ void CPlayer::Right_Gun(float fTimeDelta)
         {
             // 총알 발사 (디바이스, 생성 위치, 투사체 속도)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-            m_pTransformComp->Get_Pos(), 300.f));
+            m_pTransformComp->Get_Pos(), 300.f, this));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
     }
@@ -1925,7 +1921,7 @@ void CPlayer::Right_Thompson(float fTimeDelta)
         {
             // 총알 발사 (디바이스, 생성 위치, 투사체 속도)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), 300.f));
+                m_pTransformComp->Get_Pos(), 300.f, this));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
     }
@@ -1977,7 +1973,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
         {
             // 공격 발사 (디바이스, 생성 위치, 투사체 속도)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), 300.f));
+                m_pTransformComp->Get_Pos(), 300.f, this));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
 
@@ -2045,7 +2041,7 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
         {
             // 공격 발사 (디바이스, 생성 위치, 투사체 속도)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), 300.f));
+                m_pTransformComp->Get_Pos(), 300.f, this));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
     }
@@ -2098,7 +2094,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
         {
             // 공격 발사 (디바이스, 생성 위치, 투사체 속도)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), 300.f));
+                m_pTransformComp->Get_Pos(), 30.f, this));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
 

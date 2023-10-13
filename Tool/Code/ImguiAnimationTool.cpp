@@ -1559,7 +1559,7 @@ void CImguiAnimationTool::CreateKeyframesWithLinearInterpolation(
         if (m_bRendomValue)
         {
             // 순차적으로 증가 및 감소한 소수점 값 생성
-            if (i < numKeyframes / 2) 
+            if (i < numKeyframes / 2)
             {
                 keyframe.value = minValue + i * step; // 최소값에서 증가
             }

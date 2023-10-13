@@ -27,6 +27,15 @@ namespace Engine
 
 	enum ETEAM_ID { ETEAM_ALPHA, ETEAM_BETA, ETEAM_GAMMA, ETEAM_DELTA };
 
+	enum ATTACK_TARGET
+	{
+		AT_ALL_ATTACK,
+		AT_BLACK_BOSS,
+		AT_GRAY_MONSTER,
+		AT_BROWN_MONSTER,
+		AT_END_SIZE
+	};
+
 	enum EBIT_FLAG_32 : unsigned long
 	{
 		EBIT_FLAG32_0 = 1UL << 0,

@@ -68,6 +68,11 @@ protected:
 	CCalculatorComponent*		m_pCalculatorComp = nullptr;
 	CTransformComponent*		m_pPlayerTransformcomp = nullptr;
 
+public: // 성희 추가 : 몬스터 정보 Get,Set
+	GAUGE<_float> m_gHp;
+	GETSET_EX2(GAUGE<_float>, m_gHp, MonsterHP, GET, SET)   // 플레이어 hp용도 
+
+
 public:
 	_float						Calc_Distance();
 	_bool						Detect_Player();

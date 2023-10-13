@@ -375,6 +375,9 @@
     <ClInclude Include="BossLight.h">
       <Filter>03..=====Object=====\03. Lighter\02. BossLight</Filter>
     </ClInclude>
+    <ClInclude Include="Header\PlayerAttackUnion.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -529,6 +532,9 @@
     </ClCompile>
     <ClCompile Include="BossLight.cpp">
       <Filter>03..=====Object=====\03. Lighter\02. BossLight</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerAttackUnion.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
