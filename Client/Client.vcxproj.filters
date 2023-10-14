@@ -235,6 +235,9 @@
     <Filter Include="03..=====Object=====\00. AbstractFactory">
       <UniqueIdentifier>{4f024727-c272-4abe-9d81-b80cc7dd40cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03..=====Object=====\03. Lighter\03. PlayerGunLighter">
+      <UniqueIdentifier>{051a0ea6-b7d6-4eb6-92e9-baa1ccfed2d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -392,6 +395,9 @@
     </ClInclude>
     <ClInclude Include="Header\PlayerAttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerGunLighter.h">
+      <Filter>03..=====Object=====\03. Lighter\03. PlayerGunLighter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -556,6 +562,9 @@
     </ClCompile>
     <ClCompile Include="Code\PlayerAttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerGunLighter.cpp">
+      <Filter>03..=====Object=====\03. Lighter\03. PlayerGunLighter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

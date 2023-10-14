@@ -140,6 +140,8 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     // 위치값 가져오기 
     Get_PlayerPos();
     
+    MonsterDead();
+
     // 지형타기 
     Height_On_Terrain(); 
 
@@ -253,11 +255,18 @@ void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
-    wstring str1 = pDst->Get_ObjectName();
-    wstring str2 = L"Player";
+    CAceUnit* pPlayer = dynamic_cast<CAceUnit*>(pDst);
 
-    if (str1.compare(str2) == 0)
+    if (nullptr != pPlayer)
     {
+        //MonsterHp = pMonster->Get_MonsterHP();
+    //}
+
+    //wstring str1 = pDst->Get_ObjectName();
+    //wstring str2 = L"Player"; 
+
+    //if (str1.compare(str2) == 0)
+    //{
         // Kick or Run = Falling  , 총기류 , 기타 공격 
         if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
             m_tState_Obj.Set_State(STATE_OBJ::FALLING);
@@ -302,6 +311,10 @@ void CBrown::Update_InternalData()
 
     // 여기서부터 블랙보드의 정보를 업데이트 한다.
     //pBlackBoard->Get_BrownAwareness().Cur = m_tStat.fAwareness;
+}
+
+void CBrown::MonsterDead()
+{
 }
 
 #pragma endregion 

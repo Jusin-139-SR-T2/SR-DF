@@ -4,7 +4,7 @@
 #include "AceMonster.h"
 
 //보스
-#include "Boss.h"
+#include "AceBoss.h"
 // 몬스터
 #include "Gray.h"
 #include "Brown.h"

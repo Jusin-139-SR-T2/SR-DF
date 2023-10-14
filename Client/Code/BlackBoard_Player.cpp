@@ -5,7 +5,7 @@
 
 CBlackBoard_Player::CBlackBoard_Player()
     : Base()
-    , m_fHP(GAUGE<_float>(100.f)), m_fStamina(GAUGE<_float>(100.f))
+    , m_fHP(GAUGE<_float>(100.f)), m_fStamina(GAUGE<_float>(100.f)), m_bGunLight(false)
 {
 }
 

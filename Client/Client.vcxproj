@@ -71,6 +71,7 @@
     <ClInclude Include="Header\RedThunder.h" />
     <ClInclude Include="Header\Scene_Parsed.h" />
     <ClInclude Include="Header\PlayerAttackUnion.h" />
+    <ClInclude Include="PlayerGunLighter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Barrier.cpp" />
@@ -131,6 +132,7 @@
     <ClCompile Include="Code\RedThunder.cpp" />
     <ClCompile Include="Code\Scene_Parsed.cpp" />
     <ClCompile Include="Code\PlayerAttackUnion.cpp" />
+    <ClCompile Include="PlayerGunLighter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

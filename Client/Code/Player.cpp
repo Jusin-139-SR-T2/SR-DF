@@ -8,6 +8,7 @@
 #include "CalculatorComponent.h"
 #include "ColliderComponent.h"
 #include "PlayerLighter.h"
+#include "PlayerGunLighter.h"
 #include "Management.h"
 #include "BlackBoard_Player.h"
 
@@ -50,6 +51,7 @@ HRESULT CPlayer::Ready_GameObject()
     m_gHp.Max = 100.f;
     m_gHp.Cur = m_gHp.Max;
     m_fChage.Max = 0.f;
+    m_bGunLight = FALSE;
 
     // 플레이어 행렬 초기화
     m_pTransformComp->Set_Pos({ 10.f, 10.f, 10.f });
@@ -707,6 +709,8 @@ void CPlayer::Update_BlackBoard()
 
     // 여기서부터 블랙보드의 정보를 업데이트 한다.
     pBlackBoard->Get_HP().Cur = m_gHp.Cur;
+    pBlackBoard->Get_GunLight() = m_bGunLight;
+
 
 }
 
@@ -1346,6 +1350,7 @@ void CPlayer::Idle(float fTimeDelta)
 {
     if (m_tPlayer_State.IsState_Entered())
     {
+        m_bGunLight = FALSE;
         if (true)
         {
 
@@ -1901,6 +1906,7 @@ void CPlayer::Right_Gun(float fTimeDelta)
         if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
         {
             // 총알 발사 (디바이스, 생성 위치, 투사체 속도)
+            m_bGunLight = TRUE;
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
             m_pTransformComp->Get_Pos(), 300.f, this));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);

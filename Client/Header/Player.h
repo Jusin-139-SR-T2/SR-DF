@@ -319,7 +319,7 @@ private:
 
 	// 라이터 조명
 	CPlayerLighter* m_PlayerLighter;
-
+	_bool m_bGunLight;
 private:
 		// 애니메이션 타임 라인
 		std::vector<KEYFRAME> timeline[KEYTYPE_END];
