@@ -117,14 +117,18 @@ void CPlayerAttackUnion::Change_PlayerHp(_float pAttack)
     pPlayer->Set_PlayerHP(PlayerHp);
 }
 
-void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget)
+void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, PLAYER_ATTACK_STATE _AttackState)
 {
+    // 타겟 지정
     CAceMonster* pMonster = dynamic_cast<CAceMonster*>(_AttackTarget);
 
+    // 공격받은 몬스터(타겟)가 있을 경우
     if (nullptr != pMonster)
     {
+        // 몬스터 체력 받아오기
         MonsterHp = pMonster->Get_MonsterHP();
 
+        // 몬스터 체력 계산
         MonsterHp.Cur += pAttack;
 
         if (MonsterHp.Cur <= 0)
@@ -132,8 +136,8 @@ void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTa
         if (MonsterHp.IsMax())
             MonsterHp.Cur = MonsterHp.Max;
 
-        pMonster->Set_MonsterHP(MonsterHp);
-        _float ftest = pMonster->Get_MonsterHP().Cur;
+        pMonster->Set_MonsterHP(MonsterHp); // 계산이 끝난 몬스터의 체력으로 넣어줌
+        pMonster->Set_Player_AttackState(_AttackState); // 공격받은 유형을 넣어줌
     }
 }
 

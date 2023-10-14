@@ -81,7 +81,7 @@ void CPlayerBullet::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _float MoveSpeed, CAceUnit* _Owner)
+CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _float MoveSpeed, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -94,9 +94,10 @@ CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, 
 	}
 
 	// 플레이어 위치에서 생성
-	pInstance->m_pTransformComp->Set_Pos(vPos.x, vPos.y, vPos.z);
-	pInstance->m_tBullet.fMoveSpeed = MoveSpeed; // 투사체 속도 설정
-	pInstance->Set_Owner(_Owner);
+	pInstance->m_pTransformComp->Set_Pos(vPos.x, vPos.y, vPos.z);	// 생성 위치
+	pInstance->m_tBullet.fMoveSpeed = MoveSpeed;					// 투사체 속도 설정
+	pInstance->Set_Owner(_Owner);									// 공격의 주인
+	pInstance->Set_Player_AttackState(_AttackState);				// 공격의 상태(공격 유형)
 
 	return pInstance;
 }
@@ -139,10 +140,18 @@ void CPlayerBullet::OnCollision(CGameObject* pDst)
 
 void CPlayerBullet::OnCollisionEntered(CGameObject* pDst)
 {
-	OutputDebugString(L"플레이어의 총알 충돌 \n");
+	// 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
+	Change_MonsterHp(-m_tBullet.fDamage, pDst, m_ePlayer_AttackState);
 
-	// 몬스터 피해
-	Change_MonsterHp(-m_tBullet.fDamage, pDst);
+	// Test 공격 확인
+	if (m_ePlayer_AttackState == PSITDONW_ATTACK)
+	{
+		OutputDebugString(L"플레이어가 앉아서 공격함 \n");
+	}
+	else
+	{
+		OutputDebugString(L"플레이어의 총알 충돌 \n");
+	}
 
 	// 총알 삭제
 	Set_Dead(); //투사체는 사라짐 

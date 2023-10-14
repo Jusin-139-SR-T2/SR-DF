@@ -36,6 +36,17 @@ namespace Engine
 		AT_END_SIZE
 	};
 
+	enum PLAYER_ATTACK_STATE
+	{
+		PNOMAL_ATTACK,
+		PSITDONW_ATTACK,
+		PJUMP_ATTACK,
+		PRUN_ATTACK,
+		PDOUBLE_ATTACK,
+		PTRIPLE_ATTACK,
+		PATTACK_END_SIZE
+	};
+
 	enum EBIT_FLAG_32 : unsigned long
 	{
 		EBIT_FLAG32_0 = 1UL << 0,
