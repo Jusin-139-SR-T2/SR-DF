@@ -75,8 +75,7 @@ HRESULT CPlayer::Ready_GameObject()
     m_tPlayer_State.Add_Func(STATE_PLAYER::IDLE, &ThisClass::Idle);         // 기본 (정지)
     m_tPlayer_State.Add_Func(STATE_PLAYER::MOVE, &ThisClass::Move);         // 움직임
     m_tPlayer_State.Add_Func(STATE_PLAYER::RUN, &ThisClass::Run);           // 달리기
-    m_tPlayer_State.Add_Func(STATE_PLAYER::SITDOWN, &ThisClass::Down);         // 앉기
-    m_tPlayer_State.Add_Func(STATE_PLAYER::ATTACK, &ThisClass::Attack);     // 공격
+    m_tPlayer_State.Add_Func(STATE_PLAYER::SITDOWN, &ThisClass::Down);      // 앉기
     m_tPlayer_State.Add_Func(STATE_PLAYER::DIE, &ThisClass::Die);           // 죽음
 #pragma endregion
 
@@ -790,11 +789,26 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
         }
         else // 차지 시작 시간 미만일 경우 일반 공격
         {
+            m_bAttack = true; // 공격 On
+            
+            if (m_tPlayer_State.Get_State() == STATE_PLAYER::SITDOWN ||
+                m_tPlayer_State.Get_State() == STATE_PLAYER::SITDOWN_MOVE)
+            {
+                m_eAttackState = PSITDONW_ATTACK;
+            }
+            else if (false) // 추 후 다른상태의 공격 추가
+            {
+
+            }
+            else // 특정 상태가 없을 경우 노말공격 상태
+            {
+                m_eAttackState = PNOMAL_ATTACK;
+            }
+
             // 차징이 안켜졌을 때
             if (!bChargeAttack)
             {
-                // 플레이어 상태 : 공격, 플레이어 오른손 프레임 On
-                m_tPlayer_State.Set_State(STATE_PLAYER::ATTACK);
+
 
                 // 양손이 주먹 상태 일경우
                 if (m_tLeftHand_State.Get_State() == STATE_LEFTHAND::HAND &&
@@ -1795,13 +1809,15 @@ void CPlayer::Right_Hand(float fTimeDelta)
             }
         }
 
-        // 플레이어의 상태가 공격일경우 공격 생성
-        if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
+        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        if (m_bAttack && m_tPlayer_State.Get_State() != STATE_PLAYER::RUN)
         {
+            m_bAttack = false; // 공격 Off
+
             _vec3 vPosPlus = { 10.f, 0.f, 0.f };
-            // 주먹공격 생성 (디바이스, 생성 위치, 주인)
+            // 주먹공격 생성 (디바이스, 생성 위치, 주인, 공격 상태)
             Engine::Add_GameObject(L"GameLogic", CPlayerFist::Create(m_pGraphicDev,
-                                    m_pTransformComp->Get_Pos() + vPosPlus, this));
+                                    m_pTransformComp->Get_Pos() + vPosPlus, this, m_eAttackState));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
 
@@ -1914,13 +1930,15 @@ void CPlayer::Right_Gun(float fTimeDelta)
             }
         }
 
-        // 플레이어의 상태가 공격일경우 애니메이션 변경
-        if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
+        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        if (m_bAttack && m_tPlayer_State.Get_State() != STATE_PLAYER::RUN)
         {
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도)
+            m_bAttack = false; // 공격 Off
+
+            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
             m_bGunLight = TRUE;
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-            m_pTransformComp->Get_Pos(), 300.f, this));
+            m_pTransformComp->Get_Pos(), 300.f, this, m_eAttackState));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
     }
@@ -1969,14 +1987,16 @@ void CPlayer::Right_Thompson(float fTimeDelta)
             }
         }
 
-        // 플레이어의 상태가 공격일경우 애니메이션 변경
-        if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
+        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        if (m_bAttack && m_tPlayer_State.Get_State() != STATE_PLAYER::RUN)
         {
+            m_bAttack = false; // 공격 Off
+
             m_bGunLight = TRUE;
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도)
+            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), 300.f, this));
+                m_pTransformComp->Get_Pos(), 300.f, this, m_eAttackState));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
     }
@@ -2024,12 +2044,14 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
             }
         }
 
-        // 플레이어의 상태가 공격일경우 애니메이션 변경
-        if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
+        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        if (m_bAttack && m_tPlayer_State.Get_State() != STATE_PLAYER::RUN)
         {
-            // 공격 발사 (디바이스, 생성 위치, 투사체 속도)
+            m_bAttack = false; // 공격 Off
+
+            // 공격 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), 300.f, this));
+                m_pTransformComp->Get_Pos(), 300.f, this, m_eAttackState));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
 
@@ -2093,12 +2115,14 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
             }
         }
 
-        // 플레이어의 상태가 공격일경우 애니메이션 변경
-        if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
+        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        if (m_bAttack && m_tPlayer_State.Get_State() != STATE_PLAYER::RUN)
         {
-            // 공격 발사 (디바이스, 생성 위치, 투사체 속도)
+            m_bAttack = false; // 공격 Off
+
+            // 공격 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), 300.f, this));
+                m_pTransformComp->Get_Pos(), 300.f, this, m_eAttackState));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
     }
@@ -2147,12 +2171,14 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
             }
         }
 
-        // 플레이어의 상태가 공격일경우 애니메이션 변경
-        if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
+        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        if (m_bAttack && m_tPlayer_State.Get_State() != STATE_PLAYER::RUN)
         {
-            // 공격 발사 (디바이스, 생성 위치, 투사체 속도)
+            m_bAttack = false; // 공격 Off
+
+            // 공격 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), 30.f, this));
+                m_pTransformComp->Get_Pos(), 30.f, this, m_eAttackState));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
 

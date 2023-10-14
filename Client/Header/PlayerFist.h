@@ -28,13 +28,14 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CPlayerFist* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAceUnit* _Owner);
+	static CPlayerFist* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState);
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 		GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
 		GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 		GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+		GETSET_EX2(PLAYER_ATTACK_STATE, m_ePlayer_AttackState, Player_AttackState, GET, SET)
 
 		// Ãæµ¹ -----------------------------------------------------------------
 protected:

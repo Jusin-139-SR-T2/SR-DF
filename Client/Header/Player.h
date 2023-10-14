@@ -121,7 +121,7 @@ public: // Get_Set
 	// 플레이어 오른손 상태값
 	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
 	// 플레이어 상태값
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, SITDOWN, ATTACK, CHARGING, THROW_AWAY, DIE, JUMP, PLAYER_END };
+	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, SITDOWN, SITDOWN_MOVE, SITDOWN_ATTACK, CHARGING, THROW_AWAY, DIE, JUMP, PLAYER_END };
 
 	// 소영 추가 ---------------- 
 	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
@@ -176,7 +176,6 @@ public:
 
 private: // 플레이어의 상태 머신
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
-	STATE_PLAYER ePlayerState;
 
 	void Idle(float fTimeDelta);
 	void Move(float fTimeDelta);
@@ -231,9 +230,9 @@ private:
 	void State_Update(float fTimeDelta);	// 상태 업데이트(상태 체크)
 
 private: // 스위치
-	_bool		bSpinOn = false;		// 총 회전 On/Off
-	_bool		bRighter = false;		// 라이터 On/Off
-	_bool		bRightHandOn = true;	// 오른손 출력 On/Off
+	_bool		bSpinOn = false;			// 총 회전 On/Off
+	_bool		bRighter = false;			// 라이터 On/Off
+	_bool		bRightHandOn = true;		// 오른손 출력 On/Off
 	_bool		bRightGetAnimation = false;	// 애니메이션 불러오기 On/Off
 	_bool		bLeftGetAnimation = false;	// 애니메이션 불러오기 On/Off
 
@@ -249,6 +248,7 @@ private: // 스위치
 	_bool		bChargeAttack = false;	// 일반 공격에서 차징 공격으로 변경
 	_bool		bBackRighter = false;	// 라이터 되돌리기
 	_bool		bDbugFrame = false;		// 디버그 프레임
+	_bool		m_bAttack = false;		// 공격 On/Off
 
 private:
 	struct _LEFTHAND	// 왼손
@@ -301,6 +301,7 @@ private:
 	};
 
 
+	PLAYER_ATTACK_STATE m_eAttackState; // 플레이어 공격 유형
 
 	_PLAYER			m_tPlayer;		// 플레이어
 	_LEFTHAND		m_tLeftHand;	// 플레이어 왼손
