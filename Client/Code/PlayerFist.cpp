@@ -80,7 +80,7 @@ void CPlayerFist::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CPlayerFist* CPlayerFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState)
+CPlayerFist* CPlayerFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -96,6 +96,7 @@ CPlayerFist* CPlayerFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAce
 	pInstance->m_pTransformComp->Set_Pos(vPos.x, vPos.y, vPos.z);	// 생성 위치
 	pInstance->Set_Owner(_Owner);									// 공격의 주인
 	pInstance->Set_Player_AttackState(_AttackState);			 	// 공격의 상태(공격 유형)
+	pInstance->Set_TeamID(_eTeamID);								// 공격의 팀 설정
 
 	return pInstance;
 }

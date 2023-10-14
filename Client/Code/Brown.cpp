@@ -37,6 +37,8 @@ HRESULT CBrown::Ready_GameObject()
     SUPER::Ready_GameObject();
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    Set_TeamID(ETEAM_BETA);
     
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
     m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });

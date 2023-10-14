@@ -38,6 +38,8 @@ HRESULT CGray::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+    Set_TeamID(ETEAM_BETA);
+
     // 이미지 관련
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Single", L"Idle");
     m_pTransformComp->Set_Scale({ 3.f, 5.f, 1.f });

@@ -28,7 +28,7 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CPlayerFist* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState);
+	static CPlayerFist* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID);
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
