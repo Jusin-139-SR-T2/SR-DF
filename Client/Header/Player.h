@@ -121,7 +121,9 @@ public: // Get_Set
 	// 플레이어 오른손 상태값
 	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
 	// 플레이어 상태값
-	enum class STATE_PLAYER { NONE, IDLE, MOVE, RUN, SITDOWN, SITDOWN_MOVE, SITDOWN_ATTACK, CHARGING, THROW_AWAY, DIE, JUMP, PLAYER_END };
+	enum class STATE_PLAYER { NONE, IDLE, SITDOWN, JUMP, DIE, PLAYER_STATE_SIZE_END };
+	// 플레이어 행동 상태값
+	enum class STATE_PLAYER_ACTION { IDLE, RUN, ATTACK, CHARGING, THROW_AWAY, PLAYER_ACTION_SIZE_END };
 
 	// 소영 추가 ---------------- 
 	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
@@ -179,17 +181,22 @@ public:
 	//enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
 	enum class STATE_LEFTHAND { NONE, HAND, OPEN_HAND, RUN_HAND, RIGHTER, RUN_RIHGTER };
 
-private: // 플레이어의 상태 머신
+private: // 플레이어의 상태 머신 (상태x, 뛰기, 앉기, 점프, 죽음)
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
 
 	void Idle(float fTimeDelta);
-	void Move(float fTimeDelta);
-	void Run(float fTimeDelta);
 	void Down(float fTimeDelta);
-	void Attack(float fTimeDelta);
 	void Kick(float fTimeDelta);
-	void Throw_Away(float fTimeDelta);
 	void Die(float fTimeDelta);
+
+private: // 플레이어의 행동 머신 (행동x, 이동, 공격, 차징, 버리기)
+	STATE_SET<STATE_PLAYER_ACTION, void(CPlayer*, float)> m_tPlayer_Action;
+
+	void Action_Idle(float fTimeDelta);
+	void Action_Move(float fTimeDelta);
+	void Action_Run(float fTimeDelta);
+	void Action_Charging(float fTimeDelta);
+	void Action_ThrowAway(float fTimeDelta);
 
 public:
 	STATE_PLAYER Get_PlayerState() { return m_tPlayer_State.Get_State(); }
@@ -303,6 +310,7 @@ private:
 		_float		fRightChangeTime = 1.f;		// 시간 속도 조절(배율)
 
 		_float		fMaxChangeTime = 3.f;		// 변경될 최대 시간
+		_float		fChargeStartTime = 0.f;		// 차지를 시작할 시간
 	};
 
 

@@ -69,7 +69,7 @@ protected:
 	CTransformComponent*		m_pPlayerTransformcomp = nullptr;
 
 public: // 성희 추가 : 몬스터 정보 Get,Set
-	GAUGE<_float> m_gHp;
+	//GAUGE<_float> m_gHp;
 	PLAYER_ATTACK_STATE m_ePlayer_AttackState;
 	GETSET_EX2(GAUGE<_float>, m_gHp, MonsterHP, GET, SET)   // 몬스터 HP 
 	GETSET_EX2(PLAYER_ATTACK_STATE, m_ePlayer_AttackState, Player_AttackState, GET, SET)   // 피격당한 공격의 상태 (ex : 앉은채로 공격, 점프 공격, 2연속 공격...등등)

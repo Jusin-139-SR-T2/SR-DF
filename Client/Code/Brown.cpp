@@ -35,6 +35,8 @@ CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _flo
 HRESULT CBrown::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    Set_TeamID(ETEAM_BETA);
     
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
     m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });

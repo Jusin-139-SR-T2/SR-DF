@@ -19,6 +19,8 @@ HRESULT CAceBoss::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	Set_TeamID(ETEAM_BETA);
+
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Idle_South");
 	m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });
 	m_tFrame.fFrame = 0.f;
