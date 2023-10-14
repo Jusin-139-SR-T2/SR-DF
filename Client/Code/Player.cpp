@@ -1969,6 +1969,8 @@ void CPlayer::Right_Thompson(float fTimeDelta)
         // 플레이어의 상태가 공격일경우 애니메이션 변경
         if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
         {
+            m_bGunLight = TRUE;
+
             // 총알 발사 (디바이스, 생성 위치, 투사체 속도)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
                 m_pTransformComp->Get_Pos(), 300.f, this));

@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Barrier.h" />
-    <ClInclude Include="BossLight.h" />
+    <ClInclude Include="Header\Barrier.h" />
+    <ClInclude Include="Header\BossLight.h" />
     <ClInclude Include="Header\AbsFac_GameObject.h" />
     <ClInclude Include="Header\AceBoss.h" />
     <ClInclude Include="Header\AceGameObject.h" />
@@ -72,11 +72,11 @@
     <ClInclude Include="Header\Scene_Parsed.h" />
     <ClInclude Include="Header\PlayerAttackUnion.h" />
     <ClInclude Include="Header\PlayerFist.h" />
-    <ClInclude Include="PlayerGunLighter.h" />
+    <ClInclude Include="Header\PlayerGunLighter.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Barrier.cpp" />
-    <ClCompile Include="BossLight.cpp" />
+    <ClCompile Include="Code\Barrier.cpp" />
+    <ClCompile Include="Code\BossLight.cpp" />
     <ClCompile Include="Code\AbsFac_GameObject.cpp" />
     <ClCompile Include="Code\AceBoss.cpp" />
     <ClCompile Include="Code\AceGameObject.cpp" />
@@ -134,7 +134,7 @@
     <ClCompile Include="Code\Scene_Parsed.cpp" />
     <ClCompile Include="Code\PlayerAttackUnion.cpp" />
     <ClCompile Include="Code\PlayerFist.cpp" />
-    <ClCompile Include="PlayerGunLighter.cpp" />
+    <ClCompile Include="Code\PlayerGunLighter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

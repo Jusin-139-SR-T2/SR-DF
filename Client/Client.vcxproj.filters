@@ -381,7 +381,7 @@
     <ClInclude Include="Header\RedThunder.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\07. RedThunder</Filter>
     </ClInclude>
-    <ClInclude Include="BossLight.h">
+    <ClInclude Include="Header\BossLight.h">
       <Filter>03..=====Object=====\03. Lighter\02. BossLight</Filter>
     </ClInclude>
     <ClInclude Include="Header\Scene_Parsed.h">
@@ -390,7 +390,7 @@
     <ClInclude Include="Header\AbsFac_GameObject.h">
       <Filter>03..=====Object=====\00. AbstractFactory</Filter>
     </ClInclude>
-    <ClInclude Include="Barrier.h">
+    <ClInclude Include="Header\Barrier.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\08. Barrier</Filter>
     </ClInclude>
     <ClInclude Include="Header\PlayerAttackUnion.h">
@@ -399,7 +399,7 @@
     <ClInclude Include="Header\PlayerFist.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Fist</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerGunLighter.h">
+    <ClInclude Include="Header\PlayerGunLighter.h">
       <Filter>03..=====Object=====\03. Lighter\03. PlayerGunLighter</Filter>
     </ClInclude>
   </ItemGroup>
@@ -551,7 +551,7 @@
     <ClCompile Include="Code\RedThunder.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\07. RedThunder</Filter>
     </ClCompile>
-    <ClCompile Include="BossLight.cpp">
+    <ClCompile Include="Code\BossLight.cpp">
       <Filter>03..=====Object=====\03. Lighter\02. BossLight</Filter>
     </ClCompile>
     <ClCompile Include="Code\Scene_Parsed.cpp">
@@ -560,7 +560,7 @@
     <ClCompile Include="Code\AbsFac_GameObject.cpp">
       <Filter>03..=====Object=====\00. AbstractFactory</Filter>
     </ClCompile>
-    <ClCompile Include="Barrier.cpp">
+    <ClCompile Include="Code\Barrier.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\08. Barrier</Filter>
     </ClCompile>
     <ClCompile Include="Code\PlayerAttackUnion.cpp">
@@ -569,7 +569,7 @@
     <ClCompile Include="Code\PlayerFist.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Fist</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerGunLighter.cpp">
+    <ClCompile Include="Code\PlayerGunLighter.cpp">
       <Filter>03..=====Object=====\03. Lighter\03. PlayerGunLighter</Filter>
     </ClCompile>
   </ItemGroup>
