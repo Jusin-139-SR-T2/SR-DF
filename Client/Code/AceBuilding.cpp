@@ -2,12 +2,12 @@
 #include "AceBuilding.h"
 
 CAceBuilding::CAceBuilding(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CGameObject(pGraphicDev)
+    : Base(pGraphicDev)
 {
 }
 
 CAceBuilding::CAceBuilding(const CAceBuilding& rhs)
-    : CGameObject(rhs)
+    : Base(rhs)
 {
 }
 

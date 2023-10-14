@@ -1,7 +1,6 @@
 #pragma once
 #include "AceObjectFactory.h"
-#include "GameObject.h"
-
+#include "AceUnit.h"
 
 BEGIN(Engine)
 
@@ -13,9 +12,9 @@ class CColliderComponent;
 
 END
 
-class CAceFood : public Engine::CGameObject
+class CAceFood : public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CAceFood)
+	DERIVED_CLASS(CAceUnit, CAceFood)
 
 enum class FOOD_NAME { APPLE, BANANA, COLA, MEDIKIT, 
 					EATENAPPLE, BANANAPEEL, 
@@ -27,12 +26,11 @@ private:
 	virtual ~CAceFood();
 
 public:
-	PRIVATE virtual HRESULT		Ready_GameObject() override { return S_OK; }
-	PUBLIC	virtual HRESULT		Ready_GameObject(const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
-	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
-	virtual void		LateUpdate_GameObject() override;
-	virtual void		Render_GameObject() override;
-	static CAceFood*	Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
+	virtual HRESULT				Ready_GameObject() override;
+	virtual _int				Update_GameObject(const _float& fTimeDelta) override;
+	virtual void				LateUpdate_GameObject() override;
+	virtual void				Render_GameObject() override;
+	static CAceFood*			Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
 
 protected:
 	virtual void	OnCollision(CGameObject* pDst);

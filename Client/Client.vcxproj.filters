@@ -321,9 +321,6 @@
     <ClInclude Include="Header\AttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion</Filter>
     </ClInclude>
-    <ClInclude Include="Header\NormalBullet.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet\00. NormalBullet</Filter>
-    </ClInclude>
     <ClInclude Include="Header\MainApp.h">
       <Filter>00. =====MainApp=====</Filter>
     </ClInclude>
@@ -475,9 +472,6 @@
     </ClCompile>
     <ClCompile Include="Code\AttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\NormalBullet.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet\00. NormalBullet</Filter>
     </ClCompile>
     <ClCompile Include="Code\TitleLogo.cpp">
       <Filter>소스 파일</Filter>

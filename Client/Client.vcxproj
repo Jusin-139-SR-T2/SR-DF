@@ -65,7 +65,6 @@
     <ClInclude Include="Header\MonsterPunch.h" />
     <ClInclude Include="Header\SlowThunder.h" />
     <ClInclude Include="Header\AceMonster.h" />
-    <ClInclude Include="Header\NormalBullet.h" />
     <ClInclude Include="Header\PlayerBullet.h" />
     <ClInclude Include="Header\RedThunder.h" />
     <ClInclude Include="Header\Scene_Parsed.h" />
@@ -123,7 +122,6 @@
     <ClCompile Include="Code\MonsterPunch.cpp" />
     <ClCompile Include="Code\SlowThunder.cpp" />
     <ClCompile Include="Code\AceMonster.cpp" />
-    <ClCompile Include="Code\NormalBullet.cpp" />
     <ClCompile Include="Code\PlayerBullet.cpp" />
     <ClCompile Include="Code\RedThunder.cpp" />
     <ClCompile Include="Code\Scene_Parsed.cpp" />

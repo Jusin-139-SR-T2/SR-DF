@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AceObjectFactory.h"
-#include "GameObject.h"
+#include "AceUnit.h"
 
 BEGIN(Engine)
 
@@ -12,10 +12,9 @@ class CCalculatorComponent;
 
 END
 
-
-class CAceInteraction : public Engine::CGameObject
+class CAceInteraction :public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CAceInteraction)
+	DERIVED_CLASS(CAceUnit, CAceInteraction)
 
 	enum class INTERACTION_NAME {LIGHTSWITCH, ONE_BUTTON, TWO_BUTTON,  BLOCK_SWITCH, PADLOCK,
 								NEWSPAPER, COMICBOOK,

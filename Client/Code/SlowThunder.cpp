@@ -17,7 +17,7 @@ CSlowThunder::~CSlowThunder()
 {
 }
 
-CSlowThunder* CSlowThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAceUnit* pOwner)
+CSlowThunder* CSlowThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAceUnit* pOwner, ETEAM_ID _eTeamid)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -31,6 +31,7 @@ CSlowThunder* CSlowThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _fl
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
 	pInstance->Set_Owner(pOwner);
+	pInstance->Set_TeamID(_eTeamid);
 
 	return pInstance;
 }

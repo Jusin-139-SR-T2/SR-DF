@@ -141,9 +141,23 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	// PhysicsMgr
 	FAILED_CHECK_RETURN(Engine::Ready_PhysicsMgr(1), E_FAIL);
 
-	// 팀 에이전트 팀 설정, A, B팀 서로 적대 관계 설정
-	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_ALPHA), static_cast<_int>(ETEAM_BETA), ERELATION_STATE::HOSTILE);
-	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BETA), static_cast<_int>(ETEAM_ALPHA), ERELATION_STATE::HOSTILE);
+	// 팀 에이전트 팀 설정, A, B팀 서로 적대 관계 설정 - NONE,	HOSTILE(적대),	NUETRAL(중립),		FRIEND(호감) 
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_PLAYER), static_cast<_int>(ETEAM_MONSTER), ERELATION_STATE::HOSTILE); //플레이어가 몬스터에게 적대관계 
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_PLAYER), static_cast<_int>(ETEAM_BOSS), ERELATION_STATE::HOSTILE);		//플레이어가 보스에게 적대관계
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_PLAYER), static_cast<_int>(ETEAM_OBJECT), ERELATION_STATE::NUETRAL);	//플레이어가 오브젝트에 중립관계
+
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_MONSTER), static_cast<_int>(ETEAM_BOSS), ERELATION_STATE::FRIEND);		// 몬스터가 보스에게 친밀관계
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_MONSTER), static_cast<_int>(ETEAM_PLAYER), ERELATION_STATE::HOSTILE);	// 몬스터가 플레이어에게 적대관계
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_MONSTER), static_cast<_int>(ETEAM_OBJECT), ERELATION_STATE::NUETRAL);	// 몬스터가 오브젝트에 중립관계
+
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BOSS), static_cast<_int>(ETEAM_PLAYER), ERELATION_STATE::HOSTILE);		// 보스가 플레이어에게 적대관계
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BOSS), static_cast<_int>(ETEAM_OBJECT), ERELATION_STATE::NUETRAL);		// 보스가 오브젝트에 중립관계
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BOSS), static_cast<_int>(ETEAM_MONSTER), ERELATION_STATE::NUETRAL);	// 보스가 몬스터에게 적대관계
+
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_OBJECT), static_cast<_int>(ETEAM_PLAYER), ERELATION_STATE::NUETRAL);	// 오브젝트가 플레이어에게 중립관계
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_OBJECT), static_cast<_int>(ETEAM_MONSTER), ERELATION_STATE::NUETRAL);	// 오브젝트가 몬스터에게 중립관계
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_OBJECT), static_cast<_int>(ETEAM_BOSS), ERELATION_STATE::NUETRAL);		// 오브젝트가 보스에게 중립관계
+	//		
 
 	return S_OK;
 }

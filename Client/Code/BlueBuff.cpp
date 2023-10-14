@@ -16,7 +16,7 @@ CBlueBuff::~CBlueBuff()
 }
 
 CBlueBuff* CBlueBuff::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, 
-	MonsterPhase _CurrPhase, CGameObject* pOwner)
+	MonsterPhase _CurrPhase, CGameObject* pOwner, ETEAM_ID _eTeamid)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -30,6 +30,7 @@ CBlueBuff* CBlueBuff::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
 	pInstance->Set_Owner(pOwner);
+	pInstance->Set_TeamID(_eTeamid);
 
 	return pInstance;
 }

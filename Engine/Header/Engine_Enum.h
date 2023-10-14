@@ -25,7 +25,9 @@ namespace Engine
 
 	enum MonsterPhase { Intro, Phase1, Phase2, Phase_End };
 
-	enum ETEAM_ID { ETEAM_ALPHA, ETEAM_BETA, ETEAM_GAMMA, ETEAM_DELTA };
+	enum ETEAM_ID { ETEAM_PLAYER, ETEAM_MONSTER, ETEAM_BOSS, ETEAM_OBJECT  };
+
+	//플레이어, 몬스터, 보스, 
 
 	enum ATTACK_TARGET
 	{

@@ -22,7 +22,7 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
     if (!pInstance)
         return nullptr;
 
-    if (FAILED(pInstance->Ready_GameObject(pObjTag, _fx, _fy, _fz)))
+    if (FAILED(pInstance->Ready_GameObject()))
     {
         Safe_Release(pInstance);
 
@@ -30,6 +30,10 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
         return nullptr;
     }
     
+    pInstance->m_pTransformComp->Set_Pos({ _fx, _fy, _fz });
+    pInstance->FoodName(pObjTag);
+    pInstance->CurPos = { _fx, _fy, _fz };
+
     return pInstance;
 }
 
@@ -51,13 +55,9 @@ void CAceFood::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때
     Set_Dead();
 }
 
-HRESULT CAceFood::Ready_GameObject(const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
+HRESULT CAceFood::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
-    m_pTransformComp->Set_Pos({ _fx, _fy, _fz });
-
-    FoodName(pObjTag);
 
     CurPos = m_pTransformComp->Get_Pos();
 

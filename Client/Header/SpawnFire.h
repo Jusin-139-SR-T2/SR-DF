@@ -17,7 +17,7 @@ public:
 	virtual void		Render_GameObject() override;
 
 	static CSpawnFire* Create(LPDIRECT3DDEVICE9 pGraphicDev,
-		_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CAceUnit* pOwner);
+		_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CAceUnit* pOwner, ETEAM_ID _eTeamid);
 
 private:
 	HRESULT				Add_Component();

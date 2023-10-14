@@ -34,6 +34,8 @@ CGray* CGray::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float
 
 HRESULT CGray::Ready_GameObject()
 {
+    SUPER::Ready_GameObject();
+
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     // 이미지 관련
@@ -44,6 +46,9 @@ HRESULT CGray::Ready_GameObject()
     m_tFrame.fFrameSpeed= 12.f;
     m_tFrame.fRepeat= 0.f;
     m_tFrame.fAge = 0.f;
+
+    // 팀에이전트 셋팅 
+    Set_TeamID(ETEAM_MONSTER);
 
     //Status
     m_tStat.fAttackDistance = 13.f;
@@ -234,12 +239,7 @@ void CGray::Render_GameObject()
 
 HRESULT CGray::Add_Component()
 {
-    NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
-
-    // 콜라이더 컴포넌트
+    // 충돌 컴포넌트 
     NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
 
     // 물리 세계 등록
@@ -771,8 +771,8 @@ void CGray::AI_Throw(float fDeltaTime)
         m_tFrame.fFrameSpeed = 10.f;
        
         // 투사체 발사 
-        Engine::Add_GameObject(L"GameLogic", CThrowPipe::Create(m_pGraphicDev, 
-            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 1.f , m_pTransformComp->Get_Pos().z, this));
+        Engine::Add_GameObject(L"GameLogic", CThrowPipe::Create(m_pGraphicDev,
+            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 1.f, m_pTransformComp->Get_Pos().z, this, (ETEAM_ID)Get_TeamID()));
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1324,7 +1324,7 @@ void CGray::Attack(float fDeltaTime)
             {
                 Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev,
                     vDirPos.x, vDirPos.y, vDirPos.z,
-                    CMonsterPunch::TYPE::NORMAL, this));
+                    CMonsterPunch::TYPE::NORMAL, this, (ETEAM_ID)Get_TeamID()));
 
                 m_AttackOnce = true;
             }
@@ -1336,7 +1336,7 @@ void CGray::Attack(float fDeltaTime)
             {
                 Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev,
                     vDirPos.x, vDirPos.y, vDirPos.z,
-                    CMonsterPunch::TYPE::HEAVY, this));
+                    CMonsterPunch::TYPE::HEAVY, this, (ETEAM_ID)Get_TeamID()));
 
                 m_AttackOnce = true;
             }

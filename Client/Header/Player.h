@@ -129,7 +129,7 @@ public: // Get_Set
 	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
 	// 조명 수명 
 	_float m_fAge = 0.f;
-	_float m_fLifeTime = 0.2;
+	_float m_fLifeTime = 0.2f;
 	_bool m_bGunLight; // 불켜는 bool값 
 	// ------------------------- 
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AceObjectFactory.h"
-#include "GameObject.h"
+#include "AceUnit.h"
 
 BEGIN(Engine)
 
@@ -13,9 +13,9 @@ class CCalculatorComponent;
 END
 
 
-class CAceThrow : public Engine::CGameObject
+class CAceThrow : public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CAceThrow)
+	DERIVED_CLASS(CAceUnit, CAceThrow)
 
 		enum class THROW_NAME {
 		// Paper (6) 

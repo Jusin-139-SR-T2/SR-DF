@@ -20,7 +20,7 @@ public:
 
 	static CMonsterPunch* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
 								_float _x, _float _y, _float _z, 
-								TYPE _option, CAceUnit* pOwner);
+								TYPE _option, CAceUnit* pOwner, ETEAM_ID _eTeamid);
 
 private:
 	HRESULT				Add_Component();

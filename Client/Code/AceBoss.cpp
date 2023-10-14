@@ -17,6 +17,8 @@ CAceBoss::~CAceBoss()
 
 HRESULT CAceBoss::Ready_GameObject()
 {
+	SUPER::Ready_GameObject();
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Idle_South");
@@ -27,6 +29,9 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_tFrame.fRepeat = 0.f;
 	m_fAwareness = m_tStat.fAwareness = 0.f;
 	m_tStat.fMaxAwareness = 15.f;
+
+	// 팀에이전트 셋팅 
+	Set_TeamID(ETEAM_BOSS);
 
 	// 조명관련
 	m_tFrame.fAge = 0.f;
@@ -236,12 +241,7 @@ CAceBoss* CAceBoss::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, 
 
 HRESULT CAceBoss::Add_Component()
 {
-	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-
-	// 콜라이더 컴포넌트
+	// 충돌 컴포넌트 
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
 
 	// 물리 세계 등록
@@ -1391,7 +1391,7 @@ void CAceBoss::Attack(float fDeltaTime)
 					vDir = m_pTransformComp->Get_Pos() + vLook * 1;
 
 					Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev,
-						vDir.x, vDir.y, vDir.z, CMonsterPunch::TYPE::NORMAL, this));
+						vDir.x, vDir.y, vDir.z, CMonsterPunch::TYPE::NORMAL, this, (ETEAM_ID)Get_TeamID()));
 
 					m_AttackOnce = TRUE;
 				}
@@ -1410,7 +1410,7 @@ void CAceBoss::Attack(float fDeltaTime)
 					vDir = m_pTransformComp->Get_Pos() + vLook * 1;
 
 					Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev,
-						vDir.x, vDir.y, vDir.z, CMonsterPunch::TYPE::HEAVY, this));
+						vDir.x, vDir.y, vDir.z, CMonsterPunch::TYPE::HEAVY, this, (ETEAM_ID)Get_TeamID()));
 
 					m_AttackOnce = TRUE;
 				}
@@ -1475,7 +1475,7 @@ void CAceBoss::LaserInstall(float fDeltaTime)
 					Engine::Add_GameObject(L"GameLogic", CRedLaser::Create(m_pGraphicDev,
 						m_pTransformComp->Get_Pos().x,
 						Get_RandomFloat(PosY - 1.f, PosY + 5.f),
-						Get_RandomFloat(PosZ - 3.f, PosZ + 3.f), this));
+						Get_RandomFloat(PosZ - 3.f, PosZ + 3.f), this, (ETEAM_ID)Get_TeamID()));
 				}
 				m_AttackOnce = TRUE;
 			}
@@ -1516,7 +1516,7 @@ void CAceBoss::BuffActive(float fDeltaTime)
 				Engine::Add_GameObject(L"GameLogic", CBlueBuff::Create(m_pGraphicDev,
 					m_pTransformComp->Get_Pos().x,
 					m_pTransformComp->Get_Pos().y,
-					m_pTransformComp->Get_Pos().z, m_ePhase, this));
+					m_pTransformComp->Get_Pos().z, m_ePhase, this, (ETEAM_ID)Get_TeamID()));
 			}
 		
 			m_bBuffActive = TRUE;
@@ -1559,7 +1559,7 @@ void CAceBoss::SkillStone(float fDeltaTime)
 				Engine::Add_GameObject(L"GameLogic", CFallingStone::Create(m_pGraphicDev,
 					randomCenter.x,
 					randomCenter.y,
-					randomCenter.z, m_ePhase, this));
+					randomCenter.z, m_ePhase, this, (ETEAM_ID)Get_TeamID()));
 			}
 		}
 		m_AttackOnce = true;
@@ -1598,10 +1598,10 @@ void CAceBoss::SkillEnergyBall(float fDeltaTime)
 				_vec3 Pos2 = m_pTransformComp->Get_Pos() - m_pTransformComp->Get_Right() * i;
 
 				Engine::Add_GameObject(L"GameLogic", CEnergyBall::Create(m_pGraphicDev,
-					Pos1.x, Pos1.y, Pos1.z, m_ePhase, this));
+					Pos1.x, Pos1.y, Pos1.z, m_ePhase, this, (ETEAM_ID)Get_TeamID()));
 
 				Engine::Add_GameObject(L"GameLogic", CEnergyBall::Create(m_pGraphicDev,
-					Pos2.x, Pos2.y, Pos2.z, m_ePhase, this));
+					Pos2.x, Pos2.y, Pos2.z, m_ePhase, this, (ETEAM_ID)Get_TeamID()));
 			}
 			m_AttackOnce = true;
 		}
@@ -1634,7 +1634,7 @@ void CAceBoss::SkillThunder(float fDeltaTime)
 				Engine::Add_GameObject(L"GameLogic", CRedThunder::Create(m_pGraphicDev,
 					randomCenter.x,
 					randomCenter.y,
-					randomCenter.z, m_ePhase, this));
+					randomCenter.z, m_ePhase, this, (ETEAM_ID)Get_TeamID() ));
 			}
 			m_AttackOnce = true;
 		}
@@ -1669,7 +1669,7 @@ void CAceBoss::SkillFire(float fDeltaTime)
 				spawnPosition.z = Center.z + 4.f * sinf(angle);
 
 				Engine::Add_GameObject(L"GameLogic", CSpawnFire::Create(m_pGraphicDev,
-					spawnPosition.x, spawnPosition.y, spawnPosition.z, m_ePhase, this));
+					spawnPosition.x, spawnPosition.y, spawnPosition.z, m_ePhase, this, (ETEAM_ID)Get_TeamID()));
 			}
 			m_AttackOnce = TRUE;
 		}

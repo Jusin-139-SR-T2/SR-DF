@@ -15,6 +15,27 @@ CMonsterPunch::~CMonsterPunch()
 {
 }
 
+CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, TYPE _option, CAceUnit* pOwner, ETEAM_ID _eTeamid)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_GameObject()))
+	{
+		Safe_Release(pInstance);
+
+		MSG_BOX("MonsterPunch Create Failed");
+		return nullptr;
+	}
+
+	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
+	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
+	pInstance->m_eAttackType = _option;
+	pInstance->Set_Owner(pOwner);
+	pInstance->Set_TeamID(_eTeamid);
+
+	return pInstance;
+}
+
 HRESULT CMonsterPunch::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
@@ -56,25 +77,6 @@ void CMonsterPunch::LateUpdate_GameObject()
 
 void CMonsterPunch::Render_GameObject()
 {
-}
-
-CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, TYPE _option, CAceUnit* pOwner)
-{
-	ThisClass* pInstance = new ThisClass(pGraphicDev);
-
-	if (FAILED(pInstance->Ready_GameObject()))
-	{
-		Safe_Release(pInstance);
-
-		MSG_BOX("MonsterPunch Create Failed");
-		return nullptr;
-	}
-
-	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
-	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-	pInstance->m_eAttackType = _option;
-	pInstance->Set_Owner(pOwner);
-	return pInstance;
 }
 
 HRESULT CMonsterPunch::Add_Component()

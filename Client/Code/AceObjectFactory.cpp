@@ -7,13 +7,14 @@
 #include "AceInteraction.h"
 #include "AceBuilding.h"
 
+
+
 Engine::CGameObject* CAceObjectFactory::Create(LPDIRECT3DDEVICE9 pGraphicDev, 
                                                 OBJECT_CLASS objClass, 
                                                 const _tchar* pObjTag, 
-                                                const _float _fx, 
-                                                const _float _fy, 
-                                                const _float _fz, 
+                                                const _float _fx, const _float _fy, const _float _fz, 
                                                 const _float iCnt, 
+                                                ETEAM_ID _eTeamID, 
                                                 CAceObjectFactory::OBJECT_DIRECTION pDirection)
 {
     Engine::CGameObject* pInstance = nullptr;
@@ -45,4 +46,3 @@ Engine::CGameObject* CAceObjectFactory::Create(LPDIRECT3DDEVICE9 pGraphicDev,
 
     return pInstance;
 }
-

@@ -17,7 +17,7 @@ CSpawnFire::~CSpawnFire()
 {
 }
 
-CSpawnFire* CSpawnFire::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CAceUnit* pOwner)
+CSpawnFire* CSpawnFire::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CAceUnit* pOwner, ETEAM_ID _eTeamid)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -32,6 +32,7 @@ CSpawnFire* CSpawnFire::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
 	pInstance->Value_Setting(_x, _y, _z, _CurrPhase);
 	pInstance->Set_Owner(pOwner);
+	pInstance->Set_TeamID(_eTeamid);
 
 	return pInstance;
 }

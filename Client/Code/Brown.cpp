@@ -34,6 +34,8 @@ CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _flo
 
 HRESULT CBrown::Ready_GameObject()
 {
+    SUPER::Ready_GameObject();
+
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
     
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
@@ -42,6 +44,9 @@ HRESULT CBrown::Ready_GameObject()
     m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     m_tFrame.fFrameSpeed = 12.f;
     m_tFrame.fRepeat = 0.f;
+
+    // 팀에이전트 셋팅 
+    Set_TeamID(ETEAM_MONSTER);
 
     // Status
     m_tStat.fAttackDistance = 12.f;
@@ -171,7 +176,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     if (Engine::IsKey_Pressed(DIK_B))
     {
 
-        Engine::Add_GameObject(L"GameLogic", CRedThunder::Create(m_pGraphicDev, 5.f, 15.f, 15.f, MonsterPhase::Phase1, this));
+        Engine::Add_GameObject(L"GameLogic", CRedThunder::Create(m_pGraphicDev, 5.f, 15.f, 15.f, MonsterPhase::Phase1, this, (ETEAM_ID)Get_TeamID()));
         
 //        Engine::Add_GameObject(L"GameLogic", CRedLaser::Create(m_pGraphicDev,5.f, 1.f, 15.f, this));
 
@@ -216,12 +221,7 @@ void CBrown::Render_GameObject()
 
 HRESULT CBrown::Add_Component()
 {
-    NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-   
-    // 콜라이더 컴포넌트
+    // 충돌 컴포넌트 
     NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
     
     // 물리 세계 등록
@@ -1118,7 +1118,7 @@ void CBrown::Attack(float fDeltaTime)
             {
                 Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev,
                     vDirPos.x, vDirPos.y, vDirPos.z,
-                    CMonsterPunch::TYPE::NORMAL, this));
+                    CMonsterPunch::TYPE::NORMAL, this, (ETEAM_ID)Get_TeamID()));
                 
                 m_AttackOnce = true;
             }
@@ -1131,7 +1131,7 @@ void CBrown::Attack(float fDeltaTime)
             {
                 Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev, 
                     vDirPos.x, vDirPos.y, vDirPos.z, 
-                    CMonsterPunch::TYPE::HEAVY, this));
+                    CMonsterPunch::TYPE::HEAVY, this, (ETEAM_ID)Get_TeamID()));
 
                 m_AttackOnce = true;
             }

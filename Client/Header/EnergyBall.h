@@ -18,7 +18,7 @@ public:
 	virtual void		Render_GameObject() override;
 
 	static CEnergyBall* Create(LPDIRECT3DDEVICE9 pGraphicDev,
-								_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner);
+								_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner, ETEAM_ID _eTeamid);
 
 private:
 	HRESULT				Add_Component();

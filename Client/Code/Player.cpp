@@ -33,7 +33,7 @@ HRESULT CPlayer::Ready_GameObject()
 
 #pragma region ÆÀ ¾ÆÀÌµð
 
-    Set_TeamID(ETEAM_ALPHA);
+    Set_TeamID(ETEAM_PLAYER);
 
 #pragma endregion
 
