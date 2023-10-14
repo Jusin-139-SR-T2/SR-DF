@@ -146,9 +146,6 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
-    // 플레이어 정보 계속해서 백업 
-    Get_PlayerPos(); 
-
     // 지형타기 
     Height_On_Terrain(); 
 
@@ -690,9 +687,8 @@ void CGray::AI_Walk(float fDeltaTime)
 
         if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
         {
-            m_tState_Obj.Set_State(STATE_OBJ::REST);
+            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
-        
     }
 
     if (m_tState_Obj.IsState_Exit())
@@ -1224,10 +1220,10 @@ void CGray::Approach(float fDeltaTime)
         D3DXVec3Normalize(&vDir, &vDir);
         
         if (STATE_OBJ::RUN == m_tState_Obj.Get_State())
-            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 8.f);
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 9.f);
         
         if (STATE_OBJ::WALK == m_tState_Obj.Get_State())
-            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 5.f);
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 6.5f);
 
         m_tState_Act.Set_State(STATE_ACT::IDLE);
     }

@@ -152,12 +152,12 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 
 	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BOSS), static_cast<_int>(ETEAM_PLAYER), ERELATION_STATE::HOSTILE);		// 보스가 플레이어에게 적대관계
 	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BOSS), static_cast<_int>(ETEAM_OBJECT), ERELATION_STATE::NUETRAL);		// 보스가 오브젝트에 중립관계
-	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BOSS), static_cast<_int>(ETEAM_MONSTER), ERELATION_STATE::NUETRAL);	// 보스가 몬스터에게 적대관계
+	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_BOSS), static_cast<_int>(ETEAM_MONSTER), ERELATION_STATE::HOSTILE);	// 보스가 몬스터에게 적대관계
 
 	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_OBJECT), static_cast<_int>(ETEAM_PLAYER), ERELATION_STATE::NUETRAL);	// 오브젝트가 플레이어에게 중립관계
 	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_OBJECT), static_cast<_int>(ETEAM_MONSTER), ERELATION_STATE::NUETRAL);	// 오브젝트가 몬스터에게 중립관계
 	ITeamAgent::Add_TeamRelation(static_cast<_int>(ETEAM_OBJECT), static_cast<_int>(ETEAM_BOSS), ERELATION_STATE::NUETRAL);		// 오브젝트가 보스에게 중립관계
-	//		
+	
 
 	return S_OK;
 }

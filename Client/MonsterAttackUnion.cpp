@@ -20,6 +20,10 @@ HRESULT CMonsterAttackUnion::Ready_GameObject()
 {
     srand((_uint)time(NULL));
 
+    NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL); 
+    NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
+
     return S_OK;
 }
 
@@ -82,7 +86,7 @@ void CMonsterAttackUnion::Billboard()
 }
 
 
-void CMonsterAttackUnion::Knockback_Player(const _float& fTimeDelta, _float fSpeed)
+void CMonsterAttackUnion::Knockback_Player(const _float& fTimeDelta, _float _fSpeed)
 {
     // 공격체가 플레이어 바라보는 방향 
     // 애초에 플레이어 뒤를 가리키는 벡터이므로 순수 속력만 넣어주면된다. 
@@ -90,23 +94,92 @@ void CMonsterAttackUnion::Knockback_Player(const _float& fTimeDelta, _float fSpe
     _vec3 Dir = vPlayerPos - m_pTransformComp->Get_Pos();
     D3DXVec3Normalize(&Dir, &Dir);
 
-    m_pPlayerTransformcomp->Move_Pos(&Dir, fTimeDelta, fSpeed);
+    m_pPlayerTransformcomp->Move_Pos(&Dir, fTimeDelta, _fSpeed);
 }
 
-void CMonsterAttackUnion::Change_PlayerHp(_float pAttack)
+void CMonsterAttackUnion::Change_MonsterHp(_float _fAttack)
+{
+
+}
+
+_bool CMonsterAttackUnion::Attack_Occurrence(CGameObject* pDst, _float fAttack)
+{
+    // 현재 어택풀자체에 들어간공격팀 = 몬스터팀, 보스팀 
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
+
+    if (pAceObj == nullptr)
+       return false;
+
+    // Check_Relation(pDST, pSrc) = Dst에대한 Src의 우호도 
+    // 현재 팀이 충돌체에 대한 팀단위 우호도 검사 
+
+    // 현재팀 - 몬스터 > 적대 : 플레이어
+    // 현재팀 - 보스   > 적대 : 몬스터, 플레이어 
+    if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE) // 적대관계의 경우,
+    {
+        // 몬스터일때
+        CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
+
+        if (pMonster == nullptr) // 이게 NULL = 플레이어 
+        {
+            CPlayer* pPlayer = dynamic_cast<CPlayer*>(pAceObj);
+
+            if (pPlayer == nullptr)// 이래도 null? 
+                return false;
+            else
+            {
+                // 충돌 = 플레이어
+                OutputDebugString(L"★★★ MonsterAttackUnion에서 계산중 - 몬스터팀 공격 <> Player 충돌 \n");
+                m_gPlayerHp = pPlayer->Get_PlayerHP();
+                m_gPlayerHp.Cur -= fAttack;
+
+                if (m_gPlayerHp.Cur <= 0)
+                    m_gPlayerHp.Cur = 0.f;
+                if (m_gPlayerHp.IsMax())
+                    m_gPlayerHp.Cur = m_gPlayerHp.Max;
+
+                pPlayer->Set_PlayerHP(m_gPlayerHp);
+
+                return true;
+            }
+        }
+        else
+        {
+            // 충돌 = 몬스터 
+            OutputDebugString(L"★★★ MonsterAttackUnion에서 계산중 - 몬스터팀 공격 <> Monster 충돌 \n");
+            m_gMonsterHp = pMonster->Get_MonsterHP();
+            m_gMonsterHp.Cur -= m_fAttack;
+
+            if (m_gMonsterHp.Cur <= 0)
+                m_gMonsterHp.Cur = 0.f;
+            if (m_gMonsterHp.IsMax())
+                m_gMonsterHp.Cur = m_gMonsterHp.Max;
+
+            pMonster->Set_MonsterHP(m_gMonsterHp);
+
+            return true;
+        }
+
+    }
+
+    // 적대관계 아니면 그냥 냅두기 
+    // Set_Dead()는 해야하므로 s_ok로 설정 
+    return true;
+}
+
+void CMonsterAttackUnion::Change_PlayerHp(_float _fAttack)
 {
     // + - 둘다 가능하게 바꿈 
-    CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
-    PlayerHp = pPlayer->Get_PlayerHP();
-
-    PlayerHp.Cur += pAttack;
-
-    if (PlayerHp.Cur <= 0)
-        PlayerHp.Cur = 0.f;
-    if (PlayerHp.IsMax())
-        PlayerHp.Cur = PlayerHp.Max;
-
-    pPlayer->Set_PlayerHP(PlayerHp);
+   // PlayerHp = pPlayer->Get_PlayerHP();
+   //
+   // PlayerHp.Cur += _fAttack;
+   //
+   // if (PlayerHp.Cur <= 0)
+   //     PlayerHp.Cur = 0.f;
+   // if (PlayerHp.IsMax())
+   //     PlayerHp.Cur = PlayerHp.Max;
+   //
+   // pPlayer->Set_PlayerHP(PlayerHp);
 }
 
 #pragma endregion

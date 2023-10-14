@@ -21,7 +21,6 @@ public:
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
-	void				Billboard(const _float& fTimeDelta);
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -36,14 +35,9 @@ protected:
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	
 private:
-	_float m_fFrame;
-	_float m_fFrameEnd;
-	_float m_fFrameSpeed; // 프레임속도
-	_float m_fMoveSpeed; // 투사체 발사 속도 
-
-	_vec3 m_vPlayerPos; //생성시 플레이어 위치
-	_vec3 m_vDir; // 날아가는 방향 
-
-	_bool _bLoop; // 한번만 하게 함
+	void			Dir_Setting();
+	_vec3			m_vDir; // 날아가는 방향 
+	_bool			_bLoop; // 한번정한 방향으로 계속 날아가게함 
+	_float			m_fMoveSpeed; // 투사체 이동스피드 
 };
 

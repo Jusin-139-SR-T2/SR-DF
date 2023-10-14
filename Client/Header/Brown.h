@@ -34,9 +34,8 @@ public:
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-	
 	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
-		
+
 	// 충돌 
 protected: 
 	virtual void	OnCollision(CGameObject* pDst);
@@ -65,12 +64,9 @@ private:
 	_bool		m_bArrive = false;
 	_bool		m_AttackOnce = false;
 
-	// 플레이어 갖고오기
-	CPlayer::STATE_RIGHTHAND	m_ePlayerRighthand;
-	CPlayer::STATE_PLAYER		m_ePlayerState;
-
 	// 외부타격으로 인한 죽음
 	void MonsterDead();
+
 #pragma region 상태머신 enum셋팅
 	
 public: 

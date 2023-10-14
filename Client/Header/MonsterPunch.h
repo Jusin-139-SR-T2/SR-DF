@@ -40,7 +40,7 @@ protected:
 
 private:
 	TYPE			m_eAttackType;
-
+	_float			m_fHeavyAttack;
 };
 
 //플레이어 = -20 : 주먹

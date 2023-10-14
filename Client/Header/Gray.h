@@ -56,7 +56,6 @@ public:
 		BLOCK,													//막기
 		CROTCHHIT, FACEPUNCH, FALLING, HIT,						//피격
 		DAZED, DEATH, CHOPPED, HEADSHOT, HEADLESS				//사망
-		
 		//미구현 리스트 
 	};
 

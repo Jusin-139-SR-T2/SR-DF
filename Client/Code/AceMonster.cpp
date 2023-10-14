@@ -29,6 +29,8 @@ HRESULT CAceMonster::Ready_GameObject()
 
 _int CAceMonster::Update_GameObject(const _float& fTimeDelta)
 {
+	Get_PlayerPos();
+
     SUPER::Update_GameObject(fTimeDelta);
 
     return S_OK;
@@ -115,7 +117,6 @@ HRESULT CAceMonster::Get_PlayerPos()
 {
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
 	ePlayerRighthand = pPlayer->Get_PlayerRightHand();
-	ePlayerState = pPlayer->Get_PlayerState();
 
 	m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
 	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);

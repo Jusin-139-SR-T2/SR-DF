@@ -5,6 +5,8 @@
 #include "Export_Utility.h"
 #include "Engine_Define.h"
 
+#include "AceMonster.h"
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -44,13 +46,18 @@ public:
 	void						Billboard();
 
 public:
-	void						Change_PlayerHp(_float pAttack);
-	void						Knockback_Player(const _float& fTimeDelta, _float fSpeed);
+	void						Change_PlayerHp(_float _fAttack);
+	void						Knockback_Player(const _float& fTimeDelta, _float _fSpeed);
+	void						Change_MonsterHp(_float _fAttack);
+	_bool						Attack_Occurrence(CGameObject* pDst, _float fAttack);
+
+	GAUGE<_float>				m_gPlayerHp; //플레이어 HP 저장용 
+	GAUGE<_float>				m_gMonsterHp; //몬스터 HP 저장용
 
 protected:
-	_tchar						debugString[100];	//디버그용 string
+	_tchar						debugString[100];	// 디버그용 string
 	MonsterPhase				m_CurrPahse;		// 강화패턴 적용시 
-	GAUGE<_float>				PlayerHp;			// 플레이어 HP 임시저장용 변수 
 	FRAME						m_tFrame;			// 프레임구조체 
-	_vec3						vPlayerPos;			//플레이어 위치 벡터 
+	_vec3						vPlayerPos;			// 플레이어 위치 벡터 
+	_float						m_fAttack;			// 스킬별 공격력 
 };

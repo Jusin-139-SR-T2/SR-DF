@@ -150,9 +150,6 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	//보스 페이즈 갱신 
 	Change_Phase();
 
-	// 위치값 가져오기 
-	Get_PlayerPos();
-
 	// 지형타기 
 	Height_On_Terrain();
 
@@ -188,6 +185,10 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	if (Engine::IsKey_Pressed(DIK_X))
 	{
 		m_gHp.Cur -= 5.f;
+	}
+	if (Engine::IsKey_Pressed(DIK_Z))
+	{
+		m_tState_Obj.Set_State(STATE_OBJ::RED_THUNDER);
 	}
 #pragma endregion 
 
@@ -1594,8 +1595,8 @@ void CAceBoss::SkillEnergyBall(float fDeltaTime)
 			// 좌우 3개씩 총6개, 보스쪽은 없어서 일종의 딜타임이기도함
 			for (_int i = 1; i < iCnt; ++i)
 			{
-				_vec3 Pos1 = m_pTransformComp->Get_Pos() + m_pTransformComp->Get_Right() * i;
-				_vec3 Pos2 = m_pTransformComp->Get_Pos() - m_pTransformComp->Get_Right() * i;
+				_vec3 Pos1 = m_pTransformComp->Get_Pos() + m_pTransformComp->Get_Right() * _float(i);
+				_vec3 Pos2 = m_pTransformComp->Get_Pos() - m_pTransformComp->Get_Right() * _float(i);
 
 				Engine::Add_GameObject(L"GameLogic", CEnergyBall::Create(m_pGraphicDev,
 					Pos1.x, Pos1.y, Pos1.z, m_ePhase, this, (ETEAM_ID)Get_TeamID()));
@@ -1624,7 +1625,7 @@ void CAceBoss::SkillThunder(float fDeltaTime)
 	{
 		if (!m_AttackOnce)
 		{
-			for (_int i =0 ; i < 5; ++i)
+			for (_int i = 0 ; i < 11; ++i)
 			{
 				_vec3 randomCenter;
 				_vec3 m_pPlayerPos = m_pPlayerTransformcomp->Get_Pos();

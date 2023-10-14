@@ -1,6 +1,7 @@
 #pragma once
 #include "MonsterAttackUnion.h"
 
+
 class CRedLaser : public CMonsterAttackUnion
 {
 	DERIVED_CLASS(CMonsterAttackUnion, CRedLaser)

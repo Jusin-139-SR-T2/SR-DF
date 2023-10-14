@@ -83,14 +83,8 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderBoxComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::BOX)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderCapsuleComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::CAPSULE)), E_FAIL);
 
-	// 이펙트 컴포넌트
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Effect_BeamTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Effect", L"LightBeam")), E_FAIL);
-
 	//가건물 용도 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BuildingTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Building", L"A")), E_FAIL);
-
-	//투사체 용도
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ProjectileTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Projectile", L"ThrowPipe")), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 

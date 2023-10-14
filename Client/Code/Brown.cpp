@@ -142,11 +142,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
-    // 위치값 가져오기 
-    Get_PlayerPos();
-    
-    MonsterDead();
-
     // 지형타기 
     Height_On_Terrain(); 
 
@@ -169,26 +164,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
             m_tFrame.fRepeat += 1;
     }
-
-#pragma region 테스트 장소 
-
-    //// 현재 피격 테스트중 
-    if (Engine::IsKey_Pressed(DIK_B))
-    {
-
-        Engine::Add_GameObject(L"GameLogic", CRedThunder::Create(m_pGraphicDev, 5.f, 15.f, 15.f, MonsterPhase::Phase1, this, (ETEAM_ID)Get_TeamID()));
-        
-//        Engine::Add_GameObject(L"GameLogic", CRedLaser::Create(m_pGraphicDev,5.f, 1.f, 15.f, this));
-
-    }
-
-    //if (Engine::IsKey_Pressed(DIK_P))
-    //{
-    //    swprintf_s(debugString, L"Brown - 변수 확인 fAwareness = %f\n", m_tStat.fAwareness);
-    //    //OutputDebugStringW(debugString);
-    //}
-
-#pragma endregion 
 
      //물리 업데이트 코드
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 
@@ -234,7 +209,7 @@ HRESULT CBrown::Add_Component()
     
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
-    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL || LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
     return S_OK;
 }
@@ -255,39 +230,75 @@ void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
-    //CAttackUnion* pAttack = dynamic_cast<CAttackUnion*>(pDst);
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 
-    //if (nullptr != pAttack)
-    //{
-    //    pAttack->        
+    if (nullptr == pAceObj)
+        return;
 
+    // 현재 팀 : 몬스터  적대관계 : 플레이어 
+    if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE) // 적대관계의 경우
+    {
+        CPlayer* pPlayer = dynamic_cast<CPlayer*>(pAceObj);
 
+        if (nullptr == pPlayer)
+        {
+            // 플레이어의 공격체와 충돌 
+            CPlayerAttackUnion* pPlayerAttack = dynamic_cast<CPlayerAttackUnion*>(pAceObj);
 
-    //    // Kick or Run = Falling  , 총기류 , 기타 공격 
-    //    if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
-    //        m_tState_Obj.Set_State(STATE_OBJ::FALLING);
-    //    else if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
-    //        m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-    //    else
-    //    {
-    //        if (0 == m_gHp.Cur)
-    //        {
-    //            m_tState_Obj.Set_State(STATE_OBJ::DEATH);
-    //        }
-    //        if (Random_variable(60))
-    //            m_tState_Obj.Set_State(STATE_OBJ::HIT);
-    //        else
-    //            m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-    //    }
-    //=}
+            if (nullptr == pPlayerAttack)
+                return;
+
+            //플레이어 앉은상태 먼저 확인 
+            if(PSITDONW_ATTACK ==m_ePlayer_AttackState) 
+                m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
+            else
+            {
+                if (0 >= m_gHp.Cur)
+                    MonsterDead(); //다른곳에서 몬스터hp를 깎으므로 먼저 체크 
+                else
+                {
+                    if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand ||
+                        CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
+                        m_tState_Obj.Set_State(STATE_OBJ::HIT);
+                    else 
+                        if(Random_variable(60))
+                            m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+                        else
+                            m_tState_Obj.Set_State(STATE_OBJ::HIT);
+                }
+            }
+        }
+        else
+        {
+            // 플레이어와 충돌 
+
+            if (PRUN_ATTACK == m_ePlayer_AttackState)
+                m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+        }
+    }
+    else if (Check_Relation(pAceObj, this) == ERELATION::FRIEND)
+    {
+        // 친밀관계 - 보스 : 몬스터는 친밀이지만 보스는 적대임 
+        if (0 >= m_gHp.Cur)
+            MonsterDead(); // death로 갈것임 
+        else
+            m_tState_Obj.Set_State(STATE_OBJ::HIT);
+
+    }
 }
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
 {
-    //OutputDebugString(L"▶Brown 충돌끝남 \n");
-
 }
 
+void CBrown::MonsterDead()
+{
+    if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand ||
+        CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
+        m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+    else
+        m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+}
 #pragma endregion 
 
 #pragma region BlackBoard
@@ -307,10 +318,6 @@ void CBrown::Update_InternalData()
 
     // 여기서부터 블랙보드의 정보를 업데이트 한다.
     //pBlackBoard->Get_BrownAwareness().Cur = m_tStat.fAwareness;
-}
-
-void CBrown::MonsterDead()
-{
 }
 
 #pragma endregion 
@@ -928,8 +935,9 @@ void CBrown::AI_Reconnaissance(float fDeltaTime)
 
         }
 
-        if (0 >= m_tStat.fConsider) // 경계변수까지 완전히 0이 되면 집으로 복귀 
+        if (0.f >= m_tStat.fConsider) 
         {
+            // 경계변수까지 완전히 0이 되면 집으로 복귀 
             m_tStat.fConsider = 10.f; // 다시 초기 셋팅으로 
             m_tState_Obj.Set_State(STATE_OBJ::GOHOME); 
         }

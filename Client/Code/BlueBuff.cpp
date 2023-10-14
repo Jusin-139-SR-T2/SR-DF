@@ -37,18 +37,18 @@ CBlueBuff* CBlueBuff::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y
 
 HRESULT CBlueBuff::Ready_GameObject()
 {
+	SUPER::Ready_GameObject();
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	// 이미지 
+	// 가본셋팅 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Buff");
+	m_pTransformComp->Set_Scale({ 2.f, 2.f, 1.f });
 
 	// 프레임 및 사망시간 조정
 	m_tFrame.fFrame = 0;
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_tFrame.fFrameSpeed = 8.f;
-
-	// 크기조정
-	m_pTransformComp->Set_Scale({ 2.f, 2.f, 1.f });
 
 	return S_OK;
 }
@@ -100,12 +100,7 @@ void CBlueBuff::Render_GameObject()
 
 HRESULT CBlueBuff::Add_Component()
 {
-	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_Effect_BeamTextureComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
-	//얘는 충돌 없음 
-
+	//얘는 충돌 없음 - 나중대비 일단 함수는 넣어둠 
 	return S_OK;
 }
 

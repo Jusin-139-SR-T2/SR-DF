@@ -38,7 +38,13 @@ CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _
 
 HRESULT CMonsterPunch::Ready_GameObject()
 {
+	SUPER::Ready_GameObject();
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	// 기본셋팅
+	m_fAttack = 4.f;
+	m_fHeavyAttack = 6.f;
 
 	// 충돌 - 구형 
 	m_pTransformComp->Readjust_Transform();
@@ -81,11 +87,6 @@ void CMonsterPunch::Render_GameObject()
 
 HRESULT CMonsterPunch::Add_Component()
 {
-	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_ProjectileTextureComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
-	// -------------------- 충돌 세트 --------------------------
 	// 콜라이더 컴포넌트
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
 	// 물리 세계 등록
@@ -114,22 +115,18 @@ void CMonsterPunch::OnCollision(CGameObject* pDst)
 
 void CMonsterPunch::OnCollisionEntered(CGameObject* pDst)
 {
-	OutputDebugString(L"=================================== PunchAttack과 충돌 =================================== \n");
-
 	switch (m_eAttackType)
 	{
 	case CMonsterPunch::TYPE::NORMAL:
-		Change_PlayerHp(-7.f);
+		Attack_Occurrence(pDst, m_fAttack);
 		break;
 
 	case CMonsterPunch::TYPE::HEAVY:
-		Change_PlayerHp(-12.f);
+		Attack_Occurrence(pDst, m_fHeavyAttack);
 		break;
 	}
 
 	Set_Dead();
-	
-	// 충돌하면 바로 근접공격이 사라져야함 
 }
 
 void CMonsterPunch::OnCollisionExited(CGameObject* pDst)

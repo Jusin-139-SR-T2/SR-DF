@@ -34,8 +34,6 @@ class CCalculatorComponent;
 
 END
 
-class CPlayer;
-
 class CAceMonster : public CAceUnit
 {
 	DERIVED_CLASS(CAceUnit, CAceMonster)
@@ -54,7 +52,6 @@ protected:
 
 protected:
 	CPlayer::STATE_RIGHTHAND	ePlayerRighthand;
-	CPlayer::STATE_PLAYER		ePlayerState;
 	MONSTER						m_tStat;
 	FRAME						m_tFrame;
 	_vec3						vPlayerPos;			
@@ -69,11 +66,10 @@ protected:
 	CTransformComponent*		m_pPlayerTransformcomp = nullptr;
 
 public: // 성희 추가 : 몬스터 정보 Get,Set
-	GAUGE<_float> m_gHp;
+	//GAUGE<_float> m_gHp;
 	PLAYER_ATTACK_STATE m_ePlayer_AttackState;
 	GETSET_EX2(GAUGE<_float>, m_gHp, MonsterHP, GET, SET)   // 몬스터 HP 
 	GETSET_EX2(PLAYER_ATTACK_STATE, m_ePlayer_AttackState, Player_AttackState, GET, SET)   // 피격당한 공격의 상태 (ex : 앉은채로 공격, 점프 공격, 2연속 공격...등등)
-
 
 public:
 	_float						Calc_Distance();
@@ -104,6 +100,7 @@ public:
 	}
 
 	// center기준 radius 내의 "랜덤위치" out에 저장 
+	// radius의 경우 반지름값임. 
 	void GetRandomPointInCircle(_vec3* out, _vec3* center, float radius)
 	{
 		_float angle = static_cast<_float>(rand()) / RAND_MAX * 2 * D3DX_PI;

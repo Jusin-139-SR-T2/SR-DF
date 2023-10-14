@@ -39,26 +39,27 @@ CEnergyBall* CEnergyBall::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _floa
 
 HRESULT CEnergyBall::Ready_GameObject()
 {
+	SUPER::Ready_GameObject();
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	//기본셋팅 
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"EnergyBall");
+	m_pTransformComp->Set_Scale({ 0.7f, 0.7f, 0.7f });
+	m_fAttack = 4.f;
+
+	// 프레임 및 사망시간 조정
+	m_tFrame.fFrame = 0;
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	m_tFrame.fRepeat = 0.f;
+	m_tFrame.fAge = 0.f;
+	// LifeTime은 패턴강화에서 설정 
 
 	// 충돌용
 	m_pTransformComp->Readjust_Transform();
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 	pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
 	pShape->fRadius = 0.4f;
-
-	// 이미지 
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"EnergyBall");
-
-	// 프레임 및 사망시간 조정
-	m_tFrame.fFrame = 0;
-	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-	m_tFrame.fRepeat = 0.f;
-
-	m_tFrame.fAge = 0.f;
-
-	// 크기조정
-	m_pTransformComp->Set_Scale({ 0.7f, 0.7f, 0.7f });
 
 	return S_OK;
 }
@@ -116,10 +117,6 @@ void CEnergyBall::Render_GameObject()
 
 HRESULT CEnergyBall::Add_Component()
 {
-	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_Effect_BeamTextureComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
 	// 콜라이더 컴포넌트
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
 
@@ -155,7 +152,8 @@ void CEnergyBall::OnCollisionEntered(CGameObject* pDst)
 {
 	OutputDebugString(L"▶EnergyBall 충돌 \n");
 
-	Change_PlayerHp(-5.f);
+	if (Attack_Occurrence(pDst, m_fAttack))
+		Set_Dead();
 
 }
 
