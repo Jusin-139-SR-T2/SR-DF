@@ -1032,7 +1032,7 @@ void CImguiWin_MapTool::Layout_Viewer(const ImGuiWindowFlags& iMain_Flags)
 
         CImguiMgr* pImguiMgr = CImguiMgr::GetInstance();
 
-        ImVec2 contentSize = ImGui::GetContentRegionAvail();
+        ImVec2 contentSize = m_vViewerContent_Size = ImGui::GetContentRegionAvail();
         ImVec2 clipSize = ImVec2(contentSize.x / pImguiMgr->Get_DeviceClass()->Get_D3DPP()->BackBufferWidth,
             contentSize.y / pImguiMgr->Get_DeviceClass()->Get_D3DPP()->BackBufferHeight);
 
@@ -1089,7 +1089,7 @@ void CImguiWin_MapTool::Create_LayerToScene(const FLayerData& tLayerData)
     Engine::Add_Layer(strConvert.c_str(), Engine::CLayer::Create(tLayerData.fPriority));
 }
 
-void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, const FObjectData& tObjectData)
+void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, FObjectData& tObjectData)
 {
     switch (eClassID)
     {
@@ -1127,6 +1127,7 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
         wstring strConvert(tObjectData.strName.begin(), tObjectData.strName.end());
         pObj->Set_ObjectName(strConvert);
         Engine::Add_GameObject(pLayerTag, pObj);
+        tObjectData.pObject = pObj;
         break;
     }
     default:
@@ -1598,25 +1599,42 @@ void CImguiWin_MapTool::Input_Camera()
     
 
     // 마우스 우클릭으로 뷰 기준 회전을 한다.
-    if (ImGui::IsMouseDragging(ImGuiMouseButton_Middle))
+    if (ImGui::IsMouseDown(ImGuiMouseButton_Middle))
     {
-        ImVec2 fDelta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Middle);
-        
+        m_eEdit_Mode = EEDIT_MODE::MOUSE_TRANSLATE;
+
+        _vec3 vUp = Get_Up();
         _vec3 vLook = Get_Look() - Get_Pos();
+        _vec3 vRight;
+
         D3DXVec3Normalize(&vLook, &vLook);
-        _vec3 vRight, vUp;
-        
-        //D3DXVec3Cross(&vLook, &vRight);
-    }
 
-    if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-    {
-        m_fDrag = ImGui::GetMouseDragDelta(ImGuiMouseButton_Right);
-    }
+        D3DXVec3Cross(&vRight, &vUp, &vLook);
+        D3DXVec3Normalize(&vRight, &vRight);
 
+        D3DXVec3Cross(&vUp, &vLook, &vRight);
+        D3DXVec3Normalize(&vUp, &vUp);
+
+        m_fPrevDrag_Translate = m_fDrag_Translate;
+        ImVec2 fDelta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Middle);
+        m_fDrag_Translate = fDelta;
+
+        if (ImGui::IsMouseDragging(ImGuiMouseButton_Middle))
+        {
+            _float fMul = 10.f;
+            _vec3 vMove = { 0.f, 0.f, 0.f };
+            vMove += vRight * (m_fDrag_Translate - m_fPrevDrag_Translate).x;
+            vMove -= vUp * (m_fDrag_Translate - m_fPrevDrag_Translate).y;
+
+            Get_Pos() += vMove * fMul * 0.034f;
+            Get_Look() += vMove * fMul * 0.034f;
+        }
+    }
     // 마우스 우클릭시 WASD로 카메라 자체를 이동시킬 수 있다.
-    if (ImGui::IsMouseDown(ImGuiMouseButton_Right))
+    else if (ImGui::IsMouseDown(ImGuiMouseButton_Right))
     {
+        m_eEdit_Mode = EEDIT_MODE::MOUSE_ROTATE;
+
         _vec3 vUp = Get_Up();
         _vec3 vLook = Get_Look() - Get_Pos();
         _vec3 vRight;
@@ -1629,17 +1647,17 @@ void CImguiWin_MapTool::Input_Camera()
         D3DXVec3Cross(&vUp, &vLook, &vRight);
         D3DXVec3Normalize(&vUp, &vUp);
 
-        m_fPrevDrag = m_fDrag;
+        m_fPrevDrag_Rotate = m_fDrag_Rotate;
         ImVec2 fDelta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Right);
-        m_fDrag = fDelta;
-        cout << m_fDrag.x << ", " << m_fDrag.y << endl;
+        m_fDrag_Rotate = fDelta;
+        
         if (ImGui::IsMouseDragging(ImGuiMouseButton_Right))
         {
             // x가 UpVector기준으로 회전, y가 RightVector기준으로 회전
             _matrix matRotX, matRotY, matResult;
             _vec4 vResult;
-            D3DXMatrixRotationAxis(&matRotX, &vUp, D3DXToRadian((m_fDrag - m_fPrevDrag).x * 0.34f));
-            D3DXMatrixRotationAxis(&matRotY, &vRight, D3DXToRadian((m_fDrag - m_fPrevDrag).y * 0.34f));
+            D3DXMatrixRotationAxis(&matRotX, &vUp, D3DXToRadian((m_fDrag_Rotate - m_fPrevDrag_Rotate).x * 0.34f));
+            D3DXMatrixRotationAxis(&matRotY, &vRight, D3DXToRadian((m_fDrag_Rotate - m_fPrevDrag_Rotate).y * 0.34f));
 
             matResult = matRotX * matRotY;
 
@@ -1699,7 +1717,275 @@ void CImguiWin_MapTool::Input_Camera()
         }
     }
 
-    // 
+
+
+    // 마우스 피킹 기능
+    if (m_eEdit_Mode != EEDIT_MODE::TRANSFORM && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    {
+        // 피킹 전에 데이터 초기화
+        m_pPickedObjectData = nullptr;
+        m_iSelected_Layer = -1;
+        m_iSelected_Layer_Remain = -1;
+        m_iSelected_Object = -1;
+        m_eSelectedProperty_Type = ESELECTED_TYPE_NONE;
+
+
+        LPDIRECT3DDEVICE9 pGraphicDev = CImguiMgr::GetInstance()->Get_GraphicDev();
+
+        // 컨텐츠 좌표로 변환해야함
+        POINT pt = Get_MousePos_Client(g_hWnd);
+        ImVec2 vWindowMin = ImGui::GetWindowPos();
+        ImVec2 vContentMin = ImGui::GetWindowContentRegionMin();
+
+        _vec3 vNear(pt.x, pt.y, 0.f);
+        _vec3 vFar(pt.x, pt.y, 1.f);
+
+        _matrix matWorld;
+        D3DXMatrixIdentity(&matWorld);
+
+        D3DVIEWPORT9 viewport;
+        pGraphicDev->GetViewport(&viewport);
+        viewport = { (_ulong)vWindowMin.x, (_ulong)vWindowMin.y, (_ulong)m_vViewerContent_Size.x, (_ulong)m_vViewerContent_Size.y, viewport.MinZ, viewport.MaxZ};
+
+        _vec3 vWorldNear, vWorldFar;
+        D3DXVec3Unproject(&vWorldNear, &vNear, &viewport, &m_matProj, &m_matView, &matWorld);
+        D3DXVec3Unproject(&vWorldFar, &vFar, &viewport, &m_matProj, &m_matView, &matWorld);
+
+        _vec3 vRayDir = vWorldFar - vWorldNear;
+        D3DXVec3Normalize(&vRayDir, &vRayDir);
+
+        float fClosestDistance = FLT_MAX;
+        CGameObject* pClosestObject = nullptr;
+        
+
+        list<CGameObject*> listGameObject;
+        if (m_iLoaded_Scene != -1)
+        {
+            for (size_t i = 0; i < m_vecScene[m_iLoaded_Scene].vecLayer.size(); i++)
+            {
+                FLayerData tLayerData = m_vecScene[m_iLoaded_Scene].vecLayer[i];
+                
+                for (size_t j = 0; j < tLayerData.vecObject.size(); j++)
+                {
+                    FObjectData tObjectData = tLayerData.vecObject[j];
+
+                    listGameObject.push_back(Engine::Get_GameObject(tLayerData.strName.c_str(), tObjectData.strName.c_str()));
+                }
+            }
+        }
+
+        // 얻은 모든 편집중인 오브젝트에 대해 정점을 로드하도록 한다.
+        for (auto& pObject : listGameObject)
+        {
+            CCubeObject* pCubeObj = dynamic_cast<CCubeObject*>(pObject);
+            if (pCubeObj != nullptr)
+            {
+                VTXCUBE* pVertex = nullptr;
+                pCubeObj->Get_CubeBufferComponent()->Get_VertexBuffer()->Lock(0, 0, (void**)&pVertex, 0);
+
+                for (size_t i = 0; i < pCubeObj->Get_CubeBufferComponent()->Get_VertexCount(); i += 3)
+                {
+                    VTXCUBE pVtx[3] = {};
+                    pVtx[0] = pVertex[i];
+                    pVtx[1] = pVertex[i + 1];
+                    pVtx[2] = pVertex[i + 2];
+
+                    _matrix matObjectWorld = *pCubeObj->Get_TransformComponent()->Get_Transform();
+                    D3DXVec3TransformCoord(&pVtx[0].vPosition, &pVtx[0].vPosition, &matObjectWorld);
+                    D3DXVec3TransformCoord(&pVtx[1].vPosition, &pVtx[1].vPosition, &matObjectWorld);
+                    D3DXVec3TransformCoord(&pVtx[2].vPosition, &pVtx[2].vPosition, &matObjectWorld);
+                    
+                    D3DXPLANE tPlane;
+                    D3DXPlaneFromPoints(&tPlane, &pVtx[0].vPosition, &pVtx[1].vPosition, &pVtx[2].vPosition);
+
+                    _vec3 vResult;
+                    if (D3DXPlaneIntersectLine(&vResult, &tPlane, &vWorldNear, &vWorldFar))
+                    {
+                        _vec3 vEdge1 = pVtx[1].vPosition - pVtx[0].vPosition;
+                        _vec3 vEdge2 = pVtx[2].vPosition - pVtx[0].vPosition;
+                        _vec3 vEdge3 = pVtx[2].vPosition - pVtx[1].vPosition;
+                        _vec3 vNormal;
+                        D3DXVec3Cross(&vNormal, &vEdge1, &vEdge2);
+
+                        _vec3 vEdgeIntersect1 = vResult - pVtx[1].vPosition;
+                        _vec3 vEdgeIntersect2 = vResult - pVtx[2].vPosition;
+
+                        float fDot1 = D3DXVec3Dot(&vNormal, D3DXVec3Cross(&vEdge1, &vEdge2, &vEdgeIntersect1));
+                        float fDot2 = D3DXVec3Dot(&vNormal, D3DXVec3Cross(&vEdge2, &vEdge3, &vEdgeIntersect2));
+
+                        if (fDot1 >= 0.0f && fDot2 >= 0.0f && fDot1 + fDot2 <= D3DXVec3LengthSq(&vNormal))
+                        {
+                            _float fDistance = D3DXVec3Length(&(vResult - vWorldNear));
+                            if (fDistance < fClosestDistance)
+                            {
+                                fClosestDistance = fDistance;
+                                pClosestObject = pObject;
+                            }
+                        }
+                    }
+                }
+
+                pCubeObj->Get_CubeBufferComponent()->Get_VertexBuffer()->Unlock();
+            }
+        }
+
+        // 피킹 후 해당 오브젝트의 정보를 툴에 업로드 한다.
+        if (pClosestObject != nullptr)
+        {
+            _bool bFound = false;
+            for (size_t i = 0; i < m_vecScene[m_iLoaded_Scene].vecLayer.size(); i++)
+            {
+                FLayerData& tLayerData = m_vecScene[m_iLoaded_Scene].vecLayer[i];
+                // 속성 업데이트
+                for (size_t j = 0; j < tLayerData.vecObject.size(); j++)
+                {
+                    FObjectData& tObjectData = tLayerData.vecObject[j];
+
+                    if (tObjectData.pObject == pClosestObject)
+                    {
+                        m_pPickedObjectData = &tObjectData;
+                        m_iSelected_Layer_Remain = i;
+                        m_iSelected_Object = j;
+                        m_eSelectedProperty_Type = ESELECTED_TYPE_OBJECT;
+                        bFound = true;
+                        break;
+                    }
+                }
+
+                if (bFound)
+                    break;
+            }
+        }
+    }
+
+    // 선택된 오브젝트가 있을 때 트랜스폼 기능
+    if (!ImGui::IsMouseDown(ImGuiMouseButton_Middle)
+        && !ImGui::IsMouseDown(ImGuiMouseButton_Right))
+    {
+        if (ImGui::IsKeyPressed(ImGuiKey_S))
+        {
+            m_eTransform_Mode = ETRANSFORM_MODE_SCALE;
+            m_eEdit_Mode = EEDIT_MODE::TRANSFORM;
+        }
+        else if (ImGui::IsKeyPressed(ImGuiKey_R))
+        {
+            m_eTransform_Mode = ETRANSFORM_MODE_ROT;
+            m_eEdit_Mode = EEDIT_MODE::TRANSFORM;
+        }
+        else if (ImGui::IsKeyPressed(ImGuiKey_G))
+        {
+            m_eTransform_Mode = ETRANSFORM_MODE_MOVE;
+            m_eEdit_Mode = EEDIT_MODE::TRANSFORM;
+        }
+
+        if (ImGui::IsKeyPressed(ImGuiKey_Q))
+        {
+            m_eTransform_Mode = ETRANSFORM_MODE_NONE;
+            m_eTransform_Axis = ETRANSFORM_AXIS_NONE;
+            m_eEdit_Mode = EEDIT_MODE::NONE;
+        }
+    }
+
+    // 트랜스폼 실행중일 때, 축선택 가능
+    if (m_eTransform_Mode != ETRANSFORM_MODE_NONE)
+    {
+        if (!ImGui::IsKeyDown(ImGuiKey_LeftShift))
+        {
+            if (ImGui::IsKeyPressed(ImGuiKey_X))
+                m_eTransform_Axis = ETRANSFORM_AXIS_X;
+            else if (ImGui::IsKeyPressed(ImGuiKey_Y))
+                m_eTransform_Axis = ETRANSFORM_AXIS_Y;
+            else if (ImGui::IsKeyPressed(ImGuiKey_Z))
+                m_eTransform_Axis = ETRANSFORM_AXIS_Z;
+        }
+        else
+        {
+            if (ImGui::IsKeyPressed(ImGuiKey_X))
+                m_eTransform_Axis = ETRANSFORM_PLANE_X;
+            else if (ImGui::IsKeyPressed(ImGuiKey_Y))
+                m_eTransform_Axis = ETRANSFORM_PLANE_Y;
+            else if (ImGui::IsKeyPressed(ImGuiKey_Z))
+                m_eTransform_Axis = ETRANSFORM_PLANE_Z;
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_A))
+            m_eTransform_Axis = ETRANSFORM_AXIS_ALL;
+    }
+
+    
+
+    // 여기서부터 실제 트랜스폼 기능, 나중에 다른 곳으로 이동할 것.
+    if (m_pPickedObjectData != nullptr)
+    {
+        if (m_eEdit_Mode == EEDIT_MODE::TRANSFORM)
+        {
+            POINT pt = Get_MousePos_Client(g_hWnd);
+            m_vTransform_MouseEnd = { static_cast<_float>(pt.x), static_cast<_float>(pt.y) };
+
+            _vec2 vDelta = m_vTransform_MouseEnd - m_vTransform_MouseStart;
+            _float fLength = D3DXVec2Length(&vDelta);
+
+            cout << (m_vTransform_Scale.x * fLength * 0.034f) << endl;
+
+            CCubeObject* pObj = dynamic_cast<CCubeObject*>(m_pPickedObjectData->pObject);
+            if (pObj != nullptr)
+            {
+                // 처음 들어올 때 세팅
+                if (!m_bIsTransform_Start)
+                {
+                    m_bIsTransform_Start = !m_bIsTransform_Start;
+
+                    m_vTransform_Translate = m_vTransform_Translate_Saved = pObj->Get_TransformComponent()->Get_Pos();
+                    m_vTransform_Rotate = m_vTransform_Rotate_Saved = pObj->Get_TransformComponent()->Get_Rotation();
+                    m_vTransform_Scale = m_vTransform_Scale_Saved = pObj->Get_TransformComponent()->Get_Scale();
+                }
+
+                if (m_eTransform_Mode == ETRANSFORM_MODE_MOVE)
+                {
+                    pObj->Get_TransformComponent()->Set_Scale(m_vTransform_Translate * fLength * 0.034f);
+                    m_pPickedObjectData->vPos = pObj->Get_TransformComponent()->Get_Pos();
+                }
+                else
+                {
+                    pObj->Get_TransformComponent()->Set_Scale(m_vTransform_Translate_Saved);
+                    m_pPickedObjectData->vPos = pObj->Get_TransformComponent()->Get_Scale();
+                }
+
+                if (m_eTransform_Mode == ETRANSFORM_MODE_ROT)
+                {
+                    pObj->Get_TransformComponent()->Set_Scale(m_vTransform_Rotate * fLength * 0.034f);
+                    m_pPickedObjectData->vRot = pObj->Get_TransformComponent()->Get_Rotation();
+                }
+                else
+                {
+                    pObj->Get_TransformComponent()->Set_Scale(m_vTransform_Rotate_Saved);
+                    m_pPickedObjectData->vRot = pObj->Get_TransformComponent()->Get_Rotation();
+                }
+
+                if (m_eTransform_Mode == ETRANSFORM_MODE_SCALE)
+                {
+                    pObj->Get_TransformComponent()->Set_Scale(m_vTransform_Scale * fLength * 0.034f);
+                    m_pPickedObjectData->vScale = pObj->Get_TransformComponent()->Get_Scale();
+                }
+                else
+                {
+                    pObj->Get_TransformComponent()->Set_Scale(m_vTransform_Scale_Saved);
+                    m_pPickedObjectData->vScale = pObj->Get_TransformComponent()->Get_Scale();
+                }
+
+                // 적용
+                if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                {
+                    m_eEdit_Mode = EEDIT_MODE::NONE;
+                }
+            }
+        }
+    }
+    if (m_eEdit_Mode == EEDIT_MODE::NONE)
+    {
+        POINT pt = Get_MousePos_Client(g_hWnd);
+        m_vTransform_MouseStart = { static_cast<_float>(pt.x), static_cast<_float>(pt.y) };
+        m_bIsTransform_Start = false;
+    }
 }
 
 

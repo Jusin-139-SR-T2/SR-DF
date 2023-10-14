@@ -23,6 +23,10 @@ public:
 public:
 	const _ulong& Get_VertexCount() { return m_dwVtxCnt; }
 
+public:
+	GETSET_EX1(LPDIRECT3DVERTEXBUFFER9, m_pVB, VertexBuffer, GET_C_REF)
+	GETSET_EX1(LPDIRECT3DINDEXBUFFER9, m_pIB, IndexBuffer, GET_C_REF)
+
 protected:
 	LPDIRECT3DVERTEXBUFFER9		m_pVB;
 	LPDIRECT3DINDEXBUFFER9		m_pIB;

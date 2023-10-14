@@ -107,14 +107,16 @@ private:	// 계층 관련 정의부
 	};
 	struct FObjectData
 	{
-		string		strName = "";
-		EGO_CLASS		eObjectID = ECLASS_NONE;
+		string			strName = "";				// 현재 이름
+		string			strOriginName = "";			// 프로토 타입 이름
+		EGO_CLASS		eObjectID = ECLASS_NONE;	// 클래스 분류
+		CGameObject*	pObject = nullptr;
 
-		_vec3		vPos = { 0.f,0.f,0.f };
-		_vec3		vRot = { 0.f,0.f,0.f };
-		_vec3		vScale = { 1.f,1.f,1.f };
-		_float		fPriority[EPRIORITY_OBJECT_END] = { 0.f, 0.f, 0.f };
-		_bool		bUsePriority[EPRIORITY_OBJECT_END] = { true, true, true };
+		_vec3			vPos = { 0.f,0.f,0.f };
+		_vec3			vRot = { 0.f,0.f,0.f };
+		_vec3			vScale = { 1.f,1.f,1.f };
+		_float			fPriority[EPRIORITY_OBJECT_END] = { 0.f, 0.f, 0.f };
+		_bool			bUsePriority[EPRIORITY_OBJECT_END] = { true, true, true };
 	};
 	struct FLayerData
 	{
@@ -142,13 +144,12 @@ private:
 		m_iSelected_Layer = -1;
 		m_iSelected_Layer_Remain = -1;
 		m_iSelected_Object = -1;
-		m_iSelected_Object_Remain = -1;
 		m_eSelectedProperty_Type = ESELECTED_TYPE_NONE;
 	}
 private:
 	void			Load_ObjectToScene();
 	void			Create_LayerToScene(const FLayerData& tLayerData);
-	void			Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, const FObjectData& tObjectData);
+	void			Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, FObjectData& tObjectData);
 
 private:
 	// 목록에 있는 씬 모두 저장
@@ -176,10 +177,11 @@ private:
 	_int						m_iSelected_Layer = -1;
 	_int						m_iSelected_Layer_Remain = -1;
 	_int						m_iSelected_Object = -1;
-	_int						m_iSelected_Object_Remain = -1;
 
 	char						m_arrAddLayer_Buf[256] = "";
 	_bool						m_bFocusedLayer_Edit = false;
+
+	FObjectData*				m_pPickedObjectData = nullptr;
 
 
 private:			// 터레인 관련
@@ -191,6 +193,7 @@ private:			// 터레인 관련
 
 private:			// 프로토 관련
 	void			Add_Object();
+	//CGameObject*	Get_Object();
 
 private:
 	vector<FProtoData>			m_vecProto;
@@ -242,8 +245,11 @@ public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
 private:		// 카메라
 	void			Input_Camera();
 
-	ImVec2			m_fPrevDrag = { 0.f, 0.f };
-	ImVec2			m_fDrag = { 0.f, 0.f };
+	ImVec2			m_fPrevDrag_Translate = { 0.f, 0.f };
+	ImVec2			m_fDrag_Translate = { 0.f, 0.f };
+
+	ImVec2			m_fPrevDrag_Rotate = { 0.f, 0.f };
+	ImVec2			m_fDrag_Rotate = { 0.f, 0.f };
 
 	_vec3			m_vCamTranslate[INFO_END];
 	_vec3			m_vRot = { 0.f, 0.f, 0.f };
@@ -257,6 +263,60 @@ private:		// 카메라
 	_float			m_fNear = 0.1f;
 	_float			m_fFar = 1000.f;
 
-	
+private:		// 뷰어에서 오브젝트 이동
+	ImVec2			m_vViewerContent_Size;
+
+	enum class EEDIT_MODE
+	{
+		NONE,
+		MOUSE_TRANSLATE,
+		MOUSE_ROTATE,
+		TRANSFORM,
+	};
+
+	enum ETRANSFORM_MODE
+	{
+		ETRANSFORM_MODE_NONE,
+		ETRANSFORM_MODE_MOVE,
+		ETRANSFORM_MODE_ROT,
+		ETRANSFORM_MODE_SCALE,
+	};
+
+	enum ETRANSFORM_AXIS
+	{
+		ETRANSFORM_AXIS_NONE,
+		ETRANSFORM_AXIS_X,
+		ETRANSFORM_AXIS_Y,
+		ETRANSFORM_AXIS_Z,
+		ETRANSFORM_PLANE_X,
+		ETRANSFORM_PLANE_Y,
+		ETRANSFORM_PLANE_Z,
+		ETRANSFORM_AXIS_ALL
+	};
+
+private:
+	// 트랜스폼 에딧이 끝났을 때 호출하는 함수
+	void End_EditTransform()
+	{
+
+	}
+
+	EEDIT_MODE			m_eEdit_Mode = EEDIT_MODE::NONE;
+
+	_bool				m_bIsTransform_Start = false;
+	ETRANSFORM_MODE		m_eTransform_Mode = ETRANSFORM_MODE_NONE;
+	ETRANSFORM_AXIS		m_eTransform_Axis = ETRANSFORM_AXIS_NONE;
+	_vec2				m_vTransform_MouseStart = { 0.f, 0.f };
+	_vec2				m_vTransform_MouseEnd = { 0.f, 0.f };
+
+	_vec3				m_vTransform_Translate;
+	_vec3				m_vTransform_Translate_Saved;
+
+	_vec3				m_vTransform_Rotate;
+	_vec3				m_vTransform_Rotate_Saved;
+
+	_vec3				m_vTransform_Scale;
+	_vec3				m_vTransform_Scale_Saved;
+
 };
 

@@ -107,8 +107,12 @@ void CMainApp::Render_MainApp()
 	{
 		// [오브젝트 렌더] 렌더러에 요청해서 그려야할 오브젝트들을 그린다.
 		m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE);
 		Engine::Render_Scene(m_pGraphicDev);
 		m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 
 		CImguiMgr* pImguiMgr = CImguiMgr::GetInstance();
 		LPDIRECT3DSURFACE9 pBackBuffer = nullptr;

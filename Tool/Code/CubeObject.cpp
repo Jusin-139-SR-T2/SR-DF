@@ -56,6 +56,11 @@ HRESULT CCubeObject::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+    m_materColor.Diffuse.r = 1.f;
+    m_materColor.Diffuse.g = 0.f;
+    m_materColor.Diffuse.b = 0.f;
+    m_materColor.Diffuse.a = 1.f;
+
     return S_OK;
 }
 
@@ -111,20 +116,20 @@ void CCubeObject::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 
-    
+    D3DMATERIAL9 mater;
+    m_pGraphicDev->GetMaterial(&mater);
+    m_pGraphicDev->SetMaterial(&m_materColor);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-
-    DWORD dwTest = 0;
-    m_pGraphicDev->GetRenderState(D3DRS_ALPHABLENDENABLE, &dwTest);
-    m_pGraphicDev->GetRenderState(D3DRS_ALPHATESTENABLE, &dwTest);
+    m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE); 
 
     m_pTextureComp->Render_Texture(0);
     m_pCubeBufferComp->Render_Buffer();
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
+    m_pGraphicDev->SetMaterial(&mater);
 }
 
 

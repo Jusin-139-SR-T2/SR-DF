@@ -88,6 +88,15 @@ protected:
 
 inline void CSceneComponent::Readjust_Transform()
 {
+	/*_matrix matTranslate, matRotation, matScale;
+
+	D3DXMatrixTranslation(&matTranslate, m_vInfo[INFO_POS].x, m_vInfo[INFO_POS].y, m_vInfo[INFO_POS].z);
+	D3DXMatrixRotationYawPitchRoll(&matRotation, m_vRotation.x, m_vRotation.y, m_vRotation.z);
+	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+
+	m_matTransform = matScale * matRotation * matTranslate;*/
+
+
 	D3DXMatrixIdentity(&m_matTransform);
 
 	// 3x3만큼 월드 행렬로부터 vInfo에 복사

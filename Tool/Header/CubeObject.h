@@ -50,7 +50,8 @@ private:
 	CTextureComponent*			m_pTextureComp = nullptr;
 	
 
-	
+private:
+	D3DMATERIAL9				m_materColor;
 
 	//void Set_Material();
 };

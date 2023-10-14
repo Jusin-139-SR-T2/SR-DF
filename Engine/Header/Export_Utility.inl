@@ -7,6 +7,16 @@ CGameObject* Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
 {
 	return CManagement::GetInstance()->Get_GameObject(pLayerTag, pObjTag);
 }
+CGameObject* Get_GameObject(const char* pLayerTag, const char* pObjTag)
+{
+	string strLayerTag = pLayerTag;
+	wstring wstrLayerTag(strLayerTag.begin(), strLayerTag.end());
+
+	string strObjTag = pObjTag;
+	wstring wstrObjTag(strObjTag.begin(), strObjTag.end());
+
+	return CManagement::GetInstance()->Get_GameObject(wstrLayerTag.c_str(), wstrObjTag.c_str());
+}
 HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance, EMANAGE_SCENE eType)
 {
 	CManagement*		pManagement = CManagement::GetInstance();
