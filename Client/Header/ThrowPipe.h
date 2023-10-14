@@ -1,20 +1,9 @@
 #pragma once
-#include "GameObject.h"
-#include "Export_System.h"
-#include "Export_Utility.h"
+#include "MonsterAttackUnion.h"
 
-BEGIN(Engine)
-
-class CRcBufferComp;
-class CTextureComponent;
-class CTransformComponent;
-class CCalculatorComponent;
-class CColliderComponent;
-END
-
-class CThrowPipe : public Engine::CGameObject
+class CThrowPipe : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CGameObject, CThrowPipe)
+	DERIVED_CLASS(CMonsterAttackUnion, CThrowPipe)
 
 private:
 	explicit CThrowPipe(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -27,18 +16,12 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CThrowPipe* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CThrowPipe* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CGameObject* pOwner);
 
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
 	void				Billboard(const _float& fTimeDelta);
-
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;				
-	CTransformComponent* m_pTransformComp = nullptr;
-	CTransformComponent* m_pPlayerTransformcomp = nullptr; //플레이어용도 
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -51,7 +34,6 @@ protected:
 	virtual void	OnCollision(CGameObject* pDst);
 	virtual void	OnCollisionEntered(CGameObject* pDst);
 	virtual void	OnCollisionExited(CGameObject* pDst);
-
 	
 private:
 	_float m_fFrame;

@@ -15,14 +15,14 @@ class CCalculatorComponent;
 
 END
 
-class CPlayerAttackUnion : public CAttackUnion
+class CMonsterAttackUnion : public CAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CPlayerAttackUnion)
+	DERIVED_CLASS(CAttackUnion, CMonsterAttackUnion)
 
 protected:
-	explicit CPlayerAttackUnion(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CPlayerAttackUnion(const CPlayerAttackUnion& rhs);
-	virtual ~CPlayerAttackUnion();
+	explicit CMonsterAttackUnion(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CMonsterAttackUnion(const CMonsterAttackUnion& rhs);
+	virtual ~CMonsterAttackUnion();
 
 protected:
 	virtual HRESULT		Ready_GameObject() override;
@@ -43,18 +43,14 @@ public:
 	void						Height_On_Terrain(_float Height);
 	void						Billboard();
 
-public: //플레이어 관련 셋팅 
+public:
 	void						Change_PlayerHp(_float pAttack);
-	void						Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget);
-	HRESULT						Update_PlayerPos();
-	void						Recoil_Player(const _float& fTimeDelta, _float fSpeed);
-	GAUGE<_float>				PlayerHp; //플레이어 HP 저장용 변수 
-	GAUGE<_float>				MonsterHp; //몬스터 HP 저장용 변수 
+	void						Knockback_Player(const _float& fTimeDelta, _float fSpeed);
 
 protected:
-	MonsterPhase				m_CurrPahse;
-	ATTACK_TARGET				m_eAttack_Target;
-	_tchar						debugString[100];
-	FRAME						m_tFrame;
-
+	_tchar						debugString[100];	//디버그용 string
+	MonsterPhase				m_CurrPahse;		// 강화패턴 적용시 
+	GAUGE<_float>				PlayerHp;			// 플레이어 HP 임시저장용 변수 
+	FRAME						m_tFrame;			// 프레임구조체 
+	_vec3						vPlayerPos;			//플레이어 위치 벡터 
 };

@@ -136,6 +136,15 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
+    if (m_bGunLight)
+        m_fAge += 1.f * fTimeDelta;
+
+    if (m_fAge >= m_fLifeTime)
+    {
+        m_fAge = 0.f;
+        m_bGunLight = false;
+    }
+
     // 마우스 움직임
     Mouse_Move();
     // 마우스 입력
@@ -1359,7 +1368,6 @@ void CPlayer::Idle(float fTimeDelta)
 {
     if (m_tPlayer_State.IsState_Entered())
     {
-        m_bGunLight = FALSE;
         if (true)
         {
             
@@ -1407,6 +1415,7 @@ void CPlayer::Idle(float fTimeDelta)
         {
 
         }
+       
     }
 
     if (m_tPlayer_State.IsState_Exit())

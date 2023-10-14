@@ -1,11 +1,10 @@
+
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CPlayer;
-
-class CEnergyBall : public CAttackUnion
+class CEnergyBall : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CEnergyBall)
+	DERIVED_CLASS(CMonsterAttackUnion, CEnergyBall)
 
 private:
 	explicit CEnergyBall(LPDIRECT3DDEVICE9 pGraphicDev);

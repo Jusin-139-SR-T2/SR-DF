@@ -2,18 +2,38 @@
 #include "ThrowPipe.h"
 
 CThrowPipe::CThrowPipe(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+	: Base(pGraphicDev)
 {
 }
 
 CThrowPipe::CThrowPipe(const CThrowPipe& rhs)
-	: CGameObject(rhs)
+	: Base(rhs)
 {
 }
 
 CThrowPipe::~CThrowPipe()
 {
 }
+
+CThrowPipe* CThrowPipe::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CGameObject* pOwner)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_GameObject()))
+	{
+		Safe_Release(pInstance);
+
+		MSG_BOX("ThrowPipe Create Failed");
+		return nullptr;
+	}
+
+	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
+	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
+	pInstance->Set_Owner(pOwner);
+
+	return pInstance;
+}
+
 
 HRESULT CThrowPipe::Ready_GameObject()
 {
@@ -24,14 +44,15 @@ HRESULT CThrowPipe::Ready_GameObject()
 	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
 	pShape->fRadius = 1.5f;
 
-	// 크기 조정
+	// 셋팅
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Projectile", L"ThrowPipe");
 	m_pTransformComp->Set_Scale({ 0.3f, 0.7f, 1.f });
 
 	//변수 값 조정
-	m_fFrame = 0.f;
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Projectile", L"ThrowPipe");
-	m_fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-	m_fFrameSpeed = 10.f;
+	m_tFrame.fFrame = 0;
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	m_tFrame.fFrameSpeed = 10.f;
+
 	m_fMoveSpeed = 7.f;
 	_bLoop = false;
 	
@@ -44,7 +65,7 @@ _int CThrowPipe::Update_GameObject(const _float& fTimeDelta)
 
 	//Billboard(fTimeDelta);
 
-	if (!_bLoop)
+	if (!_bLoop) // 한번 정한 방향으로만 날라가서 플레이어가 다 피할수있도록 
 	{
 		// 플레이어 쪽으로 날아가기위해 방향벡터 잡기 
 		m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
@@ -93,31 +114,12 @@ void CThrowPipe::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CThrowPipe* CThrowPipe::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
-{
-	ThisClass* pInstance = new ThisClass(pGraphicDev);
-	
-	if (FAILED(pInstance->Ready_GameObject()))
-	{
-		Safe_Release(pInstance);
-	
-		MSG_BOX("ThrowPipe Create Failed");
-		return nullptr;
-	}
-
-	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
-	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-
-	return pInstance;
-}
-
 HRESULT CThrowPipe::Add_Component()
 {
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_ProjectileTextureComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 	
-
 	// -------------------- 충돌 세트 --------------------------
 	// 콜라이더 컴포넌트
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);

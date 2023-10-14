@@ -1,9 +1,9 @@
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CMonsterPunch : public CAttackUnion
+class CMonsterPunch : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CMonsterPunch)
+	DERIVED_CLASS(CMonsterAttackUnion, CMonsterPunch)
 
 	PUBLIC enum class TYPE { NORMAL, HEAVY, TYPE_END };
 

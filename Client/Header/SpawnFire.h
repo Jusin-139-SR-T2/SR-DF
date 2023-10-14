@@ -1,9 +1,9 @@
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CSpawnFire : public CAttackUnion
+class CSpawnFire : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CSpawnFire)
+	DERIVED_CLASS(CMonsterAttackUnion, CSpawnFire)
 
 private:
 	explicit CSpawnFire(LPDIRECT3DDEVICE9 pGraphicDev);

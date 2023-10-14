@@ -920,7 +920,7 @@ void CAceBoss::AI_SkillStone(float fDeltaTime)
 
 	if (m_tState_Obj.Can_Update())
 	{
-		_int HP = m_gHp.Cur;
+		_int HP = _int(m_gHp.Cur);
 
 		if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
 		{

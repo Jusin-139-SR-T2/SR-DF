@@ -40,54 +40,6 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player">
       <UniqueIdentifier>{bc0ac8bd-4f3c-451a-8bc9-b114015fcac7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion">
-      <UniqueIdentifier>{4d7235d5-ebba-485f-bdeb-70a9af708dcb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack">
-      <UniqueIdentifier>{991e437e-41de-4176-bfac-7b802c5b1401}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack\00. AttackPull">
-      <UniqueIdentifier>{57f63927-f895-4a93-bb3b-6e9a097ca300}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack">
-      <UniqueIdentifier>{7185b2ec-c6fb-454c-84e3-c0679bc31543}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\00. Attack">
-      <UniqueIdentifier>{b9425aa7-480e-45bd-ab4c-da3116e15bd9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\01. Hand">
-      <UniqueIdentifier>{76788cb0-7aaa-4c17-9a17-8da2bd0b6c7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\02. Gun">
-      <UniqueIdentifier>{678468bd-3c73-4262-964d-cb315a734672}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\03. SteelPipe">
-      <UniqueIdentifier>{f2289398-9a12-49b2-a75c-7a69587da0fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\04. Bullet">
-      <UniqueIdentifier>{5bd2f1fe-db61-48c8-b19c-7b53dd34029c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack">
-      <UniqueIdentifier>{67886598-b0dc-4b95-bd60-0d930a3e0d4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile">
-      <UniqueIdentifier>{72c05c56-eb63-4ae5-ab12-37f9bfb2c626}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\00. Gray_ThrowPipe">
-      <UniqueIdentifier>{b5c2064b-46d6-415d-a18d-ca7a5e1f369f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet">
-      <UniqueIdentifier>{1dfb8921-ad1e-4dbb-8166-806bfb3d4c03}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet\00. NormalBullet">
-      <UniqueIdentifier>{e60acab2-e16c-49b6-b969-471a55aaddd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet\01. TompsonBullet">
-      <UniqueIdentifier>{dadcd146-ea2b-4e31-a501-0a15cd60d9c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet\02. ShotGunBullet">
-      <UniqueIdentifier>{54511645-7e53-4d72-9f4d-cd4a74a6465c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. =====AceGameObject=====\01. AceItem">
       <UniqueIdentifier>{5e61b933-9702-4f06-a920-205389efb9c6}</UniqueIdentifier>
     </Filter>
@@ -199,36 +151,6 @@
     <Filter Include="03..=====Object=====\03. Lighter\02. BossLight">
       <UniqueIdentifier>{f8e91869-d1e5-48e5-bc3c-bde6614fb620}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill">
-      <UniqueIdentifier>{a6fbbee4-2614-4bc4-b48b-da816c3ee0f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\01. RedLaser">
-      <UniqueIdentifier>{9b780b3c-b100-4169-b025-a876d4d3045f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\02. FallingStone">
-      <UniqueIdentifier>{66d396d5-0825-4189-9328-31d61fd220dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\03. Fire">
-      <UniqueIdentifier>{d527cbb1-8a4f-4208-9c95-64b9123dcce6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\04. SlowThunder">
-      <UniqueIdentifier>{12a08efc-5fb1-4771-81aa-3aebefe5c278}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\05. EnergyBall">
-      <UniqueIdentifier>{03c60648-d638-470b-8a49-7b0a100ac9d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\06. BlueBuff">
-      <UniqueIdentifier>{a437a66f-0789-47c5-b932-5090023df07a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\00. BossBullet">
-      <UniqueIdentifier>{373d549e-1107-4cd5-85d8-e72a46f764bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\07. RedThunder">
-      <UniqueIdentifier>{183704e4-8a54-4252-abe8-38f528c42570}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\08. Barrier">
-      <UniqueIdentifier>{486efba1-aad5-4c7f-8169-b6f4ee4bd088}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. =====Scene=====\03. ParsedScene">
       <UniqueIdentifier>{e9f6b375-abee-4f0d-a9ac-0ece3a290be9}</UniqueIdentifier>
     </Filter>
@@ -237,6 +159,66 @@
     </Filter>
     <Filter Include="03..=====Object=====\03. Lighter\03. PlayerGunLighter">
       <UniqueIdentifier>{051a0ea6-b7d6-4eb6-92e9-baa1ccfed2d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion">
+      <UniqueIdentifier>{4d7235d5-ebba-485f-bdeb-70a9af708dcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..=====Object=====\05. Effect\00. PlayerEffect\00. PlayerHit">
+      <UniqueIdentifier>{0164d35e-98d8-4d6a-9514-4417fc7bbc03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..=====Object=====\05. Effect\00. PlayerEffect\01. PlayerDead">
+      <UniqueIdentifier>{e286c3f5-70c8-446d-9d71-6653620fc297}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. PlayerAttackUnion">
+      <UniqueIdentifier>{e23e79b3-2df7-484c-8e50-823d2f1ea1e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion">
+      <UniqueIdentifier>{70659f66-630d-47a6-a4e9-309af33302cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\01. CloseAttack">
+      <UniqueIdentifier>{67886598-b0dc-4b95-bd60-0d930a3e0d4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile">
+      <UniqueIdentifier>{72c05c56-eb63-4ae5-ab12-37f9bfb2c626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\00. Gray_ThrowPipe">
+      <UniqueIdentifier>{b5c2064b-46d6-415d-a18d-ca7a5e1f369f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet">
+      <UniqueIdentifier>{1dfb8921-ad1e-4dbb-8166-806bfb3d4c03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet\00. NormalBullet">
+      <UniqueIdentifier>{e60acab2-e16c-49b6-b969-471a55aaddd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet\01. TompsonBullet">
+      <UniqueIdentifier>{dadcd146-ea2b-4e31-a501-0a15cd60d9c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet\02. ShotGunBullet">
+      <UniqueIdentifier>{54511645-7e53-4d72-9f4d-cd4a74a6465c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill">
+      <UniqueIdentifier>{a6fbbee4-2614-4bc4-b48b-da816c3ee0f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\00. RedLaser">
+      <UniqueIdentifier>{9b780b3c-b100-4169-b025-a876d4d3045f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\01. FallingStone">
+      <UniqueIdentifier>{66d396d5-0825-4189-9328-31d61fd220dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\02. Fire">
+      <UniqueIdentifier>{d527cbb1-8a4f-4208-9c95-64b9123dcce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\03. SlowThunder">
+      <UniqueIdentifier>{12a08efc-5fb1-4771-81aa-3aebefe5c278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\04. EnergyBall">
+      <UniqueIdentifier>{03c60648-d638-470b-8a49-7b0a100ac9d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\05. BlueBuff">
+      <UniqueIdentifier>{a437a66f-0789-47c5-b932-5090023df07a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\06. RedThunder">
+      <UniqueIdentifier>{183704e4-8a54-4252-abe8-38f528c42570}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -298,19 +280,19 @@
       <Filter>03..=====Object=====\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClInclude>
     <ClInclude Include="Header\RedLaser.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\01. RedLaser</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\00. RedLaser</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceBuilding.h">
       <Filter>02. =====AceGameObject=====\01. AceItem\04. Ace_Building</Filter>
     </ClInclude>
     <ClInclude Include="Header\ThrowPipe.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\00. Gray_ThrowPipe</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\00. Gray_ThrowPipe</Filter>
     </ClInclude>
     <ClInclude Include="Header\UI_Player.h">
       <Filter>05. =====AceUI=====\01. Player</Filter>
     </ClInclude>
     <ClInclude Include="Header\MonsterPunch.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\01. CloseAttack</Filter>
     </ClInclude>
     <ClInclude Include="Header\BlackBoard_Player.h">
       <Filter>04. =====BlackBoard=====\0. Player</Filter>
@@ -319,13 +301,13 @@
       <Filter>04. =====BlackBoard=====\1. Monster</Filter>
     </ClInclude>
     <ClInclude Include="Header\FallingStone.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\02. FallingStone</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\01. FallingStone</Filter>
     </ClInclude>
     <ClInclude Include="Header\SlowThunder.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\04. SlowThunder</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\03. SlowThunder</Filter>
     </ClInclude>
     <ClInclude Include="Header\EnergyBall.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\05. EnergyBall</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\04. EnergyBall</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceGameObject.h">
       <Filter>02. =====AceGameObject=====</Filter>
@@ -333,14 +315,11 @@
     <ClInclude Include="Header\AceMonster.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Header\AceUnit.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit</Filter>
-    </ClInclude>
     <ClInclude Include="Header\AttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion</Filter>
     </ClInclude>
     <ClInclude Include="Header\NormalBullet.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet\00. NormalBullet</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet\00. NormalBullet</Filter>
     </ClInclude>
     <ClInclude Include="Header\MainApp.h">
       <Filter>00. =====MainApp=====</Filter>
@@ -361,10 +340,10 @@
       <Filter>05. =====AceUI=====</Filter>
     </ClInclude>
     <ClInclude Include="Header\SpawnFire.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\03. Fire</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\02. Fire</Filter>
     </ClInclude>
     <ClInclude Include="Header\BlueBuff.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\06. BlueBuff</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\05. BlueBuff</Filter>
     </ClInclude>
     <ClInclude Include="Header\Player.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\00. Player</Filter>
@@ -375,11 +354,8 @@
     <ClInclude Include="Header\AceBoss.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
     </ClInclude>
-    <ClInclude Include="Header\BossBullet.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\00. BossBullet</Filter>
-    </ClInclude>
     <ClInclude Include="Header\RedThunder.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\07. RedThunder</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\06. RedThunder</Filter>
     </ClInclude>
     <ClInclude Include="Header\BossLight.h">
       <Filter>03..=====Object=====\03. Lighter\02. BossLight</Filter>
@@ -390,9 +366,6 @@
     <ClInclude Include="Header\AbsFac_GameObject.h">
       <Filter>03..=====Object=====\00. AbstractFactory</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Barrier.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\08. Barrier</Filter>
-    </ClInclude>
     <ClInclude Include="Header\PlayerAttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
     </ClInclude>
@@ -401,6 +374,12 @@
     </ClInclude>
     <ClInclude Include="Header\PlayerGunLighter.h">
       <Filter>03..=====Object=====\03. Lighter\03. PlayerGunLighter</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\AceUnit.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterAttackUnion.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -456,28 +435,19 @@
       <Filter>03..=====Object=====\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClCompile>
     <ClCompile Include="Code\RedLaser.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\01. RedLaser</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Attack.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\00. Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\AttackPool.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack\00. AttackPull</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Bullet.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. NormalAttack\01. Attack\04. Bullet</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\00. RedLaser</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceBuilding.cpp">
       <Filter>02. =====AceGameObject=====\01. AceItem\04. Ace_Building</Filter>
     </ClCompile>
     <ClCompile Include="Code\ThrowPipe.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\00. Gray_ThrowPipe</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\00. Gray_ThrowPipe</Filter>
     </ClCompile>
     <ClCompile Include="Code\UI_Player.cpp">
       <Filter>05. =====AceUI=====\01. Player</Filter>
     </ClCompile>
     <ClCompile Include="Code\MonsterPunch.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\01. CloseAttack</Filter>
     </ClCompile>
     <ClCompile Include="Code\BlackBoard_Player.cpp">
       <Filter>04. =====BlackBoard=====\0. Player</Filter>
@@ -486,13 +456,13 @@
       <Filter>04. =====BlackBoard=====\1. Monster</Filter>
     </ClCompile>
     <ClCompile Include="Code\FallingStone.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\02. FallingStone</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\01. FallingStone</Filter>
     </ClCompile>
     <ClCompile Include="Code\SlowThunder.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\04. SlowThunder</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\03. SlowThunder</Filter>
     </ClCompile>
     <ClCompile Include="Code\EnergyBall.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\05. EnergyBall</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\04. EnergyBall</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceGameObject.cpp">
       <Filter>02. =====AceGameObject=====</Filter>
@@ -500,14 +470,11 @@
     <ClCompile Include="Code\AceMonster.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Code\AceUnit.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit</Filter>
-    </ClCompile>
     <ClCompile Include="Code\AttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion</Filter>
     </ClCompile>
     <ClCompile Include="Code\NormalBullet.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. Projectile\01. Bullet\00. NormalBullet</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet\00. NormalBullet</Filter>
     </ClCompile>
     <ClCompile Include="Code\TitleLogo.cpp">
       <Filter>소스 파일</Filter>
@@ -528,10 +495,10 @@
       <Filter>05. =====AceUI=====</Filter>
     </ClCompile>
     <ClCompile Include="Code\SpawnFire.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\03. Fire</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\02. Fire</Filter>
     </ClCompile>
     <ClCompile Include="Code\BlueBuff.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\06. BlueBuff</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\05. BlueBuff</Filter>
     </ClCompile>
     <ClCompile Include="Code\Player.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\00. Player</Filter>
@@ -545,11 +512,8 @@
     <ClCompile Include="Code\AceBoss.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit\3. Boss</Filter>
     </ClCompile>
-    <ClCompile Include="Code\BossBullet.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\00. BossBullet</Filter>
-    </ClCompile>
     <ClCompile Include="Code\RedThunder.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\07. RedThunder</Filter>
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\06. RedThunder</Filter>
     </ClCompile>
     <ClCompile Include="Code\BossLight.cpp">
       <Filter>03..=====Object=====\03. Lighter\02. BossLight</Filter>
@@ -560,9 +524,6 @@
     <ClCompile Include="Code\AbsFac_GameObject.cpp">
       <Filter>03..=====Object=====\00. AbstractFactory</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Barrier.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\02. MonsterAttack\03. BossSkill\08. Barrier</Filter>
-    </ClCompile>
     <ClCompile Include="Code\PlayerAttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
     </ClCompile>
@@ -571,6 +532,12 @@
     </ClCompile>
     <ClCompile Include="Code\PlayerGunLighter.cpp">
       <Filter>03..=====Object=====\03. Lighter\03. PlayerGunLighter</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AceUnit.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\00. Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterAttackUnion.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

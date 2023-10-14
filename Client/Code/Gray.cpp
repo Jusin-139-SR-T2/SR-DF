@@ -772,7 +772,7 @@ void CGray::AI_Throw(float fDeltaTime)
        
         // 투사체 발사 
         Engine::Add_GameObject(L"GameLogic", CThrowPipe::Create(m_pGraphicDev, 
-            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 1.f , m_pTransformComp->Get_Pos().z));
+            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 1.f , m_pTransformComp->Get_Pos().z, this));
     }
 
     if (m_tState_Obj.Can_Update())

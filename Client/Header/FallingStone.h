@@ -1,9 +1,9 @@
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CFallingStone : public CAttackUnion
+class CFallingStone : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CFallingStone)
+	DERIVED_CLASS(CMonsterAttackUnion, CFallingStone)
 
 private:
 	explicit CFallingStone(LPDIRECT3DDEVICE9 pGraphicDev);

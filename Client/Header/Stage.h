@@ -9,6 +9,7 @@
 #include "AceObjectFactory.h"
 #include "PlayerLighter.h"
 #include "PlayerGunLighter.h"
+#include "BossLight.h"
 #include "Bullet.h"
 
 #include "Terrain.h"
@@ -16,14 +17,6 @@
 #include "FireWork.h"
 
 //test
-#include "RedLaser.h"
-#include "FallingStone.h"
-#include "SlowThunder.h"
-#include "EnergyBall.h"
-#include "SpawnFire.h"
-#include "BlueBuff.h"
-#include "BossLight.h"
-#include "Barrier.h"
 
 class CStage : public Engine::CScene
 {

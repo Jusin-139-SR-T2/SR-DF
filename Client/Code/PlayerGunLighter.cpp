@@ -45,7 +45,8 @@ _int CPlayerGunLighter::Update_GameObject(const _float& fTimeDelta)
 
     Update_BlackBoard();
 
-    Height_On_Terrain();
+    if(m_bLightOn)
+        Create_Light();
 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
@@ -65,7 +66,6 @@ void CPlayerGunLighter::Render_GameObject()
     {
         m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
         m_pGraphicDev->LightEnable(4, TRUE); // 누수 잡음 
-        Create_Light();
     }
     else
     {
@@ -83,23 +83,6 @@ void CPlayerGunLighter::Render_GameObject()
         m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 }
 
-void CPlayerGunLighter::Height_On_Terrain()
-{
-    _vec3		vPos;
-    m_pTransformComp->Get_Info(INFO_POS, &vPos);
-
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
-    NULL_CHECK(pTerrainBufferComp);
-
-    _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
-        pTerrainBufferComp->Get_VtxPos(),
-        pTerrainBufferComp->Get_VertexCountX() + 1U,
-        pTerrainBufferComp->Get_VertexCountZ() + 1U,
-        pTerrainBufferComp->Get_Scale(),
-        pTerrainBufferComp->Get_InvOffset());
-
-    m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.f, vPos.z);
-}
 
 HRESULT CPlayerGunLighter::Add_Component()
 {

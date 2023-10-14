@@ -127,6 +127,10 @@ public: // Get_Set
 	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
 	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
 	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
+	// 조명 수명 
+	_float m_fAge = 0.f;
+	_float m_fLifeTime = 0.2;
+	_bool m_bGunLight; // 불켜는 bool값 
 
 		_bool* Get_DBugFrame() {
 		return &bDbugFrame;
@@ -322,7 +326,6 @@ private:
 
 	// 라이터 조명
 	CPlayerLighter* m_PlayerLighter;
-	_bool m_bGunLight;
 private:
 		// 애니메이션 타임 라인
 		std::vector<KEYFRAME> timeline[KEYTYPE_END];

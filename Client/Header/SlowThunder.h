@@ -1,9 +1,9 @@
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CSlowThunder : public CAttackUnion
+class CSlowThunder : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CSlowThunder)
+	DERIVED_CLASS(CMonsterAttackUnion, CSlowThunder)
 
 private:
 	explicit CSlowThunder(LPDIRECT3DDEVICE9 pGraphicDev);

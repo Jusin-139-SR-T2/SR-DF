@@ -255,6 +255,11 @@ void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
+
+
+
+
+
     CAceUnit* pPlayer = dynamic_cast<CAceUnit*>(pDst);
 
     if (nullptr != pPlayer)

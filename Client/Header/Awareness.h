@@ -1,5 +1,5 @@
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 #include "Brown.h"
 #include "Gray.h"
 #include "AceBoss.h"
@@ -8,9 +8,9 @@
 #include "BlackBoardPtr.h"
 #include "BlackBoardMgr.h"
 
-class CAwareness : public CAttackUnion
+class CAwareness : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CAwareness)
+	DERIVED_CLASS(CMonsterAttackUnion, CAwareness)
 
 	PUBLIC enum class TYPE {BROWN, GRAY, BOSS, TYPE_END};
 

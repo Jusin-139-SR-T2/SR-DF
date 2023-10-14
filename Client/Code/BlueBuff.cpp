@@ -15,7 +15,8 @@ CBlueBuff::~CBlueBuff()
 {
 }
 
-CBlueBuff* CBlueBuff::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner)
+CBlueBuff* CBlueBuff::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, 
+	MonsterPhase _CurrPhase, CGameObject* pOwner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 

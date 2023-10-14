@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header\Barrier.h" />
+    <ClInclude Include="MonsterAttackUnion.h" />
     <ClInclude Include="Header\BossLight.h" />
     <ClInclude Include="Header\AbsFac_GameObject.h" />
     <ClInclude Include="Header\AceBoss.h" />
@@ -27,7 +27,6 @@
     <ClInclude Include="Header\AceUnit.h" />
     <ClInclude Include="Header\AttackUnion.h" />
     <ClInclude Include="Header\BlueBuff.h" />
-    <ClInclude Include="Header\BossBullet.h" />
     <ClInclude Include="Header\SpawnFire.h" />
     <ClInclude Include="Header\EnergyBall.h" />
     <ClInclude Include="Header\FallingStone.h" />
@@ -75,7 +74,7 @@
     <ClInclude Include="Header\PlayerGunLighter.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\Barrier.cpp" />
+    <ClCompile Include="MonsterAttackUnion.cpp" />
     <ClCompile Include="Code\BossLight.cpp" />
     <ClCompile Include="Code\AbsFac_GameObject.cpp" />
     <ClCompile Include="Code\AceBoss.cpp" />
@@ -83,7 +82,6 @@
     <ClCompile Include="Code\AceUnit.cpp" />
     <ClCompile Include="Code\AttackUnion.cpp" />
     <ClCompile Include="Code\BlueBuff.cpp" />
-    <ClCompile Include="Code\BossBullet.cpp" />
     <ClCompile Include="Code\FallingStone.cpp" />
     <ClCompile Include="Code\BlackBoard_Monster.cpp" />
     <ClCompile Include="Code\BlackBoard_Player.cpp" />
@@ -91,9 +89,6 @@
     <ClCompile Include="Code\AceBuilding.cpp" />
     <ClCompile Include="Code\AceInteraction.cpp" />
     <ClCompile Include="Code\AceFood.cpp" />
-    <ClCompile Include="Code\Attack.cpp" />
-    <ClCompile Include="Code\AttackPool.cpp" />
-    <ClCompile Include="Code\Bullet.cpp" />
     <ClCompile Include="Code\PlayerLighter.cpp" />
     <ClCompile Include="Code\AceObjectFactory.cpp" />
     <ClCompile Include="Code\AceThrow.cpp" />
