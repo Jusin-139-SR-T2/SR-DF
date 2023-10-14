@@ -327,7 +327,6 @@ void CAceBoss::Update_InternalData()
 
 	// 여기서부터 블랙보드의 정보를 업데이트 한다.
 	pBlackBoard->Set_ControlLight(m_bLightOn) ;
-	pBlackBoard->Get_BossAwareness().Cur = m_tStat.fAwareness;
 }
 
 //블랙보드에서 다운로드 

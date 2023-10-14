@@ -119,25 +119,33 @@ void CPlayerAttackUnion::Change_PlayerHp(_float pAttack)
 
 void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, PLAYER_ATTACK_STATE _AttackState)
 {
-    // 타겟 지정
-    CAceMonster* pMonster = dynamic_cast<CAceMonster*>(_AttackTarget);
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(_AttackTarget);
 
-    // 공격받은 몬스터(타겟)가 있을 경우
-    if (nullptr != pMonster)
+    if (pAceObj == nullptr)
+        return;
+
+    if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE)
     {
-        // 몬스터 체력 받아오기
-        MonsterHp = pMonster->Get_MonsterHP();
+        // 타겟 지정
+        CAceMonster* pMonster = dynamic_cast<CAceMonster*>(_AttackTarget);
 
-        // 몬스터 체력 계산
-        MonsterHp.Cur += pAttack;
+        // 공격받은 몬스터(타겟)가 있을 경우
+        if (nullptr != pMonster)
+        {
+            // 몬스터 체력 받아오기
+            MonsterHp = pMonster->Get_MonsterHP();
 
-        if (MonsterHp.Cur <= 0)
-            MonsterHp.Cur = 0.f;
-        if (MonsterHp.IsMax())
-            MonsterHp.Cur = MonsterHp.Max;
+            // 몬스터 체력 계산
+            MonsterHp.Cur += pAttack;
 
-        pMonster->Set_MonsterHP(MonsterHp); // 계산이 끝난 몬스터의 체력으로 넣어줌
-        pMonster->Set_Player_AttackState(_AttackState); // 공격받은 유형을 넣어줌
+            if (MonsterHp.Cur <= 0)
+                MonsterHp.Cur = 0.f;
+            if (MonsterHp.IsMax())
+                MonsterHp.Cur = MonsterHp.Max;
+
+            pMonster->Set_MonsterHP(MonsterHp); // 계산이 끝난 몬스터의 체력으로 넣어줌
+            pMonster->Set_Player_AttackState(_AttackState); // 공격받은 유형을 넣어줌
+        }
     }
 }
 

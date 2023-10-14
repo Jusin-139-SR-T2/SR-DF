@@ -255,40 +255,31 @@ void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
+    //CAttackUnion* pAttack = dynamic_cast<CAttackUnion*>(pDst);
 
-
-
-
-
-    CAceUnit* pPlayer = dynamic_cast<CAceUnit*>(pDst);
-
-    if (nullptr != pPlayer)
-    {
-        //MonsterHp = pMonster->Get_MonsterHP();
-    //}
-
-    //wstring str1 = pDst->Get_ObjectName();
-    //wstring str2 = L"Player"; 
-
-    //if (str1.compare(str2) == 0)
+    //if (nullptr != pAttack)
     //{
-        // Kick or Run = Falling  , 총기류 , 기타 공격 
-        if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
-            m_tState_Obj.Set_State(STATE_OBJ::FALLING);
-        else if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
-            m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-        else
-        {
-            if (0 == m_gHp.Cur)
-            {
-                m_tState_Obj.Set_State(STATE_OBJ::DEATH);
-            }
-            if (Random_variable(60))
-                m_tState_Obj.Set_State(STATE_OBJ::HIT);
-            else
-                m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-        }
-    }
+    //    pAttack->        
+
+
+
+    //    // Kick or Run = Falling  , 총기류 , 기타 공격 
+    //    if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
+    //        m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+    //    else if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
+    //        m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+    //    else
+    //    {
+    //        if (0 == m_gHp.Cur)
+    //        {
+    //            m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+    //        }
+    //        if (Random_variable(60))
+    //            m_tState_Obj.Set_State(STATE_OBJ::HIT);
+    //        else
+    //            m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+    //    }
+    //=}
 }
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 

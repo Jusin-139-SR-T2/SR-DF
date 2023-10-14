@@ -31,6 +31,13 @@ HRESULT CPlayer::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+#pragma region 팀 아이디
+
+    Set_TeamID(ETEAM_ALPHA);
+
+#pragma endregion
+
+
 #pragma region 블랙보드
 
     Engine::Add_BlackBoard(L"Player", CBlackBoard_Player::Create());

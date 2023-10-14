@@ -131,6 +131,7 @@ public: // Get_Set
 	_float m_fAge = 0.f;
 	_float m_fLifeTime = 0.2;
 	_bool m_bGunLight; // 불켜는 bool값 
+	// ------------------------- 
 
 		_bool* Get_DBugFrame() {
 		return &bDbugFrame;
