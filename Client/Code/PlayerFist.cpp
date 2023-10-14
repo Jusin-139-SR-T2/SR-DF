@@ -37,7 +37,7 @@ HRESULT CPlayerFist::Ready_GameObject()
 	m_bDbugFrame = pPlayer->Get_DBugFrame();
 
 	// 데미지 설정
-	m_tFist.fDamage = 101.f;
+	m_tFist.fDamage = 5.f;
 
 	return S_OK;
 }

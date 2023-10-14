@@ -56,6 +56,9 @@ protected:
 	FRAME						m_tFrame;
 	_vec3						vPlayerPos;			
 	_tchar						debugString[100];
+	_bool						m_bDeadState; // 죽은상태
+	_bool						m_bDazedState; // 힐하는 도중에 끊기는거 용도 
+	_bool						m_bDazeToHeal; // 끊기면 daze더이상 진입x
 
 protected:
 	CRcBufferComp*				m_pBufferComp = nullptr; 
@@ -70,6 +73,8 @@ public: // 성희 추가 : 몬스터 정보 Get,Set
 	PLAYER_ATTACK_STATE m_ePlayer_AttackState;
 	GETSET_EX2(GAUGE<_float>, m_gHp, MonsterHP, GET, SET)   // 몬스터 HP 
 	GETSET_EX2(PLAYER_ATTACK_STATE, m_ePlayer_AttackState, Player_AttackState, GET, SET)   // 피격당한 공격의 상태 (ex : 앉은채로 공격, 점프 공격, 2연속 공격...등등)
+	GETSET_EX2(_bool, m_bDazedState, IsMonsterDazed, GET, SET)   
+	GETSET_EX2(_bool, m_bDeadState, IsMonsterDeath, GET, SET)   
 
 public:
 	_float						Calc_Distance();
@@ -77,6 +82,7 @@ public:
 	HRESULT						Get_PlayerPos();
 	void						Height_On_Terrain();
 	void						Billboard(const _float& fTimeDelta); 
+	_bool						m_bPlayerAttakBool;
 
 	//제작함수 리스트 - 스킬 셋팅할때 사용중 
 public:

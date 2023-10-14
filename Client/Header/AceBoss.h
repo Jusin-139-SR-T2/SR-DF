@@ -100,6 +100,7 @@ private:
 	_bool			m_bPhaseStart = FALSE;
 	_float			m_fSideAge = 0.f;
 	_float			m_fSideTime = 1.5f;
+	_float			m_fAwareness;
 
 	//공격 컨트롤 
 	_bool m_AttackOnce = FALSE;
@@ -108,9 +109,6 @@ private:
 	// 조명관련 - 블랙보드 연동 
 	_bool m_bLightOn = FALSE;
 	void LightControl(const _float& fTimeDelta);
-
-	_float m_fAwareness;
-
 
 #pragma region 상태머신 enum셋팅
 
@@ -126,7 +124,7 @@ public:
 		FALLING_STONE, ENERGY_BALL,						//스킬패턴
 		RED_THUNDER, ROUND_FIRE,						//스킬패턴
 		
-		HIT, DAZED, FACEPUNCH, FALLING,					// 피격
+		HIT, DAZED, FACEPUNCH, FALLING, CROTCHHIT,		// 피격
 		DEATH											// 죽음
 		// 보스는 보스맵 전체가 시야범위이므로 벗어나지않음. 
 	};
@@ -198,6 +196,7 @@ private:
 	void AI_Dazed(float fDeltaTime); // hp 일정이상 닳은 상태 
 	void AI_Falling(float fDeltaTime); // 발차기 맞았을경우 
 	void AI_FacePunch(float fDeltaTime); // 얼굴에 맞았을경우 
+	void AI_CrotchHit(float fDeltaTime); // 하단공격  
 
 	// 죽음 
 	void AI_Death(float fDeltaTime); //ok // hp 0인상태 

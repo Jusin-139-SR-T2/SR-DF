@@ -38,8 +38,6 @@ HRESULT CBrown::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    Set_TeamID(ETEAM_BETA);
-    
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
     m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });
     m_tFrame.fFrame = 0.f;
@@ -55,6 +53,9 @@ HRESULT CBrown::Ready_GameObject()
     m_tStat.fAttackFov = 90.f;
     m_gHp.Cur = 100.f;
     m_gHp.Max = 100.f;
+    m_bDazedState = FALSE;
+    m_bDeadState = FALSE;
+    m_bDazeToHeal = FALSE;
 
     // 충돌용
     m_pTransformComp->Readjust_Transform();
@@ -145,29 +146,34 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     SUPER::Update_GameObject(fTimeDelta);
 
     // 지형타기 
-    Height_On_Terrain(); 
+    Height_On_Terrain();
 
-    // 빌보드
-    Billboard(fTimeDelta);
+    //죽는거 셋팅 - 물리 서순문제 발생해결 
+    if (m_gHp.Cur <= 0 && FALSE == m_bDeadState)
+        MonsterDead();
 
-    //Update_InternalData();
+    if (FALSE == m_bDeadState)
+        Billboard(fTimeDelta);
 
-     //상태머신
+    //상태머신
     m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
-    
+
     m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
     m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
     m_mapActionKey.Update();	// 액션키 초기화
-    
-    if (m_tFrame.fFrame >  m_tFrame.fFrameEnd)
+
+    if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
     {
         m_tFrame.fFrame = 0.f;
-    
+
         if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
             m_tFrame.fRepeat += 1;
     }
 
-     //물리 업데이트 코드
+    // 블랙보드용 
+    //Update_InternalData();
+    
+    //물리 업데이트 코드
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 
 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -211,7 +217,7 @@ HRESULT CBrown::Add_Component()
     
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
-    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL || LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL | LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
     return S_OK;
 }
@@ -227,65 +233,82 @@ void CBrown::Free()
 
 void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중 
 {
-    
 }
 
 void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
 {
+    if (Get_IsMonsterDeath())
+        return;
+
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 
     if (nullptr == pAceObj)
         return;
 
+    // 보스 스킬에 죽을수도 있기때문에 충돌체 먼저 검사한뒤에 dead로 넘어가야함
     // 현재 팀 : 몬스터  적대관계 : 플레이어 
-    if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE) // 적대관계의 경우
+    if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE) // 적대관계
     {
         CPlayer* pPlayer = dynamic_cast<CPlayer*>(pAceObj);
 
         if (nullptr == pPlayer)
         {
-            // 플레이어의 공격체와 충돌 
             CPlayerAttackUnion* pPlayerAttack = dynamic_cast<CPlayerAttackUnion*>(pAceObj);
 
             if (nullptr == pPlayerAttack)
                 return;
 
-            //플레이어 앉은상태 먼저 확인 
-            if(PSITDONW_ATTACK ==m_ePlayer_AttackState) 
-                m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
-            else
+            //==== 플레이어 공격체와  충돌 =============================
+            m_eRecentCol = RECENT_COL::PLAYERATK;
+
+            if (m_tStat.iDazedHP >= m_gHp.Cur && FALSE == m_bDazedState)
             {
-                if (0 >= m_gHp.Cur)
-                    MonsterDead(); //다른곳에서 몬스터hp를 깎으므로 먼저 체크 
+                OutputDebugString(L"▷Brown - 충돌판정 DAZED 진입   \n");
+                m_tState_Obj.Set_State(STATE_OBJ::DAZED);
+                return;
+            }	
+            else if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand)
+                m_tState_Obj.Set_State(STATE_OBJ::FALLING); // fist
+            else if (PSITDONW_ATTACK == m_ePlayer_AttackState) // 앉 + kick = falling 임 
+                m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
+            else //일어서야 FacePunch있음 
+            {
+                if (Random_variable(60))
+                    m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
                 else
-                {
-                    if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand ||
-                        CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
-                        m_tState_Obj.Set_State(STATE_OBJ::HIT);
-                    else 
-                        if(Random_variable(60))
-                            m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-                        else
-                            m_tState_Obj.Set_State(STATE_OBJ::HIT);
-                }
+                    m_tState_Obj.Set_State(STATE_OBJ::HIT);
             }
         }
         else
         {
-            // 플레이어와 충돌 
+            //==== 플레이어와 충돌 =====================================
+            m_eRecentCol = RECENT_COL::PLAYER;
 
-            if (PRUN_ATTACK == m_ePlayer_AttackState)
-                m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+            if (CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
+                m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
+
         }
     }
     else if (Check_Relation(pAceObj, this) == ERELATION::FRIEND)
     {
         // 친밀관계 - 보스 : 몬스터는 친밀이지만 보스는 적대임 
-        if (0 >= m_gHp.Cur)
-            MonsterDead(); // death로 갈것임 
-        else
-            m_tState_Obj.Set_State(STATE_OBJ::HIT);
+        // 보스 자체의 충돌은 없고 보스가 소환한 공격체에는 충돌함 
 
+        CMonsterAttackUnion* pBossAttack = dynamic_cast<CMonsterAttackUnion*>(pAceObj);
+       
+        if(nullptr == pBossAttack)
+            return;
+        else
+        {
+            // ==== 보스스킬과 충돌 ========================================
+            m_eRecentCol = RECENT_COL::BOSSATK;
+
+            m_tState_Obj.Set_State(STATE_OBJ::HIT);
+        }
+    }
+    else if (Check_Relation(pAceObj, this) == ERELATION::NUETRAL) // 오브젝트 충돌 
+    {
+        m_tState_Obj.Set_State(STATE_OBJ::HIT);
     }
 }
 
@@ -295,10 +318,17 @@ void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때
 
 void CBrown::MonsterDead()
 {
-    if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand ||
-        CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
-        m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
-    else
+    if(RECENT_COL::PLAYER == m_eRecentCol)
+        m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+    else if (RECENT_COL::PLAYERATK == m_eRecentCol)
+    {
+        if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand ||
+            CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
+            m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
+        else
+            m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+    }
+    else if(RECENT_COL::BOSSATK == m_eRecentCol)
         m_tState_Obj.Set_State(STATE_OBJ::DEATH);
 }
 #pragma endregion 
@@ -338,7 +368,7 @@ void CBrown::AI_Idle(float fDeltaTime)
           //OutputDebugString(L"▷Brown - 상태머신 : idle 돌입   \n");
 
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
-         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     }
 
     if (m_tState_Obj.Can_Update())
@@ -714,6 +744,7 @@ void CBrown::AI_Hit(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
         //OutputDebugString(L"▷Brown - 상태머신 : Hit 진입   \n");
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Hit");
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size()); 
          m_tFrame.fFrameSpeed = 10.f;
@@ -721,7 +752,7 @@ void CBrown::AI_Hit(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        if (m_tFrame.fFrame >  m_tFrame.fFrameEnd)
+        if (m_tFrame.fFrame >=  m_tFrame.fFrameEnd)
         {
             m_tState_Obj.Set_State(STATE_OBJ::REST); 
         }
@@ -738,6 +769,7 @@ void CBrown::AI_Falling(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
         //OutputDebugString(L"▷Brown - 상태머신 : Falling 진입   \n");
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Falling");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 12.f;
@@ -765,6 +797,7 @@ void CBrown::AI_FacePunch(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
         //OutputDebugString(L"▷Brown - 상태머신 : FacePunch 진입   \n");
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"FacePunch");
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrameSpeed = 8.f;
@@ -789,6 +822,7 @@ void CBrown::AI_CrotchHit(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
         //OutputDebugString(L"▷Brown - 상태머신 : Dazed 진입   \n");
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"CrotchHit");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
@@ -818,18 +852,32 @@ void CBrown::AI_Dazed(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
         //OutputDebugString(L"▷Brown - 상태머신 : Dazed 진입   \n");
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Dazed");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
-
+        m_tFrame.fLifeTime = 1.f;
+        m_bDazedState = TRUE;
     }
 
     if (m_tState_Obj.Can_Update())
     {
-        if (m_gHp.Update(fDeltaTime * 5.f, 40.f, TRUE)) // 증가값, 도달하면 bool반환 
+        m_tFrame.fAge += 1.f * fDeltaTime;
+
+        if (m_tFrame.fAge > m_tFrame.fLifeTime)
         {
-            m_gHp.Cur = 40.f;
-            m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            m_tFrame.fLifeTime = 0.f;
+            m_tFrame.fAge = 0.f;
+            m_bDazeToHeal = TRUE;
+        }
+        if (TRUE == m_bDazeToHeal)
+        {
+            if (m_gHp.Update(fDeltaTime * 5.f, 40.f, TRUE)) // 증가값, 도달하면 bool반환 
+            {
+                m_gHp.Cur = 40.f;
+                m_bDazedState = FALSE;
+                m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+            }
         }
     }
 
@@ -843,10 +891,12 @@ void CBrown::AI_Chopped(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          //OutputDebugString(L"▷Brown - 상태머신 : Chopped 진입   \n");
+        //OutputDebugString(L"▷Brown - 상태머신 : Chopped 진입   \n");
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Chopped");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_bDeadState = TRUE;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -868,14 +918,16 @@ void CBrown::AI_Headless(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
         //OutputDebugString(L"▷Brown - 상태머신 : Headless 진입   \n");
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Headless");
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrameSpeed = 10.f;
+         m_bDeadState = TRUE;
     }
 
     if (m_tState_Obj.Can_Update())
     {
-        if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
+        if (m_tFrame.fFrame > m_tFrame.fFrameEnd-1)
         {
             m_tFrame.fFrame = m_tFrame.fFrameEnd - 1;
         }
@@ -891,16 +943,17 @@ void CBrown::AI_Death(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
-          //OutputDebugString(L"▷Brown - 상태머신 : Death 진입   \n");
-
+        //OutputDebugString(L"▷Brown - 상태머신 : Death 진입   \n");
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Death");
-         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        m_tFrame.fFrameSpeed = 10.f;
+        m_bDeadState = TRUE;
     }
 
     if (m_tState_Obj.Can_Update())
     {
-        if (m_tFrame.fFrame> m_tFrame.fFrameEnd)
+        if (m_tFrame.fFrame> m_tFrame.fFrameEnd-1)
         {
             m_tFrame.fFrame =  m_tFrame.fFrameEnd - 1;
         }

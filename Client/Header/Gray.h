@@ -87,6 +87,13 @@ private:
 	//스위치 on/off 
 	_bool		m_bArrive = FALSE; // 집에 도착 여부 
 	_bool		m_AttackOnce = FALSE;
+	_bool		m_bCollisionEnter = FALSE;
+
+	// 외부타격으로 인한 죽음
+	enum class RECENT_COL { PLAYER, PLAYERATK, BOSSATK, RECEND_END };
+
+	void MonsterDead();
+	RECENT_COL		m_eRecentCol; // 플레이어1 플레이어공격체2 보스스킬3 
 
 private:
 	//상태머신 등록 

@@ -166,7 +166,7 @@ void CFallingStone::OnCollisionEntered(CGameObject* pDst)
 {
 	OutputDebugString(L"¢ºFallingStone Ãæµ¹ \n");
 	
-	if(Attack_Occurrence(pDst, m_fAttack));
+	if(Attack_Occurrence(pDst, m_fAttack))
 		m_bCollision = TRUE;
 }
 

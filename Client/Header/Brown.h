@@ -63,9 +63,14 @@ private:
 	//스위치 on/off 
 	_bool		m_bArrive = false;
 	_bool		m_AttackOnce = false;
+	_bool		m_bCollisionEnter = TRUE;
 
 	// 외부타격으로 인한 죽음
+	enum class RECENT_COL {PLAYER, PLAYERATK, BOSSATK, RECEND_END};
+	
 	void MonsterDead();
+	RECENT_COL		m_eRecentCol; // 플레이어1 플레이어공격체2 보스스킬3 
+	
 
 #pragma region 상태머신 enum셋팅
 	
@@ -125,8 +130,8 @@ private:
 	
 	// 피격
 	void AI_Hit(float fDeltaTime); // 맞은 히트판정 
-	void AI_Falling(float fDeltaTime); // 발차기 맞았을경우 
 	void AI_FacePunch(float fDeltaTime); // 얼굴에 맞았을경우 
+	void AI_Falling(float fDeltaTime); // 발차기 맞았을경우 
 	void AI_CrotchHit(float fDeltaTime); // 하단 맞았을경우  
 
 	// 죽음 

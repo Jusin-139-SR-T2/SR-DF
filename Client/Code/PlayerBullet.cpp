@@ -40,7 +40,7 @@ HRESULT CPlayerBullet::Ready_GameObject()
 	m_bDbugFrame = pPlayer->Get_DBugFrame();
 
 	// 데미지 설정
-	m_tBullet.fDamage = 101.f;
+	m_tBullet.fDamage = 55.f;
 
 	return S_OK;
 }

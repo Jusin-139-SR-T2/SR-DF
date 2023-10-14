@@ -21,8 +21,6 @@ HRESULT CAceBoss::Ready_GameObject()
 
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	Set_TeamID(ETEAM_BETA);
-
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Idle_South");
 	m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });
 	m_tFrame.fFrame = 0.f;
@@ -31,6 +29,9 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_tFrame.fRepeat = 0.f;
 	m_fAwareness = m_tStat.fAwareness = 0.f;
 	m_tStat.fMaxAwareness = 15.f;
+	m_bDazedState = FALSE;
+	m_bDeadState = FALSE;
+	m_bDazeToHeal = FALSE;
 
 	// 팀에이전트 셋팅 
 	Set_TeamID(ETEAM_BOSS);
@@ -57,7 +58,6 @@ HRESULT CAceBoss::Ready_GameObject()
 	// Phase - 패턴관련 
 	m_ePhase = Engine::MonsterPhase::Intro;
 	m_fTriggerHP = 90.f;
-
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
 	m_tState_Obj.Set_State(STATE_OBJ::IDLE);
@@ -97,6 +97,7 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_tState_Obj.Add_Func(STATE_OBJ::DAZED, &CAceBoss::AI_Dazed);
 	m_tState_Obj.Add_Func(STATE_OBJ::FACEPUNCH, &CAceBoss::AI_FacePunch);
 	m_tState_Obj.Add_Func(STATE_OBJ::FALLING, &CAceBoss::AI_Falling);
+	m_tState_Obj.Add_Func(STATE_OBJ::CROTCHHIT, &CAceBoss::AI_CrotchHit);
 
 	// 죽음
 	m_tState_Obj.Add_Func(STATE_OBJ::DEATH, &CAceBoss::AI_Death);
@@ -149,14 +150,19 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	//보스 페이즈 갱신 
-	Change_Phase();
-
 	// 지형타기 
 	Height_On_Terrain();
 
+	// 죽는모션이 하나뿐이라서 충돌체 가리지않고 그냥 0 되면 죽음 
+	if (m_gHp.Cur <= 0 && FALSE == m_bDeadState)
+		m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+
+	//보스 페이즈 갱신 
+	Change_Phase();
+
 	// 빌보드
-	Billboard(fTimeDelta);
+	if (FALSE == m_bDeadState)
+		Billboard(fTimeDelta);
 
 	//상태머신
 	m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
@@ -257,7 +263,7 @@ HRESULT CAceBoss::Add_Component()
 
 	// 충돌 레이어, 마스크 설정
 	m_pColliderComp->Set_CollisionLayer(LAYER_BOSSMONSTER); // 이 클래스가 속할 충돌레이어 
-	m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_MONSTER | LAYER_WALL || LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
+	m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_MONSTER | LAYER_WALL | LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
 	return S_OK;
 }
@@ -277,32 +283,64 @@ void CAceBoss::OnCollision(CGameObject* pDst)
 }
 void CAceBoss::OnCollisionEntered(CGameObject* pDst)
 {
-	wstring str1 = pDst->Get_ObjectName();
-	wstring str2 = L"Player";
+	if (Get_IsMonsterDeath()) // 죽었으면 더이상 충돌일어나지않게 먼저 막음 
+		return;
 
-	if (str1.compare(str2) == 0)
+
+	else if (25 >= m_gHp.Cur && FALSE == m_bDazedState)
 	{
-		// Kick or Run = Falling  , 총기류 , 기타 공격 
-		if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
-			m_tState_Obj.Set_State(STATE_OBJ::FALLING);
-		else if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand || CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
+	
+		m_tState_Obj.Set_State(STATE_OBJ::DAZED);
+	}
+
+	CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
+
+	if (nullptr == pAceObj)
+		return;
+
+	// 현재 팀 : 보스팀  적대관계 : 플레이어, 몬스터 
+	if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE) // 적대관계의 경우
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(pAceObj);
+
+		if (nullptr == pPlayer)
 		{
-			if (0 == m_gHp.Cur)
-				m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+			CPlayerAttackUnion* pPlayerAttack = dynamic_cast<CPlayerAttackUnion*>(pAceObj);
+
+			if (nullptr == pPlayerAttack)
+				return; 
+			//몬스터가 하는 공격은 보스에게 안통함. 따라서 몬스터의 공격은 적대임에도 보스에 넣지않음 
+			
+			//==== 플레이어 공격체와  충돌 =============================
+			if (m_tStat.iDazedHP >= m_gHp.Cur && FALSE == m_bDazedState)
+			{
+				OutputDebugString(L"▷Brown - 충돌판정 DAZED 진입   \n");
+				m_tState_Obj.Set_State(STATE_OBJ::DAZED);
+				return;
+			}
+			else if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand)
+				m_tState_Obj.Set_State(STATE_OBJ::FALLING); 
+			else if (PSITDONW_ATTACK == m_ePlayer_AttackState) // 앉 + kick = falling 임 
+				m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
 			else
-				m_tState_Obj.Set_State(STATE_OBJ::HIT);
+			{
+				if (Random_variable(60))
+					m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+				else
+					m_tState_Obj.Set_State(STATE_OBJ::HIT);
+			}
 		}
 		else
 		{
-			if (0 == m_gHp.Cur)
-			{
-				m_tState_Obj.Set_State(STATE_OBJ::DEATH);
-			}
-			if (Random_variable(60))
-				m_tState_Obj.Set_State(STATE_OBJ::HIT);
-			else
-				m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+			//==== 플레이어와 충돌 =====================================
+			if (CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
+				m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
+
 		}
+	}
+	else if (Check_Relation(pAceObj, this) == ERELATION::NUETRAL) // 오브젝트 충돌 
+	{
+		m_tState_Obj.Set_State(STATE_OBJ::HIT);
 	}
 }
 
@@ -377,6 +415,7 @@ void CAceBoss::LightControl(const _float& fTimeDelta)
 		}
 	}
 }
+
 
 #pragma endregion 
 
@@ -1150,16 +1189,32 @@ void CAceBoss::AI_Dazed(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Dazed");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
-
+		m_tFrame.fLifeTime = 1.f;
+		m_bDazedState = TRUE;
+		
 		if (Engine::MonsterPhase::Phase2 == m_ePhase)
 			m_tFrame.fFrameSpeed = 12.f;
 	}
 
 	if (m_tState_Obj.Can_Update())
 	{
-		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
+		m_tFrame.fAge += 1.f * fDeltaTime;
+
+		if (m_tFrame.fAge > m_tFrame.fLifeTime)
 		{
-			m_tFrame.fFrame = m_tFrame.fFrameEnd - 1.f;
+			m_tFrame.fLifeTime = 0.f;
+			m_tFrame.fAge = 0.f;
+			m_bDazeToHeal = TRUE;
+		}
+		if (TRUE == m_bDazeToHeal)
+		{
+	
+			if (m_gHp.Update(fDeltaTime * 6.f, 40.f, TRUE)) // 증가값, 도달하면 bool반환 
+			{
+				m_gHp.Cur = 40.f;
+				m_bDazedState = FALSE;
+				m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+			}
 		}
 	}
 
@@ -1220,6 +1275,31 @@ void CAceBoss::AI_FacePunch(float fDeltaTime)
 	}
 }
 
+void CAceBoss::AI_CrotchHit(float fDeltaTime)
+{
+	if (m_tState_Obj.IsState_Entered())
+	{
+		//OutputDebugString(L"▷BOSS - 상태머신 : 하단피격 돌입   \n");
+		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"CrotchHit");
+		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	}
+
+	if (m_tState_Obj.Can_Update())
+	{
+		m_fSideAge += 1.f * fDeltaTime;
+
+		if (m_fSideAge > m_fSideTime)
+		{
+			m_fSideAge = 0.f;
+			m_tState_Obj.Set_State(STATE_OBJ::REST);
+		}
+	}
+
+	if (m_tState_Obj.IsState_Exit())
+	{
+	}
+}
+
 void CAceBoss::AI_Death(float fDeltaTime)
 {
 	if (m_tState_Obj.IsState_Entered())
@@ -1228,6 +1308,7 @@ void CAceBoss::AI_Death(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Dazed");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_bDeadState = TRUE;
 	}
 
 	if (m_tState_Obj.Can_Update())
