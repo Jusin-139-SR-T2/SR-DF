@@ -286,6 +286,12 @@ void CBackGround::KeyInput()
 		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Left_Hand");
 	}
 
+	// ¿Þ¼Õ
+	if (Engine::IsKey_Pressed(DIK_K))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"OpenHand");
+	}
+
 	// ¿À¸¥¼Õ Â÷Â¡
 	if (Engine::IsKey_Pressed(DIK_J))
 	{

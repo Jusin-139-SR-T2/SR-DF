@@ -222,6 +222,7 @@ void CPlayer::Render_GameObject()
         // 왼손 텍스처 출력
         m_pLeftHandComp->Render_Texture((_ulong)m_tLeftHand.fLeftFrame, true);    // 왼손 텍스처 출력
         m_pBufferComp->Render_Buffer();                                 // 왼손 버퍼 
+        int t = 0;
     }
 #pragma endregion
 
@@ -452,7 +453,6 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         if (!bRighter)  // 라이터가 꺼져있을 경우
         {
             bRighter = true;        // 라이터 켜주기
-            //m_fLeftMaxFrame = 6.f;  // 최대 프레임 설정
             m_tLeftHand_State.Set_State(STATE_LEFTHAND::RIGHTER); // 왼손 상태 라이터로
             m_tLeftHand.fLeftFrame = 0.f;
             m_tTime.fLeftCurrentTime = 0.f;
@@ -619,12 +619,12 @@ if (!timeline[KEYTYPE_RIGHTHAND].empty())
                         }
                     }
                 }
-
+                // 꺼내는 모션중일 경우
                 if (m_tRightHand.bPickUpState)
                 {
                     m_tRightHand.bPickUpState = false;
                 }
-                else
+                else // 꺼내는 모션이 아닐 경우
                 {
                     // 오른손 프레임과 시간 초기화
                     m_tRightHand.fRightFrame = 0.f;
@@ -1778,8 +1778,9 @@ void CPlayer::Right_Hand(float fTimeDelta)
         {
             if (bRightGetAnimation)
             {
-                m_tRightHand.bRightFrameOn = false;
-                m_tRightHand.fRightFrame = 0.f;
+                m_tRightHand.bRightFrameOn = false;     // 오른손 프레임 매니저 Off
+                m_tRightHand.fRightFrame = 0.f;         // 현재 프레임 초기화
+                m_tTime.fRightCurrentTime = 0.f;        // 현재 시간 초기화
 
                 // 오른손 주먹 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
@@ -1839,7 +1840,7 @@ void CPlayer::Right_RunHand(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 처음 꺼내는 애니메이션
-        if (m_eRightState_Old != m_tRightHand_State.Get_State())
+        if (m_tRightHand.bPickUpState)
         {
             //// 애니메이션 불러오기
             //if (bGetAnimation)
@@ -1896,8 +1897,9 @@ void CPlayer::Right_Gun(float fTimeDelta)
         {
             if (bRightGetAnimation)
             {
-                m_tRightHand.bRightFrameOn = false;
-                m_tRightHand.fRightFrame = 0.f;
+                m_tRightHand.bRightFrameOn = false;     // 오른손 프레임 매니저 Off
+                m_tRightHand.fRightFrame = 0.f;         // 현재 프레임 초기화
+                m_tTime.fRightCurrentTime = 0.f;        // 현재 시간 초기화
 
                 // 오른손 총 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Gun");
@@ -1947,16 +1949,17 @@ void CPlayer::Right_Thompson(float fTimeDelta)
         // 톰슨 꺼내는게 다 돌았을 경우
         if (!m_tRightHand.bPickUpState)
         {
-            if (bRightGetAnimation)
+            if (bRightGetAnimation) // 애니메이션 변경 On
             {
-                m_tRightHand.bRightFrameOn = false;
-                m_tRightHand.fRightFrame = 0.f;
+                m_tRightHand.bRightFrameOn = false;     // 오른손 프레임 매니저 Off
+                m_tRightHand.fRightFrame = 0.f;         // 현재 프레임 초기화
+                m_tTime.fRightCurrentTime = 0.f;        // 현재 시간 초기화
 
-                // 오른손 톰슨 불러오기
+                // 오른손 새로운 이미지로 변경
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Thompson");
-                RightLoadAnimationFromFile("Thompson");
+                RightLoadAnimationFromFile("Thompson"); // 새로운 애니메이션 로드
 
-                bRightGetAnimation = false; // Off
+                bRightGetAnimation = false; // 애니메이션 변경 Off
             }
         }
 
@@ -1981,7 +1984,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 처음 꺼내는 애니메이션
-        if (m_eRightState_Old != m_tRightHand_State.Get_State())
+        if (m_tRightHand.bPickUpState)
         {
             // 오른손 쇠파이프
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe");
@@ -1996,15 +1999,16 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
 
     if (m_tRightHand_State.Can_Update())
     {
-        // 총 회전이 다 돌았을 경우
+        // 꺼내는 모션이 끝났을 경우
         if (!m_tRightHand.bPickUpState)
         {
             if (bRightGetAnimation)
             {
-                m_tRightHand.bRightFrameOn = false;
-                m_tRightHand.fRightFrame = 0.f;
+                m_tRightHand.bRightFrameOn = false;     // 오른손 프레임 매니저 Off
+                m_tRightHand.fRightFrame = 0.f;         // 현재 프레임 초기화
+                m_tTime.fRightCurrentTime = 0.f;        // 현재 시간 초기화
 
-                // 오른손 총 불러오기
+                // 오른손 쇠파이프 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe");
                 RightLoadAnimationFromFile("Steel_Pipe");
 
@@ -2049,7 +2053,7 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 처음 꺼내는 애니메이션
-        if (m_eRightState_Old != m_tRightHand_State.Get_State())
+        if (m_tRightHand.bPickUpState)
         {
             // 오른손 맥주병
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"BeerBottle");
@@ -2069,8 +2073,9 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
         {
             if (bRightGetAnimation)
             {
-                m_tRightHand.bRightFrameOn = false;
-                m_tRightHand.fRightFrame = 0.f;
+                m_tRightHand.bRightFrameOn = false;     // 오른손 프레임 매니저 Off
+                m_tRightHand.fRightFrame = 0.f;         // 현재 프레임 초기화
+                m_tTime.fRightCurrentTime = 0.f;        // 현재 시간 초기화
 
                 // 오른손 맥주병 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"BeerBottle");
@@ -2101,7 +2106,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
     if (m_tRightHand_State.IsState_Entered())
     {
         // 처음 꺼내는 애니메이션
-        if (m_eRightState_Old != m_tRightHand_State.Get_State())
+        if (m_tRightHand.bPickUpState)
         {
             // 오른손 프라이팬
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
@@ -2122,8 +2127,9 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
         {
             if (bRightGetAnimation)
             {
-                m_tRightHand.bRightFrameOn = false;
-                m_tRightHand.fRightFrame = 0.f;
+                m_tRightHand.bRightFrameOn = false;     // 오른손 프레임 매니저 Off
+                m_tRightHand.fRightFrame = 0.f;         // 현재 프레임 초기화
+                m_tTime.fRightCurrentTime = 0.f;        // 현재 시간 초기화
 
                 // 오른손 총 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
