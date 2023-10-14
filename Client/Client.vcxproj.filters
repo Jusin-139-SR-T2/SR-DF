@@ -396,6 +396,9 @@
     <ClInclude Include="Header\PlayerAttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
     </ClInclude>
+    <ClInclude Include="Header\PlayerFist.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Fist</Filter>
+    </ClInclude>
     <ClInclude Include="PlayerGunLighter.h">
       <Filter>03..=====Object=====\03. Lighter\03. PlayerGunLighter</Filter>
     </ClInclude>
@@ -562,6 +565,9 @@
     </ClCompile>
     <ClCompile Include="Code\PlayerAttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerFist.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Fist</Filter>
     </ClCompile>
     <ClCompile Include="PlayerGunLighter.cpp">
       <Filter>03..=====Object=====\03. Lighter\03. PlayerGunLighter</Filter>

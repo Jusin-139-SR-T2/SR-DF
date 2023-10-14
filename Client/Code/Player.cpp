@@ -75,7 +75,7 @@ HRESULT CPlayer::Ready_GameObject()
     m_tPlayer_State.Add_Func(STATE_PLAYER::IDLE, &ThisClass::Idle);         // 기본 (정지)
     m_tPlayer_State.Add_Func(STATE_PLAYER::MOVE, &ThisClass::Move);         // 움직임
     m_tPlayer_State.Add_Func(STATE_PLAYER::RUN, &ThisClass::Run);           // 달리기
-    m_tPlayer_State.Add_Func(STATE_PLAYER::DOWN, &ThisClass::Down);         // 앉기
+    m_tPlayer_State.Add_Func(STATE_PLAYER::SITDOWN, &ThisClass::Down);         // 앉기
     m_tPlayer_State.Add_Func(STATE_PLAYER::ATTACK, &ThisClass::Attack);     // 공격
     m_tPlayer_State.Add_Func(STATE_PLAYER::DIE, &ThisClass::Die);           // 죽음
 #pragma endregion
@@ -474,6 +474,13 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         m_tPlayer_State.Set_State(STATE_PLAYER::THROW_AWAY);
     }
 
+    // 앉기
+    if (Engine::IsKey_Pressed(DIK_C))
+    {
+        // 플레이어 상태 앉기
+        m_tPlayer_State.Set_State(STATE_PLAYER::SITDOWN);
+    }
+
     // 공격 프레임 확인
     if (Engine::IsKey_Pressed(DIK_0))
     {
@@ -673,18 +680,17 @@ void CPlayer::OnCollision(CGameObject* pDst)
 
 void CPlayer::OnCollisionEntered(CGameObject* pDst)
 {
-    // 처음 충돌했을때
-    CBrown* pBrown = dynamic_cast<CBrown*>(pDst->Get_Owner());
-    if (FAILED(pBrown))
-    {
-        CGray* pBrown = dynamic_cast<CGray*>(pDst->Get_Owner());
-        OutputDebugString(L"플레이어 - Gray  충돌중\n");
-    }
-    else
-    {
-        OutputDebugString(L"플레이어 - Brown  충돌중\n");
-    }
-
+    //// 처음 충돌했을때
+    //CBrown* pBrown = dynamic_cast<CBrown*>(pDst->Get_Owner());
+    //if (FAILED(pBrown))
+    //{
+    //    CGray* pBrown = dynamic_cast<CGray*>(pDst->Get_Owner());
+    //    OutputDebugString(L"플레이어 - Gray  충돌중\n");
+    //}
+    //else
+    //{
+    //    OutputDebugString(L"플레이어 - Brown  충돌중\n");
+    //}
 }
 
 void CPlayer::OnCollisionExited(CGameObject* pDst)
@@ -787,6 +793,9 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
             // 차징이 안켜졌을 때
             if (!bChargeAttack)
             {
+                // 플레이어 상태 : 공격, 플레이어 오른손 프레임 On
+                m_tPlayer_State.Set_State(STATE_PLAYER::ATTACK);
+
                 // 양손이 주먹 상태 일경우
                 if (m_tLeftHand_State.Get_State() == STATE_LEFTHAND::HAND &&
                     m_tRightHand_State.Get_State() == STATE_RIGHTHAND::HAND)
@@ -803,7 +812,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                 else // 나머지 공격
                 {
                     // 플레이어 상태 : 공격, 플레이어 오른손 프레임 On
-                    m_tPlayer_State.Set_State(STATE_PLAYER::ATTACK);
+                    //m_tPlayer_State.Set_State(STATE_PLAYER::ATTACK);
                     m_tRightHand.bRightFrameOn = true;
                 }
             }
@@ -1353,7 +1362,7 @@ void CPlayer::Idle(float fTimeDelta)
         m_bGunLight = FALSE;
         if (true)
         {
-
+            
         }
     }
 
@@ -1788,9 +1797,10 @@ void CPlayer::Right_Hand(float fTimeDelta)
         // 플레이어의 상태가 공격일경우 공격 생성
         if (m_tPlayer_State.Get_State() == STATE_PLAYER::ATTACK)
         {
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                                    m_pTransformComp->Get_Pos(), 300.f, this));
+            _vec3 vPosPlus = { 10.f, 0.f, 0.f };
+            // 주먹공격 생성 (디바이스, 생성 위치, 주인)
+            Engine::Add_GameObject(L"GameLogic", CPlayerFist::Create(m_pGraphicDev,
+                                    m_pTransformComp->Get_Pos() + vPosPlus, this));
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
         }
 

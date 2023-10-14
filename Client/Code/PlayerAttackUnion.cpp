@@ -133,6 +133,7 @@ void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTa
             MonsterHp.Cur = MonsterHp.Max;
 
         pMonster->Set_MonsterHP(MonsterHp);
+        _float ftest = pMonster->Get_MonsterHP().Cur;
     }
 }
 
