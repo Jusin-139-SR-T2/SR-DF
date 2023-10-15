@@ -43,6 +43,10 @@ protected:
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionBox* pShape;
 
+	//충돌 디버그용
+public:
+	LPD3DXMESH		m_pMesh = nullptr;
+
 	//블랙보드
 private:
 	void	Update_InternalData();

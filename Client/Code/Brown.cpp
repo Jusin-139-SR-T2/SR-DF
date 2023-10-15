@@ -61,7 +61,7 @@ HRESULT CBrown::Ready_GameObject()
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
     pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-    pShape->vHalfSize = { 1.f, 0.7f, 0.3f };
+    pShape->vHalfSize = { 0.4f, 0.4f, 0.5f };
 
 
 //#pragma region 블랙보드
@@ -198,15 +198,23 @@ void CBrown::LateUpdate_GameObject()
 void CBrown::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
-
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+
+    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+    //if (m_pMesh)
+    //    m_pMesh->DrawSubset(0);
+    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
     m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
     m_pBufferComp->Render_Buffer();
 
-    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+#pragma region 충돌 메쉬 콜라이더
+    MeshBoxColider(pShape->vHalfSize.x, pShape->vHalfSize.y, pShape->vHalfSize.z);
+#pragma endregion
+
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 HRESULT CBrown::Add_Component()
