@@ -1,6 +1,5 @@
 #pragma once
 #include "AttackUnion.h"
-
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "Engine_Define.h"
@@ -50,7 +49,6 @@ public:
 	void						Knockback_Player(const _float& fTimeDelta, _float _fSpeed);
 	void						Change_MonsterHp(_float _fAttack);
 	_bool						Attack_Occurrence(CGameObject* pDst, _float fAttack);
-
 	GAUGE<_float>				m_gPlayerHp; //플레이어 HP 저장용 
 	GAUGE<_float>				m_gMonsterHp; //몬스터 HP 저장용
 

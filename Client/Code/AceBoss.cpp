@@ -1156,6 +1156,7 @@ void CAceBoss::AI_Hit(float fDeltaTime)
 	if (m_tState_Obj.IsState_Entered())
 	{
 		//OutputDebugString(L"▷BOSS - 상태머신 : 일반피격상태 돌입   \n");
+		m_tStat.fAwareness = m_tStat.fMaxAwareness;
 		if (Random_variable(50))
 			m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Hit_A");
 		else
@@ -1185,6 +1186,7 @@ void CAceBoss::AI_Dazed(float fDeltaTime)
 	if (m_tState_Obj.IsState_Entered())
 	{
 		//OutputDebugString(L"▷BOSS - 상태머신 : 1관문 설치기 돌입   \n");
+		m_tStat.fAwareness = m_tStat.fMaxAwareness;
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Dazed");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
@@ -1227,6 +1229,7 @@ void CAceBoss::AI_Falling(float fDeltaTime)
 	if (m_tState_Obj.IsState_Entered())
 	{
 		//OutputDebugString(L"▷BOSS - 상태머신 : 1관문 설치기 돌입   \n");
+		m_tStat.fAwareness = m_tStat.fMaxAwareness;
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Falling");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
@@ -1251,6 +1254,7 @@ void CAceBoss::AI_FacePunch(float fDeltaTime)
 	if (m_tState_Obj.IsState_Entered())
 	{
 		//OutputDebugString(L"▷BOSS - 상태머신 : 1관문 설치기 돌입   \n");
+		m_tStat.fAwareness = m_tStat.fMaxAwareness;
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"FacePunch");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
@@ -1279,6 +1283,7 @@ void CAceBoss::AI_CrotchHit(float fDeltaTime)
 	if (m_tState_Obj.IsState_Entered())
 	{
 		//OutputDebugString(L"▷BOSS - 상태머신 : 하단피격 돌입   \n");
+		m_tStat.fAwareness = m_tStat.fMaxAwareness;
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"CrotchHit");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	}
@@ -1304,7 +1309,8 @@ void CAceBoss::AI_Death(float fDeltaTime)
 	if (m_tState_Obj.IsState_Entered())
 	{
 		//OutputDebugString(L"▷BOSS - 상태머신 : 1관문 설치기 돌입   \n");
-		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Dazed");
+		m_tStat.fAwareness = m_tStat.fMaxAwareness;
+		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Death");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
 		m_bDeadState = TRUE;
@@ -1314,8 +1320,7 @@ void CAceBoss::AI_Death(float fDeltaTime)
 	{
 		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 		{
-			m_tFrame.fFrame = 0.f;
-			m_tState_Obj.Set_State(STATE_OBJ::REST);
+			m_tFrame.fFrame = m_tFrame.fFrameEnd -1.f;
 
 		}
 	}

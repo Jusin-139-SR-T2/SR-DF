@@ -366,14 +366,14 @@
     <ClInclude Include="Header\PlayerGunLighter.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\03. Lighter\03. PlayerGunLighter</Filter>
     </ClInclude>
-    <ClInclude Include="MonsterAttackUnion.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
-    </ClInclude>
     <ClInclude Include="Header\AceUnit.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit</Filter>
     </ClInclude>
-    <ClInclude Include="MonsterBullet.h">
+    <ClInclude Include="Header\MonsterBullet.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\MonsterAttackUnion.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -524,14 +524,14 @@
     <ClCompile Include="Code\PlayerGunLighter.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\03. Lighter\03. PlayerGunLighter</Filter>
     </ClCompile>
-    <ClCompile Include="MonsterAttackUnion.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
-    </ClCompile>
     <ClCompile Include="Code\AceUnit.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit</Filter>
     </ClCompile>
-    <ClCompile Include="MonsterBullet.cpp">
+    <ClCompile Include="Code\MonsterBullet.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\MonsterAttackUnion.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -140,6 +140,7 @@ void CSlowThunder::Free()
 
 void CSlowThunder::OnCollision(CGameObject* pDst)
 {
+	//m_pTransformComp
 }
 
 void CSlowThunder::OnCollisionEntered(CGameObject* pDst)
