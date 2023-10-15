@@ -1043,13 +1043,20 @@ void CImguiAnimationTool::SaveAnimationToFile(const char* fileName)
             << keyframe.isEaseOut << " "
             << keyframe.bChargePossible << " "
             << keyframe.bShieldPossible << " "
+            << keyframe.texureframe << " "
             << keyframe.bFullChargeKeyframe << " "
             << keyframe.bShieldKeyFrame << " "
-            << keyframe.texureframe << " "
-            << keyframe.vScale.x << " " << keyframe.vScale.y << " " << keyframe.vScale.z << " "
-            << keyframe.vRot.x << " " << keyframe.vRot.y << " " << keyframe.vRot.z << " "
-            << keyframe.vPos.x << " " << keyframe.vPos.y << " " << keyframe.vPos.z << " "
-            << keyframe.vKeyFramePos.x << " " << keyframe.vKeyFramePos.y << "\n";
+            << keyframe.vScale.x << " "
+            << keyframe.vScale.y << " "
+            << keyframe.vScale.z << " "
+            << keyframe.vRot.x << " "
+            << keyframe.vRot.y << " "
+            << keyframe.vRot.z << " "
+            << keyframe.vPos.x << " "
+            << keyframe.vPos.y << " "
+            << keyframe.vPos.z << " "
+            << keyframe.vKeyFramePos.x << " "
+            << keyframe.vKeyFramePos.y << "\n";
     }
 
     file.close();
@@ -1085,10 +1092,17 @@ void CImguiAnimationTool::LoadAnimationFromFile(const char* fileName)
         keyframe.texureframe >>
         keyframe.bFullChargeKeyframe >>
         keyframe.bShieldKeyFrame >>
-        keyframe.vScale.x >> keyframe.vScale.y >> keyframe.vScale.z >>
-        keyframe.vRot.x >> keyframe.vRot.y >> keyframe.vRot.z >>
-        keyframe.vPos.x >> keyframe.vPos.y >> keyframe.vPos.z >>
-        keyframe.vKeyFramePos.x >> keyframe.vKeyFramePos.y)
+        keyframe.vScale.x >>
+        keyframe.vScale.y >>
+        keyframe.vScale.z >>
+        keyframe.vRot.x >>
+        keyframe.vRot.y >>
+        keyframe.vRot.z >>
+        keyframe.vPos.x >>
+        keyframe.vPos.y >>
+        keyframe.vPos.z >>
+        keyframe.vKeyFramePos.x >>
+        keyframe.vKeyFramePos.y)
     {
         timeline[m_iCurType].push_back(keyframe); // 불러온 애니메이션 값 담아주기
     }
@@ -1219,6 +1233,15 @@ std::vector<const char*> CImguiAnimationTool::ConvertStringVectorToCharArray(con
 // 선택한 키프레임 값을 변경하는 함수
 void CImguiAnimationTool::DrawSelectedKeyframeEditor(KEYFRAME& selectedKeyframe)
 {
+
+    //if (iOldIndex != closestKeyframeIndex)
+    //{
+    //    m_bSheild = false;
+    //    m_bSheildFrame = false;
+    //    m_bCharging = false;
+    //    m_bChargingFrame = false;
+    //}
+
     // 타임라인 툴
     ImGui::Begin(u8"선택한 키프레임 속성 편집");
 
@@ -1369,17 +1392,17 @@ void CImguiAnimationTool::DrawSelectedKeyframeEditor(KEYFRAME& selectedKeyframe)
     ImGui::Dummy(ImVec2(0, 5)); // 공백
     ImGui::SeparatorText(u8"무기 설정");
 
-    // OBJ_TYPE 선택 목록
-    const char* objTypeItems[] = { u8"없음", u8"주먹", u8"양손 무기", u8"한손 무기" };
-    int selectedObjType = static_cast<int>(selectedKeyframe.m_eObjectType);
-    ImGui::Combo(u8"타입", &selectedObjType, objTypeItems, IM_ARRAYSIZE(objTypeItems));
-    selectedKeyframe.m_eObjectType = static_cast<OBJ_TYPE>(selectedObjType);
+    //// OBJ_TYPE 선택 목록
+    //const char* objTypeItems[] = { u8"없음", u8"주먹", u8"양손 무기", u8"한손 무기" };
+    //int selectedObjType = static_cast<int>(selectedKeyframe.m_eObjectType);
+    //ImGui::Combo(u8"타입", &selectedObjType, objTypeItems, IM_ARRAYSIZE(objTypeItems));
+    //selectedKeyframe.m_eObjectType = static_cast<OBJ_TYPE>(selectedObjType);
 
-    // OBJ_NAME 선택 목록
-    const char* objNameItems[] = { u8"없음", u8"권총", u8"톰슨 기관총", u8"쇠파이프", u8"맥주병", u8"프라이팬" };
-    int selectedObjName = static_cast<int>(selectedKeyframe.m_eObjectName);
-    ImGui::Combo(u8"무기", &selectedObjName, objNameItems, IM_ARRAYSIZE(objNameItems));
-    selectedKeyframe.m_eObjectName = static_cast<OBJ_NAME>(selectedObjName);
+    //// OBJ_NAME 선택 목록
+    //const char* objNameItems[] = { u8"없음", u8"권총", u8"톰슨 기관총", u8"쇠파이프", u8"맥주병", u8"프라이팬" };
+    //int selectedObjName = static_cast<int>(selectedKeyframe.m_eObjectName);
+    //ImGui::Combo(u8"무기", &selectedObjName, objNameItems, IM_ARRAYSIZE(objNameItems));
+    //selectedKeyframe.m_eObjectName = static_cast<OBJ_NAME>(selectedObjName);
 
 #pragma region 타입에 따른 선택목록 업데이트 (현재 미사용)
     //// OBJ_TYPE 선택 목록
@@ -1443,6 +1466,7 @@ void CImguiAnimationTool::DrawSelectedKeyframeEditor(KEYFRAME& selectedKeyframe)
     ImGui::SeparatorText(u8"차징 설정");
 
     ImGui::Dummy(ImVec2(0, 5)); // 공백
+    
     ImGui::Checkbox(u8"차징가능 여부", &selectedKeyframe.bChargePossible);
     ImGui::Dummy(ImVec2(0, 5)); // 공백
 
@@ -1457,6 +1481,22 @@ void CImguiAnimationTool::DrawSelectedKeyframeEditor(KEYFRAME& selectedKeyframe)
 
     // 선택된 키프레임만 업데이트
     timeline[m_iCurType][closestKeyframeIndex] = selectedKeyframe;
+
+    //timeline[m_iCurType][closestKeyframeIndex].time = selectedKeyframe.time;
+    //timeline[m_iCurType][closestKeyframeIndex].type = selectedKeyframe.type;
+    //timeline[m_iCurType][closestKeyframeIndex].value = selectedKeyframe.value;
+    //timeline[m_iCurType][closestKeyframeIndex].vPos = selectedKeyframe.vPos;
+    //timeline[m_iCurType][closestKeyframeIndex].vRot = selectedKeyframe.vRot;
+    //timeline[m_iCurType][closestKeyframeIndex].vScale = selectedKeyframe.vScale;
+
+    //timeline[m_iCurType][closestKeyframeIndex].bChargePossible = selectedKeyframe.bChargePossible;
+    //timeline[m_iCurType][closestKeyframeIndex].bFullChargeKeyframe = selectedKeyframe.bFullChargeKeyframe;
+    //timeline[m_iCurType][closestKeyframeIndex].bShieldKeyFrame = selectedKeyframe.bShieldKeyFrame;
+    //timeline[m_iCurType][closestKeyframeIndex].bShieldPossible = selectedKeyframe.bShieldPossible;
+    //timeline[m_iCurType][closestKeyframeIndex].texureframe = selectedKeyframe.texureframe;
+
+
+    iOldIndex = closestKeyframeIndex; // 현재 인덱스 번호를 저장
 }
 
 // _vec3 선형 보간 함수
