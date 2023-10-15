@@ -48,10 +48,12 @@ public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX2(GAUGE<_float>, m_fHP, HP, GET_C_REF, GET_REF)
 	GETSET_EX2(GAUGE<_float>, m_fStamina, Stamina, GET_C_REF, GET_REF)
 	GETSET_EX2(_bool, m_bGunLight, GunLight, GET_C_REF, GET_REF)
+	GETSET_EX2(_bool, m_bLighterLight, LighterLight, GET_C_REF, GET_REF)
 
 private:
 	GAUGE<_float>		m_fHP;
 	GAUGE<_float>		m_fStamina;
 	_bool				m_bGunLight;
+	_bool				m_bLighterLight;
 };
 

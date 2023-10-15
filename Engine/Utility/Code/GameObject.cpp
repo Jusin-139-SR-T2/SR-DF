@@ -94,6 +94,37 @@ void Engine::CGameObject::Compute_ViewZ(const _vec3* pPos)
     //m_fViewZ = D3DXVec3Length(&(vCamPos - *pPos));
 }
 
+void CGameObject::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
+{
+    if (m_MeshBox == nullptr)
+    D3DXCreateBox(m_pGraphicDev, _Width, _Height, Depth, &m_MeshBox, NULL);
+
+    m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+    m_MeshBox->DrawSubset(0);
+
+    m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+}
+
+void CGameObject::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
+{
+    LPD3DXBUFFER* MeshBuffer = nullptr;
+
+    if (m_MeshSphere == nullptr)
+        D3DXCreateSphere(m_pGraphicDev, Radius, Slices, Stacks, &m_MeshSphere, MeshBuffer);
+
+    m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+    m_MeshSphere->DrawSubset(0);
+
+    m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+}
+
+
 HRESULT CGameObject::Delete_Component(CComponent* pComponent)
 {
     for (size_t i = 0; i <= (size_t)ID_STATIC; i++)

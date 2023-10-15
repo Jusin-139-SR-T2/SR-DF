@@ -4,11 +4,13 @@
 #include "Engine_Macro.h"
 
 #include "BlackBoard_Player.h"
+#include "BlackBoard_Camera.h"
 #include "BlackBoardPtr.h"
 //임시용
 #include "AceFood.h" 
 #include "PlayerBullet.h"
 #include "PlayerFist.h"
+#include "MeshColComp.h"
 
 BEGIN(Engine)
 
@@ -18,6 +20,7 @@ class CTransformComponent;
 class CCameraComponent;
 class CCalculatorComponent;
 class CSphereColComp;
+class CMeshColComp;
 
 END
 
@@ -96,6 +99,10 @@ private:
 	// ====================================================================
 
 
+public: // 블랙보드
+	void		Update_BlackBoard();
+	void		Update_InternalData();
+
 //-------------------------------------------------------------------------------------------------
 
 protected: // 충돌 onoff
@@ -105,10 +112,6 @@ protected: // 충돌 onoff
 
 //-------------------------------------------------------------------------------------------------
 
-public: // Camera
-	GETSET_EX2(CDynamicCamera*, m_pCamera, Camera, GET, SET)
-
-
 public: // Get_Set
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
@@ -116,7 +119,7 @@ public: // Get_Set
 	GETSET_EX2(CTextureComponent*, m_pRightHandComp, m_pRightHandComp, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET) // 충돌 필수 
-	GETSET_EX2(CPlayerLighter*, m_PlayerLighter, PlayerLighter, GET, SET)	// 라이터 조명
+	//GETSET_EX2(CPlayerLighter*, m_PlayerLighter, PlayerLighter, GET, SET)	// 라이터 조명
 
 	// 플레이어 오른손 상태값
 	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
@@ -158,11 +161,9 @@ private: // 컴포넌트
 
 //-------------------------------------------------------------------------------------------------
 
-public:
-	void		Update_BlackBoard();
-
 private:
 	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player;
+	FBlackBoardPtr<CBlackBoard_Camera>		m_wpBlackBoard_Camera;
 
 //-------------------------------------------------------------------------------------------------
 
@@ -175,7 +176,7 @@ public:// 플레이어 상태 값
 	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향 
 
 private:
-	enum class EACTION_KEY : _uint { RIGHT, LEFT, UP, DOWN, RUN, ATTACK, JUMP, SIT, SIZE };
+	enum class EACTION_KEY : _uint { RIGHT, LEFT, UP, DOWN, RUN, ATTACK, JUMP, SITDOWN, SIZE };
 	ACTION_SET<EACTION_KEY>			m_tActionKey;
 
 public:
@@ -196,6 +197,7 @@ private: // 플레이어의 행동 머신 (행동x, 이동, 공격, 차징, 버리기)
 
 	void Action_Idle(float fTimeDelta);
 	void Action_Move(float fTimeDelta);
+	void Action_Sitdown(float fTimeDelta);
 	void Action_Run(float fTimeDelta);
 	void Action_Charging(float fTimeDelta);
 	void Action_ThrowAway(float fTimeDelta);
@@ -270,6 +272,7 @@ private:
 		_bool			bLeftHandOn = true;			// 왼손 출력 On/Off
 		_bool			bLeftFrameOn = false;
 		_bool			bLeftAttacColOn = false;
+		_bool			bPickUpState = false;
 
 		_float			fLeftFrameSpeed = 10.f;		// 왼손 프레임 속도
 		_float			fLeftFrame = 0.f;			// 왼손 프레임
@@ -280,6 +283,8 @@ private:
 		_bool			bRightFrameOn = false;
 		_bool			bPickUpState = false;
 		_bool			bRightAttacColOn = false;
+		_bool			bBasicAttackOn = false;
+		_bool			bChargingAttackOn = false;
 
 		_float			fRightFrameSpeed = 1.f;		// 오른손 프레임 속도
 		_float			fRightFrame = 0.f;			// 오른손 프레임
@@ -317,6 +322,14 @@ private:
 		_float		fChargeStartTime = 0.f;		// 차지를 시작할 시간
 	};
 
+	struct _CAMERA
+	{
+		_bool bOne = false;
+		_bool bThree = false;
+
+		_vec3 vEye = { 0.f, 0.f, 0.f };
+		_vec3 vAt = { 0.f, 0.f, 0.f };
+	};
 
 	PLAYER_ATTACK_STATE m_eAttackState; // 플레이어 공격 유형
 
@@ -325,11 +338,12 @@ private:
 	_RIGHTHAND		m_tRightHand;	// 플레이어 오른손
 	_DASH			m_tDash;		// 대쉬
 	_TIME			m_tTime;		// 시간
+	_CAMERA			m_tCamera;		// 카메라
 
 	GAUGE<_float>		m_fChage;	// 차지
 
-	_float		fChageTime = 0.f;			// 차징 전환 시간
-	_float		fFullChargeTime = 7.f;		// 풀자징 시간
+	// 플레이어가 바라보는 방향
+	_vec3	vPlayerLook = { 0.f, 0.f, 0.f };
 
 	// Test
 	OBJECT_TYPE m_eObjectType;	// 오브젝트 타입
@@ -346,13 +360,11 @@ private:
 
 private:
 	_long			dwMouseMove = 0;		// 마우스 무브
-
+	CMeshColComp*	m_pMeshComp = nullptr;
+	LPD3DXMESH*		m_MeshBox;
 
 private:
 	virtual void		Free();
-
-protected:
-	CDynamicCamera* m_pCamera = nullptr;
 
 private: // 보간 변수
 	// dt 값
@@ -363,6 +375,24 @@ private: // 보간 변수
 	_float fRotX_Delta, fRotY_Delta, fRotZ_Delta;
 	// 이동
 	_float fPosX_Delta, fPosY_Delta;
+
+
+
+
+
+
+
+
+
+
+
+private: // 점프
+	void PlayerJump(float fTimeDelta);
+	_bool m_IsOnGround = false;
+
+	_vec3 m_vSpeed = { 0.f, 0.f, 0.f };
+	_vec3 m_vAccel = { 0.f, -27.8f, 0.f };
+
 };
 
 /*	현재 키 설명

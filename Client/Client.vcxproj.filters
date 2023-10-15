@@ -223,6 +223,9 @@
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect\0. HitBlood">
       <UniqueIdentifier>{5c52a284-a0a1-4993-9500-f2dd04077f7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. =====BlackBoard=====\2. Camera">
+      <UniqueIdentifier>{1ccb0b78-47e8-49bf-86af-be88c0f10c39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -390,6 +393,12 @@
     <ClInclude Include="Effect_HitBlood.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect\0. HitBlood</Filter>
     </ClInclude>
+    <ClInclude Include="Header\PlayerSteelPipe.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\BlackBoard_Camera.h">
+      <Filter>04. =====BlackBoard=====\2. Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -553,6 +562,12 @@
     </ClCompile>
     <ClCompile Include="Effect_HitBlood.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect\0. HitBlood</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerSteelPipe.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoard_Camera.cpp">
+      <Filter>04. =====BlackBoard=====\2. Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
