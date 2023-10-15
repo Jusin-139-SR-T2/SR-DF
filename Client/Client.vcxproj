@@ -22,7 +22,6 @@
     <ClInclude Include="AceEffect.h" />
     <ClInclude Include="Effect_HitBlood.h" />
     <ClInclude Include="Header\BlackBoard_Camera.h" />
-    <ClInclude Include="MonsterAttackUnion.h" />
     <ClInclude Include="Header\BossLight.h" />
     <ClInclude Include="Header\AbsFac_GameObject.h" />
     <ClInclude Include="Header\AceBoss.h" />
@@ -76,14 +75,12 @@
     <ClInclude Include="Header\PlayerFist.h" />
     <ClInclude Include="Header\PlayerGunLighter.h" />
     <ClInclude Include="Header\MonsterBullet.h" />
-    <ClInclude Include="MonsterBullet.h" />
     <ClInclude Include="Header\PlayerSteelPipe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AceEffect.cpp" />
     <ClCompile Include="Effect_HitBlood.cpp" />
     <ClCompile Include="Code\BlackBoard_Camera.cpp" />
-    <ClCompile Include="MonsterAttackUnion.cpp" />
     <ClCompile Include="Code\BossLight.cpp" />
     <ClCompile Include="Code\AbsFac_GameObject.cpp" />
     <ClCompile Include="Code\AceBoss.cpp" />
@@ -140,7 +137,6 @@
     <ClCompile Include="Code\PlayerFist.cpp" />
     <ClCompile Include="Code\PlayerGunLighter.cpp" />
     <ClCompile Include="Code\MonsterBullet.cpp" />
-    <ClCompile Include="MonsterBullet.cpp" />
     <ClCompile Include="Code\PlayerSteelPipe.cpp" />
   </ItemGroup>
   <ItemGroup>
