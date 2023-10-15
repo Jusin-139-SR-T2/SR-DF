@@ -289,8 +289,17 @@ private: // 애니메이션 툴 변수
 	float MaxTime = 20.f;
 	float fDisplayTime = 1.f;	// 눈금마다의 시간 값 표시
 
+	int iOldIndex = -1;
+
 	_bool isDraggingTimeline = false;
 	_bool isPlaying = false;		// 재생 여부
+
+	// 설정
+	_bool m_bSheild = false;
+	_bool m_bSheildFrame = false;
+	_bool m_bCharging = false;
+	_bool m_bChargingFrame = false;
+
 
 	_bool m_bRendomValue = false; // 벨류 값 랜덤으로 주기
 	_bool m_bIndividualTexture = false; // 텍스처 값 순차적으로 주기

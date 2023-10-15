@@ -125,7 +125,7 @@ HRESULT CPlayerBullet::Add_Component()
 
 	// 충돌 레이어, 마스크 설정
 	m_pColliderComp->Set_CollisionLayer(LAYER_PLAYER_ATTACK); // 이 클래스가 속할 충돌레이어 (플레이어 공격)
-	m_pColliderComp->Set_CollisionMask(LAYER_MONSTER ); // 얘랑 충돌해야하는 레이어들 (몬스터)
+	m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_BOSSMONSTER); // 얘랑 충돌해야하는 레이어들 (몬스터)
 	return S_OK;
 }
 
