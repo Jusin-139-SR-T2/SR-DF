@@ -19,8 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header\Effect_DazeSwirl.h" />
     <ClInclude Include="Header\AceEffect.h" />
+    <ClInclude Include="Header\BlackBoard_Camera.h" />
+    <ClInclude Include="Header\Effect_DazeSwirl.h" />
     <ClInclude Include="Header\Effect_FallingDust.h" />
     <ClInclude Include="Header\Effect_HitBlood.h" />
     <ClInclude Include="Header\Effect_HitDust.h" />
@@ -78,11 +79,12 @@
     <ClInclude Include="Header\PlayerFist.h" />
     <ClInclude Include="Header\PlayerGunLighter.h" />
     <ClInclude Include="Header\MonsterBullet.h" />
+    <ClInclude Include="Header\PlayerSteelPipe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceEffect.cpp" />
+    <ClCompile Include="Code\BlackBoard_Camera.cpp" />
     <ClCompile Include="Code\Effect_FallingDust.cpp" />
-    <ClCompile Include="Code\Effect_HitBlood.cpp" />
     <ClCompile Include="Code\BossLight.cpp" />
     <ClCompile Include="Code\AbsFac_GameObject.cpp" />
     <ClCompile Include="Code\AceBoss.cpp" />
@@ -90,6 +92,7 @@
     <ClCompile Include="Code\AceUnit.cpp" />
     <ClCompile Include="Code\AttackUnion.cpp" />
     <ClCompile Include="Code\BlueBuff.cpp" />
+    <ClCompile Include="Code\Effect_HitBlood.cpp" />
     <ClCompile Include="Code\FallingStone.cpp" />
     <ClCompile Include="Code\BlackBoard_Monster.cpp" />
     <ClCompile Include="Code\BlackBoard_Player.cpp" />
@@ -142,6 +145,7 @@
     <ClCompile Include="Code\PlayerFist.cpp" />
     <ClCompile Include="Code\PlayerGunLighter.cpp" />
     <ClCompile Include="Code\MonsterBullet.cpp" />
+    <ClCompile Include="Code\PlayerSteelPipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

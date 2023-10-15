@@ -18,26 +18,24 @@ CMeshColComp::~CMeshColComp()
 {
 }
 
-void CMeshColComp::BoxMesh_Ready(LPDIRECT3DDEVICE9 pDevice, FLOAT _Width, FLOAT _Height, FLOAT Depth, LPD3DXMESH* ppMesh)
+void CMeshColComp::BoxMesh_Ready(LPDIRECT3DDEVICE9 pDevice, FLOAT _Width, FLOAT _Height, FLOAT Depth)
 {
-	D3DXCreateBox(pDevice, Width, Height, Depth, ppMesh, NULL);
-	m_Mesh = *ppMesh;
+	D3DXCreateBox(pDevice, Width, Height, Depth, &m_MeshBox, NULL);
 }
 
-void CMeshColComp::Sphere_Ready(LPDIRECT3DDEVICE9  pDevice, FLOAT Radius, UINT Slices, UINT Stacks, LPD3DXMESH* ppMesh, LPD3DXBUFFER* ppAdjacency)
+void CMeshColComp::Sphere_Ready(LPDIRECT3DDEVICE9  pDevice, FLOAT Radius, UINT Slices, UINT Stacks, LPD3DXBUFFER* ppAdjacency)
 {
-	D3DXCreateSphere(pDevice, Radius, Slices, Stacks, ppMesh, ppAdjacency);
-	m_Mesh = *ppMesh; 
+	D3DXCreateSphere(pDevice, Radius, Slices, Stacks, &m_MeshSphere, ppAdjacency);
 }
 
 void CMeshColComp::BoxMesh_Col()
 {
-	m_Mesh->DrawSubset(0);
+	m_MeshBox->DrawSubset(0);
 }
 
 void CMeshColComp::SphereMesh_Col()
 {
-	m_Mesh->DrawSubset(0);
+	m_MeshSphere->DrawSubset(0);
 }
 
 CMeshColComp* CMeshColComp::Create(LPDIRECT3DDEVICE9 pGraphicDev)

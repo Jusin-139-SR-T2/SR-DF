@@ -40,3 +40,13 @@ void CAceUnit::Free()
 {
     SUPER::Free();
 }
+
+void CAceUnit::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
+{
+    SUPER::MeshBoxColider(_Width, _Height, Depth);
+}
+
+void CAceUnit::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
+{
+    SUPER::MeshSphereColider(Radius, Slices, Stacks);
+}

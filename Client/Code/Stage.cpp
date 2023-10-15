@@ -231,9 +231,10 @@ HRESULT CStage::Ready_Layer_Completed()
 	CPlayerLighter* pLighter = dynamic_cast<CPlayerLighter*>(Get_GameObject(L"GameLogic", L"PlayerLighter"));
 	NULL_CHECK_RETURN(pLighter, E_FAIL);
 
-	pObj->Set_PlayerLighter(pLighter);
-	pCam->Set_Target(pObj);
-	pObj->Set_Camera(pCam);
+	// 모두 블랙보드로 연동 변경
+	//pObj->Set_PlayerLighter(pLighter);
+	//pCam->Set_Target(pObj);
+	//pObj->Set_Camera(pCam);
 
 	return S_OK;
 }

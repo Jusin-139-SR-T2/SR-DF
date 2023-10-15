@@ -214,6 +214,9 @@
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl">
       <UniqueIdentifier>{656bd528-881d-4c33-bb97-3f58c5f3dbd8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. =====BlackBoard=====\2. Camera">
+      <UniqueIdentifier>{1ccb0b78-47e8-49bf-86af-be88c0f10c39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -375,12 +378,6 @@
     <ClInclude Include="Header\MonsterAttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
     </ClInclude>
-    <ClInclude Include="Header\AceEffect.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Effect_HitBlood.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. HitBlood</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Effect_HitPow.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitPow</Filter>
     </ClInclude>
@@ -392,6 +389,18 @@
     </ClInclude>
     <ClInclude Include="Header\Effect_DazeSwirl.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PlayerSteelPipe.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\BlackBoard_Camera.h">
+      <Filter>04. =====BlackBoard=====\2. Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Effect_HitBlood.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. HitBlood</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\AceEffect.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -551,12 +560,6 @@
     <ClCompile Include="Code\MonsterAttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
     </ClCompile>
-    <ClCompile Include="Code\AceEffect.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Effect_HitBlood.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. HitBlood</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Effect_HitPow.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitPow</Filter>
     </ClCompile>
@@ -568,6 +571,18 @@
     </ClCompile>
     <ClCompile Include="Code\Effect_DazeSwirl.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerSteelPipe.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoard_Camera.cpp">
+      <Filter>04. =====BlackBoard=====\2. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Effect_HitBlood.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. HitBlood</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AceEffect.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

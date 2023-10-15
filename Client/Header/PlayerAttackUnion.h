@@ -31,6 +31,10 @@ protected:
 	virtual void		Render_GameObject() override;
 	virtual void		Free() override;
 
+	// ¼ºÈñ Ãß°¡ : MeshColider(Box, SphereColider)
+	virtual void		MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth) override;
+	virtual void		MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks) override;
+
 protected:
 	CRcBufferComp* m_pBufferComp = nullptr;
 	CTextureComponent* m_pTextureComp = nullptr;
@@ -38,6 +42,9 @@ protected:
 	CTransformComponent* m_pTransformComp = nullptr;
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
 	CTransformComponent* m_pPlayerTransformcomp = nullptr;
+
+public:
+	GETSET_EX2(_vec3, m_vDir, AttackDir, GET, SET)
 
 public:
 	void						Height_On_Terrain(_float Height);
@@ -57,5 +64,5 @@ protected:
 	_tchar						debugString[100];
 	FRAME						m_tFrame;
 	PLAYER_ATTACK_STATE			m_ePlayer_AttackState;
-
+	_vec3 m_vDir = { 0.f, 0.f, 0.f };
 };
