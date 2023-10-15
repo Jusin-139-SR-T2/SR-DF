@@ -5,6 +5,12 @@
 #include "Engine_Macro.h"
 #include "Player.h"
 
+#include "Effect_HitBlood.h"
+#include "Effect_HitPow.h"
+#include "Effect_HitDust.h"
+#include "Effect_FallingDust.h"
+#include "Effect_DazeSwirl.h"
+
 // Team Agent 추가예정  
 
 typedef struct tag_Monster_Info
@@ -69,13 +75,15 @@ protected:
 	CTransformComponent*		m_pPlayerTransformcomp = nullptr;
 
 public: // 성희 추가 : 몬스터 정보 Get,Set
-	//GAUGE<_float> m_gHp;
 	PLAYER_ATTACK_STATE m_ePlayer_AttackState;
 	GETSET_EX2(GAUGE<_float>, m_gHp, MonsterHP, GET, SET)   // 몬스터 HP 
 	GETSET_EX2(PLAYER_ATTACK_STATE, m_ePlayer_AttackState, Player_AttackState, GET, SET)   // 피격당한 공격의 상태 (ex : 앉은채로 공격, 점프 공격, 2연속 공격...등등)
+	
 	GETSET_EX2(_bool, m_bDazedState, IsMonsterDazed, GET, SET)   
 	GETSET_EX2(_bool, m_bDeadState, IsMonsterDeath, GET, SET)   
-
+	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
+	GETSET_EX2(_vec3, m_vPos, MonsterPos, GET, SET)
+		
 public:
 	_float						Calc_Distance();
 	_bool						Detect_Player();
@@ -83,6 +91,7 @@ public:
 	void						Height_On_Terrain();
 	void						Billboard(const _float& fTimeDelta); 
 	_bool						m_bPlayerAttakBool;
+	_vec3						m_vPos;
 
 	//제작함수 리스트 - 스킬 셋팅할때 사용중 
 public:

@@ -1,4 +1,5 @@
 #include "Effect_Awareness.h"
+#include "AceMonster.h"
 
 CEffect_Awareness::CEffect_Awareness(LPDIRECT3DDEVICE9 pGraphicDev)
 	:Base(pGraphicDev)
@@ -22,12 +23,13 @@ CEffect_Awareness* CEffect_Awareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _flo
 	{
 		Safe_Release(pInstance);
 
-		MSG_BOX("LightBeam Create Failed");
+		MSG_BOX("Effect - Awareness Create Failed");
 		return nullptr;
 	}
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
 	pInstance->Set_Owner(pOwner);
+	pInstance->Owner_Get_Awareness(pOwner);
 	pInstance->m_eType = pType;
 
 	return pInstance;
@@ -35,6 +37,8 @@ CEffect_Awareness* CEffect_Awareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _flo
 
 HRESULT CEffect_Awareness::Ready_GameObject()
 {
+	SUPER::Ready_GameObject();
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Awareness");
@@ -56,11 +60,11 @@ _int CEffect_Awareness::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Billboard_Aware();	
-	
+	Billboard();
+
 	m_fAwarenessPrev = m_fAwareness;
 
-	Update_Awareness();
+	Owner_Get_Awareness(m_pOwner); // m_fAwareness 갱신 
 
 	if(m_fAwarenessPrev > m_fAwareness) // 감소할때 
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"MissTarget");
@@ -116,68 +120,20 @@ void CEffect_Awareness::Render_GameObject()
 
 HRESULT CEffect_Awareness::Add_Component()
 {
-	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
 	return S_OK;
 }
 
-HRESULT CEffect_Awareness::Billboard_Aware()
+void CEffect_Awareness::Owner_Get_Awareness(CGameObject* pDst)
 {
-	m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
-	
-	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
+	CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 
-	_vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
-
-	D3DXVec3Normalize(&vDir, &vDir);
-
-	_float rad = atan2f(vDir.x, vDir.z);
-
-	m_pTransformComp->Set_RotationY(rad - D3DX_PI);
-
-	return S_OK;
-}
-
-HRESULT CEffect_Awareness::Update_Awareness()
-{
-	// 또 오류터지면 static으로 걍 고정
-
-	if (CEffect_Awareness::TYPE::BROWN == m_eType)
+	if (pAceObj == nullptr)
+		return;
+	else
 	{
-		CBrown* pBrown = dynamic_cast<CBrown*>(m_pOwner);
-		m_fAwareness = pBrown->Get_Awareness();
+		CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
+		m_fAwareness = pMonster->Get_Awareness();
 	}
-	else if (CEffect_Awareness::TYPE::GRAY == m_eType)
-	{
-		CGray* pGray = dynamic_cast<CGray*>(m_pOwner);
-		m_fAwareness = pGray->Get_Awareness();
-	}
-	else if (CEffect_Awareness::TYPE::BOSS == m_eType)
-	{
-		CAceBoss* pBoss = dynamic_cast<CAceBoss*>(m_pOwner);
-		m_fAwareness = pBoss->Get_Awareness();
-	}
-
-	return S_OK;
-}
-
-void CEffect_Awareness::Update_BlackBoard()
-{
-	if (!m_wpBlackBoard_Monster.Get_BlackBoard())
-	{
-		m_wpBlackBoard_Monster.Set_BlackBoard(Engine::Get_BlackBoard(L"MonsterUnion"));
-		// 연결 실패
-		if (!m_wpBlackBoard_Monster.Get_BlackBoard())
-			return;
-	}
-
-	CBlackBoard_Monster* pBlackBoard = m_wpBlackBoard_Monster.Get_BlackBoard();
-
-	// 여기서부터 블랙보드의 정보를 얻어온다.
-	//m_fBossAwarenessPrevCur = m_fBossAwareness.Cur;  // 이전정보 저장
-	//m_fAwareness = pBlackBoard->Get_BossAwareness().Cur; // 새로운 정보 불러오기 
 }
 
 void CEffect_Awareness::Free()

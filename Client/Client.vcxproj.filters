@@ -193,35 +193,26 @@
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect">
       <UniqueIdentifier>{263b8407-b440-45ab-b485-5cf2a9ff6021}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\00. PlayerEffect">
-      <UniqueIdentifier>{8e8a9b06-2670-4c7b-bc2d-a3d33c4f6e3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\00. PlayerEffect\00. PlayerHit">
-      <UniqueIdentifier>{0164d35e-98d8-4d6a-9514-4417fc7bbc03}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\00. PlayerEffect\01. PlayerDead">
-      <UniqueIdentifier>{e286c3f5-70c8-446d-9d71-6653620fc297}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\01. MonsterEffect">
-      <UniqueIdentifier>{c9bf29c9-754c-4e39-bb16-5ee8fc3da956}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\01. MonsterEffect\00. Awareness">
-      <UniqueIdentifier>{e5d83c0d-5126-43f7-bb72-1c56d159e4e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect">
-      <UniqueIdentifier>{fd8cc5e2-fc85-4595-a9ef-b170321da5c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\03. Environment">
-      <UniqueIdentifier>{a8982ca8-ccaf-4fbf-87cd-354da62da3f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\00. PlayerEffect\02. PlayerKick">
-      <UniqueIdentifier>{b373f376-e31e-49d2-9294-e919eb9e1c53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. =====AceUI=====\00. AbstractFactory">
       <UniqueIdentifier>{4f024727-c272-4abe-9d81-b80cc7dd40cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect\0. HitBlood">
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\00. Awareness">
+      <UniqueIdentifier>{e5d83c0d-5126-43f7-bb72-1c56d159e4e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\01. HitBlood">
       <UniqueIdentifier>{5c52a284-a0a1-4993-9500-f2dd04077f7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitPow">
+      <UniqueIdentifier>{ca09a301-4a94-4fd7-9cfd-165355b906d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\03. HitDust">
+      <UniqueIdentifier>{f36f5fa8-ec08-46ba-a4fa-c0ef24407d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\04. FallingDust">
+      <UniqueIdentifier>{fd4bfe41-7455-41f4-b77b-d93cff6d2b23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl">
+      <UniqueIdentifier>{656bd528-881d-4c33-bb97-3f58c5f3dbd8}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. =====BlackBoard=====\2. Camera">
       <UniqueIdentifier>{1ccb0b78-47e8-49bf-86af-be88c0f10c39}</UniqueIdentifier>
@@ -283,7 +274,7 @@
       <Filter>02. =====AceGameObject=====\02. AceEffect\04. Particle\01. FireWork</Filter>
     </ClInclude>
     <ClInclude Include="Header\Effect_Awareness.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. MonsterEffect\00. Awareness</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\00. Awareness</Filter>
     </ClInclude>
     <ClInclude Include="Header\RedLaser.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\00. RedLaser</Filter>
@@ -387,17 +378,29 @@
     <ClInclude Include="Header\MonsterAttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
     </ClInclude>
-    <ClInclude Include="AceEffect.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
+    <ClInclude Include="Header\Effect_HitPow.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitPow</Filter>
     </ClInclude>
-    <ClInclude Include="Effect_HitBlood.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect\0. HitBlood</Filter>
+    <ClInclude Include="Header\Effect_HitDust.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\03. HitDust</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Effect_FallingDust.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\04. FallingDust</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Effect_DazeSwirl.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl</Filter>
     </ClInclude>
     <ClInclude Include="Header\PlayerSteelPipe.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe</Filter>
     </ClInclude>
     <ClInclude Include="Header\BlackBoard_Camera.h">
       <Filter>04. =====BlackBoard=====\2. Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Effect_HitBlood.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. HitBlood</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\AceEffect.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -450,7 +453,7 @@
       <Filter>02. =====AceGameObject=====\02. AceEffect\04. Particle\01. FireWork</Filter>
     </ClCompile>
     <ClCompile Include="Code\Effect_Awareness.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. MonsterEffect\00. Awareness</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\00. Awareness</Filter>
     </ClCompile>
     <ClCompile Include="Code\RedLaser.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\00. RedLaser</Filter>
@@ -557,17 +560,29 @@
     <ClCompile Include="Code\MonsterAttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
     </ClCompile>
-    <ClCompile Include="AceEffect.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
+    <ClCompile Include="Code\Effect_HitPow.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitPow</Filter>
     </ClCompile>
-    <ClCompile Include="Effect_HitBlood.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect\0. HitBlood</Filter>
+    <ClCompile Include="Code\Effect_HitDust.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\03. HitDust</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Effect_FallingDust.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\04. FallingDust</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Effect_DazeSwirl.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl</Filter>
     </ClCompile>
     <ClCompile Include="Code\PlayerSteelPipe.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe</Filter>
     </ClCompile>
     <ClCompile Include="Code\BlackBoard_Camera.cpp">
       <Filter>04. =====BlackBoard=====\2. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Effect_HitBlood.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. HitBlood</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AceEffect.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

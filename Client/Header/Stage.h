@@ -10,7 +10,6 @@
 #include "PlayerLighter.h"
 #include "PlayerGunLighter.h"
 #include "BossLight.h"
-#include "Bullet.h"
 
 #include "Terrain.h"
 #include "SnowParticle.h"

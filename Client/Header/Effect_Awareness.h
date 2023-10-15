@@ -1,16 +1,9 @@
 #pragma once
-#include "MonsterAttackUnion.h"
-#include "Brown.h"
-#include "Gray.h"
-#include "AceBoss.h"
+#include "AceEffect.h"
 
-#include "BlackBoard_Monster.h"
-#include "BlackBoardPtr.h"
-#include "BlackBoardMgr.h"
-
-class CEffect_Awareness : public CMonsterAttackUnion
+class CEffect_Awareness : public CAceEffect
 {
-	DERIVED_CLASS(CMonsterAttackUnion, CEffect_Awareness)
+	DERIVED_CLASS(CAceEffect, CEffect_Awareness)
 
 	PUBLIC enum class TYPE {BROWN, GRAY, BOSS, TYPE_END};
 
@@ -28,7 +21,6 @@ public:
 	static CEffect_Awareness* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CEffect_Awareness::TYPE pType, CGameObject* pOwner);
 
 private:
-	HRESULT				Billboard_Aware();
 	HRESULT				Add_Component();
 	virtual void		Free();
 
@@ -48,19 +40,8 @@ public:
 	_float		m_fMaxAwareness = 0.f; // max값
 	_float		m_fAwarenessPrev = 0.f; // 이전값
 
-	CBrown*		pBrown = nullptr;
-	CGray*		pGray = nullptr;
-	CAceBoss*	pBoss = nullptr;
-	CGameObject* pObject = nullptr;
+	void Owner_Get_Awareness(CGameObject* pDst);
 
-	HRESULT Update_Awareness();
-
-	//블랙보드
-private:
-	void	Update_BlackBoard(); // 블랙보드로부터 데이터를 받아오는용도 
-
-protected:
-	FBlackBoardPtr<CBlackBoard_Monster>	m_wpBlackBoard_Monster;	// 블랙보드
 
 };
 	

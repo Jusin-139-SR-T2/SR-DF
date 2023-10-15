@@ -19,9 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AceEffect.h" />
-    <ClInclude Include="Effect_HitBlood.h" />
+    <ClInclude Include="Header\AceEffect.h" />
     <ClInclude Include="Header\BlackBoard_Camera.h" />
+<<<<<<< HEAD
+    <ClInclude Include="Header\Effect_DazeSwirl.h" />
+    <ClInclude Include="Header\Effect_FallingDust.h" />
+    <ClInclude Include="Header\Effect_HitBlood.h" />
+    <ClInclude Include="Header\Effect_HitDust.h" />
+    <ClInclude Include="Header\Effect_HitPow.h" />
+=======
+>>>>>>> feature
     <ClInclude Include="Header\BossLight.h" />
     <ClInclude Include="Header\AbsFac_GameObject.h" />
     <ClInclude Include="Header\AceBoss.h" />
@@ -78,9 +85,12 @@
     <ClInclude Include="Header\PlayerSteelPipe.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AceEffect.cpp" />
-    <ClCompile Include="Effect_HitBlood.cpp" />
+    <ClCompile Include="Code\AceEffect.cpp" />
     <ClCompile Include="Code\BlackBoard_Camera.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="Code\Effect_FallingDust.cpp" />
+=======
+>>>>>>> feature
     <ClCompile Include="Code\BossLight.cpp" />
     <ClCompile Include="Code\AbsFac_GameObject.cpp" />
     <ClCompile Include="Code\AceBoss.cpp" />
@@ -88,6 +98,7 @@
     <ClCompile Include="Code\AceUnit.cpp" />
     <ClCompile Include="Code\AttackUnion.cpp" />
     <ClCompile Include="Code\BlueBuff.cpp" />
+    <ClCompile Include="Code\Effect_HitBlood.cpp" />
     <ClCompile Include="Code\FallingStone.cpp" />
     <ClCompile Include="Code\BlackBoard_Monster.cpp" />
     <ClCompile Include="Code\BlackBoard_Player.cpp" />
@@ -111,6 +122,9 @@
     <ClCompile Include="Code\RedLaser.cpp" />
     <ClCompile Include="Code\EnergyBall.cpp" />
     <ClCompile Include="Code\SpawnFire.cpp" />
+    <ClCompile Include="Code\Effect_HitDust.cpp" />
+    <ClCompile Include="Code\Effect_HitPow.cpp" />
+    <ClCompile Include="Code\Effect_DazeSwirl.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
