@@ -20,6 +20,8 @@ const string g_strObjectPath = g_strDataPath + "Object/";
 const string g_strTerrainPath = g_strDataPath + "Terrain/";
 const string g_strLightPath = g_strDataPath + "Light/";
 
+class Engine::CGameObject;
+
 class CImguiWin_MapTool : public CImguiWin
 {
 	DERIVED_CLASS(CImguiWin, CImguiWin_MapTool)
@@ -151,6 +153,8 @@ private:
 	void			Create_LayerToScene(const FLayerData& tLayerData);
 	void			Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, FObjectData& tObjectData);
 
+	void			Delete_AllFromScene();
+
 private:
 	// 목록에 있는 씬 모두 저장
 	void			Save_SceneAll();
@@ -226,14 +230,18 @@ private:	// 유틸리티
 		else if (vVec.z > fValue)
 			vVec.z = fValue;
 	}
-
-	_bool			Check_ObjectName_InLayer();
-
-	static int InputTextCallback(ImGuiInputTextCallbackData* data)
+	void			Create_CamAxis(_vec3& refRight, _vec3& refLook, _vec3& refUp)
 	{
-		if (data->EventChar != 0 && strlen(data->Buf) >= 10)
-			return 1;
-		return 0;
+		refUp = Get_Up();
+		refLook = Get_Look() - Get_Pos();
+
+		D3DXVec3Normalize(&refLook, &refLook);
+
+		D3DXVec3Cross(&refRight, &refUp, &refLook);
+		D3DXVec3Normalize(&refRight, &refRight);
+
+		D3DXVec3Cross(&refUp, &refLook, &refRight);
+		D3DXVec3Normalize(&refUp, &refUp);
 	}
 
 public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
@@ -306,8 +314,13 @@ private:
 	_bool				m_bIsTransform_Start = false;
 	ETRANSFORM_MODE		m_eTransform_Mode = ETRANSFORM_MODE_NONE;
 	ETRANSFORM_AXIS		m_eTransform_Axis = ETRANSFORM_AXIS_NONE;
+	ETRANSFORM_AXIS		m_eTransform_PrevAxis = ETRANSFORM_AXIS_NONE;		// 되돌리기용
+
+	_vec2				m_vTransform_ObjectStart = { 0.f, 0.f };
 	_vec2				m_vTransform_MouseStart = { 0.f, 0.f };
 	_vec2				m_vTransform_MouseEnd = { 0.f, 0.f };
+	_float				m_fTransform_LengthStart = 0.f;
+	_float				m_fTransform_LengthEnd = 0.f;
 
 	_vec3				m_vTransform_Translate;
 	_vec3				m_vTransform_Translate_Saved;

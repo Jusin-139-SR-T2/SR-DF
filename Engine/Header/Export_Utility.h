@@ -37,12 +37,16 @@ inline HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** p
 
 inline HRESULT		Set_Scene(CScene* pScene);
 inline HRESULT		Set_Scene(wstring strSceneName);
+inline HRESULT		Clear_CurrentScene();	// 현재 씬만 클리어
+inline HRESULT		Clear_Scene();			// All Delete
 inline _int			Update_Scene(const _float& fTimeDelta);
 inline void			LateUpdate_Scene();
 inline void			Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev);
 
 // 게임 런타임용 오브젝트 생성기
 inline void			Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj);
+// 빌트인용 이름 지정 가능 오브젝트 생성기
+inline void			Add_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag, CGameObject* const pObj);
 inline void			Add_Layer(const _tchar* pLayerTag, CLayer* const pLayer);
 
 

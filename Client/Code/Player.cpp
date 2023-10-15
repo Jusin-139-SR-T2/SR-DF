@@ -852,6 +852,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
 // 마우스 움직임
 void CPlayer::Mouse_Move()
 {
+    m_pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Camera", L"DynamicCamera"));
     if (m_pCamera == nullptr)
         return;
 
@@ -1016,7 +1017,7 @@ void CPlayer::Height_On_Terrain()
 {
     _vec3		vPos = m_pTransformComp->Get_Pos();
 
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
     if (nullptr == pTerrainBufferComp)
         return;
 

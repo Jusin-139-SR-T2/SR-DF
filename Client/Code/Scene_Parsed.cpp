@@ -8,6 +8,7 @@
 #include "Serialize_BaseClass.h"
 #include <DynamicCamera.h>
 #include <UI_Player.h>
+#include <SkyBox.h>
 
 CScene_Parsed::CScene_Parsed(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -77,13 +78,10 @@ HRESULT CScene_Parsed::Ready_Scene(const char* pSceneFileName)
                     pLayer->Add_GameObject(strConvertObject, 
                         CAbsFac_GameObject::Create(m_pGraphicDev, tObjectSerial));
                 }
-
-                if (i == 0)
-                {
-                    // 터레인 로드
-                    pLayer->Add_GameObject(CTerrain::Create(m_pGraphicDev, tSceneSerial.refTerrainName.c_str()));
-                }
             }
+            CLayer* pLayer = CLayer::Create(0.f);
+            m_mapLayer.emplace(L"Terrain", pLayer);
+            pLayer->Add_GameObject(L"Terrain", CTerrain::Create(m_pGraphicDev, tSceneSerial.refTerrainName.c_str()));
         }
     }
     else
@@ -135,6 +133,8 @@ HRESULT CScene_Parsed::Ready_Layer_Completed()
     Add_GameObject(L"UI", CUI_Player::Create(m_pGraphicDev));
 
     Add_GameObject(L"GameLogic", CPlayer::Create(m_pGraphicDev));
+
+    Add_GameObject(L"Environment", L"SkyBox", CSkyBox::Create(m_pGraphicDev));
 
     return S_OK;
 }

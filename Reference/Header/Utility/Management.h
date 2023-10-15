@@ -27,6 +27,7 @@ public:
 	CComponent*		Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
 	CGameObject*	Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
 	void			Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj);
+	void			Add_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag, CGameObject* const pObj);
 
 	// 툴에서 쓰이는 함수
 	void			Add_Layer(const _tchar* pLayerTag, CLayer* const pLayer);
@@ -38,10 +39,21 @@ public:
 	void			Render_Scene(LPDIRECT3DDEVICE9 pGraphicDev);
 
 public:
+	// 씬 생성해서 바로 집어넣는 방식
 	HRESULT			Set_Scene(CScene* pScene);
+	// 생성된 씬을 돌려쓰는 방식
 	HRESULT			Set_Scene(wstring strSceneName);
+	// 씬 추가, 이름과 함께
 	HRESULT			Add_Scene(CScene* pScene, wstring strSceneName);
-	HRESULT			Clear_Scene();
+	// 현재씬에 요소들만 삭제 (레이어, 오브젝트)
+	HRESULT			Clear_CurrentScene();
+	// 모든씬에 요소들만 삭제 (레이어, 오브젝트)
+	HRESULT			Clear_SceneAll();
+	// 현재 씬 삭제
+	HRESULT			Delete_CurrentScene();
+	// 씬 전체 삭제, 나중에 요소들 해제하는 것으로 변경
+	HRESULT			Delete_SceneAll();
+	
 
 private:
 	CScene*								m_pScene_Reserve;

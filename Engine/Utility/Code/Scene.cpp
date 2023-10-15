@@ -111,10 +111,35 @@ void CScene::Add_GameObject(const _tchar* pLayerTag, CGameObject* pObj)
 	(*iter).second->Add_GameObject(pObj);
 }
 
+void CScene::Add_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag, CGameObject* pObj)
+{
+	auto iter = m_mapLayer.find(pLayerTag);
+	if (iter == m_mapLayer.end())
+	{
+		OutputDebugString(L"레이어 없음!");
+		Safe_Release(pObj);
+		return;
+	}
+
+	(*iter).second->Add_GameObject(pObjTag, pObj);
+}
+
 HRESULT CScene::Add_Layer(const _tchar* pLayerTag, CLayer* pLayer)
 {
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 	m_mapLayer.emplace(pLayerTag, pLayer);
+
+	return S_OK;
+}
+
+HRESULT CScene::Delete_LayerAll()
+{
+	for (auto iter = m_mapLayer.begin(); iter != m_mapLayer.end();)
+	{
+		Safe_Release((*iter).second);
+		iter = m_mapLayer.erase(iter);
+	}
+	
 
 	return S_OK;
 }

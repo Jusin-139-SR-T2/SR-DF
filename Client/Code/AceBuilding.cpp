@@ -86,8 +86,8 @@ _int CAceBuilding::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
-    // 지형타기 
-    Height_On_Terrain();
+    // 지형타기, 건물은 안움직임, 필요 엄슴.
+    //Height_On_Terrain();
 
     // Renderer 등록 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -130,7 +130,7 @@ void CAceBuilding::Height_On_Terrain()
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
     if (pTerrainBufferComp == nullptr)
         return;
 

@@ -25,7 +25,11 @@ public:
 private:
 	virtual void Free();
 
-	
+public:
+	const _vec3* const Get_VtxPos() const { return m_pVertexPos; }
+
+private:
+	_vec3* m_pVertexPos;
 	
 };
 
