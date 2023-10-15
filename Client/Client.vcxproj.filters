@@ -142,15 +142,6 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet">
       <UniqueIdentifier>{1dfb8921-ad1e-4dbb-8166-806bfb3d4c03}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet\00. NormalBullet">
-      <UniqueIdentifier>{e60acab2-e16c-49b6-b969-471a55aaddd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet\01. TompsonBullet">
-      <UniqueIdentifier>{dadcd146-ea2b-4e31-a501-0a15cd60d9c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet\02. ShotGunBullet">
-      <UniqueIdentifier>{54511645-7e53-4d72-9f4d-cd4a74a6465c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill">
       <UniqueIdentifier>{a6fbbee4-2614-4bc4-b48b-da816c3ee0f8}</UniqueIdentifier>
     </Filter>
@@ -381,6 +372,9 @@
     <ClInclude Include="Header\AceUnit.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit</Filter>
     </ClInclude>
+    <ClInclude Include="MonsterBullet.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -535,6 +529,9 @@
     </ClCompile>
     <ClCompile Include="Code\AceUnit.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterBullet.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

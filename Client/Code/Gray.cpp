@@ -58,14 +58,14 @@ HRESULT CGray::Ready_GameObject()
     m_bDazedState = FALSE;
     m_bDeadState = FALSE;
     m_bDazeToHeal = FALSE;
-
     
     // 충돌용
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-    FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-    pShape->vHalfSize = { 1.f, 2.f, 0.1f };
+    pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
+    pShape->vHalfSize = { 3.f, 3.f, 3.f };
 
+    D3DXCreateBox(m_pGraphicDev, pShape->vHalfSize.x, pShape->vHalfSize.y, pShape->vHalfSize.z, &m_pMesh, NULL);
     
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE); // 초기상태 지정 
@@ -177,6 +177,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
             m_tFrame.fRepeat += 1;
     }
 
+
 #pragma endregion 
 
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳
@@ -185,6 +186,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 
     return S_OK;
 }
+
 
 #pragma region 기본 환경설정 
 
@@ -201,6 +203,9 @@ void CGray::Render_GameObject()
 
     m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
     m_pBufferComp->Render_Buffer();
+
+    if (m_pMesh)
+        m_pMesh->DrawSubset(0);
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -231,6 +236,7 @@ void CGray::Free()
 {
     SUPER::Free();
 }
+
 
 #pragma endregion 
 

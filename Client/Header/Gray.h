@@ -44,6 +44,10 @@ protected:
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionBox* pShape;
 
+public:
+	LPD3DXMESH		m_pMesh = nullptr;
+
+
 #pragma region 상태머신 enum셋팅
 
 public:

@@ -71,6 +71,7 @@
     <ClInclude Include="Header\PlayerAttackUnion.h" />
     <ClInclude Include="Header\PlayerFist.h" />
     <ClInclude Include="Header\PlayerGunLighter.h" />
+    <ClInclude Include="MonsterBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MonsterAttackUnion.cpp" />
@@ -128,6 +129,7 @@
     <ClCompile Include="Code\PlayerAttackUnion.cpp" />
     <ClCompile Include="Code\PlayerFist.cpp" />
     <ClCompile Include="Code\PlayerGunLighter.cpp" />
+    <ClCompile Include="MonsterBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

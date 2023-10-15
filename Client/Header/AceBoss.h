@@ -17,6 +17,7 @@
 #include "SpawnFire.h"
 #include "BlueBuff.h"
 #include "RedThunder.h"
+#include "MonsterBullet.h"
 
 typedef struct BossDistance
 {
@@ -105,7 +106,7 @@ private:
 	//공격 컨트롤 
 	_bool m_AttackOnce = FALSE;
 	_bool m_bBuffActive = FALSE;
-
+	
 	// 조명관련 - 블랙보드 연동 
 	_bool m_bLightOn = FALSE;
 	void LightControl(const _float& fTimeDelta);

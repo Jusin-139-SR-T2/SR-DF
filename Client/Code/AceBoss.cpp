@@ -174,10 +174,13 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 	{
 		m_tFrame.fFrame = 0.f;
-	    
+
 		if (STATE_OBJ::SHOOTING == m_tState_Obj.Get_State() ||
-			STATE_OBJ::RUN == m_tState_Obj.Get_State() )
+			STATE_OBJ::RUN == m_tState_Obj.Get_State())
+		{
+			m_AttackOnce = false;
 			m_tFrame.fRepeat += 1;
+		}
 	}
 
 #pragma region 테스트 장소 
@@ -196,7 +199,7 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	}
 	if (Engine::IsKey_Pressed(DIK_Z))
 	{
-		m_tState_Obj.Set_State(STATE_OBJ::RED_THUNDER);
+		m_tState_Obj.Set_State(STATE_OBJ::HEAVYSHOOT);
 	}
 #pragma endregion 
 
@@ -286,12 +289,8 @@ void CAceBoss::OnCollisionEntered(CGameObject* pDst)
 	if (Get_IsMonsterDeath()) // 죽었으면 더이상 충돌일어나지않게 먼저 막음 
 		return;
 
-
 	else if (25 >= m_gHp.Cur && FALSE == m_bDazedState)
-	{
-	
 		m_tState_Obj.Set_State(STATE_OBJ::DAZED);
-	}
 
 	CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 
@@ -871,19 +870,19 @@ void CAceBoss::AI_Shoot(float fDeltaTime)
 
 	if (m_tState_Obj.Can_Update())
 	{
-		if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
-		{
-			//OutputDebugString(L"★★★★★ 상태머신 Shoot > SHOOT가상키  \n");
-			m_mapActionKey[ACTION_KEY::SHOOT].Act();
-		}
-
 		if (m_tFrame.fFrame <= 1)
 		{
 			m_bLightOn = true;
 		}
 
 		LightControl(fDeltaTime);
-		
+
+		if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+		{
+			//OutputDebugString(L"★★★★★ 상태머신 Shoot > SHOOT가상키  \n");
+			m_mapActionKey[ACTION_KEY::SHOOT].Act();
+		}
+
 		if (4 <= m_tFrame.fRepeat)
 		{
 			m_bLightOn = FALSE;
@@ -1519,16 +1518,30 @@ void CAceBoss::Shoot(float fDeltaTime)
 
 	if (m_tState_Act.Can_Update())
 	{
-		if (Engine::MonsterPhase::Intro == m_ePhase)//Shooting + CloseAtk 
+		if (STATE_OBJ::SHOOTING == m_tState_Obj.Get_State())
 		{
-		}
-		else if (Engine::MonsterPhase::Phase1 == m_ePhase)
-		{
-		}
-		else if (Engine::MonsterPhase::Phase2 == m_ePhase)//Shooting + CloseAtk 
-		{
-		}
+			if (!m_AttackOnce)
+			{
+				Engine::Add_GameObject(L"GameLogic", CMonsterBullet::Create(m_pGraphicDev,
+					m_pTransformComp->Get_Pos().x,
+					m_pTransformComp->Get_Pos().y,
+					m_pTransformComp->Get_Pos().z, CMonsterBullet::TYPE::NORMAL, this, (ETEAM_ID)Get_TeamID()));
 
+				m_AttackOnce = TRUE;
+			}
+		}
+		else if (STATE_OBJ::HEAVYSHOOT == m_tState_Obj.Get_State())
+		{
+			if (!m_AttackOnce)
+			{
+				Engine::Add_GameObject(L"GameLogic", CMonsterBullet::Create(m_pGraphicDev,
+					m_pTransformComp->Get_Pos().x,
+					m_pTransformComp->Get_Pos().y,
+					m_pTransformComp->Get_Pos().z, CMonsterBullet::TYPE::NORMAL, this, (ETEAM_ID)Get_TeamID()));
+
+				m_AttackOnce = TRUE;
+			}
+		}
 		m_tState_Act.Set_State(STATE_ACT::IDLE);
 	}
 
