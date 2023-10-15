@@ -118,6 +118,7 @@ HRESULT CAceMonster::Get_PlayerPos()
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
 	ePlayerRighthand = pPlayer->Get_PlayerRightHand();
 	m_bPlayerAttakBool = pPlayer->Get_PlayerAttackBool();
+	m_vPos = m_pTransformComp->Get_Pos();
 
 	m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
 	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);

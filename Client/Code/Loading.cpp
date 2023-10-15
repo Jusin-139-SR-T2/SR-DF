@@ -368,12 +368,13 @@ HRESULT CLoading::Loading_For_Texture()
 	
 	Load_Texture(L"./Resource/Texture/AceEffect/Awareness/Awareness_15.png", TEX_NORMAL, L"Effect", L"MaxAware"); // 몬스터 공격 디버그용
 	Load_Texture(L"./Resource/Texture/AceEffect/Awareness/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 15U));
-	Load_Texture(L"./Resource/Texture/AceEffect/Dazed/DazeSwirl_%d.png", TEX_NORMAL, L"Effect", L"DazeSwirl", _range<_uint>(0U, 3U));
 
 	// 히트판정
-	Load_Texture(L"./Resource/Texture/AceEffect/HitPow/HitPow_%d.png", TEX_NORMAL, L"Effect", L"HitPow", _range<_uint>(0U, 3U)); 
-	Load_Texture(L"./Resource/Texture/AceEffect/HitDust/HitDust_%d.png", TEX_NORMAL, L"Effect", L"HitDust", _range<_uint>(0U, 16U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/FallingDust/FallingDust_%d.png", TEX_NORMAL, L"Effect", L"FallingDust", _range<_uint>(0U, 17U)); 
 	Load_Texture(L"./Resource/Texture/AceEffect/HitBlood/HitBlood_%d.png", TEX_NORMAL, L"Effect", L"HitBlood", _range<_uint>(0U, 13U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/Dazed/DazeSwirl_%d.png", TEX_NORMAL, L"Effect", L"DazeSwirl", _range<_uint>(0U, 3U));
+	Load_Texture(L"./Resource/Texture/AceEffect/HitDust/HitDust_%d.png", TEX_NORMAL, L"Effect", L"HitDust", _range<_uint>(0U, 16U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/HitPow/HitPow_%d.png", TEX_NORMAL, L"Effect", L"HitPow", _range<_uint>(0U, 3U)); 
 
 #pragma endregion 
 

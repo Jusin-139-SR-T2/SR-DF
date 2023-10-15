@@ -81,7 +81,7 @@ void CAceEffect::Height_On_Terrain(_float Height)
 										 pTerrainBufferComp->Get_Scale(),
 										 pTerrainBufferComp->Get_InvOffset() );
 
-	m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.f, vPos.z);
+	m_pTransformComp->Set_Pos(vPos.x, fHeight + Height, vPos.z);
 }
 
 #pragma endregion

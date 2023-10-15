@@ -1,14 +1,12 @@
 #pragma once
 #include "AceGameObject.h"
-#include "Brown.h"
-#include "Gray.h"
-#include "AceBoss.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "Engine_Define.h"
 
 #include "BlackBoard_Monster.h"
+#include "BlackBoard_Player.h"
 #include "BlackBoardPtr.h"
 #include "BlackBoardMgr.h"
 
@@ -26,7 +24,7 @@ class CAceEffect : public CAceGameObject
 {
 	DERIVED_CLASS(CAceGameObject, CAceEffect)
 
-private:
+protected:
 	explicit CAceEffect(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CAceEffect(const CAceEffect& rhs);
 	virtual ~CAceEffect();
@@ -57,6 +55,23 @@ protected:
 	FBlackBoardPtr<CBlackBoard_Player>	m_wpBlackBoard_Player;
 	FRAME				m_tFrame;
 
+public:
+	_float Get_RandomFloat(_float lowBound, _float hightBound)
+	{
+		if (lowBound >= hightBound)
+			return lowBound;
 
+		_float f = (rand() % 10000) * 0.0001f;
+
+		return (f * (hightBound - lowBound)) + lowBound;
+	}
+
+	// Get_RandomFloatÀÇ vectorÇü 
+	void Get_RandomVector(_vec3* out, _vec3* min, _vec3* max)
+	{
+		out->x = Get_RandomFloat(min->x, max->x);
+		out->y = Get_RandomFloat(min->y, max->y);
+		out->z = Get_RandomFloat(min->z, max->z);
+	}
 };
 
