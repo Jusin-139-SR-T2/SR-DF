@@ -267,6 +267,7 @@ private:
 	{
 		_bool			bLeftHandOn = true;			// 왼손 출력 On/Off
 		_bool			bLeftFrameOn = false;
+		_bool			bLeftAttacColOn = false;
 
 		_float			fLeftFrameSpeed = 10.f;		// 왼손 프레임 속도
 		_float			fLeftFrame = 0.f;			// 왼손 프레임
@@ -276,6 +277,7 @@ private:
 	{
 		_bool			bRightFrameOn = false;
 		_bool			bPickUpState = false;
+		_bool			bRightAttacColOn = false;
 
 		_float			fRightFrameSpeed = 1.f;		// 오른손 프레임 속도
 		_float			fRightFrame = 0.f;			// 오른손 프레임

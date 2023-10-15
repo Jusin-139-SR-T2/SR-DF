@@ -21,8 +21,6 @@ HRESULT CAceBoss::Ready_GameObject()
 
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	Set_TeamID(ETEAM_BETA);
-
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Idle_South");
 	m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });
 	m_tFrame.fFrame = 0.f;
@@ -257,7 +255,7 @@ HRESULT CAceBoss::Add_Component()
 
 	// 충돌 레이어, 마스크 설정
 	m_pColliderComp->Set_CollisionLayer(LAYER_BOSSMONSTER); // 이 클래스가 속할 충돌레이어 
-	m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_MONSTER | LAYER_WALL || LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
+	m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_MONSTER | LAYER_WALL | LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
 	return S_OK;
 }
