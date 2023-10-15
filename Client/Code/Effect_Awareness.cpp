@@ -1,20 +1,20 @@
-#include "Awareness.h"
+#include "Effect_Awareness.h"
 
-CAwareness::CAwareness(LPDIRECT3DDEVICE9 pGraphicDev)
+CEffect_Awareness::CEffect_Awareness(LPDIRECT3DDEVICE9 pGraphicDev)
 	:Base(pGraphicDev)
 {
 }
 
-CAwareness::CAwareness(const CAwareness& rhs)
+CEffect_Awareness::CEffect_Awareness(const CEffect_Awareness& rhs)
 	:Base(rhs)
 {
 }
 
-CAwareness::~CAwareness()
+CEffect_Awareness::~CEffect_Awareness()
 {
 }
 
-CAwareness* CAwareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAwareness::TYPE pType, CGameObject* pOwner)
+CEffect_Awareness* CEffect_Awareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CEffect_Awareness::TYPE pType, CGameObject* pOwner)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -33,7 +33,7 @@ CAwareness* CAwareness::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float 
 	return pInstance;
 }
 
-HRESULT CAwareness::Ready_GameObject()
+HRESULT CEffect_Awareness::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -52,7 +52,7 @@ HRESULT CAwareness::Ready_GameObject()
 	return S_OK;
 }
 
-_int CAwareness::Update_GameObject(const _float& fTimeDelta)
+_int CEffect_Awareness::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
@@ -91,13 +91,13 @@ _int CAwareness::Update_GameObject(const _float& fTimeDelta)
 	return S_OK;
 }
 
-void CAwareness::LateUpdate_GameObject()
+void CEffect_Awareness::LateUpdate_GameObject()
 {
 	SUPER::LateUpdate_GameObject();
 }
 
 
-void CAwareness::Render_GameObject()
+void CEffect_Awareness::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -114,7 +114,7 @@ void CAwareness::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CAwareness::Add_Component()
+HRESULT CEffect_Awareness::Add_Component()
 {
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
@@ -123,7 +123,7 @@ HRESULT CAwareness::Add_Component()
 	return S_OK;
 }
 
-HRESULT CAwareness::Billboard_Aware()
+HRESULT CEffect_Awareness::Billboard_Aware()
 {
 	m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
 	
@@ -140,21 +140,21 @@ HRESULT CAwareness::Billboard_Aware()
 	return S_OK;
 }
 
-HRESULT CAwareness::Update_Awareness()
+HRESULT CEffect_Awareness::Update_Awareness()
 {
 	// 또 오류터지면 static으로 걍 고정
 
-	if (CAwareness::TYPE::BROWN == m_eType)
+	if (CEffect_Awareness::TYPE::BROWN == m_eType)
 	{
 		CBrown* pBrown = dynamic_cast<CBrown*>(m_pOwner);
 		m_fAwareness = pBrown->Get_Awareness();
 	}
-	else if (CAwareness::TYPE::GRAY == m_eType)
+	else if (CEffect_Awareness::TYPE::GRAY == m_eType)
 	{
 		CGray* pGray = dynamic_cast<CGray*>(m_pOwner);
 		m_fAwareness = pGray->Get_Awareness();
 	}
-	else if (CAwareness::TYPE::BOSS == m_eType)
+	else if (CEffect_Awareness::TYPE::BOSS == m_eType)
 	{
 		CAceBoss* pBoss = dynamic_cast<CAceBoss*>(m_pOwner);
 		m_fAwareness = pBoss->Get_Awareness();
@@ -163,7 +163,7 @@ HRESULT CAwareness::Update_Awareness()
 	return S_OK;
 }
 
-void CAwareness::Update_BlackBoard()
+void CEffect_Awareness::Update_BlackBoard()
 {
 	if (!m_wpBlackBoard_Monster.Get_BlackBoard())
 	{
@@ -180,7 +180,7 @@ void CAwareness::Update_BlackBoard()
 	//m_fAwareness = pBlackBoard->Get_BossAwareness().Cur; // 새로운 정보 불러오기 
 }
 
-void CAwareness::Free()
+void CEffect_Awareness::Free()
 {
 	SUPER::Free();
 }

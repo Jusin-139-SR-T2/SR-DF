@@ -9,7 +9,7 @@
 #include "MonsterPunch.h"
 
 //스킬 및 이펙트 헤더 
-#include "Awareness.h"
+#include "Effect_Awareness.h"
 #include "RedLaser.h"
 #include "FallingStone.h"
 #include "SlowThunder.h"

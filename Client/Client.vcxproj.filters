@@ -220,6 +220,9 @@
     <Filter Include="05. =====AceUI=====\00. AbstractFactory">
       <UniqueIdentifier>{4f024727-c272-4abe-9d81-b80cc7dd40cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect\0. HitBlood">
+      <UniqueIdentifier>{5c52a284-a0a1-4993-9500-f2dd04077f7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -276,7 +279,7 @@
     <ClInclude Include="Header\FireWork.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\04. Particle\01. FireWork</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Awareness.h">
+    <ClInclude Include="Header\Effect_Awareness.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClInclude>
     <ClInclude Include="Header\RedLaser.h">
@@ -384,6 +387,9 @@
     <ClInclude Include="AceEffect.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Effect_HitBlood.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect\0. HitBlood</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -434,7 +440,7 @@
     <ClCompile Include="Code\FireWork.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\04. Particle\01. FireWork</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Awareness.cpp">
+    <ClCompile Include="Code\Effect_Awareness.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. MonsterEffect\00. Awareness</Filter>
     </ClCompile>
     <ClCompile Include="Code\RedLaser.cpp">
@@ -544,6 +550,9 @@
     </ClCompile>
     <ClCompile Include="AceEffect.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_HitBlood.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect\0. HitBlood</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

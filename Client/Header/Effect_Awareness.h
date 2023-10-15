@@ -8,16 +8,16 @@
 #include "BlackBoardPtr.h"
 #include "BlackBoardMgr.h"
 
-class CAwareness : public CMonsterAttackUnion
+class CEffect_Awareness : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CMonsterAttackUnion, CAwareness)
+	DERIVED_CLASS(CMonsterAttackUnion, CEffect_Awareness)
 
 	PUBLIC enum class TYPE {BROWN, GRAY, BOSS, TYPE_END};
 
 private:
-	explicit CAwareness(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CAwareness(const CAwareness& rhs);
-	virtual ~CAwareness();
+	explicit CEffect_Awareness(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CEffect_Awareness(const CEffect_Awareness& rhs);
+	virtual ~CEffect_Awareness();
 
 public:
 	virtual HRESULT		Ready_GameObject() override;
@@ -25,7 +25,7 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CAwareness* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAwareness::TYPE pType, CGameObject* pOwner);
+	static CEffect_Awareness* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CEffect_Awareness::TYPE pType, CGameObject* pOwner);
 
 private:
 	HRESULT				Billboard_Aware();
@@ -38,7 +38,7 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 
 private:
-	CAwareness::TYPE m_eType;
+	CEffect_Awareness::TYPE m_eType;
 
 public:
 	_bool		m_bTrigger = FALSE; // 변수 다 채웠을때 

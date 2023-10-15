@@ -396,10 +396,10 @@ void CGray::AI_Suspicious(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
         //OutputDebugString(L"▷Gray - 상태머신 : Suspicious 진입  \n");
-       Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
+       Engine::Add_GameObject(L"GameLogic", CEffect_Awareness::Create(m_pGraphicDev,
            m_pTransformComp->Get_Pos().x ,
            m_pTransformComp->Get_Pos().y + 1.4f,
-           m_pTransformComp->Get_Pos().z, CAwareness::TYPE::GRAY, this));
+           m_pTransformComp->Get_Pos().z, CEffect_Awareness::TYPE::GRAY, this));
 
     }
 

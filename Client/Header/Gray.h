@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AceMonster.h"
-#include "Awareness.h"
+#include "Effect_Awareness.h"
 #include "ThrowPipe.h"
 #include "MonsterPunch.h"
 

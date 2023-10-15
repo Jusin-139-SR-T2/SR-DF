@@ -3,7 +3,7 @@
 #include "AceMonster.h"
 #include "BlackBoard_Monster.h"
 #include "BlackBoardPtr.h"
-#include "Awareness.h"
+#include "Effect_Awareness.h"
 #include "MonsterPunch.h"
 
 class CBrown : public CAceMonster
