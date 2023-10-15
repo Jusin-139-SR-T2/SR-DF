@@ -89,8 +89,6 @@
     <ClCompile Include="Code\BlackBoard_Camera.cpp" />
 <<<<<<< HEAD
     <ClCompile Include="Code\Effect_FallingDust.cpp" />
-=======
->>>>>>> feature
     <ClCompile Include="Code\BossLight.cpp" />
     <ClCompile Include="Code\AbsFac_GameObject.cpp" />
     <ClCompile Include="Code\AceBoss.cpp" />
