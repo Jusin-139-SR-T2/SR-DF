@@ -15,8 +15,8 @@ protected:
 	virtual ~CMeshColComp();
 
 public:
-	void	BoxMesh_Ready(LPDIRECT3DDEVICE9 pDevice, FLOAT _Width, FLOAT _Height, FLOAT Depth, LPD3DXMESH* ppMesh);
-	void	Sphere_Ready(LPDIRECT3DDEVICE9  pDevice, FLOAT Radius, UINT Slices, UINT Stacks, LPD3DXMESH* ppMesh, LPD3DXBUFFER* ppAdjacency);
+	void	BoxMesh_Ready(LPDIRECT3DDEVICE9 pDevice, FLOAT _Width, FLOAT _Height, FLOAT Depth);
+	void	Sphere_Ready(LPDIRECT3DDEVICE9  pDevice, FLOAT Radius, UINT Slices, UINT Stacks, LPD3DXBUFFER* ppAdjacency);
 	void	BoxMesh_Col();
 	void	SphereMesh_Col();
 
@@ -25,7 +25,9 @@ public:
 	virtual CComponent* Clone();
 
 private:
-	LPD3DXMESH	m_Mesh;
+	LPD3DXMESH	m_MeshBox;
+	LPD3DXMESH	m_MeshSphere;
+
 	FLOAT  Width = 0.f;
 	FLOAT  Height = 0.f;
 	FLOAT  Depth = 0.f;

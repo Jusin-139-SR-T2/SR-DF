@@ -28,7 +28,7 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CPlayerFist* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID);
+	static CPlayerFist* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID);
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -53,6 +53,8 @@ private:
 	CTransformComponent* m_pTransformComp = nullptr;
 	CTransformComponent* m_pPlayerTransformcomp = nullptr; //플레이어용도 
 
+	//LPD3DXMESH	m_MeshSphere;
+
 private:
 	struct _PlayerFist	// 플레이어 총알
 	{
@@ -61,6 +63,7 @@ private:
 		_float fFrameSpeed = 0.f; // 프레임속도
 		_float fMoveSpeed = 50.f; // 투사체 발사 속도 
 		_float fDamage = 0.f;		// 데미지
+		_float fDeleteTime = 0.f;
 
 		_vec3 vDir = { 0.f, 0.f, 0.f }; // 방향
 	};

@@ -204,8 +204,10 @@ void CGray::Render_GameObject()
     m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
     m_pBufferComp->Render_Buffer();
 
-    if (m_pMesh)
-        m_pMesh->DrawSubset(0);
+#pragma region 충돌 메쉬 콜라이더
+    //MeshSphereColider(0.1f, 15.f, 15.f);
+    MeshBoxColider(0.5f, 0.5f, 0.3f);
+#pragma endregion
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

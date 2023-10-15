@@ -21,6 +21,10 @@ protected:
 	virtual void		Render_GameObject() override;
 	virtual void		Free() override;
 
+	// ¼ºÈñ Ãß°¡ : MeshColider(Box, SphereColider)
+	virtual void		MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth) override;
+	virtual void		MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks) override;
+
 protected:
 	GAUGE<_float>		m_gHp;
 

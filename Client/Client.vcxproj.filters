@@ -214,6 +214,9 @@
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\02. EnvironmentEffect">
       <UniqueIdentifier>{fd8cc5e2-fc85-4595-a9ef-b170321da5c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. =====BlackBoard=====\2. Camera">
+      <UniqueIdentifier>{1ccb0b78-47e8-49bf-86af-be88c0f10c39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -375,6 +378,12 @@
     <ClInclude Include="MonsterBullet.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Header\PlayerSteelPipe.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\BlackBoard_Camera.h">
+      <Filter>04. =====BlackBoard=====\2. Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -532,6 +541,12 @@
     </ClCompile>
     <ClCompile Include="MonsterBullet.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\01. Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerSteelPipe.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoard_Camera.cpp">
+      <Filter>04. =====BlackBoard=====\2. Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

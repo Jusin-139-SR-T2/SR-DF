@@ -51,6 +51,16 @@ void CPlayerAttackUnion::Free()
     SUPER::Free();
 }
 
+void CPlayerAttackUnion::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
+{
+    SUPER::MeshBoxColider(_Width, _Height, Depth);
+}
+
+void CPlayerAttackUnion::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
+{
+    SUPER::MeshSphereColider(Radius, Slices, Stacks);
+}
+
 #pragma region ¼ÂÆÃ
 
 void CPlayerAttackUnion::Height_On_Terrain(_float Height)

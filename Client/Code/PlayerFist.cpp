@@ -23,7 +23,7 @@ HRESULT CPlayerFist::Ready_GameObject()
 	// 충돌
 	m_pTransformComp->Readjust_Transform();
 	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 10.f;
+	pShape->fRadius = 1.f;
 
 	// 플레이어가 바라보는 쪽으로 날아가게함
 	m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
@@ -37,7 +37,7 @@ HRESULT CPlayerFist::Ready_GameObject()
 	m_bDbugFrame = pPlayer->Get_DBugFrame();
 
 	// 데미지 설정
-	m_tFist.fDamage = 5.f;
+	m_tFist.fDamage = 50.f;
 
 	return S_OK;
 }
@@ -49,6 +49,15 @@ _int CPlayerFist::Update_GameObject(const _float& fTimeDelta)
 	//m_pTransformComp->Move_Pos(&m_tFist.vDir, fTimeDelta, m_tFist.fMoveSpeed);
 
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
+
+	m_tFist.fDeleteTime += 1.f * fTimeDelta;
+
+	if (m_tFist.fDeleteTime >= 2.5f)
+	{
+		// 총알 삭제
+		Set_Dead(); //투사체는 사라짐 
+		m_tFist.fDeleteTime = 0.f;
+	}
 
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
@@ -71,6 +80,9 @@ void CPlayerFist::Render_GameObject()
 	{
 		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
+		//MeshBoxColider(5.f, 20.f, 20.f);
+		MeshSphereColider(1.f, 30.f, 30.f);
+
 		m_pBufferComp->Render_Buffer();
 
 		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
@@ -80,7 +92,7 @@ void CPlayerFist::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CPlayerFist* CPlayerFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID)
+CPlayerFist* CPlayerFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -92,11 +104,16 @@ CPlayerFist* CPlayerFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, CAce
 		return nullptr;
 	}
 
+	_float fMovePos = 1.5f;
+	_vec3 vAttackPosition = vPos + vDir * fMovePos;
+
 	// 플레이어 위치에서 생성
-	pInstance->m_pTransformComp->Set_Pos(vPos.x, vPos.y, vPos.z);	// 생성 위치
+	//pInstance->m_pTransformComp->Set_Pos(vPos.x * vDir.x, vPos.y * vDir.y, vPos.z * vDir.z);	// 생성 위치
+	pInstance->m_pTransformComp->Set_Pos(vAttackPosition.x, vAttackPosition.y, vAttackPosition.z);	// 생성 위치
 	pInstance->Set_Owner(_Owner);									// 공격의 주인
 	pInstance->Set_Player_AttackState(_AttackState);			 	// 공격의 상태(공격 유형)
 	pInstance->Set_TeamID(_eTeamID);								// 공격의 팀 설정
+	pInstance->Set_AttackDir(vDir);
 
 	return pInstance;
 }

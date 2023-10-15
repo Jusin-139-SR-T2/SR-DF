@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\BlackBoard_Camera.h" />
     <ClInclude Include="MonsterAttackUnion.h" />
     <ClInclude Include="Header\BossLight.h" />
     <ClInclude Include="Header\AbsFac_GameObject.h" />
@@ -72,8 +73,10 @@
     <ClInclude Include="Header\PlayerFist.h" />
     <ClInclude Include="Header\PlayerGunLighter.h" />
     <ClInclude Include="MonsterBullet.h" />
+    <ClInclude Include="Header\PlayerSteelPipe.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\BlackBoard_Camera.cpp" />
     <ClCompile Include="MonsterAttackUnion.cpp" />
     <ClCompile Include="Code\BossLight.cpp" />
     <ClCompile Include="Code\AbsFac_GameObject.cpp" />
@@ -130,6 +133,7 @@
     <ClCompile Include="Code\PlayerFist.cpp" />
     <ClCompile Include="Code\PlayerGunLighter.cpp" />
     <ClCompile Include="MonsterBullet.cpp" />
+    <ClCompile Include="Code\PlayerSteelPipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />
