@@ -65,7 +65,7 @@ HRESULT CGray::Ready_GameObject()
     pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
     pShape->vHalfSize = { 3.f, 3.f, 3.f };
 
-    D3DXCreateBox(m_pGraphicDev, pShape->vHalfSize.x, pShape->vHalfSize.y, pShape->vHalfSize.z, &m_pMesh, NULL);
+    D3DXCreateBox(m_pGraphicDev, 3.f, 3.f, 3.f, &m_pMesh, NULL);
     
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE); // 초기상태 지정 
@@ -201,11 +201,15 @@ void CGray::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
-    m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
-    m_pBufferComp->Render_Buffer();
-
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     if (m_pMesh)
         m_pMesh->DrawSubset(0);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
+    m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
+    m_pBufferComp->Render_Buffer();
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

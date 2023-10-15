@@ -118,9 +118,6 @@
     <Filter Include="01. =====Scene=====\03. ParsedScene">
       <UniqueIdentifier>{e9f6b375-abee-4f0d-a9ac-0ece3a290be9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03..=====Object=====\00. AbstractFactory">
-      <UniqueIdentifier>{4f024727-c272-4abe-9d81-b80cc7dd40cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion">
       <UniqueIdentifier>{4d7235d5-ebba-485f-bdeb-70a9af708dcb}</UniqueIdentifier>
     </Filter>
@@ -211,8 +208,17 @@
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\01. MonsterEffect\00. Awareness">
       <UniqueIdentifier>{e5d83c0d-5126-43f7-bb72-1c56d159e4e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\02. EnvironmentEffect">
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitEffect">
       <UniqueIdentifier>{fd8cc5e2-fc85-4595-a9ef-b170321da5c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\03. Environment">
+      <UniqueIdentifier>{a8982ca8-ccaf-4fbf-87cd-354da62da3f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\00. PlayerEffect\02. PlayerKick">
+      <UniqueIdentifier>{b373f376-e31e-49d2-9294-e919eb9e1c53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====\00. AbstractFactory">
+      <UniqueIdentifier>{4f024727-c272-4abe-9d81-b80cc7dd40cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -355,7 +361,7 @@
       <Filter>01. =====Scene=====\03. ParsedScene</Filter>
     </ClInclude>
     <ClInclude Include="Header\AbsFac_GameObject.h">
-      <Filter>03..=====Object=====\00. AbstractFactory</Filter>
+      <Filter>05. =====AceUI=====\00. AbstractFactory</Filter>
     </ClInclude>
     <ClInclude Include="Header\PlayerAttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
@@ -374,6 +380,9 @@
     </ClInclude>
     <ClInclude Include="Header\MonsterAttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
+    </ClInclude>
+    <ClInclude Include="AceEffect.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -513,7 +522,7 @@
       <Filter>01. =====Scene=====\03. ParsedScene</Filter>
     </ClCompile>
     <ClCompile Include="Code\AbsFac_GameObject.cpp">
-      <Filter>03..=====Object=====\00. AbstractFactory</Filter>
+      <Filter>05. =====AceUI=====\00. AbstractFactory</Filter>
     </ClCompile>
     <ClCompile Include="Code\PlayerAttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
@@ -532,6 +541,9 @@
     </ClCompile>
     <ClCompile Include="Code\MonsterAttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
+    </ClCompile>
+    <ClCompile Include="AceEffect.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

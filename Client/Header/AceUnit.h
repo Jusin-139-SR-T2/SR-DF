@@ -1,7 +1,6 @@
 #pragma once
 #include "AceGameObject.h"
 
-
 /// <summary>
 /// Player, Monster, Attack이 모두 받아서 사용 
 /// </summary>

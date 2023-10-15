@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AceEffect.h" />
     <ClInclude Include="Header\BossLight.h" />
     <ClInclude Include="Header\AbsFac_GameObject.h" />
     <ClInclude Include="Header\AceBoss.h" />
@@ -74,6 +75,7 @@
     <ClInclude Include="Header\MonsterBullet.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AceEffect.cpp" />
     <ClCompile Include="Code\BossLight.cpp" />
     <ClCompile Include="Code\AbsFac_GameObject.cpp" />
     <ClCompile Include="Code\AceBoss.cpp" />

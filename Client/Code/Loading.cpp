@@ -342,22 +342,29 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma endregion
 
 #pragma region Effect
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Awareness/Awareness_15.png", TEX_NORMAL, L"Effect", L"MaxAware"); // 몬스터 공격 디버그용
-	Load_Texture(L"./Resource/Texture/Object/PoolBalls_0.png", TEX_NORMAL, L"Debug", L"Sphere"); // 몬스터 공격 디버그용
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/FallingStone1.png", TEX_NORMAL, L"Effect", L"Stone1");
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/FallingStone2.png", TEX_NORMAL, L"Effect", L"Stone2");
+	
+	//몬스터 관련 이펙트 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Stone/FallingStone1.png", TEX_NORMAL, L"Effect", L"Stone1");
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Stone/FallingStone2.png", TEX_NORMAL, L"Effect", L"Stone2");						
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/SlowThunder/SlowThunder_%d.png", TEX_NORMAL, L"Effect", L"SlowThunder", _range<_uint>(0U, 5U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/MissTarget/MissTarget_%d.png", TEX_NORMAL, L"Effect", L"MissTarget", _range<_uint>(0U, 14U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/EnergyBall/EnergyBall_%d.png", TEX_NORMAL, L"Effect", L"EnergyBall", _range<_uint>(0U, 7U));  
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/RedThunder/RedThunder_%d.png", TEX_NORMAL, L"Effect", L"RedThunder", _range<_uint>(0U, 5U));  
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/FireEffect/Fire_%d.png", TEX_NORMAL, L"Effect", L"FireEffect", _range<_uint>(0U, 5U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Stone/Stone_%d.png", TEX_NORMAL, L"Effect", L"FallingStone", _range<_uint>(0U, 3U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Barrier/Barrier_%d.png", TEX_NORMAL, L"Effect", L"Barrier", _range<_uint>(0U, 7U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/GreenBuff/Buff_%d.png", TEX_NORMAL, L"Effect", L"Buff", _range<_uint>(0U, 7U));  
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Razer/Razer_%d.png", TEX_NORMAL, L"Effect", L"Razer", _range<_uint>(0U, 18U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Holy/Holy_%d.png", TEX_NORMAL, L"Effect", L"Holy", _range<_uint>(0U, 3U)); 
+	
+	Load_Texture(L"./Resource/Texture/AceEffect/Awareness/Awareness_15.png", TEX_NORMAL, L"Effect", L"MaxAware"); // 몬스터 공격 디버그용
+	Load_Texture(L"./Resource/Texture/AceEffect/Awareness/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 15U));
+	Load_Texture(L"./Resource/Texture/AceEffect/Dazed/DazeSwirl_%d.png", TEX_NORMAL, L"Effect", L"DazeSwirl", _range<_uint>(0U, 3U));
 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/SlowThunder/SlowThunder_%d.png", TEX_NORMAL, L"Effect", L"SlowThunder", _range<_uint>(0U, 5U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/MissTarget/MissTarget_%d.png", TEX_NORMAL, L"Effect", L"MissTarget", _range<_uint>(0U, 14U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/EnergyBall/EnergyBall_%d.png", TEX_NORMAL, L"Effect", L"EnergyBall", _range<_uint>(0U, 7U));  
-	Load_Texture(L"./Resource/Texture/Monster/Effect/RedThunder/RedThunder_%d.png", TEX_NORMAL, L"Effect", L"RedThunder", _range<_uint>(0U, 5U));  
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Awareness/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 15U));
-	Load_Texture(L"./Resource/Texture/Monster/Effect/FireEffect/Fire_%d.png", TEX_NORMAL, L"Effect", L"FireEffect", _range<_uint>(0U, 5U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/Stone_%d.png", TEX_NORMAL, L"Effect", L"FallingStone", _range<_uint>(0U, 3U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Barrier/Barrier_%d.png", TEX_NORMAL, L"Effect", L"Barrier", _range<_uint>(0U, 7U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/GreenBuff/Buff_%d.png", TEX_NORMAL, L"Effect", L"Buff", _range<_uint>(0U, 7U));  
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Razer/Razer_%d.png", TEX_NORMAL, L"Effect", L"Razer", _range<_uint>(0U, 18U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Holy/Holy_%d.png", TEX_NORMAL, L"Effect", L"Holy", _range<_uint>(0U, 3U)); 
+	// 히트판정
+	Load_Texture(L"./Resource/Texture/AceEffect/HitPow/HitPow_%d.png", TEX_NORMAL, L"Effect", L"HitPow", _range<_uint>(0U, 3U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/HitDust/HitDust_%d.png", TEX_NORMAL, L"Effect", L"HitDust", _range<_uint>(0U, 16U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/HitBlood/HitBlood_%d.png", TEX_NORMAL, L"Effect", L"HitBlood", _range<_uint>(0U, 13U)); 
 
 #pragma endregion 
 
@@ -372,6 +379,9 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma endregion
 
 #pragma region Projectile
+	// 디버그용
+	Load_Texture(L"./Resource/Texture/Object/PoolBalls_0.png", TEX_NORMAL, L"Debug", L"Sphere"); // 몬스터 공격 디버그용
+
 	Load_Texture(L"./Resource/Texture/Monster/Projectile/ThrowPipe_%d.png", TEX_NORMAL, L"Projectile", L"ThrowPipe", _range<_uint>(0U, 11U)); // Bomb
 	Load_Texture(L"./Resource/Texture/idk/Circle.png", TEX_NORMAL, L"Debug", L"Sphere"); // Bomb
 
