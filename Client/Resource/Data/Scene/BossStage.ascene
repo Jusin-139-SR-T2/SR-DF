@@ -1,0 +1,73 @@
+{
+    "header": {
+        "type": 1,
+        "name": "BossStage"
+    },
+    "terrain": "BossStage",
+    "layers": [
+        {
+            "header": {
+                "type": 2,
+                "name": "Environment"
+            },
+            "priority": 0.0,
+            "objects": []
+        },
+        {
+            "header": {
+                "type": 2,
+                "name": "GameLogic"
+            },
+            "priority": 0.0,
+            "objects": [
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingE"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Building",
+                    "texture_key": "E"
+                }
+            ]
+        },
+        {
+            "header": {
+                "type": 2,
+                "name": "Camera"
+            },
+            "priority": 0.0,
+            "objects": []
+        },
+        {
+            "header": {
+                "type": 2,
+                "name": "UI"
+            },
+            "priority": 0.0,
+            "objects": []
+        }
+    ]
+}

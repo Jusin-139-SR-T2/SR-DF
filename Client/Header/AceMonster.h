@@ -65,6 +65,7 @@ protected:
 	_bool						m_bDeadState; // 죽은상태
 	_bool						m_bDazedState; // 힐하는 도중에 끊기는거 용도 
 	_bool						m_bDazeToHeal; // 끊기면 daze더이상 진입x
+	FCollisionBox*				pBoxShape;
 
 protected:
 	CRcBufferComp*				m_pBufferComp = nullptr; 

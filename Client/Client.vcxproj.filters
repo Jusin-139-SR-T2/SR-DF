@@ -217,6 +217,12 @@
     <Filter Include="04. =====BlackBoard=====\2. Camera">
       <UniqueIdentifier>{1ccb0b78-47e8-49bf-86af-be88c0f10c39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. =====AceUI=====\02. Monster">
+      <UniqueIdentifier>{814eb13c-db65-42d1-91c6-a026ebdfcd20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====\03. CrossHair">
+      <UniqueIdentifier>{2a916f85-3ff5-4560-a551-5c1a0d95045c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">

@@ -88,9 +88,7 @@ void CMonsterPunch::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 #pragma region 충돌 메쉬 콜라이더
-	MeshSphereColider(pSphereShape->fRadius, 16, 32);
-	//m_pBufferComp->Render_Buffer();
-
+	MeshSphereColider(_float(pSphereShape->fRadius), 8, 16);
 #pragma endregion
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);

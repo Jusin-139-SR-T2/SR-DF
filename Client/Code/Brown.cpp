@@ -54,7 +54,9 @@ HRESULT CBrown::Ready_GameObject()
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
-    m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });
+    m_pTextureComp->Set_Scale({ 3.f, 3.f, 1.f });
+    m_pTextureComp->Readjust_Transform();
+
     m_tFrame.fFrame = 0.f;
     m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     m_tFrame.fFrameSpeed = 12.f;
@@ -75,14 +77,10 @@ HRESULT CBrown::Ready_GameObject()
     // 충돌용
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-    pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-    pShape->vHalfSize = { 0.25f, 0.65f, 0.5f };
-
+    pBoxShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
 
 //#pragma region 블랙보드
-//
 //    Engine::Add_BlackBoard(L"Monster", CBlackBoard_Monster::Create());
-//
 //#pragma endregion
 
 
@@ -238,11 +236,12 @@ void CBrown::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, &((*m_pTextureComp->Get_Transform()) * (*m_pTransformComp->Get_Transform())));
     m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
     m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
-    MeshBoxColider(pShape->vHalfSize.x, pShape->vHalfSize.y, pShape->vHalfSize.z);
+    MeshBoxColider(pBoxShape->vHalfSize.x, pBoxShape->vHalfSize.y,pBoxShape->vHalfSize.z);
 #pragma endregion
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -863,7 +862,7 @@ void CBrown::AI_Falling(float fDeltaTime)
         if (m_tFrame.fFrame > 4.f && m_AttackOnce)
         {
             Engine::Add_GameObject(L"GameLogic", CEffect_FallingDust::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+                m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y - 1.f, m_pTransformComp->Get_Pos().z, this));
             m_AttackOnce = false;
             m_bSecondFall = false;
         }
@@ -871,7 +870,7 @@ void CBrown::AI_Falling(float fDeltaTime)
         if (m_tFrame.fFrame > 9.f && !m_AttackOnce && !m_bSecondFall)
         {
             Engine::Add_GameObject(L"GameLogic", CEffect_FallingDust::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+                m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y - 1.f, m_pTransformComp->Get_Pos().z, this));
             m_bSecondFall = true;
         }
 

@@ -42,6 +42,7 @@ HRESULT CEffect_FallingDust::Ready_GameObject()
 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"FallingDust");
 	m_pTransformComp->Set_Scale({ 0.7f, 0.7f, 1.f });
+	m_pTransformComp->Set_PosY(0.f);
 
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_tFrame.fFrameSpeed = 10.f;
@@ -56,7 +57,6 @@ _int CEffect_FallingDust::Update_GameObject(const _float& fTimeDelta)
 
 	Billboard();
 
-	Height_On_Terrain(0.55f);
 
 	m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
 

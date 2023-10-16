@@ -59,7 +59,6 @@ protected:
 	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact);
 	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact);
 	virtual void	OnCollisionExited(CGameObject* pDst);
-	PRIVATE FCollisionBox* pShape;
 
 	//충돌 디버그용
 public:

@@ -55,7 +55,9 @@ HRESULT CGray::Ready_GameObject()
 
     // 이미지 관련
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Single", L"Idle");
-    m_pTransformComp->Set_Scale({ 3.f, 5.f, 1.f });
+    m_pTextureComp->Set_Scale({ 3.f, 5.f, 1.f });
+    m_pTextureComp->Readjust_Transform();
+
     m_tFrame.fFrame = 0.f;
     m_tFrame.fFrameEnd= _float(m_pTextureComp->Get_VecTexture()->size());
     m_tFrame.fFrameSpeed= 12.f;
@@ -77,8 +79,7 @@ HRESULT CGray::Ready_GameObject()
     // 충돌용
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-    pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-    pShape->vHalfSize = { 0.3f, 0.4f, 0.5f };
+    pBoxShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
     
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE); // 초기상태 지정 
@@ -244,11 +245,12 @@ void CGray::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, &((*m_pTextureComp->Get_Transform()) * (*m_pTransformComp->Get_Transform())));
     m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
     m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
-    MeshBoxColider(pShape->vHalfSize.x, pShape->vHalfSize.y, pShape->vHalfSize.z);
+    MeshBoxColider(_float(pBoxShape->vHalfSize.x), _float(pBoxShape->vHalfSize.y), _float(pBoxShape->vHalfSize.z));
 #pragma endregion
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
