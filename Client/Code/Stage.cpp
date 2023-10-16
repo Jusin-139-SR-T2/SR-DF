@@ -85,13 +85,19 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	// SkyBox
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", CSkyBox::Create(m_pGraphicDev)), E_FAIL);
 
-	// Terrain
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", CTerrain::Create(m_pGraphicDev)), E_FAIL);
+	
 	
 	// Particle
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SnowParticle", CSnowParticle::Create(m_pGraphicDev, {40.f, 3.f, 40.f}, 10000) ), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"FireWorkParticle", CFireWork::Create(m_pGraphicDev, { 24.f, 3.f, 12.f }, 200)), E_FAIL);
 	
+
+	pLayer = Engine::CLayer::Create(-10.f);
+	NULL_CHECK_RETURN(pLayer, E_FAIL);
+	m_mapLayer.insert({ L"Terrain", pLayer});
+
+	// Terrain
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", CTerrain::Create(m_pGraphicDev)), E_FAIL);
 
 	return S_OK;
 }
@@ -107,19 +113,28 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	// Player
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", CPlayer::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PlayerLighter", CPlayerLighter::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PlayerGunLighter", CPlayerGunLighter::Create(m_pGraphicDev)), E_FAIL);
 
 	// Bullet
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bullet", CBullet::Create(m_pGraphicDev)), E_FAIL);
 
 	// Monster - TEST중이라 상시로 서로 위치 바뀝니다. 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CAceBoss::Create(m_pGraphicDev, 5.f, 1.f, 25.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown2", CBrown::Create(m_pGraphicDev, 5.f, 1.f, 50.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CAceBoss::Create(m_pGraphicDev, 65.f, 1.f, 25.f)), E_FAIL);
+
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray", CGray::Create(m_pGraphicDev, 35.f, 1.f, 25.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray2", CGray::Create(m_pGraphicDev, 35.f, 1.f, 50.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown", CBrown::Create(m_pGraphicDev, 60.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown",  CGray::Create(m_pGraphicDev, 20.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown2", CGray::Create(m_pGraphicDev, 20.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown3", CGray::Create(m_pGraphicDev, 20.f, 1.f, 30.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown4", CGray::Create(m_pGraphicDev, 20.f, 1.f, 35.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown5", CGray::Create(m_pGraphicDev, 20.f, 1.f, 40.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown6", CGray::Create(m_pGraphicDev, 20.f, 1.f, 45.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown7", CGray::Create(m_pGraphicDev, 20.f, 1.f, 50.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown8", CGray::Create(m_pGraphicDev, 20.f, 1.f, 55.f)), E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev, 60.f, 1.f, 25.f)), E_FAIL);
 
 	// 스킬 실험실
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Barrier", CBarrier::Create(m_pGraphicDev, 5.f, 1.f, 15.f)), E_FAIL);
 
 
 	// =========================================

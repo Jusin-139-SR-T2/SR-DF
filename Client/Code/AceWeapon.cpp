@@ -135,7 +135,7 @@ void CAceWeapon::Height_On_Terrain()
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
     NULL_CHECK(pTerrainBufferComp);
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
@@ -328,6 +328,18 @@ void CAceWeapon::Change_Texture(WEAPON_NAME eReceiveName)
         break;
     }
 
+}
+
+void CAceWeapon::OnCollision(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CAceWeapon::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CAceWeapon::OnCollisionExited(CGameObject* pDst)
+{
 }
 
 //------------------------------------------------------------------

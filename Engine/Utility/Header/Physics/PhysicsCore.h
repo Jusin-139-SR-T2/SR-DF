@@ -19,9 +19,17 @@ public:
     FVector3() : x(0), y(0), z(0) {}
     FVector3(const Real x, const Real y, const Real z)
         : x(x), y(y), z(z) {}
+    FVector3(const FVector3& rhs)
+        : x(rhs.x), y(rhs.y), z(rhs.z)
+    {}
 
 public:
-    Real x, y, z;
+    union {
+        struct {
+            Real x, y, z;
+        };
+        Real data[3];
+    };
 
 private:
     //Real pad = 0;       // padding용 변수, 안씀. 일부 아키텍처에 최적화용도
@@ -51,6 +59,17 @@ public:
         if (i == 0) return x;
         if (i == 1) return y;
         return z;
+    }
+
+    FVector3& operator=(const FVector3& v)
+    {
+        if (this != &v)
+        {
+            x = v.x;
+            y = v.y;
+            z = v.z;
+        }
+        return *this;
     }
 
     /** Adds the given vector to this. */
@@ -83,6 +102,11 @@ public:
     FVector3 operator-(const FVector3& v) const
     {
         return FVector3(x - v.x, y - v.y, z - v.z);
+    }
+
+    FVector3 operator-() const
+    {
+        return FVector3(-x, -y, -z);
     }
 
     /** Multiplies this vector by the given scalar. */
@@ -360,6 +384,7 @@ public:
 
 /// <summary>
 /// 3x4 행렬
+/// 행 우선 행렬이다. 다이렉트x 행렬과 호환에 주의.
 /// </summary>
 class ENGINE_DLL FMatrix3x4
 {
@@ -380,7 +405,7 @@ public:
     }
 
 public:
-    // 4x3 행렬
+    // 3x4 행렬
     Real data[12];
 
     // 행렬 곱
@@ -559,6 +584,28 @@ public:
         return FVector3(data[i], data[i + 4], data[i + 8]);
     }
 
+    FVector3 Get_PosVector() const
+    {
+        return FVector3(data[3], data[7], data[11]);
+    }
+
+    FVector3 Get_ScaleVector() const
+    {
+        FVector3 vScale;
+        vScale.x = real_sqrt(data[0] * data[0] +
+                                data[1] * data[1] +
+                                data[2] * data[2]);
+
+        vScale.y = real_sqrt(data[4] * data[4] +
+                                data[5] * data[5] +
+                                data[6] * data[6]);
+
+        vScale.z = real_sqrt(data[8] * data[8] +
+                                data[9] * data[9] +
+                                data[10] * data[10]);
+        return vScale;
+    }
+
     // 정위와 위치를 세팅하는 함수
     void Set_OrientationAndPos(const FQuaternion& q, const FVector3& pos)
     {
@@ -626,6 +673,24 @@ public:
         array[15] = (float)1;
     }
 
+    void RecieveDXArray(const float array[16])
+    {
+        data[0] = (Real)array[0];
+        data[1] = (Real)array[1];
+        data[2] = (Real)array[2];
+
+        data[4] = (Real)array[4];
+        data[5] = (Real)array[5];
+        data[6] = (Real)array[6];
+
+        data[8] = (Real)array[8];
+        data[9] = (Real)array[9];
+        data[10] = (Real)array[10];
+
+        data[3] = (Real)array[12];
+        data[7] = (Real)array[13];
+        data[11] = (Real)array[14];
+    }
 };
 
 /// <summary>

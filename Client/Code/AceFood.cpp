@@ -22,7 +22,7 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
     if (!pInstance)
         return nullptr;
 
-    if (FAILED(pInstance->Ready_GameObject(pObjTag, _fx, _fy, _fz)))
+    if (FAILED(pInstance->Ready_GameObject()))
     {
         Safe_Release(pInstance);
 
@@ -30,6 +30,10 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
         return nullptr;
     }
     
+    pInstance->m_pTransformComp->Set_Pos({ _fx, _fy, _fz });
+    pInstance->FoodName(pObjTag);
+    pInstance->CurPos = { _fx, _fy, _fz };
+
     return pInstance;
 }
 
@@ -52,12 +56,14 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameO
 }
 
 // Collision - 트리거 발동용 (event방식)
-void CAceFood::OnCollision(CGameObject* pDst) // 계속 충돌중 
+void CAceFood::OnCollision(CGameObject* pDst, const FContact* const pContact) // 계속 충돌중 
 {
     OutputDebugString(L"Object - Food 충돌중\n");
+
+    
 }
 
-void CAceFood::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
+void CAceFood::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) // 처음 충동 진입 
 {
 
     OutputDebugString(L"Object - Food 충돌 진입 \n");
@@ -66,7 +72,7 @@ void CAceFood::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입
 void CAceFood::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
 {
     OutputDebugString(L"Object - Food 충돌 끝\n");
-    Set_Dead();
+    //Set_Dead();
 }
 
 HRESULT CAceFood::Ready_GameObject()
@@ -79,10 +85,6 @@ HRESULT CAceFood::Ready_GameObject()
 HRESULT CAceFood::Ready_GameObject(const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
-    m_pTransformComp->Set_Pos({ _fx, _fy, _fz });
-
-    FoodName(pObjTag);
 
     CurPos = m_pTransformComp->Get_Pos();
 
@@ -165,7 +167,7 @@ HRESULT CAceFood::Add_Component()
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_ObjectTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderOBBComp"), E_FAIL);
 
     // 물리 세계 등록
     m_pColliderComp->EnterToPhysics(0);
@@ -187,7 +189,7 @@ void CAceFood::Height_On_Terrain()
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
     if (nullptr == pTerrainBufferComp)
         return;
 

@@ -68,8 +68,8 @@ public:
 	GETSET_EX2(GAUGE<_float>, m_gHp, BossHP, GET, SET)   // 보스  hp용도 
 		// 충돌 -----------------------------------------------------------------
 protected:
-	virtual void	OnCollision(CGameObject* pDst);
-	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact);
+	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE			FCollisionBox* pShape;
 

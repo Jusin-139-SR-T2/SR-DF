@@ -15,14 +15,41 @@ CMonsterPunch::~CMonsterPunch()
 {
 }
 
+CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, TYPE _option, CAceUnit* pOwner, ETEAM_ID _eTeamid)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_GameObject()))
+	{
+		Safe_Release(pInstance);
+
+		MSG_BOX("MonsterPunch Create Failed");
+		return nullptr;
+	}
+
+	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
+	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
+	pInstance->m_eAttackType = _option;
+	pInstance->Set_Owner(pOwner);
+	pInstance->Set_TeamID(_eTeamid);
+
+	return pInstance;
+}
+
 HRESULT CMonsterPunch::Ready_GameObject()
 {
+	SUPER::Ready_GameObject();
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	// 기본셋팅
+	m_fAttack = 4.f;
+	m_fHeavyAttack = 6.f;
 
 	// 충돌 - 구형 
 	m_pTransformComp->Readjust_Transform();
 	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 1.5f;
+	pShape->fRadius = 2.f;
 
 	//디버그용 텍스쳐
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Debug", L"Sphere");
@@ -58,32 +85,8 @@ void CMonsterPunch::Render_GameObject()
 {
 }
 
-CMonsterPunch* CMonsterPunch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, TYPE _option, CAceUnit* pOwner)
-{
-	ThisClass* pInstance = new ThisClass(pGraphicDev);
-
-	if (FAILED(pInstance->Ready_GameObject()))
-	{
-		Safe_Release(pInstance);
-
-		MSG_BOX("MonsterPunch Create Failed");
-		return nullptr;
-	}
-
-	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
-	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-	pInstance->m_eAttackType = _option;
-	pInstance->Set_Owner(pOwner);
-	return pInstance;
-}
-
 HRESULT CMonsterPunch::Add_Component()
 {
-	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_ProjectileTextureComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
-	// -------------------- 충돌 세트 --------------------------
 	// 콜라이더 컴포넌트
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
 	// 물리 세계 등록
@@ -95,7 +98,7 @@ HRESULT CMonsterPunch::Add_Component()
 	m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
 
 	// 충돌 레이어, 마스크 설정
-	m_pColliderComp->Set_CollisionLayer(LAYER_PROJECTILE); // 이 클래스가 속할 충돌레이어 
+	m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER_ATTACK); // 이 클래스가 속할 충돌레이어 
 	m_pColliderComp->Set_CollisionMask(LAYER_PLAYER); // 얘랑 충돌해야하는 레이어들 
 
 	return S_OK;
@@ -106,28 +109,24 @@ void CMonsterPunch::Free()
 	SUPER::Free();
 }
 
-void CMonsterPunch::OnCollision(CGameObject* pDst)
+void CMonsterPunch::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 }
 
-void CMonsterPunch::OnCollisionEntered(CGameObject* pDst)
+void CMonsterPunch::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
-	OutputDebugString(L"★★★★★★★★ PunchAttack과 충돌 ★★★★★★★★\n");
-
 	switch (m_eAttackType)
 	{
 	case CMonsterPunch::TYPE::NORMAL:
-		Change_PlayerHp(-7.f);
+		Attack_Occurrence(pDst, m_fAttack);
 		break;
 
 	case CMonsterPunch::TYPE::HEAVY:
-		Change_PlayerHp(-12.f);
+		Attack_Occurrence(pDst, m_fHeavyAttack);
 		break;
 	}
 
 	Set_Dead();
-	
-	// 충돌하면 바로 근접공격이 사라져야함 
 }
 
 void CMonsterPunch::OnCollisionExited(CGameObject* pDst)

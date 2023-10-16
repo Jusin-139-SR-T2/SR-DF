@@ -1,21 +1,10 @@
 #pragma once
 
 #include "AceMonster.h"
-
 #include "BlackBoard_Monster.h"
 #include "BlackBoardPtr.h"
-
-#include "MonsterPunch.h"
 #include "Awareness.h"
-
-//디버깅용 
-#include "RedLaser.h"
-#include "FallingStone.h"
-#include "SlowThunder.h"
-#include "EnergyBall.h"
-#include "SpawnFire.h"
-#include "BlueBuff.h"
-#include "RedThunder.h"
+#include "MonsterPunch.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -62,13 +51,12 @@ public:
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-	
 	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
-		
+
 	// 충돌 
 protected: 
-	virtual void	OnCollision(CGameObject* pDst);
-	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact);
+	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionBox* pShape;
 
@@ -92,6 +80,14 @@ private:
 	//스위치 on/off 
 	_bool		m_bArrive = false;
 	_bool		m_AttackOnce = false;
+	_bool		m_bCollisionEnter = TRUE;
+
+	// 외부타격으로 인한 죽음
+	enum class RECENT_COL {PLAYER, PLAYERATK, BOSSATK, RECEND_END};
+	
+	void MonsterDead();
+	RECENT_COL		m_eRecentCol; // 플레이어1 플레이어공격체2 보스스킬3 
+	
 
 #pragma region 상태머신 enum셋팅
 	
@@ -111,14 +107,14 @@ public:
 
 	// 행동 상태머신
 	enum class STATE_ACT {
-		IDLE, APPROACH, MOVING, ATTACK, GOHOME
+		IDLE, APPROACH, MOVING, ATTACK, GOHOME, FALLING
 	};
 
 	// 행동키
 	enum class ACTION_KEY { 
 		IDLE, 
 		RUN, WALK, INCHFORWARD, STRAFING, 
-		JUMP, 
+		JUMP, BEPUSHED,
 		NORMALATTACK, HEAVY_ATTACK,
 		GOHOME 
 	};
@@ -151,8 +147,8 @@ private:
 	
 	// 피격
 	void AI_Hit(float fDeltaTime); // 맞은 히트판정 
-	void AI_Falling(float fDeltaTime); // 발차기 맞았을경우 
 	void AI_FacePunch(float fDeltaTime); // 얼굴에 맞았을경우 
+	void AI_Falling(float fDeltaTime); // 발차기 맞았을경우 
 	void AI_CrotchHit(float fDeltaTime); // 하단 맞았을경우  
 
 	// 죽음 
@@ -172,6 +168,7 @@ private:
 	void Approach(float fDeltaTime);		// AI_Run + AI_Walk
 	void Moving(float fDeltaTime);			// AI_InchForward + AI_Strafing
 	void Attack(float fDeltaTime);			// AI_NORMALATTACK + AI_HeavyAttack
+	void Falling(float fDeltaTime);			// Gohome
 	void GoHome(float fDeltaTime);			// Gohome
 #pragma endregion
 

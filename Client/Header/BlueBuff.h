@@ -1,9 +1,9 @@
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CBlueBuff : public CAttackUnion
+class CBlueBuff : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CBlueBuff)
+	DERIVED_CLASS(CMonsterAttackUnion, CBlueBuff)
 
 private:
 	explicit CBlueBuff(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -17,11 +17,16 @@ public:
 	virtual void		Render_GameObject() override;
 
 	static CBlueBuff* Create(LPDIRECT3DDEVICE9 pGraphicDev,
-		_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner);
+		_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner, ETEAM_ID _eTeamid);
 
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
+
+public:
+	virtual void OnCollision(CGameObject* pDst, const FContact* const pContact) override;
+	virtual void OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) override;
+	virtual void OnCollisionExited(CGameObject* pDst) override;
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)

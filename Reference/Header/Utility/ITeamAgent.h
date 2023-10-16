@@ -38,8 +38,8 @@ private:
 	map<ULONGLONG, ERELATION>	m_mapPrivRelation;			// 개별 관계, 우선도 높음
 
 public:
-	const BYTE Get_TeamID() { return m_bTeamID; }
-	void Set_TeamID(int value) { m_bTeamID = (BYTE)value; }
+	const int Get_TeamID() const { return static_cast<int>(m_bTeamID); }
+	void Set_TeamID(const int value) { m_bTeamID = static_cast<BYTE>(value); }
 
 private:
 	// 객체를 초기화 할 때마다 ID를 증가시킴, 복사해서 만들어야 하는 경우, 상관 없음 ULONGLONG은 크니까 ㅋ

@@ -69,7 +69,7 @@ list<CColliderComponent*> CPhysicsMgr::IntersectTests(const _uint iWorldID, _vec
 list<CColliderComponent*> CPhysicsMgr::IntersectTests_Sphere(const _uint iWorldID, _vec3 vPos, _float fRadius)
 {
 	FCollisionSphere pShape;
-	pShape.vPos = FVector3(vPos.x, vPos.y, vPos.z);
+	pShape.Set_Position(FVector3(vPos.x, vPos.y, vPos.z));
 	pShape.fRadius = fRadius;
 
 	list<CColliderComponent*> listColliderComp;
@@ -88,7 +88,7 @@ list<CColliderComponent*> CPhysicsMgr::IntersectTests_Sphere(const _uint iWorldI
 list<CColliderComponent*> CPhysicsMgr::IntersectTests_Box(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize)
 {
 	FCollisionBox pShape;
-	pShape.vPos = FVector3(vPos.x, vPos.y, vPos.z);
+	pShape.Set_Position(FVector3(vPos.x, vPos.y, vPos.z));
 	pShape.vHalfSize = FVector3(vHalfSize.x, vHalfSize.y, vHalfSize.z);
 
 	list<CColliderComponent*> listColliderComp;
@@ -107,7 +107,7 @@ list<CColliderComponent*> CPhysicsMgr::IntersectTests_Box(const _uint iWorldID, 
 list<CColliderComponent*> CPhysicsMgr::IntersectTests_Capsule(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius)
 {
 	FCollisionCapsule pShape;
-	pShape.vPos = FVector3(vPos.x, vPos.y, vPos.z);
+	pShape.Set_Position(FVector3(vPos.x, vPos.y, vPos.z));
 	pShape.vDirHalfSize = FVector3(vNormal.x, vNormal.y, vNormal.z);
 	pShape.fRadius = fRadius;
 

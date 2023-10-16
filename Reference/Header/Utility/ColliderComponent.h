@@ -3,6 +3,7 @@
 #include "SceneComponent.h"
 
 #include "PhysicsWorld3D.h"
+#include "Contact.h"
 
 BEGIN(Engine)
 
@@ -47,25 +48,25 @@ protected:
 
 public:			// 이벤트 함수
 	template <typename Class>
-	HRESULT	Set_Collision_Event(Class* pOwner, function<void(Class*, CGameObject*)> fn);
+	HRESULT	Set_Collision_Event(Class* pOwner, function<void(Class*, CGameObject*, const FContact* const)> fn);
 
 	template <typename Class>
-	HRESULT	Set_CollisionEntered_Event(Class* pOwner, function<void(Class*, CGameObject*)> fn);
+	HRESULT	Set_CollisionEntered_Event(Class* pOwner, function<void(Class*, CGameObject*, const FContact* const)> fn);
 
 	template <typename Class>
 	HRESULT	Set_CollisionExited_Event(Class* pOwner, function<void(Class*, CGameObject*)> fn);
 
 protected:
-	function<void(CGameObject*)>		m_fnCollision;
-	function<void(CGameObject*)>		m_fnCollisionEntered;
-	function<void(CGameObject*)>		m_fnCollisionExited;
+	function<void(CGameObject*, const FContact* const)>		m_fnCollision;
+	function<void(CGameObject*, const FContact* const)>		m_fnCollisionEntered;
+	function<void(CGameObject*)>							m_fnCollisionExited;
 
 protected:
 	// 충돌이 발생할 때 불러오는 함수. 충돌이 발생하면 연결된 함수로 다시 신호를 보내줍니다.
 	// 충돌중
-	virtual void OnCollision(CColliderComponent* pDst);
+	virtual void OnCollision(CColliderComponent* pDst, const FContact* const pContact);
 	// 충돌 진입, Collide와 함께 발동
-	virtual void OnCollisionEntered(CColliderComponent* pDst);
+	virtual void OnCollisionEntered(CColliderComponent* pDst, const FContact* const pContact);
 	// 충돌 끝남, 모든 충돌 체크가 끝나는 시점에 발동
 	virtual void OnCollisionExited();
 
@@ -100,17 +101,17 @@ END
 
 
 template <typename Class>
-inline HRESULT	CColliderComponent::Set_Collision_Event(Class* pOwner, function<void(Class*, CGameObject*)> fn)
+inline HRESULT	CColliderComponent::Set_Collision_Event(Class* pOwner, function<void(Class*, CGameObject*, const FContact* const)> fn)
 {
-	m_fnCollision = [pOwner, fn](CGameObject* pDst) { fn(pOwner, pDst); };
+	m_fnCollision = [pOwner, fn](CGameObject* pDst, const FContact* const pContact) { fn(pOwner, pDst, pContact); };
 
 	return S_OK;
 }
 
 template <typename Class>
-inline HRESULT CColliderComponent::Set_CollisionEntered_Event(Class* pOwner, function<void(Class*, CGameObject*)> fn)
+inline HRESULT CColliderComponent::Set_CollisionEntered_Event(Class* pOwner, function<void(Class*, CGameObject*, const FContact* const)> fn)
 {
-	m_fnCollisionEntered = [pOwner, fn](CGameObject* pDst) { fn(pOwner, pDst); };
+	m_fnCollisionEntered = [pOwner, fn](CGameObject* pDst, const FContact* const pContact) { fn(pOwner, pDst, pContact); };
 
 	return S_OK;
 }

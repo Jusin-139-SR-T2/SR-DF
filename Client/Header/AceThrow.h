@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AceObjectFactory.h"
-#include "GameObject.h"
+#include "AceUnit.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -15,9 +15,9 @@ class CCalculatorComponent;
 END
 
 
-class CAceThrow : public Engine::CGameObject
+class CAceThrow : public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CAceThrow)
+	DERIVED_CLASS(CAceUnit, CAceThrow)
 
 		enum class THROW_NAME {
 		// Paper (6) 
@@ -57,6 +57,11 @@ public:
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
+
+public:
+	virtual void OnCollision(CGameObject* pDst, const FContact* const pContact) override;
+	virtual void OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) override;
+	virtual void OnCollisionExited(CGameObject* pDst) override;
 	
 
 private: // ÇÔ¼ö 
@@ -83,4 +88,6 @@ private:
 	CTextureComponent* m_pTextureComp = nullptr;
 	CTransformComponent* m_pTransformComp = nullptr;
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
+
+	
 };

@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Brown.h"
 #include "Gray.h"
-#include "Boss.h"
+#include "AceBoss.h"
 #include "AceFood.h"
 #include "AceWeapon.h"
 #include "AceThrow.h"
@@ -31,7 +31,7 @@ CGameObject* CAbsFac_GameObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSe
 		return static_cast<CGameObject*>(CGray::Create(pGraphicDev, tObject));
 		break;
 	case Engine::ECLASS_BOSS:
-		return static_cast<CGameObject*>(CBoss::Create(pGraphicDev, tObject));
+		//return static_cast<CGameObject*>(CAceBoss::Create(pGraphicDev, tObject));
 		break;
 	case Engine::ECLASS_FOOD:
 		return static_cast<CGameObject*>(CAceFood::Create(pGraphicDev, tObject));

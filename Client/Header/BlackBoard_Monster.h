@@ -55,20 +55,11 @@ private:
 	CBoss* m_pBoss = nullptr;
 
 public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
-	//GETSET_EX2(GAUGE<_float>, m_fHP, HP, GET_C_REF, GET_REF)
-	//GETSET_EX2(GAUGE<_float>, m_fStamina, Stamina, GET_C_REF, GET_REF)
-	GETSET_EX2(GAUGE<_float>, m_fBossAwareness, BossAwareness, GET_REF, SET_REF)
 	GETSET_EX2(_bool, m_bLightOn, ControlLight, GET, SET)
 
 
 private:
 	_bool				m_bLightOn;
-	GAUGE<_float>		m_fBossAwareness;
-	//GAUGE<_float>		m_fHP;
-	//GAUGE<_float>		m_fStamina;
-	//안됨
-	GAUGE<_float>		m_fBrownAwareness;
-	GAUGE<_float>		m_fGrayAwareness;
 
 };
 

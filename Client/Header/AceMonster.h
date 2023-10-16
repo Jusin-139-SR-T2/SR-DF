@@ -34,8 +34,6 @@ class CCalculatorComponent;
 
 END
 
-class CPlayer;
-
 class CAceMonster : public CAceUnit
 {
 	DERIVED_CLASS(CAceUnit, CAceMonster)
@@ -54,11 +52,13 @@ protected:
 
 protected:
 	CPlayer::STATE_RIGHTHAND	ePlayerRighthand;
-	CPlayer::STATE_PLAYER		ePlayerState;
 	MONSTER						m_tStat;
 	FRAME						m_tFrame;
 	_vec3						vPlayerPos;			
 	_tchar						debugString[100];
+	_bool						m_bDeadState; // 죽은상태
+	_bool						m_bDazedState; // 힐하는 도중에 끊기는거 용도 
+	_bool						m_bDazeToHeal; // 끊기면 daze더이상 진입x
 
 protected:
 	CRcBufferComp*				m_pBufferComp = nullptr; 
@@ -68,23 +68,24 @@ protected:
 	CCalculatorComponent*		m_pCalculatorComp = nullptr;
 	CTransformComponent*		m_pPlayerTransformcomp = nullptr;
 
+public: // 성희 추가 : 몬스터 정보 Get,Set
+	//GAUGE<_float> m_gHp;
+	PLAYER_ATTACK_STATE m_ePlayer_AttackState;
+	GETSET_EX2(GAUGE<_float>, m_gHp, MonsterHP, GET, SET)   // 몬스터 HP 
+	GETSET_EX2(PLAYER_ATTACK_STATE, m_ePlayer_AttackState, Player_AttackState, GET, SET)   // 피격당한 공격의 상태 (ex : 앉은채로 공격, 점프 공격, 2연속 공격...등등)
+	GETSET_EX2(_bool, m_bDazedState, IsMonsterDazed, GET, SET)   
+	GETSET_EX2(_bool, m_bDeadState, IsMonsterDeath, GET, SET)   
+
 public:
 	_float						Calc_Distance();
 	_bool						Detect_Player();
 	HRESULT						Get_PlayerPos();
 	void						Height_On_Terrain();
 	void						Billboard(const _float& fTimeDelta); 
+	_bool						m_bPlayerAttakBool;
 
 	//제작함수 리스트 - 스킬 셋팅할때 사용중 
 public:
-	// vector형으로 min과 max사이의 값중 랜덤으로 out에 저장 
-	void Get_RandomVector(_vec3* out, _vec3* min, _vec3* max)
-	{
-		out->x = Get_RandomFloat(min->x, max->x);
-		out->y = Get_RandomFloat(min->y, max->y);
-		out->z = Get_RandomFloat(min->z, max->z);
-	}
-
 	//low~high 사이의 값으로 return 
 	_float Get_RandomFloat(_float lowBound, _float hightBound)
 	{
@@ -96,7 +97,16 @@ public:
 		return (f * (hightBound - lowBound)) + lowBound;
 	}
 
-	// center기준 radius 내의 랜덤위치 out에 저장 
+	// Get_RandomFloat의 vector형 
+	void Get_RandomVector(_vec3* out, _vec3* min, _vec3* max)
+	{
+		out->x = Get_RandomFloat(min->x, max->x);
+		out->y = Get_RandomFloat(min->y, max->y);
+		out->z = Get_RandomFloat(min->z, max->z);
+	}
+
+	// center기준 radius 내의 "랜덤위치" out에 저장 
+	// radius의 경우 반지름값임. 
 	void GetRandomPointInCircle(_vec3* out, _vec3* center, float radius)
 	{
 		_float angle = static_cast<_float>(rand()) / RAND_MAX * 2 * D3DX_PI;
@@ -122,5 +132,23 @@ public:
 	    }
 	}
 
+	_bool Random_variable(_int _winning)
+	{
+		//운영체제 단에서 제공하는 진짜 난수 - 컴퓨터가 주변의 환경과 무작위적으로 상호작용하면서 만드는것
+		// 의사난수보다 난수를 생성하는 속도가 매우 느리다. 
+		random_device rd;
+
+		// 메르센 트위스터라는 알고리즘을 사용해서 난수 생성 엔진을 초기화
+		mt19937 gen(rd());
+
+		// 0 부터 99 까지 연속확률분포 생성   (min, max)
+		uniform_int_distribution<_int> iDistribution(0, 99);
+
+		//랜덤값 생성 
+		_int RandomValue = iDistribution(gen);
+
+		//매개변수가 5일경우 5프로 확률로 true가 반환된다
+		return (RandomValue <= _winning);
+	}
 
 };

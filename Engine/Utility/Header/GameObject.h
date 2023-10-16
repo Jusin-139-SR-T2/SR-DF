@@ -5,6 +5,8 @@
 #include "Engine_Macro.h"
 #include "ProtoMgr.h"
 
+#include "Contact.h"
+
 BEGIN(Engine)
 
 enum class EPRIORITY_TYPE : _uint
@@ -64,9 +66,9 @@ public:
 	virtual void	Render_GameObject()	PURE;
 
 protected:
-	virtual void	OnCollision(CGameObject* pDst) {}//PURE;
-	virtual void	OnCollisionEntered(CGameObject* pDst) {}//PURE;
-	virtual void	OnCollisionExited(CGameObject* pDst) {}//PURE;
+	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact) {};
+	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) {};
+	virtual void	OnCollisionExited(CGameObject* pDst) {};
 
 public:
 	void Compute_ViewZ(const _vec3* pPos);

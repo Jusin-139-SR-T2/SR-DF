@@ -17,7 +17,7 @@ CRedLaser::~CRedLaser()
 {
 }
 
-CRedLaser* CRedLaser::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAceUnit* pOwner)
+CRedLaser* CRedLaser::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, CAceUnit* pOwner, ETEAM_ID _eTeamid)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -31,20 +31,28 @@ CRedLaser* CRedLaser::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y
 	// 생성할때 몬스터 위치 로 생성하기 위해 Create에서 초기위치를 잡아줌 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
 	pInstance->Set_Owner(pOwner);
+	pInstance->Set_TeamID(_eTeamid);
 
 	return pInstance;
 }
 
 HRESULT CRedLaser::Ready_GameObject()
 {
+	SUPER::Ready_GameObject();
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	// 기본설정
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Razer"); //마우스는 역시 Razer
-
-	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_pTransformComp->Set_Scale({ 10.f, 2.f, 1.f });
+	m_fAttack = 4.f;
+
+	// 프레임 설정 
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_tFrame.fFrameSpeed = 10.f;
 	m_tFrame.fFrame = 0.f;
+	m_tFrame.fAge = 0.f;
+	m_tFrame.fLifeTime = 2.f;
 
 	// 충돌용 - BOX
 	m_pTransformComp->Readjust_Transform();
@@ -59,10 +67,9 @@ _int CRedLaser::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Update_PlayerPos();
-
 	if (KnockBack)
 	{
+		m_tFrame.fAge += 1.f * fTimeDelta;
 		Knockback_Player(fTimeDelta, 6.f);
 	}
 
@@ -101,10 +108,6 @@ void CRedLaser::Render_GameObject()
 
 HRESULT CRedLaser::Add_Component()
 {
-	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_Effect_BeamTextureComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
 	// 콜라이더 컴포넌트
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
 
@@ -128,15 +131,23 @@ void CRedLaser::Free()
 	SUPER::Free();
 }
 
-void CRedLaser::OnCollision(CGameObject* pDst) 
+void CRedLaser::OnCollision(CGameObject* pDst, const FContact* const pContact) 
 {
+	// 맞고있는게 계속있으면 2초에 한번씩 피 닳을것임 
+	if (m_tFrame.fAge >= m_tFrame.fLifeTime)
+	{
+		m_tFrame.fAge = 0.f;
+		Attack_Occurrence(pDst, m_fAttack);
+	}
 }
 
-void CRedLaser::OnCollisionEntered(CGameObject* pDst)
+void CRedLaser::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
+
 	OutputDebugString(L"▶RedLaser 충돌 \n");
-	KnockBack = TRUE;
-	Change_PlayerHp(-3.f);
+
+	if(Attack_Occurrence(pDst, m_fAttack))
+			KnockBack = TRUE;
 }
 
 void CRedLaser::OnCollisionExited(CGameObject* pDst)

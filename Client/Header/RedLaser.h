@@ -1,9 +1,10 @@
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CRedLaser : public CAttackUnion
+
+class CRedLaser : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CRedLaser)
+	DERIVED_CLASS(CMonsterAttackUnion, CRedLaser)
 
 private:
 	explicit CRedLaser(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -17,7 +18,7 @@ public:
 	virtual void		Render_GameObject() override;
 
 	static CRedLaser* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
-								_float _x, _float _y, _float _z, CAceUnit* pOwner);
+								_float _x, _float _y, _float _z, CAceUnit* pOwner, ETEAM_ID _eTeamid);
 
 private:
 	HRESULT				Add_Component();
@@ -31,8 +32,8 @@ public:
 
 	// Ãæµ¹ 
 protected:
-	virtual void	OnCollision(CGameObject* pDst);
-	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact);
+	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionBox* pShape;
 

@@ -1,6 +1,7 @@
 #include "PhysicsWorld3D.h"
 
 #include "Collide.h"
+#include "Contact.h"
 
 CPhysicsWorld3D::CPhysicsWorld3D()
 {
@@ -67,25 +68,35 @@ _int CPhysicsWorld3D::Update_Physics(const Real& fTimeDelta)
 	for (auto iter = m_setBody.begin(); iter != m_setBody.end(); ++iter)
 	{
 		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
+		pCol->Set_Position(pCol->matOffset.Get_PosVector());
 		pCol->Calculate_Transform();
 		switch (pCol->Get_Type())
 		{
 		case ECOLLISION::SPHERE:
 		{
 			FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(pCol);
-			pShape->vPos = pShape->pBody->Get_Position();
+			pShape->fRadius = max(max(pShape->matOffset.Get_ScaleVector().x,
+				pShape->matOffset.Get_ScaleVector().y),
+				pShape->matOffset.Get_ScaleVector().z) * 0.5f;
 			break;
 		}
 		case ECOLLISION::BOX:
 		{
 			FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(pCol);
-			pShape->vPos = pShape->pBody->Get_Position();
+			pShape->vHalfSize = pShape->matOffset.Get_ScaleVector() * 0.5f;
 			break;
 		}
 		case ECOLLISION::CAPSULE:
 		{
 			FCollisionCapsule* pShape = dynamic_cast<FCollisionCapsule*>(pCol);
-			pShape->vPos = pShape->pBody->Get_Position();
+			pShape->Set_Position(pShape->pBody->Get_Position());
+			break;
+		}
+		case ECOLLISION::OBB:
+		{
+			FCollisionOBB* pShape = dynamic_cast<FCollisionOBB*>(pCol);
+			pShape->vHalfSize = pShape->matOffset.Get_ScaleVector() * 0.5f;
+			int t = 0;
 			break;
 		}
 		}
@@ -127,7 +138,7 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 	for (auto iterSrc = m_setBody.begin(); iterSrc != m_setBody.end(); ++iterSrc)
 	{
 		// 재연산 방지, 현재 반복자로부터 다음 것을 가져다가 쓴다.
-		for (auto iterDst = m_setBody.begin(); iterDst != m_setBody.end(); ++iterDst)
+		for (auto iterDst = (++iterSrc)--; iterDst != m_setBody.end(); ++iterDst)
 		{
 			bool bCollide = false;
 			if ((*iterSrc) == (*iterDst))
@@ -136,26 +147,27 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 			FCollisionPrimitive* pColSrc = static_cast<FCollisionPrimitive*>((*iterSrc)->Get_Owner());
 			FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iterDst)->Get_Owner());
 
-			
-				
+			FCollisionData tColData;
+			tColData.iContactsLeft = 1;	// 작동 시킬라면 넣어야함.
 
-			bCollide = FCollisionDetector::CollsionPrimitive(pColSrc, pColDst, nullptr);
+			bCollide = FCollisionDetector::CollsionPrimitive(pColSrc, pColDst, &tColData);
 
 			if (bCollide)
 			{
 				if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer())
-					pColSrc->Handle_CollsionEvent(pColDst->Get_Owner());
+					pColSrc->Handle_CollsionEvent(pColDst->Get_Owner(), &tColData.tContacts);
+				tColData.tContacts.Reverse_BodyData();
 				if (pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
-					pColDst->Handle_CollsionEvent(pColSrc->Get_Owner());
+					pColDst->Handle_CollsionEvent(pColSrc->Get_Owner(), &tColData.tContacts);
 			}
 			++iDebugCount;
 		}
 	}
-	wstringstream ss;
+	/*wstringstream ss;
 	wstring str;
 	ss << iDebugCount;
-	//str = L"Physics CheckCount : " + ss.str() + L"\n";
-	OutputDebugString(str.c_str());
+	str = L"Physics CheckCount : " + ss.str() + L"\n";
+	OutputDebugString(str.c_str());*/
 
 	// 사용된 접촉 수를 반환
 	return m_iMaxContacts - iLimit;

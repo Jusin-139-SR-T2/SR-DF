@@ -108,6 +108,18 @@ void CBackGround::Render_GameObject()
 	m_pBufferComp->Render_Buffer();
 }
 
+void CBackGround::OnCollision(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CBackGround::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CBackGround::OnCollisionExited(CGameObject* pDst)
+{
+}
+
 void CBackGround::Free()
 {
 	SUPER::Free();

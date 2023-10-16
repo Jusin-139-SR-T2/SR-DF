@@ -32,6 +32,18 @@ CBossLight* CBossLight::Create(LPDIRECT3DDEVICE9 pGraphicDev, CGameObject* pOwne
     return pInstance;
 }
 
+void CBossLight::OnCollision(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CBossLight::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CBossLight::OnCollisionExited(CGameObject* pDst)
+{
+}
+
 HRESULT CBossLight::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
@@ -91,7 +103,7 @@ void CBossLight::Height_On_Terrain()
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
     NULL_CHECK(pTerrainBufferComp);
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
@@ -128,14 +140,14 @@ HRESULT CBossLight::Create_Light()
     // 값 셋팅해주기 
     AceBossLight.Type = D3DLIGHT_POINT; // 점광원으로 설정
     AceBossLight.Position = m_pBossTransformcomp->Get_Pos();
-    AceBossLight.Range = 6.f; // 조명을 받는 객체의 가장 먼 거리 
+    AceBossLight.Range = 5.f; // 조명을 받는 객체의 가장 먼 거리 
     AceBossLight.Diffuse = D3DXCOLOR(DXCOLOR_DARK_ORANGE); // 광원 색상 설정 - 광원에 반사될 때 출력되는 가장 주된 색
     AceBossLight.Ambient = D3DXCOLOR(DXCOLOR_CYAN); // 광원 주변 환경색 설정 - 광원의 위치와 무관하게 똑같은 양으로 모든 점에서 반사되는 색
     AceBossLight.Falloff = 1.f;
     // BossPOINT 점광원 에서는 광선의 방향(DIRECTION) 무시 
     // 
     // Boss감쇠 - 거리에 따른 선형 감쇠값
-    AceBossLight.Attenuation0 = 0.3f; // 정적 감쇠 계수 
+    AceBossLight.Attenuation0 = 0.6f; // 정적 감쇠 계수 
     AceBossLight.Attenuation1 = 0.1f; // 선형 감쇠 계수 -> 방향성 광원인경우
     AceBossLight.Attenuation2 = 0.0f; // 2차 감쇠 계수 
 

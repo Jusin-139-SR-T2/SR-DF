@@ -1,9 +1,9 @@
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CFallingStone : public CAttackUnion
+class CFallingStone : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CFallingStone)
+	DERIVED_CLASS(CMonsterAttackUnion, CFallingStone)
 
 private:
 	explicit CFallingStone(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -16,7 +16,7 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CFallingStone* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _pHASE, CAceUnit* pOwner);
+	static CFallingStone* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _pHASE, CAceUnit* pOwner, ETEAM_ID _eTeamid);
 
 private:
 	HRESULT				Add_Component();
@@ -30,8 +30,8 @@ public:
 	
 		// 충돌 -----------------------------------------------------------------
 protected:
-	virtual void	OnCollision(CGameObject* pDst);
-	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact);
+	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionSphere* pShape;
 
@@ -39,7 +39,7 @@ private:
 	_vec3 vFall;				// 떨어지는 방향 
 	_float m_fFallingSpeed;		// 떨어지는 스피드 
 	_bool m_bCollision = FALSE; //충돌해서 시간흐르는용도 
-	_bool m_bFall = TRUE;
+	_bool m_bFall = TRUE;		// 어딘가에서 충돌이 이루어지면 깨지는 이미지로 바뀌고 LifeTime이 지나면 Dead()
 	void Falling(const _float& fTimeDelta); // 떨어지는 함수 
 };
 

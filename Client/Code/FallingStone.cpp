@@ -15,7 +15,7 @@ CFallingStone::~CFallingStone()
 {
 }
 
-CFallingStone* CFallingStone::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _pHASE, CAceUnit* pOwner)
+CFallingStone* CFallingStone::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _pHASE, CAceUnit* pOwner, ETEAM_ID _eTeamid)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -29,44 +29,43 @@ CFallingStone* CFallingStone::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
 	pInstance->Set_Owner(pOwner);
+	pInstance->Set_TeamID(_eTeamid);
 
 	return pInstance;
 }
 
 HRESULT CFallingStone::Ready_GameObject()
 {
+	SUPER::Ready_GameObject();
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	srand((_uint)time(NULL));
-
-	// 충돌용
-	m_pTransformComp->Readjust_Transform();
-	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-	pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 0.5f;
-
-	// 떨어지는 돌은 랜덤 이미지 
+	// 이미지 셋팅 
 	int iCombo = (rand() % 2) + 1;
 	if (1 == iCombo)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Stone1");
 	else
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"Stone2");
 
-	// 프레임 및 사망시간 조정
+	//기본설정 
+	m_pTransformComp->Set_Scale({ 2.f, 2.f, 1.f });
+	m_fAttack = 3.f;				// 공격력 설정 
+	vFall = { 0.f, -1.f, 0.f };		// 낙하 방향 
+	m_fFallingSpeed = 6.f;			// 낙하속도 
+
+	// 프레임 설정 
 	m_tFrame.fFrame = 0;
-	m_tFrame.fFrameSpeed = 1.5f;
+	m_tFrame.fFrameSpeed = 3.f;
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-	
 	m_tFrame.fAge = 0.f;
 	m_tFrame.fLifeTime = 1.f;
 	
-	m_fFallingSpeed = 7.f;
+	// 충돌용
+	m_pTransformComp->Readjust_Transform();
+	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
+	pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+	pShape->fRadius = 0.5f;
 
-	// 크기조정
-	m_pTransformComp->Set_Scale({ 2.f, 2.f, 1.f });
-
-	// 기타 옵션값
-	vFall = { 0.f, -1.f, 0.f };
 	return S_OK;
 }
 
@@ -74,7 +73,7 @@ _int CFallingStone::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Update_PlayerPos();
+	Billboard();
 	
 	if(m_bFall)
 		Falling(fTimeDelta); //낙하 
@@ -91,7 +90,6 @@ _int CFallingStone::Update_GameObject(const _float& fTimeDelta)
 		}
 	}
 
-	Billboard();
 
 	//물리 업데이트 코드
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 
@@ -123,10 +121,6 @@ void CFallingStone::Render_GameObject()
 
 HRESULT CFallingStone::Add_Component()
 {
-	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_Effect_BeamTextureComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-	
 	// 콜라이더 컴포넌트
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
 
@@ -164,20 +158,16 @@ void CFallingStone::Falling(const _float& fTimeDelta)
 }
 #pragma endregion
 
-void CFallingStone::OnCollision(CGameObject* pDst)
+void CFallingStone::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 }
 
-void CFallingStone::OnCollisionEntered(CGameObject* pDst)
+void CFallingStone::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	OutputDebugString(L"▶FallingStone 충돌 \n");
-
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"FallingStone");
-	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-	m_bCollision = TRUE; // 충돌한뒤 이미지 바꾸기용도 
-	m_bFall = FALSE; //충돌하면 더이상 떨어지지 말아야하므로 
-
-	Change_PlayerHp(-2.f);
+	
+	if(Attack_Occurrence(pDst, m_fAttack))
+		m_bCollision = TRUE;
 }
 
 void CFallingStone::OnCollisionExited(CGameObject* pDst)

@@ -1,9 +1,9 @@
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CMonsterPunch : public CAttackUnion
+class CMonsterPunch : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CMonsterPunch)
+	DERIVED_CLASS(CMonsterAttackUnion, CMonsterPunch)
 
 	PUBLIC enum class TYPE { NORMAL, HEAVY, TYPE_END };
 
@@ -20,7 +20,7 @@ public:
 
 	static CMonsterPunch* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
 								_float _x, _float _y, _float _z, 
-								TYPE _option, CAceUnit* pOwner);
+								TYPE _option, CAceUnit* pOwner, ETEAM_ID _eTeamid);
 
 private:
 	HRESULT				Add_Component();
@@ -34,13 +34,13 @@ public:
 
 	// 충돌 
 protected:
-	virtual void	OnCollision(CGameObject* pDst);
-	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact);
+	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 
 private:
 	TYPE			m_eAttackType;
-
+	_float			m_fHeavyAttack;
 };
 
 //플레이어 = -20 : 주먹

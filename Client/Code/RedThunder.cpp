@@ -15,7 +15,8 @@ CRedThunder::~CRedThunder()
 {
 }
 
-CRedThunder* CRedThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner)
+CRedThunder* CRedThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, 
+	MonsterPhase _CurrPhase, CGameObject* pOwner, ETEAM_ID _eTeamid)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -23,39 +24,40 @@ CRedThunder* CRedThunder::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _floa
 	{
 		Safe_Release(pInstance);
 
-		MSG_BOX("LightBeam Create Failed");
+		MSG_BOX("RedThunder Create Failed");
 		return nullptr;
 	}
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
 	pInstance->Set_Owner(pOwner);
+	pInstance->Set_TeamID(_eTeamid);
 
 	return pInstance;
 }
 
 HRESULT CRedThunder::Ready_GameObject()
 {
+	SUPER::Ready_GameObject();
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	//기본셋팅 
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"RedThunder");
+	m_pTransformComp->Set_Scale({ 3.f, 12.f, 1.f });
+	m_fAttack = 6.f;
+
+	// 프레임 및 사망시간 조정
+	m_tFrame.fFrame = 0;
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	m_tFrame.fFrameSpeed = 6.f;
+	m_tFrame.fAge = 0.f;
+	m_tFrame.fLifeTime = 4.f;
 
 	// 충돌용
 	m_pTransformComp->Readjust_Transform();
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 	pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
 	pShape->vHalfSize = { 1.f, 2.f, 0.3f };
-
-	// 이미지 
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"RedThunder");
-
-	// 프레임 및 사망시간 조정
-	m_tFrame.fFrame = 0;
-	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-	m_tFrame.fFrameSpeed = 6.f;
-
-	m_tFrame.fAge = 0.f;
-	m_tFrame.fLifeTime = 4.f;
-
-	// 크기조정
-	m_pTransformComp->Set_Scale({ 3.f, 12.f, 1.f });
 
 	return S_OK;
 }
@@ -64,7 +66,7 @@ _int CRedThunder::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Update_PlayerPos();
+	Billboard();
 
 	m_tFrame.fFrame += fTimeDelta * m_tFrame.fFrameSpeed;
 
@@ -75,8 +77,6 @@ _int CRedThunder::Update_GameObject(const _float& fTimeDelta)
 	}
 
 	Height_On_Terrain(6.f);
-
-	Billboard();
 
 	//물리 업데이트 코드
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 
@@ -106,10 +106,6 @@ void CRedThunder::Render_GameObject()
 
 HRESULT CRedThunder::Add_Component()
 {
-	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_Effect_BeamTextureComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
 	// 콜라이더 컴포넌트
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
 
@@ -133,14 +129,15 @@ void CRedThunder::Free()
 	SUPER::Free();
 }
 
-void CRedThunder::OnCollision(CGameObject* pDst)
+void CRedThunder::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 	OutputDebugString(L"▶RedThunder 충돌 \n");
 
-	Change_PlayerHp(-6.f);
+	Attack_Occurrence(pDst, m_fAttack);
+
 }
 
-void CRedThunder::OnCollisionEntered(CGameObject* pDst)
+void CRedThunder::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 }
 

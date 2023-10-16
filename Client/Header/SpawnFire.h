@@ -1,9 +1,9 @@
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CSpawnFire : public CAttackUnion
+class CSpawnFire : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CSpawnFire)
+	DERIVED_CLASS(CMonsterAttackUnion, CSpawnFire)
 
 private:
 	explicit CSpawnFire(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -17,7 +17,7 @@ public:
 	virtual void		Render_GameObject() override;
 
 	static CSpawnFire* Create(LPDIRECT3DDEVICE9 pGraphicDev,
-		_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CAceUnit* pOwner);
+		_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CAceUnit* pOwner, ETEAM_ID _eTeamid);
 
 private:
 	HRESULT				Add_Component();
@@ -32,8 +32,8 @@ public:
 
 		// Ãæµ¹ -----------------------------------------------------------------
 protected:
-	virtual void	OnCollision(CGameObject* pDst);
-	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact);
+	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionSphere* pShape;
 

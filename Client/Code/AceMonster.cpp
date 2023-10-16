@@ -29,8 +29,9 @@ HRESULT CAceMonster::Ready_GameObject()
 
 _int CAceMonster::Update_GameObject(const _float& fTimeDelta)
 {
-    SUPER::Update_GameObject(fTimeDelta);
 	Get_PlayerPos();
+
+    SUPER::Update_GameObject(fTimeDelta);
 
     return S_OK;
 }
@@ -49,7 +50,7 @@ void CAceMonster::Free()
 
 _float CAceMonster::Calc_Distance()
 {
-    // 플레이어 위치 - 몬스터 위치 = 몬스터가 플레이어 바라보는 벡터
+    // 몬스터가 플레이어 바라보는 벡터 -> 길이 계산용  
     _float fDistance = D3DXVec3Length(&(m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos()));
 
     return fDistance;
@@ -99,7 +100,7 @@ void CAceMonster::Height_On_Terrain()
 	_vec3		vPos;
 	m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
-	CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+	CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
 	NULL_CHECK(pTerrainBufferComp);
 
 	_float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
@@ -116,7 +117,7 @@ HRESULT CAceMonster::Get_PlayerPos()
 {
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
 	ePlayerRighthand = pPlayer->Get_PlayerRightHand();
-	ePlayerState = pPlayer->Get_PlayerState();
+	m_bPlayerAttakBool = pPlayer->Get_PlayerAttackBool();
 
 	m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
 	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);

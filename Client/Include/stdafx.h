@@ -30,6 +30,7 @@
 #include <process.h>
 #include <iostream>
 #include <ctime>
+#include <random>
 
 #ifdef _DEBUG
 

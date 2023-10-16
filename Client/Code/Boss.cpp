@@ -267,11 +267,11 @@ void CBoss::Free()
 
 #pragma region Ãæµ¹ 
 
-void CBoss::OnCollision(CGameObject* pDst)
+void CBoss::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 
 }
-void CBoss::OnCollisionEntered(CGameObject* pDst)
+void CBoss::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 
 }

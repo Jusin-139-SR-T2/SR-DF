@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AceMonster.h"
-
+#include "Awareness.h"
 #include "ThrowPipe.h"
 #include "MonsterPunch.h"
 
@@ -54,10 +54,12 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 
+	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
+
 	// 충돌
 protected:
-	virtual void	OnCollision(CGameObject* pDst);
-	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact);
+	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionBox* pShape;
 
@@ -73,7 +75,6 @@ public:
 		BLOCK,													//막기
 		CROTCHHIT, FACEPUNCH, FALLING, HIT,						//피격
 		DAZED, DEATH, CHOPPED, HEADSHOT, HEADLESS				//사망
-		
 		//미구현 리스트 
 	};
 
@@ -105,6 +106,13 @@ private:
 	//스위치 on/off 
 	_bool		m_bArrive = FALSE; // 집에 도착 여부 
 	_bool		m_AttackOnce = FALSE;
+	_bool		m_bCollisionEnter = FALSE;
+
+	// 외부타격으로 인한 죽음
+	enum class RECENT_COL { PLAYER, PLAYERATK, BOSSATK, RECEND_END };
+
+	void MonsterDead();
+	RECENT_COL		m_eRecentCol; // 플레이어1 플레이어공격체2 보스스킬3 
 
 private:
 	//상태머신 등록 

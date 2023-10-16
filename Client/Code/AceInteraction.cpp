@@ -5,12 +5,12 @@
 #include "Export_Utility.h"
 
 CAceInteraction::CAceInteraction(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+	: Base(pGraphicDev)
 {
 }
 
 CAceInteraction::CAceInteraction(const CAceInteraction& rhs)
-	: CGameObject(rhs)
+	: Base(rhs)
 {
 }
 
@@ -173,8 +173,9 @@ void CAceInteraction::Height_On_Terrain()
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
-    NULL_CHECK(pTerrainBufferComp);
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
+    if (!pTerrainBufferComp)
+        return;
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
         pTerrainBufferComp->Get_VtxPos(),
@@ -281,6 +282,18 @@ void CAceInteraction::Change_Texture(INTERACTION_NAME eReceiveName)
 
         }
     }
+}
+
+void CAceInteraction::OnCollision(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CAceInteraction::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CAceInteraction::OnCollisionExited(CGameObject* pDst)
+{
 }
 
 #pragma endregion 

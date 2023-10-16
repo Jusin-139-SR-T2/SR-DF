@@ -1,11 +1,10 @@
+
 #pragma once
-#include "AttackUnion.h"
+#include "MonsterAttackUnion.h"
 
-class CPlayer;
-
-class CEnergyBall : public CAttackUnion
+class CEnergyBall : public CMonsterAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CEnergyBall)
+	DERIVED_CLASS(CMonsterAttackUnion, CEnergyBall)
 
 private:
 	explicit CEnergyBall(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -19,7 +18,7 @@ public:
 	virtual void		Render_GameObject() override;
 
 	static CEnergyBall* Create(LPDIRECT3DDEVICE9 pGraphicDev,
-								_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner);
+								_float _x, _float _y, _float _z, MonsterPhase _CurrPhase, CGameObject* pOwner, ETEAM_ID _eTeamid);
 
 private:
 	HRESULT				Add_Component();
@@ -34,8 +33,8 @@ public:
 
 	// Ãæµ¹ 
 protected:
-	virtual void	OnCollision(CGameObject* pDst);
-	virtual void	OnCollisionEntered(CGameObject* pDst);
+	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact);
+	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact);
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionSphere* pShape;
 
@@ -44,6 +43,7 @@ private:
 	HRESULT Follow_Player(const _float fTimeDelta);
 
 	_float m_fMovingSpeed; 
+	_float m_fGuideTime;
 	_vec3 Dir;
 };
 

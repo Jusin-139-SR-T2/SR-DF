@@ -1,6 +1,6 @@
 #pragma once
 #include "AceObjectFactory.h"
-#include "GameObject.h"
+#include "AceUnit.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -14,9 +14,9 @@ class CColliderComponent;
 
 END
 
-class CAceFood : public Engine::CGameObject
+class CAceFood : public CAceUnit
 {
-	DERIVED_CLASS(CGameObject, CAceFood)
+	DERIVED_CLASS(CAceUnit, CAceFood)
 
 enum class FOOD_NAME { APPLE, BANANA, COLA, MEDIKIT, 
 					EATENAPPLE, BANANAPEEL, 
@@ -44,8 +44,8 @@ public:
 	virtual void		Render_GameObject() override;
 	
 protected:
-	virtual void		OnCollision(CGameObject* pDst);
-	virtual void		OnCollisionEntered(CGameObject* pDst);
+	virtual void		OnCollision(CGameObject* pDst, const FContact* const pContact);
+	virtual void		OnCollisionEntered(CGameObject* pDst, const FContact* const pContact);
 	virtual void		OnCollisionExited(CGameObject* pDst);
 
 protected:
