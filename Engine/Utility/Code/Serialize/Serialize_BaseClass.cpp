@@ -39,6 +39,8 @@ void FSerialize_Proto::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 	scale.AddMember("z", Value().SetFloat(vScale.z), allocator);
 	doc.AddMember("scale", scale, allocator);
 
+	doc.AddMember("group_key", Value().SetString(strGroupKey.c_str(), allocator), allocator);
+	doc.AddMember("texture_key", Value().SetString(strTextureKey.c_str(), allocator), allocator);
 
 	if (eProcess == ESERIALIZE_PROCESS_END
 		|| eProcess == ESERIALIZE_PROCESS_IMMEDIATE)
@@ -83,6 +85,11 @@ _bool FSerialize_Proto::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 	vScale.x = doc["scale"]["x"].GetFloat();
 	vScale.y = doc["scale"]["y"].GetFloat();
 	vScale.z = doc["scale"]["z"].GetFloat();
+
+	if (doc.HasMember("group_key"))
+		strGroupKey = doc["group_key"].GetString();
+	if (doc.HasMember("texture_key"))
+		strTextureKey = doc["texture_key"].GetString();
 
 	return true;
 }
@@ -245,6 +252,9 @@ void FSerialize_Scene::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 			gameobject_scale.AddMember("z", Value().SetFloat(tObjectSerial.vScale.z), allocator);
 			gameobject.AddMember("scale", gameobject_scale, allocator);
 
+			gameobject.AddMember("group_key", Value().SetString(tObjectSerial.strGroupKey.c_str(), allocator), allocator);
+			gameobject.AddMember("texture_key", Value().SetString(tObjectSerial.strTextureKey.c_str(), allocator), allocator);
+
 			// 배열에 넣기
 			arrObject.PushBack(gameobject, allocator);
 		}
@@ -331,6 +341,11 @@ _bool FSerialize_Scene::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 			gameobjectSR.bUsePriority_Update = object["use_priority_update"].GetBool();
 			gameobjectSR.bUsePriority_LateUpdate = object["use_priority_late_update"].GetBool();
 			gameobjectSR.bUsePriority_Render = object["use_priority_render"].GetBool();
+
+			if (object.HasMember("group_key"))
+				gameobjectSR.strGroupKey = object["group_key"].GetString();
+			if (object.HasMember("texture_key"))
+				gameobjectSR.strTextureKey = object["texture_key"].GetString();
 
 			layerSR.vecGameObject.push_back(gameobjectSR);
 		}

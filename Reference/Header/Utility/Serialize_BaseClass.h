@@ -41,6 +41,9 @@ public:
 	_vec3							vRotation;
 	_vec3							vScale;
 
+	string							strGroupKey;
+	string							strTextureKey;
+
 	vector<FSerialize_Component>	vecComponent;
 };
 
@@ -54,6 +57,9 @@ public:
 	_vec3							vPos;
 	_vec3							vRot;
 	_vec3							vScale;
+
+	string							strGroupKey = "";
+	string							strTextureKey = "";
 
 	void Parse_RapidJSON(Document& doc, StringBuffer& strBuf,
 		const ESERIALIZE_PROCESS eProcess,

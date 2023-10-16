@@ -17,11 +17,11 @@ CCubeObject::~CCubeObject()
 {
 }
 
-CCubeObject* CCubeObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3& vPos, const _vec3& vRot, const _vec3& vScale)
+CCubeObject* CCubeObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3& vPos, const _vec3& vRot, const _vec3& vScale, string strGroupKey, string strTextureKey)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
 
-    if (FAILED(pInstance->Ready_GameObject(vPos, vRot, vScale)))
+    if (FAILED(pInstance->Ready_GameObject(vPos, vRot, vScale, strGroupKey, strTextureKey)))
     {
         Safe_Release(pInstance);
 
@@ -64,13 +64,18 @@ HRESULT CCubeObject::Ready_GameObject()
     return S_OK;
 }
 
-HRESULT CCubeObject::Ready_GameObject(const _vec3& vPos, const _vec3& vRot, const _vec3& vScale)
+HRESULT CCubeObject::Ready_GameObject(const _vec3& vPos, const _vec3& vRot, const _vec3& vScale, string strGroupKey, string strTextureKey)
 {
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
     m_pTransformComp->Set_Pos(vPos);
     m_pTransformComp->Set_Rotation(vRot);
     m_pTransformComp->Set_Scale(vScale);
+
+    if (!strGroupKey.empty() && !strTextureKey.empty())
+    m_pTextureComp->Receive_Texture(TEX_CUBE,
+        wstring(strGroupKey.begin(), strGroupKey.end()).c_str()
+        , wstring(strTextureKey.begin(), strTextureKey.end()).c_str());
 
     return S_OK;
 }
@@ -93,6 +98,10 @@ HRESULT CCubeObject::Ready_GameObject(const FSerialize_GameObject& tObjectSerial
     m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
     m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
+
+    m_pTextureComp->Receive_Texture(TEX_CUBE,
+        wstring(tObjectSerial.strGroupKey.begin(), tObjectSerial.strGroupKey.end()).c_str()
+        , wstring(tObjectSerial.strTextureKey.begin(), tObjectSerial.strTextureKey.end()).c_str());
 
     return S_OK;
 }

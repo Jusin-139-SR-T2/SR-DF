@@ -22,7 +22,7 @@ private:
 	virtual ~CCubeObject();
 
 public:
-	static CCubeObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3& vPos, const _vec3& vRot, const _vec3& vScale);
+	static CCubeObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3& vPos, const _vec3& vRot, const _vec3& vScale, string strGroupKey, string strTextureKey);
 	static CCubeObject*	Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial);
 
 private: // 함수 
@@ -30,7 +30,7 @@ private: // 함수
 
 public:
 	virtual HRESULT			Ready_GameObject() override;
-	virtual HRESULT			Ready_GameObject(const _vec3& vPos, const _vec3& vRot, const _vec3& vScale);
+	virtual HRESULT			Ready_GameObject(const _vec3& vPos, const _vec3& vRot, const _vec3& vScale, string strGroupKey, string strTextureKey);
 	virtual HRESULT			Ready_GameObject(const FSerialize_GameObject& tObjectSerial);
 	virtual _int			Update_GameObject(const _float& fTimeDelta) override;
 	virtual void			LateUpdate_GameObject() override;

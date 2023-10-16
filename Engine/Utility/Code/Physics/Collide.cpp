@@ -343,6 +343,7 @@ bool FCollisionDetector::SphereAndOBB(const FCollisionSphere& srcSphere, const F
 	// 
 	FVector3 vResult = dstOBB.Get_Position();
 	FVector3 vDir = srcSphere.Get_Position() - dstOBB.Get_Position();
+	FVector3 vPos = dstOBB.Get_Position();
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -356,7 +357,7 @@ bool FCollisionDetector::SphereAndOBB(const FCollisionSphere& srcSphere, const F
 		if (fDistance < -dstOBB.vHalfSize.data[i])
 			fDistance = -dstOBB.vHalfSize.data[i];
 
-		vResult = vResult + (vAxis * fDistance);
+		vResult = vResult + (vAxis.Unit() * fDistance);
 	}
 
 	// 구한 접점을 가지고 거리 체크
