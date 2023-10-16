@@ -44,10 +44,10 @@ HRESULT CMonsterBullet::Ready_GameObject()
 
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	// 충돌 - 구형 
+	// 충돌
 	m_pTransformComp->Readjust_Transform();
-	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 1.f;
+	pSphereShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+	pSphereShape->fRadius = 0.3f;
 
 	//디버그용 텍스쳐
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Debug", L"Sphere");
