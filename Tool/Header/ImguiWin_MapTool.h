@@ -256,6 +256,8 @@ public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
 private:		// 카메라
 	void			Input_Camera();
 
+	_bool			m_bCanInput_Camera = false;
+
 	ImVec2			m_fPrevDrag_Translate = { 0.f, 0.f };
 	ImVec2			m_fDrag_Translate = { 0.f, 0.f };
 
