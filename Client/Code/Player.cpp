@@ -821,7 +821,8 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
     {
         _vec3 vNormal(pContact->vContactNormal.x, pContact->vContactNormal.y, pContact->vContactNormal.z);
         m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * pContact->fPenetration));
-        cout << "건물 충돌" << endl;
+        if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
+            m_IsOnGround = true;
     }
 }
 
@@ -1235,7 +1236,8 @@ void CPlayer::Free()
 
 void CPlayer::PlayerJump(float fTimeDelta)
 {
-    m_vSpeed += m_vAccel * fTimeDelta;
+    if (!m_IsOnGround)
+        m_vSpeed += m_vAccel * fTimeDelta;
 
     m_pTransformComp->Move_Pos(&m_vSpeed, fTimeDelta, 1.f);
 }

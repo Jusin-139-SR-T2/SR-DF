@@ -34,8 +34,8 @@ HRESULT CUI_CrossHair::Ready_GameObject()
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	// 텍스쳐 크기 
-	m_fSizeX = 45.f;
-	m_fSizeY = 45.f;
+	m_fSizeX = 60.f;
+	m_fSizeY = 60.f;
 
 	// 텍스쳐 중점위치 
 	m_fX = m_fSizeX * 0.5f ;

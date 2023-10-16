@@ -80,6 +80,8 @@ HRESULT CImguiWin_MapTool::Ready_ImguiWin()
     D3DXMatrixPerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
     CImguiMgr::GetInstance()->Get_GraphicDev()->SetTransform(D3DTS_PROJECTION, &m_matProj);
 
+    m_vecScene.reserve(100);
+
 	return S_OK;
 }
 
@@ -144,6 +146,8 @@ _int CImguiWin_MapTool::Update_ImguiWin(const _float& fTimeDelta)
     Layout_Hierarchi(iMain_Flags);
     Layout_Property(iMain_Flags);
     Layout_Viewer(iMain_Flags);
+
+    Input_Camera();
 
     ImGui::End();
 
@@ -919,8 +923,6 @@ void CImguiWin_MapTool::Layout_Viewer(const ImGuiWindowFlags& iMain_Flags)
     // 뷰어
     if (ImGui::Begin(u8"뷰어", NULL, iMain_Flags | ImGuiWindowFlags_NoNavFocus))
     {
-        
-
         // 마진 없애기
         ImGuiStyle& style = ImGui::GetStyle();
         style.ItemSpacing = ImVec2(0, 2);
@@ -1037,8 +1039,10 @@ void CImguiWin_MapTool::Layout_Viewer(const ImGuiWindowFlags& iMain_Flags)
 
         if (ImGui::IsItemHovered())
         {
-            Input_Camera();
+            m_bCanInput_Camera = true;
         }
+        else
+            m_bCanInput_Camera = false;
 
         // 뷰 행렬을 만들어 장치에게 넘겨 놓는다.
         D3DXMatrixLookAtLH(&m_matView, &Get_Pos(), &Get_Look(), &Get_Up());
@@ -1194,9 +1198,11 @@ void CImguiWin_MapTool::Save_SceneAll()
                 tObjectSerial.strTextureKey = tObjectData.strTextureKey;
 
                 // 완료시 레이어에 직렬화 추가
+                tLayerSerial.vecGameObject.reserve(200);
                 tLayerSerial.vecGameObject.push_back(tObjectSerial);
             }
             // 완료시 씬에 직렬화 추가
+            tSceneSerial.vecLayer.reserve(20);
             tSceneSerial.vecLayer.push_back(tLayerSerial);
         }
 
@@ -1536,7 +1542,6 @@ void CImguiWin_MapTool::Add_Object()
         });
     if (iter == tLayerData.vecObject.end())
     {
-        tLayerData.vecObject.push_back(tObjectData);
         bAdded = true;
     }
     // 같은 이름이 있으면 이름에 숫자를 붙여 추가한다.
@@ -1556,7 +1561,6 @@ void CImguiWin_MapTool::Add_Object()
             if (iterRe == tLayerData.vecObject.end())
             {
                 tObjectData.strName = strAdd;
-                tLayerData.vecObject.push_back(tObjectData);
                 bAdded = true;
 
                 break;
@@ -1570,6 +1574,7 @@ void CImguiWin_MapTool::Add_Object()
     {
         wstring strConvert(tLayerData.strName.begin(), tLayerData.strName.end());
         Factory_GameObject(strConvert.c_str(), tObjectData.eObjectID, tObjectData);
+        tLayerData.vecObject.push_back(tObjectData);
     }
 }
 
@@ -1612,7 +1617,8 @@ void CImguiWin_MapTool::Input_Camera()
 {
     // 간단하게 설명.
     // 카메라는 마우스 가운데 클릭으로 뷰 기준 이동
-    
+    if (!m_bCanInput_Camera)
+        return;
 
     // 마우스 우클릭으로 뷰 기준 회전을 한다.
     if (m_eEdit_Mode != EEDIT_MODE::TRANSFORM && ImGui::IsMouseDown(ImGuiMouseButton_Middle))
@@ -1760,11 +1766,11 @@ void CImguiWin_MapTool::Input_Camera()
         {
             for (size_t i = 0; i < m_vecScene[m_iLoaded_Scene].vecLayer.size(); i++)
             {
-                FLayerData tLayerData = m_vecScene[m_iLoaded_Scene].vecLayer[i];
+                FLayerData& tLayerData = m_vecScene[m_iLoaded_Scene].vecLayer[i];
                 
                 for (size_t j = 0; j < tLayerData.vecObject.size(); j++)
                 {
-                    FObjectData tObjectData = tLayerData.vecObject[j];
+                    FObjectData& tObjectData = tLayerData.vecObject[j];
 
                     listGameObject.push_back(Engine::Get_GameObject(tLayerData.strName.c_str(), tObjectData.strName.c_str()));
                 }
@@ -2167,8 +2173,10 @@ void CImguiWin_MapTool::Input_Camera()
                         pTransform->Set_RotationY(m_vTransform_Rotate.y * fLength);
                         break;
                     case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
-                        //pTransform->Set_Rotation(m_vTransform_Rotate + (vLook.)* fLength);
+                    {
+                        pTransform->Set_Rotation(m_vTransform_Rotate + (vRight) * fLength);
                         break;
+                    }
                     default:
                         break;
                     }
@@ -2227,6 +2235,8 @@ void CImguiWin_MapTool::Input_Camera()
                 if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
                 {
                     m_eEdit_Mode = EEDIT_MODE::NONE;
+                    m_eTransform_Mode = ETRANSFORM_MODE_NONE;
+                    m_eTransform_Axis = ETRANSFORM_AXIS_NONE;
 
                     pTransform->Set_Pos(m_vTransform_Translate_Saved);
                     pTransform->Set_Rotation(m_vTransform_Rotate_Saved);

@@ -392,6 +392,7 @@ private: // 보간 변수
 
 private: // 점프
 	void PlayerJump(float fTimeDelta);
+	_bool m_IsOnTerrain = false;
 	_bool m_IsOnGround = false;
 
 	_vec3 m_vSpeed = { 0.f, 0.f, 0.f };

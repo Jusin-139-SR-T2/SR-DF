@@ -1,7 +1,7 @@
 {
     "header": {
         "type": 4,
-        "name": "Fur_RedCushion2"
+        "name": "Test"
     },
     "class": 9,
     "pos": {
@@ -19,6 +19,6 @@
         "y": 1.0,
         "z": 1.0
     },
-    "group_key": "Furniture",
-    "texture_key": "electricalBox"
+    "group_key": "Building",
+    "texture_key": "A"
 }
