@@ -80,6 +80,7 @@
     <ClInclude Include="Header\PlayerGunLighter.h" />
     <ClInclude Include="Header\MonsterBullet.h" />
     <ClInclude Include="Header\PlayerSteelPipe.h" />
+    <ClInclude Include="Header\UI_CrossHair.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceEffect.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="Code\PlayerGunLighter.cpp" />
     <ClCompile Include="Code\MonsterBullet.cpp" />
     <ClCompile Include="Code\PlayerSteelPipe.cpp" />
+    <ClCompile Include="Code\UI_CrossHair.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

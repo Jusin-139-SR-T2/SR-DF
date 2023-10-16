@@ -199,7 +199,7 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	}
 	if (Engine::IsKey_Pressed(DIK_O))
 	{
-		m_tState_Obj.Set_State(STATE_OBJ::SHOOTING);
+		m_tState_Obj.Set_State(STATE_OBJ::RED_THUNDER);
 	}
 #pragma endregion 
 
@@ -1318,6 +1318,7 @@ void CAceBoss::AI_Death(float fDeltaTime)
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
 		m_bDeadState = TRUE;
+		m_bLightOn = FALSE;
 	}
 
 	if (m_tState_Obj.Can_Update())

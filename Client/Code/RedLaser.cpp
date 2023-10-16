@@ -67,6 +67,8 @@ _int CRedLaser::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
+	Owner_Dead(m_pOwner);
+
 	if (KnockBack)
 	{
 		m_tFrame.fAge += 1.f * fTimeDelta;

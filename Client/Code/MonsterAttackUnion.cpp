@@ -64,11 +64,11 @@ void CMonsterAttackUnion::Height_On_Terrain(_float Height)
     NULL_CHECK(pTerrainBufferComp);
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
-        pTerrainBufferComp->Get_VtxPos(),
-        pTerrainBufferComp->Get_VertexCountX() + 1U,
-        pTerrainBufferComp->Get_VertexCountZ() + 1U,
-        pTerrainBufferComp->Get_Scale(),
-        pTerrainBufferComp->Get_InvOffset());
+                                                        pTerrainBufferComp->Get_VtxPos(),
+                                                        pTerrainBufferComp->Get_VertexCountX() + 1U,
+                                                        pTerrainBufferComp->Get_VertexCountZ() + 1U,
+                                                        pTerrainBufferComp->Get_Scale(),
+                                                        pTerrainBufferComp->Get_InvOffset());
 
     m_pTransformComp->Set_Pos(vPos.x, fHeight + Height, vPos.z);
 }
@@ -165,6 +165,22 @@ _bool CMonsterAttackUnion::Attack_Occurrence(CGameObject* pDst, _float fAttack)
     // 적대관계 아니면 그냥 냅두기 
     // Set_Dead()는 해야하므로 s_ok로 설정 
     return true;
+}
+
+void CMonsterAttackUnion::Owner_Dead(CGameObject* pOwner)
+{
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pOwner);
+
+    if (pAceObj == nullptr)
+        return;
+    else
+    {
+        CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
+        m_bOwnerDead = pMonster->Get_IsMonsterDeath();
+
+        if (m_bOwnerDead)
+            Set_Dead();
+    }
 }
 
 void CMonsterAttackUnion::Change_PlayerHp(_float _fAttack)

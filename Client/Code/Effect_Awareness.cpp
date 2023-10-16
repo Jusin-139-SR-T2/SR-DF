@@ -60,6 +60,8 @@ _int CEffect_Awareness::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
+	Owner_Dead(m_pOwner);
+
 	Billboard();
 
 	m_fAwarenessPrev = m_fAwareness;

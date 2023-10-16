@@ -469,6 +469,25 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Desk.dds", TEX_CUBE, L"Furniture", L"Desk");
 
 #pragma endregion
+
+#pragma region 3차 추가본 - Wall, Tile 등등등..   큐브만 찍고 아직안넣음 
+	//Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Desk.dds", TEX_CUBE, L"Furniture", L"Desk");
+
+
+#pragma endregion
+
+#pragma region Crosshair  
+
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairHitDistanceIndicator.png", TEX_NORMAL, L"Crosshair", L"Hit");
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairHeavyWindup.png", TEX_NORMAL, L"Crosshair", L"Windup");
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairHeavyReady.png", TEX_NORMAL, L"Crosshair", L"Charge");
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairSpinning.png", TEX_NORMAL, L"Crosshair", L"Attack");
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairSide.png", TEX_NORMAL, L"Crosshair", L"Side");
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairDot.png", TEX_NORMAL, L"Crosshair", L"Gun");
+	Load_Texture(L"./Resource/Texture/crosshair/Crosshair.png", TEX_NORMAL, L"Crosshair", L"Basic");
+
+#pragma endregion
+
 	Wait_LoadTextureAsync();
 
 	return S_OK;

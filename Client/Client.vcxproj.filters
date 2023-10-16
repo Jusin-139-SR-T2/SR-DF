@@ -408,6 +408,9 @@
     <ClInclude Include="Header\AceEffect.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Header\UI_CrossHair.h">
+      <Filter>05. =====AceUI=====\03. CrossHair</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -589,6 +592,9 @@
     </ClCompile>
     <ClCompile Include="Code\AceEffect.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI_CrossHair.cpp">
+      <Filter>05. =====AceUI=====\03. CrossHair</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

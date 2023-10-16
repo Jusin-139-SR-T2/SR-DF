@@ -68,6 +68,8 @@ HRESULT CThrowPipe::Ready_GameObject()
 _int CThrowPipe::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
+	
+	Owner_Dead(m_pOwner);
 
 	if (!_bLoop) // 한번 정한 방향으로만 날라가서 플레이어가 다 피할수있도록 
 		Dir_Setting();

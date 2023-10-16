@@ -59,6 +59,8 @@ _int CMonsterBullet::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
+	Owner_Dead(m_pOwner);
+
 	m_pTransformComp->Move_Pos(&vDir, fTimeDelta, m_fMovingSpeed);
 
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());

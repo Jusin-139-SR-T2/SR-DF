@@ -49,7 +49,7 @@ HRESULT CPlayerBullet::Ready_GameObject()
 _int CPlayerBullet::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
-
+	
 	m_pTransformComp->Move_Pos(&m_vDir, fTimeDelta, m_tBullet.fMoveSpeed);
 
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 

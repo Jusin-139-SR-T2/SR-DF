@@ -22,6 +22,7 @@ public:
 private:
 	HRESULT				Add_Component();
 	virtual void		Free();
+	FCollisionBox* pBoxShape;
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)

@@ -43,7 +43,9 @@ HRESULT CRedThunder::Ready_GameObject()
 
 	//기본셋팅 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"RedThunder");
-	m_pTransformComp->Set_Scale({ 3.f, 12.f, 1.f });
+	m_pTextureComp->Set_Scale({ 3.f, 12.f, 1.f });
+	m_pTextureComp->Set_PosY(4.5f);
+	m_pTextureComp->Readjust_Transform();
 	m_fAttack = 6.f;
 
 	// 프레임 및 사망시간 조정
@@ -56,8 +58,8 @@ HRESULT CRedThunder::Ready_GameObject()
 	// 충돌용
 	m_pTransformComp->Readjust_Transform();
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-	pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-	pShape->vHalfSize = { 1.f, 2.f, 0.3f };
+	pBoxShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
+	pBoxShape->vHalfSize = { 1.f, 4.f, 0.3f };
 
 	return S_OK;
 }
@@ -65,6 +67,8 @@ HRESULT CRedThunder::Ready_GameObject()
 _int CRedThunder::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
+
+	Owner_Dead(m_pOwner);
 
 	Billboard();
 
@@ -76,7 +80,7 @@ _int CRedThunder::Update_GameObject(const _float& fTimeDelta)
 		Set_Dead();
 	}
 
-	Height_On_Terrain(6.f);
+	//Height_On_Terrain(6.f);
 
 	//물리 업데이트 코드
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 
@@ -97,8 +101,13 @@ void CRedThunder::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &((*m_pTextureComp->Get_Transform()) * (*m_pTransformComp->Get_Transform())));
 	m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
 	m_pBufferComp->Render_Buffer();
+
+#pragma region 충돌 메쉬 콜라이더
+	MeshBoxColider(_float(pBoxShape->vHalfSize.x), _float(pBoxShape->vHalfSize.y), _float(pBoxShape->vHalfSize.z));
+#pragma endregion
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

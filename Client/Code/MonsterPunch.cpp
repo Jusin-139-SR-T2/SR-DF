@@ -61,6 +61,8 @@ _int CMonsterPunch::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
+	Owner_Dead(m_pOwner);
+
 	//충돌하지 않았을경우 없앤다. 
 	m_tFrame.fAge += fTimeDelta * 1.f;
 

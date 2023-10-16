@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "AceEffect.h"
+#include "AceMonster.h"
+
 
 CAceEffect::CAceEffect(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
@@ -27,6 +29,22 @@ HRESULT CAceEffect::Ready_GameObject()
 HRESULT CAceEffect::Add_Component()
 {
 	return S_OK;
+}
+
+void CAceEffect::Owner_Dead(CGameObject* pOwner)
+{
+	CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pOwner);
+
+	if (pAceObj == nullptr)
+		return;
+	else
+	{
+		CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
+		m_bOwnerDead = pMonster->Get_IsMonsterDeath();
+	
+		if (m_bOwnerDead)
+			Set_Dead();
+	}
 }
 
 _int CAceEffect::Update_GameObject(const _float& fTimeDelta)

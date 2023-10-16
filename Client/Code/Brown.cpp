@@ -205,10 +205,27 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
             m_tFrame.fRepeat += 1;
     }
 
-
-    if (IsKey_Pressed(DIK_O))
+    
+    if (IsKey_Pressed(DIK_I))
     {
-        m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+        //m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+
+        //m_pTransformComp->Get_Look();
+
+   /*     for (_float i = 0; i < D3DX_PI; ++i)
+        {
+            m_pTransformComp->Set_RotationY(i * fTimeDelta);
+        }*/
+
+
+       //_vec3 look = m_pPlayerTransformcomp->Get_Look();
+       //
+       //swprintf_s(debugString, L"디버그용 현재 플레이어 LOOK x %f\n", look.x);
+       //OutputDebugStringW(debugString);
+       //swprintf_s(debugString, L"디버그용 현재 플레이어 LOOK y %f\n", look.y);
+       //OutputDebugStringW(debugString);
+       //swprintf_s(debugString, L"디버그용 현재 플레이어 LOOK z %f\n", look.z);
+       //OutputDebugStringW(debugString);
 
     }
 
@@ -1329,6 +1346,7 @@ void CBrown::Falling(float fDeltaTime)
     // 실행
     {
         _vec3 vDirect = m_pTransformComp->Get_Pos() - m_pPlayerTransformcomp->Get_Pos();
+
 
         D3DXVec3Normalize(&vDirect, &vDirect);
 

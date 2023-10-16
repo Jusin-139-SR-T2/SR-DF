@@ -198,8 +198,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     }
     else
         m_IsOnGround = false;
-
-    // 대쉬
+        
+        // 대쉬
     Dash(fTimeDelta);
 
     // 프레임 관리
@@ -846,6 +846,13 @@ void CPlayer::OnCollisionExited(CGameObject* pDst)
    // OutputDebugString(L"플레이어와 충돌완료\n");
 }
 
+void CPlayer::CrossHairState()
+{
+    //블랙보드 업로드용 변수 없어서 만드려고 
+
+
+}
+
 // 블랙보드 정보 업데이트 (정보 올려주기)
 void CPlayer::Update_BlackBoard()
 {
@@ -865,6 +872,10 @@ void CPlayer::Update_BlackBoard()
     pBlackBoard->Get_HP().Cur = m_gHp.Cur;
     pBlackBoard->Get_GunLight() = m_bGunLight;
     pBlackBoard->Get_LighterLight() = m_PlayerLighter;
+
+    //pBlackBoard->Get_PlayerPickUpState() = m_tRightHand.; //차징상태
+    //pBlackBoard->Get_PlayerEquipGunState() = m_tRightHand.; //차징상태
+
 
 }
 
@@ -2497,7 +2508,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
 
                 // 오른손 총 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
-                RightLoadAnimationFromFile("FryingPan");
+                RightLoadAnimationFromFile("FryingPan5");
 
                 bRightGetAnimation = false; // Off
             }

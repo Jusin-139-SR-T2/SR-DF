@@ -68,6 +68,8 @@ _int CEnergyBall::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
+	Owner_Dead(m_pOwner);
+
 	Billboard();
 
 	m_tFrame.fFrame += fTimeDelta * m_tFrame.fFrameSpeed;

@@ -50,10 +50,21 @@ public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX2(_bool, m_bGunLight, GunLight, GET_C_REF, GET_REF)
 	GETSET_EX2(_bool, m_bLighterLight, LighterLight, GET_C_REF, GET_REF)
 
+	GETSET_EX2(_bool, m_bPlayerEquipGunState, PlayerGunState, GET_C_REF, GET_REF)
+	GETSET_EX2(_bool, m_bPlayerAttackState, PlayerAttackState, GET_C_REF, GET_REF)
+	GETSET_EX2(_bool, m_bPlayerPickUpState, PlayerPickUpState, GET_C_REF, GET_REF)
+	GETSET_EX2(_bool, m_bPlayerDetect, PlayerDetect, GET_C_REF, GET_REF)
+
+
 private:
-	GAUGE<_float>		m_fHP;
-	GAUGE<_float>		m_fStamina;
-	_bool				m_bGunLight;
-	_bool				m_bLighterLight;
+	GAUGE<_float>		m_fHP;					// 플레이어 hp
+	GAUGE<_float>		m_fStamina;				// 달리기, 공격 등에서 소모되는 스테미나 
+	_bool				m_bGunLight;			// 총쏠때 켜지는 조명 블
+	_bool				m_bLighterLight;		// 손으로 드는 라이터 
+
+	_bool				m_bPlayerEquipGunState;	// 플레이어가 총을쥐고있을때
+	_bool				m_bPlayerAttackState;	// 플레이어가 공격할때 (주먹, 장비, 발차기 등)
+	_bool				m_bPlayerPickUpState;	// 들것 들고있을때 - 시체 
+	_bool				m_bPlayerDetect;		// 플레이어 일점범위내 몬스터있을때 
 };
 

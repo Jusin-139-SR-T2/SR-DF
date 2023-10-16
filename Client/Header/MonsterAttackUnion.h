@@ -51,6 +51,7 @@ public:
 	_bool						Attack_Occurrence(CGameObject* pDst, _float fAttack);
 	GAUGE<_float>				m_gPlayerHp; //플레이어 HP 저장용 
 	GAUGE<_float>				m_gMonsterHp; //몬스터 HP 저장용
+	void						Owner_Dead(CGameObject* pOwner);
 
 protected:
 	_tchar						debugString[100];	// 디버그용 string
@@ -60,4 +61,5 @@ protected:
 	_float						m_fAttack;			// 스킬별 공격력 
 	FCollisionSphere*			pSphereShape;
 	FCollisionSphere*			pBoxShape;
+	_bool						m_bOwnerDead;
 };

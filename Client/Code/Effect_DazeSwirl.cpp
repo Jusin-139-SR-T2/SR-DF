@@ -42,6 +42,8 @@ HRESULT CEffect_DazeSwirl::Ready_GameObject()
 {
 	SUPER::Ready_GameObject();
 
+	Owner_Dead(m_pOwner);
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"DazeSwirl");

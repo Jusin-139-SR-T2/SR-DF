@@ -48,12 +48,14 @@ public:
 	HRESULT				Billboard();
 	HRESULT				Add_Component();
 	void				Height_On_Terrain(_float Height);
+	void				Owner_Dead(CGameObject* pOwner);
 	
 	// 블랙보드
 protected:
 	FBlackBoardPtr<CBlackBoard_Monster>	m_wpBlackBoard_Monster;	
 	FBlackBoardPtr<CBlackBoard_Player>	m_wpBlackBoard_Player;
 	FRAME				m_tFrame;
+	_bool						m_bOwnerDead;
 
 public:
 	_float Get_RandomFloat(_float lowBound, _float hightBound)

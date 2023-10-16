@@ -14,7 +14,7 @@
 #include "Terrain.h"
 #include "SnowParticle.h"
 #include "FireWork.h"
-
+#include "UI_CrossHair.h"
 //test
 
 class CStage : public Engine::CScene

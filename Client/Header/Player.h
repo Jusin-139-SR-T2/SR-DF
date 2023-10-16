@@ -141,6 +141,7 @@ public: // Get_Set
 	_float m_fAge = 0.f;
 	_float m_fLifeTime = 0.2f;
 	_bool m_bGunLight; // 불켜는 bool값 
+	void CrossHairState();
 	// ------------------------- 
 
 		_bool* Get_DBugFrame() {

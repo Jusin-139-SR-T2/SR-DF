@@ -74,6 +74,9 @@ _int CFallingStone::Update_GameObject(const _float& fTimeDelta)
 	SUPER::Update_GameObject(fTimeDelta);
 
 	Billboard();
+
+	Owner_Dead(m_pOwner);
+
 	
 	if(m_bFall)
 		Falling(fTimeDelta); //³«ÇÏ 

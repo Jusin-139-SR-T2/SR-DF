@@ -220,6 +220,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	Engine::CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Player", CUI_Player::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", CUI_CrossHair::Create(m_pGraphicDev)), E_FAIL);
 	
 	m_mapLayer.insert({ pLayerTag, pLayer });
 	
