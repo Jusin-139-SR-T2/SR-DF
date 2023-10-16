@@ -5,8 +5,6 @@
 #include "ThrowPipe.h"
 #include "MonsterPunch.h"
 
-#include "Awareness.h"
-
 #include "Serialize_BaseClass.h"
 
 BEGIN(Engine)

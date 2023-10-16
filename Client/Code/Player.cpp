@@ -1065,10 +1065,6 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
 // 마우스 움직임
 void CPlayer::Mouse_Move()
 {
-    m_pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Camera", L"DynamicCamera"));
-    if (m_pCamera == nullptr)
-        return;
-
 #pragma region 1인칭
     if (m_tCamera.bOne)
     {
