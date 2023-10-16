@@ -119,6 +119,9 @@ private:	// 계층 관련 정의부
 		_vec3			vScale = { 1.f,1.f,1.f };
 		_float			fPriority[EPRIORITY_OBJECT_END] = { 0.f, 0.f, 0.f };
 		_bool			bUsePriority[EPRIORITY_OBJECT_END] = { true, true, true };
+
+		string							strGroupKey;
+		string							strTextureKey;
 	};
 	struct FLayerData
 	{

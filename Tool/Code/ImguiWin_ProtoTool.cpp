@@ -42,6 +42,17 @@ CImguiWin_ProtoTool* CImguiWin_ProtoTool::Create()
 void CImguiWin_ProtoTool::Free()
 {
     SUPER::Free();
+
+    for (auto iter = m_mapProtoData.begin(); iter != m_mapProtoData.end();)
+    {
+        if (iter != m_mapProtoData.end())
+        {
+            Safe_Delete((*iter).second);
+            iter = m_mapProtoData.erase(iter);
+        }
+        else
+            ++iter;
+    }
 }
 
 HRESULT CImguiWin_ProtoTool::Ready_ImguiWin()
@@ -143,7 +154,7 @@ void CImguiWin_ProtoTool::Layout_ObjectBrowser(const ImGuiWindowFlags& iMain_Fla
         if (bAdd_Proto)
         {
             if (!m_strAdd_Proto.empty())
-                m_mapProtoData.emplace(m_strAdd_Proto, FProtoData());
+                m_mapProtoData.emplace(m_strAdd_Proto, new FProtoData());
             m_strAdd_Proto.clear();
         }
 
@@ -213,21 +224,54 @@ void CImguiWin_ProtoTool::Layout_Property(const ImGuiWindowFlags& iMain_Flags)
             ImGui::Button(u8"Transform");
             Set_Button_ReturnColor();
 
-            FProtoData& refObject = m_mapProtoData[m_strCur_Proto];
+            FProtoData* refObject = m_mapProtoData[m_strCur_Proto];
             _bool bIsEdited = false;    // 에딧되었을 때 변화 이벤트
 
 
             // 오브젝트 타입
             if (ImGui::CollapsingHeader(u8"오브젝트 타입"))
             {
-                if (ImGui::BeginCombo(u8"##ComboObjectType", m_vecObject_Type[refObject.eID].c_str()))
+                if (ImGui::BeginCombo(u8"##ComboObjectType", m_vecObject_Type[refObject->eID].c_str()))
                 {
                     for (size_t i = 0; i < m_vecObject_Type.size(); i++)
                     {
                         if (ImGui::Selectable(m_vecObject_Type[i].c_str(),
-                            static_cast<EGO_CLASS>(i) == refObject.eID))
+                            static_cast<EGO_CLASS>(i) == refObject->eID))
                         {
-                            refObject.eID = static_cast<EGO_CLASS>(i);
+                            refObject->eID = static_cast<EGO_CLASS>(i);
+
+                            switch (refObject->eID)
+                            {
+                            case Engine::ECLASS_NONE:
+                                break;
+                            case Engine::ECLASS_PLAYER:
+                                break;
+                            case Engine::ECLASS_BROWN:
+                                break;
+                            case Engine::ECLASS_GREY:
+                                break;
+                            case Engine::ECLASS_BOSS:
+                                break;
+                            case Engine::ECLASS_FOOD:
+                                break;
+                            case Engine::ECLASS_WEAPON:
+                                break;
+                            case Engine::ECLASS_THROW:
+                                break;
+                            case Engine::ECLASS_INTERACTION:
+                                break;
+                            case Engine::ECLASS_BUILDING:
+                            {
+                                /*FProtoCubeStructure* tProtoCube = new FProtoCubeStructure;
+                                *tProtoCube = *refObject;
+                                Safe_Delete(m_mapProtoData[m_strCur_Proto]);
+                                m_mapProtoData[m_strCur_Proto] = tProtoCube;
+                                refObject = tProtoCube;*/
+                                break;
+                            }
+                            default:
+                                break;
+                            }
                         }
                     }
                     
@@ -258,15 +302,15 @@ void CImguiWin_ProtoTool::Layout_Property(const ImGuiWindowFlags& iMain_Flags)
 
                 ImGui::PushItemWidth((60.f + 6.f) * 3.f);
                 if (ImGui::InputFloat3("##Translate",
-                    refObject.vPos,
+                    refObject->vPos,
                     "%.3f",
                     ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
                 {
-                    Clamp_Vec3Translate(refObject.vPos, 10000.f);
+                    Clamp_Vec3Translate(refObject->vPos, 10000.f);
                     bIsEdited = true;
                 }
                 if (ImGui::SliderFloat3("##TranslateSlider",
-                    refObject.vPos,
+                    refObject->vPos,
                     -10000.f, 10000.f))
                 {
                     bIsEdited = true;
@@ -296,15 +340,15 @@ void CImguiWin_ProtoTool::Layout_Property(const ImGuiWindowFlags& iMain_Flags)
 
                 ImGui::PushItemWidth((60.f + 6.f) * 3.f);
                 if (ImGui::InputFloat3("##Rotate",
-                    refObject.vRot,
+                    refObject->vRot,
                     "%.3f",
                     ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
                 {
-                    Clamp_Vec3Rot(refObject.vRot, 360.f);
+                    Clamp_Vec3Rot(refObject->vRot, 360.f);
                     bIsEdited = true;
                 }
                 if (ImGui::SliderFloat3("##RoateSlider",
-                    refObject.vRot,
+                    refObject->vRot,
                     -360.f, 360.f))
                 {
                     bIsEdited = true;
@@ -334,20 +378,47 @@ void CImguiWin_ProtoTool::Layout_Property(const ImGuiWindowFlags& iMain_Flags)
 
                 ImGui::PushItemWidth((60.f + 6.f) * 3.f);
                 if (ImGui::InputFloat3("##Scale",
-                    refObject.vScale,
+                    refObject->vScale,
                     "%.3f",
                     ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue))
                 {
-                    Clamp_Vec3Scale(refObject.vScale, 1000.f);
+                    Clamp_Vec3Scale(refObject->vScale, 1000.f);
                     bIsEdited = true;
                 }
                 if (ImGui::SliderFloat3("##ScaleSlider",
-                    refObject.vScale,
+                    refObject->vScale,
                     -1000.f, 1000.f))
                 {
                     bIsEdited = true;
                 }
                 ImGui::PopItemWidth();
+            }
+
+
+            if (refObject->eID == EGO_CLASS::ECLASS_BUILDING)
+            {
+                if (ImGui::CollapsingHeader(u8"텍스처세팅"))
+                {
+                    ImGui::Text(u8"그룹");
+                    refObject->strGroupKey.reserve(30);
+                    if (ImGui::InputTextEx(u8"##TextureGroupName", u8"",
+                        const_cast<char*>(refObject->strGroupKey.c_str()),
+                        (_int)refObject->strGroupKey.capacity(),
+                        ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
+                    {
+                        refObject->strGroupKey = refObject->strGroupKey.c_str();
+                    }
+
+                    ImGui::Text(u8"텍스처");
+                    refObject->strTextureKey.reserve(30);
+                    if (ImGui::InputTextEx(u8"##TexutureName", u8"",
+                        const_cast<char*>(refObject->strTextureKey.c_str()),
+                        (_int)refObject->strTextureKey.capacity(),
+                        ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
+                    {
+                        refObject->strTextureKey = refObject->strTextureKey.c_str();
+                    }
+                }
             }
         }
 
@@ -387,10 +458,12 @@ void CImguiWin_ProtoTool::Save_Protos()
         FSerialize_Proto tProto;
         tProto.tHeader.eType = ESERIALIZE_PROTO;
         tProto.tHeader.strName = (*iter).first;
-        tProto.eID = (*iter).second.eID;
-        tProto.vPos = (*iter).second.vPos;
-        tProto.vRot = (*iter).second.vRot;
-        tProto.vScale = (*iter).second.vScale;
+        tProto.eID = (*iter).second->eID;
+        tProto.vPos = (*iter).second->vPos;
+        tProto.vRot = (*iter).second->vRot;
+        tProto.vScale = (*iter).second->vScale;
+        tProto.strGroupKey = (*iter).second->strGroupKey;
+        tProto.strTextureKey = (*iter).second->strTextureKey;
 
         // 프로토 저장
         Export_Proto(tProto);
@@ -446,9 +519,9 @@ void CImguiWin_ProtoTool::Load_Protos()
             if (strName.substr(extPos) == g_strProtoExt)
             {
                 FSerialize_Proto tProtoSerial;
-                FProtoData tProtoData;
+                FProtoData* tProtoData = new FProtoData();
 
-                Import_Proto(strName, tProtoSerial, tProtoData);
+                Import_Proto(strName, tProtoSerial, *tProtoData);
 
                 m_mapProtoData.emplace(strName.substr((size_t)0, extPos), tProtoData);
             }
@@ -477,6 +550,8 @@ void CImguiWin_ProtoTool::Import_Proto(const string& strName, FSerialize_Proto& 
             tProtoData.vPos = tProtoSerial.vPos;
             tProtoData.vRot = tProtoSerial.vRot;
             tProtoData.vScale = tProtoSerial.vScale;
+            tProtoData.strGroupKey = tProtoSerial.strGroupKey;
+            tProtoData.strTextureKey = tProtoSerial.strTextureKey;
         }
     }
     else
