@@ -51,6 +51,12 @@ HRESULT CDynamicCamera::Ready_GameObject(const _vec3* pEye, const _vec3* pAt, co
 	ShowCursor(false);
 	m_bOne = true;
 
+#pragma region 블랙보드
+
+	Engine::Add_BlackBoard(L"Camera", CBlackBoard_Camera::Create());
+
+#pragma endregion
+
 	return S_OK;
 }
 
@@ -83,6 +89,9 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 	//}
 
 	_int	iExit = CCamera::Update_GameObject(fTimeDelta);
+
+	// 블랙보드 업로드
+	Update_BlackBoard();
 
 	return iExit;
 }
@@ -310,7 +319,7 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	{
 		// 카메라 위치 설정
 		m_vEye = { vPlayerPos.x,                                                                     
-				   vPlayerPos.y,
+				   vPlayerPos.y + 0.4f,
 				   vPlayerPos.z };
 
 		// 카메라가 바라보는 대상 (플레이어가 바라보는 방향)
@@ -482,4 +491,26 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 		m_vEye = vPos + pPlayerTransCom->Get_Pos();
 
 	}
+}
+
+void CDynamicCamera::Update_BlackBoard()
+{
+	// 블랙보드 연결 대기, 안전 코드로 필수
+	if (!m_wpBlackBoard_Camera.Get_BlackBoard())
+	{
+		m_wpBlackBoard_Camera.Set_BlackBoard(Engine::Get_BlackBoard(L"Camera"));
+		// 연결 실패
+		if (!m_wpBlackBoard_Camera.Get_BlackBoard())
+			return;
+	}
+
+	// 안전 코드를 거치면 일반 포인터로 접근 허용.
+	CBlackBoard_Camera* pBlackBoard = m_wpBlackBoard_Camera.Get_BlackBoard();
+
+	// 여기서부터 블랙보드의 정보를 업데이트 한다.
+	pBlackBoard->Get_OneSwitch() = m_bOne;
+	pBlackBoard->Get_ThreeSwitch() = m_bThree;
+	pBlackBoard->Set_Eye(m_vEye);
+	pBlackBoard->Set_At(m_vAt);
+
 }

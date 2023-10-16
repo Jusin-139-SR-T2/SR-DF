@@ -40,3 +40,13 @@ void CAttackUnion::Free()
 {
     SUPER::Free();
 }
+
+void CAttackUnion::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
+{
+    SUPER::MeshBoxColider(_Width, _Height, Depth);
+}
+
+void CAttackUnion::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
+{
+    SUPER::MeshSphereColider(Radius, Slices, Stacks);
+}

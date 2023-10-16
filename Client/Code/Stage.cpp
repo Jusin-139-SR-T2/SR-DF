@@ -123,9 +123,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray", CGray::Create(m_pGraphicDev, 35.f, 1.f, 25.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray2", CGray::Create(m_pGraphicDev, 35.f, 1.f, 50.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown",  CGray::Create(m_pGraphicDev, 20.f, 1.f, 20.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown2", CGray::Create(m_pGraphicDev, 20.f, 1.f, 25.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown3", CGray::Create(m_pGraphicDev, 20.f, 1.f, 30.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown",  CBrown::Create(m_pGraphicDev, 20.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown2", CBrown::Create(m_pGraphicDev, 20.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown3", CBrown::Create(m_pGraphicDev, 20.f, 1.f, 30.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown4", CGray::Create(m_pGraphicDev, 20.f, 1.f, 35.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown5", CGray::Create(m_pGraphicDev, 20.f, 1.f, 40.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown6", CGray::Create(m_pGraphicDev, 20.f, 1.f, 45.f)), E_FAIL);
@@ -237,9 +237,10 @@ HRESULT CStage::Ready_Layer_Completed()
 	CPlayerLighter* pLighter = dynamic_cast<CPlayerLighter*>(Get_GameObject(L"GameLogic", L"PlayerLighter"));
 	NULL_CHECK_RETURN(pLighter, E_FAIL);
 
-	pObj->Set_PlayerLighter(pLighter);
-	pCam->Set_Target(pObj);
-	pObj->Set_Camera(pCam);
+	// 모두 블랙보드로 연동 변경
+	//pObj->Set_PlayerLighter(pLighter);
+	//pCam->Set_Target(pObj);
+	//pObj->Set_Camera(pCam);
 
 	return S_OK;
 }

@@ -3,6 +3,8 @@
 #include "Camera.h"
 
 #include "Engine_Macro.h"
+#include "BlackBoard_Camera.h"
+#include "Player.h"
 
 class CDynamicCamera : public Engine::CCamera
 {
@@ -41,6 +43,10 @@ private:
 	void		Mouse_Fix();
 	void		Camera_State(const _float& fTimeDelta);
 	void		Quaternion_Ver(const _float& fTimeDelta);
+	void		Update_BlackBoard();
+
+private:
+	FBlackBoardPtr<CBlackBoard_Camera>		m_wpBlackBoard_Camera;
 
 private:
 	_float		m_fSpeed = 10.f;

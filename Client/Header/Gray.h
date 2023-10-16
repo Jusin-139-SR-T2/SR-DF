@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AceMonster.h"
-#include "Awareness.h"
+#include "Effect_Awareness.h"
 #include "ThrowPipe.h"
 #include "MonsterPunch.h"
 
@@ -63,6 +63,10 @@ protected:
 	virtual void	OnCollisionExited(CGameObject* pDst);
 	PRIVATE FCollisionBox* pShape;
 
+public:
+	LPD3DXMESH		m_pMesh = nullptr;
+
+
 #pragma region 상태머신 enum셋팅
 
 public:
@@ -81,6 +85,7 @@ public:
 	// 행동 상태머신
 	enum class STATE_ACT {
 		IDLE, APPROACH, SUDDENATTACK, SIDEMOVING, ATTACK,
+		FALLING,
 		GOHOME
 	};
 
@@ -88,6 +93,7 @@ public:
 	enum class ACTION_KEY {
 		IDLE, RUN, WALK, KEEPEYE, SIDEWALK,
 		UPRIGHT, FRIGHTEN, BASIC_ATTACK, HEAVY_ATTACK,
+		BACK,
 		GOHOME
 	};
 
@@ -107,11 +113,12 @@ private:
 	_bool		m_bArrive = FALSE; // 집에 도착 여부 
 	_bool		m_AttackOnce = FALSE;
 	_bool		m_bCollisionEnter = FALSE;
+	_bool		m_bSecondFall = FALSE;
 
 	// 외부타격으로 인한 죽음
 	enum class RECENT_COL { PLAYER, PLAYERATK, BOSSATK, RECEND_END };
 
-	void MonsterDead();
+	void			MonsterDead();
 	RECENT_COL		m_eRecentCol; // 플레이어1 플레이어공격체2 보스스킬3 
 
 private:
@@ -166,6 +173,7 @@ private:
 	void SideMoving(float fDeltaTime); // EKKPEYE + SIDEWALK
 	void Attack(float fDeltaTime); // BASIC ATTACK + HEAVY ATTACK
 	void GoHome(float fDeltaTime); // GOHOME 
+	void Falling(float fDeltaTime); // GOHOME 
 
 #pragma endregion
 };

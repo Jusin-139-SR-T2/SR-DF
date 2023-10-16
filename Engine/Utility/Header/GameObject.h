@@ -73,6 +73,14 @@ protected:
 public:
 	void Compute_ViewZ(const _vec3* pPos);
 
+public: // ¼ºÈñ Ãß°¡ : MeshColider(Box, SphereColider)
+	virtual void	MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth);
+	virtual void	MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks);
+
+protected: 	// ¼ºÈñ Ãß°¡ : MeshColider(Box, SphereColider)
+	LPD3DXMESH	m_MeshSphere = nullptr;
+	LPD3DXMESH	m_MeshBox = nullptr;
+
 protected:
 	static _ulonglong				g_dwID_Count;
 

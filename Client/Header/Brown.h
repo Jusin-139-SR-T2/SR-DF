@@ -3,7 +3,7 @@
 #include "AceMonster.h"
 #include "BlackBoard_Monster.h"
 #include "BlackBoardPtr.h"
-#include "Awareness.h"
+#include "Effect_Awareness.h"
 #include "MonsterPunch.h"
 
 #include "Serialize_BaseClass.h"
@@ -78,9 +78,10 @@ private:
 	_vec3		vDir;								// 몬스터가 플레이어 바라보는 벡터  
 	
 	//스위치 on/off 
-	_bool		m_bArrive = false;
-	_bool		m_AttackOnce = false;
+	_bool		m_bArrive = FALSE;
+	_bool		m_AttackOnce = FALSE;
 	_bool		m_bCollisionEnter = TRUE;
+	_bool		m_bSecondFall = FALSE;
 
 	// 외부타격으로 인한 죽음
 	enum class RECENT_COL {PLAYER, PLAYERATK, BOSSATK, RECEND_END};

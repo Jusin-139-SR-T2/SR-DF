@@ -247,6 +247,15 @@ HRESULT CLoading::Loading_For_Texture()
 
 #pragma endregion
 
+#pragma region Projectile
+	// 디버그용
+	Load_Texture(L"./Resource/Texture/Object/PoolBalls_0.png", TEX_NORMAL, L"Debug", L"Sphere"); // 몬스터 공격 디버그용
+
+	Load_Texture(L"./Resource/Texture/Monster/Projectile/ThrowPipe_%d.png", TEX_NORMAL, L"Projectile", L"ThrowPipe", _range<_uint>(0U, 11U)); // Bomb
+	Load_Texture(L"./Resource/Texture/idk/Circle.png", TEX_NORMAL, L"Debug", L"Sphere"); // Bomb
+
+#pragma endregion
+
 #pragma region Object 
 	// Object - Food
 	Load_Texture(L"./Resource/Texture/Item/Food/BananaPeel.png", TEX_NORMAL, L"Food", L"BananaPeel");
@@ -346,42 +355,120 @@ HRESULT CLoading::Loading_For_Texture()
 #pragma endregion
 
 #pragma region Effect
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Awareness/Awareness_15.png", TEX_NORMAL, L"Effect", L"MaxAware"); // 몬스터 공격 디버그용
-	Load_Texture(L"./Resource/Texture/Object/PoolBalls_0.png", TEX_NORMAL, L"Debug", L"Sphere"); // 몬스터 공격 디버그용
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/FallingStone1.png", TEX_NORMAL, L"Effect", L"Stone1");
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/FallingStone2.png", TEX_NORMAL, L"Effect", L"Stone2");
+	
+	//몬스터 관련 이펙트 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Stone/FallingStone1.png", TEX_NORMAL, L"Effect", L"Stone1");
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Stone/FallingStone2.png", TEX_NORMAL, L"Effect", L"Stone2");						
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/SlowThunder/SlowThunder_%d.png", TEX_NORMAL, L"Effect", L"SlowThunder", _range<_uint>(0U, 5U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/MissTarget/MissTarget_%d.png", TEX_NORMAL, L"Effect", L"MissTarget", _range<_uint>(0U, 14U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/EnergyBall/EnergyBall_%d.png", TEX_NORMAL, L"Effect", L"EnergyBall", _range<_uint>(0U, 7U));  
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/RedThunder/RedThunder_%d.png", TEX_NORMAL, L"Effect", L"RedThunder", _range<_uint>(0U, 5U));  
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/FireEffect/Fire_%d.png", TEX_NORMAL, L"Effect", L"FireEffect", _range<_uint>(0U, 5U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Stone/Stone_%d.png", TEX_NORMAL, L"Effect", L"FallingStone", _range<_uint>(0U, 3U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Barrier/Barrier_%d.png", TEX_NORMAL, L"Effect", L"Barrier", _range<_uint>(0U, 7U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/GreenBuff/Buff_%d.png", TEX_NORMAL, L"Effect", L"Buff", _range<_uint>(0U, 7U));  
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Razer/Razer_%d.png", TEX_NORMAL, L"Effect", L"Razer", _range<_uint>(0U, 18U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/SkillEffect/Holy/Holy_%d.png", TEX_NORMAL, L"Effect", L"Holy", _range<_uint>(0U, 3U)); 
+	
+	Load_Texture(L"./Resource/Texture/AceEffect/Awareness/Awareness_15.png", TEX_NORMAL, L"Effect", L"MaxAware"); // 몬스터 공격 디버그용
+	Load_Texture(L"./Resource/Texture/AceEffect/Awareness/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 15U));
 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/SlowThunder/SlowThunder_%d.png", TEX_NORMAL, L"Effect", L"SlowThunder", _range<_uint>(0U, 5U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/MissTarget/MissTarget_%d.png", TEX_NORMAL, L"Effect", L"MissTarget", _range<_uint>(0U, 14U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/EnergyBall/EnergyBall_%d.png", TEX_NORMAL, L"Effect", L"EnergyBall", _range<_uint>(0U, 7U));  
-	Load_Texture(L"./Resource/Texture/Monster/Effect/RedThunder/RedThunder_%d.png", TEX_NORMAL, L"Effect", L"RedThunder", _range<_uint>(0U, 5U));  
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Awareness/Awareness_%d.png", TEX_NORMAL, L"Effect", L"Awareness", _range<_uint>(0U, 15U));
-	Load_Texture(L"./Resource/Texture/Monster/Effect/FireEffect/Fire_%d.png", TEX_NORMAL, L"Effect", L"FireEffect", _range<_uint>(0U, 5U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Stone/Stone_%d.png", TEX_NORMAL, L"Effect", L"FallingStone", _range<_uint>(0U, 3U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Barrier/Barrier_%d.png", TEX_NORMAL, L"Effect", L"Barrier", _range<_uint>(0U, 7U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/GreenBuff/Buff_%d.png", TEX_NORMAL, L"Effect", L"Buff", _range<_uint>(0U, 7U));  
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Razer/Razer_%d.png", TEX_NORMAL, L"Effect", L"Razer", _range<_uint>(0U, 18U)); 
-	Load_Texture(L"./Resource/Texture/Monster/Effect/Holy/Holy_%d.png", TEX_NORMAL, L"Effect", L"Holy", _range<_uint>(0U, 3U)); 
+	// 히트판정
+	Load_Texture(L"./Resource/Texture/AceEffect/FallingDust/FallingDust_%d.png", TEX_NORMAL, L"Effect", L"FallingDust", _range<_uint>(0U, 17U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/HitBlood/HitBlood_%d.png", TEX_NORMAL, L"Effect", L"HitBlood", _range<_uint>(0U, 13U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/Dazed/DazeSwirl_%d.png", TEX_NORMAL, L"Effect", L"DazeSwirl", _range<_uint>(0U, 3U));
+	Load_Texture(L"./Resource/Texture/AceEffect/HitDust/HitDust_%d.png", TEX_NORMAL, L"Effect", L"HitDust", _range<_uint>(0U, 16U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/HitPow/HitPow_%d.png", TEX_NORMAL, L"Effect", L"HitPow", _range<_uint>(0U, 3U)); 
 
 #pragma endregion 
 
 #pragma region Building - TEX_CUBE 
-	Load_Texture(L"./Resource/Texture/Building/A.dds", TEX_CUBE, L"Building", L"A");
-	Load_Texture(L"./Resource/Texture/Building/B.dds", TEX_CUBE, L"Building", L"B");
-	Load_Texture(L"./Resource/Texture/Building/C.dds", TEX_CUBE, L"Building", L"C");
-	Load_Texture(L"./Resource/Texture/Building/D.dds", TEX_CUBE, L"Building", L"D");
-	Load_Texture(L"./Resource/Texture/Building/E.dds", TEX_CUBE, L"Building", L"E");
-	Load_Texture(L"./Resource/Texture/Building/F.dds", TEX_CUBE, L"Building", L"F");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/A.dds", TEX_CUBE, L"Building", L"A");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/B.dds", TEX_CUBE, L"Building", L"B");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/C.dds", TEX_CUBE, L"Building", L"C");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/D.dds", TEX_CUBE, L"Building", L"D");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/E.dds", TEX_CUBE, L"Building", L"E");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/F.dds", TEX_CUBE, L"Building", L"F");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/G.dds", TEX_CUBE, L"Building", L"G");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/H.dds", TEX_CUBE, L"Building", L"H");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/I.dds", TEX_CUBE, L"Building", L"I");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/J.dds", TEX_CUBE, L"Building", L"J");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/K.dds", TEX_CUBE, L"Building", L"K");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Building/L.dds", TEX_CUBE, L"Building", L"L");
 
 #pragma endregion
 
-#pragma region Projectile
-	Load_Texture(L"./Resource/Texture/Monster/Projectile/ThrowPipe_%d.png", TEX_NORMAL, L"Projectile", L"ThrowPipe", _range<_uint>(0U, 11U)); // Bomb
-	Load_Texture(L"./Resource/Texture/idk/Circle.png", TEX_NORMAL, L"Debug", L"Sphere"); // Bomb
-
+#pragma region Furniture - TEX_CUBE 
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/WhiteCurtainTable.dds", TEX_CUBE, L"Furniture", L"WhiteCurtainTable");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/CigaretteMachine.dds", TEX_CUBE, L"Furniture", L"CigaretteMachine");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/DarkNavyCushion2.dds", TEX_CUBE, L"Furniture", L"DarkNavyCushion2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BrokenVent_Rect.dds", TEX_CUBE, L"Furniture", L"BrokenVent_Rect");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/DarkNavyCushion.dds", TEX_CUBE, L"Furniture", L"DarkNavyCushion");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/DarkRedCushion.dds", TEX_CUBE, L"Furniture", L"DarkRedCushion");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BrokenVentFan.dds", TEX_CUBE, L"Furniture", L"BrokenVentFan");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/GreenCabinet2.dds", TEX_CUBE, L"Furniture", L"GreenCabinet2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/WhiteStorage2.dds", TEX_CUBE, L"Furniture", L"WhiteStorage2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/electricalBox.dds", TEX_CUBE, L"Furniture", L"electricalBox");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/GreenCabinet.dds", TEX_CUBE, L"Furniture", L"GreenCabinet");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/MarbleTable2.dds", TEX_CUBE, L"Furniture", L"MarbleTable2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/WhiteStorage.dds", TEX_CUBE, L"Furniture", L"WhiteStorage");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/MarbleTable1.dds", TEX_CUBE, L"Furniture", L"MarbleTable1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BookShelves2.dds", TEX_CUBE, L"Furniture", L"BookShelves2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/CockMachine.dds", TEX_CUBE, L"Furniture", L"CockMachine");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/GrayCabinet.dds", TEX_CUBE, L"Furniture", L"GrayCabinet");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/GreenCrate1.dds", TEX_CUBE, L"Furniture", L"GreenCrate1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/WoodCabinet.dds", TEX_CUBE, L"Furniture", L"WoodCabinet");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/RedCushion2.dds", TEX_CUBE, L"Furniture", L"RedCushion2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BlindWindow.dds", TEX_CUBE, L"Furniture", L"BlindWindow");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BlueCabinet.dds", TEX_CUBE, L"Furniture", L"BlueCabinet");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BlueMachine.dds", TEX_CUBE, L"Furniture", L"BlueMachine");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BookShelves.dds", TEX_CUBE, L"Furniture", L"BookShelves");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BrokenGlass.dds", TEX_CUBE, L"Furniture", L"BrokenGlass");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/PhoneBooth.dds", TEX_CUBE, L"Furniture", L"PhoneBooth");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BrownTrunk.dds", TEX_CUBE, L"Furniture", L"BrownTrunk");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/RedCurtain.dds", TEX_CUBE, L"Furniture", L"RedCurtain");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/RedCushion.dds", TEX_CUBE, L"Furniture", L"RedCushion");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Television.dds", TEX_CUBE, L"Furniture", L"Television");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/WhiteStand.dds", TEX_CUBE, L"Furniture", L"WhiteStand");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/WhiteStand.dds", TEX_CUBE, L"Furniture", L"WhiteStand");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/VentIntro.dds", TEX_CUBE, L"Furniture", L"VentIntro");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Barbottle.dds", TEX_CUBE, L"Furniture", L"BarBottle");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BlueTrunk.dds", TEX_CUBE, L"Furniture", L"BlueTrunk");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/TableLeg.dds", TEX_CUBE, L"Furniture", L"TableLeg");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/VentFan1.dds", TEX_CUBE, L"Furniture", L"VentFan1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/VentFan2.dds", TEX_CUBE, L"Furniture", L"VentFan2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/LightBox.dds", TEX_CUBE, L"Furniture", L"LightBox");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Radiator.dds", TEX_CUBE, L"Furniture", L"Radiator");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BarFront.dds", TEX_CUBE, L"Furniture", L"BarFront");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BarTable.dds", TEX_CUBE, L"Furniture", L"BarTable");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Cabinet1.dds", TEX_CUBE, L"Furniture", L"Cabinet1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Cabinet2.dds", TEX_CUBE, L"Furniture", L"Cabinet2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Cabinet3.dds", TEX_CUBE, L"Furniture", L"Cabinet3");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Column10.dds", TEX_CUBE, L"Furniture", L"Column10");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Column1.dds", TEX_CUBE, L"Furniture", L"Column1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Column2.dds", TEX_CUBE, L"Furniture", L"Column2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Column3.dds", TEX_CUBE, L"Furniture", L"Column3");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Column4.dds", TEX_CUBE, L"Furniture", L"Column4");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Column5.dds", TEX_CUBE, L"Furniture", L"Column5");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Column6.dds", TEX_CUBE, L"Furniture", L"Column6");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Column7.dds", TEX_CUBE, L"Furniture", L"Column7");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Column8.dds", TEX_CUBE, L"Furniture", L"Column8");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Column9.dds", TEX_CUBE, L"Furniture", L"Column9");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Closet.dds", TEX_CUBE, L"Furniture", L"Closet");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Crate1.dds", TEX_CUBE, L"Furniture", L"Crate1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Crate2.dds", TEX_CUBE, L"Furniture", L"Crate2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Crate3.dds", TEX_CUBE, L"Furniture", L"Crate3");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Crate4.dds", TEX_CUBE, L"Furniture", L"Crate4");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Glass1.dds", TEX_CUBE, L"Furniture", L"Glass1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Glass2.dds", TEX_CUBE, L"Furniture", L"Glass2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Clock.dds", TEX_CUBE, L"Furniture", L"Clock");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Radio.dds", TEX_CUBE, L"Furniture", L"Radio");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Stage.dds", TEX_CUBE, L"Furniture", L"Stage");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Train.dds", TEX_CUBE, L"Furniture", L"Train");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Gate1.dds", TEX_CUBE, L"Furniture", L"Gate1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Desk.dds", TEX_CUBE, L"Furniture", L"Desk");
 
 #pragma endregion
-
 	Wait_LoadTextureAsync();
 
 	return S_OK;

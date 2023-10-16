@@ -369,6 +369,18 @@ void CBackGround::KeyInput()
 	{
 		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"UnderThrow_RightHand");
 	}
+
+	// 왼손 달리기
+	if (Engine::IsKey_Pressed(DIK_H))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Left_RunHand");
+	}
+
+	// 오른손 달리기
+	if (Engine::IsKey_Pressed(DIK_N))
+	{
+		m_pRightHandTextureComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_RunHand");
+	}
 }
 
 // 애니메이션 불러오기

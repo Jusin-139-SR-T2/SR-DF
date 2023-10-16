@@ -15,6 +15,7 @@ CPlayerBullet::CPlayerBullet(const CPlayerBullet& rhs)
 
 CPlayerBullet::~CPlayerBullet()
 {
+
 }
 
 HRESULT CPlayerBullet::Ready_GameObject()
@@ -33,7 +34,7 @@ HRESULT CPlayerBullet::Ready_GameObject()
 	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
 	// 발사 방향 설정
-	m_tBullet.vDir = m_pPlayerTransformcomp->Get_Look();
+	//m_vDir = m_pPlayerTransformcomp->Get_Look();
 
 	// 플레이어 받아오기
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
@@ -49,11 +50,20 @@ _int CPlayerBullet::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	m_pTransformComp->Move_Pos(&m_tBullet.vDir, fTimeDelta, m_tBullet.fMoveSpeed);
+	m_pTransformComp->Move_Pos(&m_vDir, fTimeDelta, m_tBullet.fMoveSpeed);
 
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
+
+	m_tBullet.fDeleteTime += 1.f * fTimeDelta;
+
+	if (m_tBullet.fDeleteTime >= 0.4f)
+	{
+		// 총알 삭제
+		Set_Dead(); //투사체는 사라짐 
+		m_tBullet.fDeleteTime = 0.f;
+	}
 
 	return S_OK;
 }
@@ -74,6 +84,7 @@ void CPlayerBullet::Render_GameObject()
 	{
 		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
+		MeshSphereColider(5.f, 30.f, 30.f);
 		m_pBufferComp->Render_Buffer();
 		
 		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
@@ -83,7 +94,7 @@ void CPlayerBullet::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _float MoveSpeed, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID)
+CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir, _float MoveSpeed, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -101,6 +112,7 @@ CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, 
 	pInstance->Set_Owner(_Owner);									// 공격의 주인
 	pInstance->Set_Player_AttackState(_AttackState);				// 공격의 상태(공격 유형)
 	pInstance->Set_TeamID(_eTeamID);								// 공격의 팀 설정
+	pInstance->Set_AttackDir(vDir);
 
 	return pInstance;
 }
@@ -125,7 +137,7 @@ HRESULT CPlayerBullet::Add_Component()
 
 	// 충돌 레이어, 마스크 설정
 	m_pColliderComp->Set_CollisionLayer(LAYER_PLAYER_ATTACK); // 이 클래스가 속할 충돌레이어 (플레이어 공격)
-	m_pColliderComp->Set_CollisionMask(LAYER_MONSTER ); // 얘랑 충돌해야하는 레이어들 (몬스터)
+	m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_BOSSMONSTER); // 얘랑 충돌해야하는 레이어들 (몬스터)
 	return S_OK;
 }
 

@@ -163,7 +163,7 @@ HRESULT CColliderComponent::Ready_Component(LPDIRECT3DDEVICE9 pGraphicDev, ECOLL
 _int CColliderComponent::Update_Component(const _float& fTimeDelta)
 {
     OnCollisionExited();
-
+    SeeColliderFrame(m_pGraphicDev);
     // Exited 초기화
     for (auto iter = m_listColliderObject.begin(); iter != m_listColliderObject.end(); ++iter)
         iter->second = false;
@@ -218,6 +218,31 @@ void CColliderComponent::OnCollision(CColliderComponent* pDst, const FContact* c
         }
     }
         
+}
+
+void CColliderComponent::SeeColliderFrame(LPDIRECT3DDEVICE9 pGraphicDev)
+{
+   // //소영 !!
+   // if (IsKey_Pressed(DIK_PERIOD)) // '.'키
+   // {    //갖고있는 충돌체 다 꺼내서 
+   //     //모양체크하고 그거대로 그리기 
+   //     if (m_pCollisionShape->Get_Type() == ECOLLISION::SPHERE)
+   //     {
+   //         FCollisionSphere* m_pShape = static_cast<FCollisionSphere*>(m_pCollisionShape);
+   //         D3DXCreateSphere(pGraphicDev, m_pShape->fRadius * 3.f, 32, 16, &m_Mesh, NULL);
+   //     }
+   //     else if (m_pCollisionShape->Get_Type() == ECOLLISION::BOX)
+   //     {
+   //         FCollisionBox* m_pShape = static_cast<FCollisionBox*>(m_pCollisionShape);
+   //         D3DXCreateBox(pGraphicDev, 
+   //                     m_pShape->vHalfSize.x, m_pShape->vHalfSize.y, m_pShape->vHalfSize.z,
+   //                     &m_Mesh, NULL);
+   //     }
+   //     else if (m_pCollisionShape->Get_Type() == ECOLLISION::CAPSULE)
+   //     {
+   //     }
+   // }
+   //
 }
 
 void CColliderComponent::OnCollisionEntered(CColliderComponent* pDst, const FContact* const pContact)

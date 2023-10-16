@@ -400,9 +400,6 @@
     <Filter Include="01. Component\08. Collider\Data">
       <UniqueIdentifier>{2785e3ef-9b36-4604-98a2-82a01b75c6cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Component\08. Collider\01. SphereColComp">
-      <UniqueIdentifier>{a34ce4cc-9f76-49f9-82a7-77bc32698c4f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Component\98. SceneComponent">
       <UniqueIdentifier>{3d5e8d31-3bd6-44e0-b5ef-64d33f492a05}</UniqueIdentifier>
     </Filter>

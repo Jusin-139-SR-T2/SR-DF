@@ -95,6 +95,12 @@ protected:
 	_ulong				m_dwCollisionLayer_Flag;			// 콜리전 레이어, 충돌체가 존재하는 층
 	_ulong				m_dwCollisionMask_Flag;				// 콜리전 마스크, 충돌체가 충돌하고 싶어하는 층
 
+public:
+	GETSET_EX1(LPD3DXMESH, m_Mesh, Mesh, GET_REF_C)
+
+public:
+	LPD3DXMESH	m_Mesh = NULL;
+	void SeeColliderFrame(LPDIRECT3DDEVICE9 pGraphicDev);
 };
 
 END

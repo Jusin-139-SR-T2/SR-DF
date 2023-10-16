@@ -73,14 +73,14 @@ HRESULT CGray::Ready_GameObject()
     m_bDazedState = FALSE;
     m_bDeadState = FALSE;
     m_bDazeToHeal = FALSE;
-
     
     // 충돌용
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-    FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-    pShape->vHalfSize = { 1.f, 2.f, 0.1f };
+    pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
+    pShape->vHalfSize = { 3.f, 3.f, 3.f };
 
+    D3DXCreateBox(m_pGraphicDev, 3.f, 3.f, 3.f, &m_pMesh, NULL);
     
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE); // 초기상태 지정 
@@ -136,6 +136,7 @@ HRESULT CGray::Ready_GameObject()
     m_tState_Act.Add_Func(STATE_ACT::SIDEMOVING, &CGray::SideMoving);
     m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CGray::Attack);
     m_tState_Act.Add_Func(STATE_ACT::GOHOME, &CGray::GoHome);
+    m_tState_Act.Add_Func(STATE_ACT::FALLING, &CGray::Falling);
 
 #pragma endregion
 
@@ -152,6 +153,7 @@ HRESULT CGray::Ready_GameObject()
 
     m_mapActionKey.Add_Action(ACTION_KEY::BASIC_ATTACK);
     m_mapActionKey.Add_Action(ACTION_KEY::HEAVY_ATTACK);
+    m_mapActionKey.Add_Action(ACTION_KEY::BACK);
 
     m_mapActionKey.Add_Action(ACTION_KEY::GOHOME);
 
@@ -214,6 +216,14 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
             m_tFrame.fRepeat += 1;
     }
 
+#pragma region 실험실
+
+    if (IsKey_Pressed(DIK_O))
+    {
+        m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+
+    }
+
 #pragma endregion 
 
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳
@@ -222,6 +232,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 
     return S_OK;
 }
+
 
 #pragma region 기본 환경설정 
 
@@ -236,8 +247,20 @@ void CGray::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+    if (m_pMesh)
+        m_pMesh->DrawSubset(0);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
     m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
     m_pBufferComp->Render_Buffer();
+
+#pragma region 충돌 메쉬 콜라이더
+    //MeshSphereColider(0.1f, 15.f, 15.f);
+    MeshBoxColider(0.5f, 0.5f, 0.3f);
+#pragma endregion
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -269,6 +292,7 @@ void CGray::Free()
     SUPER::Free();
 }
 
+
 #pragma endregion 
 
 #pragma region 환경설정 부속파트 + 상태머신 보조함수 
@@ -299,10 +323,29 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
     if (Get_IsMonsterDeath())
         return;
 
+
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 
     if (nullptr == pAceObj)
         return;
+    else
+    {
+        // Pow 생성
+        Engine::Add_GameObject(L"GameLogic", CEffect_HitPow::Create(m_pGraphicDev,
+            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 0.2f, m_pTransformComp->Get_Pos().z, this));
+       
+        // Blood생성
+        for (_int i = 0; i < 3; ++i)
+        {
+            Engine::Add_GameObject(L"GameLogic", CEffect_HitBlood::Create(m_pGraphicDev,
+                m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+        }
+       
+        // Dust 생성
+        Engine::Add_GameObject(L"GameLogic", CEffect_HitDust::Create(m_pGraphicDev,
+            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+
+    }
 
     // 보스 스킬에 죽을수도 있기때문에 충돌체 먼저 검사한뒤에 dead로 넘어가야함
     // 현재 팀 : 몬스터  적대관계 : 플레이어 
@@ -370,6 +413,7 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
     {
         m_tState_Obj.Set_State(STATE_OBJ::HIT);
     }
+
 }
 
 void CGray::OnCollisionExited(CGameObject* pDst)
@@ -403,6 +447,7 @@ void CGray::AI_Idle(float fDeltaTime)
         //OutputDebugString(L"▷Gray - 상태머신 : idle 진입   \n");
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Single", L"Idle");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -423,10 +468,11 @@ void CGray::AI_Suspicious(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
         //OutputDebugString(L"▷Gray - 상태머신 : Suspicious 진입  \n");
-       Engine::Add_GameObject(L"GameLogic", CAwareness::Create(m_pGraphicDev,
+       Engine::Add_GameObject(L"GameLogic", CEffect_Awareness::Create(m_pGraphicDev,
            m_pTransformComp->Get_Pos().x ,
            m_pTransformComp->Get_Pos().y + 1.4f,
-           m_pTransformComp->Get_Pos().z, CAwareness::TYPE::GRAY, this));
+           m_pTransformComp->Get_Pos().z, CEffect_Awareness::TYPE::GRAY, this));
+           m_tFrame.fFrame = 0.f;
 
     }
 
@@ -483,6 +529,7 @@ void CGray::AI_Taunt(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Taunt");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 12.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -512,6 +559,7 @@ void CGray::AI_YouDie(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"YouDie");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 9.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -532,6 +580,7 @@ void CGray::AI_Reconnaissance(float fDeltaTime)
 {
     if (m_tState_Obj.IsState_Entered())
     {
+        m_tFrame.fFrame = 0.f;
 
     }
     if (m_tState_Obj.Can_Update())
@@ -570,6 +619,7 @@ void CGray::AI_GoHome(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"WalkNorth");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 14.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -599,6 +649,7 @@ void CGray::AI_Chase(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Rest");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 8.f;
+        m_tFrame.fFrame = 0.f;
 
         m_AttackOnce = FALSE;
     }
@@ -694,6 +745,7 @@ void CGray::AI_Rest(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Rest");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -718,6 +770,7 @@ void CGray::AI_Run(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Run");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 17.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -748,6 +801,7 @@ void CGray::AI_Walk(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Walk");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 11.f;
+        m_tFrame.fFrame = 0.f;
         
     }
 
@@ -776,6 +830,7 @@ void CGray::AI_KeepEye(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"KeepEye");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 11.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -805,6 +860,7 @@ void CGray::AI_SideWalk(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"SideWalk");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -836,6 +892,7 @@ void CGray::AI_Throw(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Throw");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrame = 0.f;
        
         // 투사체 발사 
         Engine::Add_GameObject(L"GameLogic", CThrowPipe::Create(m_pGraphicDev,
@@ -866,6 +923,7 @@ void CGray::AI_UpRightRun(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"UpRightRun");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 13.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -893,6 +951,7 @@ void CGray::AI_Frighten(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Frighten");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 12.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -921,6 +980,7 @@ void CGray::AI_Attack(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Attack");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -948,6 +1008,7 @@ void CGray::AI_HeavyAttack(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"HeavyAttack");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -976,6 +1037,7 @@ void CGray::AI_Block(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Block");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1002,6 +1064,7 @@ void CGray::AI_CrotchHit(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fLifeTime = 2.f; // 2초후 CHASE 진입 
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1031,6 +1094,7 @@ void CGray::AI_FacePunch(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"FacePunch");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1057,10 +1121,32 @@ void CGray::AI_Falling(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Falling"); 
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrame = 0.f;
+        m_AttackOnce = true;
+        m_bSecondFall = true;
     }
 
     if (m_tState_Obj.Can_Update())
     {
+        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+            m_mapActionKey[ACTION_KEY::BACK].Act();
+
+        if (m_tFrame.fFrame > 4.f && m_AttackOnce)
+        {
+           Engine::Add_GameObject(L"GameLogic", CEffect_FallingDust::Create(m_pGraphicDev,
+                                 m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+           m_AttackOnce = false;
+           m_bSecondFall = false;
+        }
+
+        if (m_tFrame.fFrame > 8.f && !m_AttackOnce && !m_bSecondFall)
+        {
+           Engine::Add_GameObject(L"GameLogic", CEffect_FallingDust::Create(m_pGraphicDev,
+                                  m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+           m_bSecondFall = true;
+        }
+
+        
         if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
         {
             m_tState_Obj.Set_State(STATE_OBJ::REST);
@@ -1083,6 +1169,7 @@ void CGray::AI_Hit(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Coward");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrame = 0.f;
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1109,6 +1196,7 @@ void CGray::AI_Dazed(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fLifeTime = 1.f;
+        m_tFrame.fFrame = 0.f;
         m_bDazedState = TRUE;
     }
 
@@ -1152,6 +1240,7 @@ void CGray::AI_Chopped(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Chopped");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
+        m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
     }
 
@@ -1180,6 +1269,7 @@ void CGray::AI_HeadShot(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"HeadShot");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 7.f;
+        m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
     }
 
@@ -1207,6 +1297,7 @@ void CGray::AI_Headless(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Headless");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed =7.f;
+        m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
     }
 
@@ -1230,10 +1321,11 @@ void CGray::AI_Death(float fDeltaTime)
     {
         //OutputDebugString(L"▷Gray - 상태머신 :  Death   \n");
         // 일어나는것까지 진행함 
-        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Death");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+        m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_tFrame.fFrameSpeed = 7.f;
+        m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
     }
 
@@ -1292,9 +1384,14 @@ void CGray::Idle(float fDeltaTime)
         if (m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::ATTACK);
 
+        // 피격 
+        if (m_mapActionKey[ACTION_KEY::BACK].IsOnAct())
+            m_tState_Act.Set_State(STATE_ACT::FALLING);
+        
         // 패트롤파트 
         if (m_mapActionKey[ACTION_KEY::GOHOME].IsOnAct())
             m_tState_Act.Set_State(STATE_ACT::GOHOME);
+
     }
 
     if (m_tState_Act.IsState_Exit()) // 가끔 필요할때가 있어서 - 찾아보기 
@@ -1473,6 +1570,30 @@ void CGray::GoHome(float fDeltaTime)
         }
 
         m_tState_Act.Set_State(STATE_ACT::IDLE);
+    }
+
+    if (m_tState_Act.IsState_Exit())
+    {
+    }
+}
+
+void CGray::Falling(float fDeltaTime)
+{
+    if (m_tState_Act.IsState_Entered())
+    {
+    }
+
+    // 실행
+    {
+        _vec3 vDirect = m_pTransformComp->Get_Pos() - m_pPlayerTransformcomp->Get_Pos();
+
+        D3DXVec3Normalize(&vDirect, &vDirect);
+
+        m_pTransformComp->Move_Pos(&vDirect, fDeltaTime, 5.f);
+       
+
+        if (STATE_OBJ::FALLING != m_tState_Obj.Get_State())
+            m_tState_Act.Set_State(STATE_ACT::IDLE);
     }
 
     if (m_tState_Act.IsState_Exit())
