@@ -49,6 +49,7 @@ HRESULT CDynamicCamera::Ready_GameObject(const _vec3* pEye, const _vec3* pAt, co
 	FAILED_CHECK_RETURN(CCamera::Ready_GameObject(), E_FAIL);
 
 	ShowCursor(false);
+	m_bOne = true;
 
 #pragma region 블랙보드
 

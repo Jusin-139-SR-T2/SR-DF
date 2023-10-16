@@ -10,7 +10,7 @@
 #define MAX_LOADSTRING 100
 
 // 콘솔창 키고 싶으면 이거 1로 설정
-#define _TEST_CONSOLE 0
+#define _TEST_CONSOLE 1
 
 // 전역 변수:
 HINSTANCE g_hInst;                              // 현재 인스턴스입니다.

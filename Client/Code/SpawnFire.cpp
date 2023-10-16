@@ -144,11 +144,11 @@ void CSpawnFire::Free()
 
 #pragma region 충돌 
 
-void CSpawnFire::OnCollision(CGameObject* pDst)
+void CSpawnFire::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 }
 
-void CSpawnFire::OnCollisionEntered(CGameObject* pDst)
+void CSpawnFire::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	OutputDebugString(L"▶SpawnFire 충돌 \n");
 

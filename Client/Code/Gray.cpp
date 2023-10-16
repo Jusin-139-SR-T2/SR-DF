@@ -32,6 +32,21 @@ CGray* CGray::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float
     return pInstance;
 }
 
+CGray* CGray::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject tObjectSerial)
+{
+    ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+    if (FAILED(pInstance->Ready_GameObject(tObjectSerial)))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("GrayMonster Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
+}
+
 HRESULT CGray::Ready_GameObject()
 {
     SUPER::Ready_GameObject();
@@ -141,6 +156,28 @@ HRESULT CGray::Ready_GameObject()
     m_mapActionKey.Add_Action(ACTION_KEY::GOHOME);
 
 #pragma endregion
+
+    return S_OK;
+}
+
+HRESULT CGray::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
+{
+    FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
+
+    m_pTransformComp->Set_Pos(tObjectSerial.vPos);
+    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
+    Set_ObjectName(strConvName);
+
+    m_fPriority[0] = tObjectSerial.fPriority_Update;
+    m_fPriority[1] = tObjectSerial.fPriority_LateUpdate;
+    m_fPriority[2] = tObjectSerial.fPriority_Render;
+
+    m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
+    m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
+    m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     return S_OK;
 }
@@ -265,11 +302,11 @@ void CGray::RenderSplitImages()
 
 #pragma region 충돌파트 
 
-void CGray::OnCollision(CGameObject* pDst)
+void CGray::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
     //OutputDebugString(L"▶Gray 충돌중 \n");
 }
-void CGray::OnCollisionEntered(CGameObject* pDst)
+void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
     if (Get_IsMonsterDeath())
         return;

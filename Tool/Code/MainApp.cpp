@@ -102,7 +102,13 @@ void CMainApp::Render_MainApp()
 	if ((result = Engine::Render_Begin(clear_col_dx)) >= 0)
 	{
 		// [오브젝트 렌더] 렌더러에 요청해서 그려야할 오브젝트들을 그린다.
+		m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE);
 		Engine::Render_Scene(m_pGraphicDev);
+		m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 
 		CImguiMgr* pImguiMgr = CImguiMgr::GetInstance();
 		LPDIRECT3DSURFACE9 pBackBuffer = nullptr;
@@ -118,7 +124,11 @@ void CMainApp::Render_MainApp()
 		Safe_Release(pRenderTarget);
 
 		// [IMGUI 렌더]
-		CImguiMgr::GetInstance()->Render_Imgui();
+		if (Engine::IsKey_Pressing(DIK_LCONTROL) && Engine::IsKey_Pressed(DIK_T))
+			m_bRenderImgui = !m_bRenderImgui;
+
+		if (m_bRenderImgui)
+			CImguiMgr::GetInstance()->Render_Imgui();
 	}
 
 	// 추가 뷰포트 렌더
@@ -142,17 +152,21 @@ HRESULT CMainApp::Ready_Scene(LPDIRECT3DDEVICE9 pGraphicDev, Engine::CManagement
 	// 기본 씬
 	/*NULL_CHECK_RETURN(pScene = CLogo::Create(pGraphicDev), E_FAIL);
 	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"Logo"), E_FAIL);*/
-	NULL_CHECK_RETURN(pScene = CScene_AnimationTool::Create(pGraphicDev), E_FAIL);
-	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"AnimationTool"), E_FAIL);
-
 	NULL_CHECK_RETURN(pScene = CScene_MapTool::Create(pGraphicDev), E_FAIL);
 	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"MapTool"), E_FAIL);
+	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(L"MapTool"), E_FAIL);
+
+	NULL_CHECK_RETURN(pScene = CScene_AnimationTool::Create(pGraphicDev), E_FAIL);
+	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"AnimationTool"), E_FAIL);
+	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(L"AnimationTool"), E_FAIL);
 
 	NULL_CHECK_RETURN(pScene = CScene_TextureTool::Create(pGraphicDev), E_FAIL);
 	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"TextureTool"), E_FAIL);
+	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(L"TextureTool"), E_FAIL);
 
 	NULL_CHECK_RETURN(pScene = CScene_ProtoTool::Create(pGraphicDev), E_FAIL);
 	FAILED_CHECK_RETURN((*ppManagement)->Add_Scene(pScene, L"ProtoTool"), E_FAIL);
+	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(L"ProtoTool"), E_FAIL);
 
 	// 씬을 설정한다.
 	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(L"AnimationTool"), E_FAIL);

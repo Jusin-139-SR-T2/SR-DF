@@ -109,4 +109,16 @@ void CBlueBuff::Free()
 	SUPER::Free();
 }
 
+void CBlueBuff::OnCollision(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CBlueBuff::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CBlueBuff::OnCollisionExited(CGameObject* pDst)
+{
+}
+
 #pragma endregion

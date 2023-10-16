@@ -146,12 +146,12 @@ void CPlayerBullet::Free()
 	SUPER::Free();
 }
 
-void CPlayerBullet::OnCollision(CGameObject* pDst)
+void CPlayerBullet::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 	
 }
 
-void CPlayerBullet::OnCollisionEntered(CGameObject* pDst)
+void CPlayerBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 

@@ -35,9 +35,46 @@ CAceInteraction* CAceInteraction::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _t
     return pInstance;
 }
 
+CAceInteraction* CAceInteraction::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial)
+{
+    ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+    if (FAILED(pInstance->Ready_GameObject(tObjectSerial)))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("FoodObject Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
+}
+
 HRESULT CAceInteraction::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    return S_OK;
+}
+
+HRESULT CAceInteraction::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
+{
+    FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
+
+    m_pTransformComp->Set_Pos(tObjectSerial.vPos);
+    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
+    Set_ObjectName(strConvName);
+
+    m_fPriority[0] = tObjectSerial.fPriority_Update;
+    m_fPriority[1] = tObjectSerial.fPriority_LateUpdate;
+    m_fPriority[2] = tObjectSerial.fPriority_Render;
+
+    m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
+    m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
+    m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     return S_OK;
 }
@@ -136,8 +173,9 @@ void CAceInteraction::Height_On_Terrain()
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
-    NULL_CHECK(pTerrainBufferComp);
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
+    if (!pTerrainBufferComp)
+        return;
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
         pTerrainBufferComp->Get_VtxPos(),
@@ -244,6 +282,18 @@ void CAceInteraction::Change_Texture(INTERACTION_NAME eReceiveName)
 
         }
     }
+}
+
+void CAceInteraction::OnCollision(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CAceInteraction::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CAceInteraction::OnCollisionExited(CGameObject* pDst)
+{
 }
 
 #pragma endregion 

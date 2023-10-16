@@ -6,6 +6,8 @@
 #include "Serialize_Core.h"
 #include "Serialize_BaseClass.h"
 
+#include "ImguiWin_ProtoTool.h"
+
 const string g_strSceneExt = ".ascene";
 const string g_strTerrainExt = ".aterrain";
 const string g_strObjectExt = ".aobject";
@@ -17,6 +19,8 @@ const string g_strScenePath = g_strDataPath + "Scene/";
 const string g_strObjectPath = g_strDataPath + "Object/";
 const string g_strTerrainPath = g_strDataPath + "Terrain/";
 const string g_strLightPath = g_strDataPath + "Light/";
+
+class Engine::CGameObject;
 
 class CImguiWin_MapTool : public CImguiWin
 {
@@ -105,14 +109,16 @@ private:	// 계층 관련 정의부
 	};
 	struct FObjectData
 	{
-		string		strName = "";
-		string		strObjectID = "";
+		string			strName = "";				// 현재 이름
+		string			strOriginName = "";			// 프로토 타입 이름
+		EGO_CLASS		eObjectID = ECLASS_NONE;	// 클래스 분류
+		CGameObject*	pObject = nullptr;
 
-		_vec3		vPos = { 0.f,0.f,0.f };
-		_vec3		vRot = { 0.f,0.f,0.f };
-		_vec3		vScale = { 1.f,1.f,1.f };
-		_float		fPriority[EPRIORITY_OBJECT_END] = { 0.f, 0.f, 0.f };
-		_bool		bUsePriority[EPRIORITY_OBJECT_END] = { true, true, true };
+		_vec3			vPos = { 0.f,0.f,0.f };
+		_vec3			vRot = { 0.f,0.f,0.f };
+		_vec3			vScale = { 1.f,1.f,1.f };
+		_float			fPriority[EPRIORITY_OBJECT_END] = { 0.f, 0.f, 0.f };
+		_bool			bUsePriority[EPRIORITY_OBJECT_END] = { true, true, true };
 	};
 	struct FLayerData
 	{
@@ -140,10 +146,15 @@ private:
 		m_iSelected_Layer = -1;
 		m_iSelected_Layer_Remain = -1;
 		m_iSelected_Object = -1;
-		m_iSelected_Object_Remain = -1;
 		m_eSelectedProperty_Type = ESELECTED_TYPE_NONE;
 	}
-	
+private:
+	void			Load_ObjectToScene();
+	void			Create_LayerToScene(const FLayerData& tLayerData);
+	void			Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, FObjectData& tObjectData);
+
+	void			Delete_AllFromScene();
+
 private:
 	// 목록에 있는 씬 모두 저장
 	void			Save_SceneAll();
@@ -154,11 +165,9 @@ private:
 	void			Load_SceneAll();
 	void			Import_Scene(const string& strName, FSerialize_Scene& tSceneSerial, FSceneData& tSceneData);
 
-	// 오브젝트 파싱 관련
-	void			Save_Object();
-	void			Export_Object();
-	void			Load_Object();
-	void			Import_Object();
+	// 프로토 로드 관련
+	void			Load_ProtoAll();
+	void			Import_Proto(const string& strName, FSerialize_Proto& tProtoSerial, FProtoData& tProtoData);
 
 private:
 	_bool						m_bScene_Init = true;
@@ -172,10 +181,11 @@ private:
 	_int						m_iSelected_Layer = -1;
 	_int						m_iSelected_Layer_Remain = -1;
 	_int						m_iSelected_Object = -1;
-	_int						m_iSelected_Object_Remain = -1;
 
 	char						m_arrAddLayer_Buf[256] = "";
 	_bool						m_bFocusedLayer_Edit = false;
+
+	FObjectData*				m_pPickedObjectData = nullptr;
 
 
 private:			// 터레인 관련
@@ -185,12 +195,17 @@ private:			// 터레인 관련
 	void			Load_Terrain(const _int iSelected_Scene, const string& strName);
 	void			Import_Terrain(const _int iSelected_Scene, const string& strName, FSerialize_Terrain& tTerrain);
 
+private:			// 프로토 관련
+	void			Add_Object();
+	//CGameObject*	Get_Object();
+
+private:
+	vector<FProtoData>			m_vecProto;
+	_int						m_iSelected_Proto = -1;
+
 
 private:	// 속성 관련
 	_bool			m_bInput_Warning = false;
-
-
-	
 
 
 private:	// 유틸리티
@@ -215,12 +230,106 @@ private:	// 유틸리티
 		else if (vVec.z > fValue)
 			vVec.z = fValue;
 	}
-
-	static int InputTextCallback(ImGuiInputTextCallbackData* data)
+	void			Create_CamAxis(_vec3& refRight, _vec3& refLook, _vec3& refUp)
 	{
-		if (data->EventChar != 0 && strlen(data->Buf) >= 10)
-			return 1;
-		return 0;
+		refUp = Get_Up();
+		refLook = Get_Look() - Get_Pos();
+
+		D3DXVec3Normalize(&refLook, &refLook);
+
+		D3DXVec3Cross(&refRight, &refUp, &refLook);
+		D3DXVec3Normalize(&refRight, &refRight);
+
+		D3DXVec3Cross(&refUp, &refLook, &refRight);
+		D3DXVec3Normalize(&refUp, &refUp);
 	}
+
+public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
+	GETSET_EX2(_vec3, m_vCamTranslate[INFO_RIGHT], Right, GET_REF, SET_C)
+	GETSET_EX2(_vec3, m_vCamTranslate[INFO_UP], Up, GET_REF, SET_C)
+	GETSET_EX2(_vec3, m_vCamTranslate[INFO_LOOK], Look, GET_REF, SET_C)
+	GETSET_EX2(_vec3, m_vCamTranslate[INFO_POS], Pos, GET_REF, SET_C)
+
+private:		// 카메라
+	void			Input_Camera();
+
+	ImVec2			m_fPrevDrag_Translate = { 0.f, 0.f };
+	ImVec2			m_fDrag_Translate = { 0.f, 0.f };
+
+	ImVec2			m_fPrevDrag_Rotate = { 0.f, 0.f };
+	ImVec2			m_fDrag_Rotate = { 0.f, 0.f };
+
+	_vec3			m_vCamTranslate[INFO_END];
+	_vec3			m_vRot = { 0.f, 0.f, 0.f };
+	_vec3			m_vScale = { 1.f, 1.f, 1.f };
+	_matrix			m_matView;
+
+	_matrix			m_matProj;
+
+	_float			m_fFov = D3DXToRadian(60.f);
+	_float			m_fAspect = (float)WINCX / WINCY;
+	_float			m_fNear = 0.1f;
+	_float			m_fFar = 1000.f;
+
+private:		// 뷰어에서 오브젝트 이동
+	ImVec2			m_vViewerContent_Size;
+
+	enum class EEDIT_MODE
+	{
+		NONE,
+		MOUSE_TRANSLATE,
+		MOUSE_ROTATE,
+		TRANSFORM,
+	};
+
+	enum ETRANSFORM_MODE
+	{
+		ETRANSFORM_MODE_NONE,
+		ETRANSFORM_MODE_MOVE,
+		ETRANSFORM_MODE_ROT,
+		ETRANSFORM_MODE_SCALE,
+	};
+
+	enum ETRANSFORM_AXIS
+	{
+		ETRANSFORM_AXIS_NONE,
+		ETRANSFORM_AXIS_X,
+		ETRANSFORM_AXIS_Y,
+		ETRANSFORM_AXIS_Z,
+		ETRANSFORM_PLANE_X,
+		ETRANSFORM_PLANE_Y,
+		ETRANSFORM_PLANE_Z,
+		ETRANSFORM_AXIS_ALL
+	};
+
+private:
+	// 트랜스폼 에딧이 끝났을 때 호출하는 함수
+	void End_EditTransform()
+	{
+
+	}
+
+	EEDIT_MODE			m_eEdit_Mode = EEDIT_MODE::NONE;
+
+	_bool				m_bIsTransform_Start = false;
+	ETRANSFORM_MODE		m_eTransform_Mode = ETRANSFORM_MODE_NONE;
+	ETRANSFORM_AXIS		m_eTransform_Axis = ETRANSFORM_AXIS_NONE;
+	ETRANSFORM_AXIS		m_eTransform_PrevAxis = ETRANSFORM_AXIS_NONE;		// 되돌리기용
+
+	_vec2				m_vTransform_ObjectStart = { 0.f, 0.f };
+	_vec2				m_vTransform_MouseStart = { 0.f, 0.f };
+	_vec2				m_vTransform_MouseEnd = { 0.f, 0.f };
+	_float				m_fTransform_LengthStart = 0.f;
+	_float				m_fTransform_LengthEnd = 0.f;
+
+	_vec3				m_vTransform_Translate;
+	_vec3				m_vTransform_Translate_Saved;
+
+	_vec3				m_vTransform_Rotate;
+	_vec3				m_vTransform_Rotate_Saved;
+
+	_vec3				m_vTransform_Scale;
+	_vec3				m_vTransform_Scale_Saved;
+
 };
 

@@ -129,7 +129,7 @@ void CRedThunder::Free()
 	SUPER::Free();
 }
 
-void CRedThunder::OnCollision(CGameObject* pDst)
+void CRedThunder::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 	OutputDebugString(L"¢ºRedThunder Ãæµ¹ \n");
 
@@ -137,7 +137,7 @@ void CRedThunder::OnCollision(CGameObject* pDst)
 
 }
 
-void CRedThunder::OnCollisionEntered(CGameObject* pDst)
+void CRedThunder::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 }
 

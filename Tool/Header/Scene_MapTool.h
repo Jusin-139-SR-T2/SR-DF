@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Scene.h"
+#include <future>
+
+class CLoading;
 
 /// <summary>
 /// ¸ÊÅø Àü¿ë ¾À
@@ -24,9 +27,22 @@ public:
 	virtual void		Render_Scene();
 
 protected:
+	HRESULT				Ready_Texture();
+	HRESULT				Ready_Proto();
 	virtual HRESULT		Ready_Layer_Completed();
 
+	void Load_TextureAsync(const _tchar* pfilePath, TEXTUREID eID, const _tchar* pGroupName, const _tchar* pTextureName, const _range<_uint>& iCntRange = _range<_uint>(0U, 0U));
+	void Load_Texture(const _tchar* pfilePath, TEXTUREID eID, const _tchar* pGroupName, const _tchar* pTextureName, const _range<_uint>& iCntRange = _range<_uint>(0U, 0U), _bool bAsync = true);
+	void Wait_LoadTextureAsync();
 
+protected:
+	vector<future<void>>	m_vecAsyncTexture;
+
+private:
+	DELAY<float>		m_fSkipStartFrame = DELAY<float>(0.1f);
+	_bool				m_bInitFrame;
+	CLoading*			 m_pLoading;
+	HRESULT				m_hrLoading;
 
 };
 

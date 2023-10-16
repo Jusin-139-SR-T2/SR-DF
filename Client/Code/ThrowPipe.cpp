@@ -148,11 +148,11 @@ void CThrowPipe::Free()
 	SUPER::Free();
 }
 
-void CThrowPipe::OnCollision(CGameObject* pDst)
+void CThrowPipe::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 }
 
-void CThrowPipe::OnCollisionEntered(CGameObject* pDst)
+void CThrowPipe::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	//OutputDebugString(L"Gray의 투사체와 충돌시작 \n");
 

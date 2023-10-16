@@ -144,11 +144,11 @@ void CEnergyBall::Free()
 
 #pragma region 충돌 
 
-void CEnergyBall::OnCollision(CGameObject* pDst)
+void CEnergyBall::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 }
 
-void CEnergyBall::OnCollisionEntered(CGameObject* pDst)
+void CEnergyBall::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	OutputDebugString(L"▶EnergyBall 충돌 \n");
 

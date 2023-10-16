@@ -196,6 +196,8 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Header\CubeObject.h" />
+    <ClInclude Include="Header\Loading.h" />
     <ClInclude Include="Header\AceGameObject.h" />
     <ClInclude Include="Header\BackGround.h" />
     <ClInclude Include="Header\ImguiAnimationTool.h" />
@@ -209,8 +211,10 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClInclude Include="Header\ImguiWin_DockingSpace.h" />
     <ClInclude Include="Header\ImguiWin_MapTool.h" />
     <ClInclude Include="Header\Scene_AnimationTool.h" />
+    <ClInclude Include="Header\Scene_Parsed.h" />
     <ClInclude Include="Header\Scene_ProtoTool.h" />
     <ClInclude Include="Header\Scene_TextureTool.h" />
+    <ClInclude Include="Header\Terrain.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_dx9.h" />
@@ -229,11 +233,13 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClInclude Include="Header\ProjectDataTable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\CubeObject.cpp" />
     <ClCompile Include="Code\AceGameObject.cpp" />
     <ClCompile Include="Code\BackGround.cpp" />
     <ClCompile Include="Code\ImguiAnimationTool.cpp" />
     <ClCompile Include="Code\ImguiWin_ProtoTool.cpp" />
     <ClCompile Include="Code\ImguiWin_Test.cpp" />
+    <ClCompile Include="Code\Loading.cpp" />
     <ClCompile Include="Code\MainApp.cpp" />
     <ClCompile Include="Code\Logo.cpp" />
     <ClCompile Include="Code\ImguiMgr.cpp" />
@@ -242,8 +248,10 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClCompile Include="Code\ImguiWin_DockingSpace.cpp" />
     <ClCompile Include="Code\ImguiWin_MapTool.cpp" />
     <ClCompile Include="Code\Scene_AnimationTool.cpp" />
+    <ClCompile Include="Code\Scene_Parsed.cpp" />
     <ClCompile Include="Code\Scene_ProtoTool.cpp" />
     <ClCompile Include="Code\Scene_TextureTool.cpp" />
+    <ClCompile Include="Code\Terrain.cpp" />
     <ClCompile Include="Imgui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

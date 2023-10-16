@@ -11,6 +11,7 @@ CCubeBufferComp::CCubeBufferComp(LPDIRECT3DDEVICE9 pGraphicDev)
 
 CCubeBufferComp::CCubeBufferComp(const CCubeBufferComp& rhs)
 	: Base(rhs)
+	, m_pVertexPos(rhs.m_pVertexPos)
 {
 }
 
@@ -39,6 +40,9 @@ CComponent* CCubeBufferComp::Clone(void)
 
 void CCubeBufferComp::Free(void)
 {
+	if (false == m_bClone)
+		Safe_Delete_Array(m_pVertexPos);
+
 	SUPER::Free();
 }
 
@@ -52,34 +56,36 @@ HRESULT CCubeBufferComp::Ready_Component()
 	m_dwIdxSize = sizeof(INDEX32);
 	m_IdxFmt = D3DFMT_INDEX32;
 
+	m_pVertexPos = new _vec3[m_dwVtxCnt];
+
 	FAILED_CHECK_RETURN(CVIBufferComp::Ready_Buffer(), E_FAIL);
 
 	VTXCUBE* pVertex = nullptr;
 
 	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
 
-	pVertex[0].vPosition = { -1.f, 1.f, -1.f };
+	pVertex[0].vPosition = m_pVertexPos[0] = {-0.5f, 0.5f, -0.5f };
 	pVertex[0].vTexUV = pVertex[0].vPosition;
 
-	pVertex[1].vPosition = { 1.f, 1.f, -1.f };
+	pVertex[1].vPosition = m_pVertexPos[1] = { 0.5f, 0.5f, -0.5f };
 	pVertex[1].vTexUV = pVertex[1].vPosition;
 
-	pVertex[2].vPosition = { 1.f, -1.f, -1.f };
+	pVertex[2].vPosition = m_pVertexPos[2] = { 0.5f, -0.5f, -0.5f };
 	pVertex[2].vTexUV = pVertex[2].vPosition;
 
-	pVertex[3].vPosition = { -1.f, -1.f, -1.f };
+	pVertex[3].vPosition = m_pVertexPos[3] = { -0.5f, -0.5f, -0.5f };
 	pVertex[3].vTexUV = pVertex[3].vPosition;
 
-	pVertex[4].vPosition = { -1.f, 1.f, 1.f };
+	pVertex[4].vPosition = m_pVertexPos[4] = { -0.5f, 0.5f, 0.5f };
 	pVertex[4].vTexUV = pVertex[4].vPosition;
 
-	pVertex[5].vPosition = { 1.f, 1.f, 1.f };
+	pVertex[5].vPosition = m_pVertexPos[5] = { 0.5f, 0.5f, 0.5f };
 	pVertex[5].vTexUV = pVertex[5].vPosition;
 
-	pVertex[6].vPosition = { 1.f, -1.f, 1.f };
+	pVertex[6].vPosition = m_pVertexPos[6] = { 0.5f, -0.5f, 0.5f };
 	pVertex[6].vTexUV = pVertex[6].vPosition;
 
-	pVertex[7].vPosition = { -1.f, -1.f, 1.f };
+	pVertex[7].vPosition = m_pVertexPos[7] = { -0.5f, -0.5f, 0.5f };
 	pVertex[7].vTexUV = pVertex[7].vPosition;
 
 	m_pVB->Unlock();

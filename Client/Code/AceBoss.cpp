@@ -280,11 +280,11 @@ void CAceBoss::Free()
 
 #pragma region 충돌 
 
-void CAceBoss::OnCollision(CGameObject* pDst)
+void CAceBoss::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 
 }
-void CAceBoss::OnCollisionEntered(CGameObject* pDst)
+void CAceBoss::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	if (Get_IsMonsterDeath()) // 죽었으면 더이상 충돌일어나지않게 먼저 막음 
 		return;

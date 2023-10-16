@@ -68,4 +68,5 @@ private:
 
 private:
 	LPDIRECT3DTEXTURE9 m_pTexture = nullptr;
+	_bool				m_bRenderImgui = true;
 };

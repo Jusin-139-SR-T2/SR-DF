@@ -24,6 +24,11 @@ private:
 	virtual void		Free();
 
 public:
+	virtual void OnCollision(CGameObject* pDst, const FContact* const pContact) override;
+	virtual void OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) override;
+	virtual void OnCollisionExited(CGameObject* pDst) override;
+
+public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)

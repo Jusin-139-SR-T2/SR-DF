@@ -131,7 +131,7 @@ void CRedLaser::Free()
 	SUPER::Free();
 }
 
-void CRedLaser::OnCollision(CGameObject* pDst) 
+void CRedLaser::OnCollision(CGameObject* pDst, const FContact* const pContact) 
 {
 	// 맞고있는게 계속있으면 2초에 한번씩 피 닳을것임 
 	if (m_tFrame.fAge >= m_tFrame.fLifeTime)
@@ -141,7 +141,7 @@ void CRedLaser::OnCollision(CGameObject* pDst)
 	}
 }
 
-void CRedLaser::OnCollisionEntered(CGameObject* pDst)
+void CRedLaser::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 
 	OutputDebugString(L"▶RedLaser 충돌 \n");

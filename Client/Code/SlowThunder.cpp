@@ -138,12 +138,12 @@ void CSlowThunder::Free()
 
 #pragma endregion
 
-void CSlowThunder::OnCollision(CGameObject* pDst)
+void CSlowThunder::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 	//m_pTransformComp
 }
 
-void CSlowThunder::OnCollisionEntered(CGameObject* pDst)
+void CSlowThunder::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	OutputDebugString(L"¢ºSlowThunder Ãæµ¹ \n");
 

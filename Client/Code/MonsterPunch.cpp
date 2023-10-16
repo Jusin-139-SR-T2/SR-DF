@@ -121,11 +121,11 @@ void CMonsterPunch::Free()
 	SUPER::Free();
 }
 
-void CMonsterPunch::OnCollision(CGameObject* pDst)
+void CMonsterPunch::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 }
 
-void CMonsterPunch::OnCollisionEntered(CGameObject* pDst)
+void CMonsterPunch::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	switch (m_eAttackType)
 	{

@@ -13,6 +13,7 @@ CRcBufferComp::CRcBufferComp(LPDIRECT3DDEVICE9 pGraphicDev)
 
 CRcBufferComp::CRcBufferComp(const CRcBufferComp& rhs)
 	: Base(rhs)
+	, m_pVertexPos(rhs.m_pVertexPos)
 {
 
 }

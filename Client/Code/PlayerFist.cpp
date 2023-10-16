@@ -148,13 +148,13 @@ void CPlayerFist::Free()
 	SUPER::Free();
 }
 
-void CPlayerFist::OnCollision(CGameObject* pDst)
+void CPlayerFist::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 
 
 }
 
-void CPlayerFist::OnCollisionEntered(CGameObject* pDst)
+void CPlayerFist::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	OutputDebugString(L"플레이어의 주먹 충돌 \n");
 

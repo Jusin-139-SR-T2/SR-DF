@@ -7,6 +7,16 @@ CGameObject* Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
 {
 	return CManagement::GetInstance()->Get_GameObject(pLayerTag, pObjTag);
 }
+CGameObject* Get_GameObject(const char* pLayerTag, const char* pObjTag)
+{
+	string strLayerTag = pLayerTag;
+	wstring wstrLayerTag(strLayerTag.begin(), strLayerTag.end());
+
+	string strObjTag = pObjTag;
+	wstring wstrObjTag(strObjTag.begin(), strObjTag.end());
+
+	return CManagement::GetInstance()->Get_GameObject(wstrLayerTag.c_str(), wstrObjTag.c_str());
+}
 HRESULT		Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagementInstance, EMANAGE_SCENE eType)
 {
 	CManagement*		pManagement = CManagement::GetInstance();
@@ -26,6 +36,14 @@ HRESULT		Set_Scene(wstring strSceneName)
 {
 	return CManagement::GetInstance()->Set_Scene(strSceneName);
 }
+HRESULT		Clear_CurrentScene()
+{
+	return CManagement::GetInstance()->Clear_CurrentScene();
+}
+HRESULT		Clear_Scene()
+{
+	return CManagement::GetInstance()->Delete_SceneAll();
+}
 _int			Update_Scene(const _float& fTimeDelta)
 {
 	return CManagement::GetInstance()->Update_Scene(fTimeDelta);
@@ -42,8 +60,15 @@ void			Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj)
 {
 	CManagement::GetInstance()->Add_GameObject(pLayerTag, pObj);
 }
+void			Add_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag, CGameObject* const pObj)
+{
+	CManagement::GetInstance()->Add_GameObject(pLayerTag, pObjTag, pObj);
+}
 
-
+void			Add_Layer(const _tchar* pLayerTag, CLayer* const pLayer)
+{
+	CManagement::GetInstance()->Add_Layer(pLayerTag, pLayer);
+}
 
 
 

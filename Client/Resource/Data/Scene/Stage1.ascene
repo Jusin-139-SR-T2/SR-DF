@@ -10,7 +10,7 @@
                 "type": 2,
                 "name": "Environment"
             },
-            "priority": 0.0,
+            "priority": -10.0,
             "objects": []
         },
         {
@@ -19,14 +19,276 @@
                 "name": "GameLogic"
             },
             "priority": 0.0,
-            "objects": []
+            "objects": [
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -11.34634017944336,
+                        "y": 6.697024345397949,
+                        "z": 7.992373943328857
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 13.267948150634766,
+                        "y": 13.267948150634766,
+                        "z": 15.205574989318848
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest0"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 23.61443328857422,
+                        "y": 9.030966758728027,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 13.543374061584473,
+                        "y": 18.057830810546875,
+                        "z": 13.543374061584473
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest1"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -11.626107215881348,
+                        "y": 5.210262298583984,
+                        "z": -9.974142074584961
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.7900000214576721,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 13.242364883422852,
+                        "y": 15.836332321166992,
+                        "z": 9.501799583435059
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest2"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 106.39503479003906,
+                        "y": 20.227224349975586,
+                        "z": 98.15591430664063
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 21.885513305664063,
+                        "y": 22.839763641357422,
+                        "z": 17.247316360473633
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest3"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 16.155902862548828,
+                        "y": 5.141117572784424,
+                        "z": 11.5557861328125
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.559999942779541,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 6.3366169929504395,
+                        "y": 10.398443222045898,
+                        "z": 6.932294845581055
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest4"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 12.470586776733398,
+                        "y": 9.94472885131836,
+                        "z": -13.245399475097656
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 5.7498674392700195,
+                        "y": 10.019826889038086,
+                        "z": 3.7811191082000732
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Cola"
+                    },
+                    "ID": 5,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 10.0,
+                        "y": 0.0,
+                        "z": 10.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 3.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Cola0"
+                    },
+                    "ID": 5,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 5.0,
+                        "y": 0.0,
+                        "z": 5.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 3.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest5"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -10.127054214477539,
+                        "y": 5.609738349914551,
+                        "z": 23.26165199279785
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 13.225300788879395,
+                        "y": 11.188283920288086,
+                        "z": 6.242740154266357
+                    }
+                }
+            ]
         },
         {
             "header": {
                 "type": 2,
                 "name": "Camera"
             },
-            "priority": 0.0,
+            "priority": -1.0,
             "objects": []
         },
         {
@@ -34,7 +296,7 @@
                 "type": 2,
                 "name": "UI"
             },
-            "priority": 0.0,
+            "priority": -100.0,
             "objects": []
         }
     ]

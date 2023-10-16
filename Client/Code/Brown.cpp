@@ -32,6 +32,21 @@ CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _flo
     return pInstance;
 }
 
+CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject tObjectSerial)
+{
+    ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+    if (FAILED(pInstance->Ready_GameObject(tObjectSerial)))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("Monster Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
+}
+
 HRESULT CBrown::Ready_GameObject()
 {
     SUPER::Ready_GameObject();
@@ -141,6 +156,28 @@ HRESULT CBrown::Ready_GameObject()
     return S_OK;
 }
 
+HRESULT CBrown::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
+{
+    FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
+
+    m_pTransformComp->Set_Pos(tObjectSerial.vPos);
+    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
+    Set_ObjectName(strConvName);
+
+    m_fPriority[0] = tObjectSerial.fPriority_Update;
+    m_fPriority[1] = tObjectSerial.fPriority_LateUpdate;
+    m_fPriority[2] = tObjectSerial.fPriority_Render;
+
+    m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
+    m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
+    m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
+
+    return S_OK;
+}
+
 _int CBrown::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
@@ -241,11 +278,11 @@ void CBrown::Free()
 
 #pragma region 충돌 - OnCollision 
 
-void CBrown::OnCollision(CGameObject* pDst) // 계속 충돌중 
+void CBrown::OnCollision(CGameObject* pDst, const FContact* const pContact) // 계속 충돌중 
 {
 }
 
-void CBrown::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
+void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) // 처음 충동 진입 
 {
     if (Get_IsMonsterDeath())
         return;

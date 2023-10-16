@@ -1,6 +1,7 @@
 #include "ColliderComponent.h"
 
 #include "CollisionPrimitive.h"
+#include "Contact.h"
 
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -43,16 +44,44 @@ CColliderComponent::CColliderComponent(const CColliderComponent& rhs)
         m_pCollisionShape = new FCollisionCapsule(*pShape);
         break;
     }
+    case ECOLLISION::PLANE:
+    {
+        FCollisionPlane* pShape = dynamic_cast<FCollisionPlane*>(rhs.m_pCollisionShape);
+        m_pCollisionShape = new FCollisionPlane(*pShape);
+        break;
+    }
+    case ECOLLISION::LINE:
+    {
+        FCollisionLine* pShape = dynamic_cast<FCollisionLine*>(rhs.m_pCollisionShape);
+        m_pCollisionShape = new FCollisionLine(*pShape);
+        break;
+    }
+    case ECOLLISION::RAY:
+    {
+        FCollisionRay* pShape = dynamic_cast<FCollisionRay*>(rhs.m_pCollisionShape);
+        m_pCollisionShape = new FCollisionRay(*pShape);
+        break;
+    }
+    case ECOLLISION::TRIANGLE:
+    {
+        FCollisionTriangle* pShape = dynamic_cast<FCollisionTriangle*>(rhs.m_pCollisionShape);
+        m_pCollisionShape = new FCollisionTriangle(*pShape);
+        break;
+    }
+    case ECOLLISION::OBB:
+    {
+        FCollisionOBB* pShape = dynamic_cast<FCollisionOBB*>(rhs.m_pCollisionShape);
+        m_pCollisionShape = new FCollisionOBB(*pShape);
+        break;
+    }
     }
 
     m_pCollisionShape->Set_Owner(this);
 
     // 충돌체에 충돌 이벤트 추가하기
-    m_pCollisionShape->Add_CollisionEvent([this](void* pDst) {
-        this->OnCollision(static_cast<CColliderComponent*>(pDst));
+    m_pCollisionShape->Add_CollisionEvent([this](void* pDst, const FContact* const pContact) {
+        this->OnCollision(static_cast<CColliderComponent*>(pDst), pContact);
         });
-    
-
 
     // 이벤트 함수 클론 제외, 수동으로 외부에서 추가
 }
@@ -103,14 +132,29 @@ HRESULT CColliderComponent::Ready_Component(LPDIRECT3DDEVICE9 pGraphicDev, ECOLL
     case ECOLLISION::CAPSULE:
         m_pCollisionShape = new FCollisionCapsule();
         break;
+    case ECOLLISION::PLANE:
+        m_pCollisionShape = new FCollisionPlane();
+        break;
+    case ECOLLISION::LINE:
+        m_pCollisionShape = new FCollisionLine();
+        break;
+    case ECOLLISION::RAY:
+        m_pCollisionShape = new FCollisionRay();
+        break;
+    case ECOLLISION::TRIANGLE:
+        m_pCollisionShape = new FCollisionTriangle();
+        break;
+    case ECOLLISION::OBB:
+        m_pCollisionShape = new FCollisionOBB();
+        break;
     }
 
     // 충돌체에 오너 설정
     m_pCollisionShape->Set_Owner(this);
 
     // 충돌체에 충돌 이벤트 추가하기
-    m_pCollisionShape->Add_CollisionEvent([this](void* pDst) {
-        this->OnCollision(static_cast<CColliderComponent*>(pDst));
+    m_pCollisionShape->Add_CollisionEvent([this](void* pDst, const FContact* const pContact) {
+        this->OnCollision(static_cast<CColliderComponent*>(pDst), pContact);
         });
 
     return S_OK;
@@ -142,14 +186,10 @@ void CColliderComponent::Update_Physics(const _matrix& matWorld)
     Readjust_Transform();
     Set_TransformToWorld(matWorld);
 
-    FVector3 vPos;
-    vPos.x = Get_PosByTransform().x;
-    vPos.y = Get_PosByTransform().y;
-    vPos.z = Get_PosByTransform().z;
-    m_pCollisionShape->pBody->Set_Position(vPos);
+    m_pCollisionShape->matOffset.RecieveDXArray(reinterpret_cast<const float*>(Get_Transform()));
 }
 
-void CColliderComponent::OnCollision(CColliderComponent* pDst)
+void CColliderComponent::OnCollision(CColliderComponent* pDst, const FContact* const pContact)
 {
     // 충돌체가 충돌을 진행해야하는 객체인지 확인
 
@@ -162,7 +202,7 @@ void CColliderComponent::OnCollision(CColliderComponent* pDst)
     // 충돌 진입 함수 작동
     if (iter == m_listColliderObject.end())
     {
-        OnCollisionEntered(pDst);
+        OnCollisionEntered(pDst, pContact);
         m_listColliderObject.push_back(pair_collider(pDst, true));
     }
     else
@@ -174,7 +214,7 @@ void CColliderComponent::OnCollision(CColliderComponent* pDst)
         // 오너 객체가 있어야 해당 객체를 주인에게 넘겨준다.
         if (CGameObject* pObj = pDst->Get_Owner())
         {
-            m_fnCollision(pObj);
+            m_fnCollision(pObj, pContact);
         }
     }
         
@@ -205,8 +245,7 @@ void CColliderComponent::SeeColliderFrame(LPDIRECT3DDEVICE9 pGraphicDev)
    //
 }
 
-
-void CColliderComponent::OnCollisionEntered(CColliderComponent* pDst)
+void CColliderComponent::OnCollisionEntered(CColliderComponent* pDst, const FContact* const pContact)
 {
     // CollisionEntered 발동
     if (m_fnCollisionEntered)
@@ -214,7 +253,7 @@ void CColliderComponent::OnCollisionEntered(CColliderComponent* pDst)
         // 오너 객체가 있어야 해당 객체를 주인에게 넘겨준다.
         if (CGameObject* pObj = pDst->Get_Owner())
         {
-            m_fnCollisionEntered(pObj);
+            m_fnCollisionEntered(pObj, pContact);
         }
     }
 }

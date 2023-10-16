@@ -32,6 +32,18 @@ CBossLight* CBossLight::Create(LPDIRECT3DDEVICE9 pGraphicDev, CGameObject* pOwne
     return pInstance;
 }
 
+void CBossLight::OnCollision(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CBossLight::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
+{
+}
+
+void CBossLight::OnCollisionExited(CGameObject* pDst)
+{
+}
+
 HRESULT CBossLight::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
@@ -91,7 +103,7 @@ void CBossLight::Height_On_Terrain()
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
     NULL_CHECK(pTerrainBufferComp);
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,

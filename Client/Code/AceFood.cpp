@@ -37,13 +37,33 @@ CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag,
     return pInstance;
 }
 
-// Collision - 트리거 발동용 (event방식)
-void CAceFood::OnCollision(CGameObject* pDst) // 계속 충돌중 
+CAceFood* CAceFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial)
 {
-    OutputDebugString(L"Object - Food 충돌중\n");
+    ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+    if (!pInstance)
+        return nullptr;
+
+    if (FAILED(pInstance->Ready_GameObject(tObjectSerial)))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("FoodObject Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
 }
 
-void CAceFood::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입 
+// Collision - 트리거 발동용 (event방식)
+void CAceFood::OnCollision(CGameObject* pDst, const FContact* const pContact) // 계속 충돌중 
+{
+    OutputDebugString(L"Object - Food 충돌중\n");
+
+    
+}
+
+void CAceFood::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) // 처음 충동 진입 
 {
 
     OutputDebugString(L"Object - Food 충돌 진입 \n");
@@ -52,10 +72,17 @@ void CAceFood::OnCollisionEntered(CGameObject* pDst) // 처음 충동 진입
 void CAceFood::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
 {
     OutputDebugString(L"Object - Food 충돌 끝\n");
-    Set_Dead();
+    //Set_Dead();
 }
 
 HRESULT CAceFood::Ready_GameObject()
+{
+    FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    return S_OK;
+}
+
+HRESULT CAceFood::Ready_GameObject(const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -63,6 +90,28 @@ HRESULT CAceFood::Ready_GameObject()
 
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
+
+    return S_OK;
+}
+
+HRESULT CAceFood::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
+{
+    FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
+
+    m_pTransformComp->Set_Pos(tObjectSerial.vPos);
+    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
+    Set_ObjectName(strConvName);
+
+    m_fPriority[0] = tObjectSerial.fPriority_Update;
+    m_fPriority[1] = tObjectSerial.fPriority_LateUpdate;
+    m_fPriority[2] = tObjectSerial.fPriority_Render;
+
+    m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
+    m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
+    m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     return S_OK;
 }
@@ -118,7 +167,7 @@ HRESULT CAceFood::Add_Component()
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_ObjectTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderOBBComp"), E_FAIL);
 
     // 물리 세계 등록
     m_pColliderComp->EnterToPhysics(0);
@@ -140,8 +189,9 @@ void CAceFood::Height_On_Terrain()
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
 
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
-    NULL_CHECK(pTerrainBufferComp);
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
+    if (nullptr == pTerrainBufferComp)
+        return;
 
     _float	fHeight = m_pCalculatorComp->Compute_HeightOnTerrain(&vPos,
         pTerrainBufferComp->Get_VtxPos(),

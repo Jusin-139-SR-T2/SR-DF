@@ -29,6 +29,11 @@ public:
 	virtual void		Render_GameObject() override;
 	static CBossLight*  Create(LPDIRECT3DDEVICE9 pGraphicDev, CGameObject* pOwner);
 
+public:
+	virtual void OnCollision(CGameObject* pDst, const FContact* const pContact) override;
+	virtual void OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) override;
+	virtual void OnCollisionExited(CGameObject* pDst) override;
+
 private:
 	void				Height_On_Terrain();
 	HRESULT				Add_Component();

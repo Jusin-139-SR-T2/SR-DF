@@ -40,7 +40,7 @@ private:
 public:
 	virtual HRESULT		Ready_Buffer(const _tchar* pFileName, const _ulong& dwCntX, const _ulong& dwCntZ, const _vec3& vScale, const _vec3& vInvOffset);
 	// 파싱 데이터 버전
-	virtual HRESULT		Ready_Buffer(const char* pParsedFile, const _tchar* pHeightFile);
+	virtual HRESULT		Ready_Buffer(const char* pParsedFile, const _tchar* pHeightFile = L"");
 	virtual void		Render_Buffer();
 	virtual HRESULT		Ready_Component() override;
 	virtual void		LateUpdate_Component() override;

@@ -9,6 +9,8 @@
 #include "PlayerLighter.h"
 #include "PlayerGunLighter.h"
 #include "Management.h"
+#include "BlackBoard_Player.h"
+#include "AceBuilding.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -44,8 +46,8 @@ HRESULT CPlayer::Ready_GameObject()
 
 #pragma region 플레이어 충돌체
     //m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-    FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-    pShape->fRadius = 0.5f;
+    //FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+    //pShape->fRadius = 0.5f;
 
     /*FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
     pShape->fRadius = 5.f;*/
@@ -132,17 +134,24 @@ HRESULT CPlayer::Ready_GameObject()
     return S_OK;
 }
 
-HRESULT CPlayer::Ready_GameObject(const FPlayer_Create& tCreate)
+HRESULT CPlayer::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
 {
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
-    for (_uint i = 0; i < static_cast<_uint>(EPRIORITY_TYPE::SIZE); i++)
-    {
-        m_fPriority[i] = tCreate.fPriority[i];
-    }
-    m_pTransformComp->Set_Pos(tCreate.vPos);
-    m_pTransformComp->Set_Rotation(tCreate.vRot);
-    m_pTransformComp->Set_Scale(tCreate.vScale);
+    m_pTransformComp->Set_Pos(tObjectSerial.vPos);
+    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
+    Set_ObjectName(strConvName);
+
+    m_fPriority[0] = tObjectSerial.fPriority_Update;
+    m_fPriority[1] = tObjectSerial.fPriority_LateUpdate;
+    m_fPriority[2] = tObjectSerial.fPriority_Render;
+
+    m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
+    m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
+    m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     // 플레이어 행렬 초기화
     m_pTransformComp->Readjust_Transform();
@@ -336,7 +345,7 @@ HRESULT CPlayer::Add_Component()
     m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_PLAYER);
-    m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_ITEM);
+    m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_ITEM | LAYER_WALL);
     // 플레이어가 shift로 대쉬를 하거나 공격을 했을때만 몬스터와 충돌이 허용됨. 
 
     return S_OK;
@@ -803,13 +812,20 @@ _bool CPlayer::Picking_On_Object()
         return false;
 }
 
-void CPlayer::OnCollision(CGameObject* pDst)
+void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
     // 충돌중일때
    // OutputDebugString(L"플레이어와 충돌중\n");
+    CAceBuilding* pFood = dynamic_cast<CAceBuilding*>(pDst);
+    if (pFood)
+    {
+        _vec3 vNormal(pContact->vContactNormal.x, pContact->vContactNormal.y, pContact->vContactNormal.z);
+        m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * pContact->fPenetration));
+        cout << "건물 충돌" << endl;
+    }
 }
 
-void CPlayer::OnCollisionEntered(CGameObject* pDst)
+void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
     //// 처음 충돌했을때
     //CBrown* pBrown = dynamic_cast<CBrown*>(pDst->Get_Owner());
@@ -1171,11 +1187,26 @@ void CPlayer::Mouse_Move()
 #pragma endregion
 }
 
-CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FPlayer_Create& tCreate)
+CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
     ThisClass* pInstance = new ThisClass(pGraphicDev);
 
     if (FAILED(pInstance->Ready_GameObject()))
+    {
+        Safe_Release(pInstance);
+
+        MSG_BOX("Player Create Failed");
+        return nullptr;
+    }
+
+    return pInstance;
+}
+
+CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial)
+{
+    ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+    if (FAILED(pInstance->Ready_GameObject(tObjectSerial)))
     {
         Safe_Release(pInstance);
 
@@ -1202,7 +1233,7 @@ void CPlayer::Height_On_Terrain()
 {
     _vec3		vPos = m_pTransformComp->Get_Pos();
 
-    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Environment", L"Terrain", L"Com_Buffer"));
+    CTerrainBufferComp* pTerrainBufferComp = dynamic_cast<CTerrainBufferComp*>(Engine::Get_Component(ID_STATIC, L"Terrain", L"Terrain", L"Com_Buffer"));
     if (nullptr == pTerrainBufferComp)
         return;
 

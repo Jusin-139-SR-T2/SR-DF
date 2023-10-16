@@ -158,11 +158,11 @@ void CFallingStone::Falling(const _float& fTimeDelta)
 }
 #pragma endregion
 
-void CFallingStone::OnCollision(CGameObject* pDst)
+void CFallingStone::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 }
 
-void CFallingStone::OnCollisionEntered(CGameObject* pDst)
+void CFallingStone::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	OutputDebugString(L"¢ºFallingStone Ãæµ¹ \n");
 	

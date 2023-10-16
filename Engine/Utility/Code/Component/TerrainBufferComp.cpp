@@ -156,90 +156,94 @@ HRESULT CTerrainBufferComp::Ready_Buffer(const _tchar* pFileName, const _ulong& 
 
 	VTXTEX* pVertex = nullptr;
 
-	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
-	// 1. 어디서부터 메모리를 잠글 것인가
-	// 2. 0인 경우 전체 영역을 잠금
-	// 3. 버텍스 버퍼에 저장된 정점들 중 첫 번째 주소를 반환
-	// 4. 잠그는 형태, 정적 버퍼인 경우는 0을 넣어줌
-
-	// LT (-1, 1) RB(1, -1)
-	_ulong dwIndex(0);
-	for (_ulong i = 0; i < dwCntZ; i++)
+	if (m_pVB->Lock(0, 0, (void**)&pVertex, 0) == S_OK)
 	{
-		for (_ulong j = 0; j < dwCntX; j++)
+		// 1. 어디서부터 메모리를 잠글 것인가
+		// 2. 0인 경우 전체 영역을 잠금
+		// 3. 버텍스 버퍼에 저장된 정점들 중 첫 번째 주소를 반환
+		// 4. 잠그는 형태, 정적 버퍼인 경우는 0을 넣어줌
+
+		// LT (-1, 1) RB(1, -1)
+		_ulong dwIndex(0);
+		for (_ulong i = 0; i < dwCntZ; i++)
 		{
-			dwIndex = j + i * dwCntX;
+			for (_ulong j = 0; j < dwCntX; j++)
+			{
+				dwIndex = j + i * dwCntX;
 
-			if (m_bHeightMap_Loaded)
-				pVertex[dwIndex].vPosition = { (_float)j * m_vScale.x - m_vInvOffset.x, 
-												((_float)m_vHeightMap[dwIndex] / 255.f) * m_vScale.y - m_vInvOffset.y,
-												(_float)i * m_vScale.z - m_vInvOffset.z };
-			else
-				pVertex[dwIndex].vPosition = { (_float)j, 0.f, (_float)i };
+				if (m_bHeightMap_Loaded)
+					pVertex[dwIndex].vPosition = { (_float)j * m_vScale.x - m_vInvOffset.x,
+													((_float)m_vHeightMap[dwIndex] / 255.f) * m_vScale.y - m_vInvOffset.y,
+													(_float)i * m_vScale.z - m_vInvOffset.z };
+				else
+					pVertex[dwIndex].vPosition = { (_float)j, 0.f, (_float)i };
 
-			m_pPos[dwIndex] = pVertex[dwIndex].vPosition;
+				m_pPos[dwIndex] = pVertex[dwIndex].vPosition;
 
-			pVertex[dwIndex].vNormal = { 0.f, 0.f, 0.f };
+				pVertex[dwIndex].vNormal = { 0.f, 0.f, 0.f };
 
-			pVertex[dwIndex].vTexUV = { ((_float)j / ((_float)dwCntX - 1)) * 20.f, 
-										((_float)i / ((_float)dwCntZ - 1)) * 20.f};
+				pVertex[dwIndex].vTexUV = { ((_float)j / ((_float)dwCntX - 1)) * 20.f,
+											((_float)i / ((_float)dwCntZ - 1)) * 20.f };
+			}
 		}
+
+		INDEX32* pIndex = nullptr;
+		_ulong		dwTriIdx(0);
+		_vec3		vDst, vSrc, vNormal;
+
+		//	Safe_Delete_Array(m_pPos);
+
+		m_pIB->Lock(0, 0, (void**)&pIndex, 0);
+		// 점은 좌우로 129개지만 128개로 줄여 계산
+		for (_ulong i = 0; i < dwCntZ - 1; i++)
+		{
+			for (_ulong j = 0; j < dwCntX - 1; j++)
+			{
+				dwIndex = i * dwCntX + j;
+
+				// 오른쪽 위
+				pIndex[dwTriIdx]._0 = dwIndex + dwCntX;
+				pIndex[dwTriIdx]._1 = dwIndex + dwCntX + 1;
+				pIndex[dwTriIdx]._2 = dwIndex + 1;
+
+				// 삼각형의 두 방향 벡터 구하기
+				vDst = pVertex[pIndex[dwTriIdx]._1].vPosition - pVertex[pIndex[dwTriIdx]._0].vPosition;
+				vSrc = pVertex[pIndex[dwTriIdx]._2].vPosition - pVertex[pIndex[dwTriIdx]._1].vPosition;
+				D3DXVec3Cross(&vNormal, &vDst, &vSrc);	// 외적
+
+				// 각 점에 대한 법선 벡터 만들어 주기, 이로 인해 겹치는 벡터도 존재한다. 이는 정규화로 해결.
+				pVertex[pIndex[dwTriIdx]._0].vNormal += vNormal;
+				pVertex[pIndex[dwTriIdx]._1].vNormal += vNormal;
+				pVertex[pIndex[dwTriIdx]._2].vNormal += vNormal;
+
+				dwTriIdx++;
+
+				// 왼쪽 아래 삼각형
+				pIndex[dwTriIdx]._0 = dwIndex + dwCntX;
+				pIndex[dwTriIdx]._1 = dwIndex + 1;
+				pIndex[dwTriIdx]._2 = dwIndex;
+
+				vDst = pVertex[pIndex[dwTriIdx]._1].vPosition - pVertex[pIndex[dwTriIdx]._0].vPosition;
+				vSrc = pVertex[pIndex[dwTriIdx]._2].vPosition - pVertex[pIndex[dwTriIdx]._1].vPosition;
+				D3DXVec3Cross(&vNormal, &vDst, &vSrc);
+
+				pVertex[pIndex[dwTriIdx]._0].vNormal += vNormal;
+				pVertex[pIndex[dwTriIdx]._1].vNormal += vNormal;
+				pVertex[pIndex[dwTriIdx]._2].vNormal += vNormal;
+
+				dwTriIdx++;
+			}
+		}
+
+		// 모든 법선 벡터 정규화하기
+		for (_ulong i = 0; i < m_dwVtxCnt; ++i)
+			D3DXVec3Normalize(&pVertex[i].vNormal, &pVertex[i].vNormal);
+
+		m_pVB->Unlock();
+		m_pIB->Unlock();
 	}
 
-	INDEX32* pIndex = nullptr;
-	_ulong		dwTriIdx(0);
-	_vec3		vDst, vSrc, vNormal;
-
-	//	Safe_Delete_Array(m_pPos);
-
-	m_pIB->Lock(0, 0, (void**)&pIndex, 0);
-	// 점은 좌우로 129개지만 128개로 줄여 계산
-	for (_ulong i = 0; i < dwCntZ-1; i++)
-	{
-		for (_ulong j = 0; j < dwCntX-1; j++)
-		{
-			dwIndex = i * dwCntX + j;
-
-			// 오른쪽 위
-			pIndex[dwTriIdx]._0 = dwIndex + dwCntX;
-			pIndex[dwTriIdx]._1 = dwIndex + dwCntX + 1;
-			pIndex[dwTriIdx]._2 = dwIndex + 1;
-
-			// 삼각형의 두 방향 벡터 구하기
-			vDst = pVertex[pIndex[dwTriIdx]._1].vPosition - pVertex[pIndex[dwTriIdx]._0].vPosition;
-			vSrc = pVertex[pIndex[dwTriIdx]._2].vPosition - pVertex[pIndex[dwTriIdx]._1].vPosition;
-			D3DXVec3Cross(&vNormal, &vDst, &vSrc);	// 외적
-
-			// 각 점에 대한 법선 벡터 만들어 주기, 이로 인해 겹치는 벡터도 존재한다. 이는 정규화로 해결.
-			pVertex[pIndex[dwTriIdx]._0].vNormal += vNormal;
-			pVertex[pIndex[dwTriIdx]._1].vNormal += vNormal;
-			pVertex[pIndex[dwTriIdx]._2].vNormal += vNormal;
-
-			dwTriIdx++;
-
-			// 왼쪽 아래 삼각형
-			pIndex[dwTriIdx]._0 = dwIndex + dwCntX;
-			pIndex[dwTriIdx]._1 = dwIndex + 1;
-			pIndex[dwTriIdx]._2 = dwIndex;
-
-			vDst = pVertex[pIndex[dwTriIdx]._1].vPosition - pVertex[pIndex[dwTriIdx]._0].vPosition;
-			vSrc = pVertex[pIndex[dwTriIdx]._2].vPosition - pVertex[pIndex[dwTriIdx]._1].vPosition;
-			D3DXVec3Cross(&vNormal, &vDst, &vSrc);
-
-			pVertex[pIndex[dwTriIdx]._0].vNormal += vNormal;
-			pVertex[pIndex[dwTriIdx]._1].vNormal += vNormal;
-			pVertex[pIndex[dwTriIdx]._2].vNormal += vNormal;
-
-			dwTriIdx++;
-		}
-	}
-
-	// 모든 법선 벡터 정규화하기
-	for (_ulong i = 0; i < m_dwVtxCnt; ++i)
-		D3DXVec3Normalize(&pVertex[i].vNormal, &pVertex[i].vNormal);
-
-	m_pVB->Unlock();
-	m_pIB->Unlock();
+	
 #pragma endregion 인덱스 버퍼 방식
 
 	return S_OK;
@@ -265,7 +269,8 @@ HRESULT CTerrainBufferComp::Ready_Buffer(const char* pParsedFile, const _tchar* 
 
 	tTerrain.Receive_ByRapidJSON(strJson);
 
-	Ready_Buffer(pHeightFile, static_cast<_ulong>(tTerrain.vVertexCount.x), static_cast<_ulong>(tTerrain.vVertexCount.z),
+	Ready_Buffer(pHeightFile, 
+		static_cast<_ulong>(tTerrain.vVertexCount.x), static_cast<_ulong>(tTerrain.vVertexCount.z),
 		tTerrain.vScale, tTerrain.vInvOffset);
 
 	return S_OK;

@@ -17,13 +17,40 @@ class ENGINE_DLL FContact
 	THIS_CLASS(FContact)
 
 public:
-	FRigidBody* pBody[2];
+	FRigidBody* pBody[2];           // 충돌 몸체
 
-	Real		fFriction;
-	Real		fRestitution;
+	Real		fFriction;          // 마찰 계수
+	Real		fRestitution;       // 반발 계수
 
-	FVector3	vContactPoint;
-	FVector3	vContactNormal;
+	FVector3	vContactPoint;      // 접촉지점
+	FVector3	vContactNormal;     // 접촉법선
+    Real        fPenetration;       // 관통 깊이
+
+protected:
+    FMatrix3    matContactToWorld;
+    FMatrix3    matContactVelocity;
+    Real        fDesiredDeltaVelocity;
+    FVector3    vRelativeContactPosition[2];
+
+public:
+    
+
+    void Set_BodyData(FRigidBody* pSrcBody, FRigidBody* pDstBody,
+        Real _fFriction, Real _fRestitution)
+    {
+        pBody[0] = pSrcBody;
+        pBody[1] = pDstBody;
+        fFriction = _fFriction;
+        fRestitution = _fRestitution;
+    }
+
+    void Reverse_BodyData()
+    {
+        FRigidBody* pTempBody = pBody[0];
+        pBody[0] = pBody[1];
+        pBody[1] = pBody[0];
+        vContactNormal = -vContactNormal;
+    }
 };
 
 

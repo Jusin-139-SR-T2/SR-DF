@@ -133,11 +133,11 @@ void CMonsterBullet::Free()
 	SUPER::Free();
 }
 
-void CMonsterBullet::OnCollision(CGameObject* pDst)
+void CMonsterBullet::OnCollision(CGameObject* pDst, const FContact* const)
 {
 
 }
-void CMonsterBullet::OnCollisionEntered(CGameObject* pDst)
+void CMonsterBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const)
 {
 	switch (m_eAttackType)
 	{

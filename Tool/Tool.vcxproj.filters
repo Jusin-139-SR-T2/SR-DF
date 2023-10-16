@@ -61,6 +61,12 @@
     <Filter Include="02. ImguiMgr\04. ProtoTool">
       <UniqueIdentifier>{2dc6065f-c977-4579-af7a-43c6ed2cae64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\01. Terrain">
+      <UniqueIdentifier>{2c8517ab-e4c7-4919-98bd-e2d8e069aa2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\02. Cube">
+      <UniqueIdentifier>{303baa0c-8d38-473f-b7e3-82192462007c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\framework.h">
@@ -156,6 +162,18 @@
     <ClInclude Include="Header\ImguiWin_ProtoTool.h">
       <Filter>02. ImguiMgr\04. ProtoTool</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Terrain.h">
+      <Filter>03. GameObject\01. Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Loading.h">
+      <Filter>00. MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\CubeObject.h">
+      <Filter>03. GameObject\02. Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Scene_Parsed.h">
+      <Filter>01. Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\framework.cpp">
@@ -241,6 +259,18 @@
     </ClCompile>
     <ClCompile Include="Code\ImguiWin_ProtoTool.cpp">
       <Filter>02. ImguiMgr\04. ProtoTool</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Terrain.cpp">
+      <Filter>03. GameObject\01. Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Loading.cpp">
+      <Filter>00. MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\CubeObject.cpp">
+      <Filter>03. GameObject\02. Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scene_Parsed.cpp">
+      <Filter>01. Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

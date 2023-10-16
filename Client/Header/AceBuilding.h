@@ -3,6 +3,8 @@
 #include "AceObjectFactory.h"
 #include "AceUnit.h"
 
+#include "Serialize_BaseClass.h"
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -31,24 +33,28 @@ private:
 	explicit CAceBuilding(const CAceBuilding& rhs);
 	virtual ~CAceBuilding();
 
+
+public:
+	static CAceBuilding* Create(LPDIRECT3DDEVICE9 pGraphicDev,
+			const _tchar* pObjTag,
+			const _float _fx,
+			const _float _fy,
+			const _float _fz,
+			CAceObjectFactory::OBJECT_DIRECTION pDirection = CAceObjectFactory::OBJECT_DIRECTION::SOUTH);
+
+	static CAceBuilding* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial);
+
 public:
 	virtual HRESULT		Ready_GameObject() override;
+	virtual HRESULT		Ready_GameObject(const FSerialize_GameObject& tObjectSerial);
 	virtual _int		Update_GameObject(const _float& fTimeDelta) override;
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
-	static CAceBuilding* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
-		const _tchar* pObjTag, 
-		const _float _fx, 
-		const _float _fy, 
-		const _float _fz,
-		CAceObjectFactory::OBJECT_DIRECTION pDirection = CAceObjectFactory::OBJECT_DIRECTION::SOUTH);
 
-private:
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CCubeBufferComp* m_pCubeBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
-	CCalculatorComponent* m_pCalculatorComp = nullptr;
+public:
+	virtual void OnCollision(CGameObject* pDst, const FContact* const pContact) override;
+	virtual void OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) override;
+	virtual void OnCollisionExited(CGameObject* pDst) override;
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -57,6 +63,15 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
 
+private:
+	CRcBufferComp* m_pBufferComp = nullptr;
+	CCubeBufferComp* m_pCubeBufferComp = nullptr;
+	CTextureComponent* m_pTextureComp = nullptr;
+	CTransformComponent* m_pTransformComp = nullptr;
+	CCalculatorComponent* m_pCalculatorComp = nullptr;
+	CColliderComponent* m_pColliderComp = nullptr;
+
+
 private: // 함수 
 	virtual void		Free();											// Release
 	HRESULT				Add_Component();								// 컴포넌트 추가 
@@ -64,8 +79,8 @@ private: // 함수
 	void				ObjectName(const _tchar* pObjTag);				// 처음 주어진 wchar를 enum으로 변경 
 
 	BUILDING_NAME		m_pCurName;
-	_float m_fHeight;
+	_float				m_fHeight;
 	HRESULT				Set_BuildingDir(CAceObjectFactory::OBJECT_DIRECTION _eDir);
 
-	//void Set_Material();
+	
 };

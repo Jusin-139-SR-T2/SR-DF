@@ -22,7 +22,7 @@ void CManagement::Free()
 		Safe_Release(m_pScene_Current);
 		break;
 	case EMANAGE_SCENE::MULTI:
-		for (auto item : m_mapScene)
+		for (auto& item : m_mapScene)
 			Safe_Release(item.second);
 		m_mapScene.clear();
 		break;
@@ -50,6 +50,16 @@ CGameObject* CManagement::Get_GameObject(const _tchar* pLayerTag, const _tchar* 
 void CManagement::Add_GameObject(const _tchar* pLayerTag, CGameObject* const pObj)
 {
 	m_pScene_Current->Add_GameObject(pLayerTag, pObj);
+}
+
+void CManagement::Add_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag, CGameObject* const pObj)
+{
+	m_pScene_Current->Add_GameObject(pLayerTag, pObjTag, pObj);
+}
+
+void CManagement::Add_Layer(const _tchar* pLayerTag, CLayer* const pLayer)
+{
+	m_pScene_Current->Add_Layer(pLayerTag, pLayer);
 }
 
 HRESULT CManagement::Ready_Management(const EMANAGE_SCENE eType)
@@ -151,10 +161,32 @@ HRESULT CManagement::Add_Scene(CScene* pScene, wstring strSceneName)
 	return S_OK;
 }
 
-HRESULT CManagement::Clear_Scene()
+HRESULT CManagement::Clear_CurrentScene()
 {
-	for (auto item : m_mapScene)
+	m_pScene_Current->Delete_LayerAll();
+
+	return S_OK;
+}
+
+HRESULT CManagement::Clear_SceneAll()
+{
+	for (auto& item : m_mapScene)
+		item.second->Delete_LayerAll();
+
+	return S_OK;
+}
+
+HRESULT CManagement::Delete_SceneAll()
+{
+	for (auto& item : m_mapScene)
 		Safe_Release(item.second);
+
+	return S_OK;
+}
+
+HRESULT CManagement::Delete_CurrentScene()
+{
+	Safe_Release(m_pScene_Current);
 
 	return S_OK;
 }

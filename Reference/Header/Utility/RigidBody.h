@@ -312,6 +312,28 @@ public:
         matrix[14] = (float)matTransform.data[11];
         matrix[15] = 1;
     }
+    inline void Get_DXTransform(_float matrix[16]) const
+    {
+        matrix[0] = (float)matTransform.data[0];
+        matrix[1] = (float)matTransform.data[1];
+        matrix[2] = (float)matTransform.data[2];
+        matrix[3] = 0;
+
+        matrix[4] = (float)matTransform.data[4];
+        matrix[5] = (float)matTransform.data[5];
+        matrix[6] = (float)matTransform.data[6];
+        matrix[7] = 0;
+
+        matrix[8] = (float)matTransform.data[8];
+        matrix[9] = (float)matTransform.data[9];
+        matrix[10] = (float)matTransform.data[10];
+        matrix[11] = 0;
+
+        matrix[12] = (float)matTransform.data[3];
+        matrix[13] = (float)matTransform.data[7];
+        matrix[14] = (float)matTransform.data[11];
+        matrix[15] = 1;
+    }
     // 벡터에 대한 변환 함수
     FVector3 Get_PointInLocalSpace(const FVector3& vPoint) const
     {
