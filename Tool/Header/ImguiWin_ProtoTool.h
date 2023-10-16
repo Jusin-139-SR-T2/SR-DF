@@ -16,18 +16,47 @@ struct FComponentData
 
 };
 
-struct FProtoData
+class FProtoData
 {
-	string							strName;					// 프로토타입의 이름
+public:
+	virtual ~FProtoData() {}
+public:
+	string							strName = "";				// 프로토타입의 이름
 	EGO_CLASS						eID = ECLASS_NONE;			// 프로토타입의 원본
-	string							strTextureGroupKey = "";	// 텍스처 그룹 키
-	string							strTextureKey = "";			// 텍스처 키
 
 	_vec3							vPos = { 0.f, 0.f, 0.f };
 	_vec3							vRot = { 0.f, 0.f, 0.f };
 	_vec3							vScale = { 1.f, 1.f, 1.f };
 
+	string							strGroupKey = "";
+	string							strTextureKey = "";
+
 	map<string, FComponentData>		mapComponent;
+
+	
+};
+
+class FProtoCubeStructure : public FProtoData
+{
+public:
+	virtual ~FProtoCubeStructure() {}
+public:
+	string			strGroupKey = "";
+	string			strTextureKey = "";
+
+	/*FProtoCubeStructure operator=(const FProtoData& tProto)
+	{
+		strName = tProto.strName;
+		eID = tProto.eID;
+		strTextureGroupKey = tProto.strTextureGroupKey;
+		strTextureKey = tProto.strTextureKey;
+		vPos = tProto.vPos;
+		vRot = tProto.vRot;
+		vScale = tProto.vScale;
+		mapComponent = tProto.mapComponent;
+
+		return *this;
+	}*/
 };
 
 /// <summary>
@@ -77,7 +106,7 @@ private:
 private:	// 프로토
 	_bool						m_bLoadProto_Init = false;
 	string						m_strAdd_Proto = "";			// 씬 추가하기
-	map<string, FProtoData>		m_mapProtoData;					// 프로토 타입 데이터
+	map<string, FProtoData*>	m_mapProtoData;					// 프로토 타입 데이터
 	string						m_strCur_Proto = "";			// 현재 선택된 프로토 키
 	string						m_strCur_Component = "";		// 현재 선택된 컴포넌트 키
 

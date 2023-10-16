@@ -1,12 +1,12 @@
 {
     "header": {
         "type": 4,
-        "name": "BuildingTest"
+        "name": "Building2"
     },
     "class": 9,
     "pos": {
         "x": 0.0,
-        "y": 3829.787109375,
+        "y": 0.0,
         "z": 0.0
     },
     "rot": {

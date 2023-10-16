@@ -1124,7 +1124,7 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
     case Engine::ECLASS_BUILDING:
     {
         CGameObject* pObj = static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
-            tObjectData.vPos, tObjectData.vRot, tObjectData.vScale));
+            tObjectData.vPos, tObjectData.vRot, tObjectData.vScale, tObjectData.strGroupKey, tObjectData.strTextureKey));
         wstring strConvert(tObjectData.strName.begin(), tObjectData.strName.end());
         pObj->Set_ObjectName(strConvert);
         Engine::Add_GameObject(pLayerTag, pObj);
@@ -1189,6 +1189,9 @@ void CImguiWin_MapTool::Save_SceneAll()
                 tObjectSerial.vPos = tObjectData.vPos;
                 tObjectSerial.vRotation = tObjectData.vRot;
                 tObjectSerial.vScale = tObjectData.vScale;
+
+                tObjectSerial.strGroupKey = tObjectData.strGroupKey;
+                tObjectSerial.strTextureKey = tObjectData.strTextureKey;
 
                 // 완료시 레이어에 직렬화 추가
                 tLayerSerial.vecGameObject.push_back(tObjectSerial);
@@ -1306,6 +1309,9 @@ void CImguiWin_MapTool::Import_Scene(const string& strName, FSerialize_Scene& tS
                     tObjectData.vRot = tObjectSerial.vRotation;
                     tObjectData.vScale = tObjectSerial.vScale;
 
+                    tObjectData.strGroupKey = tObjectSerial.strGroupKey;
+                    tObjectData.strTextureKey = tObjectSerial.strTextureKey;
+
                     tLayerData.vecObject.push_back(tObjectData);
                 }
                 tSceneData.vecLayer.push_back(tLayerData);
@@ -1376,6 +1382,8 @@ void CImguiWin_MapTool::Import_Proto(const string& strName, FSerialize_Proto& tP
             tProtoData.vPos = tProtoSerial.vPos;
             tProtoData.vRot = tProtoSerial.vRot;
             tProtoData.vScale = tProtoSerial.vScale;
+            tProtoData.strGroupKey = tProtoSerial.strGroupKey;
+            tProtoData.strTextureKey = tProtoSerial.strTextureKey;
 
             m_vecProto.push_back(tProtoData);
         }
@@ -1516,6 +1524,8 @@ void CImguiWin_MapTool::Add_Object()
     tObjectData.vRot = tProtoData.vRot;
     tObjectData.vScale = tProtoData.vScale;
     tObjectData.strName = tProtoData.strName;
+    tObjectData.strGroupKey = tProtoData.strGroupKey;
+    tObjectData.strTextureKey = tProtoData.strTextureKey;
 
     FLayerData& tLayerData = m_vecScene[m_iLoaded_Scene].vecLayer[m_iSelected_Layer_Remain];
     _bool bAdded = false;
@@ -2091,25 +2101,31 @@ void CImguiWin_MapTool::Input_Camera()
                     switch (m_eTransform_Axis)
                     {
                     case CImguiWin_MapTool::ETRANSFORM_AXIS_X:
-                        pTransform->Set_PosX(m_vTransform_Translate.x + (vRight * vDelta_Mouse.x).x);
+                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
+                        pTransform->Set_PosY(m_vTransform_Translate_Saved.y);
+                        pTransform->Set_PosZ(m_vTransform_Translate_Saved.z);
                         break;
                     case CImguiWin_MapTool::ETRANSFORM_AXIS_Y:
-                        pTransform->Set_PosY(m_vTransform_Translate.y - (vUp * vDelta_Mouse.y).y);
+                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
+                        pTransform->Set_PosX(m_vTransform_Translate_Saved.x);
+                        pTransform->Set_PosZ(m_vTransform_Translate_Saved.z);
                         break;
                     case CImguiWin_MapTool::ETRANSFORM_AXIS_Z:
-                        pTransform->Set_PosZ(m_vTransform_Translate.z - (vLook * vDelta_Mouse.x).x);
+                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
+                        pTransform->Set_PosX(m_vTransform_Translate_Saved.x);
+                        pTransform->Set_PosY(m_vTransform_Translate_Saved.y);
                         break;
                     case CImguiWin_MapTool::ETRANSFORM_PLANE_X:
-                        pTransform->Set_PosY(m_vTransform_Translate.y - (vUp * vDelta_Mouse.y).y);
-                        pTransform->Set_PosZ(m_vTransform_Translate.z - (vLook * vDelta_Mouse.x).x);
+                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
+                        pTransform->Set_PosX(m_vTransform_Translate_Saved.x);
                         break;
                     case CImguiWin_MapTool::ETRANSFORM_PLANE_Y:
-                        pTransform->Set_PosX(m_vTransform_Translate.x + (vRight * vDelta_Mouse.x).x);
-                        pTransform->Set_PosZ(m_vTransform_Translate.z - (vLook * vDelta_Mouse.y).y);
+                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
+                        pTransform->Set_PosY(m_vTransform_Translate_Saved.y);
                         break;
                     case CImguiWin_MapTool::ETRANSFORM_PLANE_Z:
-                        pTransform->Set_PosX(m_vTransform_Translate.x + (vRight * vDelta_Mouse.x).x);
-                        pTransform->Set_PosY(m_vTransform_Translate.y - (vUp * vDelta_Mouse.y).y);
+                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
+                        pTransform->Set_PosZ(m_vTransform_Translate_Saved.z);
                         break;
                     case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
                         pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));

@@ -1,12 +1,12 @@
 {
     "header": {
         "type": 4,
-        "name": "BuildingTest"
+        "name": "BuildingI"
     },
     "class": 9,
     "pos": {
         "x": 0.0,
-        "y": 3829.787109375,
+        "y": 0.0,
         "z": 0.0
     },
     "rot": {
@@ -20,5 +20,5 @@
         "z": 1.0
     },
     "group_key": "Building",
-    "texture_key": "B"
+    "texture_key": "I"
 }

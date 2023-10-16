@@ -80,6 +80,13 @@ HRESULT CAceBuilding::Ready_GameObject(const FSerialize_GameObject& tObjectSeria
     m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
+    if (!tObjectSerial.strGroupKey.empty() && !tObjectSerial.strTextureKey.empty())
+    m_pTextureComp->Receive_Texture(TEX_CUBE,
+        wstring(tObjectSerial.strGroupKey.begin(), tObjectSerial.strGroupKey.end()).c_str()
+        , wstring(tObjectSerial.strTextureKey.begin(), tObjectSerial.strTextureKey.end()).c_str());
+
+    //ObjectName(wstring(tObjectSerial.strTextureKey.begin(), tObjectSerial.strTextureKey.end()).c_str());
+
     return S_OK;
 }
 
@@ -168,42 +175,42 @@ void CAceBuilding::ObjectName(const _tchar* pObjTag)
         m_fHeight = 6.f;
         m_pCurName = CAceBuilding::BUILDING_NAME::A;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Building", L"A");
-        m_pTransformComp->Set_Scale({ 6.f, m_fHeight, 6.f });
+        //m_pTransformComp->Set_Scale({ 6.f, m_fHeight, 6.f });
     }
     else if ((wcscmp(pObjTag, L"B") == 0) || (wcscmp(pObjTag, L"b") == 0))
     {
         m_fHeight = 10.f;
         m_pCurName = CAceBuilding::BUILDING_NAME::B;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Building", L"B");
-        m_pTransformComp->Set_Scale({ 10.f, m_fHeight, 10.f });
+        ///m_pTransformComp->Set_Scale({ 10.f, m_fHeight, 10.f });
     }
     else if ((wcscmp(pObjTag, L"C") == 0) || (wcscmp(pObjTag, L"c") == 0))
     {
         m_fHeight = 14.f;
         m_pCurName = CAceBuilding::BUILDING_NAME::C;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Building", L"C");
-        m_pTransformComp->Set_Scale({ 8.f, m_fHeight, 8.f });
+        //m_pTransformComp->Set_Scale({ 8.f, m_fHeight, 8.f });
     }
     else if ((wcscmp(pObjTag, L"D") == 0) || (wcscmp(pObjTag, L"d") == 0))
     {
         m_fHeight = 12.f;
         m_pCurName = CAceBuilding::BUILDING_NAME::D;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Building", L"D");
-        m_pTransformComp->Set_Scale({ 10.f, m_fHeight, 10.f });
+        //m_pTransformComp->Set_Scale({ 10.f, m_fHeight, 10.f });
     }
     else if ((wcscmp(pObjTag, L"E") == 0) || (wcscmp(pObjTag, L"e") == 0))
     {
         m_fHeight = 12.f;
         m_pCurName = CAceBuilding::BUILDING_NAME::E;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Building", L"E");
-        m_pTransformComp->Set_Scale({ 10.f, m_fHeight, 10.f });
+        //m_pTransformComp->Set_Scale({ 10.f, m_fHeight, 10.f });
     }
     else if ((wcscmp(pObjTag, L"F") == 0) || (wcscmp(pObjTag, L"f") == 0))
     {
         m_fHeight = 16.f;
         m_pCurName = CAceBuilding::BUILDING_NAME::F;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Building", L"F");
-        m_pTransformComp->Set_Scale({ 6.f, m_fHeight, 22.f });
+        //m_pTransformComp->Set_Scale({ 6.f, m_fHeight, 22.f });
     }
 }
 
