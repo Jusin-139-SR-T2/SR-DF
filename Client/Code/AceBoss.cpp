@@ -199,7 +199,7 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	}
 	if (Engine::IsKey_Pressed(DIK_Z))
 	{
-		m_tState_Obj.Set_State(STATE_OBJ::HEAVYSHOOT);
+		m_tState_Obj.Set_State(STATE_OBJ::SHOOTING);
 	}
 #pragma endregion 
 

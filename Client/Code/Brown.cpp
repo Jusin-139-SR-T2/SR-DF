@@ -61,7 +61,7 @@ HRESULT CBrown::Ready_GameObject()
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
     pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-    pShape->vHalfSize = { 0.4f, 0.4f, 0.5f };
+    pShape->vHalfSize = { 0.25f, 0.65f, 0.5f };
 
 
 //#pragma region 블랙보드
@@ -200,11 +200,6 @@ void CBrown::Render_GameObject()
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-
-    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-    //if (m_pMesh)
-    //    m_pMesh->DrawSubset(0);
-    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
     m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
     m_pBufferComp->Render_Buffer();
@@ -739,7 +734,7 @@ void CBrown::AI_NormalATTACK(float fDeltaTime)
     if (m_tState_Obj.Can_Update())
     {
         //행동이 IDLE일때 가상키 누르기 
-        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+        if (m_tFrame.fFrame > 3.f && m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::NORMALATTACK].Act();
 
         if (m_tFrame.fFrame >  m_tFrame.fFrameEnd)
@@ -768,7 +763,7 @@ void CBrown::AI_HeavyAttack(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+        if (m_tFrame.fFrame > 4.f && m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].Act();
 
         if (m_tFrame.fFrame >  m_tFrame.fFrameEnd)

@@ -48,8 +48,8 @@ HRESULT CMonsterPunch::Ready_GameObject()
 
 	// 충돌 - 구형 
 	m_pTransformComp->Readjust_Transform();
-	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 2.f;
+	pSphereShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+	pSphereShape->fRadius = 1.f;
 
 	//디버그용 텍스쳐
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Debug", L"Sphere");
@@ -83,6 +83,18 @@ void CMonsterPunch::LateUpdate_GameObject()
 
 void CMonsterPunch::Render_GameObject()
 {
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+
+#pragma region 충돌 메쉬 콜라이더
+	MeshSphereColider(pSphereShape->fRadius, 16, 32);
+	//m_pBufferComp->Render_Buffer();
+
+#pragma endregion
+
+	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 HRESULT CMonsterPunch::Add_Component()

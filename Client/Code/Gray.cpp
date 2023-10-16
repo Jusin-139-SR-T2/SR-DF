@@ -63,7 +63,7 @@ HRESULT CGray::Ready_GameObject()
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
     pShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-    pShape->vHalfSize = { 0.4f, 0.4f, 0.5f };
+    pShape->vHalfSize = { 0.3f, 0.4f, 0.5f };
     
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE); // 초기상태 지정 
@@ -181,7 +181,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 
     if (IsKey_Pressed(DIK_O))
     {
-        m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+        m_tState_Obj.Set_State(STATE_OBJ::THROW);
 
     }
 
@@ -217,7 +217,6 @@ void CGray::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
-
 
 HRESULT CGray::Add_Component()
 {
@@ -937,7 +936,7 @@ void CGray::AI_Attack(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+        if (m_tFrame.fFrame > 4.f && m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::BASIC_ATTACK].Act();
 
         if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
@@ -965,7 +964,7 @@ void CGray::AI_HeavyAttack(float fDeltaTime)
 
     if (m_tState_Obj.Can_Update())
     {
-        if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+        if (m_tFrame.fFrame > 5.f && m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::HEAVY_ATTACK].Act();
 
         if (m_tFrame.fFrame > m_tFrame.fFrameEnd)

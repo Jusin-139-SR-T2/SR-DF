@@ -53,11 +53,13 @@ HRESULT CThrowPipe::Ready_GameObject()
 	m_tFrame.fFrame = 0;
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_tFrame.fFrameSpeed = 10.f;
-
+	m_tFrame.fAge = 0.f;
+	m_tFrame.fLifeTime = 5.f;
 	// 충돌
 	m_pTransformComp->Readjust_Transform();
-	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 1.5f;
+	pSphereShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+	pSphereShape->fRadius = 0.3f;
+
 
 	return S_OK;
 }
@@ -70,11 +72,15 @@ _int CThrowPipe::Update_GameObject(const _float& fTimeDelta)
 		Dir_Setting();
 
 	m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
+	m_tFrame.fAge += 1.f * fTimeDelta;
 
 	if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 	{
 		m_tFrame.fFrame = 0.f;
 	}
+
+	if (m_tFrame.fAge > m_tFrame.fLifeTime)
+		Set_Dead();
 
 	m_pTransformComp->Move_Pos(&m_vDir, fTimeDelta, m_fMoveSpeed);
 	
@@ -100,8 +106,12 @@ void CThrowPipe::Render_GameObject()
 	m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
 	m_pBufferComp->Render_Buffer();
 
+#pragma region 충돌 메쉬 콜라이더
+	MeshSphereColider(pSphereShape->fRadius, 8, 16);
+#pragma endregion
+
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW); 
 }
 
 HRESULT CThrowPipe::Add_Component()

@@ -75,17 +75,17 @@ void CMonsterBullet::LateUpdate_GameObject()
 
 void CMonsterBullet::Render_GameObject()
 {
-	//디버그용 
-
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
+
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-	
-	m_pTextureComp->Render_Texture();
-	m_pBufferComp->Render_Buffer();
-	
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
+#pragma region 충돌 메쉬 콜라이더
+	MeshSphereColider(pSphereShape->fRadius, 8, 16);
+#pragma endregion
+
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 

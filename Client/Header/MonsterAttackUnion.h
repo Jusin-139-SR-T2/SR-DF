@@ -58,4 +58,6 @@ protected:
 	FRAME						m_tFrame;			// 프레임구조체 
 	_vec3						vPlayerPos;			// 플레이어 위치 벡터 
 	_float						m_fAttack;			// 스킬별 공격력 
+	FCollisionSphere*			pSphereShape;
+	FCollisionSphere*			pBoxShape;
 };
