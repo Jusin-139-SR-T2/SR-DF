@@ -139,8 +139,8 @@ void CImguiWin_ProtoTool::Layout_ObjectBrowser(const ImGuiWindowFlags& iMain_Fla
         }
 
         ImGui::SameLine();
-        char strAdd_Proto[20] = {};
-        m_strAdd_Proto.reserve(20);
+        char strAdd_Proto[30] = {};
+        m_strAdd_Proto.reserve(30);
         strcpy_s(strAdd_Proto, m_strAdd_Proto.c_str());
         if (ImGui::InputTextEx(u8"##InputProtoName", u8"Proto Name",
             strAdd_Proto, IM_ARRAYSIZE(strAdd_Proto),
@@ -400,23 +400,25 @@ void CImguiWin_ProtoTool::Layout_Property(const ImGuiWindowFlags& iMain_Flags)
                 if (ImGui::CollapsingHeader(u8"텍스처세팅"))
                 {
                     ImGui::Text(u8"그룹");
+                    char strEdit_GroupKey[30] = {};
                     refObject->strGroupKey.reserve(30);
+                    strcpy_s(strEdit_GroupKey, refObject->strGroupKey.c_str());
                     if (ImGui::InputTextEx(u8"##TextureGroupName", u8"",
-                        const_cast<char*>(refObject->strGroupKey.c_str()),
-                        (_int)refObject->strGroupKey.capacity(),
+                        strEdit_GroupKey, IM_ARRAYSIZE(strEdit_GroupKey),
                         ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
                     {
-                        refObject->strGroupKey = refObject->strGroupKey.c_str();
+                        refObject->strGroupKey = strEdit_GroupKey;
                     }
 
                     ImGui::Text(u8"텍스처");
+                    char strEdit_TextureKey[30] = {};
                     refObject->strTextureKey.reserve(30);
+                    strcpy_s(strEdit_TextureKey, refObject->strTextureKey.c_str());
                     if (ImGui::InputTextEx(u8"##TexutureName", u8"",
-                        const_cast<char*>(refObject->strTextureKey.c_str()),
-                        (_int)refObject->strTextureKey.capacity(),
+                        strEdit_TextureKey, IM_ARRAYSIZE(strEdit_TextureKey),
                         ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
                     {
-                        refObject->strTextureKey = refObject->strTextureKey.c_str();
+                        refObject->strTextureKey = strEdit_TextureKey;
                     }
                 }
             }
