@@ -47,6 +47,8 @@ HRESULT CStage::Ready_Scene()
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 
+	//Engine::StopAll();
+
 	return S_OK;
 }
 
@@ -84,7 +86,7 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	Engine::CGameObject*		pGameObject = nullptr;
 
 	// SkyBox
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", CSkyBox::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", CSkyBox::Create(m_pGraphicDev, 10.f)), E_FAIL);
 
 	
 	
@@ -122,7 +124,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	// Monster - TEST중이라 상시로 서로 위치 바뀝니다. 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CAceBoss::Create(m_pGraphicDev, 65.f, 1.f, 25.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray", CGray::Create(m_pGraphicDev, 35.f, 1.f, 25.f)), E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray", CGray::Create(m_pGraphicDev, 35.f, 1.f, 25.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray2", CGray::Create(m_pGraphicDev, 35.f, 1.f, 50.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown",  CBrown::Create(m_pGraphicDev, 20.f, 1.f, 20.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown2", CBrown::Create(m_pGraphicDev, 20.f, 1.f, 25.f)), E_FAIL);
@@ -222,6 +224,8 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Player", CUI_Player::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", CUI_CrossHair::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_PlayerFace", CUI_PlayerFace::Create(m_pGraphicDev)), E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_BoxSelect", CUI_BoxSelect::Create(m_pGraphicDev)), E_FAIL);
 	
 	m_mapLayer.insert({ pLayerTag, pLayer });
 	

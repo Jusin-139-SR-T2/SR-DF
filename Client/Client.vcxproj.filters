@@ -70,9 +70,6 @@
     <Filter Include="05. =====AceUI=====">
       <UniqueIdentifier>{73c6059c-b0b0-48ab-ba48-db6bbc94e26c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. =====AceUI=====\01. Player">
-      <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03..=====Object=====">
       <UniqueIdentifier>{9e9c32f1-9261-4a9e-a064-25a0d834a711}</UniqueIdentifier>
     </Filter>
@@ -187,9 +184,6 @@
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect">
       <UniqueIdentifier>{263b8407-b440-45ab-b485-5cf2a9ff6021}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. =====AceUI=====\00. AbstractFactory">
-      <UniqueIdentifier>{4f024727-c272-4abe-9d81-b80cc7dd40cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\00. Awareness">
       <UniqueIdentifier>{e5d83c0d-5126-43f7-bb72-1c56d159e4e0}</UniqueIdentifier>
     </Filter>
@@ -211,10 +205,13 @@
     <Filter Include="04. =====BlackBoard=====\2. Camera">
       <UniqueIdentifier>{1ccb0b78-47e8-49bf-86af-be88c0f10c39}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. =====AceUI=====\02. Monster">
-      <UniqueIdentifier>{814eb13c-db65-42d1-91c6-a026ebdfcd20}</UniqueIdentifier>
+    <Filter Include="03..=====Object=====\00. AbstractFactory">
+      <UniqueIdentifier>{4f024727-c272-4abe-9d81-b80cc7dd40cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. =====AceUI=====\03. CrossHair">
+    <Filter Include="05. =====AceUI=====\02. UI_PlayerFace">
+      <UniqueIdentifier>{40c8f665-cd9d-4c35-85e0-4bf4ec68e5db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====\01. UI_CrossHair">
       <UniqueIdentifier>{2a916f85-3ff5-4560-a551-5c1a0d95045c}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Close Attack">
@@ -237,6 +234,9 @@
     </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union">
       <UniqueIdentifier>{c5996238-3bde-44b5-a712-86ae90bc08f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====\00. UI_PlayerBudBox">
+      <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -305,9 +305,6 @@
     </ClInclude>
     <ClInclude Include="Header\ThrowPipe.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\00. Gray_ThrowPipe</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\UI_Player.h">
-      <Filter>05. =====AceUI=====\01. Player</Filter>
     </ClInclude>
     <ClInclude Include="Header\MonsterPunch.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\01. CloseAttack</Filter>
@@ -379,7 +376,7 @@
       <Filter>01. =====Scene=====\03. ParsedScene</Filter>
     </ClInclude>
     <ClInclude Include="Header\AbsFac_GameObject.h">
-      <Filter>05. =====AceUI=====\00. AbstractFactory</Filter>
+      <Filter>03..=====Object=====\00. AbstractFactory</Filter>
     </ClInclude>
     <ClInclude Include="Header\CloseAttack.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Close Attack</Filter>
@@ -418,7 +415,13 @@
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
     </ClInclude>
     <ClInclude Include="Header\UI_CrossHair.h">
-      <Filter>05. =====AceUI=====\03. CrossHair</Filter>
+      <Filter>05. =====AceUI=====\01. UI_CrossHair</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI_Player.h">
+      <Filter>05. =====AceUI=====\00. UI_PlayerBudBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI_PlayerFace.h">
+      <Filter>05. =====AceUI=====\02. UI_PlayerFace</Filter>
     </ClInclude>
     <ClInclude Include="Header\PlayerAttackUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
@@ -487,9 +490,6 @@
     </ClCompile>
     <ClCompile Include="Code\ThrowPipe.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\00. Projectile\00. Gray_ThrowPipe</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\UI_Player.cpp">
-      <Filter>05. =====AceUI=====\01. Player</Filter>
     </ClCompile>
     <ClCompile Include="Code\MonsterPunch.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\01. CloseAttack</Filter>
@@ -564,7 +564,7 @@
       <Filter>01. =====Scene=====\03. ParsedScene</Filter>
     </ClCompile>
     <ClCompile Include="Code\AbsFac_GameObject.cpp">
-      <Filter>05. =====AceUI=====\00. AbstractFactory</Filter>
+      <Filter>03..=====Object=====\00. AbstractFactory</Filter>
     </ClCompile>
     <ClCompile Include="Code\CloseAttack.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Close Attack</Filter>
@@ -603,7 +603,13 @@
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
     </ClCompile>
     <ClCompile Include="Code\UI_CrossHair.cpp">
-      <Filter>05. =====AceUI=====\03. CrossHair</Filter>
+      <Filter>05. =====AceUI=====\01. UI_CrossHair</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI_Player.cpp">
+      <Filter>05. =====AceUI=====\00. UI_PlayerBudBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI_PlayerFace.cpp">
+      <Filter>05. =====AceUI=====\02. UI_PlayerFace</Filter>
     </ClCompile>
     <ClCompile Include="Code\PlayerAttackUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>

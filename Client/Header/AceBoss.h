@@ -87,10 +87,6 @@ private:
 	void	Update_InternalData(); // 블랙보드로 데이터를 올린다. 
 	void	Update_BlackBoard(); // 블랙보드로부터 데이터를 받아오는용도 
 
-protected:
-	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster; // 업로드 및 다운로드용 
-	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player; //플레이어꺼에서 필요한거있으면 다운로드용 
-
 private:
 	// 변수 
 	MonsterPhase	m_ePhase;

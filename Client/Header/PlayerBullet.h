@@ -56,7 +56,7 @@ private:
 
 private:
 	_bool*	m_bDbugFrame;
-
+	FCollisionSphere* pShape;
 
 };
 

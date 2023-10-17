@@ -15,6 +15,7 @@
 #include "SnowParticle.h"
 #include "FireWork.h"
 #include "UI_CrossHair.h"
+#include "UI_PlayerFace.h"
 //test
 
 class CStage : public Engine::CScene

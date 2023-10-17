@@ -49,8 +49,8 @@ protected:
 	virtual void		Free() override;
 
 	// ¼ºÈñ Ãß°¡ : MeshColider(Box, SphereColider)
-	virtual void		MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth) override;
-	virtual void		MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks) override;
+	virtual void		MeshBoxColider(_float _Width, _float _Height, _float Depth) override;
+	virtual void		MeshSphereColider(_float Radius, _uint Slices, _uint Stacks) override;
 
 protected:
 	CRcBufferComp* m_pBufferComp = nullptr;

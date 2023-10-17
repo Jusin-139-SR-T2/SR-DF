@@ -81,6 +81,7 @@
     <ClInclude Include="Header\MonsterBullet.h" />
     <ClInclude Include="Header\UI_CrossHair.h" />
     <ClInclude Include="Header\PlayerSkillUnion.h" />
+    <ClInclude Include="Header\UI_PlayerFace.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceEffect.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="Code\MonsterBullet.cpp" />
     <ClCompile Include="Code\UI_CrossHair.cpp" />
     <ClCompile Include="Code\PlayerSkillUnion.cpp" />
+    <ClCompile Include="Code\UI_PlayerFace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

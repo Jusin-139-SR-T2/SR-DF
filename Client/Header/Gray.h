@@ -64,6 +64,11 @@ protected:
 public:
 	LPD3DXMESH		m_pMesh = nullptr;
 
+	//블랙보드 - Add BlackBoard에서 추가한 BoardName과 업로드, 다운로드 이름이 모두 같아야한다. 
+private:
+	void	Update_InternalData(); // 블랙보드로 데이터를 올린다. 
+	void	Update_BlackBoard(); // 블랙보드로부터 데이터를 받아오는용도 
+
 
 #pragma region 상태머신 enum셋팅
 
@@ -110,7 +115,6 @@ private:
 	//스위치 on/off 
 	_bool		m_bArrive = FALSE; // 집에 도착 여부 
 	_bool		m_AttackOnce = FALSE;
-	_bool		m_bCollisionEnter = FALSE;
 	_bool		m_bSecondFall = FALSE;
 
 	// 외부타격으로 인한 죽음

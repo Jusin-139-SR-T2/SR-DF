@@ -146,20 +146,27 @@ _bool CMonsterAttackUnion::Attack_Occurrence(CGameObject* pDst, _float fAttack)
         else
         {
             // 충돌 = 몬스터 
-            OutputDebugString(L"★★★ MonsterAttackUnion에서 계산중 - 몬스터팀 공격 <> Monster 충돌 \n");
-            m_gMonsterHp = pMonster->Get_MonsterHP();
-            m_gMonsterHp.Cur -= m_fAttack;
+            m_bOwnerDead = pMonster->Get_IsMonsterDeath();
+         
+            if (false == m_bOwnerDead)
+            {
+                OutputDebugString(L"★★★ MonsterAttackUnion에서 계산중 - 몬스터팀 공격 <> Monster 충돌 \n");
 
-            if (m_gMonsterHp.Cur <= 0)
-                m_gMonsterHp.Cur = 0.f;
-            if (m_gMonsterHp.IsMax())
-                m_gMonsterHp.Cur = m_gMonsterHp.Max;
+                m_gMonsterHp = pMonster->Get_MonsterHP();
+                m_gMonsterHp.Cur -= m_fAttack;
 
-            pMonster->Set_MonsterHP(m_gMonsterHp);
+                if (m_gMonsterHp.Cur <= 0)
+                    m_gMonsterHp.Cur = 0.f;
+                if (m_gMonsterHp.IsMax())
+                    m_gMonsterHp.Cur = m_gMonsterHp.Max;
 
-            return true;
+                pMonster->Set_MonsterHP(m_gMonsterHp);
+
+                return true;
+            }
+            else
+                return false;
         }
-
     }
 
     // 적대관계 아니면 그냥 냅두기 

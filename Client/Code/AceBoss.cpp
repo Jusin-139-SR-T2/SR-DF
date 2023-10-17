@@ -160,6 +160,9 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	//보스 페이즈 갱신 
 	Change_Phase();
 
+	//블랙보드 업로드 
+	Update_InternalData();
+
 	// 빌보드
 	if (FALSE == m_bDeadState)
 		Billboard(fTimeDelta);
@@ -311,42 +314,70 @@ void CAceBoss::OnCollisionEntered(CGameObject* pDst, const FContact* const pCont
 			CPlayerAttackUnion* pPlayerAttack = dynamic_cast<CPlayerAttackUnion*>(pAceObj);
 
 			if (nullptr == pPlayerAttack)
-				return; 
-			//몬스터가 하는 공격은 보스에게 안통함. 따라서 몬스터의 공격은 적대임에도 보스에 넣지않음 
-			
-			//==== 플레이어 공격체와  충돌 =============================
-			if (m_tStat.iDazedHP >= m_gHp.Cur && FALSE == m_bDazedState)
 			{
-				OutputDebugString(L"▷Brown - 충돌판정 DAZED 진입   \n");
-				m_tState_Obj.Set_State(STATE_OBJ::DAZED);
-				return;
+				CMonsterAttackUnion* pMonsterAttack = dynamic_cast<CMonsterAttackUnion*>(pAceObj);
+
+				if (nullptr == pMonsterAttack)
+					return;
+				else
+				{
+					//====몬스터 공격체와 충돌  - 자기자신의 스킬도 포함임 =============================
+					return;
+				}
 			}
-			else if (STATE_RIGHTHAND::KICK == ePlayerRighthand)
-				m_tState_Obj.Set_State(STATE_OBJ::FALLING); 
-			else if (PSITDONW_ATTACK == m_ePlayer_AttackState) // 앉 + kick = falling 임 
-				m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
 			else
 			{
-				if (Random_variable(60))
-					m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+				//==== 플레이어 공격체와  충돌 =============================
+				//몬스터가 하는 공격은 보스에게 안통함. 따라서 몬스터의 공격은 적대임에도 보스에 넣지않음 
+
+				Add_BasicEffect(m_pOwner); // 이펙트 추가
+
+				if (m_tStat.iDazedHP >= m_gHp.Cur && FALSE == m_bDazedState)
+				{
+					OutputDebugString(L"▷Brown - 충돌판정 DAZED 진입   \n");
+					m_tState_Obj.Set_State(STATE_OBJ::DAZED);
+					return;
+				}
+				else if (STATE_RIGHTHAND::KICK == ePlayerRighthand)
+					m_tState_Obj.Set_State(STATE_OBJ::FALLING);
+				else if (PSITDONW_ATTACK == m_ePlayer_AttackState) // 앉 + kick = falling 임 
+					m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
 				else
-					m_tState_Obj.Set_State(STATE_OBJ::HIT);
+				{
+					if (Random_variable(60))
+						m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+					else
+						m_tState_Obj.Set_State(STATE_OBJ::HIT);
+				}
 			}
 		}
 		else
 		{
 			//==== 플레이어와 충돌 =====================================
-			if (STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
-				m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
 
+			switch (ePlayerRighthand)
+			{
+			case Engine::STATE_RIGHTHAND::RUN_HAND:	//달릴때 
+				Add_BasicEffect(m_pOwner); // 이펙트 추가
+				m_tState_Obj.Set_State(STATE_OBJ::FALLING); 
+				break;
+
+			case Engine::STATE_RIGHTHAND::KICK:	//발차기 
+				Add_BasicEffect(m_pOwner); // 이펙트 추가
+				m_tState_Obj.Set_State(STATE_OBJ::FALLING); 
+				break;
+
+			default:
+				break;
+			}
 		}
 	}
+
 	else if (Check_Relation(pAceObj, this) == ERELATION::NUETRAL) // 오브젝트 충돌 
 	{
 		m_tState_Obj.Set_State(STATE_OBJ::HIT);
 	}
 }
-
 void CAceBoss::OnCollisionExited(CGameObject* pDst)
 {
 }
@@ -371,6 +402,8 @@ void CAceBoss::Update_InternalData()
 
 	// 여기서부터 블랙보드의 정보를 업데이트 한다.
 	pBlackBoard->Set_ControlLight(m_bLightOn) ;
+	pBlackBoard->Get_BossHP() = m_gHp; // 단일객체라 그냥 업뎃함 
+
 }
 
 //블랙보드에서 다운로드 

@@ -46,6 +46,13 @@ void CAceMonster::Free()
     SUPER::Free();
 }
 
+_float CAceMonster::VoiceDistance()
+{
+	_float CurDist = Calc_Distance();
+
+	return (1.f - ( CurDist/ m_tStat.fAttackDistance ));
+}
+
 #pragma region 傍烹悸泼 颇飘 
 
 _float CAceMonster::Calc_Distance()
@@ -93,6 +100,24 @@ void CAceMonster::Billboard(const _float& fTimeDelta)
 	_float rad = atan2f(vDir.x, vDir.z);
 
 	m_pTransformComp->Set_RotationY(rad);
+}
+
+void CAceMonster::Add_BasicEffect(CGameObject* pOwner)
+{
+	// Pow 积己
+	Engine::Add_GameObject(L"GameLogic", CEffect_HitPow::Create(m_pGraphicDev,
+		m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 0.2f, m_pTransformComp->Get_Pos().z, this));
+
+	// Blood积己
+	for (_int i = 0; i < 3; ++i)
+	{
+		Engine::Add_GameObject(L"GameLogic", CEffect_HitBlood::Create(m_pGraphicDev,
+			m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+	}
+
+	// Dust 积己
+	Engine::Add_GameObject(L"GameLogic", CEffect_HitDust::Create(m_pGraphicDev,
+		m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
 }
 
 void CAceMonster::Height_On_Terrain()

@@ -74,11 +74,8 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerLeftTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Player", L"Left_RunHand")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerRightTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Player", L"Right_RunHand")), E_FAIL);
 
-	// 몬스터
+	// 몬스터 + 이펙트 + 오브젝트 + 파티클 돌려쓰는중 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MonsterTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Boss_Single", L"CrotchHit")), E_FAIL);
-	
-	// 오브젝트 
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Food", L"Cola")), E_FAIL);
 	
 	// 충돌 컴포넌트
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderSphereComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::SPHERE)), E_FAIL);
@@ -88,9 +85,6 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderLineComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::LINE)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderRayComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::RAY)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ColliderTriangleComp", CColliderComponent::Create(m_pGraphicDev, ECOLLISION::TRIANGLE)), E_FAIL);
-
-	//가건물 용도 
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BuildingTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Building", L"A")), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 
@@ -102,11 +96,10 @@ _uint CLoading::Loading_For_Stage()
 // 텍스처 매니저 텍스처 추가
 HRESULT CLoading::Loading_For_Texture()
 {
-#pragma region Terrain, UI
+#pragma region Terrain, Default
 	Load_Texture(L"./Resource/Texture/Tile/Tile/22.jpg", TEX_NORMAL, L"Tile", L"22");
 	Load_Texture(L"./Resource/Texture/SkyBox/Test4.dds", TEX_CUBE, L"TestCube", L"4");
 	//Load_Texture(L"./Resource/Texture/SkyBox/Skybox.dds", TEX_CUBE, L"TestCube", L"4");
-	Load_Texture(L"./Resource/Texture/UI/PlayerHudBox_Main.png", TEX_NORMAL, L"UI", L"HudBox_Main");
 #pragma endregion
 
 #pragma region 싱글 텍스처
@@ -472,13 +465,7 @@ HRESULT CLoading::Loading_For_Texture()
 
 #pragma endregion
 
-#pragma region 3차 추가본 - Wall, Tile 등등등..   큐브만 찍고 아직안넣음 
-	//Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Desk.dds", TEX_CUBE, L"Furniture", L"Desk");
-
-
-#pragma endregion
-
-#pragma region 추가 구조물
+#pragma region Structure - TEX_CUBE 
 	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Aspart1.dds", TEX_CUBE, L"Structure", L"Aspart1");
 	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Aspart2.dds", TEX_CUBE, L"Structure", L"Aspart2");
 	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Column.dds", TEX_CUBE, L"Structure", L"Column");
@@ -694,15 +681,57 @@ HRESULT CLoading::Loading_For_Texture()
 
 #pragma endregion
 
-#pragma region Crosshair  
+#pragma region fourth  - TEX_CUBE 
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/YellowLight.dds", TEX_CUBE, L"Light", L"YellowLight");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/WhiteLight.dds", TEX_CUBE, L"Light", L"WhiteLight");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/BlueLight.dds", TEX_CUBE, L"Light", L"BlueLight");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/RedLight.dds", TEX_CUBE, L"Light", L"RedLight");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/light10.dds", TEX_CUBE, L"Light", L"light10");
+	
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/BlockSwitch_Off.dds", TEX_CUBE, L"TriggerCube", L"BlockSwitch_Off");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/LightSwitch_Off.dds", TEX_CUBE, L"TriggerCube", L"LightSwitch_Off");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/BlockSwitch_On.dds", TEX_CUBE, L"TriggerCube", L"BlockSwitch_On");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/LightSwitch_On.dds", TEX_CUBE, L"TriggerCube", L"LightSwitch_On");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/OneButton_Off.dds", TEX_CUBE, L"TriggerCube", L"OneButton_Off");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/PadlockBroken.dds", TEX_CUBE, L"TriggerCube", L"PadlockBroken");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/TwoButton_Off.dds", TEX_CUBE, L"TriggerCube", L"TwoButton_Off");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/OneButton_On.dds", TEX_CUBE, L"TriggerCube", L"OneButton_On");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/PadlockChain.dds", TEX_CUBE, L"TriggerCube", L"PadlockChain");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/TwoButton_On.dds", TEX_CUBE, L"TriggerCube", L"TwoButton_On");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/MothPainting.dds", TEX_CUBE, L"TriggerCube", L"MothPainting");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Padlock_Off.dds", TEX_CUBE, L"TriggerCube", L"Padlock_Off");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/ComicBook.dds", TEX_CUBE, L"TriggerCube", L"ComicBook");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Newspaper.dds", TEX_CUBE, L"TriggerCube", L"Newspaper");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Key_Blue.dds", TEX_CUBE, L"TriggerCube", L"Key_Blue");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Key_Red.dds", TEX_CUBE, L"TriggerCube", L"Key_Red");
 
-	Load_Texture(L"./Resource/Texture/crosshair/CrosshairHitDistanceIndicator.png", TEX_NORMAL, L"Crosshair", L"Hit");
-	Load_Texture(L"./Resource/Texture/crosshair/CrosshairHeavyWindup.png", TEX_NORMAL, L"Crosshair", L"Windup");
-	Load_Texture(L"./Resource/Texture/crosshair/CrosshairHeavyReady.png", TEX_NORMAL, L"Crosshair", L"Charge");
-	Load_Texture(L"./Resource/Texture/crosshair/CrosshairSpinning.png", TEX_NORMAL, L"Crosshair", L"Attack");
-	Load_Texture(L"./Resource/Texture/crosshair/CrosshairSide.png", TEX_NORMAL, L"Crosshair", L"Side");
-	Load_Texture(L"./Resource/Texture/crosshair/CrosshairDot.png", TEX_NORMAL, L"Crosshair", L"Gun");
-	Load_Texture(L"./Resource/Texture/crosshair/Crosshair.png", TEX_NORMAL, L"Crosshair", L"Basic");
+#pragma endregion
+
+#pragma region UI  
+	// HudBox
+	Load_Texture(L"./Resource/Texture/UI/PlayerHudBox_Highlight.png", TEX_NORMAL, L"UI", L"HudBox_Highlight");
+	Load_Texture(L"./Resource/Texture/UI/PlayerHudBox_%d.png", TEX_NORMAL, L"UI", L"PlayerHudBox", _range<_uint>(0U, 2U));
+
+	//CrossHair
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairHitDistanceIndicator.png", TEX_NORMAL, L"UI_Crosshair", L"Hit");
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairHeavyWindup.png", TEX_NORMAL, L"UI_Crosshair", L"Windup");
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairHeavyReady.png", TEX_NORMAL, L"UI_Crosshair", L"Charge");
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairSpinning.png", TEX_NORMAL, L"UI_Crosshair", L"Attack");
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairSide.png", TEX_NORMAL, L"UI_Crosshair", L"Side");
+	Load_Texture(L"./Resource/Texture/crosshair/CrosshairDot.png", TEX_NORMAL, L"UI_Crosshair", L"Gun");
+	Load_Texture(L"./Resource/Texture/crosshair/Crosshair.png", TEX_NORMAL, L"UI_Crosshair", L"Basic");
+
+	// PlayerFace
+	Load_Texture(L"./Resource/Texture/UI/SlightlyHurt_%d.png", TEX_NORMAL, L"UI_Face", L"SlightlyHurt", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/UI/ModeratelyHurt_%d.png", TEX_NORMAL, L"UI_Face", L"ModeratelyHurt", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/UI/BadlyHurt_%d.png", TEX_NORMAL, L"UI_Face", L"BadlyHurt", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/UI/Healthy_%d.png", TEX_NORMAL, L"UI_Face", L"Healthy", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/UI/Hurt_%d.png", TEX_NORMAL, L"UI_Face", L"Hurt", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/UI/DeadFace.png", TEX_NORMAL, L"UI_Face", L"DeadFace");
+
+	// Bar
+	Load_Texture(L"./Resource/Texture/UI/Health.png", TEX_NORMAL, L"UI", L"Health");
+	Load_Texture(L"./Resource/Texture/UI/Stamina.png", TEX_NORMAL, L"UI", L"Stamina");
 
 #pragma endregion
 
