@@ -709,7 +709,8 @@ HRESULT CLoading::Loading_For_Texture()
 
 #pragma region UI  
 	// HudBox
-	Load_Texture(L"./Resource/Texture/UI/PlayerHudBox_Main.png", TEX_NORMAL, L"UI", L"HudBox_Main");
+	Load_Texture(L"./Resource/Texture/UI/PlayerHudBox_Highlight.png", TEX_NORMAL, L"UI", L"HudBox_Highlight");
+	Load_Texture(L"./Resource/Texture/UI/PlayerHudBox_%d.png", TEX_NORMAL, L"UI", L"PlayerHudBox", _range<_uint>(0U, 2U));
 
 	//CrossHair
 	Load_Texture(L"./Resource/Texture/crosshair/CrosshairHitDistanceIndicator.png", TEX_NORMAL, L"UI_Crosshair", L"Hit");
@@ -728,6 +729,9 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/UI/Hurt_%d.png", TEX_NORMAL, L"UI_Face", L"Hurt", _range<_uint>(0U, 4U));
 	Load_Texture(L"./Resource/Texture/UI/DeadFace.png", TEX_NORMAL, L"UI_Face", L"DeadFace");
 
+	// Bar
+	Load_Texture(L"./Resource/Texture/UI/Health.png", TEX_NORMAL, L"UI", L"Health");
+	Load_Texture(L"./Resource/Texture/UI/Stamina.png", TEX_NORMAL, L"UI", L"Stamina");
 
 #pragma endregion
 

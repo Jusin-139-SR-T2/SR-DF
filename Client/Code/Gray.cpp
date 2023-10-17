@@ -420,7 +420,7 @@ void CGray::OnCollisionExited(CGameObject* pDst)
 #pragma region 블랙보드 
 
 void CGray::Update_InternalData()
-{  
+{
     // 블랙보드 연결 대기, 안전 코드로 필수
     if (!m_wpBlackBoard_Monster.Get_BlackBoard())
     {
@@ -434,7 +434,23 @@ void CGray::Update_InternalData()
     CBlackBoard_Monster* pBlackBoard = m_wpBlackBoard_Monster.Get_BlackBoard();
 
     if (m_bCollisionOn)
+    {
         pBlackBoard->Get_GrayHP() = m_gHp;
+
+        _float cur = pBlackBoard->Get_BossHP().Cur;
+        swprintf_s(debugString, L"블랙보드 변수 확인 curBoss = %f\n", cur);
+        OutputDebugStringW(debugString);
+
+
+        _float cur2 = pBlackBoard->Get_BrownHP().Cur;
+        swprintf_s(debugString, L"블랙보드 변수 확인 curBrown  = %f\n", cur2);
+        OutputDebugStringW(debugString);
+
+
+        _float cur3 = pBlackBoard->Get_GrayHP().Cur;
+        swprintf_s(debugString, L"블랙보드 변수 확인 curGray = %f\n", cur3);
+        OutputDebugStringW(debugString);
+    }
 }
 
 void CGray::Update_BlackBoard()

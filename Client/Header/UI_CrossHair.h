@@ -40,6 +40,8 @@ public:
 	_bool				m_bPlayerAttackState;	// 플레이어가 공격할때 (주먹, 장비, 발차기 등)
 	_bool				m_bPlayerPickUpState;	// 들것 들고있을때 - 시체 
 	_bool				m_bPlayerDetect;		// 플레이어 일점범위내 몬스터있을때 
+
+	_bool HairSpin;
 };
 
 // 내가 피격 - 없음

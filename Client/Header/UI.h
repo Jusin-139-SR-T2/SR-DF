@@ -50,8 +50,5 @@ protected:
 	FRAME				m_tFrame;
 	_tchar				debugString[100];
 	
-private:
-
-
 };
 

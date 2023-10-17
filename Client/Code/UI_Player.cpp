@@ -39,20 +39,22 @@ HRESULT CUI_Player::Ready_GameObject()
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	// 이미지 설정
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"UI", L"HudBox_Main");
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"UI", L"PlayerHudBox");
+	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+	m_tFrame.fFrame = 0.f;
 
 	// 나타낼 폰트에 들어갈 변수 초기화 
 	m_gPlayerHP.Max = 0.f;
 	m_gPlayerHP.Cur = 0.f;
 
 	// 직교투영으로 그릴이미지 셋팅 
-	m_fSizeX = 280;
-	m_fSizeY = 180;
+	m_fSizeX = 250;
+	m_fSizeY = 250;
 
 	m_fX = m_fSizeX * 0.5f; // 중점위치 
 	m_fY = m_fSizeY * 0.5f + WINCY - m_fSizeY;
 
-	m_pTextureComp->Set_Pos({ m_fX - WINCX * 0.5f, -m_fY + WINCY * 0.5f, 0.f });	// 이미지 위치
+	m_pTextureComp->Set_Pos({ m_fX - WINCX * 0.5f - 20.f, -m_fY + WINCY * 0.5f - 45.f  , 0.f });	// 이미지 위치
 	m_pTextureComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });							// 이미지 크기
 
 	return S_OK;
@@ -87,6 +89,18 @@ _int CUI_Player::Update_GameObject(const _float& fTimeDelta)
 
 	Update_InternalData();
 
+	if (Engine::IsMouse_Pressed(DIM_MWU))
+		m_tFrame.fFrame -= 1.f;
+
+	if (Engine::IsMouse_Pressed(DIM_MWD))
+		m_tFrame.fFrame += 1.f;
+
+	if (m_tFrame.fFrame >= m_tFrame.fFrameEnd)
+		m_tFrame.fFrame = m_tFrame.fFrameEnd-1.f;
+
+	if(m_tFrame.fFrame <= 0)
+		m_tFrame.fFrame = 0.f;
+
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
 	return 0;
@@ -99,10 +113,10 @@ void CUI_Player::LateUpdate_GameObject()
 void CUI_Player::Render_GameObject()
 {
 	m_pTextureComp->Readjust_Transform();
-	m_pTextureComp->Render_Texture(0, true);
+	m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame), true);
 	m_pBufferComp->Render_Buffer();
 
-	_vec2 vFontPos = { 60.f, WINCY - 40.f };
+	_vec2 vFontPos = { 40.f, WINCY - 35.f };
 	wstringstream ss;
 	ss << m_gPlayerHP.Cur;
 	Engine::Render_Font(L"Font_Thin_Jinji", ss.str().c_str(), &vFontPos, DXCOLOR_RED);

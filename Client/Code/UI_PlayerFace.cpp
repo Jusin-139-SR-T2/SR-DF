@@ -22,7 +22,7 @@ CUI_PlayerFace* CUI_PlayerFace::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	if (FAILED(pInstance->Ready_GameObject())) {
 		Safe_Release(pInstance);
 
-		MSG_BOX("UI Create Failed");
+		MSG_BOX("UI PlayerFace Create Failed");
 		return nullptr;
 	}
 
@@ -44,13 +44,13 @@ HRESULT CUI_PlayerFace::Ready_GameObject()
 	m_gPlayerHP.Cur = 0.f;
 
 	// 직교투영으로 그릴이미지 셋팅 
-	m_fSizeX = 228;
-	m_fSizeY = 195;
+	m_fSizeX = 195;
+	m_fSizeY = 171;
 
 	m_fX = m_fSizeX * 0.5f ; 
 	m_fY = m_fSizeY * 0.5f ;
 
-	m_pTextureComp->Set_Pos({ m_fX - WINCX * 0.5f - 35, -m_fY - 154.f , 0.f });	// 이미지 위치
+	m_pTextureComp->Set_Pos({ m_fX - WINCX * 0.5f - 35, -m_fY - 177.f , 0.f });	// 이미지 위치
 	m_pTextureComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });							// 이미지 크기
 
 	// 프레임 초기화 

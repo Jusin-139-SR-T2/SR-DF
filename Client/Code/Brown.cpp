@@ -1368,12 +1368,11 @@ void CBrown::Falling(float fDeltaTime)
 
     // ½ÇÇà
     {
-        _vec3 vDirect = m_pTransformComp->Get_Pos() - m_pPlayerTransformcomp->Get_Pos();
+        vDir = m_pTransformComp->Get_Look();
 
+        D3DXVec3Normalize(&vDir, &vDir);
 
-        D3DXVec3Normalize(&vDirect, &vDirect);
-
-        m_pTransformComp->Move_Pos(&vDirect, fDeltaTime, 4.f);
+        m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 14.f);
 
         if (STATE_OBJ::FALLING != m_tState_Obj.Get_State())
             m_tState_Act.Set_State(STATE_ACT::IDLE);
