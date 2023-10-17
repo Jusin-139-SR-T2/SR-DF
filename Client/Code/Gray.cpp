@@ -359,7 +359,7 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
                 m_tState_Obj.Set_State(STATE_OBJ::DAZED);
                 return;
             }
-            else if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand)
+            else if (STATE_RIGHTHAND::KICK == ePlayerRighthand)
                 m_tState_Obj.Set_State(STATE_OBJ::FALLING); // fist
             else if (PSITDONW_ATTACK == m_ePlayer_AttackState) // 앉 + kick = falling 임 
                 m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
@@ -376,7 +376,7 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
             //==== 플레이어와 충돌 =====================================
             m_eRecentCol = RECENT_COL::PLAYER;
 
-            if (CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
+            if (STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
                 m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
 
         }
@@ -417,9 +417,9 @@ void CGray::MonsterDead()
         m_tState_Obj.Set_State(STATE_OBJ::DEATH);
     else if (RECENT_COL::PLAYERATK == m_eRecentCol)
     {
-        if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand)
+        if (STATE_RIGHTHAND::GUN == ePlayerRighthand)
             m_tState_Obj.Set_State(STATE_OBJ::HEADSHOT);
-        else if(CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
+        else if(STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
             m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
         else
             m_tState_Obj.Set_State(STATE_OBJ::DEATH);

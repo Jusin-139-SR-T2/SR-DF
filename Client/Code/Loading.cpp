@@ -688,22 +688,22 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/RedLight.dds", TEX_CUBE, L"Light", L"RedLight");
 	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/light10.dds", TEX_CUBE, L"Light", L"light10");
 	
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/BlockSwitch_Off.dds", TEX_CUBE, L"Interaction", L"BlockSwitch_Off");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/LightSwitch_Off.dds", TEX_CUBE, L"Interaction", L"LightSwitch_Off");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/BlockSwitch_On.dds", TEX_CUBE, L"Interaction", L"BlockSwitch_On");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/LightSwitch_On.dds", TEX_CUBE, L"Interaction", L"LightSwitch_On");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/OneButton_Off.dds", TEX_CUBE, L"Interaction", L"OneButton_Off");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/PadlockBroken.dds", TEX_CUBE, L"Interaction", L"PadlockBroken");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/TwoButton_Off.dds", TEX_CUBE, L"Interaction", L"TwoButton_Off");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/OneButton_On.dds", TEX_CUBE, L"Interaction", L"OneButton_On");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/PadlockChain.dds", TEX_CUBE, L"Interaction", L"PadlockChain");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/TwoButton_On.dds", TEX_CUBE, L"Interaction", L"TwoButton_On");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/MothPainting.dds", TEX_CUBE, L"Interaction", L"MothPainting");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Padlock_Off.dds", TEX_CUBE, L"Interaction", L"Padlock_Off");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/ComicBook.dds", TEX_CUBE, L"Interaction", L"ComicBook");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Newspaper.dds", TEX_CUBE, L"Interaction", L"Newspaper");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Key_Blue.dds", TEX_CUBE, L"Interaction", L"Key_Blue");
-	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Key_Red.dds", TEX_CUBE, L"Interaction", L"Key_Red");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/BlockSwitch_Off.dds", TEX_CUBE, L"TriggerCube", L"BlockSwitch_Off");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/LightSwitch_Off.dds", TEX_CUBE, L"TriggerCube", L"LightSwitch_Off");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/BlockSwitch_On.dds", TEX_CUBE, L"TriggerCube", L"BlockSwitch_On");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/LightSwitch_On.dds", TEX_CUBE, L"TriggerCube", L"LightSwitch_On");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/OneButton_Off.dds", TEX_CUBE, L"TriggerCube", L"OneButton_Off");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/PadlockBroken.dds", TEX_CUBE, L"TriggerCube", L"PadlockBroken");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/TwoButton_Off.dds", TEX_CUBE, L"TriggerCube", L"TwoButton_Off");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/OneButton_On.dds", TEX_CUBE, L"TriggerCube", L"OneButton_On");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/PadlockChain.dds", TEX_CUBE, L"TriggerCube", L"PadlockChain");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/TwoButton_On.dds", TEX_CUBE, L"TriggerCube", L"TwoButton_On");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/MothPainting.dds", TEX_CUBE, L"TriggerCube", L"MothPainting");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Padlock_Off.dds", TEX_CUBE, L"TriggerCube", L"Padlock_Off");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/ComicBook.dds", TEX_CUBE, L"TriggerCube", L"ComicBook");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Newspaper.dds", TEX_CUBE, L"TriggerCube", L"Newspaper");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Key_Blue.dds", TEX_CUBE, L"TriggerCube", L"Key_Blue");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Key_Red.dds", TEX_CUBE, L"TriggerCube", L"Key_Red");
 
 #pragma endregion
 

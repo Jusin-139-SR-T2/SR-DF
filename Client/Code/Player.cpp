@@ -672,7 +672,6 @@ if (!timeline[KEYTYPE_LEFTHAND].empty())
                 }
             }
 
-
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
             // 만약 최대프레임인데 라이터가 켜져있을 경우
             if (bRighter)
@@ -685,7 +684,6 @@ if (!timeline[KEYTYPE_LEFTHAND].empty())
             {
                 // 현재 프레임 초기화
                 m_tLeftHand.fLeftFrame = 0.f;
-
             }
             // 라이터 되돌리기가 켜져있을 경우
             if (bBackRighter)
@@ -913,6 +911,9 @@ void CPlayer::Update_BlackBoard()
     pBlackBoard->Get_HP().Cur = m_gHp.Cur;
     pBlackBoard->Get_GunLight() = m_bGunLight;
     pBlackBoard->Get_LighterLight() = m_PlayerLighter;
+    pBlackBoard->Set_PlayerState(m_tPlayer_State.Get_State());
+    pBlackBoard->Set_RightHandState(m_tRightHand_State.Get_State());
+    pBlackBoard->Get_AttackOn() = m_bAttack;
     pBlackBoard->Get_PlayerHit() = m_bHitState;
 
 
@@ -961,22 +962,22 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
         {
             switch (m_eRIGHTState)
             {
-            case CPlayer::STATE_RIGHTHAND::NONE:
+            case STATE_RIGHTHAND::NONE:
             {
                 m_fChage.Cur = 0.f;
                 break;
             }
-            case CPlayer::STATE_RIGHTHAND::RUN_HAND:
+            case STATE_RIGHTHAND::RUN_HAND:
             {
                 m_fChage.Cur = 0.f;
                 break;
             }
-            case CPlayer::STATE_RIGHTHAND::GUN:
+            case STATE_RIGHTHAND::GUN:
             {
                 m_fChage.Cur = 0.f;
                 break;
             }
-            case CPlayer::STATE_RIGHTHAND::THOMPSON:
+            case STATE_RIGHTHAND::THOMPSON:
             {
                 m_tRightHand.bRightFrameOn = true;
                 m_bAttack = true;
@@ -984,7 +985,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                 break;
             }
 
-                case CPlayer::STATE_RIGHTHAND::STEELPIPE:
+                case STATE_RIGHTHAND::STEELPIPE:
                 {
                     // 차지를 시작할 시간
                     if ((m_fChage.Update(1.f * fTimeDelta, m_tTime.fChargeStartTime)))
@@ -995,7 +996,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                     }
                     break;
                 }
-                case CPlayer::STATE_RIGHTHAND::FRYINGPAN:
+                case STATE_RIGHTHAND::FRYINGPAN:
                 {
                     // 차지를 시작할 시간
                     if ((m_fChage.Update(1.f * fTimeDelta, m_tTime.fChargeStartTime)))
@@ -1006,7 +1007,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                     }
                     break;
                 }
-                case CPlayer::STATE_RIGHTHAND::HAND:
+                case STATE_RIGHTHAND::HAND:
                 {
                     // 차지를 시작할 시간
                     if ((m_fChage.Update(1.f * fTimeDelta, m_tTime.fChargeStartTime)))
@@ -1018,12 +1019,12 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                         break;
                 }
 
-            case CPlayer::STATE_RIGHTHAND::BEERBOTLE:
+            case STATE_RIGHTHAND::BEERBOTLE:
             {
                 m_fChage.Cur = 0.f;
                 break;
             }
-            case CPlayer::STATE_RIGHTHAND::KICK:
+            case STATE_RIGHTHAND::KICK:
             {
                 m_fChage.Cur = 0.f;
                 break;
@@ -2150,17 +2151,91 @@ void CPlayer::Right_Hand(float fTimeDelta)
             }
         }
 
+        if (bRightPunch && m_bAttack)
+        {
+            m_bRotStart = true;
+
+            //m_vRot = m_pTransformComp->Get_Look();
+            //m_vCurLook = m_pTransformComp->Get_Look();
+            //D3DXVec3Normalize(&m_vRot, &m_vRot);
+        }
+
+        if (m_bRotStart)
+        {
+            fRotStart += 1.f * fTimeDelta;
+
+            if (fRotStart > 0.2f)
+            {
+                if (m_vRot.y > -0.3 && !m_bRotChange)
+                {
+                    m_vRot.y -= 0.1f * fTimeDelta;
+                }
+                else
+                {
+                    m_bRotChange = true;
+                }
+
+                if (m_bRotChange && m_vRot.y <= 0.f)
+                {
+                    m_vRot.y += 0.1f * fTimeDelta;
+                }
+
+                if (m_vRot.y >= 0.f)
+                {
+                    m_vRot.y = 0.f;
+                    m_tRightHand.bRightAttacColOn = false;
+                    //m_bAttackRotOn = false;
+                    m_bRotChange = false;
+                    fRotStart = 0.f;
+                    m_bRotStart = false;
+                }
+
+                m_pTransformComp->Rotate(ROT_Y, m_vRot.y);
+            }
+        }
+
         // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            if (!m_bAttackRotOn)
+            {
+                _vec3 vPosPlus = { 1.f, 0.f, 0.f };
+                // 주먹공격 생성 (디바이스, 생성 위치, 주인, 공격 상태)
+                Engine::Add_GameObject(L"GameLogic", CPlayerFist::Create(m_pGraphicDev,
+                    m_pTransformComp->Get_Pos(), vPlayerLook, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
+                m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
 
-            _vec3 vPosPlus = { 1.f, 0.f, 0.f };
-            // 주먹공격 생성 (디바이스, 생성 위치, 주인, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerFist::Create(m_pGraphicDev,
-                                    m_pTransformComp->Get_Pos(), vPlayerLook, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+                m_bAttack = false; // 공격 Off
+                //m_bAttackRotOn = true; // 회전 On
+            }
+
+            //if (m_bAttackRotOn)
+            //{
+
+            //    if (m_vRot.y > -0.3 && !m_bRotChange)
+            //    {
+            //        m_vRot.y -= 1.0f * fTimeDelta;
+            //    }
+            //    else
+            //    {
+            //        m_bRotChange = true;
+            //    }
+
+            //    if (m_bRotChange && m_vRot.y <= 0.f)
+            //    {
+            //        m_vRot.y += 1.0f * fTimeDelta;
+            //    }
+
+            //    if (m_vRot.y >= 0.f)
+            //    {
+            //        m_vRot.y = 0.f;
+            //        m_tRightHand.bRightAttacColOn = false;
+            //        m_bAttackRotOn = false;
+            //        m_bRotChange = false;
+            //    }
+
+            //    m_pTransformComp->Set_RotationY(m_vRot.y);
+            //}
         }
 
         // 플레이어가 차징을 하고있을 경우
