@@ -44,9 +44,12 @@ private:
 	void		Camera_State(const _float& fTimeDelta);
 	void		Quaternion_Ver(const _float& fTimeDelta);
 	void		Update_BlackBoard();
+	void		Update_InternalData();
+	void		CameraAttackMove(const _float& fTimeDelta);
 
 private:
 	FBlackBoardPtr<CBlackBoard_Camera>		m_wpBlackBoard_Camera;
+	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player;
 
 private:
 	_float		m_fSpeed = 10.f;
@@ -76,7 +79,28 @@ private:
 	_long m_dwPrevMouseMoveY = 0;
 
 private:
+	_vec3	vPlayerPosEye;			// 플레이어의 눈높이 위치
+	_vec3	vPlayerLook;			// 플레이어가 바라보는 곳
+
+	_vec3 m_vRotPlus = { 0.f, 0.f, 0.f };
+	_vec3 m_vRotMinus = { 0.f, 0.f, 0.f };
+
+	_vec3 m_vCurLook = { 0.f, 0.f, 0.f };
+
+	_bool m_bRotChange = false;
+	_bool m_bRotStart = false;
+	_bool m_bLRotStart = false;
+	_bool* m_bLAttackMove = nullptr;
+	_bool* m_bRAttackMove = nullptr;
+	_bool m_bAttackOn = false;
+
+	_float fRotStart = 0.f;
+	_float fLRotStart = 0.f;
+
+
+private:
 	CTransformComponent* pPlayerTransCom = nullptr;
+	CTransformComponent* pCameraTransCom = nullptr;
 
 public:
 	GETSET_EX2(CGameObject*, m_pTarget, Target, GET, SET)
@@ -86,6 +110,10 @@ public:
 private:
 	CGameObject*	m_pTarget = nullptr;
 	_float			m_fTarget_Distance = 10.f;
+
+	STATE_PLAYER	m_ePlayer_State;
+	STATE_RIGHTHAND	m_eRightHand_State;
+	_bool			m_bPlayerAttackOn;
 
 };
 

@@ -41,12 +41,12 @@ void CAceGameObject::Free()
 	SUPER::Free();
 }
 
-void CAceGameObject::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
+void CAceGameObject::MeshBoxColider(_float _Width, _float _Height, _float Depth)
 {
 	SUPER::MeshBoxColider(_Width, _Height, Depth);
 }
 
-void CAceGameObject::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
+void CAceGameObject::MeshSphereColider(_float Radius, _uint Slices, _uint Stacks)
 {
 	SUPER::MeshSphereColider(Radius, Slices, Stacks);
 }

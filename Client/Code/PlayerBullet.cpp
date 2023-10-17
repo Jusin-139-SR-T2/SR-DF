@@ -26,8 +26,8 @@ HRESULT CPlayerBullet::Ready_GameObject()
 
 	// 충돌
 	m_pTransformComp->Readjust_Transform();
-	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 0.5f;
+	pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+	pShape->fRadius = m_tAttack.fSize;
 
 	// 플레이어가 바라보는 쪽으로 날아가게함
 	m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
@@ -41,7 +41,7 @@ HRESULT CPlayerBullet::Ready_GameObject()
 	m_bDbugFrame = pPlayer->Get_DBugFrame();
 
 	// 데미지 설정
-	m_tBullet.fDamage = 55.f;
+	//m_tAttack.fDamage = 55.f;
 
 	return S_OK;
 }
@@ -50,19 +50,19 @@ _int CPlayerBullet::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 	
-	m_pTransformComp->Move_Pos(&m_vDir, fTimeDelta, m_tBullet.fMoveSpeed);
+	m_pTransformComp->Move_Pos(&m_tAttack.vDir, fTimeDelta, m_tAttack.fMoveSpeed);
 
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
-	m_tBullet.fDeleteTime += 1.f * fTimeDelta;
+	// 시간 업데이트
+	m_tAttack.fCurTime += 1.f * fTimeDelta;
 
-	if (m_tBullet.fDeleteTime >= 0.4f)
+	if (m_tAttack.fCurTime >= m_tAttack.fDeleteTime)
 	{
-		// 총알 삭제
-		Set_Dead(); //투사체는 사라짐 
-		m_tBullet.fDeleteTime = 0.f;
+		Set_Dead(); // 공격 삭제
+		m_tAttack.fCurTime = 0.f;
 	}
 
 	return S_OK;
@@ -82,19 +82,16 @@ void CPlayerBullet::Render_GameObject()
 	
 	if (*m_bDbugFrame)
 	{
-		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-
-		MeshSphereColider(5.f, 30.f, 30.f);
-		m_pBufferComp->Render_Buffer();
-		
-		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+		MeshSphereColider(pShape->fRadius, 30.f, 30.f);
 	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir, _float MoveSpeed, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID)
+CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir,
+	CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID,
+	_float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -108,11 +105,9 @@ CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, 
 
 	// 플레이어 위치에서 생성
 	pInstance->m_pTransformComp->Set_Pos(vPos.x, vPos.y, vPos.z);	// 생성 위치
-	pInstance->m_tBullet.fMoveSpeed = MoveSpeed;					// 투사체 속도 설정
+	pInstance->Set_PlayerAttackState(vDir, _AttackState, fMoveSpeed, fDeleteTime, fDamage, fSize); // 공격 상태 세팅
 	pInstance->Set_Owner(_Owner);									// 공격의 주인
-	pInstance->Set_Player_AttackState(_AttackState);				// 공격의 상태(공격 유형)
 	pInstance->Set_TeamID(_eTeamID);								// 공격의 팀 설정
-	pInstance->Set_AttackDir(vDir);
 
 	return pInstance;
 }
@@ -161,10 +156,10 @@ void CPlayerBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const 
 	if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE)
 	{
 		// 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
-		Change_MonsterHp(-m_tBullet.fDamage, pDst, m_ePlayer_AttackState);
+		Change_MonsterHp(-m_tAttack.fDamage, pDst, m_tAttack.ePlayer_AttackState);
 
 		// Test 공격 확인
-		if (m_ePlayer_AttackState == PSITDONW_ATTACK)
+		if (m_tAttack.ePlayer_AttackState == PSITDONW_ATTACK)
 		{
 			OutputDebugString(L"플레이어가 앉아서 공격함 \n");
 		}

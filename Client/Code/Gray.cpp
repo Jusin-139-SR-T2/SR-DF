@@ -80,7 +80,8 @@ HRESULT CGray::Ready_GameObject()
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
     pBoxShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-    
+    m_bCollisionOn = FALSE;
+
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE); // 초기상태 지정 
     // 추격
@@ -190,12 +191,17 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     // 지형타기 
     Height_On_Terrain(); 
 
+    // 몬스터 죽이기 
     if (m_gHp.Cur <= 0 && FALSE == m_bDeadState)
         MonsterDead();
 
     // 빌보드 
     if (FALSE == m_bDeadState)
         Billboard(fTimeDelta);
+
+    //블랙보드 업로드 
+    Update_InternalData();
+
 
     // 상태머신
     m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
@@ -310,32 +316,14 @@ void CGray::OnCollision(CGameObject* pDst, const FContact* const pContact)
 }
 void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
+    // 충돌 대상 : 플레이어, 플레이어 공격체, 보스몬스터 공격체, 중립(플레이어가 던지는 아이템) 
     if (Get_IsMonsterDeath())
         return;
-
 
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 
     if (nullptr == pAceObj)
         return;
-    else
-    {
-        // Pow 생성
-        Engine::Add_GameObject(L"GameLogic", CEffect_HitPow::Create(m_pGraphicDev,
-            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 0.2f, m_pTransformComp->Get_Pos().z, this));
-       
-        // Blood생성
-        for (_int i = 0; i < 3; ++i)
-        {
-            Engine::Add_GameObject(L"GameLogic", CEffect_HitBlood::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
-        }
-       
-        // Dust 생성
-        Engine::Add_GameObject(L"GameLogic", CEffect_HitDust::Create(m_pGraphicDev,
-            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
-
-    }
 
     // 보스 스킬에 죽을수도 있기때문에 충돌체 먼저 검사한뒤에 dead로 넘어가야함
     // 현재 팀 : 몬스터  적대관계 : 플레이어 
@@ -349,36 +337,52 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
 
             if (nullptr == pPlayerAttack)
                 return;
-
-            //==== 플레이어 공격체와  충돌 =============================
-            m_eRecentCol = RECENT_COL::PLAYERATK;
-
-            if (m_tStat.iDazedHP >= m_gHp.Cur && FALSE == m_bDazedState)
+            else
             {
-                OutputDebugString(L"▷Brown - 충돌판정 DAZED 진입   \n");
-                m_tState_Obj.Set_State(STATE_OBJ::DAZED);
-                return;
-            }
-            else if (CPlayer::STATE_RIGHTHAND::KICK == ePlayerRighthand)
-                m_tState_Obj.Set_State(STATE_OBJ::FALLING); // fist
-            else if (PSITDONW_ATTACK == m_ePlayer_AttackState) // 앉 + kick = falling 임 
-                m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
-            else //일어서야 FacePunch있음 
-            {
-                if (Random_variable(50))
-                    m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-                else
-                    m_tState_Obj.Set_State(STATE_OBJ::HIT);
+                //==== 플레이어 공격체와  충돌 =============================
+                m_bCollisionOn = true;
+                m_eRecentCol = RECENT_COL::PLAYERATK;
+
+                Add_BasicEffect(m_pOwner); // 이펙트 추가
+
+                if (m_tStat.iDazedHP >= m_gHp.Cur && FALSE == m_bDazedState)
+                {
+                    OutputDebugString(L"▷Brown - 충돌판정 DAZED 진입   \n");
+                    m_tState_Obj.Set_State(STATE_OBJ::DAZED);
+                    return;
+                }
+                else if (STATE_RIGHTHAND::KICK == ePlayerRighthand)
+                    m_tState_Obj.Set_State(STATE_OBJ::FALLING); // fist
+                else if (PSITDONW_ATTACK == m_ePlayer_AttackState) // 앉 + kick = falling 임 
+                    m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
+                else //일어서야 FacePunch있음 
+                {
+                    if (Random_variable(50))
+                        m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+                    else
+                        m_tState_Obj.Set_State(STATE_OBJ::HIT);
+                }
             }
         }
         else
         {
             //==== 플레이어와 충돌 =====================================
             m_eRecentCol = RECENT_COL::PLAYER;
-
-            if (CPlayer::STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
+            switch (ePlayerRighthand)
+            {
+            case Engine::STATE_RIGHTHAND::RUN_HAND:
+                m_bCollisionOn = true;
+                Add_BasicEffect(m_pOwner); // 이펙트 추가
                 m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
-
+                break;
+            case Engine::STATE_RIGHTHAND::KICK:
+                m_bCollisionOn = true;
+                Add_BasicEffect(m_pOwner); // 이펙트 추가
+                m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
+                break;
+            default:
+                break;
+            }
         }
     }
     else if (Check_Relation(pAceObj, this) == ERELATION::FRIEND)
@@ -386,7 +390,6 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
         // 친밀관계 - 보스 : 몬스터는 친밀이지만 보스는 적대임 
         // 보스 자체의 충돌은 없고 보스가 소환한 공격체에는 충돌함 
 
-        // ==== 보스스킬과 충돌 ========================================
         CMonsterAttackUnion* pBossAttack = dynamic_cast<CMonsterAttackUnion*>(pAceObj);
 
         if (nullptr == pBossAttack)
@@ -394,32 +397,90 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
         else
         {
             // ==== 보스스킬과 충돌 ========================================
+            m_bCollisionOn = true;
             m_eRecentCol = RECENT_COL::BOSSATK;
 
+            Add_BasicEffect(m_pOwner); // 이펙트 추가
             m_tState_Obj.Set_State(STATE_OBJ::HIT);
         }
     }
     else if (Check_Relation(pAceObj, this) == ERELATION::NUETRAL) // 오브젝트 충돌 
     {
         m_tState_Obj.Set_State(STATE_OBJ::HIT);
+        Add_BasicEffect(m_pOwner); // 이펙트 추가
     }
 
 }
 
 void CGray::OnCollisionExited(CGameObject* pDst)
 {
-    m_bCollisionEnter = FALSE;
+    m_bCollisionOn = FALSE;
 }
 
+#pragma region 블랙보드 
+
+void CGray::Update_InternalData()
+{
+    // 블랙보드 연결 대기, 안전 코드로 필수
+    if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+    {
+        m_wpBlackBoard_Monster.Set_BlackBoard(Engine::Get_BlackBoard(L"MonsterUnion"));
+        // 연결 실패
+        if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+            return;
+    }
+
+    // 안전 코드를 거치면 일반 포인터로 접근 허용.
+    CBlackBoard_Monster* pBlackBoard = m_wpBlackBoard_Monster.Get_BlackBoard();
+
+    if (m_bCollisionOn)
+    {
+        pBlackBoard->Get_GrayHP() = m_gHp;
+
+        _float cur = pBlackBoard->Get_BossHP().Cur;
+        swprintf_s(debugString, L"블랙보드 변수 확인 curBoss = %f\n", cur);
+        OutputDebugStringW(debugString);
+
+
+        _float cur2 = pBlackBoard->Get_BrownHP().Cur;
+        swprintf_s(debugString, L"블랙보드 변수 확인 curBrown  = %f\n", cur2);
+        OutputDebugStringW(debugString);
+
+
+        _float cur3 = pBlackBoard->Get_GrayHP().Cur;
+        swprintf_s(debugString, L"블랙보드 변수 확인 curGray = %f\n", cur3);
+        OutputDebugStringW(debugString);
+    }
+}
+
+void CGray::Update_BlackBoard()
+{  
+    //// 블랙보드 연결 대기, 안전 코드로 필수
+    //if (!m_wpBlackBoard_Player.Get_BlackBoard())
+    //{
+    //	m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"MonsterUnion"));
+    //	// 연결 실패
+    //	if (!m_wpBlackBoard_Player.Get_BlackBoard())
+    //		return;
+    //}
+
+    //// 안전 코드를 거치면 일반 포인터로 접근 허용.
+    //CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
+
+    //// 여기서부터 블랙보드의 정보를 얻어온다.
+    //m_fHp = pBlackBoard->Get_HP().Cur;
+}
+
+#pragma endregion
 void CGray::MonsterDead()
 {
     if (RECENT_COL::PLAYER == m_eRecentCol)
         m_tState_Obj.Set_State(STATE_OBJ::DEATH);
     else if (RECENT_COL::PLAYERATK == m_eRecentCol)
     {
-        if (CPlayer::STATE_RIGHTHAND::GUN == ePlayerRighthand)
+        if (STATE_RIGHTHAND::GUN == ePlayerRighthand)
             m_tState_Obj.Set_State(STATE_OBJ::HEADSHOT);
-        else if(CPlayer::STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
+        else if(STATE_RIGHTHAND::THOMPSON == ePlayerRighthand)
             m_tState_Obj.Set_State(STATE_OBJ::HEADLESS);
         else
             m_tState_Obj.Set_State(STATE_OBJ::DEATH);
@@ -652,7 +713,7 @@ void CGray::AI_Chase(float fDeltaTime)
         {
             _float CurDistance = Calc_Distance();
 
-            if (m_bPlayerAttakBool && m_bCollisionEnter == FALSE)
+            if (m_bPlayerAttakBool && m_bCollisionOn == FALSE) // 플레이어는 공격상태 + 충돌은 안한상태 
                 m_tState_Obj.Set_State(STATE_OBJ::BLOCK);
 
             // 뛰어서 다가옴 : 8 < a <= 13

@@ -35,7 +35,7 @@ private:
 	CCubeBufferComp* m_pCubeBufferComp = nullptr;
 
 public:
-	static CSkyBox* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CSkyBox* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fScale);
 
 private:
 	virtual void Free();

@@ -62,7 +62,8 @@ inline void				Update_InputDev(void);
 inline HRESULT			Ready_SoundDev();
 inline void				Play_Sound(const _tchar* pCategoryKey, const _tchar* pSoundKey, CHANNELID eChannel, _float fVolume);
 inline void				Play_BGM(const _tchar* pCategoryKey, const _tchar* pSoundKey, _float fVolume);
-
+inline void				Stop_Sound(CHANNELID eID);
+inline void				StopAll();
 
 inline void				Release_System();
 #include "Export_System.inl"

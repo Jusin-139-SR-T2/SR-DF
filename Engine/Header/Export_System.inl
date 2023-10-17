@@ -1,3 +1,4 @@
+#include "Export_System.h"
 #pragma region 그래픽 디바이스
 HRESULT			Get_DeviceAvailable()
 {
@@ -147,6 +148,16 @@ void	Play_BGM(const _tchar* pCategoryKey, const _tchar* pSoundKey, _float fVolum
 {
 	Engine::CSoundMgr::GetInstance()->Play_BGM(const_cast<_tchar*>(pCategoryKey),
 													const_cast<_tchar*>(pSoundKey), fVolume);
+}
+
+inline void Stop_Sound(CHANNELID eID)
+{
+	Engine::CSoundMgr::GetInstance()->Stop_Sound(eID);
+}
+
+inline void StopAll()
+{
+	Engine::CSoundMgr::GetInstance()->StopAll();
 }
 
 void	Release_System()

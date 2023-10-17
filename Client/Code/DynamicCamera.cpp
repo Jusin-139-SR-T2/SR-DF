@@ -7,7 +7,7 @@
 #include "TransformComponent.h"
 
 CDynamicCamera::CDynamicCamera(LPDIRECT3DDEVICE9 pGraphicDev)
-    : Base(pGraphicDev)
+	: Base(pGraphicDev)
 {
 	Set_ObjectName(L"DynamicCamera");
 }
@@ -47,6 +47,9 @@ HRESULT CDynamicCamera::Ready_GameObject(const _vec3* pEye, const _vec3* pAt, co
 	m_fFar = fFar;
 
 	FAILED_CHECK_RETURN(CCamera::Ready_GameObject(), E_FAIL);
+
+	// 행렬 컴포넌트
+	NULL_CHECK_RETURN(pCameraTransCom = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 
 	ShowCursor(false);
 	m_bOne = true;
@@ -92,6 +95,9 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 
 	// 블랙보드 업로드
 	Update_BlackBoard();
+
+	// 블랙보드 다운로드
+	Update_InternalData();
 
 	return iExit;
 }
@@ -272,9 +278,13 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 		return;
 
 	_vec3	vPlayerPos;				// 플레이어 위치
-	_vec3	vPlayerLook;			// 플레이어가 바라보는 곳
+
 	_vec3	vPlayerCameraPos;		// 3인칭 카메라 위치 벡터(Eye)
+
 	_vec3	vDist = { 0, 5, -8 };	// 카메라가 플레이어로 부터 멀어지는 거리
+
+	_vec3	vEventCameraMove = { 0.f, 0.f, 0.f };	// 특정 행동시 카메라의 움직임
+
 
 	_matrix	matPlayerRotX;		// 플레이어 회전 각도 x
 	_matrix	matPlayerRotY;		// 플레이어 회전 각도 y
@@ -283,6 +293,7 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	// 플레이어의 위치, 바라보는 방향을 얻어온다.
 	pPlayerTransCom->Get_Info(INFO_POS, &vPlayerPos);
 	pPlayerTransCom->Get_Info(INFO_LOOK, &vPlayerLook);
+	vPlayerPosEye = pPlayerTransCom->Get_PosEye();
 
 	// 플레이어의 회전한 각도를 얻어온다.
 	float fX = pPlayerTransCom->Get_Rotation().x;
@@ -296,13 +307,22 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	D3DXMatrixMultiply(&matPlayerRot, &matPlayerRotX, &matPlayerRotY);
 
 	// 플레이어가 바라보는 방향을 정규화 해준다.
-	D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);		
+	D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
 
 	//							카메라 위치, 떨어질 거리, 플레이어 각도
 	D3DXVec3TransformCoord(&vPlayerCameraPos, &vDist, &matPlayerRot);
 
 	// 플레이어로 부터 카메라가 떨어진 거리를 구한다.
 	vPlayerCameraPos = vPlayerPos + vPlayerCameraPos;
+
+	if (Engine::IsKey_Pressing(DIK_K))
+	{
+		vEventCameraMove.y += 0.1f;
+	}
+	if (Engine::IsKey_Pressing(DIK_J))
+	{
+		vEventCameraMove.y -= 0.1f;
+	}
 
 	// 3인칭
 	if (m_bThree)
@@ -314,19 +334,51 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 		m_vAt = vPlayerPos;
 	}
 
+
 	// 1인칭
 	if (m_bOne)
 	{
 		// 카메라 위치 설정
-		m_vEye = { vPlayerPos.x,                                                                     
-				   vPlayerPos.y + 0.4f,
-				   vPlayerPos.z };
+		m_vEye = vPlayerPosEye; // 플레이어의 눈높이
 
 		// 카메라가 바라보는 대상 (플레이어가 바라보는 방향)
-		m_vAt = vPlayerPos + vPlayerLook;
+		m_vAt = vPlayerPosEye + vPlayerLook;// +vEventCameraMove;
 
 		Mouse_Move(); // 마우스 이동
 		Mouse_Fix();  // 마우스 고정
+	}
+
+	// 플레이어 공격 카메라 무빙
+	//if (m_bAttackOn)
+	//{
+	//	CameraAttackMove(fTimeDelta);
+
+	//	//// 카메라 위치 설정
+	//	//m_vEye = vPlayerPosEye; // 플레이어의 눈높이
+
+	//	Mouse_Move(); // 마우스 이동
+	//	Mouse_Fix();  // 마우스 고정
+	//}
+	//else
+	//{
+	//	// 1인칭
+	//	if (m_bOne)
+	//	{
+	//		// 카메라 위치 설정
+	//		m_vEye = vPlayerPosEye; // 플레이어의 눈높이
+
+	//		// 카메라가 바라보는 대상 (플레이어가 바라보는 방향)
+	//		m_vAt = vPlayerPosEye + vPlayerLook;// +vEventCameraMove;
+
+	//		Mouse_Move(); // 마우스 이동
+	//		Mouse_Fix();  // 마우스 고정
+	//	}
+	//}
+
+
+	if (true)
+	{
+
 	}
 }
 
@@ -455,7 +507,7 @@ void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
 		m_dwPrevMouseMoveX = dwMouseMoveX;
 		m_dwPrevMouseMoveY = dwMouseMoveY;
 
-// 현재 마우스 무브로 회전해서 사용안함
+		// 현재 마우스 무브로 회전해서 사용안함
 #pragma region 우클릭 회전
 		//if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
 		//{
@@ -513,4 +565,248 @@ void CDynamicCamera::Update_BlackBoard()
 	pBlackBoard->Set_Eye(m_vEye);
 	pBlackBoard->Set_At(m_vAt);
 
+}
+
+// 블랙보드 정보 내려받기 (정보 내려받기)
+void CDynamicCamera::Update_InternalData()
+{
+	// 블랙보드 연결 대기, 안전 코드로 필수
+	if (!m_wpBlackBoard_Player.Get_BlackBoard())
+	{
+		m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"Player"));
+		// 연결 실패
+		if (!m_wpBlackBoard_Camera.Get_BlackBoard())
+			return;
+	}
+
+	// 안전 코드를 거치면 일반 포인터로 접근 허용.
+	CBlackBoard_Player* m_pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
+
+	// 여기서부터 블랙보드의 정보를 얻어온다.
+	m_ePlayer_State = m_pBlackBoard->Get_PlayerState();
+	m_eRightHand_State = m_pBlackBoard->Get_RightHandState();
+	m_bPlayerAttackOn = m_pBlackBoard->Get_AttackOn();
+	m_bRAttackMove = &m_pBlackBoard->Get_RAttackMove();
+	m_bLAttackMove = &m_pBlackBoard->Get_LAttackMove();
+	m_bAttackOn = m_pBlackBoard->Get_AttackOn();
+
+	//m_bRAttackMove
+}
+
+void CDynamicCamera::CameraAttackMove(const _float& fTimeDelta)
+{
+	_vec3 vLook = { 0.f, 0.f, 0.f };
+	_vec3 vRight = { 0.f, 0.f, 0.f };
+	_vec3 vUp = { 0.f, 0.f, 0.f };
+
+	_vec3 vCrossUp = { 0.f, 0.f, 0.f };
+
+	_vec3 vPosEye = { 0.f, 0.f, 0.f };
+
+	pPlayerTransCom->Get_Info(INFO_LOOK, &vLook);
+	pPlayerTransCom->Get_Info(INFO_RIGHT, &vRight);
+	pPlayerTransCom->Get_Info(INFO_UP, &vUp);
+	vPosEye = pPlayerTransCom->Get_PosEye();
+
+	// 카메라 위치 설정
+	m_vEye = vPosEye; // 플레이어의 눈높이
+
+	switch (m_eRightHand_State)
+	{
+	case Engine::STATE_RIGHTHAND::NONE:
+	{
+
+		break;
+	}
+	case Engine::STATE_RIGHTHAND::HAND: // 주먹
+	{
+		if (*m_bLAttackMove)
+		{
+			m_bLRotStart = true;
+
+			//m_vRot = m_pTransformComp->Get_Look();
+			//m_vCurLook = m_pTransformComp->Get_Look();
+			//D3DXVec3Normalize(&m_vRot, &m_vRot);
+		}
+		else if (*m_bRAttackMove)
+		{
+			m_bRotStart = true;
+		}
+
+		if (m_bLRotStart)
+		{
+			fLRotStart += 1.f * fTimeDelta;
+
+			_float fMoveSpeed = 1.5f;
+			_float fMoveRange = 0.2f;
+			_matrix		matRot;
+
+			if (fLRotStart > 0.3f)
+			{
+				if (m_vRotPlus.x < fMoveRange && !m_bRotChange)
+				{
+					m_vRotPlus.x += fMoveSpeed * fTimeDelta;
+
+					// 카메라의 up 벡터(y축) 기준으로 회전
+					//D3DXMatrixRotationAxis(&matRot, &m_vUp, D3DXToRadian(m_vRotPlus.x));
+
+					D3DXMatrixRotationAxis(&matRot, &vUp, D3DXToRadian(m_vRotPlus.x));
+					// 회전 결과 값과 플레이어의 Look벡터로 방향벡터 생성
+					D3DXVec3TransformNormal(&vLook, &vLook, &matRot);
+					// 최종으로 구한 방향벡터를 적용
+					m_vAt = vPosEye + vLook;// +vEventCameraMove;
+				}
+				else if (m_vRotPlus.x > fMoveRange && !m_bRotChange)
+				{
+					//m_vRot.y = 0.f;
+					m_bRotChange = true;
+				}
+
+				if (m_bRotChange && m_vRotMinus.x > -fMoveRange)
+				{
+					m_vRotMinus.x -= fMoveSpeed * fTimeDelta;
+
+					// 카메라의 up 벡터(y축) 기준으로 회전
+					D3DXMatrixRotationAxis(&matRot, &vUp, D3DXToRadian(m_vRotMinus.x));
+					// 회전 결과 값과 플레이어의 Look벡터로 방향벡터 생성
+					D3DXVec3TransformNormal(&vLook, &vLook, &matRot);
+					// 최종으로 구한 방향벡터를 적용
+					m_vAt = vPosEye + vLook;// +vEventCameraMove;
+				}
+
+				if (m_vRotMinus.x <= -fMoveRange)
+				{
+					m_vRotMinus.x = 0.f;
+					m_vRotPlus.x = 0.f;
+					fLRotStart = 0.f;
+					vPlayerLook.x;
+
+					m_bRotChange = false;
+					m_bLRotStart = false;
+
+					*m_bLAttackMove = false;
+
+					_bool test1 = *m_bLAttackMove;
+					_bool test2 = m_bLAttackMove;
+					int test3 = *m_bLAttackMove;
+					_bool* test4 = m_bLAttackMove;
+					int test = 0;
+
+				}
+			}
+		}
+
+		// 오른손 주먹
+		if (m_bRotStart)
+		{
+			fRotStart += 1.f * fTimeDelta;
+
+			_float fMoveSpeed = 1.5f;
+			_float fMoveRange = 0.2f;
+			_matrix		matRot;
+
+			if (fRotStart > 0.3f)
+			{
+				if (m_vRotMinus.x > -fMoveRange && !m_bRotChange)
+				{
+					m_vRotMinus.x -= fMoveSpeed * fTimeDelta;
+
+					pPlayerTransCom->Get_Info(INFO_LOOK, &vLook);
+					pPlayerTransCom->Get_Info(INFO_RIGHT, &vRight);
+					pPlayerTransCom->Get_Info(INFO_UP, &vUp);
+					vPosEye = pPlayerTransCom->Get_PosEye();
+
+					D3DXVec3Cross(&vCrossUp, &vLook, &vRight);
+
+					// 카메라의 up 벡터(y축) 기준으로 회전
+					D3DXMatrixRotationAxis(&matRot, &vCrossUp, D3DXToRadian(m_vRotMinus.x));
+					// 회전 결과 값과 플레이어의 Look벡터로 방향벡터 생성
+					D3DXVec3TransformNormal(&vLook, &vLook, &matRot);
+					// 최종으로 구한 방향벡터를 적용
+					m_vAt = vPosEye + vLook;// +vEventCameraMove;
+				}
+				else if (m_vRotMinus.x < -fMoveRange && !m_bRotChange)
+				{
+					//m_vRot.y = 0.f;
+					m_bRotChange = true;
+				}
+
+				if (m_bRotChange && m_vRotPlus.x < fMoveRange)
+				{
+					m_vRotPlus.x += fMoveSpeed * fTimeDelta;
+
+					pPlayerTransCom->Get_Info(INFO_LOOK, &vLook);
+					pPlayerTransCom->Get_Info(INFO_RIGHT, &vRight);
+					pPlayerTransCom->Get_Info(INFO_UP, &vUp);
+					vPosEye = pPlayerTransCom->Get_PosEye();
+
+					D3DXVec3Cross(&vCrossUp, &vLook, &vRight);
+
+					// 카메라의 up 벡터(y축) 기준으로 회전
+					D3DXMatrixRotationAxis(&matRot, &vCrossUp, D3DXToRadian(m_vRotPlus.x));
+					// 회전 결과 값과 플레이어의 Look벡터로 방향벡터 생성
+					D3DXVec3TransformNormal(&vLook, &vLook, &matRot);
+					// 최종으로 구한 방향벡터를 적용
+					m_vAt = vPosEye + vLook;// +vEventCameraMove;
+				}
+
+				if (m_vRotPlus.x >= fMoveRange)
+				{
+					m_vRotMinus.x = 0.f;
+					m_vRotPlus.x = 0.f;
+					fRotStart = 0.f;
+
+					m_bRotChange = false;
+					m_bRotStart = false;
+					*m_bRAttackMove = false;
+				}
+			}
+		}
+		break;
+	}
+	case Engine::STATE_RIGHTHAND::RUN_HAND:
+	{
+
+		break;
+	}
+	case Engine::STATE_RIGHTHAND::GUN:
+	{
+
+		break;
+	}
+	case Engine::STATE_RIGHTHAND::THOMPSON:
+	{
+
+		break;
+	}
+	case Engine::STATE_RIGHTHAND::STEELPIPE:
+	{
+
+		break;
+	}
+	case Engine::STATE_RIGHTHAND::BEERBOTLE:
+	{
+
+		break;
+	}
+	case Engine::STATE_RIGHTHAND::FRYINGPAN:
+	{
+
+		break;
+	}
+	case Engine::STATE_RIGHTHAND::KICK:
+	{
+
+		break;
+	}
+	}
+
+	//// 카메라 위치 설정
+	//m_vEye = vPlayerPosEye; // 플레이어의 눈높이
+
+	//// 카메라가 바라보는 대상 (플레이어가 바라보는 방향)
+	//m_vAt = vPlayerPosEye + vPlayerLook;// +vEventCameraMove;
+
+	//Mouse_Move(); // 마우스 이동
+	//Mouse_Fix();  // 마우스 고정
 }

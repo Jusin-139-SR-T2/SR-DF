@@ -9,7 +9,7 @@
 //임시용
 #include "AceFood.h" 
 #include "PlayerBullet.h"
-#include "PlayerFist.h"
+#include "CloseAttack.h"
 #include "MeshColComp.h"
 
 #include "Serialize_BaseClass.h"
@@ -125,22 +125,24 @@ public: // Get_Set
 	//GETSET_EX2(CPlayerLighter*, m_PlayerLighter, PlayerLighter, GET, SET)	// 라이터 조명
 
 	// 플레이어 오른손 상태값
-	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
+	//enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
 	// 플레이어 상태값
-	enum class STATE_PLAYER { NONE, IDLE, SITDOWN, JUMP, DIE, PLAYER_STATE_SIZE_END };
+	//enum class STATE_PLAYER { NONE, IDLE, SITDOWN, JUMP, DIE, PLAYER_STATE_SIZE_END };
 	// 플레이어 행동 상태값
-	enum class STATE_PLAYER_ACTION { IDLE, RUN, ATTACK, CHARGING, THROW_AWAY, PLAYER_ACTION_SIZE_END };
+	enum class STATE_PLAYER_ACTION { IDLE, RUN, GUARD, ATTACK, CHARGING, THROW_AWAY, PLAYER_ACTION_SIZE_END };
 
 	// 소영 추가 ---------------- 
 	GETSET_EX2(STATE_RIGHTHAND, m_eRIGHTState, PlayerRightHand, GET, SET)   // 오른손 상태값 받아오는용도 
 	GETSET_EX2(GAUGE<_float>, m_gHp, PlayerHP, GET, SET)   // 플레이어 hp용도 
-	GETSET_EX2(_bool, m_bAttack, PlayerAttackBool, GET, SET)   // 플레이어 hp용도 
+	GETSET_EX2(_bool, m_bAttack, PlayerAttackBool, GET, SET)   // 플레이어 공격  
 
 	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
-	// 조명 수명 
+	
 	_float m_fAge = 0.f;
 	_float m_fLifeTime = 0.2f;
 	_bool m_bGunLight; // 불켜는 bool값 
+	_bool m_bHitState = false;
+
 	void CrossHairState();
 	// ------------------------- 
 
@@ -190,7 +192,7 @@ public:
 
 private: // 플레이어의 상태 머신 (상태x, 뛰기, 앉기, 점프, 죽음)
 	STATE_SET<STATE_PLAYER, void(CPlayer*, float)> m_tPlayer_State;
-
+	STATE_PLAYER m_ePlayerTest;
 	void Idle(float fTimeDelta);
 	void Down(float fTimeDelta);
 	void Kick(float fTimeDelta);
@@ -269,6 +271,7 @@ private: // 스위치
 	_bool		bBackRighter = false;	// 라이터 되돌리기
 	_bool		bDbugFrame = false;		// 디버그 프레임
 	_bool		m_bAttack = false;		// 공격 On/Off
+	_bool		m_bAttackRotOn = false;
 
 private:
 	struct _LEFTHAND	// 왼손
@@ -293,8 +296,8 @@ private:
 		_float			fRightFrameSpeed = 1.f;		// 오른손 프레임 속도
 		_float			fRightFrame = 0.f;			// 오른손 프레임
 
-		_uint			iFullChargingIndex = 0.f;	// 풀차지시 인덱스
-		_uint			iShieldIndex = 0.f;			// 쉴드시 인덱스
+		_uint			iFullChargingIndex = 0;	// 풀차지시 인덱스
+		_uint			iShieldIndex = 0;			// 쉴드시 인덱스
 	};
 
 	struct _PLAYER	// 플레이어
@@ -347,7 +350,7 @@ private:
 	GAUGE<_float>		m_fChage;	// 차지
 
 	// 플레이어가 바라보는 방향
-	_vec3	vPlayerLook = { 0.f, 0.f, 0.f };
+	//_vec3	vPlayerLook = { 0.f, 0.f, 0.f };
 
 	// Test
 	OBJECT_TYPE m_eObjectType;	// 오브젝트 타입
@@ -380,16 +383,6 @@ private: // 보간 변수
 	// 이동
 	_float fPosX_Delta, fPosY_Delta;
 
-
-
-
-
-
-
-
-
-
-
 private: // 점프
 	void PlayerJump(float fTimeDelta);
 	_bool m_IsOnTerrain = false;
@@ -398,6 +391,28 @@ private: // 점프
 	_vec3 m_vSpeed = { 0.f, 0.f, 0.f };
 	_vec3 m_vAccel = { 0.f, -27.8f, 0.f };
 
+private:
+	enum EBLACKBOARD_UPDATE
+	{
+		EBLACKBOARD_NONE,
+		EBLACKBOARD_UPLOAD,
+		EBLACKBOARD_DOWNLOAD
+	};
+
+private:
+	_vec3 m_vRotPlus = { 0.f, 0.f, 0.f };
+	_vec3 m_vRotMinus = { 0.f, 0.f, 0.f };
+
+	_vec3 m_vCurLook = { 0.f, 0.f, 0.f };
+
+	_bool m_bRotChange = false;
+	_bool m_bRotStart = false;
+	_bool m_bLRotStart = false;
+	_int m_bLAttackMove = EBLACKBOARD_NONE;
+	_int m_bRAttackMove = EBLACKBOARD_NONE;
+
+	_float fRotStart = 0.f;
+	_float fLRotStart = 0.f;
 };
 
 /*	현재 키 설명

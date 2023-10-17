@@ -7,6 +7,7 @@
 #include "CalculatorComponent.h"
 #include "ColliderComponent.h"
 #include "PlayerLighter.h"
+#include "MonsterAttackUnion.h"
 #include "PlayerGunLighter.h"
 #include "Management.h"
 #include "BlackBoard_Player.h"
@@ -172,12 +173,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
         m_bGunLight = false;
     }
 
-    // 플레이어가 바라보는 방향 (눈높이 맞춤)
-    vPlayerLook = m_pTransformComp->Get_Look();
-
-    vPlayerLook = { vPlayerLook.x, vPlayerLook.y - 0.4f, vPlayerLook.z };
-    D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
-
     // 마우스 움직임
     Mouse_Move();
     // 마우스 입력
@@ -198,8 +193,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     }
     else
         m_IsOnGround = false;
-        
-        // 대쉬
+
+    // 대쉬
     Dash(fTimeDelta);
 
     // 프레임 관리
@@ -211,8 +206,11 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     //플레이어 디버그용 코드 
     //swprintf_s(debugString, L"Player - 변수 확인 m_gHp = %f\n", m_gHp.Cur);
     //OutputDebugStringW(debugString);
-    
 
+    if (Engine::IsKey_Pressed(DIK_E))
+    { 
+        m_gHp.Cur -= 5.f;
+    }
     //플레이어 뒤로 콜라가 생성되는 코드
     //if (Engine::IsKey_Pressed(DIK_BACK))
     //Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 
@@ -284,7 +282,7 @@ void CPlayer::Render_GameObject()
     {
         m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-        MeshSphereColider(10.f, 30.f, 30.f);
+        MeshSphereColider(10.f, 30, 30);
         MeshBoxColider(5.f, 20.f, 20.f);
         //m_pBufferComp->Render_Buffer();
 
@@ -345,7 +343,9 @@ HRESULT CPlayer::Add_Component()
     m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_PLAYER);
-    m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_ITEM | LAYER_WALL);
+    m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_BOSSMONSTER |
+                                      LAYER_BOSS_SKILL | LAYER_MONSTER_ATTACK |
+                                      LAYER_ITEM | LAYER_WALL);
     // 플레이어가 shift로 대쉬를 하거나 공격을 했을때만 몬스터와 충돌이 허용됨. 
 
     return S_OK;
@@ -527,10 +527,10 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     }
 
     // 발차기
-    if (Engine::IsKey_Pressed(DIK_Q))
-    {
-        m_tRightHand_State.Set_State(STATE_RIGHTHAND::KICK);
-    }
+    //if (Engine::IsKey_Pressed(DIK_Q))
+    //{
+    //    m_tRightHand_State.Set_State(STATE_RIGHTHAND::KICK);
+    //}
 
     // 라이터
     if (Engine::IsKey_Pressed(DIK_V) && m_tPlayer_Action.Get_State() != STATE_PLAYER_ACTION::RUN)
@@ -666,7 +666,6 @@ if (!timeline[KEYTYPE_LEFTHAND].empty())
                 }
             }
 
-
             m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
             // 만약 최대프레임인데 라이터가 켜져있을 경우
             if (bRighter)
@@ -679,7 +678,6 @@ if (!timeline[KEYTYPE_LEFTHAND].empty())
             {
                 // 현재 프레임 초기화
                 m_tLeftHand.fLeftFrame = 0.f;
-
             }
             // 라이터 되돌리기가 켜져있을 경우
             if (bBackRighter)
@@ -711,7 +709,7 @@ if (!timeline[KEYTYPE_RIGHTHAND].empty())
             m_tTime.fRightCurrentTime >= timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].time)
         {
             // 현재 시간과 텍스처 이미지를 풀 차징에 고정
-            m_tRightHand.fRightFrame = timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].texureframe;
+            m_tRightHand.fRightFrame = _float(timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].texureframe);
             m_tTime.fRightCurrentTime = timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].time;
         }
 
@@ -730,7 +728,7 @@ if (!timeline[KEYTYPE_RIGHTHAND].empty())
             if (m_tPlayer_Action.Get_State() == STATE_PLAYER_ACTION::THROW_AWAY)
             {
                 // (현재 프레임) 오른손을 Throw 이미지로 고정
-                m_tRightHand.fRightFrame = timeline[KEYTYPE_RIGHTHAND].back().texureframe;
+                m_tRightHand.fRightFrame = _float(timeline[KEYTYPE_RIGHTHAND].back().texureframe);
 
                 // 시간마다 텍스처 변경 시간을 채워준다.
                 m_tTime.fRightCurrentTime += m_tTime.fRightChangeTime * fTimeDelta;
@@ -816,6 +814,7 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
     // 충돌중일때
    // OutputDebugString(L"플레이어와 충돌중\n");
+    
     CAceBuilding* pFood = dynamic_cast<CAceBuilding*>(pDst);
     if (pFood)
     {
@@ -828,6 +827,46 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
 
 void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
+    //소영 추가 
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
+
+    if (nullptr == pAceObj)
+        return;
+
+    //플레이어 Hostile관계 =  Monster , Boss
+    if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE) // 적대관계
+    {
+        CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
+
+        if (pMonster == nullptr) 
+        {
+            CMonsterAttackUnion* pMonsterSkill = dynamic_cast<CMonsterAttackUnion*>(pAceObj);
+
+            if (nullptr == pMonsterSkill)
+                return;
+            else
+            {
+                // 충돌한게 몬스터의 스킬일때  진행하는곳 
+                m_bHitState = true;
+            }
+
+        }
+        else
+        {
+            // 충돌한게 몬스터일때 진행하는곳
+            switch (m_eRIGHTState)
+            {
+            case Engine::STATE_RIGHTHAND::RUN_HAND:
+                m_bHitState = true;
+                break;
+            case Engine::STATE_RIGHTHAND::KICK:
+                m_bHitState = true;
+                break;
+            }
+        }
+    }
+
+
     //// 처음 충돌했을때
     //CBrown* pBrown = dynamic_cast<CBrown*>(pDst->Get_Owner());
     //if (FAILED(pBrown))
@@ -843,6 +882,7 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
 
 void CPlayer::OnCollisionExited(CGameObject* pDst)
 {
+    m_bHitState = false;
     // 충돌에서 나갈때
    // OutputDebugString(L"플레이어와 충돌완료\n");
 }
@@ -873,6 +913,44 @@ void CPlayer::Update_BlackBoard()
     pBlackBoard->Get_HP().Cur = m_gHp.Cur;
     pBlackBoard->Get_GunLight() = m_bGunLight;
     pBlackBoard->Get_LighterLight() = m_PlayerLighter;
+    pBlackBoard->Set_PlayerState(m_tPlayer_State.Get_State());
+    pBlackBoard->Set_RightHandState(m_tRightHand_State.Get_State());
+    pBlackBoard->Get_AttackOn() = m_bAttack;
+    pBlackBoard->Get_PlayerHit() = m_bHitState;
+
+
+    switch (m_bRAttackMove)
+    {
+    case EBLACKBOARD_UPLOAD:
+        pBlackBoard->Get_RAttackMove() = true;
+        m_bRAttackMove = EBLACKBOARD_DOWNLOAD;
+        break;
+    case EBLACKBOARD_DOWNLOAD:
+        m_bRAttackMove = (pBlackBoard->Get_RAttackMove()) ? m_bRAttackMove : EBLACKBOARD_NONE;
+        break;
+    default:
+        break;
+    }
+
+    //if (m_bRAttackMove)
+    //{
+    //    pBlackBoard->Get_RAttackMove() = true;
+    //    m_bRAttackMove = false;
+    //}
+
+    switch (m_bLAttackMove)
+    {
+    case EBLACKBOARD_UPLOAD:
+        pBlackBoard->Get_LAttackMove() = true;
+        m_bLAttackMove = EBLACKBOARD_DOWNLOAD;
+        break;
+    case EBLACKBOARD_DOWNLOAD:
+        m_bLAttackMove = (pBlackBoard->Get_LAttackMove()) ? m_bLAttackMove : EBLACKBOARD_NONE;
+        break;
+    default:
+        break;
+    }
+        
 
     //pBlackBoard->Get_PlayerPickUpState() = m_tRightHand.; //차징상태
     //pBlackBoard->Get_PlayerEquipGunState() = m_tRightHand.; //차징상태
@@ -919,30 +997,31 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
         {
             switch (m_eRIGHTState)
             {
-            case CPlayer::STATE_RIGHTHAND::NONE:
+            case STATE_RIGHTHAND::NONE:
             {
                 m_fChage.Cur = 0.f;
                 break;
             }
-            case CPlayer::STATE_RIGHTHAND::RUN_HAND:
+            case STATE_RIGHTHAND::RUN_HAND:
             {
                 m_fChage.Cur = 0.f;
                 break;
             }
-            case CPlayer::STATE_RIGHTHAND::GUN:
+            case STATE_RIGHTHAND::GUN:
             {
                 m_fChage.Cur = 0.f;
                 break;
             }
-            case CPlayer::STATE_RIGHTHAND::THOMPSON:
+            case STATE_RIGHTHAND::THOMPSON:
             {
                 m_tRightHand.bRightFrameOn = true;
                 m_bAttack = true;
+                //m_bRAttackMove = true;
                 m_fChage.Cur = 0.f;
                 break;
             }
 
-                case CPlayer::STATE_RIGHTHAND::STEELPIPE:
+                case STATE_RIGHTHAND::STEELPIPE:
                 {
                     // 차지를 시작할 시간
                     if ((m_fChage.Update(1.f * fTimeDelta, m_tTime.fChargeStartTime)))
@@ -953,7 +1032,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                     }
                     break;
                 }
-                case CPlayer::STATE_RIGHTHAND::FRYINGPAN:
+                case STATE_RIGHTHAND::FRYINGPAN:
                 {
                     // 차지를 시작할 시간
                     if ((m_fChage.Update(1.f * fTimeDelta, m_tTime.fChargeStartTime)))
@@ -964,7 +1043,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                     }
                     break;
                 }
-                case CPlayer::STATE_RIGHTHAND::HAND:
+                case STATE_RIGHTHAND::HAND:
                 {
                     // 차지를 시작할 시간
                     if ((m_fChage.Update(1.f * fTimeDelta, m_tTime.fChargeStartTime)))
@@ -976,12 +1055,12 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                         break;
                 }
 
-            case CPlayer::STATE_RIGHTHAND::BEERBOTLE:
+            case STATE_RIGHTHAND::BEERBOTLE:
             {
                 m_fChage.Cur = 0.f;
                 break;
             }
-            case CPlayer::STATE_RIGHTHAND::KICK:
+            case STATE_RIGHTHAND::KICK:
             {
                 m_fChage.Cur = 0.f;
                 break;
@@ -1000,6 +1079,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
         if (Engine::IsMouse_Pressed(DIM_LB)) // 눌렀을 때
         {
             m_bAttack = true; // 공격 On
+            m_bRAttackMove = EBLACKBOARD_UPLOAD;
 
             // 앉은 채로 공격을 눌렀을 때
             if (m_tPlayer_State.Get_State() == STATE_PLAYER::SITDOWN)
@@ -1022,6 +1102,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                 if (bLeftPunch)
                 {
                     m_tLeftHand.bLeftFrameOn = true;
+                    m_bLAttackMove = true;
                 }
                 if (bRightPunch)
                 {
@@ -1904,14 +1985,18 @@ void CPlayer::Left_Hand(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tLeftHand.bLeftAttacColOn)
         {
-            m_tLeftHand.bLeftAttacColOn = false;
-            _vec3 vPosPlus = { 1.f, 0.f, 0.f };
-            // 주먹공격 생성 (디바이스, 생성 위치, 주인, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerFist::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos() + vPosPlus, vPlayerLook, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
+            m_tLeftHand.bLeftAttacColOn = false;    // 공격 생성 Off
+
+            // 주먹공격 생성
+            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                                   m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                                   this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                                   0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+            
+            m_bAttack = false;  // 공격 Off
         }
     }
 
@@ -2108,17 +2193,61 @@ void CPlayer::Right_Hand(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        //if (m_bRAttackMove)
+        //{
+        //    m_bRotStart = true;
+        //}
+
+        //// 공격시 카메라 무빙
+        //if (m_bRotStart)
+        //{
+        //    fRotStart += 1.f * fTimeDelta;
+        //    _float fMoveSpeed = 1.5f;
+
+        //    if (fRotStart > 0.2f)
+        //    {
+        //        if (m_vRotMinus.y > -0.3 && !m_bRotChange)
+        //        {
+        //            m_vRotMinus.y -= fMoveSpeed * fTimeDelta;
+        //            m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(m_vRotMinus.y));
+        //        }
+        //        else if(m_vRotMinus.y < -0.3 && !m_bRotChange)
+        //        {
+        //            //m_vRot.y = 0.f;
+        //            m_bRotChange = true;
+        //        }
+
+        //        if (m_bRotChange && m_vRotPlus.y < 0.3f)
+        //        {
+        //            m_vRotPlus.y += fMoveSpeed * fTimeDelta;
+        //            m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(m_vRotPlus.y));
+        //        }
+
+        //        if (m_vRotPlus.y >= 0.3f)
+        //        {
+        //            m_vRotMinus.y = 0.f;
+        //            m_vRotPlus.y = 0.f;
+        //            fRotStart = 0.f;
+
+        //            m_bRotChange = false;
+        //            m_bRotStart = false;
+        //            m_bRAttackMove = false;
+        //        }
+        //    }
+        //}
+
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            _vec3 vPosPlus = { 1.f, 0.f, 0.f };
-            // 주먹공격 생성 (디바이스, 생성 위치, 주인, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerFist::Create(m_pGraphicDev,
-                                    m_pTransformComp->Get_Pos(), vPlayerLook, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            // 주먹공격 생성
+            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+
+            m_bAttack = false;  // 공격 Off
         }
 
         // 플레이어가 차징을 하고있을 경우
@@ -2148,6 +2277,8 @@ void CPlayer::Right_Hand(float fTimeDelta)
                 m_tRightHand.bChargingAttackOn = true;
                 m_tPlayer_Action.Set_State(STATE_PLAYER_ACTION::ATTACK);
                 m_bAttack = true;
+                m_bRAttackMove = EBLACKBOARD_UPLOAD;
+
                 bChargeAttack = false;
                 m_fChage.Cur = 0.f;
             }
@@ -2239,18 +2370,20 @@ void CPlayer::Right_Gun(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            m_bGunLight = TRUE;
+            m_bGunLight = TRUE; // 총 조명On
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), vPlayerLook, 300.f, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            // 총알 생성
+            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                100.f, 3.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+
+            m_bAttack = false;  // 공격 Off
         }
     }
 
@@ -2299,18 +2432,20 @@ void CPlayer::Right_Thompson(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            m_bGunLight = TRUE;
+            m_bGunLight = TRUE; // 총 조명On
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), vPlayerLook, 300.f, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            // 총알 생성
+            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                100.f, 3.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+
+            m_bAttack = false;  // 공격 Off
         }
     }
 
@@ -2357,18 +2492,18 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            m_bGunLight = TRUE;
+            // 파이프 공격 생성
+            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), vPlayerLook, 300.f, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            m_bAttack = false;  // 공격 Off
         }
 
         // 플레이어가 차징을 하고있을 경우
@@ -2398,6 +2533,8 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
                 m_tRightHand.bChargingAttackOn = true;
                 m_tPlayer_Action.Set_State(STATE_PLAYER_ACTION::ATTACK);
                 m_bAttack = true;
+                m_bRAttackMove = EBLACKBOARD_UPLOAD;
+
                 bChargeAttack = false;
                 m_fChage.Cur = 0.f;
             }
@@ -2457,18 +2594,18 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            m_bGunLight = TRUE;
+            // 맥주병 공격 생성
+            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                100.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), vPlayerLook, 300.f, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            m_bAttack = false;  // 공격 Off
         }
     }
 
@@ -2516,18 +2653,18 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            m_bGunLight = TRUE;
+            // 총알 생성
+            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), vPlayerLook, 300.f, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            m_bAttack = false;  // 공격 Off
         }
 
         // 플레이어가 차징을 하고있을 경우
@@ -2557,6 +2694,8 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
                 m_tRightHand.bChargingAttackOn = true;
                 m_tPlayer_Action.Set_State(STATE_PLAYER_ACTION::ATTACK);
                 m_bAttack = true;
+                m_bRAttackMove = EBLACKBOARD_UPLOAD;
+
                 bChargeAttack = false;
                 m_fChage.Cur = 0.f;
             }
@@ -2766,7 +2905,7 @@ void CPlayer::LeftInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                                                     (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].vRot.z + fRotZ_Delta });
 
                 // 텍스처 번호
-                m_tLeftHand.fLeftFrame = (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].texureframe;
+                m_tLeftHand.fLeftFrame = _float((timeline)[KEYTYPE_LEFTHAND][iFrameIndex].texureframe);
             }
             else
             {
@@ -2784,7 +2923,7 @@ void CPlayer::LeftInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                                             0.f });	// 이미지 위치
 
                 // 텍스처 번호
-                m_tLeftHand.fLeftFrame = (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].texureframe;
+                m_tLeftHand.fLeftFrame = _float((timeline)[KEYTYPE_LEFTHAND][iFrameIndex].texureframe);
             }
         }
     }
@@ -2862,7 +3001,7 @@ void CPlayer::RightInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                                                         (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].vRot.z + fRotZ_Delta });
 
                     // 텍스처 번호
-                    m_tRightHand.fRightFrame = (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].texureframe;
+                    m_tRightHand.fRightFrame = _float((timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].texureframe);
                         
                 }
                 else
@@ -2880,7 +3019,7 @@ void CPlayer::RightInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                                                 0.f });	// 이미지 위치
 
                     // 텍스처 번호
-                    m_tRightHand.fRightFrame = (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].texureframe;
+                    m_tRightHand.fRightFrame = _float((timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].texureframe);
                 }
             }
     }

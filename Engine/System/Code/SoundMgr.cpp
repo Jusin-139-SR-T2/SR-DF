@@ -47,11 +47,21 @@ HRESULT CSoundMgr::Ready_Sound()
 	result = FMOD_System_GetMasterChannelGroup(m_pSystem, &m_pMasterChanelGroup);
 
 	// 실제 사운드 폴더 찾아 로드
+	LoadSoundFile_GroupAsync(L"RockmanEXE", "./Resource/Sound/RockmanEXE/sfx/");
+	
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/bgm/");
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/sfx/");
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/announce/");
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/talk/");
-	LoadSoundFile_GroupAsync(L"RockmanEXE", "./Resource/Sound/RockmanEXE/sfx/");
+	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/Player/");
+
+	//몬스터 전용 폴더 로드경로 
+	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/BossMonster/");
+	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/Brown/");
+	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/Gray/");
+	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/SkillEffect/");
+	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Enemy_Temporary/");
+	
 	Wait_GroupAsync();
 
 	return S_OK;

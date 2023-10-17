@@ -53,6 +53,8 @@ public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
 	GETSET_EX2(_vec3, m_vInfo[INFO_UP],		Up,		GET_C_REF, SET_C)
 	GETSET_EX2(_vec3, m_vInfo[INFO_LOOK],	Look,	GET_C_REF, SET_C)
 	GETSET_EX2(_vec3, m_vInfo[INFO_POS],	Pos,	GET_C_REF, SET_C)
+	GETSET_EX1(_vec3, m_vInfo[INFO_POS] + m_vInfo[INFO_POS] / 2,	PosEye,	GET_C_REF) // 성희 추가 : 눈높이
+
 	void Set_Pos(const _float& x, const _float& y, const _float& z) 
 	{
 		m_vInfo[INFO_POS].x = x;

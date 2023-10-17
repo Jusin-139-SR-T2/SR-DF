@@ -51,12 +51,12 @@ void CPlayerAttackUnion::Free()
     SUPER::Free();
 }
 
-void CPlayerAttackUnion::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
+void CPlayerAttackUnion::MeshBoxColider(_float _Width, _float _Height, _float Depth)
 {
     SUPER::MeshBoxColider(_Width, _Height, Depth);
 }
 
-void CPlayerAttackUnion::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
+void CPlayerAttackUnion::MeshSphereColider(_float Radius, _uint Slices, _uint Stacks)
 {
     SUPER::MeshSphereColider(Radius, Slices, Stacks);
 }
@@ -102,9 +102,10 @@ HRESULT CPlayerAttackUnion::Update_PlayerPos()
 }
 
 
-void CPlayerAttackUnion::Recoil_Player(const _float& fTimeDelta, _float fSpeed)
+void CPlayerAttackUnion::Recoil(const _float& fTimeDelta, _float fSpeed)
 {
-    // 공격체(총알)가 플레이어 바라보는 방향
+    // 공격체(총알)가 바라보는 방향
+    //          (바라보는 대상)                   - (공격체 본인)
     _vec3 Dir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
     D3DXVec3Normalize(&Dir, &Dir);
 

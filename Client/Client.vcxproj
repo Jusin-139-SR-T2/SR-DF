@@ -76,11 +76,12 @@
     <ClInclude Include="Header\RedThunder.h" />
     <ClInclude Include="Header\Scene_Parsed.h" />
     <ClInclude Include="Header\PlayerAttackUnion.h" />
-    <ClInclude Include="Header\PlayerFist.h" />
+    <ClInclude Include="Header\CloseAttack.h" />
     <ClInclude Include="Header\PlayerGunLighter.h" />
     <ClInclude Include="Header\MonsterBullet.h" />
-    <ClInclude Include="Header\PlayerSteelPipe.h" />
     <ClInclude Include="Header\UI_CrossHair.h" />
+    <ClInclude Include="Header\PlayerSkillUnion.h" />
+    <ClInclude Include="Header\UI_PlayerFace.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceEffect.cpp" />
@@ -143,11 +144,12 @@
     <ClCompile Include="Code\RedThunder.cpp" />
     <ClCompile Include="Code\Scene_Parsed.cpp" />
     <ClCompile Include="Code\PlayerAttackUnion.cpp" />
-    <ClCompile Include="Code\PlayerFist.cpp" />
+    <ClCompile Include="Code\CloseAttack.cpp" />
     <ClCompile Include="Code\PlayerGunLighter.cpp" />
     <ClCompile Include="Code\MonsterBullet.cpp" />
-    <ClCompile Include="Code\PlayerSteelPipe.cpp" />
     <ClCompile Include="Code\UI_CrossHair.cpp" />
+    <ClCompile Include="Code\PlayerSkillUnion.cpp" />
+    <ClCompile Include="Code\UI_PlayerFace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

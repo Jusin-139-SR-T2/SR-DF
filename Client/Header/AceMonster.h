@@ -11,11 +11,8 @@
 #include "Effect_FallingDust.h"
 #include "Effect_DazeSwirl.h"
 
-// Team Agent 추가예정  
-
 typedef struct tag_Monster_Info
 {
-	//m_tStat
 	_float		fAttackDistance;					// 몬스터 시야사거리
 	_float		fAttackFov;							// 몬스터 시야 사이 반각 (90 = 시야각도 180도)
 
@@ -28,6 +25,7 @@ typedef struct tag_Monster_Info
 	_int		iDazedHP = 25;						// 몬스터 기절하는 hp
 
 	_vec3		vPatrolPointZero;					//초기 시작포인트 
+
 }MONSTER;
 
 BEGIN(Engine)
@@ -57,15 +55,17 @@ protected:
 	virtual void		Free() override;
 
 protected:
-	CPlayer::STATE_RIGHTHAND	ePlayerRighthand;
-	MONSTER						m_tStat;
-	FRAME						m_tFrame;
-	_vec3						vPlayerPos;			
-	_tchar						debugString[100];
-	_bool						m_bDeadState; // 죽은상태
-	_bool						m_bDazedState; // 힐하는 도중에 끊기는거 용도 
-	_bool						m_bDazeToHeal; // 끊기면 daze더이상 진입x
-	FCollisionBox*				pBoxShape;
+	STATE_RIGHTHAND				ePlayerRighthand;	// 충돌시 상태머신 돌아가기위해 플레이어 오른손 텍스쳐 저장용도 
+	FCollisionBox*				pBoxShape;			// 몬스터 충돌체 = box타입
+	MONSTER						m_tStat;			// 몬스터의 각종 스텟 저장 구조체
+	FRAME						m_tFrame;			// 프레임 및 수명 등 시간관련 구조체 
+	_vec3						vPlayerPos;			//플레이어 위치정보 항상 저장하는 vec3
+	_tchar						debugString[100];	// 디버그용 sting 
+	_bool						m_bDeadState;		// 죽은상태
+	_bool						m_bDazedState;		// 힐하는 도중에 끊기는거 용도 
+	_bool						m_bDazeToHeal;		// 끊기면 daze더이상 진입x
+	_bool						m_bCollisionOn;     // 현재 충돌한상태를 의미 
+	_float VoiceDistance();
 
 protected:
 	CRcBufferComp*				m_pBufferComp = nullptr; 
@@ -75,14 +75,18 @@ protected:
 	CCalculatorComponent*		m_pCalculatorComp = nullptr;
 	CTransformComponent*		m_pPlayerTransformcomp = nullptr;
 
+protected:
+	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster; // 블랙보드용 
+	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player;  // 블랙보드용 
+
 public: // 성희 추가 : 몬스터 정보 Get,Set
 	PLAYER_ATTACK_STATE m_ePlayer_AttackState;
 	GETSET_EX2(GAUGE<_float>, m_gHp, MonsterHP, GET, SET)   // 몬스터 HP 
 	GETSET_EX2(PLAYER_ATTACK_STATE, m_ePlayer_AttackState, Player_AttackState, GET, SET)   // 피격당한 공격의 상태 (ex : 앉은채로 공격, 점프 공격, 2연속 공격...등등)
 	
+	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
 	GETSET_EX2(_bool, m_bDazedState, IsMonsterDazed, GET, SET)   
 	GETSET_EX2(_bool, m_bDeadState, IsMonsterDeath, GET, SET)   
-	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
 	GETSET_EX2(_vec3, m_vPos, MonsterPos, GET, SET)
 		
 public:
@@ -91,8 +95,10 @@ public:
 	HRESULT						Get_PlayerPos();
 	void						Height_On_Terrain();
 	void						Billboard(const _float& fTimeDelta); 
-	_bool						m_bPlayerAttakBool;
+	_bool						m_bPlayerAttakBool; // 플레이어 공격상태 블랙보드로 가져와야함 
 	_vec3						m_vPos;
+	void						Add_BasicEffect(CGameObject* pOwner);
+
 
 	//제작함수 리스트 - 스킬 셋팅할때 사용중 
 public:

@@ -28,7 +28,7 @@ HRESULT CSkyBox::Add_Component()
 	return S_OK;
 }
 
-CSkyBox* CSkyBox::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CSkyBox* CSkyBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fScale)
 {
 	CSkyBox* pInstance = new CSkyBox(pGraphicDev);
 
@@ -40,8 +40,11 @@ CSkyBox* CSkyBox::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 		return nullptr;
 	}
 
+	pInstance->m_pTransformComp->Set_Scale({ _fScale, _fScale, _fScale });
+
 	return pInstance;
 }
+
 
 void CSkyBox::Free()
 {
@@ -51,10 +54,6 @@ void CSkyBox::Free()
 HRESULT CSkyBox::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
-	m_pTransformComp->Set_Scale({10.f, 10.f, 10.f});
-	// 여기서 사이즈 조절해서 큐브자체 크기 키우면됨 
-	// 3.f 확인결과 terrain보다 위로 큐브가 뜸 
 
 	return S_OK;
 }
