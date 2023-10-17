@@ -94,7 +94,7 @@ void Engine::CGameObject::Compute_ViewZ(const _vec3* pPos)
     //m_fViewZ = D3DXVec3Length(&(vCamPos - *pPos));
 }
 
-void CGameObject::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
+void CGameObject::MeshBoxColider(_float _Width, _float _Height, _float Depth)
 {
     if (m_MeshBox == nullptr)
     D3DXCreateBox(m_pGraphicDev, _Width, _Height, Depth, &m_MeshBox, NULL);
@@ -108,7 +108,7 @@ void CGameObject::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
     m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
-void CGameObject::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
+void CGameObject::MeshSphereColider(_float Radius, _uint Slices, _uint Stacks)
 {
     LPD3DXBUFFER* MeshBuffer = nullptr;
 

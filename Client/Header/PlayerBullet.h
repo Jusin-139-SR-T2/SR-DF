@@ -73,7 +73,7 @@ private:
 	_vec3 m_vPlayerPos = { 0.f, 0.f, 0.f }; // 생성시 플레이어 위치
 	
 	_bool*	m_bDbugFrame;
-
+	FCollisionSphere* pShape;
 
 };
 

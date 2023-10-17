@@ -79,15 +79,9 @@ void CMonsterBullet::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-
 #pragma region 충돌 메쉬 콜라이더
 	MeshSphereColider(_float(pSphereShape->fRadius), 8, 16);
 #pragma endregion
-
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 

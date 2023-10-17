@@ -7,6 +7,7 @@
 #include "CalculatorComponent.h"
 #include "ColliderComponent.h"
 #include "PlayerLighter.h"
+#include "MonsterAttackUnion.h"
 #include "PlayerGunLighter.h"
 #include "Management.h"
 #include "BlackBoard_Player.h"
@@ -198,8 +199,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     }
     else
         m_IsOnGround = false;
-        
-        // 대쉬
+
+    // 대쉬
     Dash(fTimeDelta);
 
     // 프레임 관리
@@ -211,8 +212,11 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     //플레이어 디버그용 코드 
     //swprintf_s(debugString, L"Player - 변수 확인 m_gHp = %f\n", m_gHp.Cur);
     //OutputDebugStringW(debugString);
-    
 
+    if (Engine::IsKey_Pressed(DIK_E))
+    { 
+        m_gHp.Cur -= 5.f;
+    }
     //플레이어 뒤로 콜라가 생성되는 코드
     //if (Engine::IsKey_Pressed(DIK_BACK))
     //Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 
@@ -284,7 +288,7 @@ void CPlayer::Render_GameObject()
     {
         m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-        MeshSphereColider(10.f, 30.f, 30.f);
+        MeshSphereColider(10.f, 30, 30);
         MeshBoxColider(5.f, 20.f, 20.f);
         //m_pBufferComp->Render_Buffer();
 
@@ -345,7 +349,9 @@ HRESULT CPlayer::Add_Component()
     m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_PLAYER);
-    m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_ITEM | LAYER_WALL);
+    m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_BOSSMONSTER |
+                                      LAYER_BOSS_SKILL | LAYER_MONSTER_ATTACK |
+                                      LAYER_ITEM | LAYER_WALL);
     // 플레이어가 shift로 대쉬를 하거나 공격을 했을때만 몬스터와 충돌이 허용됨. 
 
     return S_OK;
@@ -527,10 +533,10 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     }
 
     // 발차기
-    if (Engine::IsKey_Pressed(DIK_Q))
-    {
-        m_tRightHand_State.Set_State(STATE_RIGHTHAND::KICK);
-    }
+    //if (Engine::IsKey_Pressed(DIK_Q))
+    //{
+    //    m_tRightHand_State.Set_State(STATE_RIGHTHAND::KICK);
+    //}
 
     // 라이터
     if (Engine::IsKey_Pressed(DIK_V) && m_tPlayer_Action.Get_State() != STATE_PLAYER_ACTION::RUN)
@@ -711,7 +717,7 @@ if (!timeline[KEYTYPE_RIGHTHAND].empty())
             m_tTime.fRightCurrentTime >= timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].time)
         {
             // 현재 시간과 텍스처 이미지를 풀 차징에 고정
-            m_tRightHand.fRightFrame = timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].texureframe;
+            m_tRightHand.fRightFrame = _float(timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].texureframe);
             m_tTime.fRightCurrentTime = timeline[KEYTYPE_RIGHTHAND][m_tRightHand.iFullChargingIndex].time;
         }
 
@@ -730,7 +736,7 @@ if (!timeline[KEYTYPE_RIGHTHAND].empty())
             if (m_tPlayer_Action.Get_State() == STATE_PLAYER_ACTION::THROW_AWAY)
             {
                 // (현재 프레임) 오른손을 Throw 이미지로 고정
-                m_tRightHand.fRightFrame = timeline[KEYTYPE_RIGHTHAND].back().texureframe;
+                m_tRightHand.fRightFrame = _float(timeline[KEYTYPE_RIGHTHAND].back().texureframe);
 
                 // 시간마다 텍스처 변경 시간을 채워준다.
                 m_tTime.fRightCurrentTime += m_tTime.fRightChangeTime * fTimeDelta;
@@ -816,6 +822,7 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
     // 충돌중일때
    // OutputDebugString(L"플레이어와 충돌중\n");
+    
     CAceBuilding* pFood = dynamic_cast<CAceBuilding*>(pDst);
     if (pFood)
     {
@@ -828,6 +835,38 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
 
 void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
+    //소영 추가 
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
+
+    if (nullptr == pAceObj)
+        return;
+
+    //플레이어 Hostile관계 =  Monster , Boss
+    if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE) // 적대관계
+    {
+        CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
+
+        if (pMonster == nullptr) 
+        {
+            CMonsterAttackUnion* pMonsterSkill = dynamic_cast<CMonsterAttackUnion*>(pAceObj);
+
+            if (nullptr == pMonsterSkill)
+                return;
+            else
+            {
+                // 충돌한게 몬스터의 스킬일때  진행하는곳 
+                m_bHitState = true;
+            }
+
+        }
+        else
+        {
+            // 충돌한게 몬스터일때 진행하는곳 
+            m_bHitState = true;
+        }
+    }
+
+
     //// 처음 충돌했을때
     //CBrown* pBrown = dynamic_cast<CBrown*>(pDst->Get_Owner());
     //if (FAILED(pBrown))
@@ -843,6 +882,7 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
 
 void CPlayer::OnCollisionExited(CGameObject* pDst)
 {
+    m_bHitState = false;
     // 충돌에서 나갈때
    // OutputDebugString(L"플레이어와 충돌완료\n");
 }
@@ -873,6 +913,8 @@ void CPlayer::Update_BlackBoard()
     pBlackBoard->Get_HP().Cur = m_gHp.Cur;
     pBlackBoard->Get_GunLight() = m_bGunLight;
     pBlackBoard->Get_LighterLight() = m_PlayerLighter;
+    pBlackBoard->Get_PlayerHit() = m_bHitState;
+
 
     //pBlackBoard->Get_PlayerPickUpState() = m_tRightHand.; //차징상태
     //pBlackBoard->Get_PlayerEquipGunState() = m_tRightHand.; //차징상태
@@ -2766,7 +2808,7 @@ void CPlayer::LeftInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                                                     (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].vRot.z + fRotZ_Delta });
 
                 // 텍스처 번호
-                m_tLeftHand.fLeftFrame = (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].texureframe;
+                m_tLeftHand.fLeftFrame = _float((timeline)[KEYTYPE_LEFTHAND][iFrameIndex].texureframe);
             }
             else
             {
@@ -2784,7 +2826,7 @@ void CPlayer::LeftInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                                             0.f });	// 이미지 위치
 
                 // 텍스처 번호
-                m_tLeftHand.fLeftFrame = (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].texureframe;
+                m_tLeftHand.fLeftFrame = _float((timeline)[KEYTYPE_LEFTHAND][iFrameIndex].texureframe);
             }
         }
     }
@@ -2862,7 +2904,7 @@ void CPlayer::RightInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                                                         (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].vRot.z + fRotZ_Delta });
 
                     // 텍스처 번호
-                    m_tRightHand.fRightFrame = (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].texureframe;
+                    m_tRightHand.fRightFrame = _float((timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].texureframe);
                         
                 }
                 else
@@ -2880,7 +2922,7 @@ void CPlayer::RightInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                                                 0.f });	// 이미지 위치
 
                     // 텍스처 번호
-                    m_tRightHand.fRightFrame = (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].texureframe;
+                    m_tRightHand.fRightFrame = _float((timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].texureframe);
                 }
             }
     }

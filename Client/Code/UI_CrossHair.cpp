@@ -31,6 +31,8 @@ CUI_CrossHair* CUI_CrossHair::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 HRESULT CUI_CrossHair::Ready_GameObject()
 {
+	SUPER::Ready_GameObject();
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	// 텍스쳐 크기 
@@ -44,7 +46,7 @@ HRESULT CUI_CrossHair::Ready_GameObject()
 	m_pTextureComp->Set_Pos({ 0.f , 0.f, 0.f });	// 이미지 위치
 	m_pTextureComp->Set_Scale({ m_fSizeX, m_fSizeY, 1.f });							// 이미지 크기
 
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Crosshair", L"Basic");
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"UI_Crosshair", L"Basic");
 
 	m_bPlayerEquipGunState = false;
 	m_bPlayerAttackState = false;
@@ -81,30 +83,26 @@ void CUI_CrossHair::Render_GameObject()
 
 HRESULT CUI_CrossHair::Add_Component()
 {
-	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_UITextureComp"), E_FAIL);
-	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-
 	return S_OK;
 }
 
 void CUI_CrossHair::Change_Texture()
 {
 
-	//로직짜야함 
-	if(m_bPlayerEquipGunState)
-		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Crosshair", L"Gun");
-	else if (m_bPlayerEquipGunState)
-			m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Crosshair", L"Hit");
-	else if (m_bPlayerEquipGunState)
-		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Crosshair", L"Windup");
-	else if (m_bPlayerEquipGunState)
-		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Crosshair", L"Charge");
+	////로직짜야함 
+	//if(m_bPlayerEquipGunState)
+	//	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"UI_Crosshair", L"Gun");
+	//else if (m_bPlayerEquipGunState)
+	//		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"UI_Crosshair", L"Hit");
+	//else if (m_bPlayerEquipGunState)
+	//	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"UI_Crosshair", L"Windup");
+	//else if (m_bPlayerEquipGunState)
+	//	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"UI_Crosshair", L"Charge");
 
-	if (m_bPlayerEquipGunState)
-		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Crosshair", L"Attack");
+	//if (m_bPlayerEquipGunState)
+	//	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"UI_Crosshair", L"Attack");
 
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Crosshair", L"Basic");
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"UI_Crosshair", L"Basic");
 }
 
 void CUI_CrossHair::Update_InternalData()

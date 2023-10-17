@@ -51,12 +51,12 @@ void CPlayerAttackUnion::Free()
     SUPER::Free();
 }
 
-void CPlayerAttackUnion::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
+void CPlayerAttackUnion::MeshBoxColider(_float _Width, _float _Height, _float Depth)
 {
     SUPER::MeshBoxColider(_Width, _Height, Depth);
 }
 
-void CPlayerAttackUnion::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
+void CPlayerAttackUnion::MeshSphereColider(_float Radius, _uint Slices, _uint Stacks)
 {
     SUPER::MeshSphereColider(Radius, Slices, Stacks);
 }

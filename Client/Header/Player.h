@@ -137,10 +137,12 @@ public: // Get_Set
 	GETSET_EX2(_bool, m_bAttack, PlayerAttackBool, GET, SET)   // 플레이어 hp용도 
 
 	STATE_RIGHTHAND   m_eRIGHTState;   // 오른손상태
-	// 조명 수명 
+	
 	_float m_fAge = 0.f;
 	_float m_fLifeTime = 0.2f;
 	_bool m_bGunLight; // 불켜는 bool값 
+	_bool m_bHitState = false;
+
 	void CrossHairState();
 	// ------------------------- 
 
@@ -293,8 +295,8 @@ private:
 		_float			fRightFrameSpeed = 1.f;		// 오른손 프레임 속도
 		_float			fRightFrame = 0.f;			// 오른손 프레임
 
-		_uint			iFullChargingIndex = 0.f;	// 풀차지시 인덱스
-		_uint			iShieldIndex = 0.f;			// 쉴드시 인덱스
+		_uint			iFullChargingIndex = 0;	// 풀차지시 인덱스
+		_uint			iShieldIndex = 0;			// 쉴드시 인덱스
 	};
 
 	struct _PLAYER	// 플레이어
