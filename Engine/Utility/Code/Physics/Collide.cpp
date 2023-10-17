@@ -343,12 +343,12 @@ bool FCollisionDetector::SphereAndOBB(const FCollisionSphere& srcSphere, const F
 	// 
 	FVector3 vResult = dstOBB.Get_Position();
 	FVector3 vDir = srcSphere.Get_Position() - dstOBB.Get_Position();
-	FVector3 vPos = dstOBB.Get_Position();
 
 	for (int i = 0; i < 3; i++)
 	{
 		const Real* orientation = &(dstOBB.Get_Transform().data[i * 4]);
 		FVector3 vAxis(orientation[0], orientation[1], orientation[2]);
+		vAxis.Normalize();
 
 		Real fDistance = vAxis.DotProduct(vDir);
 
@@ -357,7 +357,7 @@ bool FCollisionDetector::SphereAndOBB(const FCollisionSphere& srcSphere, const F
 		if (fDistance < -dstOBB.vHalfSize.data[i])
 			fDistance = -dstOBB.vHalfSize.data[i];
 
-		vResult = vResult + (vAxis.Unit() * fDistance);
+		vResult = vResult + (vAxis * fDistance);
 	}
 
 	// 구한 접점을 가지고 거리 체크
@@ -496,6 +496,48 @@ bool FCollisionDetector::CapsuleAndTriangle(const FCollisionCapsule& srcCapsule,
 
 bool FCollisionDetector::CapsuleAndOBB(const FCollisionCapsule& srcCapsule, const FCollisionOBB& dstOBB, FCollisionData* pColData)
 {
+	//FVector3 vSrc_Normal = srcCapsule.vDirHalfSize.Unit();
+	//FVector3 vSrc_LineEndOffset = vSrc_Normal * srcCapsule.fRadius;
+	//FVector3 vSrc_A = srcCapsule.Get_Position() - srcCapsule.vDirHalfSize + vSrc_LineEndOffset;			// A 구 위치
+	//FVector3 vSrc_B = srcCapsule.Get_Position() + srcCapsule.vDirHalfSize - vSrc_LineEndOffset;			// B 구 위치
+
+
+	//FVector3 vResult = dstOBB.Get_Position();
+	//FVector3 vDir = srcSphere.Get_Position() - dstOBB.Get_Position();
+
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	const Real* orientation = &(dstOBB.Get_Transform().data[i * 4]);
+	//	FVector3 vAxis(orientation[0], orientation[1], orientation[2]);
+	//	vAxis.Normalize();
+
+	//	Real fDistance = vAxis.DotProduct(vDir);
+
+	//	if (fDistance > dstOBB.vHalfSize.data[i])
+	//		fDistance = dstOBB.vHalfSize.data[i];
+	//	if (fDistance < -dstOBB.vHalfSize.data[i])
+	//		fDistance = -dstOBB.vHalfSize.data[i];
+
+	//	vResult = vResult + (vAxis * fDistance);
+	//}
+
+	//// 구한 접점을 가지고 거리 체크
+	//FVector3& vClosestPoint = vResult;
+	//Real fDistSq = (srcSphere.Get_Position() - vClosestPoint).SquareMagnitude();
+	//Real fRadiusSq = (srcSphere.fRadius * srcSphere.fRadius);
+
+	//// 충돌정보 생성
+	//if (fDistSq < fRadiusSq
+	//	&& pColData != nullptr && pColData->iContactsLeft >= 0)
+	//{
+	//	FContact& pContact = pColData->tContacts;
+	//	pContact.vContactNormal = (vClosestPoint - srcSphere.Get_Position()).Unit();
+	//	pContact.vContactPoint = vClosestPoint;
+	//	pContact.fPenetration = srcSphere.fRadius - real_sqrt(fDistSq);
+	//	pContact.Set_BodyData(srcSphere.pBody, dstOBB.pBody, pColData->fFriction, pColData->fRestitution);
+	//}
+
+	//return fDistSq < fRadiusSq;
 	return false;
 }
 

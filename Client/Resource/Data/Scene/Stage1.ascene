@@ -44,9 +44,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 10.43848705291748,
-                        "y": 10.43848705291748,
-                        "z": 7.909647464752197
+                        "x": 4.775680065155029,
+                        "y": 4.775680065155029,
+                        "z": 3.618718147277832
                     },
                     "group_key": "",
                     "texture_key": ""
@@ -65,9 +65,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 23.61443328857422,
-                        "y": 6.813437461853027,
-                        "z": 1.2773828506469727
+                        "x": 30.7399845123291,
+                        "y": 6.022335529327393,
+                        "z": 0.21626760065555573
                     },
                     "rot": {
                         "x": 0.0,
@@ -75,9 +75,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 18.200435638427734,
-                        "y": 12.94228458404541,
-                        "z": 13.8465576171875
+                        "x": 17.45900535583496,
+                        "y": 12.415056228637695,
+                        "z": 10.032893180847168
                     },
                     "group_key": "",
                     "texture_key": ""
@@ -96,53 +96,22 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": -5.665761947631836,
-                        "y": 2.7289364337921143,
-                        "z": 5.266127109527588
+                        "x": -16.21493148803711,
+                        "y": 4.1734619140625,
+                        "z": 4.626713275909424
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 2.56000018119812,
+                        "y": 2.940000057220459,
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 3.6674749851226807,
+                        "x": 3.4731905460357666,
                         "y": 5.397627830505371,
-                        "z": 3.238576650619507
+                        "z": 4.664977073669434
                     },
                     "group_key": "Building",
                     "texture_key": "K"
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "BuildingCenter"
-                    },
-                    "ID": 9,
-                    "tags": [],
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 18.031293869018555,
-                        "y": 4.4963250160217285,
-                        "z": 16.400150299072266
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 4.102908611297607,
-                        "y": 9.117813110351563,
-                        "z": 10.985326766967773
-                    },
-                    "group_key": "Building",
-                    "texture_key": "H"
                 },
                 {
                     "header": {
@@ -158,7 +127,7 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 0.7379614114761353,
+                        "x": 1.4134345054626465,
                         "y": 6.5020952224731445,
                         "z": -9.954109191894531
                     },
@@ -168,9 +137,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 17.979185104370117,
-                        "y": 14.228971481323242,
-                        "z": 9.485980033874512
+                        "x": 16.301271438598633,
+                        "y": 12.901046752929688,
+                        "z": 8.600696563720703
                     },
                     "group_key": "",
                     "texture_key": ""
@@ -199,9 +168,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 3.3615951538085938,
-                        "y": 11.372445106506348,
-                        "z": 9.946084976196289
+                        "x": 3.4512314796447754,
+                        "y": 11.675689697265625,
+                        "z": 10.211296081542969
                     },
                     "group_key": "Building",
                     "texture_key": "G"
@@ -230,9 +199,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 13.225300788879395,
-                        "y": 11.188283920288086,
-                        "z": 11.448071479797363
+                        "x": 9.250779151916504,
+                        "y": 7.825934886932373,
+                        "z": 8.007650375366211
                     },
                     "group_key": "Building",
                     "texture_key": "I"
@@ -282,9 +251,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 1.1925458908081055,
+                        "x": -6.49781608581543,
                         "y": 6.9503984451293945,
-                        "z": 42.89170455932617
+                        "z": 42.33225631713867
                     },
                     "rot": {
                         "x": 0.0,
@@ -292,9 +261,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 23.953655242919922,
-                        "y": 13.967042922973633,
-                        "z": 7.945274829864502
+                        "x": 14.234034538269043,
+                        "y": 12.649943351745605,
+                        "z": 7.196031093597412
                     },
                     "group_key": "Building",
                     "texture_key": "A"
@@ -313,13 +282,13 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 19.34818458557129,
+                        "x": 6.886740207672119,
                         "y": 5.895949363708496,
                         "z": 45.540374755859375
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.0,
+                        "y": 172.78732299804688,
                         "z": 0.0
                     },
                     "scale": {
@@ -344,9 +313,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 31.472984313964844,
-                        "y": 7.308061599731445,
-                        "z": 59.079193115234375
+                        "x": 7.262500762939453,
+                        "y": 11.778556823730469,
+                        "z": 64.54884338378906
                     },
                     "rot": {
                         "x": 0.0,
@@ -354,9 +323,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 14.417797088623047,
-                        "y": 14.417797088623047,
-                        "z": 14.417797088623047
+                        "x": 15.081883430480957,
+                        "y": 15.081883430480957,
+                        "z": 15.081883430480957
                     },
                     "group_key": "Building",
                     "texture_key": "E"
@@ -375,8 +344,8 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 60.08726501464844,
-                        "y": 13.833161354064941,
+                        "x": 61.6273193359375,
+                        "y": 7.518194198608398,
                         "z": 37.595340728759766
                     },
                     "rot": {
@@ -385,9 +354,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 27.617366790771484,
-                        "y": 27.617366790771484,
-                        "z": 21.15291404724121
+                        "x": 16.736085891723633,
+                        "y": 16.736085891723633,
+                        "z": 12.81863784790039
                     },
                     "group_key": "Building",
                     "texture_key": "D"
@@ -406,9 +375,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 32.13962173461914,
-                        "y": 6.232640743255615,
-                        "z": 35.50839614868164
+                        "x": 78.64037322998047,
+                        "y": 2.856936454772949,
+                        "z": 45.28848648071289
                     },
                     "rot": {
                         "x": 0.0,
@@ -416,9 +385,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 5.585129261016846,
-                        "y": 12.444452285766602,
-                        "z": 12.114890098571777
+                        "x": 3.7306618690490723,
+                        "y": 8.312438011169434,
+                        "z": 8.092303276062012
                     },
                     "group_key": "Building",
                     "texture_key": "I"
@@ -437,9 +406,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 15.359270095825195,
+                        "x": 15.826868057250977,
                         "y": 1.2938151359558105,
-                        "z": 12.005660057067871
+                        "z": 9.602447509765625
                     },
                     "rot": {
                         "x": 0.0,
@@ -447,43 +416,12 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.000803828239441,
-                        "y": 2.5398740768432617,
-                        "z": 1.000803828239441
+                        "x": 1.058093547821045,
+                        "y": 2.6852657794952393,
+                        "z": 1.058093547821045
                     },
                     "group_key": "Furniture",
                     "texture_key": "CockMachine"
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Fur_Desk"
-                    },
-                    "ID": 9,
-                    "tags": [],
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 17.696563720703125,
-                        "y": 0.6833555698394775,
-                        "z": 37.631107330322266
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 1.440545678138733,
-                        "y": 1.440545678138733,
-                        "z": 1.440545678138733
-                    },
-                    "group_key": "Furniture",
-                    "texture_key": "Desk"
                 },
                 {
                     "header": {
@@ -499,9 +437,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 0.0,
-                        "y": 2.198004961013794,
-                        "z": 19.612031936645508
+                        "x": -8.066069602966309,
+                        "y": 6.164783477783203,
+                        "z": 18.045764923095703
                     },
                     "rot": {
                         "x": 0.0,
@@ -509,9 +447,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.0076839923858643,
-                        "y": 4.550441741943359,
-                        "z": 1.0076839923858643
+                        "x": 0.7082061171531677,
+                        "y": 3.1980767250061035,
+                        "z": 0.7082061171531677
                     },
                     "group_key": "Furniture",
                     "texture_key": "Column7"
@@ -530,9 +468,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": -4.085395812988281,
-                        "y": 1.3862372636795044,
-                        "z": 10.014303207397461
+                        "x": -8.260348320007324,
+                        "y": 0.756589949131012,
+                        "z": 12.87320327758789
                     },
                     "rot": {
                         "x": 0.0,
@@ -561,9 +499,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 0.0,
-                        "y": 1.6022101640701294,
-                        "z": 9.914298057556152
+                        "x": -13.913365364074707,
+                        "y": 4.1837639808654785,
+                        "z": 13.040609359741211
                     },
                     "rot": {
                         "x": 0.0,
@@ -571,43 +509,12 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 3.120140552520752,
-                        "y": 3.120140552520752,
-                        "z": 2.7263741493225098
+                        "x": 1.9360753297805786,
+                        "y": 1.9360753297805786,
+                        "z": 1.6917396783828735
                     },
                     "group_key": "Furniture",
                     "texture_key": "Gate1"
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Fur_Glass1"
-                    },
-                    "ID": 9,
-                    "tags": [],
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 0.0028399527072906494,
-                        "y": 2.1544699668884277,
-                        "z": 12.649845123291016
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 1.5940911769866943,
-                        "y": 1.5940911769866943,
-                        "z": 1.5940911769866943
-                    },
-                    "group_key": "Furniture",
-                    "texture_key": "Glass1"
                 },
                 {
                     "header": {
@@ -623,19 +530,19 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 0.0,
-                        "y": 1.8320727348327637,
-                        "z": 0.0
+                        "x": -12.271703720092773,
+                        "y": 4.480528354644775,
+                        "z": -3.2273755073547363
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.0,
+                        "y": -0.5799999833106995,
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 3.934008836746216,
-                        "y": 3.934008836746216,
-                        "z": 3.934008836746216
+                        "x": 4.436337947845459,
+                        "y": 9.148443222045898,
+                        "z": 12.566696166992188
                     },
                     "group_key": "Building",
                     "texture_key": "J"
@@ -664,9 +571,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.0,
-                        "y": 3.0,
-                        "z": 3.0
+                        "x": 0.6851009130477905,
+                        "y": 2.055302619934082,
+                        "z": 2.055302619934082
                     },
                     "group_key": "Furniture",
                     "texture_key": "BookShelves"
@@ -716,9 +623,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 194.0,
-                        "y": 0.699999988079071,
-                        "z": 3.0
+                        "x": 195.0,
+                        "y": 1.5,
+                        "z": 0.5
                     },
                     "rot": {
                         "x": 0.0,
@@ -726,9 +633,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
+                        "x": 0.6492084264755249,
+                        "y": 1.9476252794265747,
+                        "z": 1.9476252794265747
                     },
                     "group_key": "Furniture",
                     "texture_key": "Crate3"
@@ -809,9 +716,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 192.0,
-                        "y": 1.2999999523162842,
-                        "z": -7.800000190734863
+                        "x": 195.0,
+                        "y": 1.5,
+                        "z": 0.5
                     },
                     "rot": {
                         "x": 0.0,
@@ -819,12 +726,322 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.0,
-                        "y": 2.5,
-                        "z": 2.0
+                        "x": 1.073278784751892,
+                        "y": 3.2198362350463867,
+                        "z": 3.2198362350463867
                     },
                     "group_key": "Furniture",
                     "texture_key": "WhiteStorage2"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Metal_16"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 7.5875725746154785,
+                        "y": 1.966306447982788,
+                        "z": 21.442535400390625
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.3585574626922607,
+                        "y": 0.1172608956694603,
+                        "z": 1.533665657043457
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Metal_16"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD0"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 35.046627044677734,
+                        "y": 5.644591331481934,
+                        "z": 8.144721031188965
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 4.019999980926514,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 11.288097381591797,
+                        "y": 11.288097381591797,
+                        "z": 8.645870208740234
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD00"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 52.37446212768555,
+                        "y": 7.453517913818359,
+                        "z": -7.62367057800293
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 3.1500000953674316,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 14.73311710357666,
+                        "y": 14.73311710357666,
+                        "z": 11.284505844116211
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Metal_160"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 7.5875725746154785,
+                        "y": 4.436616897583008,
+                        "z": 25.407451629638672
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.980581521987915,
+                        "y": 0.19790340960025787,
+                        "z": 2.5883963108062744
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Metal_16"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Metal_1600"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 7.5875725746154785,
+                        "y": 6.865838050842285,
+                        "z": 29.696001052856445
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 4.1232781410217285,
+                        "y": 0.20499788224697113,
+                        "z": 2.681185722351074
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Metal_16"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate4"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -6.494410991668701,
+                        "y": 1.1507577896118164,
+                        "z": -3.7839889526367188
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.138247013092041,
+                        "y": 2.138247013092041,
+                        "z": 2.138247013092041
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate40"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 1.3515526056289673,
+                        "y": 1.3314255475997925,
+                        "z": 17.961732864379883
+                    },
+                    "rot": {
+                        "x": 0.6100000143051147,
+                        "y": 0.8700000047683716,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.91802179813385,
+                        "y": 1.91802179813385,
+                        "z": 1.91802179813385
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate41"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -2.7896556854248047,
+                        "y": 1.0651404857635498,
+                        "z": -2.8306615352630615
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.940000057220459,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.332894802093506,
+                        "y": 2.332894802093506,
+                        "z": 2.332894802093506
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD01"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 19.948261260986328,
+                        "y": 5.8645339012146,
+                        "z": 22.24455451965332
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 3.1500000953674316,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 11.288097381591797,
+                        "y": 11.288097381591797,
+                        "z": 8.645870208740234
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate410"
+                    },
+                    "ID": 9,
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 15.802953720092773,
+                        "y": 1.0651404857635498,
+                        "z": 17.107511520385742
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.940000057220459,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.218506336212158,
+                        "y": 2.218506336212158,
+                        "z": 2.218506336212158
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
                 }
             ]
         },

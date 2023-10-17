@@ -47,7 +47,7 @@ HRESULT CLoading::Ready_Loading(LOADINGID eID)
 
 	m_eLoadingID = eID;
 
-	m_vecAsyncTexture.reserve(100);
+	m_listAsyncTexture.reserve(100);
 
 	return S_OK;
 }
@@ -391,18 +391,18 @@ void CLoading::Load_TextureAsync(const _tchar* pfilePath, TEXTUREID eID, const _
 void CLoading::Load_Texture(const _tchar* pfilePath, TEXTUREID eID, const _tchar* pGroupName, const _tchar* pTextureName, const _range<_uint>& iCntRange, _bool bAsync)
 {
 	if (bAsync)
-		m_vecAsyncTexture.push_back(async(launch::async, &CLoading::Load_TextureAsync, this, pfilePath, eID, pGroupName, pTextureName, iCntRange));
+		m_listAsyncTexture.push_back(async(launch::async, &CLoading::Load_TextureAsync, this, pfilePath, eID, pGroupName, pTextureName, iCntRange));
 	else
 		Engine::Ready_Texture(pfilePath, eID, pGroupName, pTextureName, iCntRange);
 }
 
 void CLoading::Wait_LoadTextureAsync()
 {
-	for (_uint i = 0; i < m_vecAsyncTexture.size(); i++)
+	for (_uint i = 0; i < m_listAsyncTexture.size(); i++)
 	{
-		m_vecAsyncTexture[i].get();
+		m_listAsyncTexture[i].get();
 	}
-	m_vecAsyncTexture.clear();
+	m_listAsyncTexture.clear();
 }
 
 _uint CLoading::Thread_Main(void * pArg)

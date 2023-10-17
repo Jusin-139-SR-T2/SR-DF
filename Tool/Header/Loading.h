@@ -50,7 +50,7 @@ protected:
 	virtual HRESULT		Ready_Layer_Completed() { return S_OK; }
 
 protected:
-	vector<future<void>>	m_vecAsyncTexture;
+	vector<future<void>>	m_listAsyncTexture;
 
 };
 

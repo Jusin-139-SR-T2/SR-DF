@@ -48,14 +48,16 @@ HRESULT CLoading::Ready_Loading(LOADINGID eID)
 
 	m_eLoadingID = eID;
 
-	m_vecAsyncTexture.reserve(100);
+	m_iFutureLimit = thread::hardware_concurrency() * 2;
 
 	return S_OK;
 }
 
 _uint CLoading::Loading_For_Stage()
 {
-	Loading_For_Texture();
+	FAILED_CHECK_RETURN(Loading_For_Texture(), E_FAIL);
+	//사운드 로드하기
+	FAILED_CHECK_RETURN(Engine::Ready_SoundDev(), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MeshColBufferComp", CMeshColComp::Create(m_pGraphicDev)), E_FAIL);
 
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TriColBufferComp", CTriColorComp::Create(m_pGraphicDev)), E_FAIL);
@@ -249,7 +251,7 @@ HRESULT CLoading::Loading_For_Texture()
 
 #pragma region Projectile
 	// 디버그용
-	Load_Texture(L"./Resource/Texture/Object/PoolBalls_0.png", TEX_NORMAL, L"Debug", L"Sphere"); // 몬스터 공격 디버그용
+	Load_Texture(L"./Resource/Texture/Object/PoolBalls_0.png", TEX_NORMAL, L"Debug", L"PoolBall"); // 몬스터 공격 디버그용
 
 	Load_Texture(L"./Resource/Texture/Monster/Projectile/ThrowPipe_%d.png", TEX_NORMAL, L"Projectile", L"ThrowPipe", _range<_uint>(0U, 11U)); // Bomb
 	Load_Texture(L"./Resource/Texture/idk/Circle.png", TEX_NORMAL, L"Debug", L"Sphere"); // Bomb
@@ -430,7 +432,6 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/RedCushion.dds", TEX_CUBE, L"Furniture", L"RedCushion");
 	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Television.dds", TEX_CUBE, L"Furniture", L"Television");
 	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/WhiteStand.dds", TEX_CUBE, L"Furniture", L"WhiteStand");
-	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/WhiteStand.dds", TEX_CUBE, L"Furniture", L"WhiteStand");
 	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/VentIntro.dds", TEX_CUBE, L"Furniture", L"VentIntro");
 	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Barbottle.dds", TEX_CUBE, L"Furniture", L"BarBottle");
 	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/BlueTrunk.dds", TEX_CUBE, L"Furniture", L"BlueTrunk");
@@ -468,11 +469,228 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Gate1.dds", TEX_CUBE, L"Furniture", L"Gate1");
 	Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Desk.dds", TEX_CUBE, L"Furniture", L"Desk");
 
+
 #pragma endregion
 
 #pragma region 3차 추가본 - Wall, Tile 등등등..   큐브만 찍고 아직안넣음 
 	//Load_Texture(L"./Resource/Texture/CubeTexture/Furniture/Desk.dds", TEX_CUBE, L"Furniture", L"Desk");
 
+
+#pragma endregion
+
+#pragma region 추가 구조물
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Aspart1.dds", TEX_CUBE, L"Structure", L"Aspart1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Aspart2.dds", TEX_CUBE, L"Structure", L"Aspart2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Column.dds", TEX_CUBE, L"Structure", L"Column");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_1.dds", TEX_CUBE, L"Structure", L"Door_1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_2.dds", TEX_CUBE, L"Structure", L"Door_2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_3.dds", TEX_CUBE, L"Structure", L"Door_3");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_4.dds", TEX_CUBE, L"Structure", L"Door_4");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_5.dds", TEX_CUBE, L"Structure", L"Door_5");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_6.dds", TEX_CUBE, L"Structure", L"Door_6");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_7.dds", TEX_CUBE, L"Structure", L"Door_7");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_8.dds", TEX_CUBE, L"Structure", L"Door_8");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_9.dds", TEX_CUBE, L"Structure", L"Door_9");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_10.dds", TEX_CUBE, L"Structure", L"Door_10");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_11.dds", TEX_CUBE, L"Structure", L"Door_11");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_12.dds", TEX_CUBE, L"Structure", L"Door_12");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_13.dds", TEX_CUBE, L"Structure", L"Door_13");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_14.dds", TEX_CUBE, L"Structure", L"Door_14");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_15.dds", TEX_CUBE, L"Structure", L"Door_15");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_16.dds", TEX_CUBE, L"Structure", L"Door_16");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Door_17.dds", TEX_CUBE, L"Structure", L"Door_17");
+
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Manhole.dds", TEX_CUBE, L"Structure", L"Manhole");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_1.dds", TEX_CUBE, L"Structure", L"Metal_1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_2.dds", TEX_CUBE, L"Structure", L"Metal_2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_3.dds", TEX_CUBE, L"Structure", L"Metal_3");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_4.dds", TEX_CUBE, L"Structure", L"Metal_4");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_5.dds", TEX_CUBE, L"Structure", L"Metal_5");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_6.dds", TEX_CUBE, L"Structure", L"Metal_6");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_7.dds", TEX_CUBE, L"Structure", L"Metal_7");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_8.dds", TEX_CUBE, L"Structure", L"Metal_8");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_9.dds", TEX_CUBE, L"Structure", L"Metal_9");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_10.dds", TEX_CUBE, L"Structure", L"Metal_10");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_11.dds", TEX_CUBE, L"Structure", L"Metal_11");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_12.dds", TEX_CUBE, L"Structure", L"Metal_12");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_13.dds", TEX_CUBE, L"Structure", L"Metal_13");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_14.dds", TEX_CUBE, L"Structure", L"Metal_14");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_15.dds", TEX_CUBE, L"Structure", L"Metal_15");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_16.dds", TEX_CUBE, L"Structure", L"Metal_16");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_17.dds", TEX_CUBE, L"Structure", L"Metal_17");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_18.dds", TEX_CUBE, L"Structure", L"Metal_18");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_19.dds", TEX_CUBE, L"Structure", L"Metal_19");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_20.dds", TEX_CUBE, L"Structure", L"Metal_20");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_21.dds", TEX_CUBE, L"Structure", L"Metal_21");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_22.dds", TEX_CUBE, L"Structure", L"Metal_22");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_23.dds", TEX_CUBE, L"Structure", L"Metal_23");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_24.dds", TEX_CUBE, L"Structure", L"Metal_24");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_25.dds", TEX_CUBE, L"Structure", L"Metal_25");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_26.dds", TEX_CUBE, L"Structure", L"Metal_26");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_27.dds", TEX_CUBE, L"Structure", L"Metal_27");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Metal_28.dds", TEX_CUBE, L"Structure", L"Metal_28");
+
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Mosiac.dds", TEX_CUBE, L"Structure", L"Mosiac");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Thing.dds", TEX_CUBE, L"Structure", L"Thing");
+
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_1.dds", TEX_CUBE, L"Structure", L"TileA_1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_2.dds", TEX_CUBE, L"Structure", L"TileA_2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_3.dds", TEX_CUBE, L"Structure", L"TileA_3");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_4.dds", TEX_CUBE, L"Structure", L"TileA_4");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_5.dds", TEX_CUBE, L"Structure", L"TileA_5");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_6.dds", TEX_CUBE, L"Structure", L"TileA_6");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_7.dds", TEX_CUBE, L"Structure", L"TileA_7");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_8.dds", TEX_CUBE, L"Structure", L"TileA_8");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_9.dds", TEX_CUBE, L"Structure", L"TileA_9");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_10.dds", TEX_CUBE, L"Structure", L"TileA_10");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_11.dds", TEX_CUBE, L"Structure", L"TileA_11");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_12.dds", TEX_CUBE, L"Structure", L"TileA_12");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_13.dds", TEX_CUBE, L"Structure", L"TileA_13");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_14.dds", TEX_CUBE, L"Structure", L"TileA_14");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_15.dds", TEX_CUBE, L"Structure", L"TileA_15");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_16.dds", TEX_CUBE, L"Structure", L"TileA_16");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_17.dds", TEX_CUBE, L"Structure", L"TileA_17");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_18.dds", TEX_CUBE, L"Structure", L"TileA_18");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_19.dds", TEX_CUBE, L"Structure", L"TileA_19");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_20.dds", TEX_CUBE, L"Structure", L"TileA_20");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_21.dds", TEX_CUBE, L"Structure", L"TileA_21");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_22.dds", TEX_CUBE, L"Structure", L"TileA_22");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_23.dds", TEX_CUBE, L"Structure", L"TileA_23");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_24.dds", TEX_CUBE, L"Structure", L"TileA_24");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileA_25.dds", TEX_CUBE, L"Structure", L"TileA_25");
+
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_1.dds", TEX_CUBE, L"Structure", L"TileB_1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_2.dds", TEX_CUBE, L"Structure", L"TileB_2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_3.dds", TEX_CUBE, L"Structure", L"TileB_3");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_4.dds", TEX_CUBE, L"Structure", L"TileB_4");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_5.dds", TEX_CUBE, L"Structure", L"TileB_5");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_6.dds", TEX_CUBE, L"Structure", L"TileB_6");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_7.dds", TEX_CUBE, L"Structure", L"TileB_7");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_8.dds", TEX_CUBE, L"Structure", L"TileB_8");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_9.dds", TEX_CUBE, L"Structure", L"TileB_9");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_10.dds", TEX_CUBE, L"Structure", L"TileB_10");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_11.dds", TEX_CUBE, L"Structure", L"TileB_11");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_12.dds", TEX_CUBE, L"Structure", L"TileB_12");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_13.dds", TEX_CUBE, L"Structure", L"TileB_13");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_14.dds", TEX_CUBE, L"Structure", L"TileB_14");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_15.dds", TEX_CUBE, L"Structure", L"TileB_15");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_16.dds", TEX_CUBE, L"Structure", L"TileB_16");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_17.dds", TEX_CUBE, L"Structure", L"TileB_17");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_18.dds", TEX_CUBE, L"Structure", L"TileB_18");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_19.dds", TEX_CUBE, L"Structure", L"TileB_19");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_20.dds", TEX_CUBE, L"Structure", L"TileB_20");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_21.dds", TEX_CUBE, L"Structure", L"TileB_21");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_22.dds", TEX_CUBE, L"Structure", L"TileB_22");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_23.dds", TEX_CUBE, L"Structure", L"TileB_23");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_24.dds", TEX_CUBE, L"Structure", L"TileB_24");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_25.dds", TEX_CUBE, L"Structure", L"TileB_25");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_26.dds", TEX_CUBE, L"Structure", L"TileB_26");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_27.dds", TEX_CUBE, L"Structure", L"TileB_27");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/TileB_28.dds", TEX_CUBE, L"Structure", L"TileB_28");
+
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_1.dds", TEX_CUBE, L"Structure", L"Wall_1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_2.dds", TEX_CUBE, L"Structure", L"Wall_2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_3.dds", TEX_CUBE, L"Structure", L"Wall_3");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_4.dds", TEX_CUBE, L"Structure", L"Wall_4");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_5.dds", TEX_CUBE, L"Structure", L"Wall_5");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_6.dds", TEX_CUBE, L"Structure", L"Wall_6");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_7.dds", TEX_CUBE, L"Structure", L"Wall_7");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_8.dds", TEX_CUBE, L"Structure", L"Wall_8");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_9.dds", TEX_CUBE, L"Structure", L"Wall_9");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_10.dds", TEX_CUBE, L"Structure", L"Wall_10");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_11.dds", TEX_CUBE, L"Structure", L"Wall_11");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_12.dds", TEX_CUBE, L"Structure", L"Wall_12");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_13.dds", TEX_CUBE, L"Structure", L"Wall_13");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_14.dds", TEX_CUBE, L"Structure", L"Wall_14");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_15.dds", TEX_CUBE, L"Structure", L"Wall_15");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_16.dds", TEX_CUBE, L"Structure", L"Wall_16");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_17.dds", TEX_CUBE, L"Structure", L"Wall_17");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_18.dds", TEX_CUBE, L"Structure", L"Wall_18");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_19.dds", TEX_CUBE, L"Structure", L"Wall_19");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_20.dds", TEX_CUBE, L"Structure", L"Wall_20");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_21.dds", TEX_CUBE, L"Structure", L"Wall_21");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_22.dds", TEX_CUBE, L"Structure", L"Wall_22");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_23.dds", TEX_CUBE, L"Structure", L"Wall_23");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_24.dds", TEX_CUBE, L"Structure", L"Wall_24");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_25.dds", TEX_CUBE, L"Structure", L"Wall_25");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_26.dds", TEX_CUBE, L"Structure", L"Wall_26");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_27.dds", TEX_CUBE, L"Structure", L"Wall_27");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_28.dds", TEX_CUBE, L"Structure", L"Wall_28");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_29.dds", TEX_CUBE, L"Structure", L"Wall_29");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_30.dds", TEX_CUBE, L"Structure", L"Wall_30");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_31.dds", TEX_CUBE, L"Structure", L"Wall_31");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_32.dds", TEX_CUBE, L"Structure", L"Wall_32");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_33.dds", TEX_CUBE, L"Structure", L"Wall_33");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_34.dds", TEX_CUBE, L"Structure", L"Wall_34");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_35.dds", TEX_CUBE, L"Structure", L"Wall_35");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_36.dds", TEX_CUBE, L"Structure", L"Wall_36");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_37.dds", TEX_CUBE, L"Structure", L"Wall_37");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_38.dds", TEX_CUBE, L"Structure", L"Wall_38");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_39.dds", TEX_CUBE, L"Structure", L"Wall_39");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_40.dds", TEX_CUBE, L"Structure", L"Wall_40");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_41.dds", TEX_CUBE, L"Structure", L"Wall_41");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_42.dds", TEX_CUBE, L"Structure", L"Wall_42");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_43.dds", TEX_CUBE, L"Structure", L"Wall_43");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_44.dds", TEX_CUBE, L"Structure", L"Wall_44");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_45.dds", TEX_CUBE, L"Structure", L"Wall_45");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_46.dds", TEX_CUBE, L"Structure", L"Wall_46");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_47.dds", TEX_CUBE, L"Structure", L"Wall_47");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_48.dds", TEX_CUBE, L"Structure", L"Wall_48");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_49.dds", TEX_CUBE, L"Structure", L"Wall_49");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_50.dds", TEX_CUBE, L"Structure", L"Wall_50");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_51.dds", TEX_CUBE, L"Structure", L"Wall_51");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_52.dds", TEX_CUBE, L"Structure", L"Wall_52");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_53.dds", TEX_CUBE, L"Structure", L"Wall_53");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_54.dds", TEX_CUBE, L"Structure", L"Wall_54");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_55.dds", TEX_CUBE, L"Structure", L"Wall_55");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_56.dds", TEX_CUBE, L"Structure", L"Wall_56");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_57.dds", TEX_CUBE, L"Structure", L"Wall_57");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_58.dds", TEX_CUBE, L"Structure", L"Wall_58");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_59.dds", TEX_CUBE, L"Structure", L"Wall_59");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_60.dds", TEX_CUBE, L"Structure", L"Wall_60");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_61.dds", TEX_CUBE, L"Structure", L"Wall_61");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_62.dds", TEX_CUBE, L"Structure", L"Wall_62");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_63.dds", TEX_CUBE, L"Structure", L"Wall_63");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_64.dds", TEX_CUBE, L"Structure", L"Wall_64");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_65.dds", TEX_CUBE, L"Structure", L"Wall_65");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_66.dds", TEX_CUBE, L"Structure", L"Wall_66");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wall_67.dds", TEX_CUBE, L"Structure", L"Wall_67");
+
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_1.dds", TEX_CUBE, L"Structure", L"Wood_1");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_2.dds", TEX_CUBE, L"Structure", L"Wood_2");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_3.dds", TEX_CUBE, L"Structure", L"Wood_3");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_4.dds", TEX_CUBE, L"Structure", L"Wood_4");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_5.dds", TEX_CUBE, L"Structure", L"Wood_5");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_6.dds", TEX_CUBE, L"Structure", L"Wood_6");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_7.dds", TEX_CUBE, L"Structure", L"Wood_7");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_8.dds", TEX_CUBE, L"Structure", L"Wood_8");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_9.dds", TEX_CUBE, L"Structure", L"Wood_9");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_10.dds", TEX_CUBE, L"Structure", L"Wood_10");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_11.dds", TEX_CUBE, L"Structure", L"Wood_11");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_12.dds", TEX_CUBE, L"Structure", L"Wood_12");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_13.dds", TEX_CUBE, L"Structure", L"Wood_13");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_14.dds", TEX_CUBE, L"Structure", L"Wood_14");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_15.dds", TEX_CUBE, L"Structure", L"Wood_15");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_16.dds", TEX_CUBE, L"Structure", L"Wood_16");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_17.dds", TEX_CUBE, L"Structure", L"Wood_17");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_18.dds", TEX_CUBE, L"Structure", L"Wood_18");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_19.dds", TEX_CUBE, L"Structure", L"Wood_19");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_20.dds", TEX_CUBE, L"Structure", L"Wood_20");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_21.dds", TEX_CUBE, L"Structure", L"Wood_21");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_22.dds", TEX_CUBE, L"Structure", L"Wood_22");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_23.dds", TEX_CUBE, L"Structure", L"Wood_23");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_24.dds", TEX_CUBE, L"Structure", L"Wood_24");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_25.dds", TEX_CUBE, L"Structure", L"Wood_25");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_26.dds", TEX_CUBE, L"Structure", L"Wood_26");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_27.dds", TEX_CUBE, L"Structure", L"Wood_27");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_28.dds", TEX_CUBE, L"Structure", L"Wood_28");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_29.dds", TEX_CUBE, L"Structure", L"Wood_29");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_30.dds", TEX_CUBE, L"Structure", L"Wood_30");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_31.dds", TEX_CUBE, L"Structure", L"Wood_31");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_32.dds", TEX_CUBE, L"Structure", L"Wood_32");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_33.dds", TEX_CUBE, L"Structure", L"Wood_33");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_34.dds", TEX_CUBE, L"Structure", L"Wood_34");
+	Load_Texture(L"./Resource/Texture/CubeTexture/Structure/Wood_35.dds", TEX_CUBE, L"Structure", L"Wood_35");
 
 #pragma endregion
 
@@ -501,18 +719,26 @@ void CLoading::Load_TextureAsync(const _tchar* pfilePath, TEXTUREID eID, const _
 void CLoading::Load_Texture(const _tchar* pfilePath, TEXTUREID eID, const _tchar* pGroupName, const _tchar* pTextureName, const _range<_uint>& iCntRange, _bool bAsync)
 {
 	if (bAsync)
-		m_vecAsyncTexture.push_back(async(launch::async, &CLoading::Load_TextureAsync, this, pfilePath, eID, pGroupName, pTextureName, iCntRange));
+	{
+		// 쓰레드 만큼만 만들도록 하자. 물론 MultiTexture에서도 만들긴 하지만... 좀더 낫겠지
+		if (m_listAsyncTexture.size() > m_iFutureLimit)
+		{
+			m_listAsyncTexture.front().get();
+			m_listAsyncTexture.erase(m_listAsyncTexture.begin());
+		}
+		m_listAsyncTexture.push_back(async(launch::async, &CLoading::Load_TextureAsync, this, pfilePath, eID, pGroupName, pTextureName, iCntRange));
+	}
 	else
 		Engine::Ready_Texture(pfilePath, eID, pGroupName, pTextureName, iCntRange);
 }
 
 void CLoading::Wait_LoadTextureAsync()
 {
-	for (_uint i = 0; i < m_vecAsyncTexture.size(); i++)
+	for (auto iter = m_listAsyncTexture.begin(); iter != m_listAsyncTexture.end(); ++iter)
 	{
-		m_vecAsyncTexture[i].get();
+		(*iter).get();
 	}
-	m_vecAsyncTexture.clear();
+	m_listAsyncTexture.clear();
 }
 
 _uint CLoading::Thread_Main(void * pArg)

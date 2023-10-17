@@ -150,7 +150,12 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 			FCollisionData tColData;
 			tColData.iContactsLeft = 1;	// 작동 시킬라면 넣어야함.
 
-			bCollide = FCollisionDetector::CollsionPrimitive(pColSrc, pColDst, &tColData);
+			// 하나라도 충돌을 체크를 하는 경우에만 계산한다.
+			if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer()
+				|| pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
+				bCollide = FCollisionDetector::CollsionPrimitive(pColSrc, pColDst, &tColData);
+			else
+				bCollide = false;
 
 			if (bCollide)
 			{

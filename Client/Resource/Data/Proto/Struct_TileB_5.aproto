@@ -1,0 +1,24 @@
+{
+    "header": {
+        "type": 4,
+        "name": "Struct_TileB_5"
+    },
+    "class": 9,
+    "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "group_key": "Structure",
+    "texture_key": "TileB_5"
+}

@@ -50,7 +50,8 @@ protected:
 	virtual HRESULT		Ready_Layer_Completed() { return S_OK; }
 
 protected:
-	vector<future<void>>	m_vecAsyncTexture;
+	list<future<void>>		m_listAsyncTexture;
+	_uint					m_iFutureLimit;			// 비동기 개수 제한
 
 };
 

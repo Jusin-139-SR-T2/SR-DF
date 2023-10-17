@@ -7,6 +7,7 @@
 #include "BackGround.h"
 #include "SkyBox.h"
 #include "UI_Player.h"
+#include <AceBuilding.h>
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -242,6 +243,11 @@ HRESULT CStage::Ready_Layer_Completed()
 	//pObj->Set_PlayerLighter(pLighter);
 	//pCam->Set_Target(pObj);
 	//pObj->Set_Camera(pCam);
+
+	/*for (size_t i = 0; i < 2000; i++)
+	{
+		Add_GameObject(L"Environment", CAceBuilding::Create(m_pGraphicDev, L"Test", 0.f, 0.f, 0.f));
+	}*/
 
 	return S_OK;
 }

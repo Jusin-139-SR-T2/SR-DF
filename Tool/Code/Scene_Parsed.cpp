@@ -4,6 +4,9 @@
 
 #include "Serialize_BaseClass.h"
 
+#include "Export_System.h"
+#include "Export_Utility.h"
+
 CScene_Parsed::CScene_Parsed(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {

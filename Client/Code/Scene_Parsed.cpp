@@ -9,6 +9,7 @@
 #include <DynamicCamera.h>
 #include <UI_Player.h>
 #include <SkyBox.h>
+#include "AceBuilding.h"
 
 CScene_Parsed::CScene_Parsed(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -135,6 +136,12 @@ HRESULT CScene_Parsed::Ready_Layer_Completed()
     Add_GameObject(L"GameLogic", CPlayer::Create(m_pGraphicDev));
 
     Add_GameObject(L"Environment", L"SkyBox", CSkyBox::Create(m_pGraphicDev));
+
+    /*for (size_t i = 0; i < 3000; i++)
+    {
+        Add_GameObject(L"GameLogic", CAceBuilding::Create(m_pGraphicDev, L"Test", 0.f, 0.f, 0.f));
+    }*/
+    
 
     return S_OK;
 }

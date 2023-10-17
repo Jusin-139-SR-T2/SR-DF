@@ -36,12 +36,13 @@ protected:
 	void Wait_LoadTextureAsync();
 
 protected:
-	vector<future<void>>	m_vecAsyncTexture;
+	list<future<void>>	m_listAsyncTexture;
+	_uint				m_iFutureLimit;			// 비동기 개수 제한
 
 private:
 	DELAY<float>		m_fSkipStartFrame = DELAY<float>(0.1f);
 	_bool				m_bInitFrame;
-	CLoading*			 m_pLoading;
+	CLoading*			m_pLoading;
 	HRESULT				m_hrLoading;
 
 };

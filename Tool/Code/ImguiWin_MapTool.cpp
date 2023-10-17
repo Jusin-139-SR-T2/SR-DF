@@ -242,6 +242,7 @@ void CImguiWin_MapTool::Layout_Browser_Scene()
                 Reset_Hierarchi();
 
                 // 로드된 씬의 번호를 입력해준다.
+                m_iLastLoaded_Scene = m_iLoaded_Scene;
                 m_iLoaded_Scene = m_iSelected_Scene;
 
                 // 계층에 맞게 물체를 생성해준다.
@@ -466,10 +467,11 @@ void CImguiWin_MapTool::Layout_Browser_Object()
 
         ImGui::SameLine();
         // 선택 씬 편집용으로 로드
-        if (ImGui::Button(u8"선택 레이어에 추가하기"))
+        if (ImGui::Button(u8"선택 레이어에 추가하기")
+            || (ImGui::IsKeyDown(ImGuiKey_LeftShift) && ImGui::IsKeyPressed(ImGuiKey_A)))
         {
             // 선택한 씬을 로드하도록 한다.
-            Add_Object();
+            Add_ObjectFromProto();
         }
 
         ImGui::Separator();
@@ -527,7 +529,6 @@ void CImguiWin_MapTool::Layout_Hierarchi(const ImGuiWindowFlags& iMain_Flags)
         vector<FLayerData>& vecLayer = m_vecScene[m_iLoaded_Scene].vecLayer;
         for (_uint i = 0; i < vecLayer.size(); i++)
         {
-            
             bool bIsSelected_Layer = (m_iSelected_Layer == i);
 
             if (ImGui::Selectable(vecLayer[i].strName.c_str(),
@@ -554,11 +555,23 @@ void CImguiWin_MapTool::Layout_Hierarchi(const ImGuiWindowFlags& iMain_Flags)
                     m_iSelected_Layer = -1;
                     m_iSelected_Layer_Remain = i;
                     m_pPickedObjectData = &vecLayer[i].vecObject[j];
+
+                    
                 }
             }
             ImGui::Unindent();
         }
         ImGui::Unindent();
+
+        // 선택된 오브젝트 삭제 기능
+        if (ImGui::IsKeyPressed(ImGuiKey_Delete))
+        {
+            Delete_SelectedObjectFromScene();
+        }
+        if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_D))
+        {
+            Duplicate_SelectedObject();
+        }
 
         ImGui::Separator();
         bool bInput_Apply = false;
@@ -907,7 +920,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
             if (pCube)
             {
                 pCube->Get_TransformComponent()->Set_Pos(tObjectData.vPos);
-                pCube->Get_TransformComponent()->Set_Rotation(tObjectData.vRot);
+                pCube->Get_TransformComponent()->Set_Rotation(D3DXToRadian(tObjectData.vRot));
                 pCube->Get_TransformComponent()->Set_Scale(tObjectData.vScale);
             }
         }
@@ -1066,6 +1079,7 @@ void CImguiWin_MapTool::Load_ObjectToScene()
     // 현재 로드된 씬이 있다면 실제 씬에 메모리를 적재하여 물체를 생성한다.
 
     FSceneData& tSceneData = m_vecScene[m_iLoaded_Scene];
+    m_tBackupScene = tSceneData;                        // 백업
 
     for (size_t i = 0; i < tSceneData.vecLayer.size(); i++)
     {
@@ -1140,13 +1154,89 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
     }
 }
 
+void CImguiWin_MapTool::Duplicate_SelectedObject()
+{
+    if (m_iLoaded_Scene == -1 || m_iSelected_Layer_Remain == -1 || m_iSelected_Object == -1)
+        return;
+
+    FLayerData& tLayerData = m_vecScene[m_iLoaded_Scene].vecLayer[m_iSelected_Layer_Remain];
+    vector<FObjectData>& vecObject = tLayerData.vecObject;
+    FObjectData& tObject = vecObject[m_iSelected_Object];
+    
+    // 보안 체크
+    if (tObject.pObject == nullptr)
+        return;
+
+
+    // 여기서부터 복제
+    FObjectData tDupObject = tObject;
+    tDupObject.pObject = nullptr;
+
+    auto iter = find_if(tLayerData.vecObject.begin(), tLayerData.vecObject.end(),
+        [&tDupObject](FObjectData& tDstObjectData) {
+            return tDupObject.strName == tDstObjectData.strName;
+        });
+    if (iter == tLayerData.vecObject.end())
+    {}
+    // 같은 이름이 있으면 이름에 숫자를 붙여 추가한다.
+    else
+    {
+        _uint i = 0;
+        while (true)
+        {
+            stringstream ss;
+            ss << i;
+            string strAdd = tDupObject.strName + ss.str();
+
+            auto iterRe = find_if(tLayerData.vecObject.begin(), tLayerData.vecObject.end(),
+                [&strAdd](FObjectData& tDstObjectData) {
+                    return strAdd == tDstObjectData.strName;
+                });
+            if (iterRe == tLayerData.vecObject.end())
+            {
+                tDupObject.strName = strAdd;
+                break;
+            }
+
+            ++i;
+        }
+    }
+
+    wstring strConvert(tLayerData.strName.begin(), tLayerData.strName.end());
+    Factory_GameObject(strConvert.c_str(), tDupObject.eObjectID, tDupObject);
+    vecObject.push_back(tDupObject);
+
+    // 바로 선택하기 기능
+    Set_HierarchiIndex(m_iSelected_Layer_Remain, static_cast<_int>(vecObject.size()) - 1);
+    m_pPickedObjectData = &vecObject.back();
+
+    
+}
+
 void CImguiWin_MapTool::Delete_AllFromScene()
 {
     if (m_iLoaded_Scene == -1)
         return;
 
-    // 씬을 클리어한다.
+    // 씬을 초기화 한다.
+    if (m_iLastLoaded_Scene != -1)
+        m_vecScene[m_iLastLoaded_Scene] = m_tBackupScene;
     Engine::Clear_CurrentScene();
+}
+
+void CImguiWin_MapTool::Delete_SelectedObjectFromScene()
+{
+    if (m_iLoaded_Scene == -1 || m_iSelected_Layer_Remain == -1 || m_iSelected_Object == -1)
+        return;
+
+    vector<FObjectData>& vecObject = m_vecScene[m_iLoaded_Scene].vecLayer[m_iSelected_Layer_Remain].vecObject;
+    FObjectData& tObject = vecObject[m_iSelected_Object];
+    if (tObject.pObject == nullptr)
+        return;
+
+    tObject.pObject->Set_Dead();
+    auto iter = vecObject.begin() + m_iSelected_Object;
+    vecObject.erase(iter);
 }
 
 void CImguiWin_MapTool::Save_SceneAll()
@@ -1515,7 +1605,7 @@ void CImguiWin_MapTool::Import_Terrain(const _int iSelected_Scene, const string&
     }
 }
 
-void CImguiWin_MapTool::Add_Object()
+void CImguiWin_MapTool::Add_ObjectFromProto()
 {
     if (m_iLoaded_Scene == -1 || m_iSelected_Layer_Remain == -1 || m_iSelected_Proto == -1)
         return;

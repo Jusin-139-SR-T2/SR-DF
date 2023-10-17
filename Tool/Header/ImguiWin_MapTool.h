@@ -151,21 +151,39 @@ private:
 		m_iSelected_Object = -1;
 		m_eSelectedProperty_Type = ESELECTED_TYPE_NONE;
 	}
+	// 단순 인덱스 설정용
+	void			Set_HierarchiIndex(_int iLayerIndex, _int iObjectIndex = -1)
+	{
+		if (iObjectIndex != -1)
+			m_iSelected_Layer = iLayerIndex;
+		m_iSelected_Layer_Remain = iLayerIndex;
+		m_iSelected_Object = iObjectIndex;
+		if (iObjectIndex != -1)
+			m_eSelectedProperty_Type = ESELECTED_TYPE_OBJECT;
+		else
+			m_eSelectedProperty_Type = ESELECTED_TYPE_LAYER;
+	}
 private:
 	void			Load_ObjectToScene();
 	void			Create_LayerToScene(const FLayerData& tLayerData);
 	void			Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, FObjectData& tObjectData);
 
+	void			Duplicate_SelectedObject();
 	void			Delete_AllFromScene();
+	void			Delete_SelectedObjectFromScene();
 
 private:
 	// 목록에 있는 씬 모두 저장
 	void			Save_SceneAll();
 	// 선택 씬만 저장
 	void			Save_Scene() {}
+	// 씬 내보내기 (단일 씬)
 	void			Export_Scene(const FSerialize_Scene& tSceneSerial);
 	// 전체 씬 로드
 	void			Load_SceneAll();
+	// 선택 씬만 로드
+	void			Load_SelectedScene();
+	// 파싱된 파일로부터 씬 정보 불러오기
 	void			Import_Scene(const string& strName, FSerialize_Scene& tSceneSerial, FSceneData& tSceneData);
 
 	// 프로토 로드 관련
@@ -178,9 +196,11 @@ private:
 	string						m_strAdd_SceneName;				// 씬 추가하기
 	_int						m_iSelected_Scene = -1;			// 선택된 씬
 	_int						m_iLoaded_Scene = -1;			// 실제 로드된 씬
+	_int						m_iLastLoaded_Scene = -1;
 	_bool						m_bScene_Loaded = false;
 
 	vector<FSceneData>			m_vecScene;					// 씬, 레이어, 오브젝트
+	FSceneData					m_tBackupScene;				// 로드시 저장 데이터
 	_int						m_iSelected_Layer = -1;
 	_int						m_iSelected_Layer_Remain = -1;
 	_int						m_iSelected_Object = -1;
@@ -199,7 +219,7 @@ private:			// 터레인 관련
 	void			Import_Terrain(const _int iSelected_Scene, const string& strName, FSerialize_Terrain& tTerrain);
 
 private:			// 프로토 관련
-	void			Add_Object();
+	void			Add_ObjectFromProto();
 	//CGameObject*	Get_Object();
 
 private:
