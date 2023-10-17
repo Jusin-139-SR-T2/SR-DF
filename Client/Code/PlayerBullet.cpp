@@ -26,7 +26,7 @@ HRESULT CPlayerBullet::Ready_GameObject()
 
 	// 충돌
 	m_pTransformComp->Readjust_Transform();
-	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+	pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
 	pShape->fRadius = m_tAttack.fSize;
 
 	// 플레이어가 바라보는 쪽으로 날아가게함
@@ -82,12 +82,7 @@ void CPlayerBullet::Render_GameObject()
 	
 	if (*m_bDbugFrame)
 	{
-		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-
-		MeshSphereColider(5.f, 30.f, 30.f);
-		m_pBufferComp->Render_Buffer();
-		
-		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+		MeshSphereColider(pShape->fRadius, 30.f, 30.f);
 	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
