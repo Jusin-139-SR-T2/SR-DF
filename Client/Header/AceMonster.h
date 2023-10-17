@@ -57,7 +57,7 @@ protected:
 	virtual void		Free() override;
 
 protected:
-	CPlayer::STATE_RIGHTHAND	ePlayerRighthand;
+	STATE_RIGHTHAND				ePlayerRighthand;
 	MONSTER						m_tStat;
 	FRAME						m_tFrame;
 	_vec3						vPlayerPos;			

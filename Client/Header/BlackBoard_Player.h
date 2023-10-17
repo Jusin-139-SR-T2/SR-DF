@@ -20,7 +20,10 @@ struct FBlackBoard_PlayerInit
 class CBlackBoard_Player : public CBlackBoard
 {
 	DERIVED_CLASS(CBlackBoard, CBlackBoard_Player)
-	enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
+	// 플레이어 오른손 상태값
+	//enum class STATE_RIGHTHAND { NONE, HAND, RUN_HAND, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN, KICK };
+	// 플레이어 상태값
+	//enum class STATE_PLAYER { NONE, IDLE, SITDOWN, JUMP, DIE, PLAYER_STATE_SIZE_END };
 
 protected:
 	explicit CBlackBoard_Player();
@@ -49,11 +52,18 @@ public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX2(GAUGE<_float>, m_fStamina, Stamina, GET_C_REF, GET_REF)
 	GETSET_EX2(_bool, m_bGunLight, GunLight, GET_C_REF, GET_REF)
 	GETSET_EX2(_bool, m_bLighterLight, LighterLight, GET_C_REF, GET_REF)
+	GETSET_EX2(_bool, m_bAttackOn, AttackOn, GET_C_REF, GET_REF)
+	GETSET_EX2(STATE_PLAYER, m_ePlayer_State, PlayerState, GET, SET)
+	GETSET_EX2(STATE_RIGHTHAND, m_eRightHand_State, RightHandState, GET, SET)
 
 private:
 	GAUGE<_float>		m_fHP;
 	GAUGE<_float>		m_fStamina;
 	_bool				m_bGunLight;
 	_bool				m_bLighterLight;
+	_bool				m_bAttackOn;
+	STATE_PLAYER		m_ePlayer_State;
+	STATE_RIGHTHAND		m_eRightHand_State;
+	
 };
 

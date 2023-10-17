@@ -44,9 +44,11 @@ private:
 	void		Camera_State(const _float& fTimeDelta);
 	void		Quaternion_Ver(const _float& fTimeDelta);
 	void		Update_BlackBoard();
+	void		Update_InternalData();
 
 private:
 	FBlackBoardPtr<CBlackBoard_Camera>		m_wpBlackBoard_Camera;
+	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player;
 
 private:
 	_float		m_fSpeed = 10.f;
@@ -86,6 +88,10 @@ public:
 private:
 	CGameObject*	m_pTarget = nullptr;
 	_float			m_fTarget_Distance = 10.f;
+
+	STATE_PLAYER	m_ePlayer_State;
+	STATE_RIGHTHAND	m_eRightHand_State;
+	_bool			m_bPlayerAttackOn;
 
 };
 

@@ -92,6 +92,9 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 	// 블랙보드 업로드
 	Update_BlackBoard();
 
+	// 블랙보드 다운로드
+	Update_InternalData();
+
 	return iExit;
 }
 
@@ -275,6 +278,9 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	_vec3	vPlayerCameraPos;		// 3인칭 카메라 위치 벡터(Eye)
 	_vec3	vDist = { 0, 5, -8 };	// 카메라가 플레이어로 부터 멀어지는 거리
 
+	_vec3	vEventCameraMove = { 0.f, 0.f, 0.f };	// 특정 행동시 카메라의 움직임
+
+
 	_matrix	matPlayerRotX;		// 플레이어 회전 각도 x
 	_matrix	matPlayerRotY;		// 플레이어 회전 각도 y
 	_matrix matPlayerRot;		// 최종적으로 플레이어가 회전한 각도
@@ -303,6 +309,15 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	// 플레이어로 부터 카메라가 떨어진 거리를 구한다.
 	vPlayerCameraPos = vPlayerPos + vPlayerCameraPos;
 
+	if (Engine::IsKey_Pressing(DIK_K))
+	{
+		vEventCameraMove.y += 0.1f;
+	}
+	if (Engine::IsKey_Pressing(DIK_J))
+	{
+		vEventCameraMove.y -= 0.1f;
+	}
+
 	// 3인칭
 	if (m_bThree)
 	{
@@ -318,14 +333,19 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	{
 		// 카메라 위치 설정
 		m_vEye = { vPlayerPos.x,                                                                     
-				   vPlayerPos.y + 0.4f,
+				   vPlayerPos.y + 0.4f + vEventCameraMove.y,
 				   vPlayerPos.z };
 
 		// 카메라가 바라보는 대상 (플레이어가 바라보는 방향)
-		m_vAt = vPlayerPos + vPlayerLook;
+		m_vAt = vPlayerPos + vPlayerLook;// +vEventCameraMove;
 
 		Mouse_Move(); // 마우스 이동
 		Mouse_Fix();  // 마우스 고정
+	}
+
+	if (true)
+	{
+
 	}
 }
 
@@ -512,4 +532,25 @@ void CDynamicCamera::Update_BlackBoard()
 	pBlackBoard->Set_Eye(m_vEye);
 	pBlackBoard->Set_At(m_vAt);
 
+}
+
+// 블랙보드 정보 내려받기 (정보 내려받기)
+void CDynamicCamera::Update_InternalData()
+{
+	// 블랙보드 연결 대기, 안전 코드로 필수
+	if (!m_wpBlackBoard_Player.Get_BlackBoard())
+	{
+		m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"Player"));
+		// 연결 실패
+		if (!m_wpBlackBoard_Camera.Get_BlackBoard())
+			return;
+	}
+
+	// 안전 코드를 거치면 일반 포인터로 접근 허용.
+	CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
+
+	// 여기서부터 블랙보드의 정보를 얻어온다.
+	m_ePlayer_State = pBlackBoard->Get_PlayerState();
+	m_eRightHand_State = pBlackBoard->Get_RightHandState();
+	m_bPlayerAttackOn = pBlackBoard->Get_AttackOn();
 }
