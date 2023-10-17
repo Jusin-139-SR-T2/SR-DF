@@ -160,6 +160,9 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	//보스 페이즈 갱신 
 	Change_Phase();
 
+	//블랙보드 업로드 
+	Update_InternalData();
+
 	// 빌보드
 	if (FALSE == m_bDeadState)
 		Billboard(fTimeDelta);
@@ -399,6 +402,8 @@ void CAceBoss::Update_InternalData()
 
 	// 여기서부터 블랙보드의 정보를 업데이트 한다.
 	pBlackBoard->Set_ControlLight(m_bLightOn) ;
+	pBlackBoard->Get_BossHP() = m_gHp; // 단일객체라 그냥 업뎃함 
+
 }
 
 //블랙보드에서 다운로드 

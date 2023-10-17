@@ -190,6 +190,9 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     if (FALSE == m_bDeadState)
         Billboard(fTimeDelta);
 
+    //블랙보드 업로드 
+    Update_InternalData();
+
     //상태머신
     m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
 
@@ -415,12 +418,13 @@ void CBrown::MonsterDead()
 #pragma endregion 
 
 #pragma region BlackBoard
+
 void CBrown::Update_InternalData()
 {
     // 블랙보드 연결 대기, 안전 코드로 필수
     if (!m_wpBlackBoard_Monster.Get_BlackBoard())
     {
-        m_wpBlackBoard_Monster.Set_BlackBoard(Engine::Get_BlackBoard(L"Monster"));
+        m_wpBlackBoard_Monster.Set_BlackBoard(Engine::Get_BlackBoard(L"MonsterUnion"));
         // 연결 실패
         if (!m_wpBlackBoard_Monster.Get_BlackBoard())
             return;
@@ -429,8 +433,26 @@ void CBrown::Update_InternalData()
     // 안전 코드를 거치면 일반 포인터로 접근 허용.
     CBlackBoard_Monster* pBlackBoard = m_wpBlackBoard_Monster.Get_BlackBoard();
 
-    // 여기서부터 블랙보드의 정보를 업데이트 한다.
-    //pBlackBoard->Get_BrownAwareness().Cur = m_tStat.fAwareness;
+    if(m_bCollisionOn)
+        pBlackBoard->Get_BrownHP() = m_gHp;
+}
+
+void CBrown::Update_BlackBoard()
+{
+    //// 블랙보드 연결 대기, 안전 코드로 필수
+	//if (!m_wpBlackBoard_Player.Get_BlackBoard())
+	//{
+	//	m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"MonsterUnion"));
+	//	// 연결 실패
+	//	if (!m_wpBlackBoard_Player.Get_BlackBoard())
+	//		return;
+	//}
+
+	//// 안전 코드를 거치면 일반 포인터로 접근 허용.
+	//CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
+
+	//// 여기서부터 블랙보드의 정보를 얻어온다.
+	//m_fHp = pBlackBoard->Get_HP().Cur;
 }
 
 #pragma endregion 
@@ -457,6 +479,7 @@ void CBrown::AI_Idle(float fDeltaTime)
     {
         if (Detect_Player())
         {
+            //Engine::Play_Sound(L"Enemy", L"GOON_MothNFlame_Fire.wav", SOUND_ENEMY, VoiceDistance());
             m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
         }
     }

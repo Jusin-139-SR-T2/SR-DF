@@ -47,6 +47,8 @@ HRESULT CStage::Ready_Scene()
 
 	FAILED_CHECK_RETURN(Ready_Layer_Completed(), E_FAIL);
 
+	//Engine::StopAll();
+
 	return S_OK;
 }
 

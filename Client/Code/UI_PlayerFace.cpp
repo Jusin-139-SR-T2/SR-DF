@@ -127,12 +127,12 @@ void CUI_PlayerFace::Change_Texture(const _float& fTimeDelta)
 		m_tFrame.fFrame = 4;
 		m_bTrigger = FALSE;
 		m_bFaceTurn = TRUE;
-		OutputDebugString(L"▶ : 히트 ON \n");
+		//OutputDebugString(L"▶ : 히트 ON \n");
 	}
 
 	if (!m_bTrigger && !m_bFaceTurn)
 	{
-		OutputDebugString(L"▶ : 좌우 보기  \n");
+		//OutputDebugString(L"▶ : 좌우 보기  \n");
 		if (Random_variable(50))
 			m_tFrame.fFrame = 0.f;
 		else
@@ -149,7 +149,7 @@ void CUI_PlayerFace::Change_Texture(const _float& fTimeDelta)
 
 		if (m_tFrame.fAge > m_tFrame.fLifeTime && m_bTrigger && !m_bFaceTurn)
 		{
-			OutputDebugString(L"▶ : 센터 보기  \n");
+			//OutputDebugString(L"▶ : 센터 보기  \n");
 			// 주위 응시일때  LifeTime이후 
 			m_tFrame.fAge = 0.0f;
 			m_tFrame.fFrame = 1.0f; // 중간에 1로 설정
@@ -160,7 +160,7 @@ void CUI_PlayerFace::Change_Texture(const _float& fTimeDelta)
 
 		if (m_tFrame.fAge > m_tFrame.fLifeTime && !m_bTrigger && m_bFaceTurn)
 		{
-			OutputDebugString(L"▶ : 프레임 안건들고 좌우 보는걸로 돌아가기   \n");
+			//OutputDebugString(L"▶ : 프레임 안건들고 좌우 보는걸로 돌아가기   \n");
 			// 가운데 응시일때  LifeTime이후 
 			m_tFrame.fAge = 0.0f;
 			m_bTrigger = FALSE;

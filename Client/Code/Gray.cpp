@@ -80,7 +80,8 @@ HRESULT CGray::Ready_GameObject()
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
     pBoxShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-    
+    m_bCollisionOn = FALSE;
+
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE); // 초기상태 지정 
     // 추격
@@ -190,12 +191,17 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     // 지형타기 
     Height_On_Terrain(); 
 
+    // 몬스터 죽이기 
     if (m_gHp.Cur <= 0 && FALSE == m_bDeadState)
         MonsterDead();
 
     // 빌보드 
     if (FALSE == m_bDeadState)
         Billboard(fTimeDelta);
+
+    //블랙보드 업로드 
+    Update_InternalData();
+
 
     // 상태머신
     m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
@@ -223,8 +229,6 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 
     }
 
-    swprintf_s(debugString, L"Gray - 변수 확인 Cur = %f\n", m_gHp.Cur);
-    OutputDebugStringW(debugString);
 #pragma endregion 
 
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳
@@ -336,7 +340,7 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
             else
             {
                 //==== 플레이어 공격체와  충돌 =============================
-
+                m_bCollisionOn = true;
                 m_eRecentCol = RECENT_COL::PLAYERATK;
 
                 Add_BasicEffect(m_pOwner); // 이펙트 추가
@@ -364,14 +368,15 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
         {
             //==== 플레이어와 충돌 =====================================
             m_eRecentCol = RECENT_COL::PLAYER;
-
             switch (ePlayerRighthand)
             {
             case Engine::STATE_RIGHTHAND::RUN_HAND:
+                m_bCollisionOn = true;
                 Add_BasicEffect(m_pOwner); // 이펙트 추가
                 m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
                 break;
             case Engine::STATE_RIGHTHAND::KICK:
+                m_bCollisionOn = true;
                 Add_BasicEffect(m_pOwner); // 이펙트 추가
                 m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
                 break;
@@ -392,7 +397,7 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
         else
         {
             // ==== 보스스킬과 충돌 ========================================
-
+            m_bCollisionOn = true;
             m_eRecentCol = RECENT_COL::BOSSATK;
 
             Add_BasicEffect(m_pOwner); // 이펙트 추가
@@ -409,9 +414,48 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
 
 void CGray::OnCollisionExited(CGameObject* pDst)
 {
-    m_bCollisionEnter = FALSE;
+    m_bCollisionOn = FALSE;
 }
 
+#pragma region 블랙보드 
+
+void CGray::Update_InternalData()
+{  
+    // 블랙보드 연결 대기, 안전 코드로 필수
+    if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+    {
+        m_wpBlackBoard_Monster.Set_BlackBoard(Engine::Get_BlackBoard(L"MonsterUnion"));
+        // 연결 실패
+        if (!m_wpBlackBoard_Monster.Get_BlackBoard())
+            return;
+    }
+
+    // 안전 코드를 거치면 일반 포인터로 접근 허용.
+    CBlackBoard_Monster* pBlackBoard = m_wpBlackBoard_Monster.Get_BlackBoard();
+
+    if (m_bCollisionOn)
+        pBlackBoard->Get_GrayHP() = m_gHp;
+}
+
+void CGray::Update_BlackBoard()
+{  
+    //// 블랙보드 연결 대기, 안전 코드로 필수
+    //if (!m_wpBlackBoard_Player.Get_BlackBoard())
+    //{
+    //	m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"MonsterUnion"));
+    //	// 연결 실패
+    //	if (!m_wpBlackBoard_Player.Get_BlackBoard())
+    //		return;
+    //}
+
+    //// 안전 코드를 거치면 일반 포인터로 접근 허용.
+    //CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
+
+    //// 여기서부터 블랙보드의 정보를 얻어온다.
+    //m_fHp = pBlackBoard->Get_HP().Cur;
+}
+
+#pragma endregion
 void CGray::MonsterDead()
 {
     if (RECENT_COL::PLAYER == m_eRecentCol)
@@ -653,7 +697,7 @@ void CGray::AI_Chase(float fDeltaTime)
         {
             _float CurDistance = Calc_Distance();
 
-            if (m_bPlayerAttakBool && m_bCollisionEnter == FALSE)
+            if (m_bPlayerAttakBool && m_bCollisionOn == FALSE) // 플레이어는 공격상태 + 충돌은 안한상태 
                 m_tState_Obj.Set_State(STATE_OBJ::BLOCK);
 
             // 뛰어서 다가옴 : 8 < a <= 13

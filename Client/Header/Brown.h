@@ -65,7 +65,8 @@ public:
 
 	//블랙보드
 private:
-	void	Update_InternalData();
+	void	Update_InternalData(); // 블랙보드로 데이터를 올린다. 
+	void	Update_BlackBoard(); // 블랙보드로부터 데이터를 받아오는용도 
 
 protected:  
 	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster; // 블랙보드 몬스터 

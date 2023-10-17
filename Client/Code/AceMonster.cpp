@@ -46,6 +46,13 @@ void CAceMonster::Free()
     SUPER::Free();
 }
 
+_float CAceMonster::VoiceDistance()
+{
+	_float CurDist = Calc_Distance();
+
+	return (1.f - ( CurDist/ m_tStat.fAttackDistance ));
+}
+
 #pragma region 공통셋팅 파트 
 
 _float CAceMonster::Calc_Distance()
