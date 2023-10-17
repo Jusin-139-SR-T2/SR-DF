@@ -302,29 +302,13 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
 {
     if (Get_IsMonsterDeath())
         return;
+    else if (25 >= m_gHp.Cur && FALSE == m_bDazedState)
+        m_tState_Obj.Set_State(STATE_OBJ::DAZED);
 
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 
     if (nullptr == pAceObj)
         return;
-    else
-    {
-        // Pow 생성
-        Engine::Add_GameObject(L"GameLogic", CEffect_HitPow::Create(m_pGraphicDev,
-            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 0.2f, m_pTransformComp->Get_Pos().z, this));
-
-        // Blood생성
-        for (_int i = 0; i < 3; ++i)
-        {
-            Engine::Add_GameObject(L"GameLogic", CEffect_HitBlood::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
-        }
-
-        // Dust 생성
-        Engine::Add_GameObject(L"GameLogic", CEffect_HitDust::Create(m_pGraphicDev,
-            m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
-
-    }
 
     // 보스 스킬에 죽을수도 있기때문에 충돌체 먼저 검사한뒤에 dead로 넘어가야함
     // 현재 팀 : 몬스터  적대관계 : 플레이어 
@@ -338,26 +322,30 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
 
             if (nullptr == pPlayerAttack)
                 return;
-
-            //==== 플레이어 공격체와  충돌 =============================
-            m_eRecentCol = RECENT_COL::PLAYERATK;
-
-            if (m_tStat.iDazedHP >= m_gHp.Cur && FALSE == m_bDazedState)
+            else
             {
-                OutputDebugString(L"▷Brown - 충돌판정 DAZED 진입   \n");
-                m_tState_Obj.Set_State(STATE_OBJ::DAZED);
-                return;
-            }	
-            else if (STATE_RIGHTHAND::KICK == ePlayerRighthand)
-                m_tState_Obj.Set_State(STATE_OBJ::FALLING); // fist
-            else if (PSITDONW_ATTACK == m_ePlayer_AttackState) // 앉 + kick = falling 임 
-                m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
-            else //일어서야 FacePunch있음 
-            {
-                if (Random_variable(60))
-                    m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
-                else
-                    m_tState_Obj.Set_State(STATE_OBJ::HIT);
+                //==== 플레이어 공격체와  충돌 =============================
+                m_eRecentCol = RECENT_COL::PLAYERATK;
+
+                Add_BasicEffect(m_pOwner); // 이펙트 추가
+
+                if (m_tStat.iDazedHP >= m_gHp.Cur && FALSE == m_bDazedState)
+                {
+                    OutputDebugString(L"▷Brown - 충돌판정 DAZED 진입   \n");
+                    m_tState_Obj.Set_State(STATE_OBJ::DAZED);
+                    return;
+                }
+                else if (STATE_RIGHTHAND::KICK == ePlayerRighthand)
+                    m_tState_Obj.Set_State(STATE_OBJ::FALLING); // fist
+                else if (PSITDONW_ATTACK == m_ePlayer_AttackState) // 앉 + kick = falling 임 
+                    m_tState_Obj.Set_State(STATE_OBJ::CROTCHHIT);
+                else //일어서야 FacePunch있음 
+                {
+                    if (Random_variable(60))
+                        m_tState_Obj.Set_State(STATE_OBJ::FACEPUNCH);
+                    else
+                        m_tState_Obj.Set_State(STATE_OBJ::HIT);
+                }
             }
         }
         else
@@ -365,9 +353,19 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
             //==== 플레이어와 충돌 =====================================
             m_eRecentCol = RECENT_COL::PLAYER;
 
-            if (STATE_RIGHTHAND::RUN_HAND == ePlayerRighthand)
+            switch (ePlayerRighthand)
+            {
+            case Engine::STATE_RIGHTHAND::RUN_HAND:
+                Add_BasicEffect(m_pOwner); // 이펙트 추가
                 m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
-
+                break;
+            case Engine::STATE_RIGHTHAND::KICK:
+                Add_BasicEffect(m_pOwner); // 이펙트 추가
+                m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
+                break;
+            default:
+                break;
+            }
         }
     }
     else if (Check_Relation(pAceObj, this) == ERELATION::FRIEND)
@@ -383,6 +381,8 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
         {
             // ==== 보스스킬과 충돌 ========================================
             m_eRecentCol = RECENT_COL::BOSSATK;
+
+            Add_BasicEffect(m_pOwner); // 이펙트 추가
 
             m_tState_Obj.Set_State(STATE_OBJ::HIT);
         }

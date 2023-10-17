@@ -59,8 +59,6 @@ _int CMonsterBullet::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	Owner_Dead(m_pOwner);
-
 	m_pTransformComp->Move_Pos(&vDir, fTimeDelta, m_fMovingSpeed);
 
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
@@ -135,18 +133,10 @@ void CMonsterBullet::OnCollision(CGameObject* pDst, const FContact* const)
 }
 void CMonsterBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const)
 {
-	switch (m_eAttackType)
-	{
-	case CMonsterBullet::TYPE::NORMAL:
-		Attack_Occurrence(pDst, m_fAttack);
-		break;
+	if(false == Attack_Occurrence(pDst, m_fAttack))
+		m_pTransformComp->Move_Pos(&vDir, 0.001f, m_fMovingSpeed); // 충돌했는데 대상이 죽었으면 계속 움직
 
-	case CMonsterBullet::TYPE::HEAVY:
-		Attack_Occurrence(pDst, m_fAttack);
-		break;
-	}
-
-	Set_Dead();
+	
 }
 
 void CMonsterBullet::OnCollisionExited(CGameObject* pDst)

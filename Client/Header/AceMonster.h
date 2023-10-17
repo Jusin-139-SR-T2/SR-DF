@@ -93,7 +93,7 @@ public:
 	void						Billboard(const _float& fTimeDelta); 
 	_bool						m_bPlayerAttakBool;
 	_vec3						m_vPos;
-
+	void						Add_BasicEffect(CGameObject* pOwner);
 	//제작함수 리스트 - 스킬 셋팅할때 사용중 
 public:
 	//low~high 사이의 값으로 return 

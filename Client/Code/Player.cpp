@@ -859,8 +859,16 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
         }
         else
         {
-            // 충돌한게 몬스터일때 진행하는곳 
-            m_bHitState = true;
+            // 충돌한게 몬스터일때 진행하는곳
+            switch (m_eRIGHTState)
+            {
+            case Engine::STATE_RIGHTHAND::RUN_HAND:
+                m_bHitState = true;
+                break;
+            case Engine::STATE_RIGHTHAND::KICK:
+                m_bHitState = true;
+                break;
+            }
         }
     }
 

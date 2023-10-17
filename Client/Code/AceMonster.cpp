@@ -95,6 +95,24 @@ void CAceMonster::Billboard(const _float& fTimeDelta)
 	m_pTransformComp->Set_RotationY(rad);
 }
 
+void CAceMonster::Add_BasicEffect(CGameObject* pOwner)
+{
+	// Pow 持失
+	Engine::Add_GameObject(L"GameLogic", CEffect_HitPow::Create(m_pGraphicDev,
+		m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 0.2f, m_pTransformComp->Get_Pos().z, this));
+
+	// Blood持失
+	for (_int i = 0; i < 3; ++i)
+	{
+		Engine::Add_GameObject(L"GameLogic", CEffect_HitBlood::Create(m_pGraphicDev,
+			m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+	}
+
+	// Dust 持失
+	Engine::Add_GameObject(L"GameLogic", CEffect_HitDust::Create(m_pGraphicDev,
+		m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+}
+
 void CAceMonster::Height_On_Terrain()
 {
 	_vec3		vPos;

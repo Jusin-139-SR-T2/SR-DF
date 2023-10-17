@@ -43,9 +43,5 @@ void CBlackBoard_Monster::Free()
 
 HRESULT CBlackBoard_Monster::Ready_BlackBoard(const FBlackBoard_MonsterInit& tInit)
 {
-    m_pBrown = tInit.pBrown;
-    m_pGray = tInit.pGray;
-    m_pBoss = tInit.pBoss;
-
     return S_OK;
 }

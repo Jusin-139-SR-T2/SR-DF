@@ -42,24 +42,13 @@ protected:
 	// 초기화용 구조체를 만들어 매개변수로 받게 한다.
 	virtual HRESULT Ready_BlackBoard(const FBlackBoard_MonsterInit& tInit);
 
-
-
-public:		// 정보만 얻을 때는 
-	GETSET_EX1(CBrown*, m_pBrown, Brown, GET)
-	GETSET_EX1(CGray*, m_pGray, Gray, GET)
-	GETSET_EX1(CBoss*, m_pBoss, Boss, GET)
-
-private:
-	CBrown* m_pBrown = nullptr;
-	CGray* m_pGray = nullptr;
-	CBoss* m_pBoss = nullptr;
-
 public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX2(_bool, m_bLightOn, ControlLight, GET, SET)
 
 
 private:
 	_bool				m_bLightOn;
+	_bool				m_bDeadState;
 
 };
 
