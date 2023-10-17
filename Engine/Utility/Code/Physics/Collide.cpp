@@ -595,6 +595,65 @@ bool FCollisionDetector::RayAndCapsule(const FCollisionRay& srcRay, const FColli
 
 bool FCollisionDetector::RayAndBox(const FCollisionRay& srcRay, const FCollisionBox& dstBox, FCollisionData* pColData)
 {
+	FVector3 vMin = dstBox.Get_Position() - dstBox.vHalfSize;
+	FVector3 vMax = dstBox.Get_Position() + dstBox.vHalfSize;
+
+	// Any component of direction could be 0!
+	// Address this by using a small number, close to
+	// 0 in case any of directions components are 0
+	Real fT1 = (vMin.x - srcRay.vOrigin.x) / (CMP(srcRay.vDir.x, 0.0f) ? 0.00001f : srcRay.vDir.x);
+	Real fT2 = (vMax.x - srcRay.vOrigin.x) / (CMP(srcRay.vDir.x, 0.0f) ? 0.00001f : srcRay.vDir.x);
+	Real fT3 = (vMin.y - srcRay.vOrigin.y) / (CMP(srcRay.vDir.y, 0.0f) ? 0.00001f : srcRay.vDir.y);
+	Real fT4 = (vMax.y - srcRay.vOrigin.y) / (CMP(srcRay.vDir.y, 0.0f) ? 0.00001f : srcRay.vDir.y);
+	Real fT5 = (vMin.z - srcRay.vOrigin.z) / (CMP(srcRay.vDir.z, 0.0f) ? 0.00001f : srcRay.vDir.z);
+	Real fT6 = (vMax.z - srcRay.vOrigin.z) / (CMP(srcRay.vDir.z, 0.0f) ? 0.00001f : srcRay.vDir.z);
+
+	Real fTmin = fmaxf(fmaxf(fminf(fT1, fT2), fminf(fT3, fT4)), fminf(fT5, fT6));
+	Real fTMax = fminf(fminf(fmaxf(fT1, fT2), fmaxf(fT3, fT4)), fmaxf(fT5, fT6));
+
+	// if tmax < 0, ray is intersecting AABB
+	// but entire AABB is behing it's origin
+	if (fTMax < 0) {
+		return false;
+	}
+
+	// if tmin > tmax, ray doesn't intersect AABB
+	if (fTmin > fTMax) {
+		return false;
+	}
+
+	float fT_Result = fTmin;
+
+	// If tmin is < 0, tmax is closer
+	if (fTmin < 0.0f) {
+		fT_Result = fTMax;
+	}
+
+	if (pColData != nullptr && pColData->iContactsLeft >= 0)
+	{
+		FContact& pContact = pColData->tContacts;
+		pContact.vContactPoint = srcRay.vOrigin + srcRay.vDir * fT_Result;
+		//pContact.vContactNormal = (pContact.vContactPoint - dstBox.Get_Position()).Unit();
+		pContact.fPenetration = 0.f;
+		pContact.Set_BodyData(srcRay.pBody, dstBox.pBody, pColData->fFriction, pColData->fRestitution);
+
+		FVector3 normals[] = {
+			FVector3(-1, 0, 0),
+			FVector3(1, 0, 0),
+			FVector3(0, -1, 0),
+			FVector3(0, 1, 0),
+			FVector3(0, 0, -1),
+			FVector3(0, 0, 1)
+		};
+		float t[] = { fT1, fT2, fT3, fT4, fT5, fT6 };
+
+		for (int i = 0; i < 6; ++i) {
+			if (CMP(fT_Result, t[i])) {
+				pContact.vContactNormal = normals[i];
+			}
+		}
+	}
+
 	return false;
 }
 
