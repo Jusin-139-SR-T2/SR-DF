@@ -163,38 +163,26 @@ void		Delete_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCo
 {
 	CPhysicsMgr::GetInstance()->Get_World3D(iIndex)->Delete_RigidBody(pCollider->pBody);
 }
-inline list<CColliderComponent*>	IntersectTests(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc)
-{
-	return CPhysicsMgr::GetInstance()->IntersectTests(iWorldID, vPos, pSrc);
-}
-inline list<CColliderComponent*>	IntersectTests_Sphere(const _uint iWorldID, _vec3 vPos, _float fRadius)
-{
-	return CPhysicsMgr::GetInstance()->IntersectTests_Sphere(iWorldID, vPos, fRadius);
-}
-inline list<CColliderComponent*>	IntersectTests_Box(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize)
-{
-	return CPhysicsMgr::GetInstance()->IntersectTests_Box(iWorldID, vPos, vHalfSize);
-}
-inline list<CColliderComponent*>	IntersectTests_Capsule(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius)
-{
-	return CPhysicsMgr::GetInstance()->IntersectTests_Capsule(iWorldID, vPos, vNormal, fRadius);
-}
 
-inline list<CGameObject*>	IntersectTests_GetGameObject(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc)
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Collider_GetGameObject(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc, _ulong iMask)
 {
-	return CPhysicsMgr::GetInstance()->IntersectTests_GetGameObject(iWorldID, vPos, pSrc);
+	return CPhysicsMgr::GetInstance()->IntersectTests_Collider_GetGameObject(iWorldID, vPos, pSrc, iMask);
 }
-inline list<CGameObject*>	IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius)
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius, _ulong iMask)
 {
-	return CPhysicsMgr::GetInstance()->IntersectTests_Sphere_GetGameObject(iWorldID, vPos, fRadius);
+	return CPhysicsMgr::GetInstance()->IntersectTests_Sphere_GetGameObject(iWorldID, vPos, fRadius, iMask);
 }
-inline list<CGameObject*>	IntersectTests_Box_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize)
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Box_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize, _ulong iMask)
 {
-	return CPhysicsMgr::GetInstance()->IntersectTests_Box_GetGameObject(iWorldID, vPos, vHalfSize);
+	return CPhysicsMgr::GetInstance()->IntersectTests_Box_GetGameObject(iWorldID, vPos, vHalfSize, iMask);
 }
-inline list<CGameObject*>	IntersectTests_Capsule_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius)
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Capsule_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius, _ulong iMask)
 {
-	return CPhysicsMgr::GetInstance()->IntersectTests_Capsule_GetGameObject(iWorldID, vPos, vNormal, fRadius);
+	return CPhysicsMgr::GetInstance()->IntersectTests_Capsule_GetGameObject(iWorldID, vPos, vNormal, fRadius, iMask);
+}
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Ray_GetGameObject(const _uint iWorldID, _vec3 vOrigin, _vec3 vNormal, _ulong iMask)
+{
+	return CPhysicsMgr::GetInstance()->IntersectTests_Ray_GetGameObject(iWorldID, vOrigin, vNormal, iMask);
 }
 
 

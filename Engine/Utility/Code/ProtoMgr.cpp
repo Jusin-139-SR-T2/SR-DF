@@ -15,8 +15,14 @@ HRESULT CProtoMgr::Ready_Proto(const _tchar* pProtoTag, CComponent* pComponent)
 {
     CComponent* pInstance = Find_Prototype(pProtoTag);
 
+    /*if (nullptr != pInstance)
+        return E_FAIL;*/
     if (nullptr != pInstance)
-        return E_FAIL;
+    {
+        Safe_Release(pInstance);
+        auto iter = m_mapProto.find(pProtoTag);
+        m_mapProto.erase(iter);
+    }
 
     m_mapProto.insert({ pProtoTag, pComponent });
 

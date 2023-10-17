@@ -24,6 +24,8 @@
 #include "TextureComponent.h"
 #include "TransformComponent.h"
 #include "ITeamAgent.h"
+#include "Collide.h"
+#include "Contact.h"
 
 
 BEGIN(Engine)
@@ -77,16 +79,11 @@ inline void			Play_PhysicsSimulation(const _uint iIndex);
 inline void			Add_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCollider);
 inline void			Delete_ColliderToPhysicsWorld(const _uint iIndex, FCollisionPrimitive* pCollider);
 
-inline list<CColliderComponent*>	IntersectTests(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc);
-inline list<CColliderComponent*>	IntersectTests_Sphere(const _uint iWorldID, _vec3 vPos, _float fRadius);
-inline list<CColliderComponent*>	IntersectTests_Box(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize);
-inline list<CColliderComponent*>	IntersectTests_Capsule(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius);
-
-inline list<CGameObject*>			IntersectTests_GetGameObject(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc);
-inline list<CGameObject*>			IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius);
-inline list<CGameObject*>			IntersectTests_Box_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize);
-inline list<CGameObject*>			IntersectTests_Capsule_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius);
-
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Collider_GetGameObject(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc, _ulong iMask);
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius, _ulong iMask);
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Box_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize, _ulong iMask);
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Capsule_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius, _ulong iMask);
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Ray_GetGameObject(const _uint iWorldID, _vec3 vOrigin, _vec3 vNormal, _ulong iMask);
 
 
 

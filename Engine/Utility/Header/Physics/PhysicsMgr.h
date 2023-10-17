@@ -37,15 +37,13 @@ private:
 	vector<CPhysicsWorld3D*> m_vecWorld3D;
 
 public:	// 물리세계에 충돌 테스트를 진행후 그 리스트를 돌려받기
-	list<CColliderComponent*> IntersectTests(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc);
-	list<CColliderComponent*> IntersectTests_Sphere(const _uint iWorldID, _vec3 vPos, _float fRadius);
-	list<CColliderComponent*> IntersectTests_Box(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize);
-	list<CColliderComponent*> IntersectTests_Capsule(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius);
+	list<pair<CGameObject*, FContact>> IntersectTests_GetGameObject(const _uint iWorldID, FCollisionPrimitive* pSrc);
 
-	list<CGameObject*> IntersectTests_GetGameObject(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc);
-	list<CGameObject*> IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius);
-	list<CGameObject*> IntersectTests_Box_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize);
-	list<CGameObject*> IntersectTests_Capsule_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius);
+	list<pair<CGameObject*, FContact>> IntersectTests_Collider_GetGameObject(const _uint iWorldID, const _vec3 vPos, CColliderComponent* pSrc, _ulong iMask);
+	list<pair<CGameObject*, FContact>> IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius, _ulong iMask);
+	list<pair<CGameObject*, FContact>> IntersectTests_Box_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize, _ulong iMask);
+	list<pair<CGameObject*, FContact>> IntersectTests_Capsule_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius, _ulong iMask);
+	list<pair<CGameObject*, FContact>> IntersectTests_Ray_GetGameObject(const _uint iWorldID, const _vec3 vPos, const _vec3 vNormal, _ulong iMask);
 };
 
 END

@@ -191,9 +191,9 @@ FCollisionPrimitive* CPhysicsWorld3D::Test_Contact(FCollisionPrimitive* const pC
 	return nullptr;
 }
 
-list<FCollisionPrimitive*> CPhysicsWorld3D::Test_Contacts(FCollisionPrimitive* const pCollision)
+list_collide_test CPhysicsWorld3D::Test_Contacts(FCollisionPrimitive* const pCollision)
 {
-	list<FCollisionPrimitive*> listCollision;
+	list_collide_test listCollision;
 
 	// 받은 충돌체로 리스트바디의 충돌체들과 비교해서 하나라도 충돌하면 반환한다.
 	for (auto iter = m_setBody.begin(); iter != m_setBody.end(); ++iter)
@@ -203,8 +203,20 @@ list<FCollisionPrimitive*> CPhysicsWorld3D::Test_Contacts(FCollisionPrimitive* c
 		if (pCol == pColDst)
 			continue;
 
-		if (FCollisionDetector::CollsionPrimitive(pCollision, pCol, nullptr))
-			listCollision.push_back(pCol);
+		_bool bCollide = false;
+		FCollisionData tColData;
+		tColData.iContactsLeft = 1;	// 작동 시킬라면 넣어야함.
+
+		if (pCol->Get_CollisionMask() & pColDst->Get_CollisionLayer()
+			|| pColDst->Get_CollisionMask() & pCol->Get_CollisionLayer())
+			bCollide = FCollisionDetector::CollsionPrimitive(pCol, pColDst, &tColData);
+		else
+			continue;
+
+		if (bCollide)
+		{
+			listCollision.push_back(pair<FCollisionPrimitive*, FContact>(pCol, tColData.tContacts));
+		}
 	}
 
 	return listCollision;

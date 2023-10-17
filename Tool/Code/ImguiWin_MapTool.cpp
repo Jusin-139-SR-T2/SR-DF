@@ -147,7 +147,7 @@ _int CImguiWin_MapTool::Update_ImguiWin(const _float& fTimeDelta)
     Layout_Property(iMain_Flags);
     Layout_Viewer(iMain_Flags);
 
-    Input_Camera();
+    Input_Camera(fTimeDelta);
 
     ImGui::End();
 
@@ -226,6 +226,8 @@ void CImguiWin_MapTool::Layout_Browser_Scene()
         if (ImGui::Button(u8"씬 전체 저장하기"))
         {
             Save_SceneAll();
+            Load_SceneAll();
+            m_pPickedObjectData = nullptr;
         }
 
         ImGui::SameLine();
@@ -544,7 +546,7 @@ void CImguiWin_MapTool::Layout_Hierarchi(const ImGuiWindowFlags& iMain_Flags)
             ImGui::Indent();
             for (_uint j = 0; j < vecLayer[i].vecObject.size(); j++)
             {
-                bool bIsSelected_Object = (m_iSelected_Object == j);
+                bool bIsSelected_Object = (m_iSelected_Object == j) && (m_iSelected_Layer_Remain == i);
 
                 if (ImGui::Selectable(vecLayer[i].vecObject[j].strName.c_str(),
                     bIsSelected_Object, ImGuiSelectableFlags_AllowDoubleClick))
@@ -1703,7 +1705,7 @@ void CImguiWin_MapTool::Set_Button_ReturnColor()
 }
 
 
-void CImguiWin_MapTool::Input_Camera()
+void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
 {
     // 간단하게 설명.
     // 카메라는 마우스 가운데 클릭으로 뷰 기준 이동
@@ -1743,8 +1745,10 @@ void CImguiWin_MapTool::Input_Camera()
         }
     }
     // 마우스 우클릭시 WASD로 카메라 자체를 이동시킬 수 있다.
-    else if (ImGui::IsMouseDown(ImGuiMouseButton_Right))
+    else if (m_eEdit_Mode != EEDIT_MODE::TRANSFORM && ImGui::IsMouseDown(ImGuiMouseButton_Right))
     {
+        m_eEdit_Mode = EEDIT_MODE::MOUSE_ROTATE;
+
         _vec3 vRight, vLook, vUp;
         Create_CamAxis(vRight, vLook, vUp);
 
@@ -1809,11 +1813,12 @@ void CImguiWin_MapTool::Input_Camera()
             Get_Look() += vUp * fMul * 0.034f;
         }
     }
-
-
+    else if (m_eEdit_Mode != EEDIT_MODE::TRANSFORM)
+        m_eEdit_Mode = EEDIT_MODE::NONE;
 
     // 마우스 피킹 기능
-    if (m_eEdit_Mode != EEDIT_MODE::TRANSFORM && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    if (m_eEdit_Mode == EEDIT_MODE::NONE
+        && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
         // 피킹 전에 데이터 초기화
         m_pPickedObjectData = nullptr;
@@ -1829,17 +1834,18 @@ void CImguiWin_MapTool::Input_Camera()
         POINT pt = Get_MousePos_Client(g_hWnd);
         ImVec2 vWindowMin = ImGui::GetWindowPos();
         ImVec2 vContentMin = ImGui::GetWindowContentRegionMin();
+        ImVec2 vContentSize = ImGui::GetContentRegionAvail();
 
-        _vec3 vNear(pt.x, pt.y, 0.f);
-        _vec3 vFar(pt.x, pt.y, 1.f);
+        _vec3 vNear(pt.x + vContentMin.x, 
+            pt.y + vContentMin.y, 0.f);
+        _vec3 vFar(vNear.x, vNear.y, 1.f);
 
         _matrix matWorld;
         D3DXMatrixIdentity(&matWorld);
 
         D3DVIEWPORT9 viewport;
         pGraphicDev->GetViewport(&viewport);
-        viewport = { (_ulong)vWindowMin.x, (_ulong)vWindowMin.y, (_ulong)m_vViewerContent_Size.x, (_ulong)m_vViewerContent_Size.y, viewport.MinZ, viewport.MaxZ};
-
+        
         _vec3 vWorldNear, vWorldFar;
         D3DXVec3Unproject(&vWorldNear, &vNear, &viewport, &m_matProj, &m_matView, &matWorld);
         D3DXVec3Unproject(&vWorldFar, &vFar, &viewport, &m_matProj, &m_matView, &matWorld);
@@ -2042,8 +2048,7 @@ void CImguiWin_MapTool::Input_Camera()
     }
 
     // 선택된 오브젝트가 있을 때 트랜스폼 기능
-    if (!ImGui::IsMouseDown(ImGuiMouseButton_Middle)
-        && !ImGui::IsMouseDown(ImGuiMouseButton_Right))
+    if (m_eEdit_Mode == EEDIT_MODE::NONE)
     {
         if (ImGui::IsKeyPressed(ImGuiKey_S))
         {
@@ -2072,8 +2077,8 @@ void CImguiWin_MapTool::Input_Camera()
         }
     }
 
-    // 트랜스폼 실행중일 때, 축선택 가능
-    if (m_eTransform_Mode != ETRANSFORM_MODE_NONE)
+    // 여기서부터 실제 트랜스폼 기능, 나중에 다른 곳으로 이동할 것.
+    if (m_eEdit_Mode == EEDIT_MODE::TRANSFORM && m_pPickedObjectData != nullptr)
     {
         if (!ImGui::IsKeyDown(ImGuiKey_LeftShift))
         {
@@ -2116,222 +2121,216 @@ void CImguiWin_MapTool::Input_Camera()
             m_eTransform_PrevAxis = m_eTransform_Axis;
             m_eTransform_Axis = ETRANSFORM_AXIS_ALL;
         }
-    }
 
-    
-
-    // 여기서부터 실제 트랜스폼 기능, 나중에 다른 곳으로 이동할 것.
-    if (m_pPickedObjectData != nullptr)
-    {
-        if (m_eEdit_Mode == EEDIT_MODE::TRANSFORM)
+        CCubeObject* pObj = dynamic_cast<CCubeObject*>(m_pPickedObjectData->pObject);
+        if (pObj != nullptr)
         {
-            CCubeObject* pObj = dynamic_cast<CCubeObject*>(m_pPickedObjectData->pObject);
-            if (pObj != nullptr)
+            CTransformComponent* pTransform = pObj->Get_TransformComponent();
+
+            // 처음 들어올 때 세팅
+            if (!m_bIsTransform_Start)
             {
-                CTransformComponent* pTransform = pObj->Get_TransformComponent();
-
-                // 처음 들어올 때 세팅
-                if (!m_bIsTransform_Start)
-                {
-                    m_bIsTransform_Start = !m_bIsTransform_Start;
+                m_bIsTransform_Start = !m_bIsTransform_Start;
 
 
 
-                    // 시작 마우스 위치
-                    POINT ptStart = Get_MousePos_Client(g_hWnd);
-                    m_vTransform_MouseStart = { static_cast<_float>(ptStart.x), static_cast<_float>(ptStart.y) };
+                // 시작 마우스 위치
+                POINT ptStart = Get_MousePos_Client(g_hWnd);
+                m_vTransform_MouseStart = { static_cast<_float>(ptStart.x), static_cast<_float>(ptStart.y) };
 
-                    // 여기서 시작 시점의 좌표를 구한다.
-                    LPDIRECT3DDEVICE9 pGraphicDev = CImguiMgr::GetInstance()->Get_GraphicDev();
+                // 여기서 시작 시점의 좌표를 구한다.
+                LPDIRECT3DDEVICE9 pGraphicDev = CImguiMgr::GetInstance()->Get_GraphicDev();
 
-                    POINT pt = Get_MousePos_Client(g_hWnd);
-                    ImVec2 vWindowMin = ImGui::GetWindowPos();
-                    D3DVIEWPORT9 viewport;
-                    pGraphicDev->GetViewport(&viewport);
-                    viewport = { (_ulong)vWindowMin.x, (_ulong)vWindowMin.y, (_ulong)m_vViewerContent_Size.x, (_ulong)m_vViewerContent_Size.y, viewport.MinZ, viewport.MaxZ };
+                POINT pt = Get_MousePos_Client(g_hWnd);
+                ImVec2 vWindowMin = ImGui::GetWindowPos();
+                D3DVIEWPORT9 viewport;
+                pGraphicDev->GetViewport(&viewport);
+                viewport = { (_ulong)vWindowMin.x, (_ulong)vWindowMin.y, (_ulong)m_vViewerContent_Size.x, (_ulong)m_vViewerContent_Size.y, viewport.MinZ, viewport.MaxZ };
 
-                    // 이 객체의 중심점을 화면 좌표로 옮겨서 사이즈 변경에 쓴다.
-                    _vec3 vOriginPos = { 0.f, 0.f, 0.f };
-                    _matrix vMatWorld = *pTransform->Get_Transform();
+                // 이 객체의 중심점을 화면 좌표로 옮겨서 사이즈 변경에 쓴다.
+                _vec3 vOriginPos = { 0.f, 0.f, 0.f };
+                _matrix vMatWorld = *pTransform->Get_Transform();
 
-                    D3DXVec3Project(&vOriginPos, &vOriginPos, &viewport, &m_matProj, &m_matView, &vMatWorld);
-                    m_vTransform_ObjectStart = { vOriginPos.x, vOriginPos.y };
+                D3DXVec3Project(&vOriginPos, &vOriginPos, &viewport, &m_matProj, &m_matView, &vMatWorld);
+                m_vTransform_ObjectStart = { vOriginPos.x, vOriginPos.y };
 
-                    // 시작 길이 저장
-                    m_fTransform_LengthStart = D3DXVec2Length(&(m_vTransform_MouseStart - m_vTransform_ObjectStart));
+                // 시작 길이 저장
+                m_fTransform_LengthStart = D3DXVec2Length(&(m_vTransform_MouseStart - m_vTransform_ObjectStart));
                     
 
-                    // 시작 위치 저장
-                    m_vTransform_Translate = m_vTransform_Translate_Saved = pTransform->Get_Pos();
-                    m_vTransform_Rotate = m_vTransform_Rotate_Saved = pTransform->Get_Rotation();
-                    m_vTransform_Scale = m_vTransform_Scale_Saved = pTransform->Get_Scale();
-                }
+                // 시작 위치 저장
+                m_vTransform_Translate = m_vTransform_Translate_Saved = pTransform->Get_Pos();
+                m_vTransform_Rotate = m_vTransform_Rotate_Saved = pTransform->Get_Rotation();
+                m_vTransform_Scale = m_vTransform_Scale_Saved = pTransform->Get_Scale();
+            }
 
-                // 실시간으로 변하는 마우스 위치 체크
-                POINT ptEnd = Get_MousePos_Client(g_hWnd);
-                m_vTransform_MouseEnd = { static_cast<_float>(ptEnd.x), static_cast<_float>(ptEnd.y) };
+            // 실시간으로 변하는 마우스 위치 체크
+            POINT ptEnd = Get_MousePos_Client(g_hWnd);
+            m_vTransform_MouseEnd = { static_cast<_float>(ptEnd.x), static_cast<_float>(ptEnd.y) };
 
-                // 스케일 용
-                _float fDelta_ObjectLength = D3DXVec2Length(&(m_vTransform_MouseEnd - m_vTransform_ObjectStart));
-                _float fLength = (fDelta_ObjectLength * 10.f) / (m_fTransform_LengthStart * 10.f);
+            // 스케일 용
+            _float fDelta_ObjectLength = D3DXVec2Length(&(m_vTransform_MouseEnd - m_vTransform_ObjectStart));
+            _float fLength = (fDelta_ObjectLength * 10.f) / (m_fTransform_LengthStart * 10.f);
 
-                // 트랜스레이트 용
-                _vec2 vDelta_Mouse = (m_vTransform_MouseEnd - m_vTransform_MouseStart) * 0.1f;
-                //_float fLength_Mouse = fDelta_MouseLength;
+            // 트랜스레이트 용
+            _float fDelta_MouseMul = 1.f;
+            if (ImGui::IsKeyDown(ImGuiKey_LeftShift))
+                fDelta_MouseMul *= 0.3f;
+            _vec2 vDelta_Mouse = (m_vTransform_MouseEnd - m_vTransform_MouseStart) * fTimeDelta * 10.f * fDelta_MouseMul;
+            //_float fLength_Mouse = fDelta_MouseLength;
 
-                // 카메라 기준 축 생성
-                _vec3 vRight, vLook, vUp;
-                Create_CamAxis(vRight, vLook, vUp);
+            // 카메라 기준 축 생성
+            _vec3 vRight, vLook, vUp;
+            Create_CamAxis(vRight, vLook, vUp);
 
-                if (m_eTransform_PrevAxis != m_eTransform_Axis)
+            if (m_eTransform_PrevAxis != m_eTransform_Axis)
+            {
+                m_eTransform_PrevAxis = m_eTransform_Axis;
+
+                pTransform->Set_Pos(m_vTransform_Translate_Saved);
+                pTransform->Set_Rotation(m_vTransform_Rotate_Saved);
+                pTransform->Set_Scale(m_vTransform_Scale_Saved);
+            }
+
+            if (m_eTransform_Mode == ETRANSFORM_MODE_MOVE)
+            {
+                if (m_eTransform_Axis != ETRANSFORM_AXIS_NONE)
+                    pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
+                switch (m_eTransform_Axis)
                 {
-                    m_eTransform_PrevAxis = m_eTransform_Axis;
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_X:
+                    pTransform->Set_PosY(m_vTransform_Translate_Saved.y);
+                    pTransform->Set_PosZ(m_vTransform_Translate_Saved.z);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_Y:
+                    pTransform->Set_PosX(m_vTransform_Translate_Saved.x);
+                    pTransform->Set_PosZ(m_vTransform_Translate_Saved.z);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_Z:
+                    pTransform->Set_PosX(m_vTransform_Translate_Saved.x);
+                    pTransform->Set_PosY(m_vTransform_Translate_Saved.y);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_PLANE_X:
+                        
+                    pTransform->Set_PosX(m_vTransform_Translate_Saved.x);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_PLANE_Y:
+                    pTransform->Set_PosY(m_vTransform_Translate_Saved.y);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_PLANE_Z:
+                    pTransform->Set_PosZ(m_vTransform_Translate_Saved.z);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
+                    break;
+                default:
+                    break;
+                }
+                m_pPickedObjectData->vPos = pTransform->Get_Pos();
+            }
+            else
+            {
+                pTransform->Set_Pos(m_vTransform_Translate_Saved);
+                m_pPickedObjectData->vPos = pTransform->Get_Pos();
+            }
 
-                    pTransform->Set_Pos(m_vTransform_Translate_Saved);
-                    pTransform->Set_Rotation(m_vTransform_Rotate_Saved);
-                    pTransform->Set_Scale(m_vTransform_Scale_Saved);
+            if (m_eTransform_Mode == ETRANSFORM_MODE_ROT)
+            {
+                switch (m_eTransform_Axis)
+                {
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_X:
+                    pTransform->Set_RotationX(m_vTransform_Rotate.x + vDelta_Mouse.y * fTimeDelta * 10.f);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_Y:
+                    pTransform->Set_RotationY(m_vTransform_Rotate.y - vDelta_Mouse.x * fTimeDelta * 10.f);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_Z:
+                    pTransform->Set_RotationZ(m_vTransform_Rotate.z - vDelta_Mouse.y * fTimeDelta * 10.f);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_PLANE_X:
+                    pTransform->Set_RotationY(m_vTransform_Rotate.y * fLength);
+                    pTransform->Set_RotationZ(m_vTransform_Rotate.z * fLength);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_PLANE_Y:
+                    pTransform->Set_RotationX(m_vTransform_Rotate.x * fLength);
+                    pTransform->Set_RotationZ(m_vTransform_Rotate.z * fLength);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_PLANE_Z:
+                    pTransform->Set_RotationX(m_vTransform_Rotate.x * fLength);
+                    pTransform->Set_RotationY(m_vTransform_Rotate.y * fLength);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
+                {
+                    pTransform->Set_Rotation(m_vTransform_Rotate + (vRight) * fLength);
+                    break;
                 }
+                default:
+                    break;
+                }
+                m_pPickedObjectData->vRot = pTransform->Get_Rotation();
+            }
+            else
+            {
+                pTransform->Set_Rotation(m_vTransform_Rotate_Saved);
+                m_pPickedObjectData->vRot = pTransform->Get_Rotation();
+            }
 
-                if (m_eTransform_Mode == ETRANSFORM_MODE_MOVE)
+            if (m_eTransform_Mode == ETRANSFORM_MODE_SCALE)
+            {
+                switch (m_eTransform_Axis)
                 {
-                    switch (m_eTransform_Axis)
-                    {
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_X:
-                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
-                        pTransform->Set_PosY(m_vTransform_Translate_Saved.y);
-                        pTransform->Set_PosZ(m_vTransform_Translate_Saved.z);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_Y:
-                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
-                        pTransform->Set_PosX(m_vTransform_Translate_Saved.x);
-                        pTransform->Set_PosZ(m_vTransform_Translate_Saved.z);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_Z:
-                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
-                        pTransform->Set_PosX(m_vTransform_Translate_Saved.x);
-                        pTransform->Set_PosY(m_vTransform_Translate_Saved.y);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_PLANE_X:
-                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
-                        pTransform->Set_PosX(m_vTransform_Translate_Saved.x);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_PLANE_Y:
-                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
-                        pTransform->Set_PosY(m_vTransform_Translate_Saved.y);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_PLANE_Z:
-                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
-                        pTransform->Set_PosZ(m_vTransform_Translate_Saved.z);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
-                        pTransform->Set_Pos(m_vTransform_Translate + (vRight * vDelta_Mouse.x) - (vUp * vDelta_Mouse.y));
-                        break;
-                    default:
-                        break;
-                    }
-                    m_pPickedObjectData->vPos = pTransform->Get_Pos();
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_X:
+                    pTransform->Set_ScaleX(m_vTransform_Scale.x * fLength);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_Y:
+                    pTransform->Set_ScaleY(m_vTransform_Scale.y * fLength);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_Z:
+                    pTransform->Set_ScaleZ(m_vTransform_Scale.z * fLength);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_PLANE_X:
+                    pTransform->Set_ScaleX(m_vTransform_Scale.x * fLength);
+                    pTransform->Set_ScaleY(m_vTransform_Scale.y * fLength);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_PLANE_Y:
+                    pTransform->Set_ScaleX(m_vTransform_Scale.x * fLength);
+                    pTransform->Set_ScaleZ(m_vTransform_Scale.z * fLength);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_PLANE_Z:
+                    pTransform->Set_ScaleX(m_vTransform_Scale.x * fLength);
+                    pTransform->Set_ScaleY(m_vTransform_Scale.y * fLength);
+                    break;
+                case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
+                    pTransform->Set_Scale(m_vTransform_Scale * fLength);
+                    break;
+                default:
+                    break;
                 }
-                else
-                {
-                    pTransform->Set_Pos(m_vTransform_Translate_Saved);
-                    m_pPickedObjectData->vPos = pTransform->Get_Pos();
-                }
+                m_pPickedObjectData->vScale = pTransform->Get_Scale();
+            }
+            else
+            {
+                pTransform->Set_Scale(m_vTransform_Scale_Saved);
+                m_pPickedObjectData->vScale = pTransform->Get_Scale();
+            }
 
-                if (m_eTransform_Mode == ETRANSFORM_MODE_ROT)
-                {
-                    switch (m_eTransform_Axis)
-                    {
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_X:
-                        pTransform->Set_RotationX(m_vTransform_Rotate.x + vDelta_Mouse.y * 0.1f);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_Y:
-                        pTransform->Set_RotationY(m_vTransform_Rotate.y - vDelta_Mouse.x * 0.1f);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_Z:
-                        pTransform->Set_RotationZ(m_vTransform_Rotate.z - vDelta_Mouse.y * 0.1f);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_PLANE_X:
-                        pTransform->Set_RotationY(m_vTransform_Rotate.y * fLength);
-                        pTransform->Set_RotationZ(m_vTransform_Rotate.z * fLength);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_PLANE_Y:
-                        pTransform->Set_RotationX(m_vTransform_Rotate.x * fLength);
-                        pTransform->Set_RotationZ(m_vTransform_Rotate.z * fLength);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_PLANE_Z:
-                        pTransform->Set_RotationX(m_vTransform_Rotate.x * fLength);
-                        pTransform->Set_RotationY(m_vTransform_Rotate.y * fLength);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
-                    {
-                        pTransform->Set_Rotation(m_vTransform_Rotate + (vRight) * fLength);
-                        break;
-                    }
-                    default:
-                        break;
-                    }
-                    m_pPickedObjectData->vRot = pTransform->Get_Rotation();
-                }
-                else
-                {
-                    pTransform->Set_Rotation(m_vTransform_Rotate_Saved);
-                    m_pPickedObjectData->vRot = pTransform->Get_Rotation();
-                }
+            // 적용
+            if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+            {
+                m_eEdit_Mode = EEDIT_MODE::NONE;
+            }
+            if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+            {
+                m_eEdit_Mode = EEDIT_MODE::NONE;
+                m_eTransform_Mode = ETRANSFORM_MODE_NONE;
+                m_eTransform_Axis = ETRANSFORM_AXIS_NONE;
 
-                if (m_eTransform_Mode == ETRANSFORM_MODE_SCALE)
-                {
-                    switch (m_eTransform_Axis)
-                    {
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_X:
-                        pTransform->Set_ScaleX(m_vTransform_Scale.x * fLength);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_Y:
-                        pTransform->Set_ScaleY(m_vTransform_Scale.y * fLength);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_Z:
-                        pTransform->Set_ScaleZ(m_vTransform_Scale.z * fLength);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_PLANE_X:
-                        pTransform->Set_ScaleX(m_vTransform_Scale.x* fLength);
-                        pTransform->Set_ScaleY(m_vTransform_Scale.y* fLength);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_PLANE_Y:
-                        pTransform->Set_ScaleX(m_vTransform_Scale.x* fLength);
-                        pTransform->Set_ScaleZ(m_vTransform_Scale.z* fLength);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_PLANE_Z:
-                        pTransform->Set_ScaleX(m_vTransform_Scale.x * fLength);
-                        pTransform->Set_ScaleY(m_vTransform_Scale.y * fLength);
-                        break;
-                    case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
-                        pTransform->Set_Scale(m_vTransform_Scale * fLength);
-                        break;
-                    default:
-                        break;
-                    }
-                    m_pPickedObjectData->vScale = pTransform->Get_Scale();
-                }
-                else
-                {
-                    pTransform->Set_Scale(m_vTransform_Scale_Saved);
-                    m_pPickedObjectData->vScale = pTransform->Get_Scale();
-                }
+                pTransform->Set_Pos(m_vTransform_Translate_Saved);
+                pTransform->Set_Rotation(m_vTransform_Rotate_Saved);
+                pTransform->Set_Scale(m_vTransform_Scale_Saved);
 
-                // 적용
-                if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-                {
-                    m_eEdit_Mode = EEDIT_MODE::NONE;
-                }
-                if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-                {
-                    m_eEdit_Mode = EEDIT_MODE::NONE;
-                    m_eTransform_Mode = ETRANSFORM_MODE_NONE;
-                    m_eTransform_Axis = ETRANSFORM_AXIS_NONE;
-
-                    pTransform->Set_Pos(m_vTransform_Translate_Saved);
-                    pTransform->Set_Rotation(m_vTransform_Rotate_Saved);
-                    pTransform->Set_Scale(m_vTransform_Scale_Saved);
-                }
+                m_pPickedObjectData->vPos = m_vTransform_Translate_Saved;
+                m_pPickedObjectData->vRot = m_vTransform_Rotate_Saved;
+                m_pPickedObjectData->vScale = m_vTransform_Scale_Saved;
             }
         }
     }

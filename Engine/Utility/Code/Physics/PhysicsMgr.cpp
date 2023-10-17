@@ -51,135 +51,68 @@ _int CPhysicsMgr::Update_Physics(const Real& fTimeDelta)
 	return 0;
 }
 
-list<CColliderComponent*> CPhysicsMgr::IntersectTests(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc)
+list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_GetGameObject(const _uint iWorldID, FCollisionPrimitive* pSrc)
 {
-	list<CColliderComponent*> listColliderComp;
-	list<FCollisionPrimitive*> listCollision;
+	list_collide_test listCollision;
+	list<pair<CGameObject*, FContact>> listGameObject;
 
-	listCollision = m_vecWorld3D[iWorldID]->Test_Contacts(pSrc->Get_Shape());
+	listCollision = m_vecWorld3D[iWorldID]->Test_Contacts(static_cast<FCollisionPrimitive*>(pSrc));
 	for (auto iter = listCollision.begin(); iter != listCollision.end(); ++iter)
 	{
-		if (CColliderComponent* pObj = static_cast<CColliderComponent*>((*iter)->Get_Owner()))
-			listColliderComp.push_back(pObj);
+		CColliderComponent* pCollideComp = static_cast<CColliderComponent*>((*iter).first->Get_Owner());
+		CGameObject* pObj = static_cast<CGameObject*>(pCollideComp->Get_Owner());
+		listGameObject.push_back(pair<CGameObject*, FContact>(pObj, (*iter).second));
 	}
 
-	return listColliderComp;
+	return listGameObject;
 }
 
-list<CColliderComponent*> CPhysicsMgr::IntersectTests_Sphere(const _uint iWorldID, _vec3 vPos, _float fRadius)
+list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_Collider_GetGameObject(const _uint iWorldID, const _vec3 vPos, CColliderComponent* pSrc, _ulong iMask)
+{
+	FCollisionPrimitive pShape = *static_cast<FCollisionPrimitive*>(pSrc->Get_Shape());
+	pShape.Set_Position(pShape.Get_Position() + FVector3(vPos.x, vPos.y, vPos.z));
+	pShape.Set_CollisionMask(iMask);
+
+	return IntersectTests_GetGameObject(iWorldID, &pShape);
+}
+
+list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius, _ulong iMask)
 {
 	FCollisionSphere pShape;
 	pShape.Set_Position(FVector3(vPos.x, vPos.y, vPos.z));
 	pShape.fRadius = fRadius;
+	pShape.Set_CollisionMask(iMask);
 
-	list<CColliderComponent*> listColliderComp;
-	list<FCollisionPrimitive*> listCollision;
-
-	listCollision = m_vecWorld3D[iWorldID]->Test_Contacts(static_cast<FCollisionPrimitive*>(&pShape));
-	for (auto iter = listCollision.begin(); iter != listCollision.end(); ++iter)
-	{
-		if (CColliderComponent* pObj = static_cast<CColliderComponent*>((*iter)->Get_Owner()))
-			listColliderComp.push_back(pObj);
-	}
-
-	return listColliderComp;
+	return IntersectTests_GetGameObject(iWorldID, static_cast<FCollisionPrimitive*>(&pShape));
 }
 
-list<CColliderComponent*> CPhysicsMgr::IntersectTests_Box(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize)
+list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_Box_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize, _ulong iMask)
 {
 	FCollisionBox pShape;
 	pShape.Set_Position(FVector3(vPos.x, vPos.y, vPos.z));
 	pShape.vHalfSize = FVector3(vHalfSize.x, vHalfSize.y, vHalfSize.z);
+	pShape.Set_CollisionMask(iMask);
 
-	list<CColliderComponent*> listColliderComp;
-	list<FCollisionPrimitive*> listCollision;
-
-	listCollision = m_vecWorld3D[iWorldID]->Test_Contacts(static_cast<FCollisionPrimitive*>(&pShape));
-	for (auto iter = listCollision.begin(); iter != listCollision.end(); ++iter)
-	{
-		if (CColliderComponent* pObj = static_cast<CColliderComponent*>((*iter)->Get_Owner()))
-			listColliderComp.push_back(pObj);
-	}
-
-	return listColliderComp;
+	return IntersectTests_GetGameObject(iWorldID, static_cast<FCollisionPrimitive*>(&pShape));
 }
 
-list<CColliderComponent*> CPhysicsMgr::IntersectTests_Capsule(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius)
+list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_Capsule_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius, _ulong iMask)
 {
 	FCollisionCapsule pShape;
 	pShape.Set_Position(FVector3(vPos.x, vPos.y, vPos.z));
 	pShape.vDirHalfSize = FVector3(vNormal.x, vNormal.y, vNormal.z);
 	pShape.fRadius = fRadius;
+	pShape.Set_CollisionMask(iMask);
 
-	list<CColliderComponent*> listColliderComp;
-	list<FCollisionPrimitive*> listCollision;
-
-	listCollision = m_vecWorld3D[iWorldID]->Test_Contacts(static_cast<FCollisionPrimitive*>(&pShape));
-	for (auto iter = listCollision.begin(); iter != listCollision.end(); ++iter)
-	{
-		if (CColliderComponent* pObj = static_cast<CColliderComponent*>((*iter)->Get_Owner()))
-			listColliderComp.push_back(pObj);
-	}
-
-	return listColliderComp;
+	return IntersectTests_GetGameObject(iWorldID, static_cast<FCollisionPrimitive*>(&pShape));
 }
 
-list<CGameObject*> CPhysicsMgr::IntersectTests_GetGameObject(const _uint iWorldID, _vec3 vPos, CColliderComponent* pSrc)
+list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_Ray_GetGameObject(const _uint iWorldID, const _vec3 vPos, const _vec3 vNormal, _ulong iMask)
 {
-	list<CGameObject*> listGameObject;
-	list<CColliderComponent*> listCollierComp;
+	FCollisionRay pShape;
+	pShape.vOrigin = (FVector3(vPos.x, vPos.y, vPos.z));
+	pShape.vDir = FVector3(vNormal.x, vNormal.y, vNormal.z).Unit();
+	pShape.Set_CollisionMask(iMask);
 
-	listCollierComp = IntersectTests(iWorldID, vPos, pSrc);
-	for (auto iter = listCollierComp.begin(); iter != listCollierComp.end(); ++iter)
-	{
-		if (CGameObject* pObj = static_cast<CGameObject*>((*iter)->Get_Owner()))
-			listGameObject.push_back(pObj);
-	}
-
-	return listGameObject;
-}
-
-list<CGameObject*> CPhysicsMgr::IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius)
-{
-	list<CGameObject*> listGameObject;
-	list<CColliderComponent*> listCollierComp;
-
-	listCollierComp = IntersectTests_Sphere(iWorldID, vPos, fRadius);
-	for (auto iter = listCollierComp.begin(); iter != listCollierComp.end(); ++iter)
-	{
-		if (CGameObject* pObj = static_cast<CGameObject*>((*iter)->Get_Owner()))
-			listGameObject.push_back(pObj);
-	}
-
-	return listGameObject;
-}
-
-list<CGameObject*> CPhysicsMgr::IntersectTests_Box_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize)
-{
-	list<CGameObject*> listGameObject;
-	list<CColliderComponent*> listCollierComp;
-
-	listCollierComp = IntersectTests_Box(iWorldID, vPos, vHalfSize);
-	for (auto iter = listCollierComp.begin(); iter != listCollierComp.end(); ++iter)
-	{
-		if (CGameObject* pObj = static_cast<CGameObject*>((*iter)->Get_Owner()))
-			listGameObject.push_back(pObj);
-	}
-
-	return listGameObject;
-}
-
-list<CGameObject*> CPhysicsMgr::IntersectTests_Capsule_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius)
-{
-	list<CGameObject*> listGameObject;
-	list<CColliderComponent*> listCollierComp;
-
-	listCollierComp = IntersectTests_Capsule(iWorldID, vPos, vNormal, fRadius);
-	for (auto iter = listCollierComp.begin(); iter != listCollierComp.end(); ++iter)
-	{
-		if (CGameObject* pObj = static_cast<CGameObject*>((*iter)->Get_Owner()))
-			listGameObject.push_back(pObj);
-	}
-
-	return listGameObject;
+	return IntersectTests_GetGameObject(iWorldID, static_cast<FCollisionPrimitive*>(&pShape));
 }

@@ -20,7 +20,9 @@ const string g_strObjectPath = g_strDataPath + "Object/";
 const string g_strTerrainPath = g_strDataPath + "Terrain/";
 const string g_strLightPath = g_strDataPath + "Light/";
 
-class Engine::CGameObject;
+BEGIN(Engine)
+class CGameObject;
+END
 
 class CImguiWin_MapTool : public CImguiWin
 {
@@ -274,7 +276,7 @@ public:		// 트랜스폼 영역, Transform에서 옮겨온 거임
 	GETSET_EX2(_vec3, m_vCamTranslate[INFO_POS], Pos, GET_REF, SET_C)
 
 private:		// 카메라
-	void			Input_Camera();
+	void			Input_Camera(const _float& fTimeDelta);
 
 	_bool			m_bCanInput_Camera = false;
 

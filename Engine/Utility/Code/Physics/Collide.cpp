@@ -588,6 +588,8 @@ bool FCollisionDetector::LineAndOBB(const FCollisionLine& srcLine, const FCollis
 
 bool FCollisionDetector::RayAndCapsule(const FCollisionRay& srcRay, const FCollisionCapsule& dstCapsule, FCollisionData* pColData)
 {
+	
+
 	return false;
 }
 
@@ -598,7 +600,38 @@ bool FCollisionDetector::RayAndBox(const FCollisionRay& srcRay, const FCollision
 
 bool FCollisionDetector::RayAndSphere(const FCollisionRay& srcRay, const FCollisionSphere& dstSphere, FCollisionData* pColData)
 {
-	return false;
+	FVector3 vDstDir = dstSphere.Get_Position() - srcRay.vOrigin;
+	Real fRadiusSq = dstSphere.fRadius * dstSphere.fRadius;
+
+	Real fDstDirSq = vDstDir.SquareMagnitude();
+	Real fA = srcRay.vDir.DotProduct(vDstDir);
+	Real fBSq = fDstDirSq - (fA * fA);
+	Real fF = real_sqrt(real_abs(fRadiusSq) - fBSq);
+
+	Real fT = fA - fF;
+
+	if (fRadiusSq - (fDstDirSq - fA * fA) < 0.0f)
+	{
+		return false;
+	}
+
+	if (fDstDirSq < fRadiusSq)
+	{
+		fT = fA + fF;
+	}
+
+	// 충돌정보 생성
+	if (fDstDirSq < fRadiusSq
+		&& pColData != nullptr && pColData->iContactsLeft >= 0)
+	{
+		FContact& pContact = pColData->tContacts;
+		pContact.vContactPoint = srcRay.vOrigin + srcRay.vDir * fT;
+		pContact.vContactNormal = (pContact.vContactPoint - dstSphere.Get_Position()).Unit();
+		pContact.fPenetration = 0.f;
+		pContact.Set_BodyData(srcRay.pBody, dstSphere.pBody, pColData->fFriction, pColData->fRestitution);
+	}
+
+	return true;
 }
 
 bool FCollisionDetector::RayAndPlane(const FCollisionRay& srcRay, const FCollisionPlane& dstPlane, FCollisionData* pColData)

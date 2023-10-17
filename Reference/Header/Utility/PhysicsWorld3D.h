@@ -10,6 +10,8 @@
 
 BEGIN(Engine)
 
+using list_collide_test = list<pair<FCollisionPrimitive*, FContact>>;
+
 /// <summary>
 /// 물리 프로세스가 진행되는 3D 공간
 /// </summary>
@@ -27,6 +29,7 @@ public:
 private:
 	virtual		void	Free();
 
+
 public:
 	HRESULT						Ready_Physics(_uint iMaxContacts, _uint iIterations);
 	void						StartFrame_Physics();
@@ -37,7 +40,7 @@ public:
 	// 충돌한 객체중 가장 먼저 충돌한 객체를 반환. 정말 간단한데서만 씀.
 	FCollisionPrimitive*		Test_Contact(FCollisionPrimitive* const pCollision);
 	// 충돌한 모든 충돌체 반환. 주로 많이 쓰이는 방식. 다양한 충돌체와 충돌중이면 한번에 처리가 가능하다.
-	list<FCollisionPrimitive*>	Test_Contacts(FCollisionPrimitive* const pCollision);
+	list_collide_test			Test_Contacts(FCollisionPrimitive* const pCollision);
 
 public:
 	void						Add_RigidBody(FRigidBody* pBody);
