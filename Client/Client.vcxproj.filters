@@ -106,12 +106,6 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack">
       <UniqueIdentifier>{83156d89-845d-499d-ba93-6b15ceff343e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Fist">
-      <UniqueIdentifier>{62ff4301-9922-4291-bc8b-eea1daff7cf7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe">
-      <UniqueIdentifier>{55463843-d047-4cec-8e44-950afc60c14b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\01. Bullet">
       <UniqueIdentifier>{3d6a865c-53c8-44a9-b066-854f0cf7a583}</UniqueIdentifier>
     </Filter>
@@ -222,6 +216,27 @@
     </Filter>
     <Filter Include="05. =====AceUI=====\03. CrossHair">
       <UniqueIdentifier>{2a916f85-3ff5-4560-a551-5c1a0d95045c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Close Attack">
+      <UniqueIdentifier>{62ff4301-9922-4291-bc8b-eea1daff7cf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02.">
+      <UniqueIdentifier>{7977318f-ce2b-4665-b2af-4052cbb15483}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill">
+      <UniqueIdentifier>{ca6f25a3-3f57-4f7d-bd0c-81b038c47176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\NewFilter2">
+      <UniqueIdentifier>{b2b95b6d-1894-45c0-8f8b-52c6ac98da3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\NewFilter3">
+      <UniqueIdentifier>{4aeddc07-98a5-43ec-8b94-e7b9ab2c6d73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\NewFilter4">
+      <UniqueIdentifier>{e5b11e75-edb0-4201-9b0d-54c141b12eee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union">
+      <UniqueIdentifier>{c5996238-3bde-44b5-a712-86ae90bc08f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -366,11 +381,8 @@
     <ClInclude Include="Header\AbsFac_GameObject.h">
       <Filter>05. =====AceUI=====\00. AbstractFactory</Filter>
     </ClInclude>
-    <ClInclude Include="Header\PlayerAttackUnion.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\PlayerFist.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Fist</Filter>
+    <ClInclude Include="Header\CloseAttack.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Close Attack</Filter>
     </ClInclude>
     <ClInclude Include="Header\PlayerGunLighter.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\03. Lighter\03. PlayerGunLighter</Filter>
@@ -396,9 +408,6 @@
     <ClInclude Include="Header\Effect_DazeSwirl.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl</Filter>
     </ClInclude>
-    <ClInclude Include="Header\PlayerSteelPipe.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe</Filter>
-    </ClInclude>
     <ClInclude Include="Header\BlackBoard_Camera.h">
       <Filter>04. =====BlackBoard=====\2. Camera</Filter>
     </ClInclude>
@@ -410,6 +419,12 @@
     </ClInclude>
     <ClInclude Include="Header\UI_CrossHair.h">
       <Filter>05. =====AceUI=====\03. CrossHair</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PlayerAttackUnion.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PlayerSkillUnion.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -551,11 +566,8 @@
     <ClCompile Include="Code\AbsFac_GameObject.cpp">
       <Filter>05. =====AceUI=====\00. AbstractFactory</Filter>
     </ClCompile>
-    <ClCompile Include="Code\PlayerAttackUnion.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\PlayerFist.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Fist</Filter>
+    <ClCompile Include="Code\CloseAttack.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Close Attack</Filter>
     </ClCompile>
     <ClCompile Include="Code\PlayerGunLighter.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\03. Lighter\03. PlayerGunLighter</Filter>
@@ -581,9 +593,6 @@
     <ClCompile Include="Code\Effect_DazeSwirl.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl</Filter>
     </ClCompile>
-    <ClCompile Include="Code\PlayerSteelPipe.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. SteelPipe</Filter>
-    </ClCompile>
     <ClCompile Include="Code\BlackBoard_Camera.cpp">
       <Filter>04. =====BlackBoard=====\2. Camera</Filter>
     </ClCompile>
@@ -595,6 +604,12 @@
     </ClCompile>
     <ClCompile Include="Code\UI_CrossHair.cpp">
       <Filter>05. =====AceUI=====\03. CrossHair</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerAttackUnion.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerSkillUnion.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

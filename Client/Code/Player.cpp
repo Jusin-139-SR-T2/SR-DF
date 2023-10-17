@@ -172,12 +172,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
         m_bGunLight = false;
     }
 
-    // 플레이어가 바라보는 방향 (눈높이 맞춤)
-    vPlayerLook = m_pTransformComp->Get_Look();
-
-    vPlayerLook = { vPlayerLook.x, vPlayerLook.y - 0.4f, vPlayerLook.z };
-    D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
-
     // 마우스 움직임
     Mouse_Move();
     // 마우스 입력
@@ -875,6 +869,39 @@ void CPlayer::Update_BlackBoard()
     pBlackBoard->Set_RightHandState(m_tRightHand_State.Get_State());
     pBlackBoard->Get_AttackOn() = m_bAttack;
 
+    switch (m_bRAttackMove)
+    {
+    case EBLACKBOARD_UPLOAD:
+        pBlackBoard->Get_RAttackMove() = true;
+        m_bRAttackMove = EBLACKBOARD_DOWNLOAD;
+        break;
+    case EBLACKBOARD_DOWNLOAD:
+        m_bRAttackMove = (pBlackBoard->Get_RAttackMove()) ? m_bRAttackMove : EBLACKBOARD_NONE;
+        break;
+    default:
+        break;
+    }
+
+    //if (m_bRAttackMove)
+    //{
+    //    pBlackBoard->Get_RAttackMove() = true;
+    //    m_bRAttackMove = false;
+    //}
+
+    switch (m_bLAttackMove)
+    {
+    case EBLACKBOARD_UPLOAD:
+        pBlackBoard->Get_LAttackMove() = true;
+        m_bLAttackMove = EBLACKBOARD_DOWNLOAD;
+        break;
+    case EBLACKBOARD_DOWNLOAD:
+        m_bLAttackMove = (pBlackBoard->Get_LAttackMove()) ? m_bLAttackMove : EBLACKBOARD_NONE;
+        break;
+    default:
+        break;
+    }
+        
+
     //pBlackBoard->Get_PlayerPickUpState() = m_tRightHand.; //차징상태
     //pBlackBoard->Get_PlayerEquipGunState() = m_tRightHand.; //차징상태
 
@@ -939,6 +966,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
             {
                 m_tRightHand.bRightFrameOn = true;
                 m_bAttack = true;
+                //m_bRAttackMove = true;
                 m_fChage.Cur = 0.f;
                 break;
             }
@@ -1001,6 +1029,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
         if (Engine::IsMouse_Pressed(DIM_LB)) // 눌렀을 때
         {
             m_bAttack = true; // 공격 On
+            m_bRAttackMove = EBLACKBOARD_UPLOAD;
 
             // 앉은 채로 공격을 눌렀을 때
             if (m_tPlayer_State.Get_State() == STATE_PLAYER::SITDOWN)
@@ -1023,6 +1052,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                 if (bLeftPunch)
                 {
                     m_tLeftHand.bLeftFrameOn = true;
+                    m_bLAttackMove = true;
                 }
                 if (bRightPunch)
                 {
@@ -1905,14 +1935,18 @@ void CPlayer::Left_Hand(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tLeftHand.bLeftAttacColOn)
         {
-            m_tLeftHand.bLeftAttacColOn = false;
-            _vec3 vPosPlus = { 1.f, 0.f, 0.f };
-            // 주먹공격 생성 (디바이스, 생성 위치, 주인, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerFist::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos() + vPosPlus, vPlayerLook, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
+            m_tLeftHand.bLeftAttacColOn = false;    // 공격 생성 Off
+
+            // 주먹공격 생성
+            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                                   m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                                   this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                                   0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+            
+            m_bAttack = false;  // 공격 Off
         }
     }
 
@@ -2109,91 +2143,61 @@ void CPlayer::Right_Hand(float fTimeDelta)
             }
         }
 
-        if (bRightPunch && m_bAttack)
-        {
-            m_bRotStart = true;
+        //if (m_bRAttackMove)
+        //{
+        //    m_bRotStart = true;
+        //}
 
-            //m_vRot = m_pTransformComp->Get_Look();
-            //m_vCurLook = m_pTransformComp->Get_Look();
-            //D3DXVec3Normalize(&m_vRot, &m_vRot);
-        }
+        //// 공격시 카메라 무빙
+        //if (m_bRotStart)
+        //{
+        //    fRotStart += 1.f * fTimeDelta;
+        //    _float fMoveSpeed = 1.5f;
 
-        if (m_bRotStart)
-        {
-            fRotStart += 1.f * fTimeDelta;
+        //    if (fRotStart > 0.2f)
+        //    {
+        //        if (m_vRotMinus.y > -0.3 && !m_bRotChange)
+        //        {
+        //            m_vRotMinus.y -= fMoveSpeed * fTimeDelta;
+        //            m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(m_vRotMinus.y));
+        //        }
+        //        else if(m_vRotMinus.y < -0.3 && !m_bRotChange)
+        //        {
+        //            //m_vRot.y = 0.f;
+        //            m_bRotChange = true;
+        //        }
 
-            if (fRotStart > 0.2f)
-            {
-                if (m_vRot.y > -0.3 && !m_bRotChange)
-                {
-                    m_vRot.y -= 0.1f * fTimeDelta;
-                }
-                else
-                {
-                    m_bRotChange = true;
-                }
+        //        if (m_bRotChange && m_vRotPlus.y < 0.3f)
+        //        {
+        //            m_vRotPlus.y += fMoveSpeed * fTimeDelta;
+        //            m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(m_vRotPlus.y));
+        //        }
 
-                if (m_bRotChange && m_vRot.y <= 0.f)
-                {
-                    m_vRot.y += 0.1f * fTimeDelta;
-                }
+        //        if (m_vRotPlus.y >= 0.3f)
+        //        {
+        //            m_vRotMinus.y = 0.f;
+        //            m_vRotPlus.y = 0.f;
+        //            fRotStart = 0.f;
 
-                if (m_vRot.y >= 0.f)
-                {
-                    m_vRot.y = 0.f;
-                    m_tRightHand.bRightAttacColOn = false;
-                    //m_bAttackRotOn = false;
-                    m_bRotChange = false;
-                    fRotStart = 0.f;
-                    m_bRotStart = false;
-                }
+        //            m_bRotChange = false;
+        //            m_bRotStart = false;
+        //            m_bRAttackMove = false;
+        //        }
+        //    }
+        //}
 
-                m_pTransformComp->Rotate(ROT_Y, m_vRot.y);
-            }
-        }
-
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            if (!m_bAttackRotOn)
-            {
-                _vec3 vPosPlus = { 1.f, 0.f, 0.f };
-                // 주먹공격 생성 (디바이스, 생성 위치, 주인, 공격 상태)
-                Engine::Add_GameObject(L"GameLogic", CPlayerFist::Create(m_pGraphicDev,
-                    m_pTransformComp->Get_Pos(), vPlayerLook, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-                m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-                m_bAttack = false; // 공격 Off
-                //m_bAttackRotOn = true; // 회전 On
-            }
+            // 주먹공격 생성
+            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
-            //if (m_bAttackRotOn)
-            //{
-
-            //    if (m_vRot.y > -0.3 && !m_bRotChange)
-            //    {
-            //        m_vRot.y -= 1.0f * fTimeDelta;
-            //    }
-            //    else
-            //    {
-            //        m_bRotChange = true;
-            //    }
-
-            //    if (m_bRotChange && m_vRot.y <= 0.f)
-            //    {
-            //        m_vRot.y += 1.0f * fTimeDelta;
-            //    }
-
-            //    if (m_vRot.y >= 0.f)
-            //    {
-            //        m_vRot.y = 0.f;
-            //        m_tRightHand.bRightAttacColOn = false;
-            //        m_bAttackRotOn = false;
-            //        m_bRotChange = false;
-            //    }
-
-            //    m_pTransformComp->Set_RotationY(m_vRot.y);
-            //}
+            m_bAttack = false;  // 공격 Off
         }
 
         // 플레이어가 차징을 하고있을 경우
@@ -2223,6 +2227,8 @@ void CPlayer::Right_Hand(float fTimeDelta)
                 m_tRightHand.bChargingAttackOn = true;
                 m_tPlayer_Action.Set_State(STATE_PLAYER_ACTION::ATTACK);
                 m_bAttack = true;
+                m_bRAttackMove = EBLACKBOARD_UPLOAD;
+
                 bChargeAttack = false;
                 m_fChage.Cur = 0.f;
             }
@@ -2314,18 +2320,20 @@ void CPlayer::Right_Gun(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            m_bGunLight = TRUE;
+            m_bGunLight = TRUE; // 총 조명On
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), vPlayerLook, 300.f, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            // 총알 생성
+            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                100.f, 3.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+
+            m_bAttack = false;  // 공격 Off
         }
     }
 
@@ -2374,18 +2382,20 @@ void CPlayer::Right_Thompson(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            m_bGunLight = TRUE;
+            m_bGunLight = TRUE; // 총 조명On
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), vPlayerLook, 300.f, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            // 총알 생성
+            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                100.f, 3.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+
+            m_bAttack = false;  // 공격 Off
         }
     }
 
@@ -2432,18 +2442,18 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            m_bGunLight = TRUE;
+            // 파이프 공격 생성
+            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), vPlayerLook, 300.f, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            m_bAttack = false;  // 공격 Off
         }
 
         // 플레이어가 차징을 하고있을 경우
@@ -2473,6 +2483,8 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
                 m_tRightHand.bChargingAttackOn = true;
                 m_tPlayer_Action.Set_State(STATE_PLAYER_ACTION::ATTACK);
                 m_bAttack = true;
+                m_bRAttackMove = EBLACKBOARD_UPLOAD;
+
                 bChargeAttack = false;
                 m_fChage.Cur = 0.f;
             }
@@ -2532,18 +2544,18 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            m_bGunLight = TRUE;
+            // 맥주병 공격 생성
+            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                100.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), vPlayerLook, 300.f, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            m_bAttack = false;  // 공격 Off
         }
     }
 
@@ -2591,18 +2603,18 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
             }
         }
 
-        // 공격이 켜지고 플레이어의 상태가 뛰는중이 아닐 경우 공격 생성
+        // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
-            m_bAttack = false; // 공격 Off
-            m_tRightHand.bRightAttacColOn = false;
+            m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
-            m_bGunLight = TRUE;
+            // 총알 생성
+            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
+                0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
-            // 총알 발사 (디바이스, 생성 위치, 투사체 속도, 공격 상태)
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,
-                m_pTransformComp->Get_Pos(), vPlayerLook, 300.f, this, m_eAttackState, (ETEAM_ID)Get_TeamID()));
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            m_bAttack = false;  // 공격 Off
         }
 
         // 플레이어가 차징을 하고있을 경우
@@ -2632,6 +2644,8 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
                 m_tRightHand.bChargingAttackOn = true;
                 m_tPlayer_Action.Set_State(STATE_PLAYER_ACTION::ATTACK);
                 m_bAttack = true;
+                m_bRAttackMove = EBLACKBOARD_UPLOAD;
+
                 bChargeAttack = false;
                 m_fChage.Cur = 0.f;
             }

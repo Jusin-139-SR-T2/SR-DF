@@ -28,14 +28,14 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-	static CPlayerBullet* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir, _float fMoveSpeed, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID);
-
+	static CPlayerBullet* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir,
+		CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID,
+		_float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize);
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 		GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
 		GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 		GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-		GETSET_EX2(PLAYER_ATTACK_STATE, m_ePlayer_AttackState, Player_AttackState, GET, SET)
 		//GETSET_EX2(_vec3, m_tBullet.vDir, AttackDir, GET, SET)
 
 		// 충돌 -----------------------------------------------------------------
@@ -55,23 +55,6 @@ private:
 	CTransformComponent* m_pPlayerTransformcomp = nullptr; //플레이어용도 
 
 private:
-	struct _PlayerBullet	// 플레이어 총알
-	{
-		_float fFrame = 0.f;		// 프레임
-		_float fFrameEnd = 0.f;	// 프레임
-		_float fFrameSpeed = 0.f; // 프레임속도
-		_float fMoveSpeed = 50.f; // 투사체 발사 속도 
-		_float fDamage = 0.f;		// 데미지
-		_float fDeleteTime = 0.f;
-
-		//_vec3 vDir = { 0.f, 0.f, 0.f }; // 방향
-	};
-
-private:
-	_PlayerBullet m_tBullet;
-
-	_vec3 m_vPlayerPos = { 0.f, 0.f, 0.f }; // 생성시 플레이어 위치
-	
 	_bool*	m_bDbugFrame;
 
 

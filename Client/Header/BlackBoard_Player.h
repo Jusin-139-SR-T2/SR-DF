@@ -60,6 +60,8 @@ public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX2(_bool, m_bPlayerAttackState, PlayerAttackState, GET_C_REF, GET_REF)
 	GETSET_EX2(_bool, m_bPlayerPickUpState, PlayerPickUpState, GET_C_REF, GET_REF)
 	GETSET_EX2(_bool, m_bPlayerDetect, PlayerDetect, GET_C_REF, GET_REF)
+	GETSET_EX1(_bool, m_bRAttackMove, RAttackMove, GET_REF)
+	GETSET_EX1(_bool, m_bLAttackMove, LAttackMove, GET_REF)
 
 
 private:
@@ -73,6 +75,9 @@ private:
 	_bool				m_bPlayerPickUpState;	// 들것 들고있을때 - 시체 
 	_bool				m_bPlayerDetect;		// 플레이어 일점범위내 몬스터있을때 
 	_bool				m_bAttackOn;
+	_bool				m_bRAttackMove;
+	_bool				m_bLAttackMove;
+
 	STATE_PLAYER		m_ePlayer_State;
 	STATE_RIGHTHAND		m_eRightHand_State;
 	

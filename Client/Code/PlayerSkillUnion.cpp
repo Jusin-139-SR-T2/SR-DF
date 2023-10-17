@@ -1,5 +1,5 @@
-#include "PlayerAttackUnion.h"
 #include "stdafx.h"
+#include "PlayerSkillUnion.h"
 #include "Player.h"
 #include "AceMonster.h"
 
@@ -9,61 +9,61 @@
 #include "Gray.h"
 #include "Brown.h"
 
-CPlayerAttackUnion::CPlayerAttackUnion(LPDIRECT3DDEVICE9 pGraphicDev)
+CPlayerSkillUnion::CPlayerSkillUnion(LPDIRECT3DDEVICE9 pGraphicDev)
     :Base(pGraphicDev)
 {
 }
 
-CPlayerAttackUnion::CPlayerAttackUnion(const CPlayerAttackUnion& rhs)
+CPlayerSkillUnion::CPlayerSkillUnion(const CPlayerSkillUnion& rhs)
     : Base(rhs)
 {
 }
 
-CPlayerAttackUnion::~CPlayerAttackUnion()
+CPlayerSkillUnion::~CPlayerSkillUnion()
 {
 }
 
-HRESULT CPlayerAttackUnion::Ready_GameObject()
+HRESULT CPlayerSkillUnion::Ready_GameObject()
 {
     srand((_uint)time(NULL));
 
     return S_OK;
 }
 
-_int CPlayerAttackUnion::Update_GameObject(const _float& fTimeDelta)
+_int CPlayerSkillUnion::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
     return S_OK;
 }
 
-void CPlayerAttackUnion::LateUpdate_GameObject()
+void CPlayerSkillUnion::LateUpdate_GameObject()
 {
     SUPER::LateUpdate_GameObject();
 }
 
-void CPlayerAttackUnion::Render_GameObject()
+void CPlayerSkillUnion::Render_GameObject()
 {
 }
 
-void CPlayerAttackUnion::Free()
+void CPlayerSkillUnion::Free()
 {
     SUPER::Free();
 }
 
-void CPlayerAttackUnion::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
+void CPlayerSkillUnion::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
 {
     SUPER::MeshBoxColider(_Width, _Height, Depth);
 }
 
-void CPlayerAttackUnion::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
+void CPlayerSkillUnion::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
 {
     SUPER::MeshSphereColider(Radius, Slices, Stacks);
 }
 
 #pragma region 셋팅
 
-void CPlayerAttackUnion::Height_On_Terrain(_float Height)
+void CPlayerSkillUnion::Height_On_Terrain(_float Height)
 {
     _vec3		vPos;
     m_pTransformComp->Get_Info(INFO_POS, &vPos);
@@ -81,7 +81,7 @@ void CPlayerAttackUnion::Height_On_Terrain(_float Height)
     m_pTransformComp->Set_Pos(vPos.x, fHeight + Height, vPos.z);
 }
 
-void CPlayerAttackUnion::Billboard()
+void CPlayerSkillUnion::Billboard()
 {
     // 해당 공격이 플레이어를 바라보는 벡터 
     _vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
@@ -93,7 +93,7 @@ void CPlayerAttackUnion::Billboard()
     m_pTransformComp->Set_RotationY(rad);
 }
 
-HRESULT CPlayerAttackUnion::Update_PlayerPos()
+HRESULT CPlayerSkillUnion::Update_PlayerPos()
 {
     m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
     NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
@@ -102,17 +102,16 @@ HRESULT CPlayerAttackUnion::Update_PlayerPos()
 }
 
 
-void CPlayerAttackUnion::Recoil(const _float& fTimeDelta, _float fSpeed)
+void CPlayerSkillUnion::Recoil(const _float& fTimeDelta, _float fSpeed)
 {
-    // 공격체(총알)가 바라보는 방향
-    //          (바라보는 대상)                   - (공격체 본인)
+    // 공격체(총알)가 플레이어 바라보는 방향
     _vec3 Dir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
     D3DXVec3Normalize(&Dir, &Dir);
 
     m_pPlayerTransformcomp->Move_Pos(&Dir, fTimeDelta, fSpeed);
 }
 
-void CPlayerAttackUnion::Change_PlayerHp(_float pAttack)
+void CPlayerSkillUnion::Change_PlayerHp(_float pAttack)
 {
     // + - 둘다 가능하게 바꿈 
     CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
@@ -128,7 +127,7 @@ void CPlayerAttackUnion::Change_PlayerHp(_float pAttack)
     pPlayer->Set_PlayerHP(PlayerHp);
 }
 
-void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, PLAYER_ATTACK_STATE _AttackState)
+void CPlayerSkillUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, PLAYER_ATTACK_STATE _AttackState)
 {
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(_AttackTarget);
 

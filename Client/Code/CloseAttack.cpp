@@ -1,48 +1,48 @@
 #include "stdafx.h"
-#include "PlayerFist.h"
+#include "CloseAttack.h"
 #include "Player.h"
 
-CPlayerFist::CPlayerFist(LPDIRECT3DDEVICE9 pGraphicDev)
+CCloseAttack::CCloseAttack(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CPlayerAttackUnion(pGraphicDev)
 {
 }
 
-CPlayerFist::CPlayerFist(const CPlayerFist& rhs)
+CCloseAttack::CCloseAttack(const CCloseAttack& rhs)
 	: CPlayerAttackUnion(rhs)
 {
 }
 
-CPlayerFist::~CPlayerFist()
+CCloseAttack::~CCloseAttack()
 {
 }
 
-HRESULT CPlayerFist::Ready_GameObject()
+HRESULT CCloseAttack::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	// 충돌
 	m_pTransformComp->Readjust_Transform();
 	FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 1.f;
+	pShape->fRadius = m_tAttack.fSize;
 
 	// 플레이어가 바라보는 쪽으로 날아가게함
 	m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
 	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
 	// 발사 방향 설정
-	m_tFist.vDir = m_pPlayerTransformcomp->Get_Look();
+	m_tAttack.vDir = m_pPlayerTransformcomp->Get_Look();
 
 	// 플레이어 받아오기
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
 	m_bDbugFrame = pPlayer->Get_DBugFrame();
 
 	// 데미지 설정
-	m_tFist.fDamage = 50.f;
+	m_tAttack.fDamage = 50.f;
 
 	return S_OK;
 }
 
-_int CPlayerFist::Update_GameObject(const _float& fTimeDelta)
+_int CCloseAttack::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
@@ -50,13 +50,13 @@ _int CPlayerFist::Update_GameObject(const _float& fTimeDelta)
 
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 
-	m_tFist.fDeleteTime += 1.f * fTimeDelta;
+	// 시간 업데이트
+	m_tAttack.fCurTime += 1.f * fTimeDelta;
 
-	if (m_tFist.fDeleteTime >= 2.5f)
+	if (m_tAttack.fCurTime >= m_tAttack.fDeleteTime)
 	{
-		// 총알 삭제
-		Set_Dead(); //투사체는 사라짐 
-		m_tFist.fDeleteTime = 0.f;
+		Set_Dead(); // 공격 삭제
+		m_tAttack.fCurTime = 0.f;
 	}
 
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -64,12 +64,12 @@ _int CPlayerFist::Update_GameObject(const _float& fTimeDelta)
 	return S_OK;
 }
 
-void CPlayerFist::LateUpdate_GameObject()
+void CCloseAttack::LateUpdate_GameObject()
 {
 	SUPER::LateUpdate_GameObject();
 }
 
-void CPlayerFist::Render_GameObject()
+void CCloseAttack::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 
@@ -92,7 +92,9 @@ void CPlayerFist::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CPlayerFist* CPlayerFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID)
+CCloseAttack* CCloseAttack::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir,
+									CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID,
+									_float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -107,18 +109,15 @@ CPlayerFist* CPlayerFist::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec
 	_float fMovePos = 1.5f;
 	_vec3 vAttackPosition = vPos + vDir * fMovePos;
 
-	// 플레이어 위치에서 생성
-	//pInstance->m_pTransformComp->Set_Pos(vPos.x * vDir.x, vPos.y * vDir.y, vPos.z * vDir.z);	// 생성 위치
 	pInstance->m_pTransformComp->Set_Pos(vAttackPosition.x, vAttackPosition.y, vAttackPosition.z);	// 생성 위치
+	pInstance->Set_PlayerAttackState(vDir, _AttackState, fMoveSpeed, fDeleteTime, fDamage, fSize);	// 공격 세팅
 	pInstance->Set_Owner(_Owner);									// 공격의 주인
-	pInstance->Set_Player_AttackState(_AttackState);			 	// 공격의 상태(공격 유형)
 	pInstance->Set_TeamID(_eTeamID);								// 공격의 팀 설정
-	pInstance->Set_AttackDir(vDir);
 
 	return pInstance;
 }
 
-HRESULT CPlayerFist::Add_Component()
+HRESULT CCloseAttack::Add_Component()
 {
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
@@ -143,26 +142,26 @@ HRESULT CPlayerFist::Add_Component()
 	return S_OK;
 }
 
-void CPlayerFist::Free()
+void CCloseAttack::Free()
 {
 	SUPER::Free();
 }
 
-void CPlayerFist::OnCollision(CGameObject* pDst, const FContact* const pContact)
+void CCloseAttack::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
 
 
 }
 
-void CPlayerFist::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
+void CCloseAttack::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	OutputDebugString(L"플레이어의 주먹 충돌 \n");
-
+	
 	// 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
-	Change_MonsterHp(-m_tFist.fDamage, pDst, m_ePlayer_AttackState);
+	Change_MonsterHp(-m_tAttack.fDamage, pDst, m_tAttack.ePlayer_AttackState);
 	
 	// Test 앉기 공격 확인
-	if (m_ePlayer_AttackState == PSITDONW_ATTACK)
+	if (m_tAttack.ePlayer_AttackState == PSITDONW_ATTACK)
 	{
 		OutputDebugString(L"플레이어가 앉아서 공격함 \n");
 	}
@@ -171,6 +170,6 @@ void CPlayerFist::OnCollisionEntered(CGameObject* pDst, const FContact* const pC
 	Set_Dead(); //투사체는 사라짐 
 }
 
-void CPlayerFist::OnCollisionExited(CGameObject* pDst)
+void CCloseAttack::OnCollisionExited(CGameObject* pDst)
 {
 }

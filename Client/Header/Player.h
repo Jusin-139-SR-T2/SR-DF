@@ -9,7 +9,7 @@
 //임시용
 #include "AceFood.h" 
 #include "PlayerBullet.h"
-#include "PlayerFist.h"
+#include "CloseAttack.h"
 #include "MeshColComp.h"
 
 #include "Serialize_BaseClass.h"
@@ -348,7 +348,7 @@ private:
 	GAUGE<_float>		m_fChage;	// 차지
 
 	// 플레이어가 바라보는 방향
-	_vec3	vPlayerLook = { 0.f, 0.f, 0.f };
+	//_vec3	vPlayerLook = { 0.f, 0.f, 0.f };
 
 	// Test
 	OBJECT_TYPE m_eObjectType;	// 오브젝트 타입
@@ -381,16 +381,6 @@ private: // 보간 변수
 	// 이동
 	_float fPosX_Delta, fPosY_Delta;
 
-
-
-
-
-
-
-
-
-
-
 private: // 점프
 	void PlayerJump(float fTimeDelta);
 	_bool m_IsOnTerrain = false;
@@ -400,13 +390,27 @@ private: // 점프
 	_vec3 m_vAccel = { 0.f, -27.8f, 0.f };
 
 private:
-	_vec3 m_vRot = { 0.f, 0.f, 0.f };
+	enum EBLACKBOARD_UPDATE
+	{
+		EBLACKBOARD_NONE,
+		EBLACKBOARD_UPLOAD,
+		EBLACKBOARD_DOWNLOAD
+	};
+
+private:
+	_vec3 m_vRotPlus = { 0.f, 0.f, 0.f };
+	_vec3 m_vRotMinus = { 0.f, 0.f, 0.f };
+
 	_vec3 m_vCurLook = { 0.f, 0.f, 0.f };
 
 	_bool m_bRotChange = false;
 	_bool m_bRotStart = false;
+	_bool m_bLRotStart = false;
+	_int m_bLAttackMove = EBLACKBOARD_NONE;
+	_int m_bRAttackMove = EBLACKBOARD_NONE;
 
 	_float fRotStart = 0.f;
+	_float fLRotStart = 0.f;
 };
 
 /*	현재 키 설명

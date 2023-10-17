@@ -15,31 +15,14 @@ class CCalculatorComponent;
 
 END
 
-class CPlayerAttackUnion : public CAttackUnion
+class CPlayerSkillUnion : public CAttackUnion
 {
-	DERIVED_CLASS(CAttackUnion, CPlayerAttackUnion)
+	DERIVED_CLASS(CAttackUnion, CPlayerSkillUnion)
 
 protected:
-	explicit CPlayerAttackUnion(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CPlayerAttackUnion(const CPlayerAttackUnion& rhs);
-	virtual ~CPlayerAttackUnion();
-
-private:
-	struct _PLAYERATTACK	// 플레이어 공격 구조체
-	{
-		_float fCurTime = 0.f;
-		_float fFrame = 0.f;		// 프레임 시작
-		_float fFrameEnd = 0.f;		// 프레임 끝
-		_float fFrameSpeed = 0.f;	// 프레임 속도
-		_float fMoveSpeed = 0.f;	// 투사체 속도 
-		_float fDeleteTime = 0.f;	// 공격 삭제 시간
-		_float fDamage = 0.f;		// 데미지
-		_float fSize = 0.f;			// 크기
-
-		PLAYER_ATTACK_STATE			ePlayer_AttackState; // 공격 유형
-
-		_vec3 vDir = { 0.f, 0.f, 0.f }; // 방향
-	};
+	explicit CPlayerSkillUnion(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CPlayerSkillUnion(const CPlayerSkillUnion& rhs);
+	virtual ~CPlayerSkillUnion();
 
 protected:
 	virtual HRESULT		Ready_GameObject() override;
@@ -60,23 +43,8 @@ protected:
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
 	CTransformComponent* m_pPlayerTransformcomp = nullptr;
 
-
-
 public:
-	_PLAYERATTACK Get_AttackState() 
-	{
-		return m_tAttack;
-	} 
-	void Set_PlayerAttackState(_vec3 vDir, PLAYER_ATTACK_STATE _AttackState,
-						 _float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize)
-	{
-		m_tAttack.vDir = vDir;
-		m_tAttack.ePlayer_AttackState = _AttackState;
-		m_tAttack.fMoveSpeed = fMoveSpeed;
-		m_tAttack.fDeleteTime = fDeleteTime;
-		m_tAttack.fDamage = fDamage;
-		m_tAttack.fSize = fSize;
-	}
+	GETSET_EX2(_vec3, m_vDir, AttackDir, GET, SET)
 
 public:
 	void						Height_On_Terrain(_float Height);
@@ -91,6 +59,10 @@ public: //플레이어 관련 셋팅
 	GAUGE<_float>				MonsterHp; //몬스터 HP 저장용 변수 
 
 protected:
-	_PLAYERATTACK				m_tAttack;
-	
+	MonsterPhase				m_CurrPahse;
+	ATTACK_TARGET				m_eAttack_Target;
+	_tchar						debugString[100];
+	FRAME						m_tFrame;
+	PLAYER_ATTACK_STATE			m_ePlayer_AttackState;
+	_vec3 m_vDir = { 0.f, 0.f, 0.f };
 };
