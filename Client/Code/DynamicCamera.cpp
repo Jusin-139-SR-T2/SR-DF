@@ -293,7 +293,7 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	// 플레이어의 위치, 바라보는 방향을 얻어온다.
 	pPlayerTransCom->Get_Info(INFO_POS, &vPlayerPos);
 	pPlayerTransCom->Get_Info(INFO_LOOK, &vPlayerLook);
-	vPlayerPosEye = pPlayerTransCom->Get_PosEye();
+	//vPlayerPosEye = pPlayerTransCom->Get_PosEye();
 
 	// 플레이어의 회전한 각도를 얻어온다.
 	float fX = pPlayerTransCom->Get_Rotation().x;
@@ -339,10 +339,10 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	if (m_bOne)
 	{
 		// 카메라 위치 설정
-		m_vEye = vPlayerPosEye; // 플레이어의 눈높이
+		m_vEye = vPlayerPos; // 플레이어의 눈높이
 
 		// 카메라가 바라보는 대상 (플레이어가 바라보는 방향)
-		m_vAt = vPlayerPosEye + vPlayerLook;// +vEventCameraMove;
+		m_vAt = vPlayerPos + vPlayerLook;// +vEventCameraMove;
 
 		Mouse_Move(); // 마우스 이동
 		Mouse_Fix();  // 마우스 고정

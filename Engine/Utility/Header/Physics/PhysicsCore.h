@@ -305,6 +305,14 @@ public:
         z = -z;
     }
 
+    D3DXVECTOR3 Convert_DX9Vec3()
+    {
+        D3DXVECTOR3 v3;
+        v3.x = x;
+        v3.y = y;
+        v3.z = z;
+        return v3;
+    }
 };
 
 

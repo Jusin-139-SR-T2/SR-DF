@@ -10,6 +10,8 @@
 
 BEGIN(Engine)
 
+#define CMP(x, y) \
+	(fabsf(x - y) <= FLT_EPSILON * fmaxf(1.0f, fmaxf(fabsf(x), fabsf(y))))
 
 /// <summary>
 /// 각종 기하학적 모형들의 충돌테스트 클래스

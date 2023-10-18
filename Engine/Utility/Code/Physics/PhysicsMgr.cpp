@@ -111,6 +111,17 @@ list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_Capsule_GetGameOb
 	return IntersectTests_GetGameObject(iWorldID, static_cast<FCollisionPrimitive*>(&pShape));
 }
 
+list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_Line_GetGameObject(const _uint iWorldID, _vec3 vStart, _vec3 vEnd, _ulong iMask)
+{
+	FCollisionLine pShape;
+	//pShape.Set_Position(FVector3(vPos.x, vPos.y, vPos.z));
+	pShape.vStart = FVector3(vStart.x, vStart.y, vStart.z);
+	pShape.vEnd = FVector3(vEnd.x, vEnd.y, vEnd.z);
+	pShape.Set_CollisionMask(iMask);
+
+	return IntersectTests_GetGameObject(iWorldID, static_cast<FCollisionPrimitive*>(&pShape));
+}
+
 list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_Ray_GetGameObject(const _uint iWorldID, const _vec3 vPos, const _vec3 vNormal, _ulong iMask)
 {
 	FCollisionRay pShape;

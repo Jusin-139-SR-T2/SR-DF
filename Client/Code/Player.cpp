@@ -12,6 +12,7 @@
 #include "Management.h"
 #include "BlackBoard_Player.h"
 #include "AceBuilding.h"
+#include "DynamicCamera.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -199,6 +200,9 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     // 프레임 관리
     FrameManage(fTimeDelta);
+
+    //
+    RayCast();
 
     // 물리 업데이트 코드
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌체 이동
@@ -808,6 +812,42 @@ _bool CPlayer::Picking_On_Object()
         return true;
     else
         return false;
+}
+
+void CPlayer::RayCast()
+{
+    CDynamicCamera* pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Camera", L"DynamicCamera"));
+    if (pCamera)
+    {
+        _vec3 vTest = m_pTransformComp->Get_Look();
+        D3DXVec3Normalize(&vTest, &vTest);
+        /*auto listMonster = Engine::IntersectTests_Line_GetGameObject(0, m_pTransformComp->Get_Pos(),
+            m_pTransformComp->Get_Pos() + vTest * 100.f,
+            LAYER_MONSTER);*/
+        auto listMonster = Engine::IntersectTests_Ray_GetGameObject(0, m_pTransformComp->Get_Pos(),
+            m_pTransformComp->Get_Look(),
+            LAYER_MONSTER);
+        if (!listMonster.empty())
+        {
+            _float fDist = FLT_MAX;
+            CGameObject* pDstObj = nullptr;
+            for (auto iter = listMonster.begin(); iter != listMonster.end(); ++iter)
+            {
+                _vec3 vPos = (*iter).second.vContactPoint.Convert_DX9Vec3();
+                _float fLength = D3DXVec3Length(&(m_pTransformComp->Get_Pos() - vPos));
+                if (fLength < fDist)
+                {
+                    fDist = fLength;
+                    pDstObj = (*iter).first;
+                }
+            }
+
+
+            if (pDstObj)
+                cout << " 거리 : " << fDist << endl;
+        }
+
+    }
 }
 
 void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)

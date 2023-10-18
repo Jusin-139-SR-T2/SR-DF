@@ -83,6 +83,7 @@ inline list<pair<CGameObject*, FContact>>	IntersectTests_Collider_GetGameObject(
 inline list<pair<CGameObject*, FContact>>	IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius, _ulong iMask);
 inline list<pair<CGameObject*, FContact>>	IntersectTests_Box_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vHalfSize, _ulong iMask);
 inline list<pair<CGameObject*, FContact>>	IntersectTests_Capsule_GetGameObject(const _uint iWorldID, _vec3 vPos, _vec3 vNormal, _float fRadius, _ulong iMask);
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Line_GetGameObject(const _uint iWorldID, _vec3 vStart, _vec3 vEnd, _ulong iMask);
 inline list<pair<CGameObject*, FContact>>	IntersectTests_Ray_GetGameObject(const _uint iWorldID, _vec3 vOrigin, _vec3 vNormal, _ulong iMask);
 
 

@@ -261,7 +261,7 @@ void CBrown::Render_GameObject()
     m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
-    MeshBoxColider(pBoxShape->vHalfSize.x, pBoxShape->vHalfSize.y,pBoxShape->vHalfSize.z);
+    //MeshBoxColider(pBoxShape->vHalfSize.x, pBoxShape->vHalfSize.y,pBoxShape->vHalfSize.z);
 #pragma endregion
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -271,7 +271,7 @@ void CBrown::Render_GameObject()
 HRESULT CBrown::Add_Component()
 {
     // 충돌 컴포넌트 
-    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
     
     // 물리 세계 등록
     m_pColliderComp->EnterToPhysics(0);

@@ -180,6 +180,10 @@ inline list<pair<CGameObject*, FContact>>	IntersectTests_Capsule_GetGameObject(c
 {
 	return CPhysicsMgr::GetInstance()->IntersectTests_Capsule_GetGameObject(iWorldID, vPos, vNormal, fRadius, iMask);
 }
+inline list<pair<CGameObject*, FContact>>	IntersectTests_Line_GetGameObject(const _uint iWorldID, _vec3 vStart, _vec3 vEnd, _ulong iMask)
+{
+	return CPhysicsMgr::GetInstance()->IntersectTests_Line_GetGameObject(iWorldID, vStart, vEnd, iMask);
+}
 inline list<pair<CGameObject*, FContact>>	IntersectTests_Ray_GetGameObject(const _uint iWorldID, _vec3 vOrigin, _vec3 vNormal, _ulong iMask)
 {
 	return CPhysicsMgr::GetInstance()->IntersectTests_Ray_GetGameObject(iWorldID, vOrigin, vNormal, iMask);

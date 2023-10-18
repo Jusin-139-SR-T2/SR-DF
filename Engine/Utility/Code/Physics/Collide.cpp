@@ -258,6 +258,132 @@ bool FCollisionDetector::CollsionPrimitive(const FCollisionPrimitive* srcShape, 
 		}
 		break;
 	}
+	case ECOLLISION::LINE:
+	{
+		switch (dstShape->Get_Type())
+		{
+		case ECOLLISION::SPHERE:
+		{
+			const FCollisionLine* pShapeSrc = static_cast<const FCollisionLine*>(srcShape);
+			const FCollisionSphere* pShapeDst = static_cast<const FCollisionSphere*>(dstShape);
+			bCollide = FCollisionDetector::LineAndSphere(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::BOX:
+		{
+			const FCollisionLine* pShapeSrc = static_cast<const FCollisionLine*>(srcShape);
+			const FCollisionBox* pShapeDst = static_cast<const FCollisionBox*>(dstShape);
+			bCollide = FCollisionDetector::LineAndBox(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::CAPSULE:
+		{
+			const FCollisionLine* pShapeSrc = static_cast<const FCollisionLine*>(srcShape);
+			const FCollisionCapsule* pShapeDst = static_cast<const FCollisionCapsule*>(dstShape);
+			bCollide = FCollisionDetector::LineAndCapsule(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::PLANE:
+		{
+			const FCollisionLine* pShapeSrc = static_cast<const FCollisionLine*>(srcShape);
+			const FCollisionPlane* pShapeDst = static_cast<const FCollisionPlane*>(dstShape);
+			bCollide = FCollisionDetector::LineAndPlane(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::LINE:
+		{
+			const FCollisionLine* pShapeSrc = static_cast<const FCollisionLine*>(srcShape);
+			const FCollisionLine* pShapeDst = static_cast<const FCollisionLine*>(dstShape);
+			bCollide = FCollisionDetector::LineAndLine(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::RAY:
+		{
+			const FCollisionLine* pShapeSrc = static_cast<const FCollisionLine*>(srcShape);
+			const FCollisionRay* pShapeDst = static_cast<const FCollisionRay*>(dstShape);
+			bCollide = FCollisionDetector::LineAndRay(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::TRIANGLE:
+		{
+			const FCollisionLine* pShapeSrc = static_cast<const FCollisionLine*>(srcShape);
+			const FCollisionTriangle* pShapeDst = static_cast<const FCollisionTriangle*>(dstShape);
+			bCollide = FCollisionDetector::LineAndTriangle(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::OBB:
+		{
+			const FCollisionLine* pShapeSrc = static_cast<const FCollisionLine*>(srcShape);
+			const FCollisionOBB* pShapeDst = static_cast<const FCollisionOBB*>(dstShape);
+			bCollide = FCollisionDetector::LineAndOBB(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		}
+		break;
+	}
+	case ECOLLISION::RAY:
+	{
+		switch (dstShape->Get_Type())
+		{
+		case ECOLLISION::SPHERE:
+		{
+			const FCollisionRay* pShapeSrc = static_cast<const FCollisionRay*>(srcShape);
+			const FCollisionSphere* pShapeDst = static_cast<const FCollisionSphere*>(dstShape);
+			bCollide = FCollisionDetector::RayAndSphere(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::BOX:
+		{
+			const FCollisionRay* pShapeSrc = static_cast<const FCollisionRay*>(srcShape);
+			const FCollisionBox* pShapeDst = static_cast<const FCollisionBox*>(dstShape);
+			bCollide = FCollisionDetector::RayAndBox(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::CAPSULE:
+		{
+			const FCollisionRay* pShapeSrc = static_cast<const FCollisionRay*>(srcShape);
+			const FCollisionCapsule* pShapeDst = static_cast<const FCollisionCapsule*>(dstShape);
+			bCollide = FCollisionDetector::RayAndCapsule(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::PLANE:
+		{
+			const FCollisionRay* pShapeSrc = static_cast<const FCollisionRay*>(srcShape);
+			const FCollisionPlane* pShapeDst = static_cast<const FCollisionPlane*>(dstShape);
+			bCollide = FCollisionDetector::RayAndPlane(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::LINE:
+		{
+			const FCollisionRay* pShapeSrc = static_cast<const FCollisionRay*>(srcShape);
+			const FCollisionLine* pShapeDst = static_cast<const FCollisionLine*>(dstShape);
+			bCollide = FCollisionDetector::RayAndLine(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::RAY:
+		{
+			const FCollisionRay* pShapeSrc = static_cast<const FCollisionRay*>(srcShape);
+			const FCollisionRay* pShapeDst = static_cast<const FCollisionRay*>(dstShape);
+			bCollide = FCollisionDetector::RayAndRay(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::TRIANGLE:
+		{
+			const FCollisionRay* pShapeSrc = static_cast<const FCollisionRay*>(srcShape);
+			const FCollisionTriangle* pShapeDst = static_cast<const FCollisionTriangle*>(dstShape);
+			bCollide = FCollisionDetector::RayAndTriangle(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		case ECOLLISION::OBB:
+		{
+			const FCollisionRay* pShapeSrc = static_cast<const FCollisionRay*>(srcShape);
+			const FCollisionOBB* pShapeDst = static_cast<const FCollisionOBB*>(dstShape);
+			bCollide = FCollisionDetector::RayAndOBB(*pShapeSrc, *pShapeDst, pColData);
+			break;
+		}
+		}
+		break;
+	}
 	}
 
 	return bCollide;
@@ -558,7 +684,12 @@ bool FCollisionDetector::LineAndBox(const FCollisionLine& srcLine, const FCollis
 
 bool FCollisionDetector::LineAndSphere(const FCollisionLine& srcLine, const FCollisionSphere& dstSphere, FCollisionData* pColData)
 {
-	return false;
+	FVector3 vBest = FLineTests::ClosestPointOnLineSegment(srcLine.vStart, srcLine.vEnd, dstSphere.Get_Position());
+
+	FVector3 vSub = vBest - dstSphere.Get_Position();
+	Real fSqLength = vSub.SquareMagnitude();
+
+	return ((dstSphere.fRadius * dstSphere.fRadius) >= fSqLength);
 }
 
 bool FCollisionDetector::LineAndPlane(const FCollisionLine& srcLine, const FCollisionPlane& dstPlane, FCollisionData* pColData)
@@ -659,17 +790,17 @@ bool FCollisionDetector::RayAndBox(const FCollisionRay& srcRay, const FCollision
 
 bool FCollisionDetector::RayAndSphere(const FCollisionRay& srcRay, const FCollisionSphere& dstSphere, FCollisionData* pColData)
 {
-	FVector3 vDstDir = dstSphere.Get_Position() - srcRay.vOrigin;
+	FVector3 vDstDir = (dstSphere.Get_Position() - srcRay.vOrigin);
 	Real fRadiusSq = dstSphere.fRadius * dstSphere.fRadius;
 
 	Real fDstDirSq = vDstDir.SquareMagnitude();
 	Real fA = srcRay.vDir.DotProduct(vDstDir);
 	Real fBSq = fDstDirSq - (fA * fA);
-	Real fF = real_sqrt(real_abs(fRadiusSq) - fBSq);
+	Real fF = real_sqrt(real_abs(fRadiusSq - fBSq));
 
 	Real fT = fA - fF;
 
-	if (fRadiusSq - (fDstDirSq - fA * fA) < 0.0f)
+	if (fRadiusSq - fBSq < 0.0f)
 	{
 		return false;
 	}
@@ -680,8 +811,7 @@ bool FCollisionDetector::RayAndSphere(const FCollisionRay& srcRay, const FCollis
 	}
 
 	// 충돌정보 생성
-	if (fDstDirSq < fRadiusSq
-		&& pColData != nullptr && pColData->iContactsLeft >= 0)
+	if (pColData != nullptr && pColData->iContactsLeft >= 0)
 	{
 		FContact& pContact = pColData->tContacts;
 		pContact.vContactPoint = srcRay.vOrigin + srcRay.vDir * fT;
