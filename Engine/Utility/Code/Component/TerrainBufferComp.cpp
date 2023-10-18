@@ -182,8 +182,8 @@ HRESULT CTerrainBufferComp::Ready_Buffer(const _tchar* pFileName, const _ulong& 
 
 				pVertex[dwIndex].vNormal = { 0.f, 0.f, 0.f };
 
-				pVertex[dwIndex].vTexUV = { ((_float)j / ((_float)dwCntX - 1)) * 20.f,
-											((_float)i / ((_float)dwCntZ - 1)) * 20.f };
+				pVertex[dwIndex].vTexUV = { ((_float)j / ((_float)dwCntX - 1)) * 40.f * ((_float)m_dwCountX / 128.f),
+											((_float)i / ((_float)dwCntZ - 1)) * 40.f * ((_float)m_dwCountX / 128.f) };
 			}
 		}
 
