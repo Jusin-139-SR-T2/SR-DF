@@ -2,6 +2,7 @@
 
 #include "Player.h"
 #include "PlayerBullet.h"
+#include "Effect_HitPow.h"
 
 CPlayerBullet::CPlayerBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CPlayerAttackUnion(pGraphicDev)
@@ -61,7 +62,10 @@ _int CPlayerBullet::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_tAttack.fCurTime >= m_tAttack.fDeleteTime)
 	{
-		Set_Dead(); // 공격 삭제
+		m_vPos = m_pTransformComp->Get_Pos();
+		CEffect_HitPow::Create(m_pGraphicDev, m_vPos.x, m_vPos.y, m_vPos.z, this);
+
+		//Set_Dead(); // 공격 삭제
 		m_tAttack.fCurTime = 0.f;
 	}
 
@@ -82,7 +86,7 @@ void CPlayerBullet::Render_GameObject()
 	
 	if (*m_bDbugFrame)
 	{
-		MeshSphereColider(pShape->fRadius, 30.f, 30.f);
+		//MeshSphereColider(pShape->fRadius, 30.f, 30.f);
 	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
