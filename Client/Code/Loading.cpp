@@ -699,6 +699,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/PadlockChain.dds", TEX_CUBE, L"TriggerCube", L"PadlockChain");
 	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/TwoButton_On.dds", TEX_CUBE, L"TriggerCube", L"TwoButton_On");
 	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/MothPainting.dds", TEX_CUBE, L"TriggerCube", L"MothPainting");
+	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Shelves_dark.dds", TEX_CUBE, L"TriggerCube", L"Shelves_dark");
 	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Padlock_Off.dds", TEX_CUBE, L"TriggerCube", L"Padlock_Off");
 	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/ComicBook.dds", TEX_CUBE, L"TriggerCube", L"ComicBook");
 	Load_Texture(L"./Resource/Texture/CubeTexture/fourth/Newspaper.dds", TEX_CUBE, L"TriggerCube", L"Newspaper");
