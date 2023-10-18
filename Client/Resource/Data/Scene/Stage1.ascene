@@ -508,7 +508,7 @@
                     "group_key": "Structure",
                     "texture_key": "TileA_3"
                 },
-				{
+                {
                     "header": {
                         "type": 3,
                         "name": "BuildingTest"
