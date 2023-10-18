@@ -60,6 +60,7 @@ _int CEffect_HitPow::Update_GameObject(const _float& fTimeDelta)
 	if (m_tFrame.fFrame >= m_tFrame.fFrameEnd)
 	{
 		m_tFrame.fFrame = m_tFrame.fFrameEnd - 1.f;
+
 		Set_Dead();
 	}
 

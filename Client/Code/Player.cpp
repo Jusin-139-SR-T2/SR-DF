@@ -13,6 +13,7 @@
 #include "BlackBoard_Player.h"
 #include "AceBuilding.h"
 #include "DynamicCamera.h"
+#include "Effect_HitPow.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -200,9 +201,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     // 프레임 관리
     FrameManage(fTimeDelta);
-
-    //
-    RayCast();
 
     // 물리 업데이트 코드
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌체 이동
@@ -814,9 +812,10 @@ _bool CPlayer::Picking_On_Object()
         return false;
 }
 
-void CPlayer::RayCast()
+CGameObject* CPlayer::RayCast()
 {
     CDynamicCamera* pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Camera", L"DynamicCamera"));
+
     if (pCamera)
     {
         _vec3 vTest = m_pTransformComp->Get_Look();
@@ -826,11 +825,13 @@ void CPlayer::RayCast()
             LAYER_MONSTER);*/
         auto listMonster = Engine::IntersectTests_Ray_GetGameObject(0, m_pTransformComp->Get_Pos(),
             m_pTransformComp->Get_Look(),
-            LAYER_MONSTER);
+            -1);
+
         if (!listMonster.empty())
         {
-            _float fDist = FLT_MAX;
             CGameObject* pDstObj = nullptr;
+            _float fDist = FLT_MAX;
+
             for (auto iter = listMonster.begin(); iter != listMonster.end(); ++iter)
             {
                 _vec3 vPos = (*iter).second.vContactPoint.Convert_DX9Vec3();
@@ -844,10 +845,25 @@ void CPlayer::RayCast()
 
 
             if (pDstObj)
+            {
                 cout << " 거리 : " << fDist << endl;
+                CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDstObj);
+                // 타겟 지정
+                CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
+
+                //cout << " 체력 : " << pMonster->Get_MonsterHP().Cur << endl;
+
+                return pDstObj;
+            }
+            else
+            {
+                return nullptr;
+            }
         }
 
     }
+
+    return nullptr;
 }
 
 void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
@@ -867,7 +883,7 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
 
 void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
-    //소영 추가 
+
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 
     if (nullptr == pAceObj)
@@ -2417,6 +2433,11 @@ void CPlayer::Right_Gun(float fTimeDelta)
 
             m_bGunLight = TRUE; // 총 조명On
 
+            CGameObject* pDst = RayCast();
+
+            // 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
+            RayAttack(pDst , -10.f, m_eAttackState);
+
             // 총알 생성
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
                 m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
@@ -2479,11 +2500,16 @@ void CPlayer::Right_Thompson(float fTimeDelta)
 
             m_bGunLight = TRUE; // 총 조명On
 
+            //CGameObject* pDst = RayCast();
+
+            //// 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
+            //RayAttack(pDst, -10.f, m_eAttackState);
+
             // 총알 생성
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
                 m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                100.f, 3.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+                100.f, 0.1f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기f
 
             m_bAttack = false;  // 공격 Off
         }
@@ -3064,3 +3090,52 @@ void CPlayer::RightInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
             }
     }
 }
+
+void CPlayer::RayEvent()
+{
+}
+
+void CPlayer::RayAttack(CGameObject* _pDst, _float _fAttack, PLAYER_ATTACK_STATE _eAttackState)
+{
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(_pDst);
+
+    // Pow 생성
+    Engine::Add_GameObject(L"GameLogic", CEffect_HitPow::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 0.2f, m_pTransformComp->Get_Pos().z, this));
+
+
+    if (pAceObj == nullptr)
+        return;
+
+    if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE)
+    {
+        // 타겟 지정
+        CAceMonster* pMonster = dynamic_cast<CAceMonster*>(_pDst);
+
+        // 공격받은 몬스터(타겟)가 있을 경우
+        if (nullptr != pMonster)
+        {
+            // 이벤트 발생
+            pMonster->OnCollisionEntered(this, nullptr);
+
+            // 몬스터 체력 받아오기
+            m_fMonsterHp = pMonster->Get_MonsterHP();
+
+            // 몬스터 체력 계산
+            m_fMonsterHp.Cur += _fAttack;
+
+            if (m_fMonsterHp.Cur <= 0)
+                m_fMonsterHp.Cur = 0.f;
+            if (m_fMonsterHp.IsMax())
+                m_fMonsterHp.Cur = m_fMonsterHp.Max;
+
+            pMonster->Set_MonsterHP(m_fMonsterHp); // 계산이 끝난 몬스터의 체력으로 넣어줌
+            pMonster->Set_Player_AttackState(_eAttackState); // 공격받은 유형을 넣어줌
+        }
+    }
+}
+
+//void Ray CPlayer::Event()
+//{
+//    return void Ray();
+//}
