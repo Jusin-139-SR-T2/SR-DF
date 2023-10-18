@@ -189,6 +189,26 @@ void CImguiWin_MapTool::Layout_Browser(const ImGuiWindowFlags& iMain_Flags)
             ImGui::EndTabBar();
         }
 
+        if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_S))
+        {
+            Save_SceneAll();
+            Load_SceneAll();
+            m_pPickedObjectData = nullptr;
+
+            // 선택한 씬을 로드하도록 한다.
+            if (m_iLoaded_Scene != -1)
+            {
+                // 씬 로드시 관련 변수 리셋
+                Reset_Hierarchi();
+
+                // 계층에 맞게 물체를 생성해준다.
+                Load_ObjectToScene();
+
+                // 터레인 정보로 로드한다.
+                Load_Terrain(m_iLoaded_Scene, m_vecScene[m_iLoaded_Scene].strName);
+            }
+        }
+
     }   ImGui::End();
 }
 
@@ -228,6 +248,19 @@ void CImguiWin_MapTool::Layout_Browser_Scene()
             Save_SceneAll();
             Load_SceneAll();
             m_pPickedObjectData = nullptr;
+
+            // 선택한 씬을 로드하도록 한다.
+            if (m_iLoaded_Scene != -1)
+            {
+                // 씬 로드시 관련 변수 리셋
+                Reset_Hierarchi();
+
+                // 계층에 맞게 물체를 생성해준다.
+                Load_ObjectToScene();
+
+                // 터레인 정보로 로드한다.
+                Load_Terrain(m_iLoaded_Scene, m_vecScene[m_iLoaded_Scene].strName);
+            }
         }
 
         ImGui::SameLine();
@@ -487,6 +520,15 @@ void CImguiWin_MapTool::Layout_Browser_Object()
                 bIsSelected_Proto, ImGuiSelectableFlags_AllowDoubleClick))
             {
                 m_iSelected_Proto = i;
+            }
+            if (bIsSelected_Proto)
+            {
+                vector<LPDIRECT3DBASETEXTURE9> vecTexture;
+                CTextureMgr::GetInstance()->Transfer_Texture(&vecTexture, TEX_CUBE,
+                    wstring(m_vecProto[i].strGroupKey.begin(), m_vecProto[i].strGroupKey.end()).c_str(),
+                    wstring(m_vecProto[i].strTextureKey.begin(), m_vecProto[i].strTextureKey.end()).c_str());
+
+                ImGui::Image((LPDIRECT3DCUBETEXTURE9)vecTexture[0], ImVec2(128, 128));
             }
         }
 
@@ -1735,13 +1777,13 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
 
         if (ImGui::IsMouseDragging(ImGuiMouseButton_Middle))
         {
-            _float fMul = 10.f;
+            _float fMul = 20.f;
             _vec3 vMove = { 0.f, 0.f, 0.f };
             vMove += vRight * (m_fDrag_Translate - m_fPrevDrag_Translate).x;
             vMove -= vUp * (m_fDrag_Translate - m_fPrevDrag_Translate).y;
 
-            Get_Pos() += vMove * fMul * 0.034f;
-            Get_Look() += vMove * fMul * 0.034f;
+            Get_Pos() += vMove * fMul * fTimeDelta;
+            Get_Look() += vMove * fMul * fTimeDelta;
         }
     }
     // 마우스 우클릭시 WASD로 카메라 자체를 이동시킬 수 있다.
@@ -1761,8 +1803,8 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
             // x가 UpVector기준으로 회전, y가 RightVector기준으로 회전
             _matrix matRotX, matRotY, matResult;
             _vec4 vResult;
-            D3DXMatrixRotationAxis(&matRotX, &vUp, D3DXToRadian((m_fDrag_Rotate - m_fPrevDrag_Rotate).x * 0.34f));
-            D3DXMatrixRotationAxis(&matRotY, &vRight, D3DXToRadian((m_fDrag_Rotate - m_fPrevDrag_Rotate).y * 0.34f));
+            D3DXMatrixRotationAxis(&matRotX, &vUp, D3DXToRadian((m_fDrag_Rotate - m_fPrevDrag_Rotate).x * 30.f * fTimeDelta));
+            D3DXMatrixRotationAxis(&matRotY, &vRight, D3DXToRadian((m_fDrag_Rotate - m_fPrevDrag_Rotate).y * 30.f * fTimeDelta));
 
             matResult = matRotX * matRotY;
 
@@ -1777,40 +1819,40 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
             Create_CamAxis(vRight, vLook, vUp);
         }
 
-        _float fMul = 10.f;
+        _float fMul = 30.f;
         if (ImGui::IsKeyDown(ImGuiKey_LeftShift))
             fMul *= 2.f;
 
         // Look 기준으로 화면을 이동
         if (ImGui::IsKeyDown(ImGuiKey_W))
         {
-            Get_Pos() += vLook * fMul * 0.034f;
-            Get_Look() += vLook * fMul * 0.034f;
+            Get_Pos() += vLook * fMul * fTimeDelta;
+            Get_Look() += vLook * fMul * fTimeDelta;
         }
         else if (ImGui::IsKeyDown(ImGuiKey_S))
         {
-            Get_Pos() -= vLook * fMul * 0.034f;
-            Get_Look() -= vLook * fMul * 0.034f;
+            Get_Pos() -= vLook * fMul * fTimeDelta;
+            Get_Look() -= vLook * fMul * fTimeDelta;
         }
         if (ImGui::IsKeyDown(ImGuiKey_A))
         {
-            Get_Pos() -= vRight * fMul * 0.034f;
-            Get_Look() -= vRight * fMul * 0.034f;
+            Get_Pos() -= vRight * fMul * fTimeDelta;
+            Get_Look() -= vRight * fMul * fTimeDelta;
         }
         else if (ImGui::IsKeyDown(ImGuiKey_D))
         {
-            Get_Pos() += vRight * fMul * 0.034f;
-            Get_Look() += vRight * fMul * 0.034f;
+            Get_Pos() += vRight * fMul * fTimeDelta;
+            Get_Look() += vRight * fMul * fTimeDelta;
         }
         if (ImGui::IsKeyDown(ImGuiKey_Q))
         {
-            Get_Pos() -= vUp * fMul * 0.034f;
-            Get_Look() -= vUp * fMul * 0.034f;
+            Get_Pos() -= vUp * fMul * fTimeDelta;
+            Get_Look() -= vUp * fMul * fTimeDelta;
         }
         else if (ImGui::IsKeyDown(ImGuiKey_E))
         {
-            Get_Pos() += vUp * fMul * 0.034f;
-            Get_Look() += vUp * fMul * 0.034f;
+            Get_Pos() += vUp * fMul * fTimeDelta;
+            Get_Look() += vUp * fMul * fTimeDelta;
         }
     }
     else if (m_eEdit_Mode != EEDIT_MODE::TRANSFORM)
