@@ -2043,9 +2043,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 50.02405548095703,
-                        "y": 0.4528946280479431,
-                        "z": -21.226184844970703
+                        "x": 10.572623252868652,
+                        "y": 0.48351114988327026,
+                        "z": 23.39095115661621
                     },
                     "rot": {
                         "x": 0.0,
@@ -2055,7 +2055,7 @@
                     "scale": {
                         "x": 5.0,
                         "y": 1.0,
-                        "z": 5.0
+                        "z": 2.5197372436523438
                     },
                     "group_key": "Structure",
                     "texture_key": "Wood_2"
@@ -3099,9 +3099,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 45.208900451660156,
-                        "y": 2.056206226348877,
-                        "z": -21.226184844970703
+                        "x": 10.919670104980469,
+                        "y": 3.061211347579956,
+                        "z": 19.69721794128418
                     },
                     "rot": {
                         "x": 0.0,
@@ -3111,7 +3111,7 @@
                     "scale": {
                         "x": 5.0,
                         "y": 1.0,
-                        "z": 5.0
+                        "z": 2.372978448867798
                     },
                     "group_key": "Structure",
                     "texture_key": "Wood_2"
@@ -3131,9 +3131,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 40.51836395263672,
-                        "y": 3.372647285461426,
-                        "z": -21.226184844970703
+                        "x": 10.720609664916992,
+                        "y": 1.5556914806365967,
+                        "z": 21.903135299682617
                     },
                     "rot": {
                         "x": 0.0,
@@ -3143,7 +3143,7 @@
                     "scale": {
                         "x": 5.0,
                         "y": 1.0,
-                        "z": 5.0
+                        "z": 2.6048483848571777
                     },
                     "group_key": "Structure",
                     "texture_key": "Wood_2"
@@ -3163,13 +3163,13 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 30.5482177734375,
+                        "x": 30.848604202270508,
                         "y": 1.7467989921569824,
-                        "z": 7.531910419464111
+                        "z": 7.439772605895996
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 89.43598937988281,
+                        "y": 89.43595886230469,
                         "z": 0.0
                     },
                     "scale": {
@@ -3179,6 +3179,646 @@
                     },
                     "group_key": "Structure",
                     "texture_key": "Door_9"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Apple"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 45.02622604370117,
+                        "y": 1.7804287672042847,
+                        "z": -8.820693016052246
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 113.44556427001953,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.41015341877937317,
+                        "y": 0.37330272793769836,
+                        "z": 1.0
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Apple"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Door_90"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 28.8096981048584,
+                        "y": 1.7467989921569824,
+                        "z": 7.516068935394287
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 89.43594360351563,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": -0.3327322006225586,
+                        "y": 3.337355136871338,
+                        "z": 2.076915740966797
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Door_9"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Clock"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -2.105654716491699,
+                        "y": 1.7129216194152832,
+                        "z": 2.29378080368042
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -178.76260375976563,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.6671809554100037,
+                        "y": 3.1961889266967773,
+                        "z": 1.1552878618240356
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Clock"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Door_8"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -2.4956421852111816,
+                        "y": 1.7906508445739746,
+                        "z": 17.303028106689453
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.13617977499961853,
+                        "y": 3.559997081756592,
+                        "z": 1.9826451539993286
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Door_8"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_TileB_25"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 29.808399200439453,
+                        "y": -0.33801165223121643,
+                        "z": 6.862994194030762
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.4360756874084473,
+                        "y": 1.0,
+                        "z": 1.5114402770996094
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "TileB_25"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fourth_Shelves_dark"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 44.9217414855957,
+                        "y": 2.9330599308013916,
+                        "z": -17.374696731567383
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -91.10023498535156,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.5683214664459229,
+                        "y": 0.16328279674053192,
+                        "z": 5.24535608291626
+                    },
+                    "group_key": "Fourth",
+                    "texture_key": "Shelves_dark"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_RedCushion"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -1.7476203441619873,
+                        "y": 0.2226189523935318,
+                        "z": -0.40931767225265503
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 0.2125609666109085,
+                        "z": 2.6068456172943115
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "RedCushion"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_RedCushion0"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -1.9578967094421387,
+                        "y": 0.24827635288238525,
+                        "z": 0.9828152060508728
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.3996670246124268,
+                        "y": 0.7667575478553772,
+                        "z": 0.17901921272277832
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "RedCushion"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_RedCushion1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -2.342104434967041,
+                        "y": 0.2226189523935318,
+                        "z": -0.40931767225265503
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.312738299369812,
+                        "y": 1.355881929397583,
+                        "z": 2.6068456172943115
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "RedCushion"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_RedCushion00"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -1.9578967094421387,
+                        "y": 0.24827635288238525,
+                        "z": -1.7748115062713623
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.3996670246124268,
+                        "y": 0.7667575478553772,
+                        "z": 0.17901921272277832
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "RedCushion"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Medkit"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 43.4599723815918,
+                        "y": 3.228921413421631,
+                        "z": -16.828245162963867
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 25.783096313476563,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.5639137625694275,
+                        "y": 0.3987479507923126,
+                        "z": 1.0
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Medkit"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Cola"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 46.31991958618164,
+                        "y": 3.5067036151885986,
+                        "z": -16.97182846069336
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.4410321116447449,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Cola"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "EatenApple"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 44.09477615356445,
+                        "y": 0.45182764530181885,
+                        "z": -15.171432495117188
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.7199998497962952,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.8175756335258484,
+                        "y": 0.5479395389556885,
+                        "z": 3.9988107681274414
+                    },
+                    "group_key": "Food",
+                    "texture_key": "EatenApple"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Apple0"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 43.35960388183594,
+                        "y": 3.344886064529419,
+                        "z": -8.938546180725098
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 149.54197692871094,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.47688642144203186,
+                        "y": 0.3722493052482605,
+                        "z": 0.5780454874038696
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Apple"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Cola0"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -1.9286949634552002,
+                        "y": 0.40592169761657715,
+                        "z": -2.18157958984375
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 79.06816101074219,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.18054300546646118,
+                        "y": 0.5411819815635681,
+                        "z": 0.849726676940918
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Cola"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BlueTrunk0"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 46.14091873168945,
+                        "y": 0.6003435850143433,
+                        "z": -15.906204223632813
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -51.66973876953125,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 2.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BlueTrunk"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Radio"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 56.82078170776367,
+                        "y": 1.1238683462142944,
+                        "z": 2.6433825492858887
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.5330591797828674,
+                        "y": 2.1685538291931152,
+                        "z": 1.2824702262878418
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Radio"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_TileB_27"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -0.3563131093978882,
+                        "y": 5.319234371185303,
+                        "z": 0.0007250681519508362
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 5.0,
+                        "y": 1.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "TileB_27"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_TileA_1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.0,
+                        "y": 5.4846343994140625,
+                        "z": 20.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 90.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "TileA_1"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_TileA_10"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.0,
+                        "y": 5.4846343994140625,
+                        "z": 24.992464065551758
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 90.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "TileA_1"
                 }
             ]
         },
