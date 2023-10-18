@@ -726,7 +726,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
     
     _bool bIsEdited = false;    // 에딧되었을 때 변화 이벤트
 
-    if (iSelected_Layer == -1 && iSelected_Object == -1 && iSelected_Scene == -1)
+    if (iSelected_Layer == -1 || iSelected_Object == -1 || iSelected_Scene == -1)
         return;
 
     vector<FLayerData>& vecLayer = m_vecScene[iSelected_Scene].vecLayer;
