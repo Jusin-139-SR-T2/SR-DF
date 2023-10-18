@@ -963,11 +963,18 @@ void CImguiWin_MapTool::Layout_Property_Object()
         if (nullptr != pObj)
         {
             CCubeObject* pCube = dynamic_cast<CCubeObject*>(pObj);
+            CRectObject* pRect = dynamic_cast<CRectObject*>(pObj);
             if (pCube)
             {
                 pCube->Get_TransformComponent()->Set_Pos(tObjectData.vPos);
                 pCube->Get_TransformComponent()->Set_Rotation(D3DXToRadian(tObjectData.vRot));
                 pCube->Get_TransformComponent()->Set_Scale(tObjectData.vScale);
+            }
+            else if (pRect)
+            {
+                pRect->Get_TransformComponent()->Set_Pos(tObjectData.vPos);
+                pRect->Get_TransformComponent()->Set_Rotation(D3DXToRadian(tObjectData.vRot));
+                pRect->Get_TransformComponent()->Set_Scale(tObjectData.vScale);
             }
         }
     }
@@ -1896,10 +1903,13 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
         GetClientRect(g_hWnd, &rc);
         ImVec2 vWindowMin = ImGui::GetWindowPos();
         ImVec2 vContentMin = ImGui::GetWindowContentRegionMin();
-        ImVec2 vContentSize = ImGui::GetContentRegionAvail();
-        ;
-        _vec3 vNear(pt.x + ((_float)rc.right - m_vViewerContent_Size.x) * 0.5f,
-            pt.y + ((_float)rc.bottom - m_vViewerContent_Size.y) * 0.5f, 0.f);
+
+        _vec2 vRatio = _vec2(m_vViewerContent_Size.x / (_float)rc.right, 
+            (m_vViewerContent_Size.y / (_float)rc.bottom));
+
+
+        _vec3 vNear((_float)pt.x * vRatio.x + ((_float)rc.right - m_vViewerContent_Size.x) * 0.5f,
+            (_float)pt.y * vRatio.y + ((_float)rc.bottom - m_vViewerContent_Size.y) * 0.5f, 0.f);
         _vec3 vFar(vNear.x, vNear.y, 1.f);
         /*_vec3 vNear(pt.x, pt.y, 0.f);
         _vec3 vFar(vNear.x, vNear.y, 1.f);*/
@@ -2150,7 +2160,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
     }
 
     // 선택된 오브젝트가 있을 때 트랜스폼 기능
-    if (m_eEdit_Mode == EEDIT_MODE::NONE
+    if ((m_eEdit_Mode == EEDIT_MODE::NONE || m_eEdit_Mode == EEDIT_MODE::TRANSFORM)
         && !ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
     {
         if (ImGui::IsKeyPressed(ImGuiKey_S))
@@ -2439,7 +2449,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
                 pTransform->Set_Scale(m_vTransform_Scale_Saved);
 
                 m_pPickedObjectData->vPos = m_vTransform_Translate_Saved;
-                m_pPickedObjectData->vRot = D3DXToRadian(m_vTransform_Rotate_Saved);
+                m_pPickedObjectData->vRot = m_vTransform_Rotate_Saved;
                 m_pPickedObjectData->vScale = m_vTransform_Scale_Saved;
             }
         }
