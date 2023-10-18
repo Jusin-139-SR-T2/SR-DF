@@ -18,6 +18,7 @@
                         "name": "Struct_Wood_2"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -49,6 +50,7 @@
                         "name": "Struct_Wood_20"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -80,6 +82,7 @@
                         "name": "Struct_Wood_21"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -111,6 +114,7 @@
                         "name": "Struct_Wood_22"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -142,6 +146,7 @@
                         "name": "Struct_Wood_23"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -173,6 +178,7 @@
                         "name": "Struct_Wood_24"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -204,6 +210,7 @@
                         "name": "Struct_Wood_25"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -235,6 +242,7 @@
                         "name": "Struct_Wood_26"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -266,6 +274,7 @@
                         "name": "Struct_Wood_27"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -297,6 +306,7 @@
                         "name": "Struct_Wood_28"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -328,6 +338,7 @@
                         "name": "Struct_Wood_29"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -359,6 +370,7 @@
                         "name": "Struct_Wood_210"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -390,6 +402,7 @@
                         "name": "Struct_Wood_3"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -421,6 +434,7 @@
                         "name": "Struct_Wood_30"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -452,6 +466,7 @@
                         "name": "Struct_Wall_18"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -483,6 +498,7 @@
                         "name": "Struct_Wall_180"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -514,6 +530,7 @@
                         "name": "Struct_Wood_31"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -545,6 +562,7 @@
                         "name": "Struct_Wood_32"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -576,6 +594,7 @@
                         "name": "Struct_Wood_33"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -607,6 +626,7 @@
                         "name": "Struct_Wood_34"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -638,6 +658,7 @@
                         "name": "Struct_Wood_35"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -669,6 +690,7 @@
                         "name": "Struct_Wood_36"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -700,6 +722,7 @@
                         "name": "Struct_Wood_37"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -731,6 +754,7 @@
                         "name": "Struct_Wood_38"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -762,6 +786,7 @@
                         "name": "Struct_Wood_39"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -793,6 +818,7 @@
                         "name": "Struct_Wood_310"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -824,6 +850,7 @@
                         "name": "Struct_Wood_4"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -855,6 +882,7 @@
                         "name": "Struct_Wood_40"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -886,6 +914,7 @@
                         "name": "Struct_Wood_41"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -917,6 +946,7 @@
                         "name": "Struct_Wood_410"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -948,6 +978,7 @@
                         "name": "Struct_Wood_42"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -979,6 +1010,7 @@
                         "name": "Struct_Wood_420"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1010,6 +1042,7 @@
                         "name": "Struct_Wood_211"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1041,6 +1074,7 @@
                         "name": "Struct_Wood_2110"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1072,6 +1106,7 @@
                         "name": "Struct_Wood_2111"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1103,6 +1138,7 @@
                         "name": "Struct_Wood_2112"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1134,6 +1170,7 @@
                         "name": "Struct_Wood_2113"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1165,6 +1202,7 @@
                         "name": "Struct_Wood_21130"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1196,6 +1234,7 @@
                         "name": "Struct_Wood_21110"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1227,6 +1266,7 @@
                         "name": "Struct_Wood_211100"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1258,6 +1298,7 @@
                         "name": "Struct_Wall_181"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1289,6 +1330,7 @@
                         "name": "Struct_Wall_17"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1320,6 +1362,7 @@
                         "name": "Struct_Wall_1810"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1351,6 +1394,7 @@
                         "name": "Struct_Wall_18100"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1365,7 +1409,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5600876808166504,
+                        "y": 89.38643646240234,
                         "z": 0.0
                     },
                     "scale": {
@@ -1382,6 +1426,7 @@
                         "name": "Struct_Wall_170"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1413,6 +1458,7 @@
                         "name": "Struct_Wall_181000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1427,7 +1473,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -1.5640357732772827,
+                        "y": -89.61264038085938,
                         "z": 0.0
                     },
                     "scale": {
@@ -1444,6 +1490,7 @@
                         "name": "Struct_Wood_2114"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1458,7 +1505,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5711164474487305,
+                        "y": 90.0183334350586,
                         "z": 0.0
                     },
                     "scale": {
@@ -1475,6 +1522,7 @@
                         "name": "Struct_Wall_181001"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1489,7 +1537,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.561746597290039,
+                        "y": 89.48148345947266,
                         "z": 0.0
                     },
                     "scale": {
@@ -1506,6 +1554,7 @@
                         "name": "Struct_Wall_1811"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1537,6 +1586,7 @@
                         "name": "Struct_Wall_1700"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1568,6 +1618,7 @@
                         "name": "Struct_Wall_18110"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1599,6 +1650,7 @@
                         "name": "Struct_Wall_17000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1630,6 +1682,7 @@
                         "name": "Struct_Wall_170000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1644,7 +1697,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5786088705062866,
+                        "y": 90.44762420654297,
                         "z": 0.0
                     },
                     "scale": {
@@ -1661,6 +1714,7 @@
                         "name": "Struct_Wall_1700000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1675,7 +1729,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -1.5709723234176636,
+                        "y": -90.01007843017578,
                         "z": 0.0
                     },
                     "scale": {
@@ -1692,6 +1746,7 @@
                         "name": "Struct_Wall_181002"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1706,7 +1761,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5719927549362183,
+                        "y": 90.06854248046875,
                         "z": 0.0
                     },
                     "scale": {
@@ -1723,6 +1778,7 @@
                         "name": "Struct_Wall_1810020"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1737,7 +1793,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -1754,6 +1810,7 @@
                         "name": "Struct_Wall_18100200"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1768,7 +1825,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -1785,6 +1842,7 @@
                         "name": "Struct_Wall_181002000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1799,7 +1857,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -1816,6 +1874,7 @@
                         "name": "Struct_Wall_17000000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1830,7 +1889,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -1.5709723234176636,
+                        "y": -90.01007843017578,
                         "z": 0.0
                     },
                     "scale": {
@@ -1847,6 +1906,7 @@
                         "name": "Struct_Wall_1810020000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1861,7 +1921,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -1878,6 +1938,7 @@
                         "name": "Struct_Wall_18100200000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1892,7 +1953,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -1909,6 +1970,7 @@
                         "name": "Struct_Wall_170000000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1923,7 +1985,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -1.5709723234176636,
+                        "y": -90.01007843017578,
                         "z": 0.0
                     },
                     "scale": {
@@ -1940,6 +2002,7 @@
                         "name": "Struct_Wall_181002000000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1954,7 +2017,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -1971,6 +2034,7 @@
                         "name": "Struct_Wood_421"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2002,6 +2066,7 @@
                         "name": "Struct_Wall_1810020000000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2033,6 +2098,7 @@
                         "name": "Struct_Wall_1810020000001"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2047,7 +2113,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5487552881240845,
+                        "y": 88.73713684082031,
                         "z": 0.0
                     },
                     "scale": {
@@ -2064,6 +2130,7 @@
                         "name": "Struct_Wood_400"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2095,6 +2162,7 @@
                         "name": "Struct_Wall_1810020000002"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2109,7 +2177,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5232315063476563,
+                        "y": 87.27473449707031,
                         "z": 0.0
                     },
                     "scale": {
@@ -2126,6 +2194,7 @@
                         "name": "Struct_Wall_19"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2140,7 +2209,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -1.5720889568328857,
+                        "y": -90.07405853271484,
                         "z": 0.0
                     },
                     "scale": {
@@ -2157,6 +2226,7 @@
                         "name": "Struct_Wall_1700000000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2171,7 +2241,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -0.02741863951086998,
+                        "y": -1.570972204208374,
                         "z": 0.0
                     },
                     "scale": {
@@ -2188,6 +2258,7 @@
                         "name": "Struct_Wall_17000000000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2202,7 +2273,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.005880676209926605,
+                        "y": 0.33693790435791016,
                         "z": 0.0
                     },
                     "scale": {
@@ -2219,6 +2290,7 @@
                         "name": "Struct_Wood_401"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2250,6 +2322,7 @@
                         "name": "Struct_Wall_18100200000000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2281,6 +2354,7 @@
                         "name": "Struct_Wall_18100200000001"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2295,7 +2369,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5487369298934937,
+                        "y": 88.736083984375,
                         "z": 0.0
                     },
                     "scale": {
@@ -2312,6 +2386,7 @@
                         "name": "Struct_Wall_181002000000010"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2326,7 +2401,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5487369298934937,
+                        "y": 88.736083984375,
                         "z": 0.0
                     },
                     "scale": {
@@ -2343,6 +2418,7 @@
                         "name": "Struct_Wall_181002000000011"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2357,7 +2433,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5741302967071533,
+                        "y": 90.1910171508789,
                         "z": 0.0
                     },
                     "scale": {
@@ -2374,6 +2450,7 @@
                         "name": "Struct_Wall_18100200000002"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2405,6 +2482,7 @@
                         "name": "Struct_Wall_181002000000020"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2436,6 +2514,7 @@
                         "name": "Struct_Wall_182"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2467,6 +2546,7 @@
                         "name": "Struct_Wall_1820"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2498,6 +2578,7 @@
                         "name": "Struct_Wall_181002001"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2512,7 +2593,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -2529,6 +2610,7 @@
                         "name": "Struct_Wall_1810020001"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2543,7 +2625,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -2560,6 +2642,7 @@
                         "name": "Struct_Wall_1810020010"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2574,7 +2657,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -2591,6 +2674,7 @@
                         "name": "Struct_Wall_190"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2605,7 +2689,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -1.5720889568328857,
+                        "y": -90.07405853271484,
                         "z": 0.0
                     },
                     "scale": {
@@ -2622,6 +2706,7 @@
                         "name": "Struct_Wall_18100200100"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2636,7 +2721,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -2653,6 +2738,7 @@
                         "name": "Struct_Wall_181002001000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2667,7 +2753,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5708014965057373,
+                        "y": 90.00028991699219,
                         "z": 0.0
                     },
                     "scale": {
@@ -2684,6 +2770,7 @@
                         "name": "Struct_Wall_1700001"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2698,7 +2785,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5639150142669678,
+                        "y": 89.60572814941406,
                         "z": 0.0
                     },
                     "scale": {
@@ -2715,6 +2802,7 @@
                         "name": "Fur_Crate1"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2746,6 +2834,7 @@
                         "name": "Fur_Crate4"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2760,7 +2849,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.003666902892291546,
+                        "y": 0.2100980430841446,
                         "z": 0.0
                     },
                     "scale": {
@@ -2777,6 +2866,7 @@
                         "name": "Fur_Crate10"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2808,6 +2898,7 @@
                         "name": "Fur_Crate11"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2839,6 +2930,7 @@
                         "name": "Fur_Crate110"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2853,7 +2945,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -0.34926578402519226,
+                        "y": -20.01145362854004,
                         "z": 0.0
                     },
                     "scale": {
@@ -2870,6 +2962,7 @@
                         "name": "Fur_Crate1100"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2901,6 +2994,7 @@
                         "name": "Fur_Crate11000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2932,6 +3026,7 @@
                         "name": "Fur_BlueTrunk"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2946,7 +3041,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -1.591807246208191,
+                        "y": -91.2038345336914,
                         "z": 0.0
                     },
                     "scale": {
@@ -2963,6 +3058,7 @@
                         "name": "Fur_Crate11001"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2976,9 +3072,9 @@
                         "z": -10.452974319458008
                     },
                     "rot": {
-                        "x": -0.6688107252120972,
-                        "y": 0.6027997732162476,
-                        "z": 0.8563154935836792
+                        "x": -38.320030212402344,
+                        "y": 34.537879943847656,
+                        "z": 49.06325912475586
                     },
                     "scale": {
                         "x": 1.5,
@@ -2994,6 +3090,7 @@
                         "name": "Struct_Wood_4210"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -3025,6 +3122,7 @@
                         "name": "Struct_Wood_42100"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -3056,6 +3154,7 @@
                         "name": "Struct_Door_9"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -3070,7 +3169,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5609525442123413,
+                        "y": 89.43598937988281,
                         "z": 0.0
                     },
                     "scale": {
@@ -3096,7 +3195,7 @@
                         "name": "BuildingE"
                     },
                     "ID": 9,
-                    "class_name": "",
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,

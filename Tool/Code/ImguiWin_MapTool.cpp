@@ -740,8 +740,8 @@ void CImguiWin_MapTool::Layout_Property_Object()
         Set_Button_ReturnColor();
 
         // 입력부
-        vecObject[iSelected_Object].strName.reserve(20);
-        char  strInput[20] = {};
+        vecObject[iSelected_Object].strName.reserve(50);
+        char  strInput[50] = {};
         strcpy_s(strInput, vecObject[iSelected_Object].strName.c_str());
             
         ImGui::SameLine();
@@ -1346,11 +1346,11 @@ void CImguiWin_MapTool::Save_SceneAll()
                 tObjectSerial.strTextureKey = tObjectData.strTextureKey;
 
                 // 완료시 레이어에 직렬화 추가
-                tLayerSerial.vecGameObject.reserve(200);
+                tLayerSerial.vecGameObject.reserve(300);
                 tLayerSerial.vecGameObject.push_back(tObjectSerial);
             }
             // 완료시 씬에 직렬화 추가
-            tSceneSerial.vecLayer.reserve(20);
+            tSceneSerial.vecLayer.reserve(30);
             tSceneSerial.vecLayer.push_back(tLayerSerial);
         }
 
