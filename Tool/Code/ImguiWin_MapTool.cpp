@@ -1275,6 +1275,8 @@ void CImguiWin_MapTool::Delete_SelectedObjectFromScene()
     tObject.pObject->Set_Dead();
     auto iter = vecObject.begin() + m_iSelected_Object;
     vecObject.erase(iter);
+    m_iSelected_Object = -1;
+    m_pPickedObjectData = nullptr;
 }
 
 void CImguiWin_MapTool::Set_SelectedObject()
@@ -1733,6 +1735,8 @@ void CImguiWin_MapTool::Add_ObjectFromProto()
         wstring strConvert(tLayerData.strName.begin(), tLayerData.strName.end());
         Factory_GameObject(strConvert.c_str(), tObjectData.eObjectID, tObjectData);
         tLayerData.vecObject.push_back(tObjectData);
+        m_pPickedObjectData = &tLayerData.vecObject.back();
+        Set_HierarchiIndex(m_iSelected_Layer_Remain, (_int)tLayerData.vecObject.size() - 1);
     }
 }
 
