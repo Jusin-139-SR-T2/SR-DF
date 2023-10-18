@@ -71,7 +71,7 @@ int CMainApp::Update_MainApp(const _float& fTimeDelta)
 	auto end = chrono::high_resolution_clock::now();
 	chrono::duration<double> duration = end - start;
 
-	cout << "업데이트 실행시간 : " << duration.count() << endl;
+	//cout << "업데이트 실행시간 : " << duration.count() << endl;
 
 	return 0;
 }
@@ -94,7 +94,7 @@ void CMainApp::Render_MainApp()
 	auto end = chrono::high_resolution_clock::now();
 	chrono::duration<double> duration = end - start;
 
-	cout << "렌더 실행시간 : " << duration.count() << endl;
+	//cout << "렌더 실행시간 : " << duration.count() << endl;
 
 	Render_FrameRate();
 
