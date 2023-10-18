@@ -7,6 +7,24 @@ using namespace rapidjson;
 
 BEGIN(Engine)
 
+#define RPJSON_IS_MEMBER(value, name)	\
+			(value.HasMember(name))
+
+#define RPJSON_RECIEVE_STRING(value, name)	\
+			((RPJSON_IS_MEMBER(value, name) && value[name].IsString()) ? value[name].GetString() : "")
+
+#define RPJSON_RECIEVE_BOOL(value, name)	\
+			((RPJSON_IS_MEMBER(value, name) && value[name].IsBool()) ? value[name].GetBool() : false)
+
+#define RPJSON_RECIEVE_FLOAT(value, name)	\
+			((RPJSON_IS_MEMBER(value, name) && value[name].IsFloat()) ? value[name].GetFloat() : 0.f)
+
+#define RPJSON_RECIEVE_INT(value, name)	\
+			((RPJSON_IS_MEMBER(value, name) && value[name].IsInt()) ? value[name].GetInt() : 0)
+
+#define RPJSON_IS_MEMARRAY(value, name)		\
+			(value.HasMember(name) && value[name].IsArray())
+
 /// <summary>
 /// 컴포넌트가 가지는 직렬화 데이터
 /// </summary>
@@ -27,6 +45,7 @@ class ENGINE_DLL FSerialize_GameObject
 public:
 	FSeialize_Header				tHeader;
 	EGO_CLASS						eID;						// 실제 오브젝트의 원본 태그
+	string							strClassName;				// 원본이 되는 클래스의 이름
 
 	set<string>						bTag;						// 태그
 
@@ -53,6 +72,7 @@ class ENGINE_DLL FSerialize_Proto
 public:
 	FSeialize_Header				tHeader;
 	EGO_CLASS						eID;
+	string							strClassName = "";
 
 	_vec3							vPos;
 	_vec3							vRot;

@@ -26,6 +26,7 @@
                         "name": "BuildingE"
                     },
                     "ID": 9,
+                    "class_name": "",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,

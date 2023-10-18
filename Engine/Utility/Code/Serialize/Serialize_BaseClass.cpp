@@ -15,8 +15,10 @@ void FSerialize_Proto::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 	header.AddMember("name", Value().SetString(tHeader.strName.c_str(), allocator), allocator);
 	doc.AddMember("header", header, allocator);
 
-	// 클래스 타입
+	// 클래스 타입, 이제 안쓸거임
 	doc.AddMember("class", Value().SetInt(static_cast<_int>(eID)), allocator);
+	// 클래스 이름
+	doc.AddMember("class_name", Value().SetString(strClassName.c_str(), allocator), allocator);
 
 	// 위치
 	Value pos(kObjectType);
@@ -69,27 +71,42 @@ _bool FSerialize_Proto::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 	if (doc.HasParseError())
 		return false;
 
-	tHeader.eType = static_cast<ESERIALIZE_TYPE>(doc["header"]["type"].GetInt());
-	tHeader.strName = doc["header"]["name"].GetString();
+	if (doc.HasMember("header"))
+	{
+		const Value& header = doc["header"];
+		header.HasMember("type") ? tHeader.eType = static_cast<ESERIALIZE_TYPE>(header["type"].GetInt()) : 0;
+		header.HasMember("name") ? tHeader.strName = header["name"].GetString() : 0;
+	}
 
-	eID = static_cast<EGO_CLASS>(doc["class"].GetInt());
+	doc.HasMember("class") ? eID = static_cast<EGO_CLASS>(doc["class"].GetInt()) : 0;
+	doc.HasMember("class_name") ? strClassName = doc["class_name"].GetString() : "";
 
-	vPos.x = doc["pos"]["x"].GetFloat();
-	vPos.y = doc["pos"]["y"].GetFloat();
-	vPos.z = doc["pos"]["z"].GetFloat();
+	if (doc.HasMember("pos"))
+	{
+		const Value& pos = doc["pos"];
+		pos.HasMember("x") ? vPos.x = pos["x"].GetFloat() : 0;
+		pos.HasMember("y") ? vPos.y = pos["y"].GetFloat() : 0;
+		pos.HasMember("z") ? vPos.z = pos["z"].GetFloat() : 0;
+	}
 
-	vRot.x = doc["rot"]["x"].GetFloat();
-	vRot.y = doc["rot"]["y"].GetFloat();
-	vRot.z = doc["rot"]["z"].GetFloat();
+	if (doc.HasMember("rot"))
+	{
+		const Value& rot = doc["rot"];
+		rot.HasMember("x") ? vRot.x = rot["x"].GetFloat() : 0;
+		rot.HasMember("y") ? vRot.y = rot["y"].GetFloat() : 0;
+		rot.HasMember("z") ? vRot.z = rot["z"].GetFloat() : 0;
+	}
 
-	vScale.x = doc["scale"]["x"].GetFloat();
-	vScale.y = doc["scale"]["y"].GetFloat();
-	vScale.z = doc["scale"]["z"].GetFloat();
+	if (doc.HasMember("scale"))
+	{
+		const Value& scale = doc["scale"];
+		scale.HasMember("x") ? vScale.x = scale["x"].GetFloat() : 0;
+		scale.HasMember("y") ? vScale.y = scale["y"].GetFloat() : 0;
+		scale.HasMember("z") ? vScale.z = scale["z"].GetFloat() : 0;
+	}
 
-	if (doc.HasMember("group_key"))
-		strGroupKey = doc["group_key"].GetString();
-	if (doc.HasMember("texture_key"))
-		strTextureKey = doc["texture_key"].GetString();
+	doc.HasMember("group_key") ? strGroupKey = doc["group_key"].GetString() : 0;
+	doc.HasMember("texture_key") ? strTextureKey = doc["texture_key"].GetString() : 0;
 
 	return true;
 }
@@ -214,6 +231,9 @@ void FSerialize_Scene::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 			Value gameobject_ID(kObjectType);
 			gameobject.AddMember("ID", Value().SetInt(tObjectSerial.eID), allocator);
 
+			// 클래스 이름
+			gameobject.AddMember("class_name", Value().SetString(tObjectSerial.strClassName.c_str(), allocator), allocator);
+
 
 			// 태그 이름 배열로 넣기
 			Value arrtag(kArrayType);
@@ -295,57 +315,81 @@ _bool FSerialize_Scene::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 	if (!doc.IsObject())
 		return false;
 
-	tHeader.eType = static_cast<ESERIALIZE_TYPE>(doc["header"]["type"].GetInt());
-	tHeader.strName = doc["header"]["name"].GetString();
+	if (doc.HasMember("header"))
+	{
+		const Value& header = doc["header"];
+		header.HasMember("type") ? tHeader.eType = static_cast<ESERIALIZE_TYPE>(header["type"].GetInt()) : 0;
+		header.HasMember("name") ? tHeader.strName = header["name"].GetString() : 0;
+	}
 
-	refTerrainName = doc["terrain"].GetString();
+	doc.HasMember("terrain") ? refTerrainName = doc["terrain"].GetString() : "";
 
 	// 레이어 로드
 	if (doc.HasMember("layers") && doc["layers"].IsArray())
 	for (SizeType i = 0; i < doc["layers"].Size(); i++)
 	{
-		Value& layer = doc["layers"][i];
+		const Value& layer = doc["layers"][i];
 		FSerialize_Layer layerSR;
-		layerSR.tHeader.eType = static_cast<ESERIALIZE_TYPE>(layer["header"]["type"].GetInt());
-		layerSR.tHeader.strName = layer["header"]["name"].GetString();
+		if (layer.HasMember("header"))
+		{
+			const Value& layer_header = layer["header"];
+			layer_header.HasMember("type") ? layerSR.tHeader.eType = static_cast<ESERIALIZE_TYPE>(layer_header["type"].GetInt()) : 0;
+			layer_header.HasMember("name") ? layerSR.tHeader.strName = layer_header["name"].GetString() : 0;
+		}
 
-		layerSR.fPriority = layer["priority"].GetFloat();
+		layer.HasMember("priority") ? layerSR.fPriority = layer["priority"].GetFloat() : 0.f;
 
 		// 오브젝트 로드
 		if (layer.HasMember("objects") && layer["objects"].IsArray())
 		for (SizeType j = 0; j < layer["objects"].Size(); j++)
 		{
-			Value& object = layer["objects"][j];
+			const Value& object = layer["objects"][j];
 			FSerialize_GameObject gameobjectSR;
-			gameobjectSR.tHeader.eType = static_cast<ESERIALIZE_TYPE>(object["header"]["type"].GetInt());
-			gameobjectSR.tHeader.strName = object["header"]["name"].GetString();
 
-			gameobjectSR.eID = static_cast<EGO_CLASS>(object["ID"].GetInt());
+			if (object.HasMember("header"))
+			{
+				const Value& object_header = object["header"];
+				gameobjectSR.tHeader.eType = static_cast<ESERIALIZE_TYPE>(RPJSON_RECIEVE_INT(object_header, "type"));
+				gameobjectSR.tHeader.strName = RPJSON_RECIEVE_STRING(object_header, "name");
+			}
 
-			gameobjectSR.vPos.x = object["pos"]["x"].GetFloat();
-			gameobjectSR.vPos.y = object["pos"]["y"].GetFloat();
-			gameobjectSR.vPos.z = object["pos"]["z"].GetFloat();
+			gameobjectSR.eID = static_cast<EGO_CLASS>(RPJSON_RECIEVE_INT(object, "ID"));
+			gameobjectSR.strClassName = RPJSON_RECIEVE_STRING(object, "class_name");
 
-			gameobjectSR.vRotation.x = object["rot"]["x"].GetFloat();
-			gameobjectSR.vRotation.y = object["rot"]["y"].GetFloat();
-			gameobjectSR.vRotation.z = object["rot"]["z"].GetFloat();
+			if (object.HasMember("pos"))
+			{
+				const Value& object_pos = object["pos"];
+				gameobjectSR.vPos.x = RPJSON_RECIEVE_FLOAT(object_pos, "x");
+				gameobjectSR.vPos.y = RPJSON_RECIEVE_FLOAT(object_pos, "y");
+				gameobjectSR.vPos.z = RPJSON_RECIEVE_FLOAT(object_pos, "z");
+			}
 
-			gameobjectSR.vScale.x = object["scale"]["x"].GetFloat();
-			gameobjectSR.vScale.y = object["scale"]["y"].GetFloat();
-			gameobjectSR.vScale.z = object["scale"]["z"].GetFloat();
+			if (object.HasMember("rot"))
+			{
+				const Value& object_rot = object["rot"];
+				gameobjectSR.vRotation.x = RPJSON_RECIEVE_FLOAT(object_rot, "x");
+				gameobjectSR.vRotation.y = RPJSON_RECIEVE_FLOAT(object_rot, "y");
+				gameobjectSR.vRotation.z = RPJSON_RECIEVE_FLOAT(object_rot, "z");
+			}
 
-			gameobjectSR.fPriority_Update = object["priority_update"].GetFloat();
-			gameobjectSR.fPriority_LateUpdate = object["priority_late_update"].GetFloat();
-			gameobjectSR.fPriority_Render = object["priority_render"].GetFloat();
+			if (object.HasMember("scale"))
+			{
+				const Value& object_scale = object["scale"];
+				gameobjectSR.vScale.x = RPJSON_RECIEVE_FLOAT(object_scale, "x");
+				gameobjectSR.vScale.y = RPJSON_RECIEVE_FLOAT(object_scale, "y");
+				gameobjectSR.vScale.z = RPJSON_RECIEVE_FLOAT(object_scale, "z");
+			}
 
-			gameobjectSR.bUsePriority_Update = object["use_priority_update"].GetBool();
-			gameobjectSR.bUsePriority_LateUpdate = object["use_priority_late_update"].GetBool();
-			gameobjectSR.bUsePriority_Render = object["use_priority_render"].GetBool();
+			gameobjectSR.fPriority_Update = RPJSON_RECIEVE_FLOAT(object, "priority_update");
+			gameobjectSR.fPriority_LateUpdate = RPJSON_RECIEVE_FLOAT(object, "priority_late_update");
+			gameobjectSR.fPriority_Render = RPJSON_RECIEVE_FLOAT(object, "priority_render");
 
-			if (object.HasMember("group_key"))
-				gameobjectSR.strGroupKey = object["group_key"].GetString();
-			if (object.HasMember("texture_key"))
-				gameobjectSR.strTextureKey = object["texture_key"].GetString();
+			gameobjectSR.bUsePriority_Update = RPJSON_RECIEVE_BOOL(object, "use_priority_update");
+			gameobjectSR.bUsePriority_LateUpdate = RPJSON_RECIEVE_BOOL(object, "use_priority_late_update");
+			gameobjectSR.bUsePriority_Render = RPJSON_RECIEVE_BOOL(object, "use_priority_render");
+
+			gameobjectSR.strGroupKey = RPJSON_RECIEVE_STRING(object, "group_key");
+			gameobjectSR.strTextureKey = RPJSON_RECIEVE_STRING(object, "texture_key");
 
 			layerSR.vecGameObject.push_back(gameobjectSR);
 		}

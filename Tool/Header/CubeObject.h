@@ -50,8 +50,9 @@ private:
 	CTextureComponent*			m_pTextureComp = nullptr;
 	
 
-private:
-	D3DMATERIAL9				m_materColor;
+public:
+	GETSET_EX2(_bool, m_bIsSelected, IsSelected, GET_REF, SET_C_REF)
 
-	//void Set_Material();
+private:
+	_bool m_bIsSelected = false;
 };

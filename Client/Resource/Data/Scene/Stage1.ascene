@@ -18,6 +18,7 @@
                         "name": "Fur_Radiator"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -32,7 +33,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -0.17000000178813934,
+                        "y": -9.74028205871582,
                         "z": 0.0
                     },
                     "scale": {
@@ -49,6 +50,7 @@
                         "name": "BuildingD"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -63,7 +65,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 3.1500000953674316,
+                        "y": 180.48167419433594,
                         "z": 0.0
                     },
                     "scale": {
@@ -80,6 +82,7 @@
                         "name": "BuildingL"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -111,6 +114,7 @@
                         "name": "BuildingL0"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -125,7 +129,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.8100000619888306,
+                        "y": 46.409576416015625,
                         "z": 0.0
                     },
                     "scale": {
@@ -142,6 +146,7 @@
                         "name": "BuildingL00"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -156,7 +161,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.020000040531158447,
+                        "y": 1.1459178924560547,
                         "z": 0.0
                     },
                     "scale": {
@@ -170,40 +175,10 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Struct_TileA_13"
-                    },
-                    "ID": 9,
-                    "tags": [],
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 11.440921783447266,
-                        "y": 6.800396919250488,
-                        "z": 0.0
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 0.1619565635919571,
-                        "y": 3.69270920753479,
-                        "z": 3.69270920753479
-                    },
-                    "group_key": "Structure",
-                    "texture_key": "TileA_13"
-                },
-                {
-                    "header": {
-                        "type": 3,
                         "name": "Struct_TileA_18"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -219,7 +194,7 @@
                     "rot": {
                         "x": 0.0,
                         "y": 0.0,
-                        "z": -1.5677556991577148
+                        "z": -89.8257827758789
                     },
                     "scale": {
                         "x": 0.2642706334590912,
@@ -235,6 +210,7 @@
                         "name": "Struct_TileA_180"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -248,9 +224,9 @@
                         "z": -1.8727171421051025
                     },
                     "rot": {
-                        "x": -1.5762224197387695,
+                        "x": 91.10028076171875,
                         "y": 0.0,
-                        "z": -1.5677556991577148
+                        "z": 91.10027313232422
                     },
                     "scale": {
                         "x": 0.25855034589767456,
@@ -266,6 +242,7 @@
                         "name": "BuildingD0"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -280,7 +257,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 3.1500000953674316,
+                        "y": 3.1499991416931152,
                         "z": 0.0
                     },
                     "scale": {
@@ -297,6 +274,7 @@
                         "name": "BuildingD00"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -311,7 +289,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 3.1500000953674316,
+                        "y": 180.48167419433594,
                         "z": 0.0
                     },
                     "scale": {
@@ -328,6 +306,7 @@
                         "name": "Struct_TileA_3"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -341,7 +320,7 @@
                         "z": 56.25273513793945
                     },
                     "rot": {
-                        "x": -1.5794274806976318,
+                        "x": -1.5794271230697632,
                         "y": 0.0,
                         "z": 0.0
                     },
@@ -359,6 +338,7 @@
                         "name": "Struct_TileA_30"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -372,7 +352,7 @@
                         "z": 39.362247467041016
                     },
                     "rot": {
-                        "x": -1.5698120594024658,
+                        "x": -89.94358825683594,
                         "y": 0.0,
                         "z": 0.0
                     },
@@ -390,6 +370,7 @@
                         "name": "Fur_Radiator0"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -404,7 +385,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.07092784345149994,
+                        "y": 4.063865661621094,
                         "z": 0.0
                     },
                     "scale": {
@@ -421,6 +402,7 @@
                         "name": "Struct_TileA_300"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -434,8 +416,8 @@
                         "z": 49.21763610839844
                     },
                     "rot": {
-                        "x": -1.5794274806976318,
-                        "y": -0.20937979221343994,
+                        "x": -90.4945068359375,
+                        "y": -11.996576309204102,
                         "z": 0.0
                     },
                     "scale": {
@@ -452,6 +434,7 @@
                         "name": "Struct_TileA_3000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -465,7 +448,7 @@
                         "z": 5.99076509475708
                     },
                     "rot": {
-                        "x": -1.5648384094238281,
+                        "x": -89.65861511230469,
                         "y": 0.0,
                         "z": 0.0
                     },
@@ -483,6 +466,7 @@
                         "name": "Struct_TileA_301"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -496,7 +480,7 @@
                         "z": 22.66404914855957
                     },
                     "rot": {
-                        "x": -1.5698120594024658,
+                        "x": -89.94358825683594,
                         "y": 0.0,
                         "z": 0.0
                     },
@@ -508,12 +492,13 @@
                     "group_key": "Structure",
                     "texture_key": "TileA_3"
                 },
-				{
+                {
                     "header": {
                         "type": 3,
                         "name": "BuildingTest"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -545,6 +530,7 @@
                         "name": "BuildingTest0"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -559,7 +545,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 4.710000038146973,
+                        "y": 92.97802734375,
                         "z": 0.0
                     },
                     "scale": {
@@ -576,6 +562,7 @@
                         "name": "BuildingTest1"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -590,7 +577,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 2.940000057220459,
+                        "y": 168.44955444335938,
                         "z": 0.0
                     },
                     "scale": {
@@ -607,6 +594,7 @@
                         "name": "BuildingTest3"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -638,6 +626,7 @@
                         "name": "Building1"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -669,6 +658,7 @@
                         "name": "Building10"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -700,6 +690,7 @@
                         "name": "Building2"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -714,7 +705,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 172.78732299804688,
+                        "y": 179.7349090576172,
                         "z": 0.0
                     },
                     "scale": {
@@ -731,6 +722,7 @@
                         "name": "BuildingE"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -745,7 +737,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5600000619888306,
+                        "y": 89.38140106201172,
                         "z": 0.0
                     },
                     "scale": {
@@ -762,6 +754,7 @@
                         "name": "BuildingD"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -776,7 +769,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 3.1500000953674316,
+                        "y": 180.48167419433594,
                         "z": 0.0
                     },
                     "scale": {
@@ -793,6 +786,7 @@
                         "name": "Fur_CockMachine"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -824,6 +818,7 @@
                         "name": "Fur_electricalBox"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -855,6 +850,7 @@
                         "name": "Fur_Gate1"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -869,7 +865,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.0,
+                        "y": 57.2957649230957,
                         "z": 0.0
                     },
                     "scale": {
@@ -886,6 +882,7 @@
                         "name": "BuildingJ"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -894,19 +891,19 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": -12.271703720092773,
+                        "x": -12.970947265625,
                         "y": 4.480528354644775,
-                        "z": -3.2273755073547363
+                        "z": -3.8045668601989746
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -0.5799999833106995,
+                        "y": -34.720664978027344,
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 4.436337947845459,
-                        "y": 9.148443222045898,
-                        "z": 12.566696166992188
+                        "x": 5.6840009689331055,
+                        "y": 9.13239574432373,
+                        "z": 12.544652938842773
                     },
                     "group_key": "Building",
                     "texture_key": "J"
@@ -917,6 +914,7 @@
                         "name": "Fur_BookShelves"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -948,6 +946,7 @@
                         "name": "Fur_Column7"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -979,6 +978,7 @@
                         "name": "Fur_Crate3"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1010,6 +1010,7 @@
                         "name": "Fur_Glass1"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1041,6 +1042,7 @@
                         "name": "Fur_WhiteStorage"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1072,6 +1074,7 @@
                         "name": "Fur_WhiteStorage2"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1103,6 +1106,7 @@
                         "name": "BuildingD0"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1117,7 +1121,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 3.140800952911377,
+                        "y": 179.9546356201172,
                         "z": 0.0
                     },
                     "scale": {
@@ -1134,6 +1138,7 @@
                         "name": "BuildingD00"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1148,7 +1153,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 3.9100000858306885,
+                        "y": 224.0264434814453,
                         "z": 0.0
                     },
                     "scale": {
@@ -1165,6 +1170,7 @@
                         "name": "Struct_Metal_1600"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1179,8 +1185,8 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5836801528930664,
-                        "z": 1.5686759948730469
+                        "y": 90.73816680908203,
+                        "z": 89.87849426269531
                     },
                     "scale": {
                         "x": 3.2768094539642334,
@@ -1196,6 +1202,7 @@
                         "name": "Fur_Crate4"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1227,6 +1234,7 @@
                         "name": "Fur_Crate40"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1240,8 +1248,8 @@
                         "z": 16.356815338134766
                     },
                     "rot": {
-                        "x": 0.6100000143051147,
-                        "y": 0.8700000047683716,
+                        "x": 34.95042419433594,
+                        "y": 49.847320556640625,
                         "z": 0.0
                     },
                     "scale": {
@@ -1258,6 +1266,7 @@
                         "name": "Fur_Crate41"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1272,7 +1281,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.940000057220459,
+                        "y": 53.8580322265625,
                         "z": 0.0
                     },
                     "scale": {
@@ -1289,6 +1298,7 @@
                         "name": "BuildingD01"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1303,7 +1313,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 3.1500000953674316,
+                        "y": 180.48167419433594,
                         "z": 0.0
                     },
                     "scale": {
@@ -1320,6 +1330,7 @@
                         "name": "Fur_Crate410"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1334,7 +1345,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.940000057220459,
+                        "y": 53.8580322265625,
                         "z": 0.0
                     },
                     "scale": {
@@ -1351,6 +1362,7 @@
                         "name": "Fur_Gate10"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1365,7 +1377,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.2000000476837158,
+                        "y": 68.75492095947266,
                         "z": 0.0
                     },
                     "scale": {
@@ -1382,6 +1394,7 @@
                         "name": "Fur_Crate411"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1396,7 +1409,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.940000057220459,
+                        "y": 53.8580322265625,
                         "z": 0.0
                     },
                     "scale": {
@@ -1413,6 +1426,7 @@
                         "name": "Fur_Crate4110"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1427,7 +1441,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.8200000524520874,
+                        "y": 46.982540130615234,
                         "z": 0.0
                     },
                     "scale": {
@@ -1444,6 +1458,7 @@
                         "name": "Fur_Crate41100"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1458,7 +1473,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.28000009059906,
+                        "y": 73.33858489990234,
                         "z": 0.0
                     },
                     "scale": {
@@ -1475,6 +1490,7 @@
                         "name": "Fur_Crate411000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1488,9 +1504,9 @@
                         "z": -10.524989128112793
                     },
                     "rot": {
-                        "x": -0.7914862036705017,
-                        "y": 1.4500000476837158,
-                        "z": -0.1110377237200737
+                        "x": -45.348812103271484,
+                        "y": 83.0788803100586,
+                        "z": -6.361991882324219
                     },
                     "scale": {
                         "x": 2.332894802093506,
@@ -1506,6 +1522,7 @@
                         "name": "Fur_Crate4100"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1520,7 +1537,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.190000057220459,
+                        "y": 68.18196868896484,
                         "z": 0.0
                     },
                     "scale": {
@@ -1537,6 +1554,7 @@
                         "name": "BuildingTest30"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1551,7 +1569,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5770000219345093,
+                        "y": 89.75521087646484,
                         "z": 0.0
                     },
                     "scale": {
@@ -1568,6 +1586,7 @@
                         "name": "Fur_CockMachine0"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1599,6 +1618,7 @@
                         "name": "Fur_Crate41000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1613,7 +1633,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.190000057220459,
+                        "y": 68.18196868896484,
                         "z": 0.0
                     },
                     "scale": {
@@ -1630,6 +1650,7 @@
                         "name": "Fur_Crate410000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1644,7 +1665,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.190000057220459,
+                        "y": 68.18196868896484,
                         "z": 0.0
                     },
                     "scale": {
@@ -1661,6 +1682,7 @@
                         "name": "Fur_Crate410001"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1675,7 +1697,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5500000715255737,
+                        "y": 88.80844116210938,
                         "z": 0.0
                     },
                     "scale": {
@@ -1692,6 +1714,7 @@
                         "name": "BuildingD000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1706,7 +1729,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 3.1395866870880127,
+                        "y": 179.88504028320313,
                         "z": 0.0
                     },
                     "scale": {
@@ -1723,6 +1746,7 @@
                         "name": "Fur_Crate4100000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1737,7 +1761,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.540000081062317,
+                        "y": 88.23548889160156,
                         "z": 0.0
                     },
                     "scale": {
@@ -1754,6 +1778,7 @@
                         "name": "Building20"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1768,7 +1793,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 172.07350158691406,
+                        "y": 229.31192016601563,
                         "z": 0.0
                     },
                     "scale": {
@@ -1785,6 +1810,7 @@
                         "name": "Fur_Crate4100010"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1799,7 +1825,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.2817585468292236,
+                        "y": 73.43933868408203,
                         "z": 0.0
                     },
                     "scale": {
@@ -1816,6 +1842,7 @@
                         "name": "Fur_Crate41000100"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1830,7 +1857,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.050247073173523,
+                        "y": 1.0502468347549438,
                         "z": 0.0
                     },
                     "scale": {
@@ -1847,6 +1874,7 @@
                         "name": "Fur_Crate410001000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1861,7 +1889,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.3627790212631226,
+                        "y": 78.08146667480469,
                         "z": 0.0
                     },
                     "scale": {
@@ -1878,6 +1906,7 @@
                         "name": "BuildingE0"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1892,7 +1921,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5600000619888306,
+                        "y": 89.38140106201172,
                         "z": 0.0
                     },
                     "scale": {
@@ -1909,6 +1938,7 @@
                         "name": "BuildingE00"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1923,7 +1953,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5600000619888306,
+                        "y": 89.38140106201172,
                         "z": 0.0
                     },
                     "scale": {
@@ -1940,6 +1970,7 @@
                         "name": "BuildingE000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1954,7 +1985,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 1.5600000619888306,
+                        "y": 89.38140106201172,
                         "z": 0.0
                     },
                     "scale": {
@@ -1971,6 +2002,7 @@
                         "name": "Building200"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -1985,7 +2017,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 171.2246856689453,
+                        "y": 9810.4501953125,
                         "z": 0.0
                     },
                     "scale": {
@@ -2002,6 +2034,7 @@
                         "name": "Building2000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2016,7 +2049,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 171.2246856689453,
+                        "y": 9810.4501953125,
                         "z": 0.0
                     },
                     "scale": {
@@ -2033,6 +2066,7 @@
                         "name": "Building20000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2047,7 +2081,7 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 171.2246856689453,
+                        "y": 90.21293640136719,
                         "z": 0.0
                     },
                     "scale": {
@@ -2064,6 +2098,7 @@
                         "name": "BuildingTest00"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2078,13 +2113,13 @@
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 4.710000038146973,
+                        "y": 90.6536636352539,
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 15.553193092346191,
-                        "y": 11.059837341308594,
-                        "z": 8.93770980834961
+                        "x": 15.229780197143555,
+                        "y": 10.82985782623291,
+                        "z": 8.751858711242676
                     },
                     "group_key": "Building",
                     "texture_key": "B"
@@ -2095,6 +2130,7 @@
                         "name": "Fur_CockMachine00"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2126,6 +2162,7 @@
                         "name": "Fur_CockMachine000"
                     },
                     "ID": 9,
+                    "class_name": "AceBuilding",
                     "tags": [],
                     "priority_update": 0.0,
                     "use_priority_update": true,
@@ -2136,7 +2173,7 @@
                     "pos": {
                         "x": -39.45615768432617,
                         "y": 1.2938151359558105,
-                        "z": 4.311178207397461
+                        "z": -11.418692588806152
                     },
                     "rot": {
                         "x": 0.0,
@@ -2150,6 +2187,582 @@
                     },
                     "group_key": "Furniture",
                     "texture_key": "CockMachine"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingI"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 23.911636352539063,
+                        "y": 3.932344436645508,
+                        "z": -17.089937210083008
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.4566376209259033,
+                        "y": 8.24422550201416,
+                        "z": 8.24422550201416
+                    },
+                    "group_key": "Building",
+                    "texture_key": "I"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingH"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 24.126306533813477,
+                        "y": 4.241626262664795,
+                        "z": -26.84123420715332
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.063891887664795,
+                        "y": 8.815256118774414,
+                        "z": 8.815256118774414
+                    },
+                    "group_key": "Building",
+                    "texture_key": "H"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingG"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -27.844728469848633,
+                        "y": 3.7386486530303955,
+                        "z": -23.864788055419922
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 88.42790985107422,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.011711597442627,
+                        "y": 7.59035062789917,
+                        "z": 7.59035062789917
+                    },
+                    "group_key": "Building",
+                    "texture_key": "G"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingF"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 9.14261245727539,
+                        "y": 5.553629398345947,
+                        "z": -32.354583740234375
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.12090075016021729,
+                        "y": 0.12090075016021729,
+                        "z": 0.12090075016021729
+                    },
+                    "group_key": "Building",
+                    "texture_key": "F"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingE1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -2.136298418045044,
+                        "y": -2.50386643409729,
+                        "z": -3.662868022918701
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.09190799295902252,
+                        "y": 0.09190799295902252,
+                        "z": 0.09190799295902252
+                    },
+                    "group_key": "Building",
+                    "texture_key": "E"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingC"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -5.4344282150268555,
+                        "y": 5.999954700469971,
+                        "z": -25.15711784362793
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 6.534002304077148,
+                        "y": 12.855884552001953,
+                        "z": 6.4022345542907715
+                    },
+                    "group_key": "Building",
+                    "texture_key": "C"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingB"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 4.954591274261475,
+                        "y": 6.475429058074951,
+                        "z": -35.04677200317383
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 13.044713973999023,
+                        "y": 13.044713973999023,
+                        "z": 13.044713973999023
+                    },
+                    "group_key": "Building",
+                    "texture_key": "B"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingTest31"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -38.26381301879883,
+                        "y": 6.156488418579102,
+                        "z": -17.01358985900879
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 12.59332275390625,
+                        "y": 12.59332275390625,
+                        "z": 9.773999214172363
+                    },
+                    "group_key": "Building",
+                    "texture_key": "A"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingG0"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -27.844728469848633,
+                        "y": 11.283570289611816,
+                        "z": -23.864788055419922
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 88.42790985107422,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.011711597442627,
+                        "y": 7.59035062789917,
+                        "z": 7.59035062789917
+                    },
+                    "group_key": "Building",
+                    "texture_key": "G"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingG00"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -27.844728469848633,
+                        "y": 18.822391510009766,
+                        "z": -23.864788055419922
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 88.42790985107422,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.011711597442627,
+                        "y": 7.59035062789917,
+                        "z": 7.59035062789917
+                    },
+                    "group_key": "Building",
+                    "texture_key": "G"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingG1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -20.277612686157227,
+                        "y": 3.7386486530303955,
+                        "z": -23.677152633666992
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 88.42790985107422,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.011711597442627,
+                        "y": 7.59035062789917,
+                        "z": 7.59035062789917
+                    },
+                    "group_key": "Building",
+                    "texture_key": "G"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingG10"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -20.277612686157227,
+                        "y": 11.269744873046875,
+                        "z": -23.677152633666992
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 87.6894760131836,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.011711597442627,
+                        "y": 7.59035062789917,
+                        "z": 7.59035062789917
+                    },
+                    "group_key": "Building",
+                    "texture_key": "G"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingG100"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -20.277612686157227,
+                        "y": 18.79191780090332,
+                        "z": -23.677152633666992
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 88.42790985107422,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.011711597442627,
+                        "y": 7.59035062789917,
+                        "z": 7.59035062789917
+                    },
+                    "group_key": "Building",
+                    "texture_key": "G"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingG11"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -12.697385787963867,
+                        "y": 3.7386486530303955,
+                        "z": -23.461584091186523
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 88.42790985107422,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.011711597442627,
+                        "y": 7.59035062789917,
+                        "z": 7.59035062789917
+                    },
+                    "group_key": "Building",
+                    "texture_key": "G"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingG110"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -12.697385787963867,
+                        "y": 11.264734268188477,
+                        "z": -23.461584091186523
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 88.42790985107422,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.011711597442627,
+                        "y": 7.59035062789917,
+                        "z": 7.59035062789917
+                    },
+                    "group_key": "Building",
+                    "texture_key": "G"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingG1100"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -12.697385787963867,
+                        "y": 18.761428833007813,
+                        "z": -23.461584091186523
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 88.42790985107422,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.011711597442627,
+                        "y": 7.59035062789917,
+                        "z": 7.59035062789917
+                    },
+                    "group_key": "Building",
+                    "texture_key": "G"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate411001"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -0.65692538022995,
+                        "y": 1.1273809671401978,
+                        "z": -27.100072860717773
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 73.33858489990234,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.332894802093506,
+                        "y": 2.332894802093506,
+                        "z": 2.332894802093506
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate4110010"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -0.65692538022995,
+                        "y": 1.1273809671401978,
+                        "z": -24.19856834411621
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 97.31170654296875,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.332894802093506,
+                        "y": 2.332894802093506,
+                        "z": 2.332894802093506
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
                 }
             ]
         },
@@ -2159,7 +2772,136 @@
                 "name": "GameLogic"
             },
             "priority": 0.0,
-            "objects": []
+            "objects": [
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Cola"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -2.6413068771362305,
+                        "y": 2.7149784564971924,
+                        "z": -2.0448596477508545
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.4690392017364502,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Cola"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Cola0"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -5.900147914886475,
+                        "y": 2.6220648288726807,
+                        "z": -2.922316074371338
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.4690392017364502,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Cola"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Cola1"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 18.787214279174805,
+                        "y": 3.382828712463379,
+                        "z": 8.014200210571289
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.4690392017364502,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Cola"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Apple"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.595301628112793,
+                        "y": 0.1681067943572998,
+                        "z": 26.682344436645508
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.3888173997402191,
+                        "y": 0.3888173997402191,
+                        "z": 0.3888173997402191
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Apple"
+                }
+            ]
         },
         {
             "header": {

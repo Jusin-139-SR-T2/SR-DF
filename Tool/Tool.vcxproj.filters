@@ -67,6 +67,9 @@
     <Filter Include="03. GameObject\02. Cube">
       <UniqueIdentifier>{303baa0c-8d38-473f-b7e3-82192462007c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\03. Rect">
+      <UniqueIdentifier>{65ed5f1f-7e12-43b2-83ed-fe1cd24cb13e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\framework.h">
@@ -174,6 +177,9 @@
     <ClInclude Include="Header\Scene_Parsed.h">
       <Filter>01. Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Header\RectObject.h">
+      <Filter>03. GameObject\03. Rect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\framework.cpp">
@@ -271,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="Code\Scene_Parsed.cpp">
       <Filter>01. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RectObject.cpp">
+      <Filter>03. GameObject\03. Rect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

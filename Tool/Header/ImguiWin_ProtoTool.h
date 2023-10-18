@@ -23,6 +23,7 @@ public:
 public:
 	string							strName = "";				// 프로토타입의 이름
 	EGO_CLASS						eID = ECLASS_NONE;			// 프로토타입의 원본
+	string							strClassName = "";
 
 	_vec3							vPos = { 0.f, 0.f, 0.f };
 	_vec3							vRot = { 0.f, 0.f, 0.f };

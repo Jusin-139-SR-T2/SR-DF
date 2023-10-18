@@ -114,6 +114,7 @@ private:	// 계층 관련 정의부
 		string			strName = "";				// 현재 이름
 		string			strOriginName = "";			// 프로토 타입 이름
 		EGO_CLASS		eObjectID = ECLASS_NONE;	// 클래스 분류
+		string			strClassName = "";
 		CGameObject*	pObject = nullptr;
 
 		_vec3			vPos = { 0.f,0.f,0.f };
@@ -173,6 +174,9 @@ private:
 	void			Duplicate_SelectedObject();
 	void			Delete_AllFromScene();
 	void			Delete_SelectedObjectFromScene();
+
+	void			Set_SelectedObject();
+	void			Reset_SelectedObject();
 
 private:
 	// 목록에 있는 씬 모두 저장

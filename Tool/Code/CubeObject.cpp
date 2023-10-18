@@ -56,11 +56,6 @@ HRESULT CCubeObject::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_materColor.Diffuse.r = 1.f;
-    m_materColor.Diffuse.g = 0.f;
-    m_materColor.Diffuse.b = 0.f;
-    m_materColor.Diffuse.a = 1.f;
-
     return S_OK;
 }
 
@@ -125,9 +120,17 @@ void CCubeObject::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 
-    D3DMATERIAL9 mater;
-    m_pGraphicDev->GetMaterial(&mater);
-    m_pGraphicDev->SetMaterial(&m_materColor);
+    if (m_bIsSelected)
+    {
+        m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, DXCOLOR_MAGENTA);
+        m_pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+        m_pGraphicDev->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+        m_pGraphicDev->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TFACTOR);
+    }
+    else
+    {
+        m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
+    }
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE); 
@@ -135,10 +138,10 @@ void CCubeObject::Render_GameObject()
     m_pTextureComp->Render_Texture(0);
     m_pCubeBufferComp->Render_Buffer();
 
+    m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
+
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
-    m_pGraphicDev->SetMaterial(&mater);
 }
 
 

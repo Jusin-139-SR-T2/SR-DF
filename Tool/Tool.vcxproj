@@ -210,6 +210,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClInclude Include="Header\ImguiWin_TextureTool.h" />
     <ClInclude Include="Header\ImguiWin_DockingSpace.h" />
     <ClInclude Include="Header\ImguiWin_MapTool.h" />
+    <ClInclude Include="Header\RectObject.h" />
     <ClInclude Include="Header\Scene_AnimationTool.h" />
     <ClInclude Include="Header\Scene_Parsed.h" />
     <ClInclude Include="Header\Scene_ProtoTool.h" />
@@ -247,6 +248,7 @@ xcopy "$(SolutionDir)Reference\Library\FMod\studio\$(PlatformTarget)\fmodstudioL
     <ClCompile Include="Code\ImguiWin_TextureTool.cpp" />
     <ClCompile Include="Code\ImguiWin_DockingSpace.cpp" />
     <ClCompile Include="Code\ImguiWin_MapTool.cpp" />
+    <ClCompile Include="Code\RectObject.cpp" />
     <ClCompile Include="Code\Scene_AnimationTool.cpp" />
     <ClCompile Include="Code\Scene_Parsed.cpp" />
     <ClCompile Include="Code\Scene_ProtoTool.cpp" />

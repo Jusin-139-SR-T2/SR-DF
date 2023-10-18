@@ -4,6 +4,7 @@
         "name": "Struct_TileA_2"
     },
     "class": 9,
+    "class_name": "AceBuilding",
     "pos": {
         "x": 0.0,
         "y": 0.0,

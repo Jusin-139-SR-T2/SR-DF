@@ -17,6 +17,7 @@
 #include <fstream>
 #include <CubeObject.h>
 #include "Terrain.h"
+#include "RectObject.h"
 
 CImguiWin_MapTool::CImguiWin_MapTool()
 {
@@ -194,6 +195,7 @@ void CImguiWin_MapTool::Layout_Browser(const ImGuiWindowFlags& iMain_Flags)
             Save_SceneAll();
             Load_SceneAll();
             m_pPickedObjectData = nullptr;
+            m_eEdit_Mode = EEDIT_MODE::NONE;
 
             // 선택한 씬을 로드하도록 한다.
             if (m_iLoaded_Scene != -1)
@@ -528,7 +530,7 @@ void CImguiWin_MapTool::Layout_Browser_Object()
                     wstring(m_vecProto[i].strGroupKey.begin(), m_vecProto[i].strGroupKey.end()).c_str(),
                     wstring(m_vecProto[i].strTextureKey.begin(), m_vecProto[i].strTextureKey.end()).c_str());
 
-                ImGui::Image((LPDIRECT3DCUBETEXTURE9)vecTexture[0], ImVec2(128, 128));
+                ImGui::Image((LPDIRECT3DCUBETEXTURE9)vecTexture[0], ImVec2(128, 128), ImVec2(0, -0.5), ImVec2(0.5, 0.5));
             }
         }
 
@@ -598,9 +600,9 @@ void CImguiWin_MapTool::Layout_Hierarchi(const ImGuiWindowFlags& iMain_Flags)
                     m_iSelected_Object = j;
                     m_iSelected_Layer = -1;
                     m_iSelected_Layer_Remain = i;
+                    Reset_SelectedObject();
                     m_pPickedObjectData = &vecLayer[i].vecObject[j];
-
-                    
+                    Set_SelectedObject();
                 }
             }
             ImGui::Unindent();
@@ -1154,47 +1156,30 @@ void CImguiWin_MapTool::Create_LayerToScene(const FLayerData& tLayerData)
 
 void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, FObjectData& tObjectData)
 {
-    switch (eClassID)
-    {
-    case Engine::ECLASS_NONE:
-        
-        break;
-    case Engine::ECLASS_PLAYER:
-        
-        break;
-    case Engine::ECLASS_BROWN:
-
-        break;
-    case Engine::ECLASS_GREY:
-
-        break;
-    case Engine::ECLASS_BOSS:
-
-        break;
-    case Engine::ECLASS_FOOD:
-
-        break;
-    case Engine::ECLASS_WEAPON:
-
-        break;
-    case Engine::ECLASS_THROW:
-
-        break;
-    case Engine::ECLASS_INTERACTION:
-
-        break;
-    case Engine::ECLASS_BUILDING:
+    if (tObjectData.strClassName == "AceBuilding")
     {
         CGameObject* pObj = static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
-            tObjectData.vPos, tObjectData.vRot, tObjectData.vScale, tObjectData.strGroupKey, tObjectData.strTextureKey));
+            tObjectData.vPos, D3DXToRadian(tObjectData.vRot), tObjectData.vScale, tObjectData.strGroupKey, tObjectData.strTextureKey));
         wstring strConvert(tObjectData.strName.begin(), tObjectData.strName.end());
         pObj->Set_ObjectName(strConvert);
         Engine::Add_GameObject(pLayerTag, pObj);
         tObjectData.pObject = pObj;
-        break;
     }
-    default:
-        break;
+    else if (tObjectData.strClassName == "AceFood" 
+        || tObjectData.strClassName == "Brown"
+        || tObjectData.strClassName == "Grey"
+        || tObjectData.strClassName == "Boss"
+        || tObjectData.strClassName == "AceWeapon"
+        || tObjectData.strClassName == "AceFood"
+        || tObjectData.strClassName == "AceThrow"
+        || tObjectData.strClassName == "AceInteraction")
+    {
+        CGameObject* pObj = static_cast<CGameObject*>(CRectObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
+            tObjectData.vPos, D3DXToRadian(tObjectData.vRot), tObjectData.vScale, tObjectData.strGroupKey, tObjectData.strTextureKey));
+        wstring strConvert(tObjectData.strName.begin(), tObjectData.strName.end());
+        pObj->Set_ObjectName(strConvert);
+        Engine::Add_GameObject(pLayerTag, pObj);
+        tObjectData.pObject = pObj;
     }
 }
 
@@ -1213,6 +1198,7 @@ void CImguiWin_MapTool::Duplicate_SelectedObject()
 
 
     // 여기서부터 복제
+    Reset_SelectedObject();
     FObjectData tDupObject = tObject;
     tDupObject.pObject = nullptr;
 
@@ -1252,8 +1238,9 @@ void CImguiWin_MapTool::Duplicate_SelectedObject()
 
     // 바로 선택하기 기능
     Set_HierarchiIndex(m_iSelected_Layer_Remain, static_cast<_int>(vecObject.size()) - 1);
+    
     m_pPickedObjectData = &vecObject.back();
-
+    Set_SelectedObject();
     
 }
 
@@ -1281,6 +1268,32 @@ void CImguiWin_MapTool::Delete_SelectedObjectFromScene()
     tObject.pObject->Set_Dead();
     auto iter = vecObject.begin() + m_iSelected_Object;
     vecObject.erase(iter);
+}
+
+void CImguiWin_MapTool::Set_SelectedObject()
+{
+    if (m_pPickedObjectData && m_pPickedObjectData->pObject)
+    {
+        CCubeObject* pCubeObj = dynamic_cast<CCubeObject*>(m_pPickedObjectData->pObject);
+        if (pCubeObj)
+            pCubeObj->Set_IsSelected(true);
+        CRectObject* pRectObj = dynamic_cast<CRectObject*>(m_pPickedObjectData->pObject);
+        if (pRectObj)
+            pRectObj->Set_IsSelected(true);
+    }
+}
+
+void CImguiWin_MapTool::Reset_SelectedObject()
+{
+    if (m_pPickedObjectData && m_pPickedObjectData->pObject)
+    {
+        CCubeObject* pCubeObj = dynamic_cast<CCubeObject*>(m_pPickedObjectData->pObject);
+        if (pCubeObj)
+            pCubeObj->Set_IsSelected(false);
+        CRectObject* pRectObj = dynamic_cast<CRectObject*>(m_pPickedObjectData->pObject);
+        if (pRectObj)
+            pRectObj->Set_IsSelected(false);
+    }
 }
 
 void CImguiWin_MapTool::Save_SceneAll()
@@ -1315,6 +1328,7 @@ void CImguiWin_MapTool::Save_SceneAll()
                 tObjectSerial.tHeader.strName = tObjectData.strName;
 
                 tObjectSerial.eID = tObjectData.eObjectID;
+                tObjectSerial.strClassName = tObjectData.strClassName;
 
                 tObjectSerial.fPriority_Update = tObjectData.fPriority[0];
                 tObjectSerial.fPriority_LateUpdate = tObjectData.fPriority[1];
@@ -1436,6 +1450,7 @@ void CImguiWin_MapTool::Import_Scene(const string& strName, FSerialize_Scene& tS
                     tObjectData.strName = tObjectSerial.tHeader.strName;
 
                     tObjectData.eObjectID = tObjectSerial.eID;
+                    tObjectData.strClassName = tObjectSerial.strClassName;
 
                     tObjectData.fPriority[EPRIORITY_OBJECT_UPDATE] = tObjectSerial.fPriority_Update;
                     tObjectData.fPriority[EPRIORITY_OBJECT_LATE] = tObjectSerial.fPriority_LateUpdate;
@@ -1519,6 +1534,7 @@ void CImguiWin_MapTool::Import_Proto(const string& strName, FSerialize_Proto& tP
         {
             tProtoData.strName = tProtoSerial.tHeader.strName;
             tProtoData.eID = tProtoSerial.eID;
+            tProtoData.strClassName = tProtoSerial.strClassName;
             tProtoData.vPos = tProtoSerial.vPos;
             tProtoData.vRot = tProtoSerial.vRot;
             tProtoData.vScale = tProtoSerial.vScale;
@@ -1661,6 +1677,7 @@ void CImguiWin_MapTool::Add_ObjectFromProto()
     FObjectData tObjectData;
 
     tObjectData.eObjectID = tProtoData.eID;
+    tObjectData.strClassName = tProtoData.strClassName;
     tObjectData.vRot = tProtoData.vRot;
     tObjectData.vScale = tProtoData.vScale;
     tObjectData.strName = tProtoData.strName;
@@ -1863,6 +1880,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
         && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
         // 피킹 전에 데이터 초기화
+        Reset_SelectedObject();
         m_pPickedObjectData = nullptr;
         m_iSelected_Layer = -1;
         m_iSelected_Layer_Remain = -1;
@@ -1874,19 +1892,24 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
 
         // 컨텐츠 좌표로 변환해야함
         POINT pt = Get_MousePos_Client(g_hWnd);
+        RECT rc;
+        GetClientRect(g_hWnd, &rc);
         ImVec2 vWindowMin = ImGui::GetWindowPos();
         ImVec2 vContentMin = ImGui::GetWindowContentRegionMin();
         ImVec2 vContentSize = ImGui::GetContentRegionAvail();
-
-        _vec3 vNear(pt.x + vContentMin.x, 
-            pt.y + vContentMin.y, 0.f);
+        ;
+        _vec3 vNear(pt.x + ((_float)rc.right - m_vViewerContent_Size.x) * 0.5f,
+            pt.y + ((_float)rc.bottom - m_vViewerContent_Size.y) * 0.5f, 0.f);
         _vec3 vFar(vNear.x, vNear.y, 1.f);
+        /*_vec3 vNear(pt.x, pt.y, 0.f);
+        _vec3 vFar(vNear.x, vNear.y, 1.f);*/
 
         _matrix matWorld;
         D3DXMatrixIdentity(&matWorld);
 
         D3DVIEWPORT9 viewport;
         pGraphicDev->GetViewport(&viewport);
+        //viewport = { (_ulong)vContentMin.x, (_ulong)vContentMin.y, (_ulong)m_vViewerContent_Size.x, (_ulong)m_vViewerContent_Size.y, viewport.MinZ, viewport.MaxZ};
         
         _vec3 vWorldNear, vWorldFar;
         D3DXVec3Unproject(&vWorldNear, &vNear, &viewport, &m_matProj, &m_matView, &matWorld);
@@ -1919,6 +1942,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
         for (auto& pObject : listGameObject)
         {
             CCubeObject* pCubeObj = dynamic_cast<CCubeObject*>(pObject);
+            CRectObject* pRectObj = dynamic_cast<CRectObject*>(pObject);
             if (pCubeObj != nullptr)
             {
                 const _vec3* const pVtxPos = pCubeObj->Get_CubeBufferComponent()->Get_VtxPos();
@@ -2058,6 +2082,41 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
                     }
                 }
             }
+
+            if (pRectObj != nullptr)
+            {
+                const _vec3* const pVtxPos = pRectObj->Get_RectBufferComponent()->Get_VtxPos();
+                vector<_vec3> vecVtx;
+                for (size_t i = 0; i < pRectObj->Get_RectBufferComponent()->Get_VertexCount(); i++)
+                {
+                    vecVtx.push_back(pVtxPos[i]);
+
+                    _matrix matObjectWorld = *pRectObj->Get_TransformComponent()->Get_Transform();
+                    D3DXVec3TransformCoord(&vecVtx[i], &vecVtx[i], &matObjectWorld);
+                }
+
+                _float fDist;
+                // X+
+                if (D3DXIntersectTri(&vecVtx[0], &vecVtx[1], &vecVtx[2],
+                    &vWorldNear, &vRayDir, nullptr, nullptr, &fDist))
+                {
+                    if (fDist < fClosestDistance)
+                    {
+                        fClosestDistance = fDist;
+                        pClosestObject = pObject;
+                    }
+                }
+                // X+
+                if (D3DXIntersectTri(&vecVtx[0], &vecVtx[2], &vecVtx[3],
+                    &vWorldNear, &vRayDir, nullptr, nullptr, &fDist))
+                {
+                    if (fDist < fClosestDistance)
+                    {
+                        fClosestDistance = fDist;
+                        pClosestObject = pObject;
+                    }
+                }
+            }
         }
 
         // 피킹 후 해당 오브젝트의 정보를 툴에 업로드 한다.
@@ -2078,6 +2137,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
                         m_iSelected_Layer_Remain = i;
                         m_iSelected_Object = j;
                         m_eSelectedProperty_Type = ESELECTED_TYPE_OBJECT;
+                        Set_SelectedObject();
                         bFound = true;
                         break;
                     }
@@ -2090,7 +2150,8 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
     }
 
     // 선택된 오브젝트가 있을 때 트랜스폼 기능
-    if (m_eEdit_Mode == EEDIT_MODE::NONE)
+    if (m_eEdit_Mode == EEDIT_MODE::NONE
+        && !ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
     {
         if (ImGui::IsKeyPressed(ImGuiKey_S))
         {
@@ -2164,17 +2225,20 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
             m_eTransform_Axis = ETRANSFORM_AXIS_ALL;
         }
 
-        CCubeObject* pObj = dynamic_cast<CCubeObject*>(m_pPickedObjectData->pObject);
-        if (pObj != nullptr)
-        {
-            CTransformComponent* pTransform = pObj->Get_TransformComponent();
+        CTransformComponent* pTransform = nullptr; 
+        CCubeObject* pCubeObj = dynamic_cast<CCubeObject*>(m_pPickedObjectData->pObject);
+        CRectObject* pRectObj = dynamic_cast<CRectObject*>(m_pPickedObjectData->pObject);
+        if (pCubeObj)
+            pTransform = pCubeObj->Get_TransformComponent();
+        if (pRectObj)
+            pTransform = pRectObj->Get_TransformComponent();
 
+        if (pTransform != nullptr)
+        {
             // 처음 들어올 때 세팅
             if (!m_bIsTransform_Start)
             {
                 m_bIsTransform_Start = !m_bIsTransform_Start;
-
-
 
                 // 시작 마우스 위치
                 POINT ptStart = Get_MousePos_Client(g_hWnd);
@@ -2202,7 +2266,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
 
                 // 시작 위치 저장
                 m_vTransform_Translate = m_vTransform_Translate_Saved = pTransform->Get_Pos();
-                m_vTransform_Rotate = m_vTransform_Rotate_Saved = pTransform->Get_Rotation();
+                m_vTransform_Rotate = m_vTransform_Rotate_Saved = D3DXToDegree(pTransform->Get_Rotation());
                 m_vTransform_Scale = m_vTransform_Scale_Saved = pTransform->Get_Scale();
             }
 
@@ -2218,8 +2282,10 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
             _float fDelta_MouseMul = 1.f;
             if (ImGui::IsKeyDown(ImGuiKey_LeftShift))
                 fDelta_MouseMul *= 0.3f;
-            _vec2 vDelta_Mouse = (m_vTransform_MouseEnd - m_vTransform_MouseStart) * fTimeDelta * 10.f * fDelta_MouseMul;
+            _vec2 vDelta_Mouse = (m_vTransform_MouseEnd - m_vTransform_MouseStart) * 0.03f * fDelta_MouseMul;
             //_float fLength_Mouse = fDelta_MouseLength;
+
+            cout << vDelta_Mouse.x << " " << vDelta_Mouse.y << endl;
 
             // 카메라 기준 축 생성
             _vec3 vRight, vLook, vUp;
@@ -2230,7 +2296,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
                 m_eTransform_PrevAxis = m_eTransform_Axis;
 
                 pTransform->Set_Pos(m_vTransform_Translate_Saved);
-                pTransform->Set_Rotation(m_vTransform_Rotate_Saved);
+                pTransform->Set_Rotation(D3DXToRadian(m_vTransform_Rotate_Saved));
                 pTransform->Set_Scale(m_vTransform_Scale_Saved);
             }
 
@@ -2280,40 +2346,40 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
                 switch (m_eTransform_Axis)
                 {
                 case CImguiWin_MapTool::ETRANSFORM_AXIS_X:
-                    pTransform->Set_RotationX(m_vTransform_Rotate.x + vDelta_Mouse.y * fTimeDelta * 10.f);
+                    pTransform->Set_RotationX(D3DXToRadian(m_vTransform_Rotate.x) + vDelta_Mouse.y);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_AXIS_Y:
-                    pTransform->Set_RotationY(m_vTransform_Rotate.y - vDelta_Mouse.x * fTimeDelta * 10.f);
+                    pTransform->Set_RotationY(D3DXToRadian(m_vTransform_Rotate.y) - vDelta_Mouse.x);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_AXIS_Z:
-                    pTransform->Set_RotationZ(m_vTransform_Rotate.z - vDelta_Mouse.y * fTimeDelta * 10.f);
+                    pTransform->Set_RotationZ(D3DXToRadian(m_vTransform_Rotate.z) - vDelta_Mouse.y);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_PLANE_X:
-                    pTransform->Set_RotationY(m_vTransform_Rotate.y * fLength);
-                    pTransform->Set_RotationZ(m_vTransform_Rotate.z * fLength);
+                    pTransform->Set_RotationY(D3DXToRadian(m_vTransform_Rotate.y) * fLength);
+                    pTransform->Set_RotationZ(D3DXToRadian(m_vTransform_Rotate.z) * fLength);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_PLANE_Y:
-                    pTransform->Set_RotationX(m_vTransform_Rotate.x * fLength);
-                    pTransform->Set_RotationZ(m_vTransform_Rotate.z * fLength);
+                    pTransform->Set_RotationX(D3DXToRadian(m_vTransform_Rotate.x) * fLength);
+                    pTransform->Set_RotationZ(D3DXToRadian(m_vTransform_Rotate.z) * fLength);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_PLANE_Z:
-                    pTransform->Set_RotationX(m_vTransform_Rotate.x * fLength);
-                    pTransform->Set_RotationY(m_vTransform_Rotate.y * fLength);
+                    pTransform->Set_RotationX(D3DXToRadian(m_vTransform_Rotate.x) * fLength);
+                    pTransform->Set_RotationY(D3DXToRadian(m_vTransform_Rotate.y) * fLength);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
                 {
-                    pTransform->Set_Rotation(m_vTransform_Rotate + (vRight) * fLength);
+                    pTransform->Set_Rotation(D3DXToRadian(m_vTransform_Rotate) + vRight * fLength);
                     break;
                 }
                 default:
                     break;
                 }
-                m_pPickedObjectData->vRot = pTransform->Get_Rotation();
+                m_pPickedObjectData->vRot = D3DXToDegree(pTransform->Get_Rotation());
             }
             else
             {
-                pTransform->Set_Rotation(m_vTransform_Rotate_Saved);
-                m_pPickedObjectData->vRot = pTransform->Get_Rotation();
+                pTransform->Set_Rotation(D3DXToRadian(m_vTransform_Rotate_Saved));
+                m_pPickedObjectData->vRot = D3DXToDegree(pTransform->Get_Rotation());
             }
 
             if (m_eTransform_Mode == ETRANSFORM_MODE_SCALE)
@@ -2359,6 +2425,8 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
             if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
             {
                 m_eEdit_Mode = EEDIT_MODE::NONE;
+                m_eTransform_Mode = ETRANSFORM_MODE_NONE;
+                m_eTransform_Axis = ETRANSFORM_AXIS_NONE;
             }
             if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
             {
@@ -2367,11 +2435,11 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
                 m_eTransform_Axis = ETRANSFORM_AXIS_NONE;
 
                 pTransform->Set_Pos(m_vTransform_Translate_Saved);
-                pTransform->Set_Rotation(m_vTransform_Rotate_Saved);
+                pTransform->Set_Rotation(D3DXToRadian(m_vTransform_Rotate_Saved));
                 pTransform->Set_Scale(m_vTransform_Scale_Saved);
 
                 m_pPickedObjectData->vPos = m_vTransform_Translate_Saved;
-                m_pPickedObjectData->vRot = m_vTransform_Rotate_Saved;
+                m_pPickedObjectData->vRot = D3DXToRadian(m_vTransform_Rotate_Saved);
                 m_pPickedObjectData->vScale = m_vTransform_Scale_Saved;
             }
         }

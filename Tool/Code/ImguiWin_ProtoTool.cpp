@@ -394,32 +394,28 @@ void CImguiWin_ProtoTool::Layout_Property(const ImGuiWindowFlags& iMain_Flags)
                 ImGui::PopItemWidth();
             }
 
-
-            if (refObject->eID == EGO_CLASS::ECLASS_BUILDING)
+            if (ImGui::CollapsingHeader(u8"텍스처세팅"))
             {
-                if (ImGui::CollapsingHeader(u8"텍스처세팅"))
+                ImGui::Text(u8"그룹");
+                char strEdit_GroupKey[30] = {};
+                refObject->strGroupKey.reserve(30);
+                strcpy_s(strEdit_GroupKey, refObject->strGroupKey.c_str());
+                if (ImGui::InputTextEx(u8"##TextureGroupName", u8"",
+                    strEdit_GroupKey, IM_ARRAYSIZE(strEdit_GroupKey),
+                    ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
                 {
-                    ImGui::Text(u8"그룹");
-                    char strEdit_GroupKey[30] = {};
-                    refObject->strGroupKey.reserve(30);
-                    strcpy_s(strEdit_GroupKey, refObject->strGroupKey.c_str());
-                    if (ImGui::InputTextEx(u8"##TextureGroupName", u8"",
-                        strEdit_GroupKey, IM_ARRAYSIZE(strEdit_GroupKey),
-                        ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
-                    {
-                        refObject->strGroupKey = strEdit_GroupKey;
-                    }
+                    refObject->strGroupKey = strEdit_GroupKey;
+                }
 
-                    ImGui::Text(u8"텍스처");
-                    char strEdit_TextureKey[30] = {};
-                    refObject->strTextureKey.reserve(30);
-                    strcpy_s(strEdit_TextureKey, refObject->strTextureKey.c_str());
-                    if (ImGui::InputTextEx(u8"##TexutureName", u8"",
-                        strEdit_TextureKey, IM_ARRAYSIZE(strEdit_TextureKey),
-                        ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
-                    {
-                        refObject->strTextureKey = strEdit_TextureKey;
-                    }
+                ImGui::Text(u8"텍스처");
+                char strEdit_TextureKey[30] = {};
+                refObject->strTextureKey.reserve(30);
+                strcpy_s(strEdit_TextureKey, refObject->strTextureKey.c_str());
+                if (ImGui::InputTextEx(u8"##TexutureName", u8"",
+                    strEdit_TextureKey, IM_ARRAYSIZE(strEdit_TextureKey),
+                    ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
+                {
+                    refObject->strTextureKey = strEdit_TextureKey;
                 }
             }
         }
@@ -461,6 +457,7 @@ void CImguiWin_ProtoTool::Save_Protos()
         tProto.tHeader.eType = ESERIALIZE_PROTO;
         tProto.tHeader.strName = (*iter).first;
         tProto.eID = (*iter).second->eID;
+        tProto.strClassName = (*iter).second->strClassName;
         tProto.vPos = (*iter).second->vPos;
         tProto.vRot = (*iter).second->vRot;
         tProto.vScale = (*iter).second->vScale;
@@ -549,6 +546,7 @@ void CImguiWin_ProtoTool::Import_Proto(const string& strName, FSerialize_Proto& 
         if (tProtoSerial.Receive_ByRapidJSON(strJson))
         {
             tProtoData.eID = tProtoSerial.eID;
+            tProtoData.strClassName = tProtoSerial.strClassName;
             tProtoData.vPos = tProtoSerial.vPos;
             tProtoData.vRot = tProtoSerial.vRot;
             tProtoData.vScale = tProtoSerial.vScale;
