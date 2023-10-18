@@ -57,6 +57,7 @@ private:
 private:
 	_bool*	m_bDbugFrame;
 	FCollisionSphere* pShape;
+	_vec3	m_vPos = { 0.f, 0.f, 0.f };
 
 };
 

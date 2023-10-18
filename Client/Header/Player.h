@@ -100,7 +100,7 @@ private:
 	//_vec3				Picking_On_Object();	// 오브젝트 마우스 피킹 
 	_bool				Picking_On_Object();
 	// ====================================================================
-	void				RayCast();
+
 
 public: // 블랙보드
 	void		Update_BlackBoard();
@@ -247,6 +247,9 @@ private: // 함수
 	void				RightLoadAnimationFromFile(const char* fileName);	// 애니메이션 불러오기
 	void				LeftInterpolation();
 	void				RightInterpolation();
+	void				RayEvent();
+	void				RayAttack(CGameObject* _pDst, _float _fAttack, PLAYER_ATTACK_STATE _eAttackState);
+	CGameObject*		RayCast();
 
 private:
 	void State_Update(float fTimeDelta);	// 상태 업데이트(상태 체크)
@@ -413,6 +416,9 @@ private:
 
 	_float fRotStart = 0.f;
 	_float fLRotStart = 0.f;
+
+private:
+	GAUGE<_float>	m_fMonsterHp;
 };
 
 /*	현재 키 설명

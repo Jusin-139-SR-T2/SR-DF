@@ -65,7 +65,7 @@ public:
 	virtual void	LateUpdate_GameObject();
 	virtual void	Render_GameObject()	PURE;
 
-protected:
+public:
 	virtual void	OnCollision(CGameObject* pDst, const FContact* const pContact) {};
 	virtual void	OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) {};
 	virtual void	OnCollisionExited(CGameObject* pDst) {};
