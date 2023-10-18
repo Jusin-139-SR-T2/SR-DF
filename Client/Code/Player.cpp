@@ -2032,7 +2032,7 @@ void CPlayer::Left_Hand(float fTimeDelta)
 
             // 주먹공격 생성
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
-                                   m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                                   m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                                    this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
                                    0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
             
@@ -2283,7 +2283,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
 
             // 주먹공격 생성
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
-                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
                 0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
@@ -2419,7 +2419,7 @@ void CPlayer::Right_Gun(float fTimeDelta)
 
             // 총알 생성
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
-                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
                 100.f, 3.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
@@ -2481,7 +2481,7 @@ void CPlayer::Right_Thompson(float fTimeDelta)
 
             // 총알 생성
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
-                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
                 100.f, 3.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
@@ -2539,7 +2539,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
 
             // 파이프 공격 생성
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
-                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
                 0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
@@ -2641,7 +2641,7 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
 
             // 맥주병 공격 생성
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
-                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
                 100.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
@@ -2700,7 +2700,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
 
             // 총알 생성
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
-                m_pTransformComp->Get_PosEye(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
                 0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 

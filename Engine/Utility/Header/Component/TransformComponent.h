@@ -54,6 +54,11 @@ public:
 		memcpy(pInfo, &m_matTransform.m[eType][0], sizeof(_vec3));
 	}
 
+	_vec3		Get_Pos()	{ return m_vInfo[INFO_POS]; }
+	_vec3		Get_Right() { return m_vInfo[INFO_RIGHT]; }
+	_vec3		Get_Up()	{ return m_vInfo[INFO_UP]; }
+	_vec3		Get_Look()	{ return m_vInfo[INFO_LOOK]; }
+
 	void		Set_WorldMatrixS(const _matrix* pWorld) { m_matTransform = *pWorld; }
 
 	void		Set_MovePos(const _float& fTimeDelta, const _vec3& fSpeed)
