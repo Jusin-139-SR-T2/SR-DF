@@ -280,7 +280,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Throw/ScrunchedPaper_1.png", TEX_NORMAL, L"Throw", L"ScrunchedPaper_1");
 	Load_Texture(L"./Resource/Texture/Item/Throw/PaperBox_0.png", TEX_NORMAL, L"Throw", L"PaperBox_0");
 	Load_Texture(L"./Resource/Texture/Item/Throw/PaperBox_1.png", TEX_NORMAL, L"Throw", L"PaperBox_1");
-\
+
 	Load_Texture(L"./Resource/Texture/Item/Throw/Sack_0.png", TEX_NORMAL, L"Throw", L"Sack_0");
 	Load_Texture(L"./Resource/Texture/Item/Throw/Sack_1.png", TEX_NORMAL, L"Throw", L"Sack_1");
 	Load_Texture(L"./Resource/Texture/Item/Throw/Sack_2.png", TEX_NORMAL, L"Throw", L"Sack_2");
