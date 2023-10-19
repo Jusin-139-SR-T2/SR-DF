@@ -86,7 +86,7 @@ void CPlayerBullet::Render_GameObject()
 	
 	if (*m_bDbugFrame)
 	{
-		//MeshSphereColider(pShape->fRadius, 30.f, 30.f);
+		MeshSphereColider(pShape->fRadius, 30.f, 30.f);
 	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -108,7 +108,7 @@ CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, 
 	}
 
 	// 플레이어 위치에서 생성
-	pInstance->m_pTransformComp->Set_Pos(vPos.x, vPos.y, vPos.z);	// 생성 위치
+	pInstance->m_pTransformComp->Set_Pos(vPos.x, vPos.y + 0.7f, vPos.z);	// 생성 위치
 	pInstance->Set_PlayerAttackState(vDir, _AttackState, fMoveSpeed, fDeleteTime, fDamage, fSize); // 공격 상태 세팅
 	pInstance->Set_Owner(_Owner);									// 공격의 주인
 	pInstance->Set_TeamID(_eTeamID);								// 공격의 팀 설정
