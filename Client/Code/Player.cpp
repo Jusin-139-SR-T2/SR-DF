@@ -14,6 +14,8 @@
 #include "AceBuilding.h"
 #include "DynamicCamera.h"
 #include "Effect_HitPow.h"
+#include "AceUnit.h"
+#include "AceWeapon.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -72,7 +74,8 @@ HRESULT CPlayer::Ready_GameObject()
     //m_pMeshComp->BoxMesh_Ready(m_pGraphicDev, 10.f, 10.f, 5.f);
 
     // 플레이어 행렬 초기화
-    m_pTransformComp->Set_Pos({ 10.f, 10.f, 10.f });
+    //m_pTransformComp->Set_Pos({ 10.f, 10.f, 10.f }); // Test Stage
+    m_pTransformComp->Set_Pos({ 20.f, 5.f, -9.5f }); // Jump Map
     m_pTransformComp->Readjust_Transform();
 
     m_pLeftHandComp->Set_Pos({ -300.f, -363.f, 0.f });	                        // 이미지 위치
@@ -1164,7 +1167,7 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
             {
                 m_eAttackState = PNOMAL_ATTACK;
             }
-
+                
             // 양손이 주먹 상태 일경우
             if (m_tLeftHand_State.Get_State() == STATE_LEFTHAND::HAND &&
                 m_tRightHand_State.Get_State() == STATE_RIGHTHAND::HAND)
@@ -2064,7 +2067,7 @@ void CPlayer::Left_Hand(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
                                    m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                                    this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                                   0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+                                   0.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
             
             m_bAttack = false;  // 공격 Off
         }
@@ -2315,7 +2318,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
                 m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+                0.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
         }
@@ -2456,7 +2459,7 @@ void CPlayer::Right_Gun(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
                 m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                100.f, 3.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+                100.f, 40.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
         }
@@ -2523,7 +2526,7 @@ void CPlayer::Right_Thompson(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
                 m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                100.f, 0.1f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기f
+                100.f, 1.f, 40.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기f
 
             m_bAttack = false;  // 공격 Off
         }
@@ -2581,7 +2584,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
                 m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+                0.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
         }
@@ -2683,7 +2686,7 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
                 m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                100.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+                100.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
         }
@@ -2742,7 +2745,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
                 m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                0.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+                0.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
         }
@@ -3105,8 +3108,31 @@ void CPlayer::RightInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
     }
 }
 
-void CPlayer::RayEvent()
+void CPlayer::RayEvent(CGameObject* _pDst)
 {
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(_pDst);
+
+    if (pAceObj == nullptr)
+        return;
+
+    if (Check_Relation(pAceObj, this) == ERELATION::NUETRAL)
+    {
+        // 타겟 지정
+        CAceFood* pUnit = dynamic_cast<CAceFood*>(_pDst);
+
+        // 공격받은 타겟이 있을 경우
+        if (nullptr != pUnit)
+        {
+            // 해당 음식 이름 반환
+            m_eFoodName = pUnit->Get_FoodName();
+
+            if (m_fMonsterHp.Cur <= 0)
+                m_fMonsterHp.Cur = 0.f;
+            if (m_fMonsterHp.IsMax())
+                m_fMonsterHp.Cur = m_fMonsterHp.Max;
+
+        }
+    }
 }
 
 void CPlayer::RayAttack(CGameObject* _pDst, _float _fAttack, PLAYER_ATTACK_STATE _eAttackState)

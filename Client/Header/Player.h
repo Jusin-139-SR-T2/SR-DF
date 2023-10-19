@@ -13,6 +13,7 @@
 #include "MeshColComp.h"
 
 #include "Serialize_BaseClass.h"
+#include "AceFood.h"
 
 BEGIN(Engine)
 
@@ -177,6 +178,8 @@ public:// 플레이어 상태 값
 	// TEST
 	enum class OBJECT_TYPE { NONE, TWO_HAND, TWO_OBJECT, RIGHT_OBJECT }; // 테스트(오브젝트)
 	enum class OBJECT_NAME { NONE, GUN, THOMPSON, STEELPIPE, BEERBOTLE, FRYINGPAN };
+	
+	CAceFood::FOOD_NAME m_eFoodName;
 
 	// TEST
 	enum DASHDIR { LEFT, RIGHT, DOWN };	// 대쉬 방향 
@@ -247,7 +250,7 @@ private: // 함수
 	void				RightLoadAnimationFromFile(const char* fileName);	// 애니메이션 불러오기
 	void				LeftInterpolation();
 	void				RightInterpolation();
-	void				RayEvent();
+	void				RayEvent(CGameObject* _pDst);
 	void				RayAttack(CGameObject* _pDst, _float _fAttack, PLAYER_ATTACK_STATE _eAttackState);
 	CGameObject*		RayCast();
 

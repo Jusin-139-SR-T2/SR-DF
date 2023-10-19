@@ -43,7 +43,6 @@ public:
 	virtual void OnCollision(CGameObject* pDst, const FContact* const pContact) override;
 	virtual void OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) override;
 	virtual void OnCollisionExited(CGameObject* pDst) override;
-	
 
 private: // ÇÔ¼ö 
 	HRESULT				Add_Component();
