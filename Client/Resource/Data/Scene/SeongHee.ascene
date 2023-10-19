@@ -27,9 +27,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": -12.442288398742676,
+                        "x": 6.522737503051758,
                         "y": 4.051226615905762,
-                        "z": 33.81587219238281
+                        "z": 72.01722717285156
                     },
                     "rot": {
                         "x": 0.0,
@@ -827,9 +827,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 1.809370517730713,
-                        "y": 2.0,
-                        "z": -2.0
+                        "x": 8.683884620666504,
+                        "y": 28.37350845336914,
+                        "z": 8.922262191772461
                     },
                     "rot": {
                         "x": 0.0,
@@ -1659,9 +1659,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": -0.5334267020225525,
-                        "y": 0.5227273106575012,
-                        "z": 5.569040298461914
+                        "x": -4.1105146408081055,
+                        "y": 174.6385040283203,
+                        "z": 41.68301010131836
                     },
                     "rot": {
                         "x": 0.0,
@@ -1671,7 +1671,7 @@
                     "scale": {
                         "x": 1.0,
                         "y": 1.0,
-                        "z": 1.0
+                        "z": 2.0
                     },
                     "group_key": "Furniture",
                     "texture_key": "MarbleTable2"
@@ -2107,9 +2107,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 9.560937881469727,
-                        "y": 0.26993370056152344,
-                        "z": 11.256937980651855
+                        "x": -0.6641656160354614,
+                        "y": 0.5645828247070313,
+                        "z": -1.5497163534164429
                     },
                     "rot": {
                         "x": 0.0,
@@ -2171,19 +2171,19 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": -1.3940534591674805,
-                        "y": 3.4137511253356934,
-                        "z": 8.63833999633789
+                        "x": 40.42241668701172,
+                        "y": 143.97486877441406,
+                        "z": 34.10496520996094
                     },
                     "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
+                        "x": 24.999996185302734,
+                        "y": 90.0,
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
+                        "x": 2.0,
+                        "y": 5.0,
+                        "z": 5.0
                     },
                     "group_key": "Furniture",
                     "texture_key": "WhiteStand"
@@ -2267,9 +2267,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 2.973626136779785,
-                        "y": 2.215655565261841,
-                        "z": 13.061873435974121
+                        "x": 5.248785495758057,
+                        "y": 44.85199737548828,
+                        "z": 4.753901481628418
                     },
                     "rot": {
                         "x": 0.0,
@@ -2459,9 +2459,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 10.802850723266602,
-                        "y": 2.374554395675659,
-                        "z": 2.5476267337799072
+                        "x": 17.126863479614258,
+                        "y": 1.9245952367782593,
+                        "z": 1.2680559158325195
                     },
                     "rot": {
                         "x": 0.0,
@@ -2523,9 +2523,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 9.155205726623535,
-                        "y": 2.360419988632202,
-                        "z": 1.3444783687591553
+                        "x": 12.108155250549316,
+                        "y": 139.36309814453125,
+                        "z": 2.1941092014312744
                     },
                     "rot": {
                         "x": 0.0,
@@ -2533,9 +2533,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
+                        "x": 3.0,
+                        "y": 0.0,
+                        "z": 3.0
                     },
                     "group_key": "Structure",
                     "texture_key": "Thing"
@@ -2555,9 +2555,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 6.146402835845947,
-                        "y": 1.5406334400177002,
-                        "z": 1.0057222843170166
+                        "x": 14.754899024963379,
+                        "y": 0.9983237981796265,
+                        "z": 2.9336695671081543
                     },
                     "rot": {
                         "x": 0.0,
@@ -4187,14 +4187,14 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 24.575000762939453,
-                        "y": 129.5,
-                        "z": 5.056000232696533
+                        "x": 24.565011978149414,
+                        "y": 129.32568359375,
+                        "z": 4.818296909332275
                     },
                     "rot": {
                         "x": 0.0,
                         "y": 0.0,
-                        "z": 1.5707963705062866
+                        "z": 0.0
                     },
                     "scale": {
                         "x": 20.0,
@@ -4411,9 +4411,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 44.57500076293945,
-                        "y": 149.5,
-                        "z": 45.02899932861328
+                        "x": 24.6574649810791,
+                        "y": 149.34136962890625,
+                        "z": 44.95384216308594
                     },
                     "rot": {
                         "x": 0.0,
@@ -4475,9 +4475,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 24.575000762939453,
+                        "x": 24.66779899597168,
                         "y": 169.5,
-                        "z": 45.02899932861328
+                        "z": 64.8311996459961
                     },
                     "rot": {
                         "x": 0.0,
@@ -4540,7 +4540,7 @@
                     "use_priority_render": true,
                     "pos": {
                         "x": -14.574999809265137,
-                        "y": 169.5,
+                        "y": 169.6246337890625,
                         "z": 45.02899932861328
                     },
                     "rot": {
@@ -4956,13 +4956,13 @@
                     "use_priority_render": true,
                     "pos": {
                         "x": 1.0,
-                        "y": 157.5,
+                        "y": 157.05450439453125,
                         "z": 44.83000183105469
                     },
                     "rot": {
                         "x": 0.0,
                         "y": 0.0,
-                        "z": 55.0
+                        "z": 54.99999237060547
                     },
                     "scale": {
                         "x": 20.0,
@@ -4988,7 +4988,7 @@
                     "use_priority_render": true,
                     "pos": {
                         "x": -11.0,
-                        "y": 161.5,
+                        "y": 160.97398376464844,
                         "z": 44.83000183105469
                     },
                     "rot": {
@@ -11691,6 +11691,2598 @@
                     },
                     "group_key": "Building",
                     "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.642225980758667,
+                        "y": 123.71794128417969,
+                        "z": 3.855848789215088
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 339.99993896484375,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect2"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.570382833480835,
+                        "y": 124.24536895751953,
+                        "z": 4.147243976593018
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 345.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect3"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.521772623062134,
+                        "y": 124.6556167602539,
+                        "z": 4.471429347991943
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 350.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect4"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.4970455169677734,
+                        "y": 125.03305053710938,
+                        "z": 4.745885372161865
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 355.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect5"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.487616777420044,
+                        "y": 125.41048431396484,
+                        "z": 5.04182767868042
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 360.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect6"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.514482021331787,
+                        "y": 125.7767562866211,
+                        "z": 5.438284873962402
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 5.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect7"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.5605452060699463,
+                        "y": 126.2712173461914,
+                        "z": 5.786866188049316
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 10.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect8"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.6279373168945313,
+                        "y": 126.65579986572266,
+                        "z": 6.1937971115112305
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 15.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect9"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.762204170227051,
+                        "y": 127.0806655883789,
+                        "z": 6.577762126922607
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 20.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect10"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.9986112117767334,
+                        "y": 127.46304321289063,
+                        "z": 6.9049577713012695
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 25.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect11"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 3.1595675945281982,
+                        "y": 127.89478302001953,
+                        "z": 7.263099193572998
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 30.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect12"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 3.3254950046539307,
+                        "y": 128.2617645263672,
+                        "z": 7.566409111022949
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 34.999996185302734,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect13"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 3.6182668209075928,
+                        "y": 128.6287384033203,
+                        "z": 7.813730716705322
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 39.99999237060547,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect14"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 3.9601502418518066,
+                        "y": 129.08383178710938,
+                        "z": 8.132641792297363
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 45.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect15"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 4.23856258392334,
+                        "y": 129.53892517089844,
+                        "z": 8.407536506652832
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 50.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect16"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 4.494211673736572,
+                        "y": 129.95068359375,
+                        "z": 8.61742877960205
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 55.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect17"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 4.7953877449035645,
+                        "y": 130.36244201660156,
+                        "z": 8.840360641479492
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 60.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect18"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 5.189374923706055,
+                        "y": 130.79612731933594,
+                        "z": 8.989566802978516
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 65.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect19"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 5.559181213378906,
+                        "y": 131.25692749023438,
+                        "z": 8.989566802978516
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 70.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect20"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 5.996828556060791,
+                        "y": 131.65792846679688,
+                        "z": 9.094829559326172
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 75.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect21"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 6.411738872528076,
+                        "y": 132.05892944335938,
+                        "z": 9.172948837280273
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 80.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect22"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 6.856594085693359,
+                        "y": 132.48858642578125,
+                        "z": 9.218914031982422
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 85.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect23"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 7.211614608764648,
+                        "y": 132.88958740234375,
+                        "z": 9.218914031982422
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect24"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 7.539574146270752,
+                        "y": 133.2605438232422,
+                        "z": 9.182109832763672
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 95.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect25"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 7.9312744140625,
+                        "y": 133.60296630859375,
+                        "z": 9.078359603881836
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 100.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect26"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 8.334721565246582,
+                        "y": 133.9886932373047,
+                        "z": 8.972691535949707
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 104.9999771118164,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect27"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 8.800177574157715,
+                        "y": 134.37442016601563,
+                        "z": 8.815887451171875
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 109.99998474121094,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect28"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 9.141863822937012,
+                        "y": 134.72006225585938,
+                        "z": 8.639111518859863
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 109.99996185302734,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect29"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 9.335711479187012,
+                        "y": 135.238525390625,
+                        "z": 8.41694164276123
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 115.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect30"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 9.718656539916992,
+                        "y": 135.660400390625,
+                        "z": 8.204651832580566
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 120.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect31"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 10.050409317016602,
+                        "y": 136.135009765625,
+                        "z": 7.943332195281982
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 125.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect32"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 10.360745429992676,
+                        "y": 136.50802612304688,
+                        "z": 7.616768836975098
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 130.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect33"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 10.557380676269531,
+                        "y": 136.94052124023438,
+                        "z": 7.368116855621338
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 135.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect34"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 10.848128318786621,
+                        "y": 137.3267364501953,
+                        "z": 7.040657997131348
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 140.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect35"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.002062797546387,
+                        "y": 137.7771453857422,
+                        "z": 6.728675365447998
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 145.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect36"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.210121154785156,
+                        "y": 138.22422790527344,
+                        "z": 6.424612522125244
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 150.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect37"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.362128257751465,
+                        "y": 138.67823791503906,
+                        "z": 6.118292331695557
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 149.9999542236328,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect38"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.538619041442871,
+                        "y": 139.0612335205078,
+                        "z": 5.794219017028809
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 155.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect39"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.71521282196045,
+                        "y": 139.1376495361328,
+                        "z": 5.453810214996338
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 154.9999542236328,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect40"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.814812660217285,
+                        "y": 139.1376495361328,
+                        "z": 5.243706703186035
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 159.99996948242188,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect41"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.971503257751465,
+                        "y": 139.1376495361328,
+                        "z": 4.882131099700928
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 165.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect42"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 12.030738830566406,
+                        "y": 139.1376495361328,
+                        "z": 4.564240455627441
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 170.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect43"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 12.082636833190918,
+                        "y": 139.1376495361328,
+                        "z": 4.242344379425049
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 174.99996948242188,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BrokenVent_Rect44"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 12.114662170410156,
+                        "y": 139.1376495361328,
+                        "z": 3.915109157562256
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 180.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.5,
+                        "z": 0.5
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BrokenVent_Rect"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Thing0"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 12.108155250549316,
+                        "y": 139.36309814453125,
+                        "z": -0.8052350282669067
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Thing"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Thing1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 12.108155250549316,
+                        "y": 139.36309814453125,
+                        "z": -3.7707085609436035
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Thing"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Thing2"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 15.028085708618164,
+                        "y": 139.36309814453125,
+                        "z": -3.5251550674438477
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Thing"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Thing3"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 15.028085708618164,
+                        "y": 139.36309814453125,
+                        "z": -0.7510128021240234
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Thing"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Thing4"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 15.028085708618164,
+                        "y": 139.36309814453125,
+                        "z": 2.1811931133270264
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 0.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Thing"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_WhiteStand0"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 47.626426696777344,
+                        "y": 140.4913787841797,
+                        "z": 34.10496520996094
+                    },
+                    "rot": {
+                        "x": -9.999998092651367,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "WhiteStand"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_WhiteStand1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 49.58598709106445,
+                        "y": 145.63539123535156,
+                        "z": 34.10496520996094
+                    },
+                    "rot": {
+                        "x": -9.999996185302734,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "WhiteStand"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_WhiteStand2"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 39.39970779418945,
+                        "y": 149.7916717529297,
+                        "z": 34.10496520996094
+                    },
+                    "rot": {
+                        "x": 24.999996185302734,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "WhiteStand"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_MarbleTable3"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -4.071505546569824,
+                        "y": 176.61422729492188,
+                        "z": 47.588802337646484
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 2.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "MarbleTable2"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD4"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 6.42323112487793,
+                        "y": 10.165397644042969,
+                        "z": -75.63082122802734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD5"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 46.52377700805664,
+                        "y": 10.165397644042969,
+                        "z": -75.63082122802734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD6"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 46.52377700805664,
+                        "y": 29.890901565551758,
+                        "z": -75.63082122802734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD7"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 26.471240997314453,
+                        "y": 29.890901565551758,
+                        "z": -75.63082122802734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD8"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 6.471116542816162,
+                        "y": 29.890901565551758,
+                        "z": -75.63082122802734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD9"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -13.56535530090332,
+                        "y": 29.890901565551758,
+                        "z": -75.63082122802734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD12"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 26.406673431396484,
+                        "y": 49.718143463134766,
+                        "z": -75.63082122802734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD13"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 46.44422149658203,
+                        "y": 49.718143463134766,
+                        "z": -75.63082122802734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingD14"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 6.365990161895752,
+                        "y": 49.718143463134766,
+                        "z": -75.63082122802734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Building",
+                    "texture_key": "D"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Clock2"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -24.234397888183594,
+                        "y": 70.9775390625,
+                        "z": -27.448652267456055
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Clock"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Clock3"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -31.131202697753906,
+                        "y": 80.60672760009766,
+                        "z": -14.810001373291016
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 20.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Clock"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Clock4"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -24.234397888183594,
+                        "y": 50.0,
+                        "z": -32.81343078613281
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": 45.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 50.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Clock"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Clock5"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -1.0334258079528809,
+                        "y": 27.038511276245117,
+                        "z": -32.81343078613281
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": -45.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 40.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Clock"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Clock6"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -1.0334258079528809,
+                        "y": 6.456078052520752,
+                        "z": -32.13251495361328
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 243.19097900390625,
+                        "z": -45.0
+                    },
+                    "scale": {
+                        "x": 20.0,
+                        "y": 40.0,
+                        "z": 20.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Clock"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_CockMachine1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 25.549091339111328,
+                        "y": 2.42879581451416,
+                        "z": -33.221588134765625
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 45.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.0,
+                        "y": 5.0,
+                        "z": 4.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "CockMachine"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fourth_Newspaper0"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 5.265852928161621,
+                        "y": 23.44142723083496,
+                        "z": 4.035251140594482
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Fourth",
+                    "texture_key": "Newspaper"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fourth_Newspaper1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.008697718381881714,
+                        "y": 23.44142723083496,
+                        "z": 6.615865707397461
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Fourth",
+                    "texture_key": "Newspaper"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fourth_Newspaper2"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.4629135131835938,
+                        "y": 24.253175735473633,
+                        "z": 12.968013763427734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Fourth",
+                    "texture_key": "Newspaper"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingH4"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 24.63055992126465,
+                        "y": 149.30960083007813,
+                        "z": 44.93422317504883
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 90.0
+                    },
+                    "scale": {
+                        "x": 20.116655349731445,
+                        "y": 20.116655349731445,
+                        "z": 20.116655349731445
+                    },
+                    "group_key": "Building",
+                    "texture_key": "H"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_MarbleTable4"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -4.052084922790527,
+                        "y": 172.63037109375,
+                        "z": 45.6131706237793
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 2.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "MarbleTable2"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_WhiteStand3"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 49.97812271118164,
+                        "y": 150.86058044433594,
+                        "z": 34.10496520996094
+                    },
+                    "rot": {
+                        "x": -9.999996185302734,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "WhiteStand"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_WhiteStand4"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 39.39970779418945,
+                        "y": 155.03196716308594,
+                        "z": 34.10496520996094
+                    },
+                    "rot": {
+                        "x": 24.999996185302734,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "WhiteStand"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_WhiteStand5"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 50.660667419433594,
+                        "y": 155.90750122070313,
+                        "z": 34.10496520996094
+                    },
+                    "rot": {
+                        "x": -9.999996185302734,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "WhiteStand"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_LightBox1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 14.071602821350098,
+                        "y": 57.05169677734375,
+                        "z": -0.17334172129631042
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "LightBox"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_WoodCabinet0"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 4.348484039306641,
+                        "y": 47.237247467041016,
+                        "z": 1.0655652284622192
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "WoodCabinet"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_WoodCabinet1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 3.0481996536254883,
+                        "y": 49.06611633300781,
+                        "z": 3.9184839725494385
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "WoodCabinet"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_WoodCabinet2"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 4.097687244415283,
+                        "y": 52.22587585449219,
+                        "z": 1.9609037637710571
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "WoodCabinet"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_WoodCabinet3"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 6.454315662384033,
+                        "y": 53.48658752441406,
+                        "z": 4.269972801208496
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "WoodCabinet"
                 }
             ]
         },

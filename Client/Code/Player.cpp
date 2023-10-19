@@ -523,7 +523,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     }
 
     // มกวม
-    if (Engine::IsKey_Pressed(DIK_SPACE) && m_IsOnGround)
+    if (Engine::IsKey_Pressed(DIK_SPACE))// && m_IsOnGround)
     {
         m_vSpeed.y = 10.f;
     }
