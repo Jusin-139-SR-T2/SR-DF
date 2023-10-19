@@ -1,0 +1,25 @@
+{
+    "header": {
+        "type": 4,
+        "name": "Trashbin_2"
+    },
+    "class": 6,
+    "class_name": "AceThrow",
+    "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "group_key": "Throw",
+    "texture_key": "Trashbin_2"
+}
