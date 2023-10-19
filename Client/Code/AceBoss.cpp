@@ -1002,7 +1002,13 @@ void CAceBoss::AI_Roll(float fDeltaTime)
 		m_tFrame.fFrame = 0.f;
 
 		if (Engine::MonsterPhase::Phase2 == m_ePhase)
+		{
 			m_tFrame.fFrameSpeed = 14.f;
+			Engine::Play_Sound(L"Enemy", L"_MyTurfB.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		}
+		else if (Engine::MonsterPhase::Phase1 == m_ePhase)
+			Engine::Play_Sound(L"Enemy", L"_MyTurfA.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
 	}
 
 	if (m_tState_Obj.Can_Update())
