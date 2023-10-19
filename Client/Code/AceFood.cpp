@@ -113,6 +113,11 @@ HRESULT CAceFood::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
+    if (!tObjectSerial.strGroupKey.empty() && !tObjectSerial.strTextureKey.empty())
+        m_pTextureComp->Receive_Texture(TEX_CUBE,
+            wstring(tObjectSerial.strGroupKey.begin(), tObjectSerial.strGroupKey.end()).c_str()
+            , wstring(tObjectSerial.strTextureKey.begin(), tObjectSerial.strTextureKey.end()).c_str());
+
     return S_OK;
 }
 
