@@ -18,6 +18,8 @@
 #include <CubeObject.h>
 #include "Terrain.h"
 #include "RectObject.h"
+#include <stack>
+#include <queue>
 
 CImguiWin_MapTool::CImguiWin_MapTool()
 {
@@ -1222,8 +1224,32 @@ void CImguiWin_MapTool::Duplicate_SelectedObject()
         while (true)
         {
             stringstream ss;
-            ss << i;
-            string strAdd = tDupObject.strName + ss.str();
+            string strAdd = tDupObject.strName;
+            queue<char> vecLastChar;
+            char lastChar;
+            do
+            {
+                lastChar = strAdd.back();
+                if (isdigit(lastChar))
+                {
+                    vecLastChar.push(lastChar);
+                    strAdd.pop_back();
+                    tDupObject.strName.pop_back();
+                }
+            } while (isdigit(lastChar));
+
+            _ulonglong lastInt = i, j = 1;
+            while (vecLastChar.size())
+            {
+                char c = vecLastChar.front();
+                lastInt += (c - '0') * j;
+                vecLastChar.pop();
+                j *= 10;
+            }
+
+            // 숫자가 같을 때 숫자 카운트를 올림
+            ss << lastInt;
+            strAdd = tDupObject.strName + ss.str();
 
             auto iterRe = find_if(tLayerData.vecObject.begin(), tLayerData.vecObject.end(),
                 [&strAdd](FObjectData& tDstObjectData) {
@@ -1711,8 +1737,32 @@ void CImguiWin_MapTool::Add_ObjectFromProto()
         while(true)
         {
             stringstream ss;
-            ss << i;
-            string strAdd = tObjectData.strName + ss.str();
+            string strAdd = tObjectData.strName;
+            queue<char> vecLastChar;
+            char lastChar;
+            do
+            {
+                lastChar = strAdd.back();
+                if (isdigit(lastChar))
+                {
+                    vecLastChar.push(lastChar);
+                    strAdd.pop_back();
+                    tObjectData.strName.pop_back();
+                }
+            } while (isdigit(lastChar));
+
+            _ulonglong lastInt = i, j = 1;
+            while (vecLastChar.size())
+            {
+                char c = vecLastChar.front();
+                lastInt += (c - '0') * j;
+                vecLastChar.pop();
+                j *= 10;
+            }
+
+            // 숫자가 같을 때 숫자 카운트를 올림
+            ss << lastInt;
+            strAdd = tObjectData.strName + ss.str();
 
             auto iterRe = find_if(tLayerData.vecObject.begin(), tLayerData.vecObject.end(),
                 [&strAdd](FObjectData& tDstObjectData) {
