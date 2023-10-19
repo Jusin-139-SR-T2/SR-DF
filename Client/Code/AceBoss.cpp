@@ -1263,6 +1263,8 @@ void CAceBoss::AI_SkillThunder(float fDeltaTime)
 		m_tFrame.fFrameSpeed = 10.f;
 		m_tFrame.fFrame = 0.f;
 		Engine::Play_Sound(L"Enemy", L"_MeleeB.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
+		//여러개 생성해야되서 Create할때마다 자꾸 불러오는것때문에 여기서 효과음 추가 
 		Engine::Play_Sound(L"Enemy", L"_Thunder.wav", SOUND_ENEMY_THUNDER, m_tSound.m_fSoundVolume);
 	}
 

@@ -53,10 +53,19 @@ HRESULT CBrown::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+    //사운드 관련
+    m_tSound.m_fTalkAge = 0.f;
+    m_tSound.m_fTalkLife = 5.f; // 반복이 필요한애들은 대충 이거기준으로 
+    m_tSound.m_fTalkReapeat = 0.f;
+    m_tSound.m_fSoundVolume = 0.6f;
+    m_tSound.m_fSoundEffectVolume = 0.2f;
+    m_tSound.m_bSoundOnce = FALSE;
+    m_tSound.m_bSoundCheck = FALSE;
+
+    //이미지 및 프레임 셋팅 
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
     m_pTextureComp->Set_Scale({ 3.f, 3.f, 1.f });
     m_pTextureComp->Readjust_Transform();
-
     m_tFrame.fFrame = 0.f;
     m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     m_tFrame.fFrameSpeed = 12.f;
@@ -204,7 +213,8 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     {
         m_tFrame.fFrame = 0.f;
 
-        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State())
+        if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State() ||
+            STATE_OBJ::STRAFING == m_tState_Obj.Get_State())
             m_tFrame.fRepeat += 1;
     }
 
@@ -505,6 +515,9 @@ void CBrown::AI_Suspicious(float fDeltaTime)
            m_pTransformComp->Get_Pos().x + 0.1f, 
            m_pTransformComp->Get_Pos().y + 1.3f,
            m_pTransformComp->Get_Pos().z, CEffect_Awareness::TYPE::BROWN, this));
+
+       Engine::Play_Sound(L"Enemy", L"Brown_Suspicious.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -551,10 +564,13 @@ void CBrown::AI_Taunt(float fDeltaTime)
     if (m_tState_Obj.IsState_Entered())
     {
           //OutputDebugString(L"▷Brown - 상태머신 : Taunt 돌입   \n");
-        m_tFrame.fFrameSpeed = 7.f;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Taunt");
+         m_tFrame.fFrameSpeed = 7.f;
+         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Taunt");
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrame = 0.f;
+
+         Engine::Play_Sound(L"Enemy", L"Brown_Taunt.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -582,6 +598,11 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
         m_tFrame.fFrameSpeed = 10.f; //원상복귀 
         m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_tFrame.fFrame = 0.f;
+
+        if(Random_variable(10))
+            Engine::Play_Sound(L"Enemy", L"Brown_RndTaunt.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"Enemy", L"Brown_RndTaunt.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -684,10 +705,13 @@ void CBrown::AI_Run(float fDeltaTime)
     {
           //OutputDebugString(L"▷Brown - 상태머신 : Run 진입   \n");
 
-        m_tFrame.fFrameSpeed = 11.f;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"RunSouth");
+         m_tFrame.fFrameSpeed = 11.f;
+         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"RunSouth");
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrame = 0.f;
+
+         Engine::Play_Sound(L"Enemy", L"Brown_Run.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -715,6 +739,9 @@ void CBrown::AI_Walk(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_South");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrame = 0.f;
+
+        Engine::Play_Sound(L"Enemy", L"Brown_Walk.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -743,6 +770,12 @@ void CBrown::AI_InchForward(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"InchForward");
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrame = 0.f;
+
+        //if (Random_variable(50))
+        //    Engine::Play_Sound(L"Enemy", L"Brown_InchA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        //else
+        //    Engine::Play_Sound(L"Enemy", L"Brown_InchB.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -773,10 +806,17 @@ void CBrown::AI_Strafing(float fDeltaTime)
     {
           //OutputDebugString(L"▷Brown - 상태머신 : Strafing 진입   \n");
 
-        m_tFrame.fFrameSpeed = 9.f;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Strafing");
+         m_tFrame.fFrameSpeed = 9.f;
+         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Strafing");
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrame = 0.f;
+         m_tFrame.fRepeat = 0.f;
+
+         if(Random_variable(50))
+             Engine::Play_Sound(L"Enemy", L"Brown_StrafingA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+         else
+             Engine::Play_Sound(L"Enemy", L"Brown_StrafingB.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
     if (m_tState_Obj.Can_Update())
     {     
@@ -784,8 +824,9 @@ void CBrown::AI_Strafing(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::STRAFING].Act();
 
-        if (m_tFrame.fFrame >  m_tFrame.fFrameEnd)
+        if (m_tFrame.fRepeat >=3)
         {
+            m_tFrame.fRepeat = 0.f;
             m_tState_Obj.Set_State(STATE_OBJ::CHASE);
         }
     }
@@ -805,6 +846,8 @@ void CBrown::AI_NormalATTACK(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"NormalAttack");
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrame = 0.f;
+
+         Engine::Play_Sound(L"Enemy", L"Brown_Punch.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
 
     }
     if (m_tState_Obj.Can_Update())
@@ -835,6 +878,12 @@ void CBrown::AI_HeavyAttack(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"HeavyAttack");
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrame = 0.f;
+
+         if(Random_variable(50))
+             Engine::Play_Sound(L"Enemy", L"Brown_HeavyAttackA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+         else
+             Engine::Play_Sound(L"Enemy", L"Brown_HeavyAttackB.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -892,6 +941,8 @@ void CBrown::AI_Falling(float fDeltaTime)
         m_tFrame.fFrame = 0.f;
         m_bSecondFall = true;
         m_AttackOnce = true;
+
+        Engine::Play_Sound(L"Enemy", L"Brown_Falling.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -936,6 +987,12 @@ void CBrown::AI_FacePunch(float fDeltaTime)
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrameSpeed = 8.f;
          m_tFrame.fFrame = 0.f;
+
+         if(Random_variable(50))
+             Engine::Play_Sound(L"Enemy", L"Brown_FacePunchA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+         else
+             Engine::Play_Sound(L"Enemy", L"Brown_FacePunchB.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -963,6 +1020,8 @@ void CBrown::AI_CrotchHit(float fDeltaTime)
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fLifeTime = 2.f; // 2초후 CHASE 진입 
         m_tFrame.fFrame = 0.f;
+
+        Engine::Play_Sound(L"Enemy", L"Brown_CrotchHit.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -996,6 +1055,9 @@ void CBrown::AI_Dazed(float fDeltaTime)
         m_tFrame.fFrame = 0.f;
         m_bDazedState = TRUE;
         m_AttackOnce = false;
+
+        Engine::Play_Sound(L"Enemy", L"Brown_Dazed.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1043,6 +1105,8 @@ void CBrown::AI_Chopped(float fDeltaTime)
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
+        Engine::Play_Sound(L"Enemy", L"Brown_Choped.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1070,6 +1134,9 @@ void CBrown::AI_Headless(float fDeltaTime)
          m_tFrame.fFrameSpeed = 11.f;
          m_tFrame.fFrame = 0.f;
          m_bDeadState = TRUE;
+
+         Engine::Play_Sound(L"Enemy", L"Brown_Headless.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1097,6 +1164,9 @@ void CBrown::AI_Death(float fDeltaTime)
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
+
+        Engine::Play_Sound(L"Enemy", L"Brown_Death.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
