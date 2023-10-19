@@ -3227,9 +3227,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": -2.105654716491699,
-                        "y": 1.7129216194152832,
-                        "z": 2.29378080368042
+                        "x": -2.119859457015991,
+                        "y": 1.6844041347503662,
+                        "z": 3.1037096977233887
                     },
                     "rot": {
                         "x": 0.0,
@@ -4843,6 +4843,38 @@
                     },
                     "group_key": "Throw",
                     "texture_key": "Lamp_1"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Trashbin_0"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -1.8574683666229248,
+                        "y": 0.5822198987007141,
+                        "z": 1.5441184043884277
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -275.01959228515625,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.4157240092754364,
+                        "y": 0.9341345429420471,
+                        "z": 6.415329456329346
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "Trashbin_0"
                 }
             ]
         },

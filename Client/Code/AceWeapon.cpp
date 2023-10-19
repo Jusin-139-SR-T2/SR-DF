@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AceWeapon.h"
+#include "Player.h"
 
 CAceWeapon::CAceWeapon(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -58,6 +59,9 @@ HRESULT CAceWeapon::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
 {
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
+    m_gHp.Cur = 100.f;
+    m_gHp.Max = 100.f;
+
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
     m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
     m_pTransformComp->Set_Scale(tObjectSerial.vScale);
@@ -83,8 +87,6 @@ _int CAceWeapon::Update_GameObject(const _float& fTimeDelta)
     // 지형타기 
     Height_On_Terrain();
 
-    // 빌보드 
-    if(CAceWeapon::WEAPON_NAME::WALLPIPE != m_pCurName) //벽에 박혀있는애라 빌보드 x
     BillBoard(fTimeDelta);
 
     // 변수에 저장된 enum과 hp로 texture 결정 
@@ -166,156 +168,65 @@ HRESULT CAceWeapon::BillBoard(const _float& fTimeDelta)
 
 void CAceWeapon::WeaponName(const _tchar* pObjTag)
 {
-    if ((wcscmp(pObjTag, L"BOTTLE") == 0) || (wcscmp(pObjTag, L"Bottle") == 0))
-        m_pCurName = CAceWeapon::WEAPON_NAME::BOTTLE;
+        if ((wcscmp(pObjTag, L"BOTTLE") == 0) || (wcscmp(pObjTag, L"Bottle") == 0))
+        m_pCurName = CPlayer::OBJECT_NAME::BEERBOTLE;
     else if ((wcscmp(pObjTag, L"PIPE") == 0) || (wcscmp(pObjTag, L"Pipe") == 0))
-        m_pCurName = CAceWeapon::WEAPON_NAME::PIPE;
-    else if ((wcscmp(pObjTag, L"WALLPIPE") == 0) || (wcscmp(pObjTag, L"WallPipe") == 0))
-        m_pCurName = CAceWeapon::WEAPON_NAME::WALLPIPE;
+        m_pCurName = CPlayer::OBJECT_NAME::STEELPIPE;
     else if ((wcscmp(pObjTag, L"FRYINGPAN") == 0) || (wcscmp(pObjTag, L"FryingPan") == 0))
-        m_pCurName = CAceWeapon::WEAPON_NAME::FRYINGPAN;
+        m_pCurName = CPlayer::OBJECT_NAME::FRYINGPAN;
     else if ((wcscmp(pObjTag, L"PISTOL") == 0) || (wcscmp(pObjTag, L"Pistol") == 0))
-        m_pCurName = CAceWeapon::WEAPON_NAME::PISTOL;
+        m_pCurName = CPlayer::OBJECT_NAME::GUN;
     else if ((wcscmp(pObjTag, L"TOMMYGUN") == 0) || (wcscmp(pObjTag, L"TommyGun") == 0))
-        m_pCurName = CAceWeapon::WEAPON_NAME::TOMMYGUN;
-    else if ((wcscmp(pObjTag, L"GASCANISTER") == 0) || (wcscmp(pObjTag, L"GasCanister") == 0))
-        m_pCurName = CAceWeapon::WEAPON_NAME::GASCANISTER;
-    else if ((wcscmp(pObjTag, L"BROKENFRYINGPAN") == 0) || (wcscmp(pObjTag, L"BrokenFryingPan") == 0))
-    {
-        m_fHp = m_fBrokenHp;
-        m_pCurName = CAceWeapon::WEAPON_NAME::FRYINGPAN;
-    }
-    else if ((wcscmp(pObjTag, L"BROKENTOMMYGUN") == 0) || (wcscmp(pObjTag, L"BrokenTommyGun") == 0))
-    {
-        m_fHp = m_fBrokenHp;
-        m_pCurName = CAceWeapon::WEAPON_NAME::TOMMYGUN;
-    }
-    else if ((wcscmp(pObjTag, L"CRACKEDBOTTLE") == 0) || (wcscmp(pObjTag, L"CrackedBottle") == 0))
-    {
-        m_fHp = m_fCrackedHp;
-        m_pCurName = CAceWeapon::WEAPON_NAME::BOTTLE;
-    }
-    else if ((wcscmp(pObjTag, L"BROKENBOTTLE") == 0) || (wcscmp(pObjTag, L"BrokenBottle") == 0))
-    {
-        m_fHp = m_fBrokenHp;
-        m_pCurName = CAceWeapon::WEAPON_NAME::BOTTLE;
-    }
-    else if ((wcscmp(pObjTag, L"BROKENPISTOL") == 0) || (wcscmp(pObjTag, L"BrokenPistol") == 0))
-    {
-        m_fHp = m_fBrokenHp;
-        m_pCurName = CAceWeapon::WEAPON_NAME::PISTOL;
-    }
-    else if ((wcscmp(pObjTag, L"BROKENPIPE") == 0) || (wcscmp(pObjTag, L"BrokenPipe") == 0))
-    {
-        m_fHp = m_fBrokenHp;
-        m_pCurName = CAceWeapon::WEAPON_NAME::PIPE;
-    }
-    else
-    {
-        m_pCurName = CAceWeapon::WEAPON_NAME::WEAPON_END;
-    }
+        m_pCurName = CPlayer::OBJECT_NAME::THOMPSON;
+
 }
 
-void CAceWeapon::Change_Texture(WEAPON_NAME eReceiveName)
+void CAceWeapon::Change_Texture(CPlayer::OBJECT_NAME eReceiveName)
 {
     switch (eReceiveName)
     {
-    case CAceWeapon::WEAPON_NAME::BOTTLE:
-
-        if (m_fMaxHP == m_fHp)
-        {
-            m_pTransformComp->Set_Scale({ 0.25f, 1.f, 1.f });
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"Bottle");
-            break;
-        }
-        else if (m_fCrackedHp == m_fHp)
-        {
-            m_pTransformComp->Set_Scale({ 0.25f, 0.25f, 1.f });
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"CrackedBottle");
-            break;
-        }
-        else
-        {
-            m_pTransformComp->Set_Scale({ 0.25f, 0.25f, 1.f });
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenBottle");
-            break;
-        }
+    case CPlayer::OBJECT_NAME::NONE:
         break;
 
-    case CAceWeapon::WEAPON_NAME::PIPE:
-        if (m_fMaxHP == m_fHp)
-        {
-            m_pTransformComp->Set_Scale({ 1.f, 0.25f, 1.f });
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"LeadPipe");
-            break;
-        }
-        else if (m_fBrokenHp == m_fHp)
-        {
-            m_pTransformComp->Set_Scale({ 1.f, 0.25f, 1.f });
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenPipe");
-            break;
-        }
-        break;
-
-    case CAceWeapon::WEAPON_NAME::WALLPIPE:
-        if (m_fMaxHP == m_fHp)
-        {
-            m_pTransformComp->Set_Scale({ 0.25f, 1.f, 1.f });
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"WallPipe");
-            break;
-        }
-        else if (m_fBrokenHp == m_fHp)
-        {
-            m_pTransformComp->Set_Scale({ 1.f, 0.25f, 1.f });
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenPipe");
-            break;
-        }
-        break;
-
-    case CAceWeapon::WEAPON_NAME::FRYINGPAN:
-        if (m_fMaxHP == m_fHp)
-        {
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"FryingPan");
-            break;
-        }
-        else if (m_fBrokenHp == m_fHp)
-        {
-            m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenFryingPan");
-            break;
-        }
-        break;
-
-    case CAceWeapon::WEAPON_NAME::PISTOL:
-        if (m_fMaxHP == m_fHp)
+    case CPlayer::OBJECT_NAME::GUN:
+        if (m_gHp.Cur > 0)
         {
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"Pistol");
             break;
         }
-        else if (m_fBrokenHp == m_fHp)
+        else if (m_gHp.Cur <= 0)
         {
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenPistol");
             break;
         }
         break;
-
-    case CAceWeapon::WEAPON_NAME::TOMMYGUN:
-        if (m_fMaxHP == m_fHp)
+    
+    case CPlayer::OBJECT_NAME::THOMPSON:
+        if (m_gHp.Cur > 0)
         {
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"TommyGun");
             break;
         }
-        else if (m_fBrokenHp == m_fHp)
+        else if (m_gHp.Cur <= 0)
         {
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"BrokenTommyGun");
             break;
         }
         break;
 
-    case CAceWeapon::WEAPON_NAME::GASCANISTER:
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"GasCanister");
+    case CPlayer::OBJECT_NAME::STEELPIPE:
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"LeadPipe");
+        break;
+
+    case CPlayer::OBJECT_NAME::BEERBOTLE:
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"Bottle");
+        break;
+
+    case CPlayer::OBJECT_NAME::FRYINGPAN:
+
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"FryingPan");
         break;
     }
-
 }
 
 void CAceWeapon::OnCollision(CGameObject* pDst, const FContact* const pContact)

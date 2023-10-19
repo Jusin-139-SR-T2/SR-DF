@@ -3675,9 +3675,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": -7.431694507598877,
-                        "y": 1.956863522529602,
-                        "z": 17.048412322998047
+                        "x": -25.415939331054688,
+                        "y": 5.965831756591797,
+                        "z": -27.795799255371094
                     },
                     "rot": {
                         "x": 0.0,
@@ -3685,8 +3685,8 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
+                        "x": 2.0,
+                        "y": 2.0,
                         "z": 1.0
                     },
                     "group_key": "Furniture",
@@ -6043,9 +6043,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 31.07198143005371,
-                        "y": 3.484555959701538,
-                        "z": -3.100270986557007
+                        "x": 31.11804962158203,
+                        "y": 2.961561441421509,
+                        "z": -3.0833775997161865
                     },
                     "rot": {
                         "x": 0.0,
@@ -6054,7 +6054,7 @@
                     },
                     "scale": {
                         "x": 1.0,
-                        "y": 3.0,
+                        "y": 2.0,
                         "z": 2.0
                     },
                     "group_key": "Furniture",
@@ -6939,7 +6939,7 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": -2.0330936908721924,
+                        "x": -2.016746997833252,
                         "y": 3.5163187980651855,
                         "z": 2.0857932567596436
                     },
@@ -8251,19 +8251,19 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 23.622814178466797,
+                        "x": 23.248464584350586,
                         "y": 4.493530750274658,
                         "z": -14.436769485473633
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -55.003936767578125,
+                        "y": -55.00392532348633,
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
+                        "x": 0.8737837672233582,
+                        "y": 0.8737837672233582,
+                        "z": 0.8737837672233582
                     },
                     "group_key": "Throw",
                     "texture_key": "TablePlantFlower"
@@ -10972,8 +10972,8 @@
                     "use_priority_render": true,
                     "pos": {
                         "x": 31.98726463317871,
-                        "y": 3.484555959701538,
-                        "z": -24.937801361083984
+                        "y": 5.449419021606445,
+                        "z": -10.012789726257324
                     },
                     "rot": {
                         "x": 0.0,
@@ -10982,7 +10982,7 @@
                     },
                     "scale": {
                         "x": 1.0,
-                        "y": 3.0,
+                        "y": 2.0,
                         "z": 2.0
                     },
                     "group_key": "Furniture",
@@ -11115,6 +11115,550 @@
                     },
                     "group_key": "Food",
                     "texture_key": "EatenApple"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Perfume_2"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -0.6874305605888367,
+                        "y": 2.45819354057312,
+                        "z": 6.451624870300293
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -17.188732147216797,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "Perfume_2"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Column1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -2.0330936908721924,
+                        "y": 3.5163187980651855,
+                        "z": 6.45290470123291
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 7.0,
+                        "z": 2.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Column8"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BarFront2"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.9895868301391602,
+                        "y": 1.0218955278396606,
+                        "z": 6.736326217651367
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.5,
+                        "y": 2.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BarFront"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Perfume_0"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.38446322083473206,
+                        "y": 2.526963949203491,
+                        "z": 6.26368522644043
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 12.032113075256348,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "Perfume_0"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "ScrunchedPaper_1"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.6013278961181641,
+                        "y": 0.30588725209236145,
+                        "z": 5.002777099609375
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.6784327626228333,
+                        "y": 0.5883944630622864,
+                        "z": 0.6784327626228333
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "ScrunchedPaper_1"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Thing"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -7.225259780883789,
+                        "y": 3.8210272789001465,
+                        "z": -37.434715270996094
+                    },
+                    "rot": {
+                        "x": 90.0,
+                        "y": 0.0,
+                        "z": -90.0
+                    },
+                    "scale": {
+                        "x": 2.0,
+                        "y": 1.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Thing"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Thing0"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 4.056307315826416,
+                        "y": 3.8210272789001465,
+                        "z": -37.434715270996094
+                    },
+                    "rot": {
+                        "x": 90.0,
+                        "y": 0.0,
+                        "z": -90.0
+                    },
+                    "scale": {
+                        "x": 2.0,
+                        "y": 1.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Thing"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Stage"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -7.78023624420166,
+                        "y": 3.4554009437561035,
+                        "z": 4.683192729949951
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 85.94363403320313,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 5.0,
+                        "y": 7.0,
+                        "z": 10.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Stage"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BarStool0"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -8.088350296020508,
+                        "y": 0.8553756475448608,
+                        "z": -0.47644275426864624
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.6842408180236816,
+                        "z": 1.0
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "BarStool"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BarStool1"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -5.900388240814209,
+                        "y": 0.8553756475448608,
+                        "z": -0.47644275426864624
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.6842408180236816,
+                        "z": 1.0
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "BarStool"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BarStool2"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -5.900388240814209,
+                        "y": 0.8553756475448608,
+                        "z": -0.47644275426864624
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.6842408180236816,
+                        "z": 1.0
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "BarStool"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_VentIntro"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -25.42292594909668,
+                        "y": 5.919595718383789,
+                        "z": -28.21393394470215
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 94.53803253173828,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": -2.0,
+                        "y": 2.0,
+                        "z": 2.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "VentIntro"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Lamp_0"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 23.418777465820313,
+                        "y": 4.3416876792907715,
+                        "z": -16.82478141784668
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 87.6624984741211,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.7438051104545593,
+                        "y": 0.7438051104545593,
+                        "z": 0.7438051104545593
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "Lamp_0"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "PaperBox_0"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 31.70209503173828,
+                        "y": 4.259582042694092,
+                        "z": -22.882789611816406
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 99.69464111328125,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.6565269231796265,
+                        "y": 0.6565269231796265,
+                        "z": 0.6565269231796265
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "PaperBox_0"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Perfume_1"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 29.2598819732666,
+                        "y": 4.169706344604492,
+                        "z": -23.542192459106445
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "Perfume_1"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Wall_1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 22.49315071105957,
+                        "y": 4.460000038146973,
+                        "z": -5.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.009999999776482582,
+                        "y": 5.099999904632568,
+                        "z": 5.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Wall_22"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Wall_2"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 23.31850814819336,
+                        "y": 4.460000038146973,
+                        "z": -7.503346920013428
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.009999999776482582,
+                        "y": 5.099999904632568,
+                        "z": 1.649999976158142
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Wall_22"
                 }
             ]
         },

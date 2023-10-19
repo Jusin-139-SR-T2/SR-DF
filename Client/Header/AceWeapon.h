@@ -18,8 +18,6 @@ class CAceWeapon : public CAceUnit
 {
 	DERIVED_CLASS(CAceUnit, CAceWeapon)
 
-enum class WEAPON_NAME { BOTTLE, PIPE, WALLPIPE, FRYINGPAN, PISTOL, TOMMYGUN, GASCANISTER, WEAPON_END };
-
 private:
 	explicit CAceWeapon(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CAceWeapon(const CAceWeapon& rhs);
@@ -50,10 +48,10 @@ private: // 함수
 	HRESULT				BillBoard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	void				Height_On_Terrain();
 	void				WeaponName(const _tchar* pObjTag);
-	void				Change_Texture(WEAPON_NAME eReceiveName); //모든 무기에 내구도에 따른 이미지 존재 
+	void				Change_Texture(CPlayer::OBJECT_NAME eReceiveName); //모든 무기에 내구도에 따른 이미지 존재 
 	
 private: // 변수 
-	WEAPON_NAME			m_pCurName;
+	CPlayer::OBJECT_NAME			m_pCurName;
 	_float m_fHp = 2.f;
 	_float m_fBrokenHp = 0.f;
 	_float m_fCrackedHp = 1.f;

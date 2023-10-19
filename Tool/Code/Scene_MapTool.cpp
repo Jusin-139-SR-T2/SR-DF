@@ -338,13 +338,14 @@ HRESULT CScene_MapTool::Ready_Texture()
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Potplant.png", TEX_NORMAL, L"Throw", L"Potplant");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/BeerMug.png", TEX_NORMAL, L"Throw", L"BeerMug");
 
-	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/Trashbin_0.png", TEX_NORMAL, L"Throw", L"Trashbin_0");
-	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/Trashbin_1.png", TEX_NORMAL, L"Throw", L"Trashbin_1");
-	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/Trashbin_2.png", TEX_NORMAL, L"Throw", L"Trashbin_2");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Trashbin_0.png", TEX_NORMAL, L"Throw", L"Trashbin_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Trashbin_1.png", TEX_NORMAL, L"Throw", L"Trashbin_1");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Trashbin_2.png", TEX_NORMAL, L"Throw", L"Trashbin_2");
 
-	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrashCan_0.png", TEX_NORMAL, L"Throw", L"TrashCan_0");
-	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrashCan_1.png", TEX_NORMAL, L"Throw", L"TrashCan_1");
-	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrashCan_2.png", TEX_NORMAL, L"Throw", L"TrashCan_2");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrashCan_0.png", TEX_NORMAL, L"Throw", L"TrashCan_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrashCan_1.png", TEX_NORMAL, L"Throw", L"TrashCan_1");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrashCan_2.png", TEX_NORMAL, L"Throw", L"TrashCan_2");
+
 
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/PaintCan_0.png", TEX_NORMAL, L"Throw", L"PaintCan_0");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/PaintCan_1.png", TEX_NORMAL, L"Throw", L"PaintCan_1");
