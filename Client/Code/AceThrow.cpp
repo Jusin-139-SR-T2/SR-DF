@@ -188,10 +188,15 @@ void CAceThrow::ThrowName(const _tchar* pObjTag)
         m_pCurName = CAceThrow::THROW_NAME::PAPERBOX;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"PaperBox");
     }
-    else if ((wcscmp(pObjTag, L"SCRUNCHEDPAPER") == 0) || (wcscmp(pObjTag, L"ScrunchedPaper") == 0))
+    else if ((wcscmp(pObjTag, L"SCRUNCHEDPAPER_0") == 0) || (wcscmp(pObjTag, L"ScrunchedPaper_0") == 0))
     {
         m_pCurName = CAceThrow::THROW_NAME::SCRUNCHEDPAPER;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"ScrunchedPaper");
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"ScrunchedPaper_0");
+    }
+    else if ((wcscmp(pObjTag, L"SCRUNCHEDPAPER_1") == 0) || (wcscmp(pObjTag, L"ScrunchedPaper_1") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::SCRUNCHEDPAPER;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"ScrunchedPaper_1");
     }
     else if ((wcscmp(pObjTag, L"FEDORA") == 0) || (wcscmp(pObjTag, L"Fedora") == 0))
     {
@@ -203,10 +208,20 @@ void CAceThrow::ThrowName(const _tchar* pObjTag)
         m_pCurName = CAceThrow::THROW_NAME::ROPE;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Rope");
     }
-    else if ((wcscmp(pObjTag, L"SACK") == 0) || (wcscmp(pObjTag, L"Sack") == 0))
+    else if ((wcscmp(pObjTag, L"SACK_0") == 0) || (wcscmp(pObjTag, L"Sack_0") == 0))
     {
         m_pCurName = CAceThrow::THROW_NAME::SACK;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Sack");
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Sack_0");
+    }
+    else if ((wcscmp(pObjTag, L"SACK_1") == 0) || (wcscmp(pObjTag, L"Sack_1") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::SACK;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Sack_1");
+    }
+    else if ((wcscmp(pObjTag, L"SACK_2") == 0) || (wcscmp(pObjTag, L"Sack_2") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::SACK;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Sack_2");
     }
     else if ((wcscmp(pObjTag, L"HANDBAG") == 0) || (wcscmp(pObjTag, L"Handbag") == 0))
     {
@@ -275,10 +290,45 @@ void CAceThrow::ThrowName(const _tchar* pObjTag)
         m_pCurName = CAceThrow::THROW_NAME::CABLEREEL;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"CableReel");
     }
-    else if ((wcscmp(pObjTag, L"CHAIR") == 0) || (wcscmp(pObjTag, L"Chair") == 0))
+    else if ((wcscmp(pObjTag, L"CHAIR_0") == 0) || (wcscmp(pObjTag, L"Chair_0") == 0))
     {
         m_pCurName = CAceThrow::THROW_NAME::CHAIR;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Chair");
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Chair_0");
+    }
+    else if ((wcscmp(pObjTag, L"CHAIR_1") == 0) || (wcscmp(pObjTag, L"Chair_1") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::CHAIR;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Chair_1");
+    }
+    else if ((wcscmp(pObjTag, L"CHAIR_2") == 0) || (wcscmp(pObjTag, L"Chair_2") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::CHAIR;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Chair_2");
+    }
+    else if ((wcscmp(pObjTag, L"CHAIR_3") == 0) || (wcscmp(pObjTag, L"Chair_3") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::CHAIR;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Chair_3");
+    }
+    else if ((wcscmp(pObjTag, L"CHAIR_4") == 0) || (wcscmp(pObjTag, L"Chair_4") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::CHAIR;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Chair_4");
+    }
+    else if ((wcscmp(pObjTag, L"CHAIR_5") == 0) || (wcscmp(pObjTag, L"Chair_5") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::CHAIR;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Chair_5");
+    }
+    else if ((wcscmp(pObjTag, L"CHAIR_6") == 0) || (wcscmp(pObjTag, L"Chair_6") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::CHAIR;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Chair_6");
+    }
+    else if ((wcscmp(pObjTag, L"CHAIR_7") == 0) || (wcscmp(pObjTag, L"Chair_7") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::CHAIR;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Chair_7");
     }
 
     // Glass
@@ -317,20 +367,60 @@ void CAceThrow::ThrowName(const _tchar* pObjTag)
         m_pCurName = CAceThrow::THROW_NAME::MARTINIGLASS;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"MartiniGlass");
     }
-    else if ((wcscmp(pObjTag, L"PERFUME") == 0) || (wcscmp(pObjTag, L"Perfume") == 0))
+    else if ((wcscmp(pObjTag, L"PERFUME_0") == 0) || (wcscmp(pObjTag, L"Perfume_0") == 0))
     {
         m_pCurName = CAceThrow::THROW_NAME::PERFUME;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Perfume");
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Perfume_0");
     }
-    else if ((wcscmp(pObjTag, L"GENERICBOTTLE") == 0) || (wcscmp(pObjTag, L"GenericBottles") == 0))
+    else if ((wcscmp(pObjTag, L"PERFUME_1") == 0) || (wcscmp(pObjTag, L"Perfume_1") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::PERFUME;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Perfume_1");
+    }
+    else if ((wcscmp(pObjTag, L"PERFUME_2") == 0) || (wcscmp(pObjTag, L"Perfume_2") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::PERFUME;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Perfume_2");
+    }
+    else if ((wcscmp(pObjTag, L"GENERICBOTTLE_0") == 0) || (wcscmp(pObjTag, L"GenericBottles_0") == 0))
     {
         m_pCurName = CAceThrow::THROW_NAME::GENERICBOTTLE;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"GenericBottles");
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"GenericBottles_0");
     }
-    else if ((wcscmp(pObjTag, L"LAMP") == 0) || (wcscmp(pObjTag, L"Lamp") == 0))
+    else if ((wcscmp(pObjTag, L"GENERICBOTTLE_1") == 0) || (wcscmp(pObjTag, L"GenericBottles_1") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::GENERICBOTTLE;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"GenericBottles_1");
+    }
+    else if ((wcscmp(pObjTag, L"GENERICBOTTLE_2") == 0) || (wcscmp(pObjTag, L"GenericBottles_2") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::GENERICBOTTLE;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"GenericBottles_2");
+    }
+    else if ((wcscmp(pObjTag, L"GENERICBOTTLE_3") == 0) || (wcscmp(pObjTag, L"GenericBottles_3") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::GENERICBOTTLE;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"GenericBottles_3");
+    }
+    else if ((wcscmp(pObjTag, L"GENERICBOTTLE_4") == 0) || (wcscmp(pObjTag, L"GenericBottles_4") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::GENERICBOTTLE;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"GenericBottles_4");
+    }
+    else if ((wcscmp(pObjTag, L"GENERICBOTTLE_5") == 0) || (wcscmp(pObjTag, L"GenericBottles_5") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::GENERICBOTTLE;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"GenericBottles_5");
+    }
+    else if ((wcscmp(pObjTag, L"LAMP_0") == 0) || (wcscmp(pObjTag, L"Lamp_0") == 0))
     {
         m_pCurName = CAceThrow::THROW_NAME::LAMP;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Lamp");
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Lamp_0");
+    }
+    else if ((wcscmp(pObjTag, L"LAMP_1") == 0) || (wcscmp(pObjTag, L"Lamp_1") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::LAMP;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Lamp_1");
     }
 
     // Steel
@@ -344,15 +434,35 @@ void CAceThrow::ThrowName(const _tchar* pObjTag)
         m_pCurName = CAceThrow::THROW_NAME::TRAFFICCONE;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"TrafficCone");
     }
-    else if ((wcscmp(pObjTag, L"TRASHBIN") == 0) || (wcscmp(pObjTag, L"Trashbin") == 0))
+    else if ((wcscmp(pObjTag, L"TRASHBIN_0") == 0) || (wcscmp(pObjTag, L"Trashbin_0") == 0))
     {
         m_pCurName = CAceThrow::THROW_NAME::TRASHBIN;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Trashbin");
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Trashbin_0");
     }
-    else if ((wcscmp(pObjTag, L"TRASHCAN") == 0) || (wcscmp(pObjTag, L"TrashCan") == 0))
+    else if ((wcscmp(pObjTag, L"TRASHBIN_1") == 0) || (wcscmp(pObjTag, L"Trashbin_1") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::TRASHBIN;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Trashbin_1");
+    }
+    else if ((wcscmp(pObjTag, L"TRASHBIN_2") == 0) || (wcscmp(pObjTag, L"Trashbin_2") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::TRASHBIN;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"Trashbin_2");
+    }
+    else if ((wcscmp(pObjTag, L"TRASHCAN_0") == 0) || (wcscmp(pObjTag, L"TrashCan_0") == 0))
     {
         m_pCurName = CAceThrow::THROW_NAME::TRASHCAN;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"TrashCan");
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"TrashCan_0");
+    }
+    else if ((wcscmp(pObjTag, L"TRASHCAN_1") == 0) || (wcscmp(pObjTag, L"TrashCan_1") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::TRASHCAN;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"TrashCan_1");
+    }
+    else if ((wcscmp(pObjTag, L"TRASHCAN_2") == 0) || (wcscmp(pObjTag, L"TrashCan_2") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::TRASHCAN;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"TrashCan_2");
     }
     else if ((wcscmp(pObjTag, L"MICROPHONE") == 0) || (wcscmp(pObjTag, L"Microphone") == 0))
     {
@@ -374,10 +484,25 @@ void CAceThrow::ThrowName(const _tchar* pObjTag)
         m_pCurName = CAceThrow::THROW_NAME::TRAFFICBOLLARD;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"TrafficBollard");
     }
-    else if ((wcscmp(pObjTag, L"PAINTCAN") == 0) || (wcscmp(pObjTag, L"PaintCan") == 0))
+    else if ((wcscmp(pObjTag, L"PAINTCAN_0") == 0) || (wcscmp(pObjTag, L"PaintCan_0") == 0))
     {
         m_pCurName = CAceThrow::THROW_NAME::PAINTCAN;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"PaintCan");
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"PaintCan_0");
+    }
+    else if ((wcscmp(pObjTag, L"PAINTCAN_1") == 0) || (wcscmp(pObjTag, L"PaintCan_1") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::PAINTCAN;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"PaintCan_1");
+    }
+    else if ((wcscmp(pObjTag, L"PAINTCAN_2") == 0) || (wcscmp(pObjTag, L"PaintCan_2") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::PAINTCAN;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"PaintCan_2");
+    }
+    else if ((wcscmp(pObjTag, L"PAINTCAN_3") == 0) || (wcscmp(pObjTag, L"PaintCan_3") == 0))
+    {
+        m_pCurName = CAceThrow::THROW_NAME::PAINTCAN;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Throw", L"PaintCan_3");
     }
     else if ((wcscmp(pObjTag, L"METALBARREL") == 0) || (wcscmp(pObjTag, L"MetalBarrel") == 0))
     {

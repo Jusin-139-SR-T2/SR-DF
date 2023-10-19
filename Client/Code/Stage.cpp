@@ -183,11 +183,14 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction9", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"Padlock", 40.f, 1.f, 16.f)), E_FAIL);
 	
 	// 너무많아서 그냥 이정도만 깔음 - 스프라이트 형식으로 넣어서 Cnt값의 Frame을 넣어주면 해당하는거 나옴 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"CoatHanger", 36.f, 1.f, 12.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"TrashCan", 32.f, 1.f, 12.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"Trashbin", 24.f, 1.f, 12.f)), E_FAIL); 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"Lamp", 28.f, 1.f, 12.f)), E_FAIL); 
-
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw3", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"Lamp_0", 20.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"BeerGlass", 22.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"CafeTable", 24.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw2", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"CafeTable", 26.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw4", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"Trashbin_0", 28.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw6", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"PaintCan_2", 30.f, 1.f, 12.f)), E_FAIL); 
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Throw5", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::THROW, L"WoodenStool", 32.f, 1.f, 12.f)), E_FAIL); 
+	
 	// FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Interaction1", CAceObjectFactory::Create(m_pGraphicDev, CAceObjectFactory::OBJECT_CLASS::INTERACTION, L"BLOCK_SWITCH", 24.f, 1.f, 12.f)), E_FAIL); //
 	// Add_GameObject에 들어가는 pObjTag 가 다 달라야 들어감 -> Object 피킹하는데 연산량이 너무 증가함
 	// 해결방안 생각해봐야 할듯 

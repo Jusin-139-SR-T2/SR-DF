@@ -281,15 +281,31 @@ HRESULT CScene_MapTool::Ready_Texture()
 	Load_Texture(L"../Client/Resource/Texture/Item/Weapon/Bottle.png", TEX_NORMAL, L"Weapon", L"Bottle");
 
 	//Object - Throw 
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/ScrunchedPaper_%d.png", TEX_NORMAL, L"Throw", L"ScrunchedPaper", _range<_uint>(0U, 1U));
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/PaperBox_%d.png", TEX_NORMAL, L"Throw", L"PaperBox", _range<_uint>(0U, 1U));
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Sack_%d.png", TEX_NORMAL, L"Throw", L"Sack", _range<_uint>(0U, 2U));
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/ScrunchedPaper_0.png", TEX_NORMAL, L"Throw", L"ScrunchedPaper_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/ScrunchedPaper_1.png", TEX_NORMAL, L"Throw", L"ScrunchedPaper_1");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/PaperBox_0.png", TEX_NORMAL, L"Throw", L"PaperBox_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/PaperBox_1.png", TEX_NORMAL, L"Throw", L"PaperBox_1");	
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Sack_0.png", TEX_NORMAL, L"Throw", L"Sack_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Sack_1.png", TEX_NORMAL, L"Throw", L"Sack_1");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Sack_2.png", TEX_NORMAL, L"Throw", L"Sack_2");
+
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Handbag.png", TEX_NORMAL, L"Throw", L"Handbag");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Fedora.png", TEX_NORMAL, L"Throw", L"Fedora");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Rope.png", TEX_NORMAL, L"Throw", L"Rope");
 
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Board_%d.png", TEX_NORMAL, L"Throw", L"Board", _range<_uint>(0U, 2U));
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Chair_%d.png", TEX_NORMAL, L"Throw", L"Chair", _range<_uint>(0U, 7U));
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Chair_0.png", TEX_NORMAL, L"Throw", L"Chair_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Chair_1.png", TEX_NORMAL, L"Throw", L"Chair_1");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Chair_2.png", TEX_NORMAL, L"Throw", L"Chair_2");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Chair_3.png", TEX_NORMAL, L"Throw", L"Chair_3");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Chair_4.png", TEX_NORMAL, L"Throw", L"Chair_4");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Chair_5.png", TEX_NORMAL, L"Throw", L"Chair_5");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Chair_6.png", TEX_NORMAL, L"Throw", L"Chair_6");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Chair_7.png", TEX_NORMAL, L"Throw", L"Chair_7");
+
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Board_0.png", TEX_NORMAL, L"Throw", L"Board_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Board_1.png", TEX_NORMAL, L"Throw", L"Board_1");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Board_2.png", TEX_NORMAL, L"Throw", L"Board_2");
+
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/UmbrellaStand.png", TEX_NORMAL, L"Throw", L"UmbrellaStand");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/WoodenBarrel.png", TEX_NORMAL, L"Throw", L"WoodenBarrel");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/WoodenStool.png", TEX_NORMAL, L"Throw", L"WoodenStool");
@@ -302,9 +318,18 @@ HRESULT CScene_MapTool::Ready_Texture()
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Toolbox.png", TEX_NORMAL, L"Throw", L"Toolbox");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Matches.png", TEX_NORMAL, L"Throw", L"Matches");
 
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/GenericBottles_%d.png", TEX_NORMAL, L"Throw", L"GenericBottles", _range<_uint>(0U, 5U));
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Perfume_%d.png", TEX_NORMAL, L"Throw", L"Perfume", _range<_uint>(0U, 2U));
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Lamp_%d.png", TEX_NORMAL, L"Throw", L"Lamp", _range<_uint>(0U, 1U));
+
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/GenericBottles_0.png", TEX_NORMAL, L"Throw", L"GenericBottles_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/GenericBottles_1.png", TEX_NORMAL, L"Throw", L"GenericBottles_1");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/GenericBottles_2.png", TEX_NORMAL, L"Throw", L"GenericBottles_2");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/GenericBottles_3.png", TEX_NORMAL, L"Throw", L"GenericBottles_3");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/GenericBottles_4.png", TEX_NORMAL, L"Throw", L"GenericBottles_4");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/GenericBottles_5.png", TEX_NORMAL, L"Throw", L"GenericBottles_5");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Perfume_0.png", TEX_NORMAL, L"Throw", L"Perfume_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Perfume_1.png", TEX_NORMAL, L"Throw", L"Perfume_1");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Perfume_2.png", TEX_NORMAL, L"Throw", L"Perfume_2");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Lamp_0.png", TEX_NORMAL, L"Throw", L"Lamp_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Lamp_1.png", TEX_NORMAL, L"Throw", L"Lamp_1");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/TablePlantFlower.png", TEX_NORMAL, L"Throw", L"TablePlantFlower");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/TablePlantLeaf.png", TEX_NORMAL, L"Throw", L"TablePlantLeaf");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/WhiskeyGlass.png", TEX_NORMAL, L"Throw", L"WhiskeyGlass");
@@ -313,9 +338,19 @@ HRESULT CScene_MapTool::Ready_Texture()
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/Potplant.png", TEX_NORMAL, L"Throw", L"Potplant");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/BeerMug.png", TEX_NORMAL, L"Throw", L"BeerMug");
 
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/trashbin_%d.png", TEX_NORMAL, L"Throw", L"Trashbin", _range<_uint>(0U, 2U));
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/trashcan_%d.png", TEX_NORMAL, L"Throw", L"TrashCan", _range<_uint>(0U, 2U));
-	Load_Texture(L"../Client/Resource/Texture/Item/Throw/PaintCan_%d.png", TEX_NORMAL, L"Throw", L"PaintCan", _range<_uint>(0U, 3U));
+	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/Trashbin_0.png", TEX_NORMAL, L"Throw", L"Trashbin_0");
+	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/Trashbin_1.png", TEX_NORMAL, L"Throw", L"Trashbin_1");
+	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/Trashbin_2.png", TEX_NORMAL, L"Throw", L"Trashbin_2");
+
+	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrashCan_0.png", TEX_NORMAL, L"Throw", L"TrashCan_0");
+	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrashCan_1.png", TEX_NORMAL, L"Throw", L"TrashCan_1");
+	//Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrashCan_2.png", TEX_NORMAL, L"Throw", L"TrashCan_2");
+
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/PaintCan_0.png", TEX_NORMAL, L"Throw", L"PaintCan_0");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/PaintCan_1.png", TEX_NORMAL, L"Throw", L"PaintCan_1");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/PaintCan_2.png", TEX_NORMAL, L"Throw", L"PaintCan_2");
+	Load_Texture(L"../Client/Resource/Texture/Item/Throw/PaintCan_3.png", TEX_NORMAL, L"Throw", L"PaintCan_3");
+
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/ChampagneBucket.png", TEX_NORMAL, L"Throw", L"ChampagneBucket");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrafficBollard.png", TEX_NORMAL, L"Throw", L"TrafficBollard");
 	Load_Texture(L"../Client/Resource/Texture/Item/Throw/TrafficCone.png", TEX_NORMAL, L"Throw", L"TrafficCone");
