@@ -139,6 +139,7 @@ HRESULT CSpawnFire::Add_Component()
 
 void CSpawnFire::Free()
 {
+	Engine::Stop_Sound(SOUND_ENEMY_FIRE);
 	SUPER::Free();
 }
 

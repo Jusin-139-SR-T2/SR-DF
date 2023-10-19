@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Effect_HitPow.h"
+#include "AceMonster.h"
 
 CEffect_HitPow::CEffect_HitPow(LPDIRECT3DDEVICE9 pGraphicDev)
 	:Base(pGraphicDev)
@@ -86,9 +87,9 @@ void CEffect_HitPow::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
+
 HRESULT CEffect_HitPow::Update_Pos()
 {
-	
 	CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(m_pOwner);
 
 	if (pAceObj == nullptr)

@@ -99,10 +99,14 @@ private:
 	_float			m_fSideTime = 1.5f;
 	_float			m_fAwareness;
 
+	_float m_fTalk;
+	_float m_fTalkLife;
+	_float m_fTalkReapeat;
+
 	//공격 컨트롤 
 	_bool m_AttackOnce = FALSE;
 	_bool m_bBuffActive = FALSE;
-	
+	_bool m_bShitTrigger = FALSE;
 	// 조명관련 - 블랙보드 연동 
 	_bool m_bLightOn = FALSE;
 	void LightControl(const _float& fTimeDelta);
@@ -197,6 +201,7 @@ private:
 
 	// 죽음 
 	void AI_Death(float fDeltaTime); //ok // hp 0인상태 
+	//Engine::Play_Sound(L"Enemy", L"_Death.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
 
 #pragma endregion
 

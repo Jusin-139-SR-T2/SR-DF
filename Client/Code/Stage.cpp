@@ -218,7 +218,6 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Player", CUI_Player::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", CUI_CrossHair::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_PlayerFace", CUI_PlayerFace::Create(m_pGraphicDev)), E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_BoxSelect", CUI_BoxSelect::Create(m_pGraphicDev)), E_FAIL);
 	
 	m_mapLayer.insert({ pLayerTag, pLayer });
 	
@@ -227,25 +226,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 
 HRESULT CStage::Ready_Layer_Completed()
 {
-	CPlayer* pObj = dynamic_cast<CPlayer*>(Get_GameObject(L"GameLogic", L"Player"));
-	NULL_CHECK_RETURN(pObj, E_FAIL);
-
-	CDynamicCamera* pCam = dynamic_cast<CDynamicCamera*>(Get_GameObject(L"Camera", L"DynamicCamera"));
-	NULL_CHECK_RETURN(pCam, E_FAIL);
-
-	CPlayerLighter* pLighter = dynamic_cast<CPlayerLighter*>(Get_GameObject(L"GameLogic", L"PlayerLighter"));
-	NULL_CHECK_RETURN(pLighter, E_FAIL);
-
-	// 모두 블랙보드로 연동 변경
-	//pObj->Set_PlayerLighter(pLighter);
-	//pCam->Set_Target(pObj);
-	//pObj->Set_Camera(pCam);
-
-	/*for (size_t i = 0; i < 2000; i++)
-	{
-		Add_GameObject(L"Environment", CAceBuilding::Create(m_pGraphicDev, L"Test", 0.f, 0.f, 0.f));
-	}*/
-
+	
 	return S_OK;
 }
 

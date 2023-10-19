@@ -61,6 +61,8 @@ HRESULT CEnergyBall::Ready_GameObject()
 	pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
 	pShape->fRadius = 0.4f;
 
+	Engine::Play_Sound(L"Enemy", L"_EnergyBallA.wav", SOUND_ENEMY_EFFECT, 0.4f);
+
 	return S_OK;
 }
 
@@ -187,6 +189,7 @@ void CEnergyBall::Value_Setting(_float _x, _float _y, _float _z, MonsterPhase _p
 		m_fMovingSpeed = 3.f;
 		m_tFrame.fLifeTime = 4.f;
 		m_fGuideTime = 2.f;
+		
 		break;
 
 	case Engine::Phase2:

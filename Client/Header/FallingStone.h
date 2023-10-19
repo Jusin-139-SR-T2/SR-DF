@@ -41,5 +41,6 @@ private:
 	_bool m_bCollision = FALSE; //충돌해서 시간흐르는용도 
 	_bool m_bFall = TRUE;		// 어딘가에서 충돌이 이루어지면 깨지는 이미지로 바뀌고 LifeTime이 지나면 Dead()
 	void Falling(const _float& fTimeDelta); // 떨어지는 함수 
+	_bool m_bSound = TRUE;
 };
 
