@@ -1,6 +1,7 @@
 #pragma once
 #include "AceObjectFactory.h"
 #include "AceUnit.h"
+#include "Engine_Enum.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -70,5 +71,9 @@ private: //변수
 	_bool				m_bDead = false;  // 죽는거 생기면 그걸로 변경 
 	_vec3				CurPos;			  // 현재 위치 
 	_float				m_fChangeTextureSpeed = 0.001f;
+	OBJECT_CLASS		m_eFactoryClass;
+
+public:
+	GETSET_EX2(OBJECT_CLASS, m_eFactoryClass, FACTORY_NAME, GET, SET)
 };
 

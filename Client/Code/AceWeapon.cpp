@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "AceWeapon.h"
-#include "Player.h"
 
 CAceWeapon::CAceWeapon(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -77,6 +76,7 @@ HRESULT CAceWeapon::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
+    m_eFactoryClass = OBJECT_CLASS::WEAPON;
     return S_OK;
 }
 

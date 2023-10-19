@@ -2,8 +2,9 @@
 
 #include "AceObjectFactory.h"
 #include "AceUnit.h"
-
+#include "Engine_Enum.h"
 #include "Serialize_BaseClass.h"
+#include "Player.h"
 
 BEGIN(Engine)
 
@@ -56,6 +57,7 @@ private: // º¯¼ö
 	_float m_fBrokenHp = 0.f;
 	_float m_fCrackedHp = 1.f;
 	_float m_fMaxHP = 2.f;
+	OBJECT_CLASS		m_eFactoryClass;
 
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;

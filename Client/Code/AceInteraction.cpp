@@ -54,15 +54,7 @@ HRESULT CAceInteraction::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-
-
-
-
-
-
-
-
-
+    m_eFactoryClass = OBJECT_CLASS::INTERACTION;
 
     return S_OK;
 }

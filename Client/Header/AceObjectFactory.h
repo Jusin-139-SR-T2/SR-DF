@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Engine_Enum.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
@@ -7,14 +8,7 @@
 class CAceObjectFactory
 {
 public:
-	enum class OBJECT_CLASS {
-		FOOD,			
-		WEAPON,			
-		INTERACTION,	
-		THROW,			
-		BUILDING,		
-		OBJECT_CLASSEND
-	};
+
 
 	enum class OBJECT_DIRECTION {
 		EAST, SOUTHEAST,
@@ -25,7 +19,7 @@ public:
 	};
 
 	static Engine::CGameObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
-										OBJECT_CLASS objClass, 
+										OBJECT_CLASS objClass,
 										const _tchar* pObjTag, 
 										const _float _fx, 
 										const _float _fy, 

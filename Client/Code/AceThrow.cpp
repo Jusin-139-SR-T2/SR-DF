@@ -75,6 +75,9 @@ HRESULT CAceThrow::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
+
+    m_eFactoryClass = OBJECT_CLASS::THROW;
+
     return S_OK;
 }
 

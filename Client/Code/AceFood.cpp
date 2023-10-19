@@ -118,6 +118,8 @@ HRESULT CAceFood::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
             wstring(tObjectSerial.strGroupKey.begin(), tObjectSerial.strGroupKey.end()).c_str()
             , wstring(tObjectSerial.strTextureKey.begin(), tObjectSerial.strTextureKey.end()).c_str());
 
+    m_eFactoryClass = OBJECT_CLASS::FOOD;
+
     return S_OK;
 }
 
