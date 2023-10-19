@@ -2448,31 +2448,32 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
 
             if (m_eTransform_Mode == ETRANSFORM_MODE_SCALE)
             {
+                if (m_eTransform_Axis != ETRANSFORM_AXIS_NONE)
+                    pTransform->Set_Scale(m_vTransform_Scale * fLength);
                 switch (m_eTransform_Axis)
                 {
                 case CImguiWin_MapTool::ETRANSFORM_AXIS_X:
-                    pTransform->Set_ScaleX(m_vTransform_Scale.x * fLength);
+                    pTransform->Set_ScaleY(m_vTransform_Scale_Saved.y);
+                    pTransform->Set_ScaleZ(m_vTransform_Scale_Saved.z);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_AXIS_Y:
-                    pTransform->Set_ScaleY(m_vTransform_Scale.y * fLength);
+                    pTransform->Set_ScaleX(m_vTransform_Scale_Saved.x);
+                    pTransform->Set_ScaleZ(m_vTransform_Scale_Saved.z);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_AXIS_Z:
-                    pTransform->Set_ScaleZ(m_vTransform_Scale.z * fLength);
+                    pTransform->Set_ScaleX(m_vTransform_Scale_Saved.x);
+                    pTransform->Set_ScaleY(m_vTransform_Scale_Saved.y);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_PLANE_X:
-                    pTransform->Set_ScaleX(m_vTransform_Scale.x * fLength);
-                    pTransform->Set_ScaleY(m_vTransform_Scale.y * fLength);
+                    pTransform->Set_ScaleX(m_vTransform_Scale_Saved.x);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_PLANE_Y:
-                    pTransform->Set_ScaleX(m_vTransform_Scale.x * fLength);
-                    pTransform->Set_ScaleZ(m_vTransform_Scale.z * fLength);
+                    pTransform->Set_ScaleY(m_vTransform_Scale_Saved.y);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_PLANE_Z:
-                    pTransform->Set_ScaleX(m_vTransform_Scale.x * fLength);
-                    pTransform->Set_ScaleY(m_vTransform_Scale.y * fLength);
+                    pTransform->Set_ScaleZ(m_vTransform_Scale_Saved.z);
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
-                    pTransform->Set_Scale(m_vTransform_Scale * fLength);
                     break;
                 default:
                     break;
