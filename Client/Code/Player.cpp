@@ -574,6 +574,20 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         //m_pTransformComp->Set_PosY(-10.f);
     }
 
+    // Test
+    if (Engine::IsKey_Pressing(DIK_G))
+    {
+        Test.y += 1.f;
+
+        m_pTransformComp->Move_Pos(&Test, fTimeDelta, 1.f);
+    }
+    else
+    {
+        if (Test.y > 0.f)
+            Test.y -= 1.f;
+    }
+
+
     // ∂√¿ª ∂ß
     if (Engine::IsKey_Released(DIK_C))
     {

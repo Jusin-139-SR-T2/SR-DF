@@ -105,7 +105,7 @@ private:
 public: // 블랙보드
 	void		Update_BlackBoard();
 	void		Update_InternalData();
-
+	_vec3 Test = { 0.f, 10.f, 0.f };
 //-------------------------------------------------------------------------------------------------
 
 protected: // 충돌 onoff
