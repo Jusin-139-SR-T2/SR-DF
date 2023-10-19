@@ -221,7 +221,6 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     //블랙보드 업로드 
     Update_InternalData();
 
-
     // 상태머신
     m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
 
