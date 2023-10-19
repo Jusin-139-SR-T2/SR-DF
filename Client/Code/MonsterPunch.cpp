@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "MonsterPunch.h"
+#include "AceBoss.h"
 
 CMonsterPunch::CMonsterPunch(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
@@ -127,6 +128,21 @@ void CMonsterPunch::OnCollision(CGameObject* pDst, const FContact* const pContac
 
 void CMonsterPunch::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
+	CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(m_pOwner);
+
+	CGray* pGray = dynamic_cast<CGray*>(pAceObj);
+	
+	if (nullptr == pGray)
+	{
+		Engine::Play_Sound(L"Enemy", L"_HitPunch.mp3", SOUND_ENEMY_MONSTER_EFFECT, 0.6f);
+	}
+	else
+	{
+		// Gray가 만든것 
+		Engine::Play_Sound(L"Enemy", L"_PipeHit.wav", SOUND_ENEMY_MONSTER_EFFECT, 0.6f);
+	}
+	
+
 	switch (m_eAttackType)
 	{
 	case CMonsterPunch::TYPE::NORMAL:

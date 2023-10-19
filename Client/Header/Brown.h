@@ -165,7 +165,12 @@ private:
 	// 복귀
 	void AI_Reconnaissance(float fDeltaTime); // 플레이어 놓쳐서 주변 정찰하는중 
 	void AI_GoHome(float fDeltaTime);		 // 정찰마치고 원위치 복귀중 
+	/*
 
+	 Engine::Play_Sound(L"Enemy", L"Gray_FacePunchA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+	 
+	  SOUND_ENEMY_MONSTER, SOUND_ENEMY_MONSTER_EFFECT,
+ */
 #pragma endregion
 
 #pragma region 행동 : AI 이후 넘어가는곳 

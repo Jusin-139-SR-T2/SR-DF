@@ -54,7 +54,7 @@ HRESULT CThrowPipe::Ready_GameObject()
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_tFrame.fFrameSpeed = 10.f;
 	m_tFrame.fAge = 0.f;
-	m_tFrame.fLifeTime = 5.f;
+	m_tFrame.fLifeTime = 4.f;
 
 	// Ãæµ¹
 	m_pTransformComp->Readjust_Transform();

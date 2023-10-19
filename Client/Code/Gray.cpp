@@ -54,6 +54,15 @@ HRESULT CGray::Ready_GameObject()
 
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+    //사운드 관련
+    m_tSound.m_fTalkAge = 0.f;
+    m_tSound.m_fTalkLife = 5.f; // 반복이 필요한애들은 대충 이거기준으로 
+    m_tSound.m_fTalkReapeat = 0.f;
+    m_tSound.m_fSoundVolume = 0.6f;
+    m_tSound.m_fSoundEffectVolume = 0.2f;
+    m_tSound.m_bSoundOnce = FALSE;
+    m_tSound.m_bSoundCheck = FALSE;
+
     // 이미지 관련
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Single", L"Idle");
     //m_pTextureComp->Set_Scale({ 3.f, 5.f, 1.f });
@@ -233,9 +242,19 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 
 #pragma region 실험실
 
+    if (IsKey_Pressed(DIK_P))
+    {
+        m_tState_Obj.Set_State(STATE_OBJ::RUN);
+
+    }
     if (IsKey_Pressed(DIK_O))
     {
-        m_tState_Obj.Set_State(STATE_OBJ::THROW);
+        m_tState_Obj.Set_State(STATE_OBJ::WALK);
+    
+    }
+    if (IsKey_Pressed(DIK_I))
+    {
+        m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
 
     }
 
@@ -288,7 +307,7 @@ HRESULT CGray::Add_Component()
 
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
-    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL | LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_WALL | LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
     return S_OK;
 }
@@ -544,6 +563,8 @@ void CGray::AI_Suspicious(float fDeltaTime)
            m_pTransformComp->Get_Pos().z, CEffect_Awareness::TYPE::GRAY, this));
            m_tFrame.fFrame = 0.f;
 
+       Engine::Play_Sound(L"Enemy", L"Gray_Suspicious.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume); 
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -600,6 +621,7 @@ void CGray::AI_Taunt(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 12.f;
         m_tFrame.fFrame = 0.f;
+        Engine::Play_Sound(L"Enemy", L"Gray_Taunt.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume); 
     }
 
     if (m_tState_Obj.Can_Update())
@@ -630,6 +652,7 @@ void CGray::AI_YouDie(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 9.f;
         m_tFrame.fFrame = 0.f;
+        Engine::Play_Sound(L"Enemy", L"Gray_YouDie.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -841,6 +864,9 @@ void CGray::AI_Run(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 17.f;
         m_tFrame.fFrame = 0.f;
+
+        Engine::Play_Sound(L"Enemy", L"Gray_Run.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -872,7 +898,8 @@ void CGray::AI_Walk(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 11.f;
         m_tFrame.fFrame = 0.f;
-        
+        Engine::Play_Sound(L"Enemy", L"Gray_Walk.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -901,6 +928,8 @@ void CGray::AI_KeepEye(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 11.f;
         m_tFrame.fFrame = 0.f;
+        Engine::Play_Sound(L"Enemy", L"Gray_Keepeye.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -930,7 +959,8 @@ void CGray::AI_SideWalk(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"SideWalk");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
-        m_tFrame.fFrame = 0.f;
+        m_tFrame.fFrame = 0.f; 
+        Engine::Play_Sound(L"Enemy", L"Gray_SideWalk.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume); 
     }
 
     if (m_tState_Obj.Can_Update())
@@ -963,10 +993,15 @@ void CGray::AI_Throw(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
-       
+
+        Engine::Play_Sound(L"Enemy", L"Gray_ThrowPipe.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        Engine::Play_Sound(L"Enemy", L"_ThrowPipe.wav", SOUND_ENEMY_MONSTER_EFFECT, m_tSound.m_fSoundVolume);
+
+
         // 투사체 발사 
         Engine::Add_GameObject(L"GameLogic", CThrowPipe::Create(m_pGraphicDev,
             m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 1.f, m_pTransformComp->Get_Pos().z, this, (ETEAM_ID)Get_TeamID()));
+    
     }
 
     if (m_tState_Obj.Can_Update())
@@ -993,7 +1028,9 @@ void CGray::AI_UpRightRun(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"UpRightRun");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 13.f;
-        m_tFrame.fFrame = 0.f;
+        m_tFrame.fFrame = 0.f; 
+        Engine::Play_Sound(L"Enemy", L"Gray_Upright.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume); 
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1022,6 +1059,9 @@ void CGray::AI_Frighten(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 12.f;
         m_tFrame.fFrame = 0.f;
+
+        Engine::Play_Sound(L"Enemy", L"Gray_Frighten.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1051,6 +1091,8 @@ void CGray::AI_Attack(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
+
+        Engine::Play_Sound(L"Enemy", L"_PipeSwing.wav", SOUND_ENEMY_MONSTER_EFFECT, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1079,6 +1121,9 @@ void CGray::AI_HeavyAttack(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
+
+        Engine::Play_Sound(L"Enemy", L"_PipeHeavySwing.mp3", SOUND_ENEMY_MONSTER_EFFECT, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1108,6 +1153,8 @@ void CGray::AI_Block(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
+        Engine::Play_Sound(L"Enemy", L"Gray_Block.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume); 
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1135,6 +1182,8 @@ void CGray::AI_CrotchHit(float fDeltaTime)
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fLifeTime = 2.f; // 2초후 CHASE 진입 
         m_tFrame.fFrame = 0.f;
+
+        Engine::Play_Sound(L"Enemy", L"Gray_CrotchHit.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1165,6 +1214,12 @@ void CGray::AI_FacePunch(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
+
+        if(Random_variable(50))
+            Engine::Play_Sound(L"Enemy", L"Gray_FacePunchA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        else
+            Engine::Play_Sound(L"Enemy", L"Gray_FacePunchB.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1188,12 +1243,14 @@ void CGray::AI_Falling(float fDeltaTime)
         //OutputDebugString(L"▷Gray - 상태머신 : Falling 진입   \n");
         // 일어나는것까지 진행함 
         m_tStat.fAwareness = m_tStat.fMaxAwareness;
-        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Falling"); 
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Falling");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
         m_AttackOnce = true;
         m_bSecondFall = true;
+
+        Engine::Play_Sound(L"Enemy", L"Gray_Falling.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1240,6 +1297,11 @@ void CGray::AI_Hit(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
+
+        if (Random_variable(50))
+            Engine::Play_Sound(L"Enemy", L"Gray_HitA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        else
+            Engine::Play_Sound(L"Enemy", L"Gray_HitB.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1267,7 +1329,10 @@ void CGray::AI_Dazed(float fDeltaTime)
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fLifeTime = 1.f;
         m_tFrame.fFrame = 0.f;
-        m_bDazedState = TRUE;
+        m_bDazedState = TRUE; 
+        
+        Engine::Play_Sound(L"Enemy", L"Gray_Dazed.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1285,7 +1350,7 @@ void CGray::AI_Dazed(float fDeltaTime)
             if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
                 m_tFrame.fFrame = 10.f;
 
-            if (m_gHp.Update(fDeltaTime * 6.f, 40.f, TRUE)) // 증가값, 도달하면 bool반환 
+            if (m_gHp.Update(fDeltaTime * 3.f, 40.f, TRUE)) // 증가값, 도달하면 bool반환 
             {
                 m_gHp.Cur = 40.f;
                 m_bDazedState = FALSE;
@@ -1312,6 +1377,8 @@ void CGray::AI_Chopped(float fDeltaTime)
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
+
+        Engine::Play_Sound(L"Enemy", L"Gray_Chopped.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1341,6 +1408,8 @@ void CGray::AI_HeadShot(float fDeltaTime)
         m_tFrame.fFrameSpeed = 7.f;
         m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
+
+        Engine::Play_Sound(L"Enemy", L"Gray_Headshot.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1366,9 +1435,11 @@ void CGray::AI_Headless(float fDeltaTime)
         m_tStat.fAwareness = m_tStat.fMaxAwareness;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Multi", L"Headless");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
-        m_tFrame.fFrameSpeed =7.f;
+        m_tFrame.fFrameSpeed = 7.f;
         m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
+
+        Engine::Play_Sound(L"Enemy", L"Gray_Headshot.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1397,6 +1468,8 @@ void CGray::AI_Death(float fDeltaTime)
         m_tFrame.fFrameSpeed = 7.f;
         m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
+
+        Engine::Play_Sound(L"Enemy", L"Gray_Death.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1585,6 +1658,7 @@ void CGray::Attack(float fDeltaTime)
         {
             if (!m_AttackOnce)
             {
+
                 Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev,
                     vDirPos.x, vDirPos.y, vDirPos.z,
                     CMonsterPunch::TYPE::NORMAL, this, (ETEAM_ID)Get_TeamID()));
@@ -1597,6 +1671,7 @@ void CGray::Attack(float fDeltaTime)
         {
             if (!m_AttackOnce)
             {
+               
                 Engine::Add_GameObject(L"GameLogic", CMonsterPunch::Create(m_pGraphicDev,
                     vDirPos.x, vDirPos.y, vDirPos.z,
                     CMonsterPunch::TYPE::HEAVY, this, (ETEAM_ID)Get_TeamID()));

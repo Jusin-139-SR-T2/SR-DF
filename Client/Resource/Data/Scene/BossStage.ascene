@@ -3227,9 +3227,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": -2.105654716491699,
-                        "y": 1.7129216194152832,
-                        "z": 2.29378080368042
+                        "x": -2.119859457015991,
+                        "y": 1.6844041347503662,
+                        "z": 3.1037096977233887
                     },
                     "rot": {
                         "x": 0.0,
@@ -3515,18 +3515,18 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 44.09477615356445,
+                        "x": 44.60245895385742,
                         "y": 0.45182764530181885,
-                        "z": -15.171432495117188
+                        "z": -15.716285705566406
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.7199998497962952,
+                        "y": 64.31831359863281,
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 0.8175756335258484,
-                        "y": 0.5479395389556885,
+                        "x": 0.30497661232948303,
+                        "y": 0.21525759994983673,
                         "z": 3.9988107681274414
                     },
                     "group_key": "Food",
@@ -4763,13 +4763,13 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 46.724273681640625,
+                        "x": 46.835693359375,
                         "y": 0.5075094699859619,
-                        "z": -8.351142883300781
+                        "z": -7.963820457458496
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 2.0999996662139893,
+                        "y": -58.06055450439453,
                         "z": 0.0
                     },
                     "scale": {
@@ -4779,6 +4779,102 @@
                     },
                     "group_key": "Throw",
                     "texture_key": "Bucket"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "PaintCan_2"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 46.098289489746094,
+                        "y": 0.4619475305080414,
+                        "z": -8.785555839538574
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 134.07205200195313,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.705819845199585,
+                        "y": 0.7070369124412537,
+                        "z": 1.0
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "PaintCan_2"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Lamp_1"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 49.25162887573242,
+                        "y": 1.3943887948989868,
+                        "z": -16.54993438720703
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -34.377464294433594,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.5525220036506653,
+                        "y": 0.5966986417770386,
+                        "z": 1.0
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "Lamp_1"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Trashbin_0"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -1.8574683666229248,
+                        "y": 0.5822198987007141,
+                        "z": 1.5441184043884277
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -275.01959228515625,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.4157240092754364,
+                        "y": 0.9341345429420471,
+                        "z": 6.415329456329346
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "Trashbin_0"
                 }
             ]
         },

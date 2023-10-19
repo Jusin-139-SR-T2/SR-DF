@@ -2,6 +2,7 @@
 
 #include "AceObjectFactory.h"
 #include "AceUnit.h"
+#include "Engine_Enum.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -82,6 +83,7 @@ private: // 변수
 	_float		m_fFrame = 0.f;						// 이미지 돌리기위한 프레임변수 
 	_float		m_fFrameEnd;						// 이미지마다 변수 넣어줘야함 
 	_float		m_fFrameSpeed;						// 프레임 돌리는 속도
+	OBJECT_CLASS		m_eFactoryClass;
 
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;

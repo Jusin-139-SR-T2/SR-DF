@@ -280,7 +280,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Throw/ScrunchedPaper_1.png", TEX_NORMAL, L"Throw", L"ScrunchedPaper_1");
 	Load_Texture(L"./Resource/Texture/Item/Throw/PaperBox_0.png", TEX_NORMAL, L"Throw", L"PaperBox_0");
 	Load_Texture(L"./Resource/Texture/Item/Throw/PaperBox_1.png", TEX_NORMAL, L"Throw", L"PaperBox_1");
-\
+
 	Load_Texture(L"./Resource/Texture/Item/Throw/Sack_0.png", TEX_NORMAL, L"Throw", L"Sack_0");
 	Load_Texture(L"./Resource/Texture/Item/Throw/Sack_1.png", TEX_NORMAL, L"Throw", L"Sack_1");
 	Load_Texture(L"./Resource/Texture/Item/Throw/Sack_2.png", TEX_NORMAL, L"Throw", L"Sack_2");
@@ -333,12 +333,16 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Throw/Trashbin_0.png", TEX_NORMAL, L"Throw", L"Trashbin_0");
 	Load_Texture(L"./Resource/Texture/Item/Throw/Trashbin_1.png", TEX_NORMAL, L"Throw", L"Trashbin_1");
 	Load_Texture(L"./Resource/Texture/Item/Throw/Trashbin_2.png", TEX_NORMAL, L"Throw", L"Trashbin_2");
+
 	Load_Texture(L"./Resource/Texture/Item/Throw/TrashCan_0.png", TEX_NORMAL, L"Throw", L"TrashCan_0");
 	Load_Texture(L"./Resource/Texture/Item/Throw/TrashCan_1.png", TEX_NORMAL, L"Throw", L"TrashCan_1");
 	Load_Texture(L"./Resource/Texture/Item/Throw/TrashCan_2.png", TEX_NORMAL, L"Throw", L"TrashCan_2");
+
 	Load_Texture(L"./Resource/Texture/Item/Throw/PaintCan_0.png", TEX_NORMAL, L"Throw", L"PaintCan_0");
 	Load_Texture(L"./Resource/Texture/Item/Throw/PaintCan_1.png", TEX_NORMAL, L"Throw", L"PaintCan_1");
 	Load_Texture(L"./Resource/Texture/Item/Throw/PaintCan_2.png", TEX_NORMAL, L"Throw", L"PaintCan_2");
+	Load_Texture(L"./Resource/Texture/Item/Throw/PaintCan_3.png", TEX_NORMAL, L"Throw", L"PaintCan_3");
+
 	Load_Texture(L"./Resource/Texture/Item/Throw/ChampagneBucket.png", TEX_NORMAL, L"Throw", L"ChampagneBucket");
 	Load_Texture(L"./Resource/Texture/Item/Throw/TrafficBollard.png", TEX_NORMAL, L"Throw", L"TrafficBollard");
 	Load_Texture(L"./Resource/Texture/Item/Throw/TrafficCone.png", TEX_NORMAL, L"Throw", L"TrafficCone");
@@ -763,7 +767,6 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/UI/Stamina.png", TEX_NORMAL, L"UI", L"Stamina");
 
 #pragma endregion
-
 
 #pragma region 4Â÷
 

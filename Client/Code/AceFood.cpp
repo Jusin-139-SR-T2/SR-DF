@@ -118,6 +118,8 @@ HRESULT CAceFood::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
             wstring(tObjectSerial.strGroupKey.begin(), tObjectSerial.strGroupKey.end()).c_str()
             , wstring(tObjectSerial.strTextureKey.begin(), tObjectSerial.strTextureKey.end()).c_str());
 
+    m_eFactoryClass = OBJECT_CLASS::FOOD;
+
     return S_OK;
 }
 
@@ -210,28 +212,16 @@ void CAceFood::Height_On_Terrain()
 
 HRESULT CAceFood::BillBoard(const _float& fTimeDelta)
 {
-    _matrix		matWorld;
-    _vec3 vPlayerPos;
-
-    matWorld = *m_pTransformComp->Get_Transform();
-
     CTransformComponent* m_pPlayerTransformcomp = dynamic_cast<CTransformComponent*>(Engine::Get_Component(ID_DYNAMIC, L"GameLogic", L"Player", L"Com_Transform"));
     NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
-    m_pPlayerTransformcomp->Get_Info(INFO_POS, &vPlayerPos);
-    _vec3 Pos = m_pTransformComp->Get_Pos();
-
-    _vec3 vDir = vPlayerPos - m_pTransformComp->Get_Pos();
+    _vec3 vDir = m_pPlayerTransformcomp->Get_Pos() - m_pTransformComp->Get_Pos();
 
     D3DXVec3Normalize(&vDir, &vDir);
 
     _float rad = atan2f(vDir.x, vDir.z);
 
-    // 회전행렬 생성
-    _matrix rotationMatrix;
-    D3DXMatrixRotationY(&rotationMatrix, rad);
-
-    m_pTransformComp->Set_WorldMatrixS(&(rotationMatrix * matWorld));
+    m_pTransformComp->Set_RotationY(rad);
 
     return S_OK;
 }

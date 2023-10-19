@@ -1,6 +1,7 @@
 #pragma once
 #include "AceObjectFactory.h"
 #include "AceUnit.h"
+#include "Engine_Enum.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -18,9 +19,7 @@ class CAceFood : public CAceUnit
 {
 	DERIVED_CLASS(CAceUnit, CAceFood)
 
-enum class FOOD_NAME { APPLE, BANANA, COLA, MEDIKIT, 
-					EATENAPPLE, BANANAPEEL, 
-					FOOD_END };
+
 
 private:
 	explicit CAceFood(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -30,6 +29,12 @@ private:
 public:
 	static CAceFood* Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar* pObjTag, const _float _fx, const _float _fy, const _float _fz);
 	static CAceFood* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial);
+
+	enum class FOOD_NAME {
+		APPLE, BANANA, COLA, MEDIKIT,
+		EATENAPPLE, BANANAPEEL,
+		FOOD_END
+	};
 
 private:
 	virtual void		Free();
@@ -53,6 +58,9 @@ protected:
 	HRESULT				BillBoard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	void				Height_On_Terrain(); // 지형타기 
 
+public:
+	FOOD_NAME Get_FoodName() { return m_pCurName; }
+
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
 	CTextureComponent* m_pTextureComp = nullptr;
@@ -70,5 +78,9 @@ private: //변수
 	_bool				m_bDead = false;  // 죽는거 생기면 그걸로 변경 
 	_vec3				CurPos;			  // 현재 위치 
 	_float				m_fChangeTextureSpeed = 0.001f;
+	OBJECT_CLASS		m_eFactoryClass;
+
+public:
+	GETSET_EX2(OBJECT_CLASS, m_eFactoryClass, FACTORY_NAME, GET, SET)
 };
 

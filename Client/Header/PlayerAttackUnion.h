@@ -70,7 +70,11 @@ public:
 	void Set_PlayerAttackState(_vec3 vDir, PLAYER_ATTACK_STATE _AttackState,
 						 _float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize)
 	{
-		m_tAttack.vDir = vDir;
+		//m_tAttack.vDir = vDir;
+		m_tAttack.vDir.x = vDir.x;
+		m_tAttack.vDir.y = vDir.y;
+		m_tAttack.vDir.z = vDir.z;
+
 		m_tAttack.ePlayer_AttackState = _AttackState;
 		m_tAttack.fMoveSpeed = fMoveSpeed;
 		m_tAttack.fDeleteTime = fDeleteTime;

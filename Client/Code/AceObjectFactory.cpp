@@ -21,24 +21,24 @@ Engine::CGameObject* CAceObjectFactory::Create(LPDIRECT3DDEVICE9 pGraphicDev,
 
     switch (objClass)
     {
-    case CAceObjectFactory::OBJECT_CLASS::FOOD:
+    case OBJECT_CLASS::FOOD:
         pInstance = CAceFood::Create(pGraphicDev, pObjTag, _fx, _fy, _fz);
         return pInstance;
 
-    case CAceObjectFactory::OBJECT_CLASS::WEAPON:
+    case OBJECT_CLASS::WEAPON:
         pInstance = CAceWeapon::Create(pGraphicDev, pObjTag, _fx, _fy, _fz);
         return pInstance;
 
-    case CAceObjectFactory::OBJECT_CLASS::INTERACTION:
+    case OBJECT_CLASS::INTERACTION:
         pInstance = CAceInteraction::Create(pGraphicDev, pObjTag, _fx, _fy, _fz);
         return pInstance;
         break;
 
-    case CAceObjectFactory::OBJECT_CLASS::THROW:
+    case OBJECT_CLASS::THROW:
         pInstance = CAceThrow::Create(pGraphicDev, pObjTag, _fx, _fy, _fz, iCnt);
         return pInstance;
         
-    case CAceObjectFactory::OBJECT_CLASS::BUILDING:
+    case OBJECT_CLASS::BUILDING:
         pInstance = CAceBuilding::Create(pGraphicDev, pObjTag, _fx, _fy, _fz, pDirection);
         return pInstance;
 

@@ -2,6 +2,7 @@
 
 #include "AceObjectFactory.h"
 #include "AceUnit.h"
+#include "Engine_Enum.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -52,6 +53,7 @@ private: // 함수
 	void				Height_On_Terrain();							// 지형타기 
 	void				ObjectName(const _tchar* pObjTag);				// 처음 주어진 wchar를 enum으로 변경 
 	void				Change_Texture(INTERACTION_NAME eReceiveName);  // 변경되는 texture를 바꾸는곳 
+	OBJECT_CLASS		m_eFactoryClass;
 
 private: // 변수 
 	INTERACTION_NAME			m_pCurName;								// 현재 오브젝트 enum 
