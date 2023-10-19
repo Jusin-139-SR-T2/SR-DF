@@ -523,7 +523,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     }
 
     // 점프
-    if (Engine::IsKey_Pressed(DIK_SPACE) && m_IsOnGround)
+    if (Engine::IsKey_Pressed(DIK_SPACE))// && m_IsOnGround)
     {
         m_vSpeed.y = 10.f;
     }
@@ -573,6 +573,20 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         m_pTransformComp->Set_MovePos(fTimeDelta, vSitDown);
         //m_pTransformComp->Set_PosY(-10.f);
     }
+
+    // Test
+    if (Engine::IsKey_Pressing(DIK_G))
+    {
+        Test.y += 1.f;
+
+        m_pTransformComp->Move_Pos(&Test, fTimeDelta, 1.f);
+    }
+    else
+    {
+        if (Test.y > 0.f)
+            Test.y -= 1.f;
+    }
+
 
     // 뗐을 때
     if (Engine::IsKey_Released(DIK_C))

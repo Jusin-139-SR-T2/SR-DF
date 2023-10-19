@@ -430,7 +430,6 @@ HRESULT CScene_MapTool::Ready_Texture()
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Furniture/RedCushion.dds", TEX_CUBE, L"Furniture", L"RedCushion");
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Furniture/Television.dds", TEX_CUBE, L"Furniture", L"Television");
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Furniture/WhiteStand.dds", TEX_CUBE, L"Furniture", L"WhiteStand");
-	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Furniture/WhiteStand.dds", TEX_CUBE, L"Furniture", L"WhiteStand");
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Furniture/VentIntro.dds", TEX_CUBE, L"Furniture", L"VentIntro");
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Furniture/Barbottle.dds", TEX_CUBE, L"Furniture", L"BarBottle");
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Furniture/BlueTrunk.dds", TEX_CUBE, L"Furniture", L"BlueTrunk");
@@ -521,7 +520,6 @@ HRESULT CScene_MapTool::Ready_Texture()
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Structure/Metal_25.dds", TEX_CUBE, L"Structure", L"Metal_25");
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Structure/Metal_26.dds", TEX_CUBE, L"Structure", L"Metal_26");
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Structure/Metal_27.dds", TEX_CUBE, L"Structure", L"Metal_27");
-	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Structure/Metal_28.dds", TEX_CUBE, L"Structure", L"Metal_28");
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Structure/Metal_28.dds", TEX_CUBE, L"Structure", L"Metal_28");
 														  
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Structure/Mosiac.dds", TEX_CUBE, L"Structure", L"Mosiac");

@@ -18,6 +18,8 @@
 #include <CubeObject.h>
 #include "Terrain.h"
 #include "RectObject.h"
+#include <stack>
+#include <queue>
 
 CImguiWin_MapTool::CImguiWin_MapTool()
 {
@@ -726,7 +728,7 @@ void CImguiWin_MapTool::Layout_Property_Object()
     
     _bool bIsEdited = false;    // 에딧되었을 때 변화 이벤트
 
-    if (iSelected_Layer == -1 && iSelected_Object == -1 && iSelected_Scene == -1)
+    if (iSelected_Layer == -1 || iSelected_Object == -1 || iSelected_Scene == -1)
         return;
 
     vector<FLayerData>& vecLayer = m_vecScene[iSelected_Scene].vecLayer;
@@ -963,11 +965,18 @@ void CImguiWin_MapTool::Layout_Property_Object()
         if (nullptr != pObj)
         {
             CCubeObject* pCube = dynamic_cast<CCubeObject*>(pObj);
+            CRectObject* pRect = dynamic_cast<CRectObject*>(pObj);
             if (pCube)
             {
                 pCube->Get_TransformComponent()->Set_Pos(tObjectData.vPos);
                 pCube->Get_TransformComponent()->Set_Rotation(D3DXToRadian(tObjectData.vRot));
                 pCube->Get_TransformComponent()->Set_Scale(tObjectData.vScale);
+            }
+            else if (pRect)
+            {
+                pRect->Get_TransformComponent()->Set_Pos(tObjectData.vPos);
+                pRect->Get_TransformComponent()->Set_Rotation(D3DXToRadian(tObjectData.vRot));
+                pRect->Get_TransformComponent()->Set_Scale(tObjectData.vScale);
             }
         }
     }
@@ -1215,8 +1224,32 @@ void CImguiWin_MapTool::Duplicate_SelectedObject()
         while (true)
         {
             stringstream ss;
-            ss << i;
-            string strAdd = tDupObject.strName + ss.str();
+            string strAdd = tDupObject.strName;
+            queue<char> vecLastChar;
+            char lastChar;
+            do
+            {
+                lastChar = strAdd.back();
+                if (isdigit(lastChar))
+                {
+                    vecLastChar.push(lastChar);
+                    strAdd.pop_back();
+                    tDupObject.strName.pop_back();
+                }
+            } while (isdigit(lastChar));
+
+            _ulonglong lastInt = i, j = 1;
+            while (vecLastChar.size())
+            {
+                char c = vecLastChar.front();
+                lastInt += (c - '0') * j;
+                vecLastChar.pop();
+                j *= 10;
+            }
+
+            // 숫자가 같을 때 숫자 카운트를 올림
+            ss << lastInt;
+            strAdd = tDupObject.strName + ss.str();
 
             auto iterRe = find_if(tLayerData.vecObject.begin(), tLayerData.vecObject.end(),
                 [&strAdd](FObjectData& tDstObjectData) {
@@ -1704,8 +1737,32 @@ void CImguiWin_MapTool::Add_ObjectFromProto()
         while(true)
         {
             stringstream ss;
-            ss << i;
-            string strAdd = tObjectData.strName + ss.str();
+            string strAdd = tObjectData.strName;
+            queue<char> vecLastChar;
+            char lastChar;
+            do
+            {
+                lastChar = strAdd.back();
+                if (isdigit(lastChar))
+                {
+                    vecLastChar.push(lastChar);
+                    strAdd.pop_back();
+                    tObjectData.strName.pop_back();
+                }
+            } while (isdigit(lastChar));
+
+            _ulonglong lastInt = i, j = 1;
+            while (vecLastChar.size())
+            {
+                char c = vecLastChar.front();
+                lastInt += (c - '0') * j;
+                vecLastChar.pop();
+                j *= 10;
+            }
+
+            // 숫자가 같을 때 숫자 카운트를 올림
+            ss << lastInt;
+            strAdd = tObjectData.strName + ss.str();
 
             auto iterRe = find_if(tLayerData.vecObject.begin(), tLayerData.vecObject.end(),
                 [&strAdd](FObjectData& tDstObjectData) {
@@ -1900,10 +1957,13 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
         GetClientRect(g_hWnd, &rc);
         ImVec2 vWindowMin = ImGui::GetWindowPos();
         ImVec2 vContentMin = ImGui::GetWindowContentRegionMin();
-        ImVec2 vContentSize = ImGui::GetContentRegionAvail();
-        ;
-        _vec3 vNear(pt.x + ((_float)rc.right - m_vViewerContent_Size.x) * 0.5f,
-            pt.y + ((_float)rc.bottom - m_vViewerContent_Size.y) * 0.5f, 0.f);
+
+        _vec2 vRatio = _vec2(m_vViewerContent_Size.x / (_float)rc.right, 
+            (m_vViewerContent_Size.y / (_float)rc.bottom));
+
+
+        _vec3 vNear((_float)pt.x * vRatio.x + ((_float)rc.right - m_vViewerContent_Size.x) * 0.5f,
+            (_float)pt.y * vRatio.y + ((_float)rc.bottom - m_vViewerContent_Size.y) * 0.5f, 0.f);
         _vec3 vFar(vNear.x, vNear.y, 1.f);
         /*_vec3 vNear(pt.x, pt.y, 0.f);
         _vec3 vFar(vNear.x, vNear.y, 1.f);*/
@@ -2154,7 +2214,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
     }
 
     // 선택된 오브젝트가 있을 때 트랜스폼 기능
-    if (m_eEdit_Mode == EEDIT_MODE::NONE
+    if ((m_eEdit_Mode == EEDIT_MODE::NONE || m_eEdit_Mode == EEDIT_MODE::TRANSFORM)
         && !ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
     {
         if (ImGui::IsKeyPressed(ImGuiKey_S))
@@ -2443,7 +2503,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
                 pTransform->Set_Scale(m_vTransform_Scale_Saved);
 
                 m_pPickedObjectData->vPos = m_vTransform_Translate_Saved;
-                m_pPickedObjectData->vRot = D3DXToRadian(m_vTransform_Rotate_Saved);
+                m_pPickedObjectData->vRot = m_vTransform_Rotate_Saved;
                 m_pPickedObjectData->vScale = m_vTransform_Scale_Saved;
             }
         }
