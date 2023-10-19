@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Brown.h"
+#include <AceBuilding.h>
 
 CBrown::CBrown(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -54,7 +55,7 @@ HRESULT CBrown::Ready_GameObject()
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
-    m_pTextureComp->Set_Scale({ 3.f, 3.f, 1.f });
+    //m_pTextureComp->Set_Scale({ 3.f, 3.f, 1.f });
     m_pTextureComp->Readjust_Transform();
 
     m_tFrame.fFrame = 0.f;
@@ -159,8 +160,9 @@ HRESULT CBrown::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
     m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+    m_pTextureComp->Readjust_Transform();
 
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
     Set_ObjectName(strConvName);
@@ -180,8 +182,17 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
+    Gravity(fTimeDelta);
+    m_pTransformComp->Move_Pos(&m_vSpeed, fTimeDelta, 1.f);
+
     // 지형타기 
-    Height_On_Terrain();
+    if (m_pTransformComp->Get_Pos().y < 1.5f && m_vSpeed.y < 0.f)
+    {
+        Height_On_Terrain();
+        m_IsOnGround = true;
+    }
+    else
+        m_IsOnGround = false;
 
     //죽는거 셋팅 - 물리 서순문제 발생해결 
     if (m_gHp.Cur <= 0 && FALSE == m_bDeadState)
@@ -299,6 +310,14 @@ void CBrown::Free()
 
 void CBrown::OnCollision(CGameObject* pDst, const FContact* const pContact) // 계속 충돌중 
 {
+    CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
+    if (pSolid)
+    {
+        _vec3 vNormal(pContact->vContactNormal.x, pContact->vContactNormal.y, pContact->vContactNormal.z);
+        m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * pContact->fPenetration));
+        if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
+            m_IsOnGround = true;
+    }
 }
 
 void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) // 처음 충동 진입 

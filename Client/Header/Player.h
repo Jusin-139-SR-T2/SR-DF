@@ -386,13 +386,8 @@ private: // 보간 변수
 	// 이동
 	_float fPosX_Delta, fPosY_Delta;
 
-private: // 점프
+private:
 	void PlayerJump(float fTimeDelta);
-	_bool m_IsOnTerrain = false;
-	_bool m_IsOnGround = false;
-
-	_vec3 m_vSpeed = { 0.f, 0.f, 0.f };
-	_vec3 m_vAccel = { 0.f, -27.8f, 0.f };
 
 private:
 	enum EBLACKBOARD_UPDATE

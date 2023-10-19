@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Gray.h"
+#include <AceBuilding.h>
 
 CGray::CGray(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
@@ -55,7 +56,7 @@ HRESULT CGray::Ready_GameObject()
 
     // 이미지 관련
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Single", L"Idle");
-    m_pTextureComp->Set_Scale({ 3.f, 5.f, 1.f });
+    //m_pTextureComp->Set_Scale({ 3.f, 5.f, 1.f });
     m_pTextureComp->Readjust_Transform();
 
     m_tFrame.fFrame = 0.f;
@@ -167,7 +168,7 @@ HRESULT CGray::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
     m_pTransformComp->Set_Scale(tObjectSerial.vScale);
 
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
@@ -188,8 +189,17 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
+    Gravity(fTimeDelta);
+    m_pTransformComp->Move_Pos(&m_vSpeed, fTimeDelta, 1.f);
+
     // 지형타기 
-    Height_On_Terrain(); 
+    if (m_pTransformComp->Get_Pos().y < 1.5f && m_vSpeed.y < 0.f)
+    {
+        Height_On_Terrain();
+        m_IsOnGround = true;
+    }
+    else
+        m_IsOnGround = false;
 
     // 몬스터 죽이기 
     if (m_gHp.Cur <= 0 && FALSE == m_bDeadState)
@@ -313,6 +323,15 @@ void CGray::RenderSplitImages()
 void CGray::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
     //OutputDebugString(L"▶Gray 충돌중 \n");
+
+    CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
+    if (pSolid)
+    {
+        _vec3 vNormal(pContact->vContactNormal.x, pContact->vContactNormal.y, pContact->vContactNormal.z);
+        m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * pContact->fPenetration));
+        if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
+            m_IsOnGround = true;
+    }
 }
 void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {

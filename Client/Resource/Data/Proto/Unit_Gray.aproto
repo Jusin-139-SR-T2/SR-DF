@@ -1,0 +1,25 @@
+{
+    "header": {
+        "type": 4,
+        "name": "Unit_Gray"
+    },
+    "class": 9,
+    "class_name": "Gray",
+    "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "scale": {
+        "x": 3.0,
+        "y": 5.0,
+        "z": 1.0
+    },
+    "group_key": "Gray_Single",
+    "texture_key": "Idle"
+}

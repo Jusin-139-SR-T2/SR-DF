@@ -885,8 +885,8 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
     // 충돌중일때
    // OutputDebugString(L"플레이어와 충돌중\n");
     
-    CAceBuilding* pFood = dynamic_cast<CAceBuilding*>(pDst);
-    if (pFood)
+    CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
+    if (pSolid)
     {
         _vec3 vNormal(pContact->vContactNormal.x, pContact->vContactNormal.y, pContact->vContactNormal.z);
         m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * pContact->fPenetration));

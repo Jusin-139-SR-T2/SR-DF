@@ -15,6 +15,38 @@ CAceBoss::~CAceBoss()
 {
 }
 
+CAceBoss* CAceBoss::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_GameObject()))
+	{
+		Safe_Release(pInstance);
+
+		MSG_BOX("BOSS Monster Create Failed");
+		return nullptr;
+	}
+
+	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
+
+	return pInstance;
+}
+
+CAceBoss* CAceBoss::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_GameObject(tObjectSerial)))
+	{
+		Safe_Release(pInstance);
+
+		MSG_BOX("BOSS Monster Create Failed");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
 HRESULT CAceBoss::Ready_GameObject()
 {
 	SUPER::Ready_GameObject();
@@ -146,6 +178,29 @@ HRESULT CAceBoss::Ready_GameObject()
 	return S_OK;
 }
 
+HRESULT CAceBoss::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
+{
+	SUPER::Ready_GameObject();
+	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_pTransformComp->Set_Pos(tObjectSerial.vPos);
+	m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
+	m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+	wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
+	Set_ObjectName(strConvName);
+
+	m_fPriority[0] = tObjectSerial.fPriority_Update;
+	m_fPriority[1] = tObjectSerial.fPriority_LateUpdate;
+	m_fPriority[2] = tObjectSerial.fPriority_Render;
+
+	m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
+	m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
+	m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
+
+	return S_OK;
+}
+
 _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
@@ -239,23 +294,6 @@ void CAceBoss::Render_GameObject()
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-}
-
-CAceBoss* CAceBoss::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
-{
-	ThisClass* pInstance = new ThisClass(pGraphicDev);
-
-	if (FAILED(pInstance->Ready_GameObject()))
-	{
-		Safe_Release(pInstance);
-
-		MSG_BOX("BOSS Monster Create Failed");
-		return nullptr;
-	}
-
-	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-
-	return pInstance;
 }
 
 HRESULT CAceBoss::Add_Component()

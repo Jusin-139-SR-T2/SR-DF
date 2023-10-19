@@ -120,16 +120,14 @@ void CCubeObject::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 
+    DWORD hrColor;
+    m_pGraphicDev->GetRenderState(D3DRS_TEXTUREFACTOR, &hrColor);
     if (m_bIsSelected)
     {
         m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, DXCOLOR_MAGENTA);
         m_pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
         m_pGraphicDev->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
         m_pGraphicDev->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TFACTOR);
-    }
-    else
-    {
-        m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
     }
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -138,7 +136,7 @@ void CCubeObject::Render_GameObject()
     m_pTextureComp->Render_Texture(0);
     m_pCubeBufferComp->Render_Buffer();
 
-    m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
+    m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, hrColor);
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
