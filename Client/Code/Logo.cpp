@@ -84,8 +84,13 @@ void CLogo::LateUpdate_Scene()
 
 		if (Engine::IsKey_Pressed(DIK_RETURN))
 		{
+<<<<<<< HEAD
 			CScene* pScene = CStage::Create(m_pGraphicDev);
 			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Stage1");
+=======
+			//CScene* pScene = CStage::Create(m_pGraphicDev);
+			CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Stage1");
+>>>>>>> 66e88bd018c1799c2195f09c9cde1fbd89088f3c
 			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "SeongHee");
 			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "BossStage");
 			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Malone");

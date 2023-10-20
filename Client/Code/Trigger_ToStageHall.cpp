@@ -99,14 +99,18 @@ void CTrigger_ToStageHall::OnCollision(CGameObject* pDst, const FContact* const 
 
 void CTrigger_ToStageHall::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
-    
+    if (!m_bIsTriggered)
+    {
+        CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "BossStage");
+        Engine::Set_Scene(pScene);
+        Set_Dead();
+        m_bIsTriggered = true;
+    }
 }
 
 void CTrigger_ToStageHall::OnCollisionExited(CGameObject* pDst)
 {
-    CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "BossStage");
-    Engine::Set_Scene(pScene);
-    Set_Dead();
+    
 }
 
 HRESULT CTrigger_ToStageHall::Add_Component()
