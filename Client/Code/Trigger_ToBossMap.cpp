@@ -100,14 +100,18 @@ void CTrigger_ToBossMap::OnCollision(CGameObject* pDst, const FContact* const pC
 
 void CTrigger_ToBossMap::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
-    
+    if (!m_bIsTriggered)
+    {
+        CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Malone");
+        Engine::Set_Scene(pScene);
+        Set_Dead();
+        m_bIsTriggered = true;
+    }
 }
 
 void CTrigger_ToBossMap::OnCollisionExited(CGameObject* pDst)
 {
-    CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Malone");
-    Engine::Set_Scene(pScene);
-    Set_Dead();
+    
 }
 
 HRESULT CTrigger_ToBossMap::Add_Component()

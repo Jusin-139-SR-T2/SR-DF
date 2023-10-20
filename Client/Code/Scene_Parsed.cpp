@@ -140,8 +140,8 @@ HRESULT CScene_Parsed::Ready_Layer_Completed()
 
     Add_GameObject(L"Environment", L"SkyBox", CSkyBox::Create(m_pGraphicDev, 10.f));
 
-    Add_GameObject(L"UI_CrossHair", CUI_CrossHair::Create(m_pGraphicDev));
-    Add_GameObject(L"UI_PlayerFace", CUI_PlayerFace::Create(m_pGraphicDev));
+    Add_GameObject(L"UI", L"UI_CrossHair", CUI_CrossHair::Create(m_pGraphicDev));
+    Add_GameObject(L"UI", L"UI_PlayerFace", CUI_PlayerFace::Create(m_pGraphicDev));
 
     /*for (size_t i = 0; i < 3000; i++)
     {
