@@ -1,25 +1,24 @@
 #include "stdafx.h"
-
+#include "RayBullet.h"
 #include "Player.h"
-#include "PlayerBullet.h"
 #include "Effect_HitPow.h"
 
-CPlayerBullet::CPlayerBullet(LPDIRECT3DDEVICE9 pGraphicDev)
+CRayBullet::CRayBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CPlayerAttackUnion(pGraphicDev)
 {
 }
 
-CPlayerBullet::CPlayerBullet(const CPlayerBullet& rhs)
+CRayBullet::CRayBullet(const CRayBullet& rhs)
 	: CPlayerAttackUnion(rhs)
 {
 }
 
-CPlayerBullet::~CPlayerBullet()
+CRayBullet::~CRayBullet()
 {
 
 }
 
-HRESULT CPlayerBullet::Ready_GameObject()
+HRESULT CRayBullet::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -47,10 +46,10 @@ HRESULT CPlayerBullet::Ready_GameObject()
 	return S_OK;
 }
 
-_int CPlayerBullet::Update_GameObject(const _float& fTimeDelta)
+_int CRayBullet::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
-	
+
 	m_pTransformComp->Move_Pos(&m_tAttack.vDir, fTimeDelta, m_tAttack.fMoveSpeed);
 
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
@@ -72,18 +71,18 @@ _int CPlayerBullet::Update_GameObject(const _float& fTimeDelta)
 	return S_OK;
 }
 
-void CPlayerBullet::LateUpdate_GameObject()
+void CRayBullet::LateUpdate_GameObject()
 {
 	SUPER::LateUpdate_GameObject();
 }
 
-void CPlayerBullet::Render_GameObject()
+void CRayBullet::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-	
+
 	if (*m_bDbugFrame)
 	{
 		MeshSphereColider(pShape->fRadius, 30.f, 30.f);
@@ -93,7 +92,7 @@ void CPlayerBullet::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir,
+CRayBullet* CRayBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir,
 	CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID,
 	_float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize)
 {
@@ -110,22 +109,21 @@ CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, 
 	// 플레이어 위치에서 생성
 	pInstance->m_pTransformComp->Set_Pos(vPos.x, vPos.y + 0.7f, vPos.z);	// 생성 위치
 	pInstance->Set_PlayerAttackState(vDir, _AttackState, fMoveSpeed, fDeleteTime, fDamage, fSize); // 공격 상태 세팅
-	pInstance->Set_Owner(_Owner);									// 공격의 주인
-	pInstance->Set_TeamID(_eTeamID);								// 공격의 팀 설정
+	pInstance->Set_Owner(_Owner);											// 공격의 주인
+	pInstance->Set_TeamID(_eTeamID);										// 공격의 팀 설정
 
 	return pInstance;
 }
 
-HRESULT CPlayerBullet::Add_Component()
+HRESULT CRayBullet::Add_Component()
 {
 	NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
 	NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 
-
 	// -------------------- 충돌 세트 --------------------------
 	// 콜라이더 컴포넌트
 	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
-	
+
 	// 물리 세계 등록
 	m_pColliderComp->EnterToPhysics(0);
 
@@ -140,17 +138,17 @@ HRESULT CPlayerBullet::Add_Component()
 	return S_OK;
 }
 
-void CPlayerBullet::Free()
+void CRayBullet::Free()
 {
 	SUPER::Free();
 }
 
-void CPlayerBullet::OnCollision(CGameObject* pDst, const FContact* const pContact)
+void CRayBullet::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
-	
+
 }
 
-void CPlayerBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
+void CRayBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
 	CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 
@@ -177,6 +175,6 @@ void CPlayerBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const 
 	}
 }
 
-void CPlayerBullet::OnCollisionExited(CGameObject* pDst)
+void CRayBullet::OnCollisionExited(CGameObject* pDst)
 {
 }

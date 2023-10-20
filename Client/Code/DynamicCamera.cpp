@@ -278,7 +278,7 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 		return;
 
 	_vec3	vPlayerPos;				// 플레이어 위치
-
+	_vec3	vPlayerLook;			// 플레이어가 바라보는 곳
 	_vec3	vPlayerCameraPos;		// 3인칭 카메라 위치 벡터(Eye)
 
 	_vec3	vDist = { 0, 5, -8 };	// 카메라가 플레이어로 부터 멀어지는 거리
@@ -337,9 +337,12 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	// 1인칭
 	if (m_bOne)
 	{
+		vPlayerPos.y += 0.7f;
+
 		// 카메라 위치 설정
 		//m_vEye = { vPlayerPos.x, vPlayerPos.y + (vPlayerPos.y / 2), vPlayerPos.z}; // 플레이어의 눈높이
-		m_vEye = { vPlayerPos.x, vPlayerPos.y + 0.7f, vPlayerPos.z}; // 플레이어의 눈높이
+
+		m_vEye = vPlayerPos; // 플레이어의 눈높이
 
 		// 카메라가 바라보는 대상 (플레이어가 바라보는 방향)
 		m_vAt = vPlayerPos + vPlayerLook;// +vEventCameraMove;
@@ -687,7 +690,7 @@ void CDynamicCamera::CameraAttackMove(const _float& fTimeDelta)
 					m_vRotMinus.x = 0.f;
 					m_vRotPlus.x = 0.f;
 					fLRotStart = 0.f;
-					vPlayerLook.x;
+					//vPlayerLook.x;
 
 					m_bRotChange = false;
 					m_bLRotStart = false;

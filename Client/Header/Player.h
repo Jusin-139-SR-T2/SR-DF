@@ -249,7 +249,7 @@ private: // 함수
 	void				RightLoadAnimationFromFile(const char* fileName);	// 애니메이션 불러오기
 	void				LeftInterpolation();
 	void				RightInterpolation();
-	void				RayEvent(CGameObject* _pDst);
+	void				LineEvent();
 	void				RayAttack(CGameObject* _pDst, _float _fAttack, PLAYER_ATTACK_STATE _eAttackState);
 	CGameObject*		RayCast();
 

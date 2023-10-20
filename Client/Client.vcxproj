@@ -82,6 +82,7 @@
     <ClInclude Include="Header\UI_CrossHair.h" />
     <ClInclude Include="Header\PlayerSkillUnion.h" />
     <ClInclude Include="Header\UI_PlayerFace.h" />
+    <ClInclude Include="Header\RayBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceEffect.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Code\UI_CrossHair.cpp" />
     <ClCompile Include="Code\PlayerSkillUnion.cpp" />
     <ClCompile Include="Code\UI_PlayerFace.cpp" />
+    <ClCompile Include="Code\RayBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

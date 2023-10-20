@@ -62,8 +62,12 @@ HRESULT CAceWeapon::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     m_gHp.Max = 100.f;
 
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
-    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    //m_pTextureComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
+    m_pTextureComp->Set_Scale(tObjectSerial.vScale);
+
+    //m_pColliderComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
+    m_pColliderComp->Set_Scale({1.f, 1.f, 1.f});
 
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
     Set_ObjectName(strConvName);
@@ -77,6 +81,9 @@ HRESULT CAceWeapon::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     m_eFactoryClass = OBJECT_CLASS::WEAPON;
+
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌체 이동
+
     return S_OK;
 }
 
@@ -91,6 +98,9 @@ _int CAceWeapon::Update_GameObject(const _float& fTimeDelta)
 
     // 변수에 저장된 enum과 hp로 texture 결정 
     Change_Texture(m_pCurName);
+    
+    // 필수 물리충돌에 필요함
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌체 이동
 
     // Renderer 등록 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -108,6 +118,11 @@ void CAceWeapon::Render_GameObject()
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+
+#pragma region 충돌 메쉬 콜라이더
+    //MeshSphereColider(1.f, 20.f, 20.f);
+    MeshBoxColider(m_pColliderComp->Get_Scale().x, m_pColliderComp->Get_Scale().y, m_pColliderComp->Get_Scale().z);
+#pragma endregion
 
     m_pTextureComp->Render_Texture();
     m_pBufferComp->Render_Buffer();
@@ -128,6 +143,29 @@ HRESULT CAceWeapon::Add_Component()
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
+    // 콜라이더 컴포넌트
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+
+    // 물리 세계 등록
+    m_pColliderComp->EnterToPhysics(0);
+    // 충돌 함수 연결
+    m_pColliderComp->Set_Collision_Event<ThisClass>(this, &ThisClass::OnCollision);
+    m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
+    m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
+    // 충돌 레이어, 마스크 설정
+    m_pColliderComp->Set_CollisionLayer(LAYER_ITEM);
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER);
+
+    // 충돌용
+    m_pTransformComp->Readjust_Transform();
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
+    FCollisionBox* pBoxShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
+
+    // 충돌체 크기 설정
+    _vec3 vScale = { 1.f, 1.f, 1.f };
+    m_pColliderComp->Set_Scale(vScale);
+
+    //pBoxShape->
 
     return S_OK;
 }
@@ -231,6 +269,7 @@ void CAceWeapon::Change_Texture(CPlayer::OBJECT_NAME eReceiveName)
 
 void CAceWeapon::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
+    cout << "나임" << endl;
 }
 
 void CAceWeapon::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
