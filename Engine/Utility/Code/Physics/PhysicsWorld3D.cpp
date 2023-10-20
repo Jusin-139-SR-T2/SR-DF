@@ -89,7 +89,8 @@ _int CPhysicsWorld3D::Update_Physics(const Real& fTimeDelta)
 		case ECOLLISION::CAPSULE:
 		{
 			FCollisionCapsule* pShape = dynamic_cast<FCollisionCapsule*>(pCol);
-			pShape->Set_Position(pShape->pBody->Get_Position());
+			//pShape->vDirHalfSize.y = pShape->matOffset.Get_ScaleVector().y;
+			//pShape->vDirHalfSize.z = pShape->matOffset.Get_ScaleVector().y;
 			break;
 		}
 		case ECOLLISION::OBB:
@@ -135,6 +136,7 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 	// 계획은 충돌객체를 트리로 만들어 부딪힐 것 같은 객체에 대해 처리하는 것.
 	// 여기서 발생시킨 충돌에 대한 것은 엔진에서 발생하는 
 	_int iDebugCount = 0;
+	_int iDebug_BodySrc = 0;
 	for (auto iterSrc = m_setBody.begin(); iterSrc != m_setBody.end(); ++iterSrc)
 	{
 		// 재연산 방지, 현재 반복자로부터 다음 것을 가져다가 쓴다.
@@ -167,12 +169,17 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 			}
 			++iDebugCount;
 		}
+		++iDebug_BodySrc;
 	}
 	/*wstringstream ss;
 	wstring str;
 	ss << iDebugCount;
 	str = L"Physics CheckCount : " + ss.str() + L"\n";
 	OutputDebugString(str.c_str());*/
+	cout << "검사 카운트 : " << iDebugCount << endl;
+	cout << "Src 카운트 : " << iDebug_BodySrc << endl;
+	cout << "Dst 카운트 : " << ((iDebug_BodySrc) ? (iDebugCount / iDebug_BodySrc) : 0) << endl;
+	cout << "Body 카운트 : " << m_setBody.size() << endl;
 
 	// 사용된 접촉 수를 반환
 	return m_iMaxContacts - iLimit;

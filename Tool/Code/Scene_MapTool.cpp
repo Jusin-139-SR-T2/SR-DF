@@ -747,12 +747,11 @@ HRESULT CScene_MapTool::Ready_Texture()
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Fourth/WhiteLight.dds", TEX_NORMAL, L"Fourth", L"WhiteLight");
 	Load_Texture(L"../Client/Resource/Texture/CubeTexture/Fourth/YellowLight.dds", TEX_NORMAL, L"Fourth", L"YellowLight");
 
-
-
-
 #pragma endregion
 
-
+#pragma region °³¹ß¿ë
+	Load_Texture(L"../Client/Resource/Texture/Develop/Trigger.dds", TEX_CUBE, L"Develop", L"BoxTrigger");
+#pragma endregion
 
 	Wait_LoadTextureAsync();
 

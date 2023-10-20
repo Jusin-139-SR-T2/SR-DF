@@ -76,8 +76,9 @@ HRESULT CScene_Parsed::Ready_Scene(const char* pSceneFileName)
                     
                     wstring strConvertObject(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
 
-                    pLayer->Add_GameObject(strConvertObject, 
-                        CAbsFac_GameObject::Create(m_pGraphicDev, tObjectSerial));
+                    CGameObject* pGameObject = CAbsFac_GameObject::Create(m_pGraphicDev, tObjectSerial);
+                    if (pGameObject != nullptr)
+                        pLayer->Add_GameObject(strConvertObject, pGameObject);
                 }
             }
             CLayer* pLayer = CLayer::Create(0.f);

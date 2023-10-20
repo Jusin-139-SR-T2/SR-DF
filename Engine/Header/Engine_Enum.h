@@ -115,7 +115,8 @@ namespace Engine
 		LAYER_PROJECTILE		= EBIT_FLAG32_5,		//몬스터 투사체 
 		LAYER_PLAYER_ATTACK		= EBIT_FLAG32_6,		// 플레이어 공격
 		LAYER_MONSTER_ATTACK	= EBIT_FLAG32_7,		// 몬스터 일반
-		LAYER_BOSS_SKILL		= EBIT_FLAG32_8			// 보스 스킬공격 
+		LAYER_BOSS_SKILL		= EBIT_FLAG32_8,		// 보스 스킬공격 
+		LAYER_TRIGGER			= EBIT_FLAG32_9
 	};
 
 	// 아 귀찮아 안해
