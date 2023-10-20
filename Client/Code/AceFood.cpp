@@ -134,7 +134,11 @@ _int CAceFood::Update_GameObject(const _float& fTimeDelta)
     BillBoard(fTimeDelta);
     
     // 변수에 저장된 enum으로 texture 결정 - eaten 변경때문에 
-    Eat_Food(m_pCurName, fTimeDelta);
+    Eat_Food(m_pCurName, fTimeDelta, m_bRayEaten);
+
+    if (m_bDead)
+        Set_Dead();
+
 
     // 물리바디 업데이트
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
@@ -236,63 +240,66 @@ void CAceFood::FoodName(const _tchar* pObjTag)
         m_pCurName = CAceFood::FOOD_NAME::APPLE;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Apple");
         m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+        m_fHp = 5.f;
     }
     else if ((wcscmp(pObjTag, L"EATENAPPLE") == 0) || (wcscmp(pObjTag, L"EatenApple") == 0))
     {
         m_pCurName = CAceFood::FOOD_NAME::EATENAPPLE;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"EatenApple");
         m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+        m_fHp = 0.f;
     }
     else if ((wcscmp(pObjTag, L"BANANA") == 0) || (wcscmp(pObjTag, L"Banana") == 0))
     {
         m_pCurName = CAceFood::FOOD_NAME::BANANA;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Banana");
         m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+        m_fHp = 5.f;
     }
     else if ((wcscmp(pObjTag, L"BANANAPEEL") == 0) || (wcscmp(pObjTag, L"BananaPeel") == 0))
     {
         m_pCurName = CAceFood::FOOD_NAME::BANANAPEEL;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"BananaPeel");
         m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+        m_fHp = 0.f;
     }
     else if ((wcscmp(pObjTag, L"COLA") == 0) || (wcscmp(pObjTag, L"Cola") == 0))
     {
         m_pCurName = CAceFood::FOOD_NAME::COLA;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Cola");
         m_pTransformComp->Set_Scale({ 0.1f, 1.f,  0.5f });
+        m_fHp = 8.f;
     }
     else if ((wcscmp(pObjTag, L"MEDIKIT") == 0) || (wcscmp(pObjTag, L"Medkit") == 0))
     {
         m_pCurName = CAceFood::FOOD_NAME::MEDIKIT;
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Medkit");
         m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+        m_fHp = 25.f;
     }
     else
         m_pCurName = CAceFood::FOOD_NAME::FOOD_END;
 
 }
 
-void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta)
+void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat)
 {
-    if (m_bEat)
+    if (bEat)
     {
         switch (eCurName)
         {
         case CAceFood::FOOD_NAME::APPLE:
-
+            // 사과 -> 먹은사과로 변경 
             m_pCurName = CAceFood::FOOD_NAME::EATENAPPLE;
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"EatenApple");
-            m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
-            m_bDead = FALSE; // 죽는거 생기면 그걸로 변경 
+            m_bDead = FALSE;
             //먹자마자 1증가, 체젠 5초간 0.8초당 1씩 증가 // 58 -> 65 , 71 -> 78 (+7)
-
             break;
 
         case CAceFood::FOOD_NAME::BANANA:
-
+            // 바나나 -> 껍질로 변경 
             m_pCurName = CAceFood::FOOD_NAME::BANANAPEEL;
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"BananaPeel");
-            m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
             m_bDead = FALSE;
 
             break;
@@ -300,7 +307,6 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta)
         case CAceFood::FOOD_NAME::COLA:
             // 먹자마자 0증가, 체젠 0.5초당 1씩 증가 , 20초간 이속증가 
             m_bDead = TRUE;
-
             break;
 
         case CAceFood::FOOD_NAME::MEDIKIT:
@@ -308,6 +314,16 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta)
             m_bDead = TRUE;
             break;
 
+        case CAceFood::FOOD_NAME::EATENAPPLE:
+                break;
+
+        case CAceFood::FOOD_NAME::BANANAPEEL:
+               break;
         }
     }
 }
+/*
+APPLE, BANANA, COLA, MEDIKIT,
+EATENAPPLE, BANANAPEEL,
+FOOD_END
+*/

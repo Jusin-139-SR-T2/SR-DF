@@ -65,8 +65,8 @@ HRESULT CGray::Ready_GameObject()
 
     // 이미지 관련
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Gray_Single", L"Idle");
-    //m_pTextureComp->Set_Scale({ 3.f, 5.f, 1.f });
     m_pTextureComp->Readjust_Transform();
+    //m_pTextureComp->Set_Scale({ 3.f, 5.f, 1.f });
 
     m_tFrame.fFrame = 0.f;
     m_tFrame.fFrameEnd= _float(m_pTextureComp->Get_VecTexture()->size());
@@ -90,7 +90,7 @@ HRESULT CGray::Ready_GameObject()
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
     pSphereShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-    m_pColliderComp->Set_Scale({ 0.1, 0.1, 0.1 });
+    //m_pColliderComp->Set_Scale({ 0.1, 0.1, 0.1 });
 
     m_bCollisionOn = FALSE;
 
@@ -179,8 +179,9 @@ HRESULT CGray::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-    m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
     m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+    m_pTextureComp->Readjust_Transform();
+    //m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
 
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
     Set_ObjectName(strConvName);
@@ -194,6 +195,8 @@ HRESULT CGray::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     m_tStat.vPatrolPointZero = m_pTransformComp->Get_Pos();
+
+    m_pColliderComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
 
     return S_OK;
 }

@@ -245,8 +245,6 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	//사운드 재생용
 	m_tSound.m_fTalkAge += fTimeDelta;
 
-
-
 	//상태머신
 	m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
 	m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI

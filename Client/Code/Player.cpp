@@ -3216,8 +3216,7 @@ void CPlayer::LineEvent()
     if (pFood != nullptr)
     {
         m_gHp.Cur += pFood->Get_Hp();
-        m_eFoodName = pFood->Get_FoodName();
-        pFood->Set_Dead();
+        pFood->Set_FoodEat(true);
     }
 }
 

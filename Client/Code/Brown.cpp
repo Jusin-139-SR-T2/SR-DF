@@ -65,8 +65,8 @@ HRESULT CBrown::Ready_GameObject()
 
     //이미지 및 프레임 셋팅 
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
-    //m_pTextureComp->Set_Scale({ 3.f, 3.f, 1.f });
     m_pTextureComp->Readjust_Transform();
+    //m_pTextureComp->Set_Scale({ 3.f, 3.f, 1.f });
     m_tFrame.fFrame = 0.f;
     m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     m_tFrame.fFrameSpeed = 12.f;
@@ -165,12 +165,9 @@ HRESULT CBrown::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-
-    //m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
     m_pTextureComp->Set_Scale(tObjectSerial.vScale);
-
-
     m_pTextureComp->Readjust_Transform();
+    //m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
 
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
     Set_ObjectName(strConvName);
