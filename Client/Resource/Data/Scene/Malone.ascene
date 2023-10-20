@@ -11864,7 +11864,7 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Unit_Boss"
+                        "name": "Boss"
                     },
                     "ID": 9,
                     "class_name": "AceBoss",

@@ -198,8 +198,7 @@ HRESULT CAceBoss::Ready_GameObject()
 
 HRESULT CAceBoss::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
 {
-	SUPER::Ready_GameObject();
-	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
 	m_pTransformComp->Set_Pos(tObjectSerial.vPos);
 	m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
@@ -324,7 +323,7 @@ void CAceBoss::Render_GameObject()
 	m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
-	MeshSphereColider(pSphereShape->fRadius, 32, 16);
+	//MeshSphereColider(pSphereShape->fRadius, 32, 16);
 #pragma endregion
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);

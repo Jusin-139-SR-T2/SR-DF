@@ -100,14 +100,18 @@ void CTrigger_ToJumpMap::OnCollision(CGameObject* pDst, const FContact* const pC
 
 void CTrigger_ToJumpMap::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
-    
+    if (!m_bIsTriggered)
+    {
+        CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "SeongHee");
+        Engine::Set_Scene(pScene);
+        Set_Dead();
+        m_bIsTriggered = true;
+    }
 }
 
 void CTrigger_ToJumpMap::OnCollisionExited(CGameObject* pDst)
 {
-    CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "SeongHee");
-    Engine::Set_Scene(pScene);
-    Set_Dead();
+    
 }
 
 HRESULT CTrigger_ToJumpMap::Add_Component()
