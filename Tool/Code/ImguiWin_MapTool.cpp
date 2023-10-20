@@ -507,7 +507,7 @@ void CImguiWin_MapTool::Layout_Browser_Object()
         ImGui::SameLine();
         // 선택 씬 편집용으로 로드
         if (ImGui::Button(u8"선택 레이어에 추가하기")
-            || (ImGui::IsKeyDown(ImGuiKey_LeftShift) && ImGui::IsKeyPressed(ImGuiKey_A)))
+            || (ImGui::IsKeyDown(ImGuiKey_LeftShift) && ImGui::IsKeyPressed(ImGuiKey_A) && m_eEdit_Mode == EEDIT_MODE::NONE))
         {
             // 선택한 씬을 로드하도록 한다.
             Add_ObjectFromProto();
@@ -1176,8 +1176,8 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
     }
     else if (tObjectData.strClassName == "AceFood" 
         || tObjectData.strClassName == "Brown"
-        || tObjectData.strClassName == "Grey"
-        || tObjectData.strClassName == "Boss"
+        || tObjectData.strClassName == "Gray"
+        || tObjectData.strClassName == "AceBoss"
         || tObjectData.strClassName == "AceWeapon"
         || tObjectData.strClassName == "AceFood"
         || tObjectData.strClassName == "AceThrow"
@@ -1958,12 +1958,13 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
         ImVec2 vWindowMin = ImGui::GetWindowPos();
         ImVec2 vContentMin = ImGui::GetWindowContentRegionMin();
 
-        _vec2 vRatio = _vec2(m_vViewerContent_Size.x / (_float)rc.right, 
-            (m_vViewerContent_Size.y / (_float)rc.bottom));
+        _vec2 vRatio = _vec2((_float)rc.right / m_vViewerContent_Size.x,
+            ((_float)rc.bottom / m_vViewerContent_Size.y));
 
 
-        _vec3 vNear((_float)pt.x * vRatio.x + ((_float)rc.right - m_vViewerContent_Size.x) * 0.5f,
-            (_float)pt.y * vRatio.y + ((_float)rc.bottom - m_vViewerContent_Size.y) * 0.5f, 0.f);
+        _vec3 vNear(((_float)pt.x - (vWindowMin.x + m_vViewerContent_Size.x * 0.5f) + (_float)rc.right * 0.5f),
+            ((_float)pt.y - (vWindowMin.y + m_vViewerContent_Size.y * 0.5f) + (_float)rc.bottom * 0.5f), 0.f);
+        //vNear += _vec3(((_float)pt.x - vNear.x) * vRatio.x, ((_float)pt.y - vNear.y) * vRatio.y, 0.f);
         _vec3 vFar(vNear.x, vNear.y, 1.f);
         /*_vec3 vNear(pt.x, pt.y, 0.f);
         _vec3 vFar(vNear.x, vNear.y, 1.f);*/

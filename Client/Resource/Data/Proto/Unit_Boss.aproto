@@ -1,0 +1,25 @@
+{
+    "header": {
+        "type": 4,
+        "name": "Unit_Boss"
+    },
+    "class": 9,
+    "class_name": "AceBoss",
+    "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "scale": {
+        "x": 3.0,
+        "y": 2.5,
+        "z": 1.0
+    },
+    "group_key": "Boss_Single",
+    "texture_key": "Idle_South"
+}

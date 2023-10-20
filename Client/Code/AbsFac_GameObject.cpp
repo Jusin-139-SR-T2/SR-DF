@@ -66,6 +66,22 @@ CGameObject* CAbsFac_GameObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSe
 	{
 		return static_cast<CGameObject*>(CAceThrow::Create(pGraphicDev, tObject));
 	}
+	else if (strType == "AceInteraction")
+	{
+		return static_cast<CGameObject*>(CAceInteraction::Create(pGraphicDev, tObject));
+	}
+	else if (strType == "Brown")
+	{
+		return static_cast<CGameObject*>(CBrown::Create(pGraphicDev, tObject));
+	}
+	else if (strType == "Gray")
+	{
+		return static_cast<CGameObject*>(CGray::Create(pGraphicDev, tObject));
+	}
+	else if (strType == "AceBoss")
+	{
+		return static_cast<CGameObject*>(CAceBoss::Create(pGraphicDev, tObject));
+	}
 
 	return static_cast<CGameObject*>(nullptr);
 }

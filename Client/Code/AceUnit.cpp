@@ -50,3 +50,9 @@ void CAceUnit::MeshSphereColider(_float Radius, _uint Slices, _uint Stacks)
 {
     SUPER::MeshSphereColider(Radius, Slices, Stacks);
 }
+
+void CAceUnit::Gravity(const _float& fTimeDelta)
+{
+    if (!m_IsOnGround)
+        m_vSpeed += m_vAccel * fTimeDelta;
+}

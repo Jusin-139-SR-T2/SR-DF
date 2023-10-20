@@ -5,6 +5,8 @@
 #include "BlackBoard_Monster.h"
 #include "BlackBoardPtr.h"
 
+#include "Serialize_BaseClass.h"
+
 //공격 헤더 
 #include "MonsterPunch.h"
 
@@ -54,17 +56,23 @@ private:
 	virtual ~CAceBoss();
 
 public:
+	static CAceBoss* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CAceBoss* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial);
+
+private:
+	virtual void		Free();
+
+public:
 	virtual HRESULT Ready_GameObject() override;
+	virtual HRESULT Ready_GameObject(const FSerialize_GameObject& tObjectSerial);
 	virtual _int	Update_GameObject(const _float& fTimeDelta) override;
 	virtual void	LateUpdate_GameObject() override;
 	virtual void	Render_GameObject() override;
 
-	static CAceBoss* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
-
 private:
 	HRESULT				Add_Component();
 	void				Change_Phase();
-	virtual void		Free();
+	
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -99,10 +107,14 @@ private:
 	_float			m_fSideTime = 1.5f;
 	_float			m_fAwareness;
 
+	_float m_fTalk;
+	_float m_fTalkLife;
+	_float m_fTalkReapeat;
+
 	//공격 컨트롤 
 	_bool m_AttackOnce = FALSE;
 	_bool m_bBuffActive = FALSE;
-	
+	_bool m_bShitTrigger = FALSE;
 	// 조명관련 - 블랙보드 연동 
 	_bool m_bLightOn = FALSE;
 	void LightControl(const _float& fTimeDelta);
@@ -197,6 +209,7 @@ private:
 
 	// 죽음 
 	void AI_Death(float fDeltaTime); //ok // hp 0인상태 
+	//Engine::Play_Sound(L"Enemy", L"_Death.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
 
 #pragma endregion
 

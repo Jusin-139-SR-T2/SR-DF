@@ -60,7 +60,8 @@ HRESULT CSoundMgr::Ready_Sound()
 	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/Brown/");
 	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/Gray/");
 	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/SkillEffect/");
-	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Enemy_Temporary/");
+
+	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Enemy_Temporary/"); //임시경로 - 모슨리소스 다있는곳 
 	
 	Wait_GroupAsync();
 

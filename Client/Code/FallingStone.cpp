@@ -84,6 +84,12 @@ _int CFallingStone::Update_GameObject(const _float& fTimeDelta)
 	// 안맞고 그냥 낙하해서 땅에 충돌 or 무언가에 충돌 
 	if (m_bCollision)
 	{
+		if (m_bSound)
+		{
+			Engine::Play_Sound(L"Enemy", L"_StoneBreak.wav", SOUND_ENEMY_EFFECT, 0.4f);
+			m_bSound = FALSE;
+		}
+
 		m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
 
 		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
@@ -151,8 +157,10 @@ void CFallingStone::Falling(const _float& fTimeDelta)
 {
 	if (m_pTransformComp->Get_Pos().y < 0.5f)
 	{
+		
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Effect", L"FallingStone");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+
 		m_bCollision = TRUE;
 	}
 	else

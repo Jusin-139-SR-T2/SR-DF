@@ -74,8 +74,8 @@ HRESULT CPlayer::Ready_GameObject()
     //m_pMeshComp->BoxMesh_Ready(m_pGraphicDev, 10.f, 10.f, 5.f);
 
     // 플레이어 행렬 초기화
-    //m_pTransformComp->Set_Pos({ 10.f, 10.f, 10.f }); // Test Stage
-    m_pTransformComp->Set_Pos({ 20.f, 5.f, -9.5f }); // Jump Map
+    m_pTransformComp->Set_Pos({ 10.f, 10.f, 10.f }); // Test Stage
+    //m_pTransformComp->Set_Pos({ 20.f, 5.f, -9.5f }); // Jump Map
     m_pTransformComp->Readjust_Transform();
 
     m_pLeftHandComp->Set_Pos({ -300.f, -363.f, 0.f });	                        // 이미지 위치
@@ -888,8 +888,8 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
     // 충돌중일때
    // OutputDebugString(L"플레이어와 충돌중\n");
     
-    CAceBuilding* pFood = dynamic_cast<CAceBuilding*>(pDst);
-    if (pFood)
+    CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
+    if (pSolid)
     {
         _vec3 vNormal(pContact->vContactNormal.x, pContact->vContactNormal.y, pContact->vContactNormal.z);
         m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * pContact->fPenetration));

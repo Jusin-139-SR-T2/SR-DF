@@ -164,7 +164,13 @@ private:
 	void AI_Chopped(float fDeltaTime); //뒤돌고 있을때 손날치기 -> sleep 
 	void AI_HeadShot(float fDeltaTime); // 주먹이나 기타 무기로 헤드샷
 	void AI_Headless(float fDeltaTime); //총으로 헤드어택
-
+	
+	/*
+	
+	Engine::Play_Sound(L"Enemy", L"Gray_FacePunchA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+	 
+	 SOUND_ENEMY_MONSTER, SOUND_ENEMY_MONSTER_EFFECT, 
+	 */
 #pragma endregion
 
 #pragma region AI 행동 

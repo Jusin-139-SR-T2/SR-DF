@@ -6013,7 +6013,7 @@
                     "pos": {
                         "x": 31.95839500427246,
                         "y": 2.934286117553711,
-                        "z": -21.491592407226563
+                        "z": -8.51480770111084
                     },
                     "rot": {
                         "x": 0.0,
@@ -6044,7 +6044,7 @@
                     "use_priority_render": true,
                     "pos": {
                         "x": 31.11804962158203,
-                        "y": 2.961561441421509,
+                        "y": 3.1925253868103027,
                         "z": -3.0833775997161865
                     },
                     "rot": {
@@ -6054,7 +6054,7 @@
                     },
                     "scale": {
                         "x": 1.0,
-                        "y": 2.0,
+                        "y": 2.5,
                         "z": 2.0
                     },
                     "group_key": "Furniture",
@@ -10909,7 +10909,7 @@
                     "pos": {
                         "x": 31.95839500427246,
                         "y": 2.934286117553711,
-                        "z": -22.48169708251953
+                        "z": -10.509174346923828
                     },
                     "rot": {
                         "x": 0.0,
@@ -10941,7 +10941,7 @@
                     "pos": {
                         "x": 31.95839500427246,
                         "y": 2.934286117553711,
-                        "z": -23.468345642089844
+                        "z": -9.510235786437988
                     },
                     "rot": {
                         "x": 0.0,
@@ -10971,18 +10971,18 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 31.98726463317871,
-                        "y": 5.449419021606445,
-                        "z": -10.012789726257324
+                        "x": 31.094486236572266,
+                        "y": 5.658950328826904,
+                        "z": -3.12789249420166
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.0,
+                        "y": 90.0,
                         "z": 0.0
                     },
                     "scale": {
                         "x": 1.0,
-                        "y": 2.0,
+                        "y": 2.5,
                         "z": 2.0
                     },
                     "group_key": "Furniture",
@@ -11547,9 +11547,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 31.70209503173828,
+                        "x": 31.86498260498047,
                         "y": 4.259582042694092,
-                        "z": -22.882789611816406
+                        "z": -21.986059188842773
                     },
                     "rot": {
                         "x": 0.0,
@@ -11579,19 +11579,19 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 29.2598819732666,
+                        "x": 31.926048278808594,
                         "y": 4.169706344604492,
                         "z": -23.542192459106445
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 0.0,
+                        "y": -85.94365692138672,
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
+                        "x": 0.570488691329956,
+                        "y": 0.570488691329956,
+                        "z": 0.570488691329956
                     },
                     "group_key": "Throw",
                     "texture_key": "Perfume_1"
@@ -11644,7 +11644,7 @@
                     "use_priority_render": true,
                     "pos": {
                         "x": 23.31850814819336,
-                        "y": 4.460000038146973,
+                        "y": 9.400318145751953,
                         "z": -7.503346920013428
                     },
                     "rot": {
@@ -11659,6 +11659,134 @@
                     },
                     "group_key": "Structure",
                     "texture_key": "Wall_22"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_BarFront3"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 32.0245361328125,
+                        "y": 2.8574044704437256,
+                        "z": -23.49459457397461
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 2.0,
+                        "z": 5.0
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "BarFront"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_Thing1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 9.233532905578613,
+                        "y": 5.664955139160156,
+                        "z": -31.55105972290039
+                    },
+                    "rot": {
+                        "x": 90.0,
+                        "y": 0.0,
+                        "z": -90.0
+                    },
+                    "scale": {
+                        "x": 2.0,
+                        "y": 1.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "Thing"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Trashbin_0"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 4.130510330200195,
+                        "y": 0.7128507494926453,
+                        "z": 6.292091369628906
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.7165912985801697,
+                        "y": 1.3540478944778442,
+                        "z": 0.7165912985801697
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "Trashbin_0"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "ScrunchedPaper_2"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.058842480182647705,
+                        "y": 2.055126905441284,
+                        "z": -12.99260139465332
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 51.56619644165039,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.6784327626228333,
+                        "y": 0.5883944630622864,
+                        "z": 0.6784327626228333
+                    },
+                    "group_key": "Throw",
+                    "texture_key": "ScrunchedPaper_1"
                 }
             ]
         },

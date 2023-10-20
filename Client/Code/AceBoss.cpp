@@ -15,23 +15,71 @@ CAceBoss::~CAceBoss()
 {
 }
 
+CAceBoss* CAceBoss::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_GameObject()))
+	{
+		Safe_Release(pInstance);
+
+		MSG_BOX("BOSS Monster Create Failed");
+		return nullptr;
+	}
+
+	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
+
+	return pInstance;
+}
+
+CAceBoss* CAceBoss::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial)
+{
+	ThisClass* pInstance = new ThisClass(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_GameObject(tObjectSerial)))
+	{
+		Safe_Release(pInstance);
+
+		MSG_BOX("BOSS Monster Create Failed");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
 HRESULT CAceBoss::Ready_GameObject()
 {
 	SUPER::Ready_GameObject();
 
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	//사운드 관련
+	m_tSound.m_fTalkAge = 0.f;
+	m_tSound.m_fTalkLife = 5.f;
+	m_tSound.m_fTalkReapeat = 0.f;
+	m_tSound.m_fSoundVolume = 0.6f;
+	m_tSound.m_fSoundEffectVolume = 0.2f;
+	m_tSound.m_bSoundOnce = FALSE;
+	m_tSound.m_bSoundCheck = FALSE;
+
+
+	// 프레임 및 이미지 관련 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Idle_South");
 	m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });
 	m_tFrame.fFrame = 0.f;
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_tFrame.fFrameSpeed = 12.f;
 	m_tFrame.fRepeat = 0.f;
+
+	// 이펙트 관련
 	m_fAwareness = m_tStat.fAwareness = 0.f;
 	m_tStat.fMaxAwareness = 15.f;
+	
+	// 충돌처리 & 블랙보드 & 상태 체크 관련 
 	m_bDazedState = FALSE;
 	m_bDeadState = FALSE;
 	m_bDazeToHeal = FALSE;
+	m_bShitTrigger = FALSE;
 
 	// 팀에이전트 셋팅 
 	Set_TeamID(ETEAM_BOSS);
@@ -143,12 +191,39 @@ HRESULT CAceBoss::Ready_GameObject()
 
 #pragma endregion
 
+	Engine::Play_Sound(L"Enemy", L"_TeddyBear.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
+	return S_OK;
+}
+
+HRESULT CAceBoss::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
+{
+	SUPER::Ready_GameObject();
+	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_pTransformComp->Set_Pos(tObjectSerial.vPos);
+	m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
+	m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+	wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
+	Set_ObjectName(strConvName);
+
+	m_fPriority[0] = tObjectSerial.fPriority_Update;
+	m_fPriority[1] = tObjectSerial.fPriority_LateUpdate;
+	m_fPriority[2] = tObjectSerial.fPriority_Render;
+
+	m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
+	m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
+	m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
+
 	return S_OK;
 }
 
 _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
+
+	m_tSound.m_iHpSection = m_gHp.Cur / 20.f; // 20구간으로 나눈 현재 보스의 hpsection 
 
 	// 지형타기 
 	Height_On_Terrain();
@@ -167,9 +242,13 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	if (FALSE == m_bDeadState)
 		Billboard(fTimeDelta);
 
+	//사운드 재생용
+	m_tSound.m_fTalkAge += fTimeDelta;
+
+
+
 	//상태머신
 	m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
-
 	m_tState_Obj.Get_StateFunc()(this, fTimeDelta);	// AI
 	m_tState_Act.Get_StateFunc()(this, fTimeDelta);	// 행동
 	m_mapActionKey.Update();	// 액션키 초기화
@@ -179,11 +258,19 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 		m_tFrame.fFrame = 0.f;
 
 		if (STATE_OBJ::SHOOTING == m_tState_Obj.Get_State() ||
-			STATE_OBJ::RUN == m_tState_Obj.Get_State())
+			STATE_OBJ::RUN == m_tState_Obj.Get_State() ||
+			STATE_OBJ::REST == m_tState_Obj.Get_State() 
+			)
 		{
 			m_AttackOnce = false;
 			m_tFrame.fRepeat += 1;
 		}
+	}
+
+	if (m_tSound.m_fTalkAge > m_tSound.m_fTalkLife)
+	{
+		m_tSound.m_fTalkAge = 0.f;
+		m_tSound.m_fTalkReapeat += 1.f;
 	}
 
 #pragma region 테스트 장소 
@@ -202,7 +289,12 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	}
 	if (Engine::IsKey_Pressed(DIK_O))
 	{
+
 		m_tState_Obj.Set_State(STATE_OBJ::RED_THUNDER);
+	}
+	if (Engine::IsKey_Pressed(DIK_P))
+	{
+
 	}
 #pragma endregion 
 
@@ -239,23 +331,6 @@ void CAceBoss::Render_GameObject()
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-}
-
-CAceBoss* CAceBoss::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
-{
-	ThisClass* pInstance = new ThisClass(pGraphicDev);
-
-	if (FAILED(pInstance->Ready_GameObject()))
-	{
-		Safe_Release(pInstance);
-
-		MSG_BOX("BOSS Monster Create Failed");
-		return nullptr;
-	}
-
-	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-
-	return pInstance;
 }
 
 HRESULT CAceBoss::Add_Component()
@@ -465,17 +540,30 @@ void CAceBoss::AI_Idle(float fDeltaTime)
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"IdleReady");
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
+
+		m_tSound.m_fTalkReapeat = 0.f;
 
 		Engine::Add_GameObject(L"GameLogic", CBossLight::Create(m_pGraphicDev, this));
     }
 
-    if (m_tState_Obj.Can_Update())
-    {
-        if (Detect_Player())
-        {
-            m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
-        }
-    }
+	if (m_tState_Obj.Can_Update())
+	{
+
+		if (m_tSound.m_fTalkAge > m_tSound.m_fTalkLife)
+		{
+			if (1 == m_tSound.m_fTalkReapeat)
+				Engine::Play_Sound(L"Enemy", L"_HeardSomething.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+			else if (2 <= m_tSound.m_fTalkReapeat)
+				Engine::Play_Sound(L"Enemy", L"_HearingGhosts.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		}
+
+		if (Detect_Player())
+		{
+			m_tSound.m_fTalkReapeat = 0.f;
+			m_tState_Obj.Set_State(STATE_OBJ::SUSPICIOUS);
+		}
+	}
 
     if (m_tState_Obj.IsState_Exit())
     {
@@ -487,14 +575,17 @@ void CAceBoss::AI_Suspicious(float fDeltaTime)
 {
 	if (m_tState_Obj.IsState_Entered())
 	{
-		//OutputDebugString(L"▷BOSS - 상태머신 : Suspicious 돌입   \n");
-
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"BackIdle");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
-
+		m_tFrame.fFrame = 0.f;
 		Engine::Add_GameObject(L"GameLogic", CEffect_Awareness::Create(m_pGraphicDev,
-		m_pTransformComp->Get_Pos().x + 0.1f, m_pTransformComp->Get_Pos().y + 1.3f, m_pTransformComp->Get_Pos().z, CEffect_Awareness::TYPE::BOSS, this));
+								m_pTransformComp->Get_Pos().x + 0.1f, 
+								m_pTransformComp->Get_Pos().y + 1.3f, 
+								m_pTransformComp->Get_Pos().z, 
+								CEffect_Awareness::TYPE::BOSS, this));
+
+		Engine::Play_Sound(L"Enemy", L"_HearingThingsAgain.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -535,14 +626,39 @@ void CAceBoss::AI_Reloading(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Reloading");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 8.f;
+		m_tFrame.fFrame = 0.f;
 
+		m_tSound.m_fTalkReapeat = 0.f;
+		
 		if(Engine::MonsterPhase::Phase2 == m_ePhase) // 속도 상승 
 			m_tFrame.fFrameSpeed = 11.f;
 
+		if(0 == m_tSound.m_iHpSection)
+			Engine::Play_Sound(L"Enemy", L"_Reloading_20.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		else if (1 == m_tSound.m_iHpSection)
+			Engine::Play_Sound(L"Enemy", L"_Reloading_40.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		else if (2 == m_tSound.m_iHpSection)
+			Engine::Play_Sound(L"Enemy", L"_Reloading_60.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		else if (3 == m_tSound.m_iHpSection)
+			Engine::Play_Sound(L"Enemy", L"_Reloading_80.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		else if (4 == m_tSound.m_iHpSection)
+			Engine::Play_Sound(L"Enemy", L"_Reloading_100.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		else if (5 == m_tSound.m_iHpSection && 0 == m_tSound.m_fTalkReapeat)
+			Engine::Play_Sound(L"Enemy", L"_HugeMistake.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		else
+			Engine::Play_Sound(L"Enemy", L"_Reloading_100.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
+		m_tSound.m_bSoundOnce = true;
 	}
 
 	if (m_tState_Obj.Can_Update())
 	{
+		if (m_tSound.m_bSoundOnce && m_tFrame.fFrame >= 6.f)
+		{
+			Engine::Play_Sound(L"Enemy", L"_Reloading.wav", SOUND_ENEMY_EFFECT, m_tSound.m_fSoundEffectVolume);
+			m_tSound.m_bSoundOnce = false;
+		}
+
 		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 		{
 			m_tState_Obj.Set_State(STATE_OBJ::CHASE);
@@ -564,13 +680,35 @@ void CAceBoss::AI_Rest(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"IdleReady"); // ♣ 이미지 바꾸기 ? 
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
 	}
 
 	if (m_tState_Obj.Can_Update())
 	{
 		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 		{
-			m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+			if (m_bShitTrigger == TRUE)
+			{
+				if (m_tFrame.fRepeat >= 2)
+				{
+					if (MonsterPhase::Phase1 == m_ePhase)
+					{
+						m_bShitTrigger = false;
+						m_tFrame.fRepeat = 0.f;
+						m_tState_Obj.Set_State(STATE_OBJ::ENERGY_BALL); // EnergyBall
+					}
+					else if (MonsterPhase::Phase2 == m_ePhase)
+					{
+						m_bShitTrigger = false;
+						m_tFrame.fRepeat = 0.f;
+						m_tState_Obj.Set_State(STATE_OBJ::RED_THUNDER); // EnergyBall
+					}
+					else if (MonsterPhase::Intro == m_ePhase)
+						m_tState_Obj.Set_State(STATE_OBJ::CHASE);
+				}
+			}
+			else if (m_bShitTrigger == FALSE)
+				m_tState_Obj.Set_State(STATE_OBJ::CHASE);
 		}
 	}
 
@@ -586,6 +724,7 @@ void CAceBoss::AI_Chase(float fDeltaTime)
 	{
 		m_tStat.fAwareness = m_tStat.fMaxAwareness;
 		m_AttackOnce = FALSE;
+		
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -623,10 +762,12 @@ void CAceBoss::AI_Chase(float fDeltaTime)
 				m_bPhaseStart = TRUE;
 				m_tState_Obj.Set_State(STATE_OBJ::PHASE1_INSTALL);
 			}
-			else if(m_fTriggerHP > HP) // 10단위 깎을때마다 나오는 패턴 
+			else if(m_fTriggerHP > HP) // 15단위 깎을때마다 나오는 패턴 
 			{
-				m_fTriggerHP -= 10.f;
-				m_tState_Obj.Set_State(STATE_OBJ::ENERGY_BALL); // EnergyBall
+				Engine::Play_Sound(L"Enemy", L"_ShitShitShitA.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+				m_fTriggerHP -= 15.f;
+				m_bShitTrigger = TRUE;
+				m_tState_Obj.Set_State(STATE_OBJ::REST); // EnergyBall
 			}
 			else if (Random_variable(65)) //60% 확률로 스킬공격이 들어간다. 
 			{
@@ -661,10 +802,12 @@ void CAceBoss::AI_Chase(float fDeltaTime)
 				m_bPhaseStart = FALSE;
 				m_tState_Obj.Set_State(STATE_OBJ::PHASE2_BUFF);
 			}
-			else if (m_fTriggerHP > HP) // 10단위 hp깎을때마다 
+			else if (m_fTriggerHP > HP) // 12단위 hp깎을때마다 
 			{
-				m_fTriggerHP -= 8.f;
-				m_tState_Obj.Set_State(STATE_OBJ::RED_THUNDER); // EnergyBall
+				Engine::Play_Sound(L"Enemy", L"_ShitShitShitB.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+				m_fTriggerHP -= 12.f;
+				m_bShitTrigger = TRUE;
+				m_tState_Obj.Set_State(STATE_OBJ::REST); // Thunder
 			}
 			//else if (m_gHp.Cur < 25.f) // 레이저 설치할게 마땅치않아서 그냥 주석처리 
 			//{
@@ -720,6 +863,18 @@ void CAceBoss::AI_Run(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Run"); // ♣ 이미지 바꾸기 ? 
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 11.f;
+		m_tFrame.fFrame = 0.f;
+
+		m_tSound.m_bSoundOnce = true;
+		m_tSound.m_bSoundCheck = true;
+		m_AttackOnce = true;
+
+		if(1 >= m_tSound.m_iHpSection)
+			Engine::Play_Sound(L"Enemy", L"_MySightA.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		else if (3 >= m_tSound.m_iHpSection && 1 < m_tSound.m_iHpSection)
+			Engine::Play_Sound(L"Enemy", L"_MySightB.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		else if (4 <= m_tSound.m_iHpSection)
+			Engine::Play_Sound(L"Enemy", L"_MySightC.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
 
 		if(Engine::MonsterPhase::Phase2 == m_ePhase)
 			m_tFrame.fFrameSpeed = 14.f;
@@ -727,13 +882,41 @@ void CAceBoss::AI_Run(float fDeltaTime)
 
 	if (m_tState_Obj.Can_Update())
 	{
+		// 사운드 - Phase별로 스피드가 다름 
+		if (m_tFrame.fFrame >= 1 && m_tSound.m_bSoundOnce && m_tSound.m_bSoundCheck && m_AttackOnce) // TT
+		{
+			m_tSound.m_bSoundOnce = false;
+			m_tSound.m_bSoundCheck = false;
+			m_AttackOnce = false;
+			Engine::Play_Sound(L"Enemy", L"_FootstepRun.wav", SOUND_ENEMY_EFFECT, m_tSound.m_fSoundVolume);
+		}
+		else if (m_tFrame.fFrame >= 3 && !m_tSound.m_bSoundOnce && !m_tSound.m_bSoundCheck)
+		{
+			m_tSound.m_bSoundOnce = true;
+			m_tSound.m_bSoundCheck = false;
+			Engine::Play_Sound(L"Enemy", L"_FootstepRun.wav", SOUND_ENEMY_EFFECT, m_tSound.m_fSoundVolume);
+		} 
+		else if (m_tFrame.fFrame >=6 && m_tSound.m_bSoundOnce && !m_tSound.m_bSoundCheck)
+		{
+			m_tSound.m_bSoundOnce = false;
+			m_tSound.m_bSoundCheck = true;
+			Engine::Play_Sound(L"Enemy", L"_FootstepRun.wav", SOUND_ENEMY_EFFECT, m_tSound.m_fSoundVolume);
+		}
+		else if (m_tFrame.fFrame >= 9 && !m_tSound.m_bSoundOnce && m_tSound.m_bSoundCheck)
+		{
+			m_tSound.m_bSoundOnce = true;
+			m_tSound.m_bSoundCheck = true;
+			Engine::Play_Sound(L"Enemy", L"_FootstepRun.wav", SOUND_ENEMY_EFFECT, m_tSound.m_fSoundVolume);
+		}
+
+
 		if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
 		{
 			//OutputDebugString(L"★★★★★ 상태머신 Run > Run가상키  \n");
 			m_mapActionKey[ACTION_KEY::RUN].Act();
 		}
 
-		if (m_tFrame.fRepeat >= 2)
+		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 		{
 			//OutputDebugString(L"★★★★★ 상태머신 Run -> SHOOTING 다시 진입   \n");
 			m_tFrame.fRepeat = 0.f;
@@ -755,10 +938,25 @@ void CAceBoss::AI_Walk(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Walk"); // ♣ 이미지 바꾸기 ? 
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 14.f;
+		m_tFrame.fFrame = 0.f;
+		m_tSound.m_bSoundOnce = true;
+		m_tSound.m_bSoundCheck = true;
 	}
 
 	if (m_tState_Obj.Can_Update())
 	{
+		if (m_tFrame.fFrame >= 3 && m_tSound.m_bSoundOnce && m_tSound.m_bSoundCheck)
+		{
+			m_tSound.m_bSoundOnce = false;
+			m_tSound.m_bSoundCheck = false;
+			Engine::Play_Sound(L"Enemy", L"_FootstepWalk.wav", SOUND_ENEMY_EFFECT, m_tSound.m_fSoundVolume);
+		}
+		if (m_tFrame.fFrame >= 14 && !m_tSound.m_bSoundOnce)
+		{
+			m_tSound.m_bSoundOnce = true;
+			Engine::Play_Sound(L"Enemy", L"_FootstepWalk.wav", SOUND_ENEMY_EFFECT, m_tSound.m_fSoundVolume);
+		}
+
 		if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
 		{
 			//OutputDebugString(L"★★★★★ 상태머신 Walk > walk가상키  \n");
@@ -784,6 +982,7 @@ void CAceBoss::AI_PreAttack(float fDeltaTime)
 		//OutputDebugString(L"▷BOSS - 상태머신 : Pre_Attack 돌입   \n");
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Pre_Attack"); // ♣ 이미지 바꾸기 ? 
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+		m_tFrame.fFrame = 0.f;
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -810,6 +1009,7 @@ void CAceBoss::AI_SideReady(float fDeltaTime)
 		//OutputDebugString(L"▷BOSS - 상태머신 : SideReady 돌입   \n");
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"SideReady");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+		m_tFrame.fFrame = 0.f;
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -837,9 +1037,16 @@ void CAceBoss::AI_Roll(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Roll");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 11.f;
+		m_tFrame.fFrame = 0.f;
 
 		if (Engine::MonsterPhase::Phase2 == m_ePhase)
+		{
 			m_tFrame.fFrameSpeed = 14.f;
+			Engine::Play_Sound(L"Enemy", L"_MyTurfB.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		}
+		else if (Engine::MonsterPhase::Phase1 == m_ePhase)
+			Engine::Play_Sound(L"Enemy", L"_MyTurfA.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -869,6 +1076,7 @@ void CAceBoss::AI_CloseAttack(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"CloseAttack");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -900,6 +1108,7 @@ void CAceBoss::AI_Shoot(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Shooting");
 		m_tFrame.fFrameEnd = float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 13.f;
+		m_tFrame.fFrame = 0.f;
 
 		if (Engine::MonsterPhase::Phase2 == m_ePhase)
 			m_tFrame.fFrameSpeed = 16.f;
@@ -945,6 +1154,7 @@ void CAceBoss::AI_HeavyShoot(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Shooting");
 		m_tFrame.fFrameEnd = float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -989,10 +1199,12 @@ void CAceBoss::AI_SkillStone(float fDeltaTime)
 	if (m_tState_Obj.IsState_Entered())
 	{
 		//OutputDebugString(L"▷BOSS - 상태머신 : Phase1 Skill 돌입   \n");
-
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Evasion");
 		m_tFrame.fFrameEnd = float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 8.f;
+		m_tFrame.fFrame = 0.f;
+
+		Engine::Play_Sound(L"Enemy", L"_MeleeA.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1024,6 +1236,8 @@ void CAceBoss::AI_SkillEnergyBall(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Evasion");
 		m_tFrame.fFrameEnd = float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 8.f;
+		m_tFrame.fFrame = 0.f;
+		Engine::Play_Sound(L"Enemy", L"_MeleeB.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1052,6 +1266,10 @@ void CAceBoss::AI_InstallPh1(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"SetOn");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
+
+		Engine::Play_Sound(L"Enemy", L"_DoYouKnowA.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1081,6 +1299,11 @@ void CAceBoss::AI_SkillThunder(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Shout");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
+		Engine::Play_Sound(L"Enemy", L"_MeleeB.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
+		//여러개 생성해야되서 Create할때마다 자꾸 불러오는것때문에 여기서 효과음 추가 
+		Engine::Play_Sound(L"Enemy", L"_Thunder.wav", SOUND_ENEMY_THUNDER, m_tSound.m_fSoundVolume);
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1110,6 +1333,8 @@ void CAceBoss::AI_SkillFire(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Shout");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
+		Engine::Play_Sound(L"Enemy", L"_MeleeA.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1139,6 +1364,8 @@ void CAceBoss::AI_SkillBuff(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Shout");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
+		Engine::Play_Sound(L"Enemy", L"_BuffCall.wav", SOUND_ENEMY, 0.5f);
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1169,6 +1396,7 @@ void CAceBoss::AI_InstallPh2(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"SetOn");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1194,11 +1422,18 @@ void CAceBoss::AI_Hit(float fDeltaTime)
 	{
 		//OutputDebugString(L"▷BOSS - 상태머신 : 일반피격상태 돌입   \n");
 		m_tStat.fAwareness = m_tStat.fMaxAwareness;
-		if (Random_variable(50))
-			m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Hit_A");
-		else
-			m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Hit_B");
+		m_tFrame.fFrame = 0.f;
 
+		if (Random_variable(50))
+		{
+			m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Hit_A");
+			Engine::Play_Sound(L"Enemy", L"_HitA.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		}
+		else
+		{
+			m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Hit_B");
+			Engine::Play_Sound(L"Enemy", L"_HitB.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+		}
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	}
 
@@ -1227,9 +1462,11 @@ void CAceBoss::AI_Dazed(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Dazed");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
 		m_tFrame.fLifeTime = 1.f;
 		m_bDazedState = TRUE;
-		
+		Engine::Play_Sound(L"Enemy", L"_Dazed.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
 		if (Engine::MonsterPhase::Phase2 == m_ePhase)
 			m_tFrame.fFrameSpeed = 12.f;
 	}
@@ -1270,6 +1507,10 @@ void CAceBoss::AI_Falling(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Falling");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
+
+		Engine::Play_Sound(L"Enemy", L"_Falling.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1295,9 +1536,13 @@ void CAceBoss::AI_FacePunch(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"FacePunch");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
 		
 		if (Engine::MonsterPhase::Phase2 == m_ePhase)
 			m_tFrame.fFrameSpeed = 14.f;
+
+		Engine::Play_Sound(L"Enemy", L"_FacePunch.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1323,6 +1568,9 @@ void CAceBoss::AI_CrotchHit(float fDeltaTime)
 		m_tStat.fAwareness = m_tStat.fMaxAwareness;
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"CrotchHit");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+		m_tFrame.fFrame = 0.f;
+		Engine::Play_Sound(L"Enemy", L"_CrotchHit.wav", SOUND_ENEMY, m_tSound.m_fSoundVolume);
+
 	}
 
 	if (m_tState_Obj.Can_Update())
@@ -1350,12 +1598,16 @@ void CAceBoss::AI_Death(float fDeltaTime)
 		m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Multi", L"Death");
 		m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 		m_tFrame.fFrameSpeed = 10.f;
+		m_tFrame.fFrame = 0.f;
 		m_bDeadState = TRUE;
 		m_bLightOn = FALSE;
+
+		Engine::Play_Sound(L"Enemy", L"_Death.wav", SOUND_ENEMY, 0.5f);
 	}
 
 	if (m_tState_Obj.Can_Update())
 	{
+
 		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 		{
 			m_tFrame.fFrame = m_tFrame.fFrameEnd -1.f;
@@ -1456,9 +1708,9 @@ void CAceBoss::Approach(float fDeltaTime)
 		if (Engine::MonsterPhase::Intro == m_ePhase)// WALK
 				m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 4.f);
 		else if (Engine::MonsterPhase::Phase1 == m_ePhase) // RUN
-			m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 8.f);
+			m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 12.f);
 		else if (Engine::MonsterPhase::Phase2 == m_ePhase) //RUN
-			m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 10.f);
+			m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 16.f);
 
 		m_tState_Act.Set_State(STATE_ACT::IDLE);
 	}
@@ -1565,6 +1817,8 @@ void CAceBoss::Shoot(float fDeltaTime)
 		{
 			if (!m_AttackOnce)
 			{
+				Engine::Play_Sound(L"Enemy", L"_Shooting.wav", SOUND_ENEMY_EFFECT, m_tSound.m_fSoundEffectVolume);
+
 				Engine::Add_GameObject(L"GameLogic", CMonsterBullet::Create(m_pGraphicDev,
 					m_pTransformComp->Get_Pos().x,
 					m_pTransformComp->Get_Pos().y,
@@ -1577,6 +1831,8 @@ void CAceBoss::Shoot(float fDeltaTime)
 		{
 			if (!m_AttackOnce)
 			{
+				Engine::Play_Sound(L"Enemy", L"_HeavyShoot.wav", SOUND_ENEMY_EFFECT, m_tSound.m_fSoundEffectVolume);
+
 				Engine::Add_GameObject(L"GameLogic", CMonsterBullet::Create(m_pGraphicDev,
 					m_pTransformComp->Get_Pos().x,
 					m_pTransformComp->Get_Pos().y,
@@ -1701,6 +1957,7 @@ void CAceBoss::SkillStone(float fDeltaTime)
 					randomCenter.y,
 					randomCenter.z, m_ePhase, this, (ETEAM_ID)Get_TeamID()));
 			}
+
 		}
 		m_AttackOnce = true;
 
@@ -1764,6 +2021,7 @@ void CAceBoss::SkillThunder(float fDeltaTime)
 	{
 		if (!m_AttackOnce)
 		{
+
 			for (_int i = 0 ; i < 11; ++i)
 			{
 				_vec3 randomCenter;
@@ -1776,6 +2034,7 @@ void CAceBoss::SkillThunder(float fDeltaTime)
 					randomCenter.y,
 					randomCenter.z, m_ePhase, this, (ETEAM_ID)Get_TeamID() ));
 			}
+
 			m_AttackOnce = true;
 		}
 		m_tState_Act.Set_State(STATE_ACT::IDLE);
@@ -1797,6 +2056,8 @@ void CAceBoss::SkillFire(float fDeltaTime)
 	{
 		if (!m_AttackOnce)
 		{
+			Engine::Play_Sound(L"Enemy", L"_SkillFire.wav", SOUND_ENEMY_FIRE, m_tSound.m_fSoundVolume);
+
 			_vec3 Center = m_pTransformComp->Get_Pos();
 			_vec3 spawnPosition;
 
@@ -1810,6 +2071,7 @@ void CAceBoss::SkillFire(float fDeltaTime)
 
 				Engine::Add_GameObject(L"GameLogic", CSpawnFire::Create(m_pGraphicDev,
 					spawnPosition.x, spawnPosition.y, spawnPosition.z, m_ePhase, this, (ETEAM_ID)Get_TeamID()));
+
 			}
 			m_AttackOnce = TRUE;
 		}

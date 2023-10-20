@@ -123,6 +123,8 @@ void CRectObject::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
+    DWORD hrColor;
+    m_pGraphicDev->GetRenderState(D3DRS_TEXTUREFACTOR, &hrColor);
     if (m_bIsSelected)
     {
         m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, DXCOLOR_MAGENTA);
@@ -136,7 +138,7 @@ void CRectObject::Render_GameObject()
 
     if (m_bIsSelected)
     {
-        m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
+        m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, hrColor);
     }
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);

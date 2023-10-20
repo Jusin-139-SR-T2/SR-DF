@@ -27,4 +27,14 @@ protected:
 protected:
 	GAUGE<_float>		m_gHp;
 
+protected: // มกวม
+	_bool m_IsOnTerrain = false;
+	_bool m_IsOnGround = false;
+
+	_vec3 m_vSpeed = { 0.f, 0.f, 0.f };
+	_vec3 m_vAccel = { 0.f, -27.8f, 0.f };
+
+protected:
+	void Gravity(const _float& fTimeDelta);
+
 };

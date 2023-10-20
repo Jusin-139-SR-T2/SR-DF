@@ -68,6 +68,8 @@ _int CBlueBuff::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 	{
+		//Engine::Play_Sound(L"Enemy", L"_Buff.wav", SOUND_ENEMY_BUFF, 0.2f);
+
 		m_tFrame.fFrame = 0;
 	}
 
@@ -108,6 +110,7 @@ HRESULT CBlueBuff::Add_Component()
 
 void CBlueBuff::Free()
 {
+	//Engine::Stop_Sound(SOUND_ENEMY_BUFF);
 	SUPER::Free();
 }
 

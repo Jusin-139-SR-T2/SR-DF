@@ -28,6 +28,22 @@ typedef struct tag_Monster_Info
 
 }MONSTER;
 
+typedef struct tag_MonsterSound_Info
+{
+	_int		m_iHpSection;		// 구간나누기 위한 섹션 정의 - 20으로 나눈구간임 
+
+	_float		m_fTalkAge;			// 말하는 시간 - 나이
+	_float		m_fTalkLife;		// 말하는시간 - 수명 
+	_float		m_fTalkReapeat;		// 말하는시간  - 반복횟수 카운트 
+
+	_float		m_fSoundVolume;		// 사운드 재생하는 볼륨 
+	_float		m_fSoundEffectVolume; //이펙트 재생볼륨
+
+	_bool		m_bSoundOnce; // 한번만 재생되어야할때 
+	_bool		m_bSoundCheck; 
+
+}MonsterSound;
+
 BEGIN(Engine)
 
 class CRcBufferComp;
@@ -57,6 +73,7 @@ protected:
 protected:
 	STATE_RIGHTHAND				ePlayerRighthand;	// 충돌시 상태머신 돌아가기위해 플레이어 오른손 텍스쳐 저장용도 
 	FCollisionBox*				pBoxShape;			// 몬스터 충돌체 = box타입
+	MonsterSound				m_tSound;			// 사운드 제어하기위한 구조체 
 	MONSTER						m_tStat;			// 몬스터의 각종 스텟 저장 구조체
 	FRAME						m_tFrame;			// 프레임 및 수명 등 시간관련 구조체 
 	_vec3						vPlayerPos;			//플레이어 위치정보 항상 저장하는 vec3
