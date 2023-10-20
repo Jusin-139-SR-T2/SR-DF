@@ -45,5 +45,8 @@ protected:
 	CTransformComponent* m_pTransformComp = nullptr;
 	CColliderComponent* m_pColliderComp = nullptr;
 
+protected:
+	_bool m_bIsTriggered = false;
+
 };
 

@@ -146,6 +146,10 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 			if ((*iterSrc) == (*iterDst))
 				continue;
 
+			// 도중에 연결 정지 신호들어오면 종료
+			if (m_bIsPaused)
+				return 0;
+
 			FCollisionPrimitive* pColSrc = static_cast<FCollisionPrimitive*>((*iterSrc)->Get_Owner());
 			FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iterDst)->Get_Owner());
 
