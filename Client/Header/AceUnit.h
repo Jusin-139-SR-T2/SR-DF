@@ -27,7 +27,4 @@ protected:
 protected:
 	GAUGE<_float>		m_gHp;
 
-public:
-	GETSET_EX2(OBJECT_CLASS, m_eFactoryClass, FACTORY_NAME, GET, SET)
-	OBJECT_CLASS		m_eFactoryClass;
 };

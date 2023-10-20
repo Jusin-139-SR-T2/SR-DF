@@ -16,7 +16,6 @@
 #include "Effect_HitPow.h"
 #include "AceUnit.h"
 #include "AceWeapon.h"
-#include "RayBullet.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -75,8 +74,8 @@ HRESULT CPlayer::Ready_GameObject()
     //m_pMeshComp->BoxMesh_Ready(m_pGraphicDev, 10.f, 10.f, 5.f);
 
     // 플레이어 행렬 초기화
-    m_pTransformComp->Set_Pos({ 10.f, 10.f, 10.f }); // Test Stage
-    //m_pTransformComp->Set_Pos({ 20.f, 5.f, -9.5f }); // Jump Map
+    //m_pTransformComp->Set_Pos({ 10.f, 10.f, 10.f }); // Test Stage
+    m_pTransformComp->Set_Pos({ 20.f, 5.f, -9.5f }); // Jump Map
     m_pTransformComp->Readjust_Transform();
 
     m_pLeftHandComp->Set_Pos({ -300.f, -363.f, 0.f });	                        // 이미지 위치
@@ -213,10 +212,10 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     //swprintf_s(debugString, L"Player - 변수 확인 m_gHp = %f\n", m_gHp.Cur);
     //OutputDebugStringW(debugString);
 
-    //if (Engine::IsKey_Pressed(DIK_E))
-    //{ 
-    //    m_gHp.Cur -= 5.f;
-    //}
+    if (Engine::IsKey_Pressed(DIK_E))
+    { 
+        m_gHp.Cur -= 5.f;
+    }
     //플레이어 뒤로 콜라가 생성되는 코드
     //if (Engine::IsKey_Pressed(DIK_BACK))
     //Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 
@@ -591,20 +590,6 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
             Test.y -= 1.f;
     }
 
-    // Test
-    if (Engine::IsKey_Pressed(DIK_E))
-    {
-        //_vec3 vLook = { 0.f, 0.f, 0.f };
-        //m_pTransformComp->Get_Info(INFO_LOOK, &vLook);
-
-        //// 총알 생성
-        //Engine::Add_GameObject(L"GameLogic", CRayBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
-        //    m_pTransformComp->Get_Pos(), vLook,                                 // 생성위치, 방향
-        //    this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                       // 공격유형, 팀
-        //    100.f, 1.f, 40.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기f
-        CGameObject* pDst = RayCast();
-        LineEvent();
-    }
 
     // 뗐을 때
     if (Engine::IsKey_Released(DIK_C))
@@ -855,16 +840,9 @@ CGameObject* CPlayer::RayCast()
         /*auto listMonster = Engine::IntersectTests_Line_GetGameObject(0, m_pTransformComp->Get_Pos(),
             m_pTransformComp->Get_Pos() + vTest * 100.f,
             LAYER_MONSTER);*/
-        _vec3 vPos = m_pTransformComp->Get_Pos();
-        vPos.y += 0.7f;
-
-        auto listMonster = Engine::IntersectTests_Ray_GetGameObject(0, vPos,
+        auto listMonster = Engine::IntersectTests_Ray_GetGameObject(0, m_pTransformComp->Get_Pos(),
             m_pTransformComp->Get_Look(),
-            (_ulong)(-1) ^ LAYER_PLAYER);
-
-        //auto listMonster = Engine::IntersectTests_Line_GetGameObject(0, vPos,
-        //    vPos + m_pTransformComp->Get_Look() * 3.f,
-        //    (_ulong)(-1) ^ LAYER_PLAYER);
+            -1);
 
         if (!listMonster.empty())
         {
@@ -887,19 +865,10 @@ CGameObject* CPlayer::RayCast()
             {
                 cout << " 거리 : " << fDist << endl;
                 CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDstObj);
-
                 // 타겟 지정
-                //CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
-                //CAceFood* pFood = dynamic_cast<CAceFood*>(pAceObj);
-                //CAceWeapon* pWeapon = dynamic_cast<CAceWeapon*>(pAceObj);
+                CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
 
-                //if (pMonster != nullptr)
-                //    cout << " 체력 : " << pMonster->Get_MonsterHP().Cur << endl;
-
-                //cout << pWeapon->Get_ObjectID() << endl;
-                //m_eObjectName = pWeapon->Get_WeaponName();
-                //cout << " 이름 : " << pFood->Get_FACTORY_NAME() << endl;
-                //cout << " 이름 : " << m_eObjectName << endl;
+                //cout << " 체력 : " << pMonster->Get_MonsterHP().Cur << endl;
 
                 return pDstObj;
             }
@@ -919,14 +888,14 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
     // 충돌중일때
    // OutputDebugString(L"플레이어와 충돌중\n");
     
-    //CAceBuilding* pFood = dynamic_cast<CAceBuilding*>(pDst);
-    //if (pFood)
-    //{
-    //    _vec3 vNormal(pContact->vContactNormal.x, pContact->vContactNormal.y, pContact->vContactNormal.z);
-    //    m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * pContact->fPenetration));
-    //    if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
-    //        m_IsOnGround = true;
-    //}
+    CAceBuilding* pFood = dynamic_cast<CAceBuilding*>(pDst);
+    if (pFood)
+    {
+        _vec3 vNormal(pContact->vContactNormal.x, pContact->vContactNormal.y, pContact->vContactNormal.z);
+        m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * pContact->fPenetration));
+        if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
+            m_IsOnGround = true;
+    }
 }
 
 void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
@@ -1182,7 +1151,6 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
 
         if (Engine::IsMouse_Pressed(DIM_LB)) // 눌렀을 때
         {
-            _vec3 test = m_pTransformComp->Get_Look();
             m_bAttack = true; // 공격 On
             m_bRAttackMove = EBLACKBOARD_UPLOAD;
 
@@ -1687,30 +1655,6 @@ void CPlayer::Hand_Check()
 
     // 플레이어의 현재 상태를 저장
     m_eRightState_Old = m_tRightHand_State.Get_State();
-
-    switch (m_eObjectName)
-    {
-    case CPlayer::OBJECT_NAME::NONE:
-        m_eObjectType = OBJECT_TYPE::TWO_HAND;
-        break;
-    case CPlayer::OBJECT_NAME::GUN:
-        m_eObjectType = OBJECT_TYPE::RIGHT_OBJECT;
-        break;
-    case CPlayer::OBJECT_NAME::THOMPSON:
-        m_eObjectType = OBJECT_TYPE::TWO_OBJECT;
-        break;
-    case CPlayer::OBJECT_NAME::STEELPIPE:
-        m_eObjectType = OBJECT_TYPE::RIGHT_OBJECT;
-        break;
-    case CPlayer::OBJECT_NAME::BEERBOTLE:
-        m_eObjectType = OBJECT_TYPE::RIGHT_OBJECT;
-        break;
-    case CPlayer::OBJECT_NAME::FRYINGPAN:
-        m_eObjectType = OBJECT_TYPE::RIGHT_OBJECT;
-        break;
-    default:
-        break;
-    }
 
     // 플레이어가 안뛰고있는 경우
     if (m_tPlayer_Action.Get_State() != STATE_PLAYER_ACTION::RUN)
@@ -2506,10 +2450,10 @@ void CPlayer::Right_Gun(float fTimeDelta)
 
             m_bGunLight = TRUE; // 총 조명On
 
-            //CGameObject* pDst = RayCast();
+            CGameObject* pDst = RayCast();
 
             // 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
-            //RayAttack(pDst , -10.f, m_eAttackState);
+            RayAttack(pDst , -10.f, m_eAttackState);
 
             // 총알 생성
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
@@ -3164,162 +3108,40 @@ void CPlayer::RightInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
     }
 }
 
-void CPlayer::LineEvent()
+void CPlayer::RayEvent(CGameObject* _pDst)
 {
-    CDynamicCamera* pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Camera", L"DynamicCamera"));
-    CGameObject* pGameObject = nullptr;
-
-    if (pCamera)
-    {
-        _vec3 vTest = m_pTransformComp->Get_Look();
-        D3DXVec3Normalize(&vTest, &vTest);
-        /*auto listMonster = Engine::IntersectTests_Line_GetGameObject(0, m_pTransformComp->Get_Pos(),
-            m_pTransformComp->Get_Pos() + vTest * 100.f,
-            LAYER_MONSTER);*/
-        _vec3 vPos = m_pTransformComp->Get_Pos();
-        vPos.y += 0.7f;
-
-        //auto listMonster = Engine::IntersectTests_Ray_GetGameObject(0, vPos,
-        //    m_pTransformComp->Get_Look(),
-        //    (_ulong)(-1) ^ LAYER_PLAYER);
-
-        auto listMonster = Engine::IntersectTests_Line_GetGameObject(0, vPos,
-            vPos + m_pTransformComp->Get_Look() * 3.f,
-            (_ulong)(-1) ^ LAYER_PLAYER);
-
-        if (!listMonster.empty())
-        {
-            CGameObject* pDstObj = nullptr;
-            _float fDist = FLT_MAX;
-
-            for (auto iter = listMonster.begin(); iter != listMonster.end(); ++iter)
-            {
-                _vec3 vPos = (*iter).second.vContactPoint.Convert_DX9Vec3();
-                _float fLength = D3DXVec3Length(&(m_pTransformComp->Get_Pos() - vPos));
-                if (fLength < fDist)
-                {
-                    fDist = fLength;
-                    pDstObj = (*iter).first;
-                }
-            }
-
-
-            if (pDstObj)
-            {
-                cout << " 거리 : " << fDist << endl;
-                CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDstObj);
-
-                // 타겟 지정
-                //CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
-                //CAceFood* pFood = dynamic_cast<CAceFood*>(pAceObj);
-                //CAceWeapon* pWeapon = dynamic_cast<CAceWeapon*>(pAceObj);
-
-                //if (pMonster != nullptr)
-                //    cout << " 체력 : " << pMonster->Get_MonsterHP().Cur << endl;
-
-                //cout << pWeapon->Get_ObjectID() << endl;
-                //m_eObjectName = pWeapon->Get_WeaponName();
-                //cout << " 이름 : " << pFood->Get_FACTORY_NAME() << endl;
-                //cout << " 이름 : " << m_eObjectName << endl;
-
-                pGameObject = pDstObj;
-            }
-            else
-            {
-                pGameObject = nullptr;
-            }
-        }
-    }
-
-
-    CAceGameObject* pAceObj = nullptr;
-
-    if (pGameObject != nullptr)
-        pAceObj = dynamic_cast<CAceGameObject*>(pGameObject);
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(_pDst);
 
     if (pAceObj == nullptr)
         return;
 
+    if (Check_Relation(pAceObj, this) == ERELATION::NUETRAL)
+    {
+        // 타겟 지정
+        CAceFood* pUnit = dynamic_cast<CAceFood*>(_pDst);
 
-    CAceWeapon* pWeapon = dynamic_cast<CAceWeapon*>(pAceObj);
-    if (pWeapon != nullptr)
-        m_eObjectName = pWeapon->Get_WeaponName();
+        // 공격받은 타겟이 있을 경우
+        if (nullptr != pUnit)
+        {
+            // 해당 음식 이름 반환
+            m_eFoodName = pUnit->Get_FoodName();
 
+            if (m_fMonsterHp.Cur <= 0)
+                m_fMonsterHp.Cur = 0.f;
+            if (m_fMonsterHp.IsMax())
+                m_fMonsterHp.Cur = m_fMonsterHp.Max;
 
-    CAceFood* pFood = dynamic_cast<CAceFood*>(pAceObj);
-    if (pFood != nullptr)
-        m_eFoodName = pFood->Get_FoodName();
-
+        }
+    }
 }
 
 void CPlayer::RayAttack(CGameObject* _pDst, _float _fAttack, PLAYER_ATTACK_STATE _eAttackState)
 {
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(_pDst);
-    CDynamicCamera* pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Camera", L"DynamicCamera"));
-    CGameObject* pGameObject = nullptr;
 
-    if (pCamera)
-    {
-        _vec3 vTest = m_pTransformComp->Get_Look();
-        D3DXVec3Normalize(&vTest, &vTest);
-        /*auto listMonster = Engine::IntersectTests_Line_GetGameObject(0, m_pTransformComp->Get_Pos(),
-            m_pTransformComp->Get_Pos() + vTest * 100.f,
-            LAYER_MONSTER);*/
-        _vec3 vPos = m_pTransformComp->Get_Pos();
-        vPos.y += 0.7f;
-
-        auto listMonster = Engine::IntersectTests_Ray_GetGameObject(0, vPos,
-            m_pTransformComp->Get_Look(),
-            (_ulong)(-1) ^ LAYER_PLAYER);
-
-        //auto listMonster = Engine::IntersectTests_Line_GetGameObject(0, vPos,
-        //    vPos + m_pTransformComp->Get_Look() * 3.f,
-        //    (_ulong)(-1) ^ LAYER_PLAYER);
-
-        if (!listMonster.empty())
-        {
-            CGameObject* pDstObj = nullptr;
-            _float fDist = FLT_MAX;
-
-            for (auto iter = listMonster.begin(); iter != listMonster.end(); ++iter)
-            {
-                _vec3 vPos = (*iter).second.vContactPoint.Convert_DX9Vec3();
-                _float fLength = D3DXVec3Length(&(m_pTransformComp->Get_Pos() - vPos));
-                if (fLength < fDist)
-                {
-                    fDist = fLength;
-                    pDstObj = (*iter).first;
-                }
-            }
-
-
-            if (pDstObj)
-            {
-                cout << " 거리 : " << fDist << endl;
-                CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDstObj);
-
-                // 타겟 지정
-                //CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
-                //CAceFood* pFood = dynamic_cast<CAceFood*>(pAceObj);
-                //CAceWeapon* pWeapon = dynamic_cast<CAceWeapon*>(pAceObj);
-
-                //if (pMonster != nullptr)
-                //    cout << " 체력 : " << pMonster->Get_MonsterHP().Cur << endl;
-
-                //cout << pWeapon->Get_ObjectID() << endl;
-                //m_eObjectName = pWeapon->Get_WeaponName();
-                //cout << " 이름 : " << pFood->Get_FACTORY_NAME() << endl;
-                //cout << " 이름 : " << m_eObjectName << endl;
-
-                pGameObject = pDstObj;
-            }
-            else
-            {
-                pGameObject = nullptr;
-            }
-        }
-
-    }
+    // Pow 생성
+    Engine::Add_GameObject(L"GameLogic", CEffect_HitPow::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 0.2f, m_pTransformComp->Get_Pos().z, this));
 
 
     if (pAceObj == nullptr)

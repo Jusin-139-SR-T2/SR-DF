@@ -80,7 +80,7 @@ private:
 
 private:
 	//_vec3	vPlayerPosEye;			// 플레이어의 눈높이 위치
-
+	_vec3	vPlayerLook;			// 플레이어가 바라보는 곳
 
 	_vec3 m_vRotPlus = { 0.f, 0.f, 0.f };
 	_vec3 m_vRotMinus = { 0.f, 0.f, 0.f };

@@ -217,6 +217,9 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Close Attack">
       <UniqueIdentifier>{62ff4301-9922-4291-bc8b-eea1daff7cf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02.">
+      <UniqueIdentifier>{7977318f-ce2b-4665-b2af-4052cbb15483}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill">
       <UniqueIdentifier>{ca6f25a3-3f57-4f7d-bd0c-81b038c47176}</UniqueIdentifier>
     </Filter>
@@ -234,9 +237,6 @@
     </Filter>
     <Filter Include="05. =====AceUI=====\00. UI_PlayerBudBox">
       <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. RayBullet">
-      <UniqueIdentifier>{7977318f-ce2b-4665-b2af-4052cbb15483}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -429,9 +429,6 @@
     <ClInclude Include="Header\PlayerSkillUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
     </ClInclude>
-    <ClInclude Include="Header\RayBullet.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. RayBullet</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -619,9 +616,6 @@
     </ClCompile>
     <ClCompile Include="Code\PlayerSkillUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\RayBullet.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02. RayBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

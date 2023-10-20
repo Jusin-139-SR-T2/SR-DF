@@ -12,7 +12,6 @@ class CRcBufferComp;
 class CTextureComponent;
 class CTransformComponent;
 class CCalculatorComponent;
-class CColliderComponent;
 
 END
 
@@ -44,9 +43,6 @@ public:
 	virtual void OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) override;
 	virtual void OnCollisionExited(CGameObject* pDst) override;
 
-public:
-	CPlayer::OBJECT_NAME Get_WeaponName() { return m_pCurName; }
-
 private: // 함수 
 	HRESULT				Add_Component();
 	HRESULT				BillBoard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
@@ -62,13 +58,11 @@ private: // 변수
 	_float m_fMaxHP = 2.f;
 	OBJECT_CLASS		m_eFactoryClass;
 
-
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
 	CTextureComponent* m_pTextureComp = nullptr;
 	CTransformComponent* m_pTransformComp = nullptr;
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;
 
 	
 };
