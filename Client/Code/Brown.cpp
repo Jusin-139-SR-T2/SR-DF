@@ -89,7 +89,8 @@ HRESULT CBrown::Ready_GameObject()
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
     pSphereShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
     m_bCollisionOn = FALSE;
-    m_pColliderComp->Set_Scale({ 0.1, 0.1, 0.1 });
+    //m_pColliderComp->Set_Scale({ 0.2, 0.2, 0.2 });
+   // m_pColliderComp->Set_ScaleY(0.2);
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE);
@@ -164,8 +165,11 @@ HRESULT CBrown::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-    m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
-    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    //m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
+    m_pTextureComp->Set_Scale(tObjectSerial.vScale);
+
+
     m_pTextureComp->Readjust_Transform();
 
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
@@ -180,6 +184,8 @@ HRESULT CBrown::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     m_tStat.vPatrolPointZero = m_pTransformComp->Get_Pos();
+
+    m_pColliderComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
 
     return S_OK;
 }
