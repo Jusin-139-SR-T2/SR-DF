@@ -419,6 +419,9 @@ private:
 	_float fRotStart = 0.f;
 	_float fLRotStart = 0.f;
 
+	_float fAttackTime = 0.f;
+
+
 private:
 	GAUGE<_float>	m_fMonsterHp;
 };

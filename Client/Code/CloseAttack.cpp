@@ -99,10 +99,10 @@ CCloseAttack* CCloseAttack::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _v
 		return nullptr;
 	}
 
-	_float fMovePos = 0.7f;
-	_vec3 vAttackPosition = vPos + vDir;
+	_float fMovePos = 1.2f;
+	_vec3 vAttackPosition = vPos + vDir * fMovePos;
 
-	pInstance->m_pTransformComp->Set_Pos(vAttackPosition.x, vAttackPosition.y, vAttackPosition.z + fMovePos);	// 생성 위치
+	pInstance->m_pTransformComp->Set_Pos(vAttackPosition.x, vAttackPosition.y, vAttackPosition.z);	// 생성 위치
 	pInstance->Set_PlayerAttackState(vDir, _AttackState, fMoveSpeed, fDeleteTime, fDamage, fSize);	// 공격 세팅
 	pInstance->Set_Owner(_Owner);									// 공격의 주인
 	pInstance->Set_TeamID(_eTeamID);								// 공격의 팀 설정
