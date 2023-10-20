@@ -2334,7 +2334,6 @@ void CPlayer::Right_Hand(float fTimeDelta)
             m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
             _vec3 vPos = m_pTransformComp->Get_Pos();
-            vPos.y += 0.7f;
 
             // 주먹공격 생성
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
@@ -2355,6 +2354,8 @@ void CPlayer::Right_Hand(float fTimeDelta)
 
             // 차징 텍스처로 변경
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"RightHand_Charging");
+
+            m_tTime.fRightChangeTime = 1.2f;         // 프레임 속도 조절
 
             // 불러오기 On
             bRightGetAnimation = true;
@@ -2385,6 +2386,8 @@ void CPlayer::Right_Hand(float fTimeDelta)
         {
             // 오른손 주먹 다시 불러오기
             m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
+
+            m_tTime.fRightChangeTime = 1.f;         // 프레임 속도 조절
             RightLoadAnimationFromFile("RightFist");
             m_tRightHand.bBasicAttackOn = false;
         }
@@ -2478,7 +2481,6 @@ void CPlayer::Right_Gun(float fTimeDelta)
             //RayAttack(pDst , -10.f, m_eAttackState);
 
             _vec3 vPos = m_pTransformComp->Get_Pos();
-            vPos.y += 0.7f;
 
             // 총알 생성
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
@@ -2510,7 +2512,6 @@ void CPlayer::Right_Thompson(float fTimeDelta)
             if (bRightGetAnimation)
             {
                 RightLoadAnimationFromFile("ThompsonPickUp");
-
             }
         }
     }
@@ -2548,13 +2549,12 @@ void CPlayer::Right_Thompson(float fTimeDelta)
             //RayAttack(pDst, -10.f, m_eAttackState);
 
             _vec3 vPos = m_pTransformComp->Get_Pos();
-            vPos.y += 0.7f;
 
             // 총알 생성
-            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
-                vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
-                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                100.f, 1.f, 40.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기f
+            Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev, // 레이어, 디바이스
+                vPos, m_pTransformComp->Get_Look(),             // 생성위치, 방향
+                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),   // 공격유형, 팀
+                100.f, 1.f, 40.f, 1.f));                        // 속도, 삭제시간, 데미지, 크기f
 
             m_bAttack = false;  // 공격 Off
         }
@@ -2609,7 +2609,6 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
             m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
             _vec3 vPos = m_pTransformComp->Get_Pos();
-            vPos.y += 0.7f;
 
             // 파이프 공격 생성
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
@@ -2633,6 +2632,8 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
 
             // 불러오기 On
             bRightGetAnimation = true;
+
+            //m_tTime.fRightChangeTime = 1.2f;         // 프레임 속도 조절
 
             // 애니메이션 불러오기
             if (bRightGetAnimation)
@@ -2761,7 +2762,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
 
                 // 오른손 총 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
-                RightLoadAnimationFromFile("FryingPan5");
+                RightLoadAnimationFromFile("FryingPan");
 
                 bRightGetAnimation = false; // Off
             }

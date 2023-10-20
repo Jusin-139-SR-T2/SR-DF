@@ -332,6 +332,8 @@ private:
 
 		_float		fMaxChangeTime = 3.f;		// 변경될 최대 시간
 		_float		fChargeStartTime = 0.f;		// 차지를 시작할 시간
+
+		_float		fAttackCreateTime = 0.f;	// 공격 생성 시간
 	};
 
 	struct _CAMERA
@@ -408,6 +410,9 @@ private:
 	_bool m_bRotChange = false;
 	_bool m_bRotStart = false;
 	_bool m_bLRotStart = false;
+
+	_bool m_bAttackCreateOn = false;
+
 	_int m_bLAttackMove = EBLACKBOARD_NONE;
 	_int m_bRAttackMove = EBLACKBOARD_NONE;
 
