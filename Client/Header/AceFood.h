@@ -60,6 +60,7 @@ protected:
 
 public:
 	FOOD_NAME Get_FoodName() { return m_pCurName; }
+	_float	  Get_Hp() { return m_fHp; }
 
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
@@ -79,7 +80,7 @@ private: //변수
 	_vec3				CurPos;			  // 현재 위치 
 	_float				m_fChangeTextureSpeed = 0.001f;
 	OBJECT_CLASS		m_eFactoryClass;
-
+	_float				m_fHp = 10.f;
 public:
 	GETSET_EX2(OBJECT_CLASS, m_eFactoryClass, FACTORY_NAME, GET, SET)
 };

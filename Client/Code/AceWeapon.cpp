@@ -65,6 +65,12 @@ HRESULT CAceWeapon::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
     m_pTransformComp->Set_Scale(tObjectSerial.vScale);
 
+    //_vec3 vScale = { 1.f, 1.f, 1.f };
+    //m_pColliderComp->Set_Scale(vScale);
+
+    //m_pTextureComp->Set_Scale(vScale);
+
+
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
     Set_ObjectName(strConvName);
 
@@ -91,6 +97,9 @@ _int CAceWeapon::Update_GameObject(const _float& fTimeDelta)
 
     // 변수에 저장된 enum과 hp로 texture 결정 
     Change_Texture(m_pCurName);
+
+    // 물리바디 업데이트
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
 
     // Renderer 등록 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -128,6 +137,21 @@ HRESULT CAceWeapon::Add_Component()
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
+
+    // 충돌 컴포넌트 
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+
+    // 물리 세계 등록
+    m_pColliderComp->EnterToPhysics(0);
+
+    // 충돌 함수 연결
+    m_pColliderComp->Set_Collision_Event<ThisClass>(this, &ThisClass::OnCollision);
+    m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
+    m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
+
+    // 충돌 레이어, 마스크 설정
+    m_pColliderComp->Set_CollisionLayer(LAYER_ITEM); // 이 클래스가 속할 충돌레이어 
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
     return S_OK;
 }
