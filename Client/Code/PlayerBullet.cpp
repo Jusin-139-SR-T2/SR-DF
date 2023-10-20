@@ -35,8 +35,8 @@ HRESULT CPlayerBullet::Ready_GameObject()
 	NULL_CHECK_RETURN(m_pPlayerTransformcomp, -1);
 
 	// 발사 방향 설정
-	//m_vDir = m_pPlayerTransformcomp->Get_Look();
-
+	m_tAttack.vDir = m_pPlayerTransformcomp->Get_Look();
+	m_tAttack.fMoveSpeed = 5.f;
 	// 플레이어 받아오기
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"GameLogic", L"Player"));
 	m_bDbugFrame = pPlayer->Get_DBugFrame();
@@ -86,7 +86,7 @@ void CPlayerBullet::Render_GameObject()
 	
 	if (*m_bDbugFrame)
 	{
-		MeshSphereColider(pShape->fRadius, 30.f, 30.f);
+		MeshSphereColider(pShape->fRadius, 30, 30);
 	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);

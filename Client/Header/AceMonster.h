@@ -72,7 +72,7 @@ protected:
 
 protected:
 	STATE_RIGHTHAND				ePlayerRighthand;	// 충돌시 상태머신 돌아가기위해 플레이어 오른손 텍스쳐 저장용도 
-	FCollisionBox*				pBoxShape;			// 몬스터 충돌체 = box타입
+	FCollisionSphere*			pSphereShape;			// 몬스터 충돌체 = box타입
 	MonsterSound				m_tSound;			// 사운드 제어하기위한 구조체 
 	MONSTER						m_tStat;			// 몬스터의 각종 스텟 저장 구조체
 	FRAME						m_tFrame;			// 프레임 및 수명 등 시간관련 구조체 

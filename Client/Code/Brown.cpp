@@ -87,12 +87,9 @@ HRESULT CBrown::Ready_GameObject()
     // 충돌용
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-    pBoxShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-
-//#pragma region 블랙보드
-//    Engine::Add_BlackBoard(L"Monster", CBlackBoard_Monster::Create());
-//#pragma endregion
-
+    pSphereShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+    m_bCollisionOn = FALSE;
+    m_pColliderComp->Set_Scale({ 0.1, 0.1, 0.1 });
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
     m_tState_Obj.Set_State(STATE_OBJ::IDLE);
@@ -159,8 +156,6 @@ HRESULT CBrown::Ready_GameObject()
 
 #pragma endregion
 
-    //OutputDebugStringW(debugString);
-
     return S_OK;
 }
 
@@ -184,6 +179,8 @@ HRESULT CBrown::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
     m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
+    m_tStat.vPatrolPointZero = m_pTransformComp->Get_Pos();
+
     return S_OK;
 }
 
@@ -192,6 +189,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     SUPER::Update_GameObject(fTimeDelta);
 
     Gravity(fTimeDelta);
+
     m_pTransformComp->Move_Pos(&m_vSpeed, fTimeDelta, 1.f);
 
     // 지형타기 
@@ -211,7 +209,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         Billboard(fTimeDelta);
 
     //블랙보드 업로드 
-    Update_InternalData();
+    //Update_InternalData();
 
     //상태머신
     m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
@@ -282,7 +280,7 @@ void CBrown::Render_GameObject()
     m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
-    //MeshBoxColider(pBoxShape->vHalfSize.x, pBoxShape->vHalfSize.y,pBoxShape->vHalfSize.z);
+    MeshSphereColider(pSphereShape->fRadius, 32, 16);
 #pragma endregion
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -304,7 +302,7 @@ HRESULT CBrown::Add_Component()
     
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
-    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL | LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL | LAYER_PLAYER_ATTACK | LAYER_BOSS_SKILL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
     return S_OK;
 }
@@ -357,6 +355,7 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
             else
             {
                 //==== 플레이어 공격체와  충돌 =============================
+                m_bCollisionOn = true;
                 m_eRecentCol = RECENT_COL::PLAYERATK;
 
                 Add_BasicEffect(m_pOwner); // 이펙트 추가
@@ -388,10 +387,12 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
             switch (ePlayerRighthand)
             {
             case Engine::STATE_RIGHTHAND::RUN_HAND:
+                m_bCollisionOn = true;
                 Add_BasicEffect(m_pOwner); // 이펙트 추가
                 m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
                 break;
             case Engine::STATE_RIGHTHAND::KICK:
+                m_bCollisionOn = true;
                 Add_BasicEffect(m_pOwner); // 이펙트 추가
                 m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
                 break;
@@ -412,6 +413,7 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
         else
         {
             // ==== 보스스킬과 충돌 ========================================
+            m_bCollisionOn = true;
             m_eRecentCol = RECENT_COL::BOSSATK;
 
             Add_BasicEffect(m_pOwner); // 이펙트 추가
@@ -427,6 +429,7 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 
 {
+    m_bCollisionOn = false;
 }
 
 void CBrown::MonsterDead()
