@@ -241,6 +241,9 @@
     <Filter Include="02. =====AceGameObject=====\03. AceTrigger">
       <UniqueIdentifier>{6f71e0b3-4236-486c-9bd7-5a5add4d4342}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03..=====Object=====\01. Trigger">
+      <UniqueIdentifier>{dd0f134e-566b-4da6-82aa-8d5343aa837e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -432,6 +435,18 @@
     <ClInclude Include="Header\PlayerSkillUnion.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Trigger.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Trigger_ToStageHall.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Trigger_ToJumpMap.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Trigger_ToBossMap.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -619,6 +634,18 @@
     </ClCompile>
     <ClCompile Include="Code\PlayerSkillUnion.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Trigger.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Trigger_ToStageHall.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Trigger_ToJumpMap.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Trigger_ToBossMap.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

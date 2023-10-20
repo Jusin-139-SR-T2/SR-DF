@@ -10,6 +10,9 @@
 #include "AceThrow.h"
 #include "AceInteraction.h"
 #include "AceBuilding.h"
+#include "Trigger_ToStageHall.h"
+#include "Trigger_ToJumpMap.h"
+#include "Trigger_ToBossMap.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -81,6 +84,18 @@ CGameObject* CAbsFac_GameObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSe
 	else if (strType == "AceBoss")
 	{
 		return static_cast<CGameObject*>(CAceBoss::Create(pGraphicDev, tObject));
+	}
+	else if (strType == "Trigger_ToStageHall")
+	{
+		return static_cast<CGameObject*>(CTrigger_ToStageHall::Create(pGraphicDev, tObject));
+	}
+	else if (strType == "Trigger_ToBossMap")
+	{
+		return static_cast<CGameObject*>(CTrigger_ToBossMap::Create(pGraphicDev, tObject));
+	}
+	else if (strType == "Trigger_ToJumpMap")
+	{
+		return static_cast<CGameObject*>(CTrigger_ToJumpMap::Create(pGraphicDev, tObject));
 	}
 
 	return static_cast<CGameObject*>(nullptr);

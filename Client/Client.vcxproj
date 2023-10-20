@@ -55,6 +55,10 @@
     <ClInclude Include="Header\Loading.h" />
     <ClInclude Include="Header\MainApp.h" />
     <ClInclude Include="Header\Stage.h" />
+    <ClInclude Include="Header\Trigger.h" />
+    <ClInclude Include="Header\Trigger_ToBossMap.h" />
+    <ClInclude Include="Header\Trigger_ToJumpMap.h" />
+    <ClInclude Include="Header\Trigger_ToStageHall.h" />
     <ClInclude Include="Header\UI_Player.h" />
     <ClInclude Include="Include\Client.h" />
     <ClInclude Include="Include\Resource.h" />
@@ -112,6 +116,10 @@
     <ClCompile Include="Code\MainApp.cpp" />
     <ClCompile Include="Code\Stage.cpp" />
     <ClCompile Include="Code\DynamicCamera.cpp" />
+    <ClCompile Include="Code\Trigger.cpp" />
+    <ClCompile Include="Code\Trigger_ToBossMap.cpp" />
+    <ClCompile Include="Code\Trigger_ToJumpMap.cpp" />
+    <ClCompile Include="Code\Trigger_ToStageHall.cpp" />
     <ClCompile Include="Code\UI_Player.cpp" />
     <ClCompile Include="Code\Gray.cpp" />
     <ClCompile Include="Code\FireWork.cpp" />

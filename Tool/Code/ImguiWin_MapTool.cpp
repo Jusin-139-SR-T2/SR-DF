@@ -1165,7 +1165,11 @@ void CImguiWin_MapTool::Create_LayerToScene(const FLayerData& tLayerData)
 
 void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CLASS& eClassID, FObjectData& tObjectData)
 {
-    if (tObjectData.strClassName == "AceBuilding")
+    if (tObjectData.strClassName == "AceBuilding"
+        || tObjectData.strClassName == "Trigger_ToStageHall"
+        || tObjectData.strClassName == "Trigger_ToBossMap"
+        || tObjectData.strClassName == "Trigger_ToJumpMap"
+        || tObjectData.strClassName == "Trigger_ToMalone")
     {
         CGameObject* pObj = static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
             tObjectData.vPos, D3DXToRadian(tObjectData.vRot), tObjectData.vScale, tObjectData.strGroupKey, tObjectData.strTextureKey));
@@ -1181,7 +1185,8 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
         || tObjectData.strClassName == "AceWeapon"
         || tObjectData.strClassName == "AceFood"
         || tObjectData.strClassName == "AceThrow"
-        || tObjectData.strClassName == "AceInteraction")
+        || tObjectData.strClassName == "AceInteraction"
+        )
     {
         CGameObject* pObj = static_cast<CGameObject*>(CRectObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
             tObjectData.vPos, D3DXToRadian(tObjectData.vRot), tObjectData.vScale, tObjectData.strGroupKey, tObjectData.strTextureKey));
@@ -1962,8 +1967,8 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
             ((_float)rc.bottom / m_vViewerContent_Size.y));
 
 
-        _vec3 vNear(((_float)pt.x - (vWindowMin.x + m_vViewerContent_Size.x * 0.5f) + (_float)rc.right * 0.5f),
-            ((_float)pt.y - (vWindowMin.y + m_vViewerContent_Size.y * 0.5f) + (_float)rc.bottom * 0.5f), 0.f);
+        _vec3 vNear(((_float)pt.x - (vWindowMin.x * 2.f + m_vViewerContent_Size.x * 0.5f) + (_float)rc.right * 0.5f),
+            ((_float)pt.y - (vWindowMin.y * 2.f + m_vViewerContent_Size.y * 0.5f) + (_float)rc.bottom * 0.5f), 0.f);
         //vNear += _vec3(((_float)pt.x - vNear.x) * vRatio.x, ((_float)pt.y - vNear.y) * vRatio.y, 0.f);
         _vec3 vFar(vNear.x, vNear.y, 1.f);
         /*_vec3 vNear(pt.x, pt.y, 0.f);

@@ -668,7 +668,7 @@
                     "use_priority_render": true,
                     "pos": {
                         "x": -6.49781608581543,
-                        "y": 6.9503984451293945,
+                        "y": 6.268315315246582,
                         "z": 42.33225631713867
                     },
                     "rot": {
@@ -22219,6 +22219,326 @@
                     },
                     "group_key": "Furniture",
                     "texture_key": "Crate4"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate68"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 110.76557922363281,
+                        "y": 16.912691116333008,
+                        "z": 124.16645050048828
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 375.8601379394531,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 5.028140068054199,
+                        "y": 5.028140068054199,
+                        "z": 5.028140068054199
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_CockMachine1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -34.73366165161133,
+                        "y": 1.5423250198364258,
+                        "z": 42.0991325378418
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.9462599158287048,
+                        "y": 3.2486538887023926,
+                        "z": 1.2800891399383545
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "CockMachine"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_GreenCrate1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -14.357057571411133,
+                        "y": 1.4232836961746216,
+                        "z": 47.37571716308594
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 2.892787218093872,
+                        "y": 2.892787218093872,
+                        "z": 2.892787218093872
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "GreenCrate1"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate69"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -41.3681526184082,
+                        "y": 16.293956756591797,
+                        "z": 158.2611083984375
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 53.85802459716797,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 4.079090118408203,
+                        "y": 4.079090118408203,
+                        "z": 4.079090118408203
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate70"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -40.42249298095703,
+                        "y": 16.293956756591797,
+                        "z": 168.75767517089844
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 53.85802459716797,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 4.079090118408203,
+                        "y": 4.079090118408203,
+                        "z": 4.079090118408203
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate71"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -41.66856002807617,
+                        "y": 16.293956756591797,
+                        "z": 178.50485229492188
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 53.85802459716797,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 4.079090118408203,
+                        "y": 4.079090118408203,
+                        "z": 4.079090118408203
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_TileB_68"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 54.00312042236328,
+                        "y": 15.248552322387695,
+                        "z": 130.19610595703125
+                    },
+                    "rot": {
+                        "x": 201.76864624023438,
+                        "y": 0.0,
+                        "z": 662.7731323242188
+                    },
+                    "scale": {
+                        "x": 0.8024030923843384,
+                        "y": 10.029276847839355,
+                        "z": 11.175297737121582
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "TileB_6"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Struct_TileB_69"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 45.832489013671875,
+                        "y": 15.248552322387695,
+                        "z": 118.33233642578125
+                    },
+                    "rot": {
+                        "x": 201.76864624023438,
+                        "y": 232.04788208007813,
+                        "z": 662.7731323242188
+                    },
+                    "scale": {
+                        "x": 0.8024030923843384,
+                        "y": 10.029276847839355,
+                        "z": 11.175297737121582
+                    },
+                    "group_key": "Structure",
+                    "texture_key": "TileB_6"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate72"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 12.393138885498047,
+                        "y": 16.293956756591797,
+                        "z": 160.35086059570313
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 53.85802459716797,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 4.079090118408203,
+                        "y": 4.079090118408203,
+                        "z": 4.079090118408203
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Crate73"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -3.996598720550537,
+                        "y": 16.293956756591797,
+                        "z": 155.0185546875
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 120.89408111572266,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 4.079090118408203,
+                        "y": 4.079090118408203,
+                        "z": 4.079090118408203
+                    },
+                    "group_key": "Furniture",
+                    "texture_key": "Crate4"
                 }
             ]
         },
@@ -23591,6 +23911,582 @@
                         "x": -69.4009780883789,
                         "y": 15.753219604492188,
                         "z": 123.67969512939453
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Trigger_ToStageHall"
+                    },
+                    "ID": 9,
+                    "class_name": "Trigger_ToStageHall",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 160.8789520263672,
+                        "y": 16.706022262573242,
+                        "z": -13.05267333984375
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 39.989925384521484,
+                        "y": 33.130577087402344,
+                        "z": 37.08479309082031
+                    },
+                    "group_key": "Develop",
+                    "texture_key": "BoxTrigger"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown23"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -32.50577926635742,
+                        "y": 15.753219604492188,
+                        "z": 163.06275939941406
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown24"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -32.28841781616211,
+                        "y": 15.753219604492188,
+                        "z": 175.03334045410156
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown25"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 23.575584411621094,
+                        "y": 15.753219604492188,
+                        "z": 125.64262390136719
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown26"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 40.46841812133789,
+                        "y": 15.753219604492188,
+                        "z": 125.02204895019531
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown27"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 49.683502197265625,
+                        "y": 15.753219604492188,
+                        "z": 137.87046813964844
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Gray10"
+                    },
+                    "ID": 9,
+                    "class_name": "Gray",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 55.22592544555664,
+                        "y": 15.584877967834473,
+                        "z": 122.00483703613281
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Gray_Single",
+                    "texture_key": "Idle"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Gray11"
+                    },
+                    "ID": 9,
+                    "class_name": "Gray",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 94.12057495117188,
+                        "y": 1.3687735795974731,
+                        "z": 102.42037200927734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Gray_Single",
+                    "texture_key": "Idle"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Gray12"
+                    },
+                    "ID": 9,
+                    "class_name": "Gray",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 97.95225524902344,
+                        "y": 1.3687735795974731,
+                        "z": 102.42037200927734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Gray_Single",
+                    "texture_key": "Idle"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Gray13"
+                    },
+                    "ID": 9,
+                    "class_name": "Gray",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 90.26441955566406,
+                        "y": 1.3687735795974731,
+                        "z": 102.42037200927734
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Gray_Single",
+                    "texture_key": "Idle"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown28"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 90.2683334350586,
+                        "y": 1.434950828552246,
+                        "z": 70.41535186767578
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Gray14"
+                    },
+                    "ID": 9,
+                    "class_name": "Gray",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 124.36508178710938,
+                        "y": 1.3687735795974731,
+                        "z": -13.044075012207031
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Gray_Single",
+                    "texture_key": "Idle"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown29"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 125.81680297851563,
+                        "y": 1.434950828552246,
+                        "z": -3.8221993446350098
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown30"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 128.1988067626953,
+                        "y": 1.434950828552246,
+                        "z": 1.3409630060195923
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown31"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 124.88459777832031,
+                        "y": 1.434950828552246,
+                        "z": -8.345736503601074
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown32"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 124.88459777832031,
+                        "y": 1.434950828552246,
+                        "z": -18.223983764648438
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown33"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 127.0800552368164,
+                        "y": 1.434950828552246,
+                        "z": -23.16986846923828
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Brown_Single",
+                    "texture_key": "Stand_South"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Unit_Brown34"
+                    },
+                    "ID": 9,
+                    "class_name": "Brown",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 129.84176635742188,
+                        "y": 1.434950828552246,
+                        "z": -27.495241165161133
                     },
                     "rot": {
                         "x": 0.0,
