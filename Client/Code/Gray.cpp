@@ -292,7 +292,7 @@ void CGray::Render_GameObject()
     m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
-    MeshSphereColider(pSphereShape->fRadius, 32, 16);
+    MeshSphereColider(_float(pSphereShape->fRadius), 32, 16);
     //MeshBoxColider(_float(pBoxShape->vHalfSize.x), _float(pBoxShape->vHalfSize.y), _float(pBoxShape->vHalfSize.z));
 #pragma endregion
 
@@ -354,8 +354,8 @@ void CGray::OnCollision(CGameObject* pDst, const FContact* const pContact)
     CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
     if (pSolid)
     {
-        _vec3 vNormal(pContact->vContactNormal.x, pContact->vContactNormal.y, pContact->vContactNormal.z);
-        m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * pContact->fPenetration));
+        _vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));
+        m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * static_cast<_float>(pContact->fPenetration)));
         if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
             m_IsOnGround = true;
     }

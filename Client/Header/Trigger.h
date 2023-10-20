@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
+#include "UI_SceneChange.h"
 
 BEGIN(Engine)
 

@@ -2,6 +2,8 @@
 #include "AceObjectFactory.h"
 #include "AceUnit.h"
 #include "Engine_Enum.h"
+#include "Export_System.h"
+#include "Export_Utility.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -61,7 +63,8 @@ protected:
 public:
 	FOOD_NAME	Get_FoodName() { return m_pCurName; }
 	_float		Get_Hp() { return m_fHp; }
-	_bool		m_bRayEaten = FALSE;
+	_bool		m_bEaten = false;
+
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
 	CTextureComponent* m_pTextureComp = nullptr;
@@ -83,11 +86,6 @@ private: //º¯¼ö
 
 public:
 	GETSET_EX2(OBJECT_CLASS, m_eFactoryClass, FACTORY_NAME, GET, SET)
-	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
-	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComp, GET, SET)
-
-	GETSET_EX2(_bool, m_bRayEaten, FoodEat, GET, SET)
-
+	GETSET_EX2(_bool , m_bEaten, FOOD_EAT, GET, SET)
 };
 

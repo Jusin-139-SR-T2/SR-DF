@@ -86,7 +86,7 @@ void CPlayerBullet::Render_GameObject()
 	
 	if (*m_bDbugFrame)
 	{
-		MeshSphereColider(pShape->fRadius, 30, 30);
+		MeshSphereColider(_float(pShape->fRadius), 30, 30);
 	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
