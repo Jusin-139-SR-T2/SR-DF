@@ -338,8 +338,9 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	if (m_bOne)
 	{
 		// 카메라 위치 설정
-		//m_vEye = { vPlayerPos.x, vPlayerPos.y + (vPlayerPos.y / 2), vPlayerPos.z}; // 플레이어의 눈높이
-		m_vEye = { vPlayerPos.x, vPlayerPos.y + 0.7f, vPlayerPos.z}; // 플레이어의 눈높이
+		vPlayerPos.y += 0.7f;
+
+		m_vEye = vPlayerPos; // 플레이어의 눈높이
 
 		// 카메라가 바라보는 대상 (플레이어가 바라보는 방향)
 		m_vAt = vPlayerPos + vPlayerLook;// +vEventCameraMove;

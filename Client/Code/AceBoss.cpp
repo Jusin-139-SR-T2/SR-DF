@@ -97,9 +97,9 @@ HRESULT CAceBoss::Ready_GameObject()
 	// 충돌용
 	m_pTransformComp->Readjust_Transform();
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-	pBoxShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
-	pBoxShape->vHalfSize = { 0.3f, 0.4f, 0.5f };
-	
+	pSphereShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+	m_pColliderComp->Set_Scale({ 0.1, 0.1, 0.1 });
+
 	// 블랙보드 등록 
 	Engine::Add_BlackBoard(L"MonsterUnion", CBlackBoard_Monster::Create());
 
@@ -326,7 +326,7 @@ void CAceBoss::Render_GameObject()
 	m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
-	MeshBoxColider(_float(pBoxShape->vHalfSize.x), _float(pBoxShape->vHalfSize.y), _float(pBoxShape->vHalfSize.z));
+	MeshSphereColider(pSphereShape->fRadius, 32, 16);
 #pragma endregion
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);

@@ -85,11 +85,13 @@ HRESULT CGray::Ready_GameObject()
     m_bDazedState = FALSE;
     m_bDeadState = FALSE;
     m_bDazeToHeal = FALSE;
-    
+
     // 충돌용
     m_pTransformComp->Readjust_Transform();
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
-    pBoxShape = dynamic_cast<FCollisionBox*>(m_pColliderComp->Get_Shape());
+    pSphereShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
+    m_pColliderComp->Set_Scale({ 0.1, 0.1, 0.1 });
+
     m_bCollisionOn = FALSE;
 
 #pragma region 목표 상태머신 등록 - (AI) Judge
@@ -191,6 +193,8 @@ HRESULT CGray::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
     m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
+    m_tStat.vPatrolPointZero = m_pTransformComp->Get_Pos();
+
     return S_OK;
 }
 
@@ -199,6 +203,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     SUPER::Update_GameObject(fTimeDelta);
 
     Gravity(fTimeDelta);
+
     m_pTransformComp->Move_Pos(&m_vSpeed, fTimeDelta, 1.f);
 
     // 지형타기 
@@ -219,7 +224,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
         Billboard(fTimeDelta);
 
     //블랙보드 업로드 
-    Update_InternalData();
+    //Update_InternalData();
 
     // 상태머신
     m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
@@ -284,6 +289,7 @@ void CGray::Render_GameObject()
     m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
+    MeshSphereColider(pSphereShape->fRadius, 32, 16);
     //MeshBoxColider(_float(pBoxShape->vHalfSize.x), _float(pBoxShape->vHalfSize.y), _float(pBoxShape->vHalfSize.z));
 #pragma endregion
 
@@ -306,7 +312,7 @@ HRESULT CGray::Add_Component()
 
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
-    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_WALL | LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_WALL | LAYER_PLAYER_ATTACK | LAYER_BOSS_SKILL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
     return S_OK;
 }
@@ -351,11 +357,14 @@ void CGray::OnCollision(CGameObject* pDst, const FContact* const pContact)
             m_IsOnGround = true;
     }
 }
+
 void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
     // 충돌 대상 : 플레이어, 플레이어 공격체, 보스몬스터 공격체, 중립(플레이어가 던지는 아이템) 
     if (Get_IsMonsterDeath())
         return;
+    else if (25 >= m_gHp.Cur && FALSE == m_bDazedState)
+        m_tState_Obj.Set_State(STATE_OBJ::DAZED);
 
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 

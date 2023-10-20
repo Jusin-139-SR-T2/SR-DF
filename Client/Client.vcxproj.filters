@@ -238,6 +238,9 @@
     <Filter Include="05. =====AceUI=====\00. UI_PlayerBudBox">
       <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. =====AceGameObject=====\03. AceTrigger">
+      <UniqueIdentifier>{6f71e0b3-4236-486c-9bd7-5a5add4d4342}</UniqueIdentifier>
+    </Filter>
     <Filter Include="03..=====Object=====\01. Trigger">
       <UniqueIdentifier>{dd0f134e-566b-4da6-82aa-8d5343aa837e}</UniqueIdentifier>
     </Filter>
