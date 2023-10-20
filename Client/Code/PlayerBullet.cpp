@@ -65,7 +65,7 @@ _int CPlayerBullet::Update_GameObject(const _float& fTimeDelta)
 		m_vPos = m_pTransformComp->Get_Pos();
 		//CEffect_HitPow::Create(m_pGraphicDev, m_vPos.x, m_vPos.y, m_vPos.z, this);
 
-		//Set_Dead(); // 공격 삭제
+		Set_Dead(); // 공격 삭제
 		m_tAttack.fCurTime = 0.f;
 	}
 

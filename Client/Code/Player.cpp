@@ -2285,48 +2285,48 @@ void CPlayer::Right_Hand(float fTimeDelta)
             }
         }
 
-        //if (m_bRAttackMove)
-        //{
-        //    m_bRotStart = true;
-        //}
+        if (m_bRAttackMove)
+        {
+            m_bRotStart = true;
+        }
 
-        //// 공격시 카메라 무빙
-        //if (m_bRotStart)
-        //{
-        //    fRotStart += 1.f * fTimeDelta;
-        //    _float fMoveSpeed = 1.5f;
+        // 공격시 카메라 무빙
+        if (m_bRotStart)
+        {
+            fRotStart += 1.f * fTimeDelta;
+            _float fMoveSpeed = 1.5f;
 
-        //    if (fRotStart > 0.2f)
-        //    {
-        //        if (m_vRotMinus.y > -0.3 && !m_bRotChange)
-        //        {
-        //            m_vRotMinus.y -= fMoveSpeed * fTimeDelta;
-        //            m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(m_vRotMinus.y));
-        //        }
-        //        else if(m_vRotMinus.y < -0.3 && !m_bRotChange)
-        //        {
-        //            //m_vRot.y = 0.f;
-        //            m_bRotChange = true;
-        //        }
+            if (fRotStart > 0.2f)
+            {
+                if (m_vRotMinus.y > -0.3 && !m_bRotChange)
+                {
+                    m_vRotMinus.y -= fMoveSpeed * fTimeDelta;
+                    m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(m_vRotMinus.y));
+                }
+                else if(m_vRotMinus.y < -0.3 && !m_bRotChange)
+                {
+                    //m_vRot.y = 0.f;
+                    m_bRotChange = true;
+                }
 
-        //        if (m_bRotChange && m_vRotPlus.y < 0.3f)
-        //        {
-        //            m_vRotPlus.y += fMoveSpeed * fTimeDelta;
-        //            m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(m_vRotPlus.y));
-        //        }
+                if (m_bRotChange && m_vRotPlus.y < 0.3f)
+                {
+                    m_vRotPlus.y += fMoveSpeed * fTimeDelta;
+                    m_pTransformComp->Rotate(ROT_Y, D3DXToRadian(m_vRotPlus.y));
+                }
 
-        //        if (m_vRotPlus.y >= 0.3f)
-        //        {
-        //            m_vRotMinus.y = 0.f;
-        //            m_vRotPlus.y = 0.f;
-        //            fRotStart = 0.f;
+                if (m_vRotPlus.y >= 0.3f)
+                {
+                    m_vRotMinus.y = 0.f;
+                    m_vRotPlus.y = 0.f;
+                    fRotStart = 0.f;
 
-        //            m_bRotChange = false;
-        //            m_bRotStart = false;
-        //            m_bRAttackMove = false;
-        //        }
-        //    }
-        //}
+                    m_bRotChange = false;
+                    m_bRotStart = false;
+                    m_bRAttackMove = false;
+                }
+            }
+        }
 
         // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
