@@ -17,6 +17,9 @@
 #include "AceUnit.h"
 #include "AceWeapon.h"
 
+//테스트
+#include "UI_PlayerHurt.h"
+
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {
@@ -214,8 +217,11 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 
     //플레이어 뒤로 콜라가 생성되는 코드
-    //if (Engine::IsKey_Pressed(DIK_BACK))
-    //Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 
+    if (Engine::IsKey_Pressed(DIK_O))
+    {
+        Engine::Add_GameObject(L"UI", CUI_PlayerHurt::Create(m_pGraphicDev));
+    }
+        //Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 
     //    L"Test", m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z));
 
     //_vec3 vTest = m_pTransformComp->Get_Pos();
@@ -303,7 +309,7 @@ void CPlayer::Render_GameObject()
     // 오른손 출력 여부
     if (bRightHandOn)
     {
-        m_pRightHandComp->Render_Texture(m_tRightHand.fRightFrame, true);    // 오른손 텍스처 출력
+        m_pRightHandComp->Render_Texture(_uint(m_tRightHand.fRightFrame), true);    // 오른손 텍스처 출력
         m_pBufferComp->Render_Buffer();                             // 오른손 버퍼
     }
 #pragma endregion
@@ -680,7 +686,7 @@ if (!timeline[KEYTYPE_LEFTHAND].empty())
             if (bRighter)
             {
                 // (현재 프레임) 라이터를 켜져있는 이미지(마지막)로 고정
-                m_tLeftHand.fLeftFrame = timeline[KEYTYPE_LEFTHAND].back().texureframe;
+                m_tLeftHand.fLeftFrame = _float(timeline[KEYTYPE_LEFTHAND].back().texureframe);
                 m_PlayerLighter->Set_m_bLightOn(true);
             }
             else // 라이터가 안켜져있을 경우
@@ -885,8 +891,8 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
     CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
     if (pSolid)
     {
-        _vec3 vNormal(pContact->vContactNormal.x, pContact->vContactNormal.y, pContact->vContactNormal.z);
-        m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * pContact->fPenetration));
+        _vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));
+        m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * static_cast<_float>(pContact->fPenetration)));
         if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
             m_IsOnGround = true;
     }
@@ -2972,7 +2978,7 @@ void CPlayer::LeftInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
             _uint iFrameIndex = 0U;
 
             // 사이즈의 끝에서부터 시작해서 찾기
-            for (_uint j = timeline[KEYTYPE_LEFTHAND].size() - 1; j >= 0; j--)
+            for (_uint j = _uint(timeline[KEYTYPE_LEFTHAND].size()) - 1; j >= 0; j--)
             {
                 if ((timeline)[KEYTYPE_LEFTHAND][j].time <= m_tTime.fLeftCurrentTime)
                 {
@@ -3056,7 +3062,7 @@ void CPlayer::RightInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                 _uint iFrameIndex = 0U;
 
                 // 사이즈의 끝에서부터 시작해서 찾기
-                for (_uint j = timeline[KEYTYPE_RIGHTHAND].size() - 1; j >= 0; j--)
+                for (_uint j = _uint(timeline[KEYTYPE_RIGHTHAND].size()) - 1; j >= 0; j--)
                 {
                     // 풀차지시 키프레임
                     if (timeline[KEYTYPE_RIGHTHAND][j].bFullChargeKeyframe)
@@ -3216,8 +3222,7 @@ void CPlayer::LineEvent()
     if (pFood != nullptr)
     {
         m_gHp.Cur += pFood->Get_Hp();
-        m_eFoodName = pFood->Get_FoodName();
-        pFood->Set_Dead();
+        pFood->Set_FOOD_EAT(true);
     }
 }
 

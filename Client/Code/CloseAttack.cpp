@@ -78,7 +78,7 @@ void CCloseAttack::Render_GameObject()
 
 	if (*m_bDbugFrame)
 	{
-		MeshSphereColider(pShape->fRadius, 30.f, 30.f);
+		MeshSphereColider(_float(pShape->fRadius), 30, 30);
 	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);

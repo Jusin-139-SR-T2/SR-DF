@@ -64,13 +64,13 @@ _int CUI_CrossHair::Update_GameObject(const _float& fTimeDelta)
 
 	Change_Texture();
 
-	if (m_bPlayerAttackState)
-	{
-		for (double i = 0; i <= D3DX_PI * 2 ; i += fTimeDelta*0.1)
-			m_pTextureComp->Set_RotationZ(i);
+	//if (m_bPlayerAttackState)
+	//{
+	//	for (double i = 0; i <= D3DX_PI * 2 ; i += fTimeDelta*0.1)
+	//		m_pTextureComp->Set_RotationZ(i);
 
-		HairSpin = false;
-	}
+	//	HairSpin = false;
+	//}
 
 	Engine::Add_RenderGroup(RENDER_UI, this);
 

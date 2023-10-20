@@ -157,51 +157,6 @@
     <Filter Include="02. =====AceGameObject=====\02. AceEffect">
       <UniqueIdentifier>{543898ad-a751-4e16-b261-7b6a8a7ad222}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\03. Lighter">
-      <UniqueIdentifier>{e350700e-8895-4112-89d7-93342261724e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\03. Lighter\00. PlayerLighter">
-      <UniqueIdentifier>{aa69537c-df32-4a2e-b2c2-06149ae88894}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\03. Lighter\01. CeilingLighter">
-      <UniqueIdentifier>{d2f211d2-f5ae-419c-bc37-862eb89e188f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\03. Lighter\02. BossLight">
-      <UniqueIdentifier>{f8e91869-d1e5-48e5-bc3c-bde6614fb620}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\03. Lighter\03. PlayerGunLighter">
-      <UniqueIdentifier>{051a0ea6-b7d6-4eb6-92e9-baa1ccfed2d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\04. Particle">
-      <UniqueIdentifier>{3f2cfdea-5e85-4333-874f-bc9351297fed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\04. Particle\00. Snow">
-      <UniqueIdentifier>{a8602073-922e-4493-ad1c-9fc6fabd3a13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\04. Particle\01. FireWork">
-      <UniqueIdentifier>{8ab2be83-6fa5-4fde-9971-970b4bffbbeb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect">
-      <UniqueIdentifier>{263b8407-b440-45ab-b485-5cf2a9ff6021}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\00. Awareness">
-      <UniqueIdentifier>{e5d83c0d-5126-43f7-bb72-1c56d159e4e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\01. HitBlood">
-      <UniqueIdentifier>{5c52a284-a0a1-4993-9500-f2dd04077f7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitPow">
-      <UniqueIdentifier>{ca09a301-4a94-4fd7-9cfd-165355b906d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\03. HitDust">
-      <UniqueIdentifier>{f36f5fa8-ec08-46ba-a4fa-c0ef24407d51}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\04. FallingDust">
-      <UniqueIdentifier>{fd4bfe41-7455-41f4-b77b-d93cff6d2b23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl">
-      <UniqueIdentifier>{656bd528-881d-4c33-bb97-3f58c5f3dbd8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. =====BlackBoard=====\2. Camera">
       <UniqueIdentifier>{1ccb0b78-47e8-49bf-86af-be88c0f10c39}</UniqueIdentifier>
     </Filter>
@@ -238,11 +193,71 @@
     <Filter Include="05. =====AceUI=====\00. UI_PlayerBudBox">
       <UniqueIdentifier>{683e3e2b-cabf-4f17-9c6d-62844df1890d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\03. AceTrigger">
-      <UniqueIdentifier>{6f71e0b3-4236-486c-9bd7-5a5add4d4342}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03..=====Object=====\01. Trigger">
       <UniqueIdentifier>{dd0f134e-566b-4da6-82aa-8d5343aa837e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..=====Object=====\01. Trigger\1. To_Malone">
+      <UniqueIdentifier>{7f58e9ad-9c84-471a-97c1-8093e2c763e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..=====Object=====\01. Trigger\0. To_Hall">
+      <UniqueIdentifier>{4558362d-c2fa-4be3-bdbb-fda4467973aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..=====Object=====\01. Trigger\2. To_JumpMap">
+      <UniqueIdentifier>{3c92a682-bebc-419d-bcb2-b68e32565298}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\00. Lighter">
+      <UniqueIdentifier>{e350700e-8895-4112-89d7-93342261724e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\00. Lighter\00. PlayerLighter">
+      <UniqueIdentifier>{aa69537c-df32-4a2e-b2c2-06149ae88894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\00. Lighter\01. CeilingLighter">
+      <UniqueIdentifier>{d2f211d2-f5ae-419c-bc37-862eb89e188f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\00. Lighter\02. BossLight">
+      <UniqueIdentifier>{f8e91869-d1e5-48e5-bc3c-bde6614fb620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\00. Lighter\03. PlayerGunLighter">
+      <UniqueIdentifier>{051a0ea6-b7d6-4eb6-92e9-baa1ccfed2d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\01. Particle">
+      <UniqueIdentifier>{3f2cfdea-5e85-4333-874f-bc9351297fed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\01. Particle\00. Snow">
+      <UniqueIdentifier>{a8602073-922e-4493-ad1c-9fc6fabd3a13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\01. Particle\01. FireWork">
+      <UniqueIdentifier>{8ab2be83-6fa5-4fde-9971-970b4bffbbeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect">
+      <UniqueIdentifier>{263b8407-b440-45ab-b485-5cf2a9ff6021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\00. Awareness">
+      <UniqueIdentifier>{e5d83c0d-5126-43f7-bb72-1c56d159e4e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\01. HitBlood">
+      <UniqueIdentifier>{5c52a284-a0a1-4993-9500-f2dd04077f7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\02. HitPow">
+      <UniqueIdentifier>{ca09a301-4a94-4fd7-9cfd-165355b906d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\03. HitDust">
+      <UniqueIdentifier>{f36f5fa8-ec08-46ba-a4fa-c0ef24407d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\04. FallingDust">
+      <UniqueIdentifier>{fd4bfe41-7455-41f4-b77b-d93cff6d2b23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\05. DazeSwirl">
+      <UniqueIdentifier>{656bd528-881d-4c33-bb97-3f58c5f3dbd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====\99. UI_ChangeScene">
+      <UniqueIdentifier>{b9593666-94e6-4459-9e0b-d42b07c06070}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====\98. UI_EatFood">
+      <UniqueIdentifier>{52cb2a0e-3ead-434a-a910-25b95011197d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====\97. UI_PlayerHurt">
+      <UniqueIdentifier>{52f07944-4c5c-40ad-8f91-556e8393a2d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -292,16 +307,16 @@
       <Filter>02. =====AceGameObject=====\01. AceItem\03. Ace_Interaction</Filter>
     </ClInclude>
     <ClInclude Include="Header\SnowParticle.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\04. Particle\00. Snow</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\01. Particle\00. Snow</Filter>
     </ClInclude>
     <ClInclude Include="Header\PlayerLighter.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\03. Lighter\00. PlayerLighter</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\00. Lighter\00. PlayerLighter</Filter>
     </ClInclude>
     <ClInclude Include="Header\FireWork.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\04. Particle\01. FireWork</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\01. Particle\01. FireWork</Filter>
     </ClInclude>
     <ClInclude Include="Header\Effect_Awareness.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\00. Awareness</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\00. Awareness</Filter>
     </ClInclude>
     <ClInclude Include="Header\RedLaser.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\00. RedLaser</Filter>
@@ -376,7 +391,7 @@
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\06. RedThunder</Filter>
     </ClInclude>
     <ClInclude Include="Header\BossLight.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\03. Lighter\02. BossLight</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\00. Lighter\02. BossLight</Filter>
     </ClInclude>
     <ClInclude Include="Header\Scene_Parsed.h">
       <Filter>01. =====Scene=====\03. ParsedScene</Filter>
@@ -388,7 +403,7 @@
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Close Attack</Filter>
     </ClInclude>
     <ClInclude Include="Header\PlayerGunLighter.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\03. Lighter\03. PlayerGunLighter</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\00. Lighter\03. PlayerGunLighter</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceUnit.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit</Filter>
@@ -400,25 +415,25 @@
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
     </ClInclude>
     <ClInclude Include="Header\Effect_HitPow.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitPow</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\02. HitPow</Filter>
     </ClInclude>
     <ClInclude Include="Header\Effect_HitDust.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\03. HitDust</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\03. HitDust</Filter>
     </ClInclude>
     <ClInclude Include="Header\Effect_FallingDust.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\04. FallingDust</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\04. FallingDust</Filter>
     </ClInclude>
     <ClInclude Include="Header\Effect_DazeSwirl.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\05. DazeSwirl</Filter>
     </ClInclude>
     <ClInclude Include="Header\BlackBoard_Camera.h">
       <Filter>04. =====BlackBoard=====\2. Camera</Filter>
     </ClInclude>
     <ClInclude Include="Header\Effect_HitBlood.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. HitBlood</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\01. HitBlood</Filter>
     </ClInclude>
     <ClInclude Include="Header\AceEffect.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect</Filter>
     </ClInclude>
     <ClInclude Include="Header\UI_CrossHair.h">
       <Filter>05. =====AceUI=====\01. UI_CrossHair</Filter>
@@ -436,16 +451,25 @@
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
     </ClInclude>
     <ClInclude Include="Header\Trigger.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Trigger_ToStageHall.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Trigger_ToJumpMap.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>03..=====Object=====\01. Trigger</Filter>
     </ClInclude>
     <ClInclude Include="Header\Trigger_ToBossMap.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>03..=====Object=====\01. Trigger\1. To_Malone</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Trigger_ToJumpMap.h">
+      <Filter>03..=====Object=====\01. Trigger\2. To_JumpMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Trigger_ToStageHall.h">
+      <Filter>03..=====Object=====\01. Trigger\0. To_Hall</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_SceneChange.h">
+      <Filter>05. =====AceUI=====\99. UI_ChangeScene</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_EatFood.h">
+      <Filter>05. =====AceUI=====\98. UI_EatFood</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_PlayerHurt.h">
+      <Filter>05. =====AceUI=====\97. UI_PlayerHurt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -489,16 +513,16 @@
       <Filter>02. =====AceGameObject=====\01. AceItem\03. Ace_Interaction</Filter>
     </ClCompile>
     <ClCompile Include="Code\SnowParticle.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\04. Particle\00. Snow</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\01. Particle\00. Snow</Filter>
     </ClCompile>
     <ClCompile Include="Code\PlayerLighter.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\03. Lighter\00. PlayerLighter</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\00. Lighter\00. PlayerLighter</Filter>
     </ClCompile>
     <ClCompile Include="Code\FireWork.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\04. Particle\01. FireWork</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\01. Particle\01. FireWork</Filter>
     </ClCompile>
     <ClCompile Include="Code\Effect_Awareness.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\00. Awareness</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\00. Awareness</Filter>
     </ClCompile>
     <ClCompile Include="Code\RedLaser.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\00. RedLaser</Filter>
@@ -576,7 +600,7 @@
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\06. RedThunder</Filter>
     </ClCompile>
     <ClCompile Include="Code\BossLight.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\03. Lighter\02. BossLight</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\00. Lighter\02. BossLight</Filter>
     </ClCompile>
     <ClCompile Include="Code\Scene_Parsed.cpp">
       <Filter>01. =====Scene=====\03. ParsedScene</Filter>
@@ -588,7 +612,7 @@
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Close Attack</Filter>
     </ClCompile>
     <ClCompile Include="Code\PlayerGunLighter.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\03. Lighter\03. PlayerGunLighter</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\00. Lighter\03. PlayerGunLighter</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceUnit.cpp">
       <Filter>02. =====AceGameObject=====\00. AceUnit</Filter>
@@ -600,25 +624,25 @@
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion</Filter>
     </ClCompile>
     <ClCompile Include="Code\Effect_HitPow.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\02. HitPow</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\02. HitPow</Filter>
     </ClCompile>
     <ClCompile Include="Code\Effect_HitDust.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\03. HitDust</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\03. HitDust</Filter>
     </ClCompile>
     <ClCompile Include="Code\Effect_FallingDust.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\04. FallingDust</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\04. FallingDust</Filter>
     </ClCompile>
     <ClCompile Include="Code\Effect_DazeSwirl.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\05. DazeSwirl</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\05. DazeSwirl</Filter>
     </ClCompile>
     <ClCompile Include="Code\BlackBoard_Camera.cpp">
       <Filter>04. =====BlackBoard=====\2. Camera</Filter>
     </ClCompile>
     <ClCompile Include="Code\Effect_HitBlood.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect\01. HitBlood</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\01. HitBlood</Filter>
     </ClCompile>
     <ClCompile Include="Code\AceEffect.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\05. Effect</Filter>
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect</Filter>
     </ClCompile>
     <ClCompile Include="Code\UI_CrossHair.cpp">
       <Filter>05. =====AceUI=====\01. UI_CrossHair</Filter>
@@ -636,16 +660,25 @@
       <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union</Filter>
     </ClCompile>
     <ClCompile Include="Code\Trigger.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Trigger_ToStageHall.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Trigger_ToJumpMap.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>03..=====Object=====\01. Trigger</Filter>
     </ClCompile>
     <ClCompile Include="Code\Trigger_ToBossMap.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>03..=====Object=====\01. Trigger\1. To_Malone</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Trigger_ToJumpMap.cpp">
+      <Filter>03..=====Object=====\01. Trigger\2. To_JumpMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Trigger_ToStageHall.cpp">
+      <Filter>03..=====Object=====\01. Trigger\0. To_Hall</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_SceneChange.cpp">
+      <Filter>05. =====AceUI=====\99. UI_ChangeScene</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_EatFood.cpp">
+      <Filter>05. =====AceUI=====\98. UI_EatFood</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_PlayerHurt.cpp">
+      <Filter>05. =====AceUI=====\97. UI_PlayerHurt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

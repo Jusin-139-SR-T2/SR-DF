@@ -98,7 +98,7 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_pTransformComp->Readjust_Transform();
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 	pSphereShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	m_pColliderComp->Set_Scale({ 0.1, 0.1, 0.1 });
+//	m_pColliderComp->Set_Scale({ 0.1f, 0.1, 0.1 });
 
 	// 블랙보드 등록 
 	Engine::Add_BlackBoard(L"MonsterUnion", CBlackBoard_Monster::Create());
@@ -222,7 +222,7 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
-	m_tSound.m_iHpSection = m_gHp.Cur / 20.f; // 20구간으로 나눈 현재 보스의 hpsection 
+	m_tSound.m_iHpSection = _int((m_gHp.Cur)/20.f); // 20구간으로 나눈 현재 보스의 hpsection 
 
 	// 지형타기 
 	Height_On_Terrain();

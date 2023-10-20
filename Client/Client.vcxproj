@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI_PlayerHurt.h" />
+    <ClInclude Include="UI_SceneChange.h" />
     <ClInclude Include="Header\AceEffect.h" />
     <ClInclude Include="Header\BlackBoard_Camera.h" />
     <ClInclude Include="Header\Effect_DazeSwirl.h" />
@@ -86,6 +88,7 @@
     <ClInclude Include="Header\UI_CrossHair.h" />
     <ClInclude Include="Header\PlayerSkillUnion.h" />
     <ClInclude Include="Header\UI_PlayerFace.h" />
+    <ClInclude Include="UI_EatFood.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceEffect.cpp" />
@@ -129,6 +132,8 @@
     <ClCompile Include="Code\Effect_HitDust.cpp" />
     <ClCompile Include="Code\Effect_HitPow.cpp" />
     <ClCompile Include="Code\Effect_DazeSwirl.cpp" />
+    <ClCompile Include="UI_PlayerHurt.cpp" />
+    <ClCompile Include="UI_SceneChange.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -158,6 +163,7 @@
     <ClCompile Include="Code\UI_CrossHair.cpp" />
     <ClCompile Include="Code\PlayerSkillUnion.cpp" />
     <ClCompile Include="Code\UI_PlayerFace.cpp" />
+    <ClCompile Include="UI_EatFood.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

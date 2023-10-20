@@ -8,6 +8,7 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 
+
 CTrigger_ToBossMap::CTrigger_ToBossMap(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {
@@ -64,6 +65,8 @@ HRESULT CTrigger_ToBossMap::Ready_GameObject(const FSerialize_GameObject& tObjec
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
+
+    return S_OK;
 }
 
 _int CTrigger_ToBossMap::Update_GameObject(const _float& fTimeDelta)
@@ -100,10 +103,13 @@ void CTrigger_ToBossMap::OnCollision(CGameObject* pDst, const FContact* const pC
 
 void CTrigger_ToBossMap::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
+    //Engine::Add_GameObject(L"UI", CUI_SceneChange::Create(m_pGraphicDev));
+    
     if (!m_bIsTriggered)
     {
         CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Malone");
         Engine::Set_Scene(pScene);
+        pScene->Add_GameObject(L"UI", CUI_SceneChange::Create(m_pGraphicDev));
         Set_Dead();
         m_bIsTriggered = true;
     }

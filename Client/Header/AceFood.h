@@ -2,6 +2,8 @@
 #include "AceObjectFactory.h"
 #include "AceUnit.h"
 #include "Engine_Enum.h"
+#include "Export_System.h"
+#include "Export_Utility.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -59,8 +61,9 @@ protected:
 	void				Height_On_Terrain(); // 지형타기 
 
 public:
-	FOOD_NAME Get_FoodName() { return m_pCurName; }
-	_float	  Get_Hp() { return m_fHp; }
+	FOOD_NAME	Get_FoodName() { return m_pCurName; }
+	_float		Get_Hp() { return m_fHp; }
+	_bool		m_bEaten = false;
 
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
@@ -71,17 +74,18 @@ private:
 
 private:// 함수
 	void				FoodName(const _tchar* pObjTag); // TCHAR를 ENUM에 맞게 고치기 
-	void				Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta);
+	void				Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat);
 
 private: //변수
 	FOOD_NAME			m_pCurName;
-	_bool				m_bEat = false;   //blackboard 연동해서 플레이어 E상호작용 OR 피킹 여부 확인
 	_bool				m_bDead = false;  // 죽는거 생기면 그걸로 변경 
 	_vec3				CurPos;			  // 현재 위치 
 	_float				m_fChangeTextureSpeed = 0.001f;
 	OBJECT_CLASS		m_eFactoryClass;
-	_float				m_fHp = 10.f;
+	_float				m_fHp;
+
 public:
 	GETSET_EX2(OBJECT_CLASS, m_eFactoryClass, FACTORY_NAME, GET, SET)
+	GETSET_EX2(_bool , m_bEaten, FOOD_EAT, GET, SET)
 };
 

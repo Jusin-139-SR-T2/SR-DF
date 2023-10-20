@@ -64,6 +64,8 @@ HRESULT CTrigger_ToJumpMap::Ready_GameObject(const FSerialize_GameObject& tObjec
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
+
+    return S_OK;
 }
 
 _int CTrigger_ToJumpMap::Update_GameObject(const _float& fTimeDelta)
@@ -104,6 +106,7 @@ void CTrigger_ToJumpMap::OnCollisionEntered(CGameObject* pDst, const FContact* c
     {
         CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "SeongHee");
         Engine::Set_Scene(pScene);
+        pScene->Add_GameObject(L"UI", CUI_SceneChange::Create(m_pGraphicDev));
         Set_Dead();
         m_bIsTriggered = true;
     }

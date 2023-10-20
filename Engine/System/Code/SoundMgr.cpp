@@ -50,12 +50,16 @@ HRESULT CSoundMgr::Ready_Sound()
 	LoadSoundFile_GroupAsync(L"RockmanEXE", "./Resource/Sound/RockmanEXE/sfx/");
 	
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/bgm/");
-	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/sfx/");
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/announce/");
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/talk/");
+
+	//플레이어 
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/Player/");
 
-	//몬스터 전용 폴더 로드경로 
+	// Food 사운드
+	LoadSoundFile_GroupAsync(L"Food", "./Resource/Sound/FallenAces/sfx/Food/");
+
+	//몬스터 사운드 
 	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/BossMonster/");
 	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/Brown/");
 	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/Gray/");

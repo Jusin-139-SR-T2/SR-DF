@@ -63,7 +63,10 @@ HRESULT CTrigger_ToStageHall::Ready_GameObject(const FSerialize_GameObject& tObj
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
+
+    return S_OK;
 }
+
 
 _int CTrigger_ToStageHall::Update_GameObject(const _float& fTimeDelta)
 {
@@ -103,6 +106,7 @@ void CTrigger_ToStageHall::OnCollisionEntered(CGameObject* pDst, const FContact*
     {
         CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "BossStage");
         Engine::Set_Scene(pScene);
+        pScene->Add_GameObject(L"UI", CUI_SceneChange::Create(m_pGraphicDev));
         Set_Dead();
         m_bIsTriggered = true;
     }
