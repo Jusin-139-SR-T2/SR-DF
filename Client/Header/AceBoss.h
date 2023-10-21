@@ -102,7 +102,7 @@ private:
 
 	_vec3			vDir; //돌려쓰는 벡터용도 
 	_float			m_fTriggerHP;
-	_bool			m_bPhaseStart = FALSE;
+	_bool			m_bPhaseStart = false;
 	_float			m_fSideAge = 0.f;
 	_float			m_fSideTime = 1.5f;
 	_float			m_fAwareness;
@@ -112,9 +112,10 @@ private:
 	_float m_fTalkReapeat;
 
 	//공격 컨트롤 
-	_bool m_AttackOnce = FALSE;
-	_bool m_bBuffActive = FALSE;
-	_bool m_bShitTrigger = FALSE;
+	_bool m_AttackOnce = false;
+	_bool m_bBuffActive = false;
+	_bool m_bShitTrigger = false;
+	_bool m_bCollisionOn = false;
 	// 조명관련 - 블랙보드 연동 
 	_bool m_bLightOn = FALSE;
 	void LightControl(const _float& fTimeDelta);

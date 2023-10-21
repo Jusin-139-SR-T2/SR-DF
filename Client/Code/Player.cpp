@@ -50,6 +50,7 @@ HRESULT CPlayer::Ready_GameObject()
 #pragma region 블랙보드
 
     Engine::Add_BlackBoard(L"Player", CBlackBoard_Player::Create());
+    Engine::Add_BlackBoard(L"MonsterUnion", CBlackBoard_Monster::Create());
 
 #pragma endregion
 
@@ -3401,8 +3402,13 @@ void CPlayer::LineEvent()
 
     if (pFood != nullptr)
     {
-        m_gHp.Cur += pFood->Get_Hp();
         pFood->Set_FOOD_EAT(true);
+
+        m_gHp.Cur += pFood->Get_Hp();
+        
+        if (m_gHp.Cur >= 100.f)
+            m_gHp.Cur = 100.f;
+
     }
 }
 

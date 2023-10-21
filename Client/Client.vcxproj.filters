@@ -262,6 +262,9 @@
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\06. Bubble">
       <UniqueIdentifier>{06b6cd4d-a514-402d-9d7e-9c9a180adc76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. =====AceUI=====\03. UI_MonsterHP">
+      <UniqueIdentifier>{d577ce92-c631-4619-811f-00562b197cd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -480,6 +483,9 @@
     <ClInclude Include="Effect_Bubble.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\06. Bubble</Filter>
     </ClInclude>
+    <ClInclude Include="UI_MonsterHP.h">
+      <Filter>05. =====AceUI=====\03. UI_MonsterHP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -694,6 +700,9 @@
     </ClCompile>
     <ClCompile Include="Effect_Bubble.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\06. Bubble</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_MonsterHP.cpp">
+      <Filter>05. =====AceUI=====\03. UI_MonsterHP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

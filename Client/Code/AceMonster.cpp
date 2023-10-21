@@ -153,6 +153,7 @@ void CAceMonster::Calc_Theta()
 	else if (m_ftheta >= D3DXToRadian(337.5f) && m_ftheta < D3DXToRadian(360.0f))
 		m_eDirection = Dir::SOUTH;
 }
+
 void CAceMonster::Height_On_Terrain()
 {
 	_vec3		vPos;

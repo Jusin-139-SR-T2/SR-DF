@@ -767,10 +767,6 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/UI/Hurt_%d.png", TEX_NORMAL, L"UI_Face", L"Hurt", _range<_uint>(0U, 4U));
 	Load_Texture(L"./Resource/Texture/UI/DeadFace.png", TEX_NORMAL, L"UI_Face", L"DeadFace");
 
-	// Bar
-	Load_Texture(L"./Resource/Texture/UI/Health.png", TEX_NORMAL, L"UI", L"Health");
-	Load_Texture(L"./Resource/Texture/UI/Stamina.png", TEX_NORMAL, L"UI", L"Stamina");
-
 	// Fade
 	Load_Texture(L"./Resource/Texture/Scene/Fade_%d.png", TEX_NORMAL, L"UI_Scene", L"FadeInOut", _range<_uint>(0U, 30U));
 	
@@ -779,6 +775,12 @@ HRESULT CLoading::Loading_For_Texture()
 	 
 	// Red Effect - 플레이어 피격
 	Load_Texture(L"./Resource/Texture/UI/PlayerHurt_%d.png", TEX_NORMAL, L"UI_Scene", L"PlayerHurt", _range<_uint>(0U, 7U));
+
+	// Monster Hp Bar
+	Load_Texture(L"./Resource/Texture/UI/HealthBar_Border.png", TEX_NORMAL, L"UI_HpBar", L"Border");
+	Load_Texture(L"./Resource/Texture/UI/PreHealth.png", TEX_NORMAL, L"UI_HpBar", L"PreHealth");
+	Load_Texture(L"./Resource/Texture/UI/Health.png", TEX_NORMAL, L"UI_HpBar", L"Health");
+	Load_Texture(L"./Resource/Texture/UI/Stamina.png", TEX_NORMAL, L"UI_HpBar", L"Stamina");
 
 #pragma endregion
 

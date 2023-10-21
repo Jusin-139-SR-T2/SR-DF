@@ -66,7 +66,7 @@ HRESULT CBrown::Ready_GameObject()
     //이미지 및 프레임 셋팅 
     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Single", L"Stand_South");
     m_pTextureComp->Readjust_Transform();
-    //m_pTextureComp->Set_Scale({ 3.f, 3.f, 1.f });
+    
     m_tFrame.fFrame = 0.f;
     m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
     m_tFrame.fFrameSpeed = 12.f;
@@ -76,7 +76,7 @@ HRESULT CBrown::Ready_GameObject()
     Set_TeamID(ETEAM_MONSTER);
 
     // Status
-    m_tStat.fAttackDistance = 12.f;
+    m_tStat.fAttackDistance = 13.f;
     m_tStat.fAttackFov = 90.f;
     m_gHp.Cur = 100.f;
     m_gHp.Max = 100.f;
@@ -213,9 +213,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     if (FALSE == m_bDeadState)
         Billboard(fTimeDelta);
 
-    //블랙보드 업로드 
-    //Update_InternalData();
-
     //상태머신
     m_tFrame.fFrame += m_tFrame.fFrameSpeed * fTimeDelta;
 
@@ -243,8 +240,8 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     // OutputDebugStringW(debugString);
     }
 
-    // 블랙보드용 
-    //Update_InternalData();
+    // 블랙보드
+    Update_InternalData();
     
     //물리 업데이트 코드
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 콜라이더 위치 업데이트 
@@ -389,6 +386,7 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
                 m_tState_Obj.Set_State(STATE_OBJ::FALLING); //달릴때 
                 break;
             default:
+                m_bCollisionOn = true;
                 break;
             }
         }
@@ -459,8 +457,13 @@ void CBrown::Update_InternalData()
     // 안전 코드를 거치면 일반 포인터로 접근 허용.
     CBlackBoard_Monster* pBlackBoard = m_wpBlackBoard_Monster.Get_BlackBoard();
 
-    if(m_bCollisionOn)
-        pBlackBoard->Get_BrownHP() = m_gHp;
+    if (m_bCollisionOn)
+    {
+        pBlackBoard->Get_MonsterHP() = m_gHp;
+        pBlackBoard->Get_Owner() = L"Unarmed Goon";
+
+        Engine::Add_GameObject(L"UI", L"UI_MonsterHpBar", CUI_MonsterHP::Create(m_pGraphicDev));
+    }
 }
 
 void CBrown::Update_BlackBoard()
@@ -532,7 +535,7 @@ void CBrown::AI_Suspicious(float fDeltaTime)
            m_pTransformComp->Get_Pos().y + 1.3f,
            m_pTransformComp->Get_Pos().z, CEffect_Awareness::TYPE::BROWN, this));
 
-       Engine::Play_Sound(L"Enemy", L"Brown_Suspicious.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+       Engine::Play_Sound(L"Enemy", L"Brown_Suspicious.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
 
@@ -541,13 +544,9 @@ void CBrown::AI_Suspicious(float fDeltaTime)
         
         if(Detect_Player()) // 시야각 이내에 위치 + 시야거리 이내 위치 
         {
-           // //OutputDebugString(L"▶Brown - 변수체크 : 인지변수 상승중   \n");
-            m_tStat.fAwareness += fDeltaTime * 2.f;
+            _float fWeight = 4.0f / Calc_Distance(); 
 
-            // ＠＠ 수정사항 
-            // 중요 << ★ 여기서 awareness와 몬스터의 m_awareness 서로 연결해서 값에따라 증가하게 해야함. 
-            // 그리고 몬스터 상태가 Taunt로 가면 쟤 set_dead로 날려야함 
-            // 당장은 야매로 값 비슷하게 맞춘거 
+            m_tStat.fAwareness += fDeltaTime * 4.f * (1 + fWeight); // 가중치 추가본 
 
             // 2. 인지값이 MAX가 되면 플레이어 추격 시작 
             if (m_tStat.fMaxAwareness <= m_tStat.fAwareness)
@@ -585,7 +584,7 @@ void CBrown::AI_Taunt(float fDeltaTime)
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrame = 0.f;
 
-         Engine::Play_Sound(L"Enemy", L"Brown_Taunt.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+         Engine::Play_Sound(L"Enemy", L"Brown_Taunt.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
 
@@ -616,9 +615,9 @@ void CBrown::AI_Chase(float fDeltaTime) // 달리다가 걷다가 잽날리려고함
         m_tFrame.fFrame = 0.f;
 
         if(Random_variable(10))
-            Engine::Play_Sound(L"Enemy", L"Brown_RndTaunt.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+            Engine::Play_Sound(L"Enemy", L"Brown_RndTaunt.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
         else if (Random_variable(10))
-            Engine::Play_Sound(L"Enemy", L"Brown_RndTaunt.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+            Engine::Play_Sound(L"Enemy", L"Brown_RndTaunt.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
     }
     if (m_tState_Obj.Can_Update())
     {
@@ -726,7 +725,7 @@ void CBrown::AI_Run(float fDeltaTime)
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrame = 0.f;
 
-         Engine::Play_Sound(L"Enemy", L"Brown_Run.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+         Engine::Play_Sound(L"Enemy", L"Brown_Run.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
     if (m_tState_Obj.Can_Update())
@@ -756,7 +755,7 @@ void CBrown::AI_Walk(float fDeltaTime)
         m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
         m_tFrame.fFrame = 0.f;
 
-        Engine::Play_Sound(L"Enemy", L"Brown_Walk.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        Engine::Play_Sound(L"Enemy", L"Brown_Walk.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
     if (m_tState_Obj.Can_Update())
@@ -788,9 +787,9 @@ void CBrown::AI_InchForward(float fDeltaTime)
          m_tFrame.fFrame = 0.f;
 
         //if (Random_variable(50))
-        //    Engine::Play_Sound(L"Enemy", L"Brown_InchA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        //    Engine::Play_Sound(L"Enemy", L"Brown_InchA.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
         //else
-        //    Engine::Play_Sound(L"Enemy", L"Brown_InchB.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        //    Engine::Play_Sound(L"Enemy", L"Brown_InchB.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
     if (m_tState_Obj.Can_Update())
@@ -829,9 +828,9 @@ void CBrown::AI_Strafing(float fDeltaTime)
          m_tFrame.fRepeat = 0.f;
 
          if(Random_variable(50))
-             Engine::Play_Sound(L"Enemy", L"Brown_StrafingA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+             Engine::Play_Sound(L"Enemy", L"Brown_StrafingA.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
          else
-             Engine::Play_Sound(L"Enemy", L"Brown_StrafingB.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+             Engine::Play_Sound(L"Enemy", L"Brown_StrafingB.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
     if (m_tState_Obj.Can_Update())
@@ -863,7 +862,7 @@ void CBrown::AI_NormalATTACK(float fDeltaTime)
          m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
          m_tFrame.fFrame = 0.f;
 
-         Engine::Play_Sound(L"Enemy", L"Brown_Punch.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+         Engine::Play_Sound(L"Enemy", L"Brown_Punch.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
     if (m_tState_Obj.Can_Update())
@@ -896,9 +895,9 @@ void CBrown::AI_HeavyAttack(float fDeltaTime)
          m_tFrame.fFrame = 0.f;
 
          if(Random_variable(50))
-             Engine::Play_Sound(L"Enemy", L"Brown_HeavyAttackA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+             Engine::Play_Sound(L"Enemy", L"Brown_HeavyAttackA.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
          else
-             Engine::Play_Sound(L"Enemy", L"Brown_HeavyAttackB.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+             Engine::Play_Sound(L"Enemy", L"Brown_HeavyAttackB.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
 
@@ -958,7 +957,7 @@ void CBrown::AI_Falling(float fDeltaTime)
         m_bSecondFall = true;
         m_AttackOnce = true;
 
-        Engine::Play_Sound(L"Enemy", L"Brown_Falling.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        Engine::Play_Sound(L"Enemy", L"Brown_Falling.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1005,9 +1004,9 @@ void CBrown::AI_FacePunch(float fDeltaTime)
          m_tFrame.fFrame = 0.f;
 
          if(Random_variable(50))
-             Engine::Play_Sound(L"Enemy", L"Brown_FacePunchA.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+             Engine::Play_Sound(L"Enemy", L"Brown_FacePunchA.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
          else
-             Engine::Play_Sound(L"Enemy", L"Brown_FacePunchB.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+             Engine::Play_Sound(L"Enemy", L"Brown_FacePunchB.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
 
@@ -1037,7 +1036,7 @@ void CBrown::AI_CrotchHit(float fDeltaTime)
         m_tFrame.fLifeTime = 2.f; // 2초후 CHASE 진입 
         m_tFrame.fFrame = 0.f;
 
-        Engine::Play_Sound(L"Enemy", L"Brown_CrotchHit.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        Engine::Play_Sound(L"Enemy", L"Brown_CrotchHit.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
     }
 
     if (m_tState_Obj.Can_Update())
@@ -1072,7 +1071,7 @@ void CBrown::AI_Dazed(float fDeltaTime)
         m_bDazedState = TRUE;
         m_AttackOnce = false;
 
-        Engine::Play_Sound(L"Enemy", L"Brown_Dazed.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        Engine::Play_Sound(L"Enemy", L"Brown_Dazed.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
 
@@ -1121,7 +1120,7 @@ void CBrown::AI_Chopped(float fDeltaTime)
         m_tFrame.fFrameSpeed = 10.f;
         m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
-        Engine::Play_Sound(L"Enemy", L"Brown_Choped.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        Engine::Play_Sound(L"Enemy", L"Brown_Choped.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
 
@@ -1151,7 +1150,7 @@ void CBrown::AI_Headless(float fDeltaTime)
          m_tFrame.fFrame = 0.f;
          m_bDeadState = TRUE;
 
-         Engine::Play_Sound(L"Enemy", L"Brown_Headless.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+         Engine::Play_Sound(L"Enemy", L"Brown_Headless.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
 
@@ -1181,7 +1180,7 @@ void CBrown::AI_Death(float fDeltaTime)
         m_tFrame.fFrame = 0.f;
         m_bDeadState = TRUE;
 
-        Engine::Play_Sound(L"Enemy", L"Brown_Death.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        Engine::Play_Sound(L"Enemy", L"Brown_Death.wav", SOUND_ENEMY_BROWN, m_tSound.m_fSoundVolume);
 
     }
 
@@ -1220,10 +1219,7 @@ void CBrown::AI_Reconnaissance(float fDeltaTime)
             }
         }
         else // 플레이어 포착x
-        {
             m_tStat.fConsider -= fDeltaTime * 3.f;
-
-        }
 
         if (0.f >= m_tStat.fConsider) 
         {
@@ -1255,7 +1251,10 @@ void CBrown::AI_GoHome(float fDeltaTime)
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE)) // 현재 액션키가 IDLE 이므로 
             m_mapActionKey[ACTION_KEY::GOHOME].Act(); // 액션키 누르기 
 
-        Calc_Theta();
+        if (Detect_Player())
+            m_tState_Obj.Set_State(STATE_OBJ::RECONNAISSANCE);
+        
+        //Calc_Theta();
 
        // switch (m_eDirection)
        // {
@@ -1359,13 +1358,13 @@ void CBrown::Approach(float fDeltaTime) // RUN 액션키 들어가면 수행하는곳
         if (STATE_OBJ::RUN == m_tState_Obj.Get_State())
         {
               //OutputDebugString(L"▷Brown - 가상키 : RUN 수행   \n");
-            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 5.f);
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 8.f);
         }
 
         if (STATE_OBJ::WALK == m_tState_Obj.Get_State())
         { 
             //OutputDebugString(L"▷Brown - 가상키 : WALK 수행   \n");
-            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 3.5f);
+            m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 6.f);
     
         }
 

@@ -281,7 +281,6 @@ void CAceFood::FoodName(const _tchar* pObjTag)
     }
     else
         m_pCurName = CAceFood::FOOD_NAME::FOOD_END;
-
 }
 
 void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat)

@@ -9,6 +9,7 @@
 #include "UI_Player.h"
 #include <AceBuilding.h>
 
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 {
@@ -122,9 +123,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bullet", CBullet::Create(m_pGraphicDev)), E_FAIL);
 
 	// Monster - TEST중이라 상시로 서로 위치 바뀝니다. 
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CAceBoss::Create(m_pGraphicDev, 65.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CAceBoss::Create(m_pGraphicDev, 65.f, 1.f, 25.f)), E_FAIL);
 
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray2",  CGray::Create(m_pGraphicDev, 35.f, 1.f, 50.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray2",  CGray::Create(m_pGraphicDev, 15.f, 1.f, 50.f)), E_FAIL);
+	
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray4",  CBrown::Create(m_pGraphicDev, 15.f, 1.f, 20.f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray5",  CBrown::Create(m_pGraphicDev, 15.75f, 1.f, 22.5f)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray6",  CBrown::Create(m_pGraphicDev, 17.5f, 1.f, 24.25f)), E_FAIL);
@@ -228,6 +230,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Player", CUI_Player::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", CUI_CrossHair::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_PlayerFace", CUI_PlayerFace::Create(m_pGraphicDev)), E_FAIL);
+
 	
 	m_mapLayer.insert({ pLayerTag, pLayer });
 	

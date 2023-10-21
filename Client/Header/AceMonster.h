@@ -10,6 +10,7 @@
 #include "Effect_HitDust.h"
 #include "Effect_FallingDust.h"
 #include "Effect_DazeSwirl.h"
+#include "UI_MonsterHP.h"
 
 typedef struct tag_Monster_Info
 {
@@ -87,6 +88,7 @@ protected:
 	_float						VoiceDistance();
 	_float						m_ftheta;
 	_vec3						vDirect; //Go HomeÀü¿ë º¤ÅÍ 
+	_float						m_fDistWeight;
 
 protected:
 	CRcBufferComp*				m_pBufferComp = nullptr; 

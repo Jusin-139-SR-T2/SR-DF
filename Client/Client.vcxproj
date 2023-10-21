@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Effect_Bubble.h" />
     <ClInclude Include="UI_FadeOut.h" />
+    <ClInclude Include="UI_MonsterHP.h" />
     <ClInclude Include="UI_PlayerHurt.h" />
     <ClInclude Include="UI_FadeIn.h" />
     <ClInclude Include="Header\AceEffect.h" />
@@ -136,6 +137,7 @@
     <ClCompile Include="Code\Effect_HitPow.cpp" />
     <ClCompile Include="Code\Effect_DazeSwirl.cpp" />
     <ClCompile Include="UI_FadeOut.cpp" />
+    <ClCompile Include="UI_MonsterHP.cpp" />
     <ClCompile Include="UI_PlayerHurt.cpp" />
     <ClCompile Include="UI_FadeIn.cpp" />
     <ClCompile Include="Include\Client.cpp" />

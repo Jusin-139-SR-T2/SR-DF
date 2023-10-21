@@ -17,6 +17,7 @@
 #include "UI_CrossHair.h"
 #include "UI_PlayerFace.h"
 //test
+#include "UI_MonsterHP.h"
 
 class CStage : public Engine::CScene
 {
