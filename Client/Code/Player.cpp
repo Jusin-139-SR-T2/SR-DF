@@ -148,7 +148,7 @@ HRESULT CPlayer::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
     //m_pTexture->Set_Scale(tObjectSerial.vScale);
 
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
