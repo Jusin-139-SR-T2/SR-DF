@@ -8,6 +8,7 @@ CBlackBoard_Player::CBlackBoard_Player()
     , m_fHP(GAUGE<_float>(100.f)), m_fStamina(GAUGE<_float>(100.f)), m_bGunLight(false)
     , m_bPlayerEquipGunState(false), m_bPlayerAttackState(false), m_bPlayerPickUpState(false), m_bPlayerDetect(false) // 이줄은 크로스헤어용
     , m_bPlayerHitState(false)
+    , m_bFade(false)
 {
 }
 

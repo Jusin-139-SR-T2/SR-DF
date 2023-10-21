@@ -1,7 +1,13 @@
 #pragma once
 
 #include "GameObject.h"
-#include "UI_SceneChange.h"
+#include "UI_FadeIn.h"
+#include "UI_FadeOut.h"
+
+#include "BlackBoard_Player.h"
+#include "BlackBoardPtr.h"
+#include "BlackBoardMgr.h"
+
 
 BEGIN(Engine)
 
@@ -42,12 +48,15 @@ public:
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 
+
 protected:
 	CTransformComponent* m_pTransformComp = nullptr;
 	CColliderComponent* m_pColliderComp = nullptr;
 
-protected:
-	_bool m_bIsTriggered = false;
+	FBlackBoardPtr<CBlackBoard_Player>	m_wpBlackBoard_Player;	// 블랙보드 플레이어
 
+protected:
+	_bool	m_bIsTriggered = false;
+	_bool	FadeInEnd = false;
 };
 

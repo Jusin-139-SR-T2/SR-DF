@@ -37,6 +37,5 @@ private:
 
 private:
 	GAUGE<_float> m_gPlayerHP;
-	
 };
 

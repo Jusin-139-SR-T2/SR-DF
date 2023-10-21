@@ -250,14 +250,14 @@
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\05. DazeSwirl">
       <UniqueIdentifier>{656bd528-881d-4c33-bb97-3f58c5f3dbd8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. =====AceUI=====\99. UI_ChangeScene">
-      <UniqueIdentifier>{b9593666-94e6-4459-9e0b-d42b07c06070}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. =====AceUI=====\98. UI_EatFood">
       <UniqueIdentifier>{52cb2a0e-3ead-434a-a910-25b95011197d}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. =====AceUI=====\97. UI_PlayerHurt">
       <UniqueIdentifier>{52f07944-4c5c-40ad-8f91-556e8393a2d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====\99. UI_Fade">
+      <UniqueIdentifier>{b9593666-94e6-4459-9e0b-d42b07c06070}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -462,14 +462,17 @@
     <ClInclude Include="Header\Trigger_ToStageHall.h">
       <Filter>03..=====Object=====\01. Trigger\0. To_Hall</Filter>
     </ClInclude>
-    <ClInclude Include="UI_SceneChange.h">
-      <Filter>05. =====AceUI=====\99. UI_ChangeScene</Filter>
+    <ClInclude Include="UI_FadeIn.h">
+      <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClInclude>
     <ClInclude Include="UI_EatFood.h">
       <Filter>05. =====AceUI=====\98. UI_EatFood</Filter>
     </ClInclude>
     <ClInclude Include="UI_PlayerHurt.h">
       <Filter>05. =====AceUI=====\97. UI_PlayerHurt</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_FadeOut.h">
+      <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -671,14 +674,17 @@
     <ClCompile Include="Code\Trigger_ToStageHall.cpp">
       <Filter>03..=====Object=====\01. Trigger\0. To_Hall</Filter>
     </ClCompile>
-    <ClCompile Include="UI_SceneChange.cpp">
-      <Filter>05. =====AceUI=====\99. UI_ChangeScene</Filter>
+    <ClCompile Include="UI_FadeIn.cpp">
+      <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClCompile>
     <ClCompile Include="UI_EatFood.cpp">
       <Filter>05. =====AceUI=====\98. UI_EatFood</Filter>
     </ClCompile>
     <ClCompile Include="UI_PlayerHurt.cpp">
       <Filter>05. =====AceUI=====\97. UI_PlayerHurt</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_FadeOut.cpp">
+      <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,20 +1,21 @@
 #pragma once
 #include "UI.h"
+#include "Trigger.h"
 
 /// <summary>
-/// 페이드인 페이드아웃용 
-/// add object에 priority 1로 설정해야됨  높은게 우선 
+/// 페이드인용 
 /// </summary>
-class CUI_SceneChange : public CUI
+class CUI_FadeIn : public CUI
 {
-	DERIVED_CLASS(CUI, CUI_SceneChange)
+	DERIVED_CLASS(CUI, CUI_FadeIn)
+
 protected:
-	explicit CUI_SceneChange(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CUI_SceneChange(const CUI_SceneChange& rhs);
-	virtual ~CUI_SceneChange();
+	explicit CUI_FadeIn(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CUI_FadeIn(const CUI_FadeIn& rhs);
+	virtual ~CUI_FadeIn();
 
 public:
-	static CUI_SceneChange* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CUI_FadeIn* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void		Free();
@@ -37,4 +38,9 @@ private:
 	HRESULT				Add_Component();
 	FRAME				m_tFrame;
 
+	_bool m_bEnd = false;
+
 };
+
+// 페이드인 : 검은화면에서 서서히 밝아지며 나타나는것 
+// 페이드 아웃 : 서서히 어두워지다가 까만화면이 되는것 

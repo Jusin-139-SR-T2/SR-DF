@@ -35,5 +35,8 @@ public:
 
 protected:
 	virtual HRESULT		Add_Component();
+
+private:
+	void	Update_InternalData();
 };
 

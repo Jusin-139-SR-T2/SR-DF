@@ -1,20 +1,20 @@
-#include "UI_SceneChange.h"
+#include "UI_FadeIn.h"
 
-CUI_SceneChange::CUI_SceneChange(LPDIRECT3DDEVICE9 pGraphicDev)
+CUI_FadeIn::CUI_FadeIn(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
 {
 }
 
-CUI_SceneChange::CUI_SceneChange(const CUI_SceneChange& rhs)
+CUI_FadeIn::CUI_FadeIn(const CUI_FadeIn& rhs)
 	: Base(rhs)
 {
 }
 
-CUI_SceneChange::~CUI_SceneChange()
+CUI_FadeIn::~CUI_FadeIn()
 {
 }
 
-CUI_SceneChange* CUI_SceneChange::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CUI_FadeIn* CUI_FadeIn::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -22,14 +22,14 @@ CUI_SceneChange* CUI_SceneChange::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	{
 		Safe_Release(pInstance);
 
-		MSG_BOX("UI - ScencChange Create Failed");
+		MSG_BOX("UI - FadeIn Create Failed");
 		return nullptr;
 	}
 
 	return pInstance;
 }
 
-HRESULT CUI_SceneChange::Ready_GameObject()
+HRESULT CUI_FadeIn::Ready_GameObject()
 {
 	SUPER::Ready_GameObject();
 
@@ -56,15 +56,18 @@ HRESULT CUI_SceneChange::Ready_GameObject()
 	m_tFrame.fFrame = 0.f;
 	m_tFrame.fFrameSpeed = 40.f;
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
+
+	m_bEnd = false;
 	return S_OK;
 }
 
-HRESULT CUI_SceneChange::Add_Component()
+HRESULT CUI_FadeIn::Add_Component()
 {
 	return S_OK;
 }
 
-_int CUI_SceneChange::Update_GameObject(const _float& fTimeDelta)
+
+_int CUI_FadeIn::Update_GameObject(const _float& fTimeDelta)
 {
 	SUPER::Update_GameObject(fTimeDelta);
 
@@ -73,28 +76,30 @@ _int CUI_SceneChange::Update_GameObject(const _float& fTimeDelta)
 	if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 	{
 		m_tFrame.fFrame = m_tFrame.fFrameEnd - 1.f;
-
-		Set_Dead();
+		m_bEnd = true; 
 	}
-
+	
+	if(m_bEnd)
+		Set_Dead();
+	
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
 	return 0;
 }
 
-void CUI_SceneChange::LateUpdate_GameObject()
+void CUI_FadeIn::LateUpdate_GameObject()
 {
 	SUPER::LateUpdate_GameObject();
 }
 
-void CUI_SceneChange::Render_GameObject()
+void CUI_FadeIn::Render_GameObject()
 {
 	m_pTextureComp->Readjust_Transform();
 	m_pTextureComp->Render_Texture((_ulong)m_tFrame.fFrame, true);
 	m_pBufferComp->Render_Buffer();
 }
 
-void CUI_SceneChange::Free()
+void CUI_FadeIn::Free()
 {
 	SUPER::Free();
 }

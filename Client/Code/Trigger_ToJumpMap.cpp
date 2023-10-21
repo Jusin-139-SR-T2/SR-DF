@@ -65,12 +65,16 @@ HRESULT CTrigger_ToJumpMap::Ready_GameObject(const FSerialize_GameObject& tObjec
 
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
 
+    FadeInEnd = false;
+
     return S_OK;
 }
 
 _int CTrigger_ToJumpMap::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
+
+    Update_InternalData();
 
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
 
@@ -102,19 +106,23 @@ void CTrigger_ToJumpMap::OnCollision(CGameObject* pDst, const FContact* const pC
 
 void CTrigger_ToJumpMap::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
-    if (!m_bIsTriggered)
+    if (FadeInEnd) // 페이드아웃이 완료되면 블랙보드에 올라옴 - 해당변수먼저 체크 
     {
-        CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "SeongHee");
-        Engine::Set_Scene(pScene);
-        pScene->Add_GameObject(L"UI", CUI_SceneChange::Create(m_pGraphicDev));
-        Set_Dead();
-        m_bIsTriggered = true;
+        if (!m_bIsTriggered)
+        {
+            CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "SeongHee");
+            Engine::Set_Scene(pScene);
+            pScene->Add_GameObject(L"UI", CUI_FadeIn::Create(m_pGraphicDev));
+            m_bIsTriggered = true;
+            Update_InternalData();
+            Set_Dead();
+        }
     }
 }
 
 void CTrigger_ToJumpMap::OnCollisionExited(CGameObject* pDst)
 {
-    
+    Engine::Add_GameObject(L"UI", CUI_FadeOut::Create(m_pGraphicDev)); // 페이드아웃 먼저 생성
 }
 
 HRESULT CTrigger_ToJumpMap::Add_Component()
@@ -122,4 +130,25 @@ HRESULT CTrigger_ToJumpMap::Add_Component()
     SUPER::Add_Component();
 
     return S_OK;
+}
+
+void CTrigger_ToJumpMap::Update_InternalData()
+{
+    // 블랙보드 연결 대기, 안전 코드로 필수
+    if (!m_wpBlackBoard_Player.Get_BlackBoard())
+    {
+        m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"Player"));
+        // 연결 실패
+        if (!m_wpBlackBoard_Player.Get_BlackBoard())
+            return;
+    }
+
+    // 안전 코드를 거치면 일반 포인터로 접근 허용.
+    CBlackBoard_Player* pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
+
+    // 여기서부터 블랙보드의 정보를 얻어온다.
+    FadeInEnd = pBlackBoard->Get_SceneFade();
+
+    if (m_bIsTriggered)
+        pBlackBoard->Get_SceneFade() = false;
 }

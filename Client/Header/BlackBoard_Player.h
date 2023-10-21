@@ -64,6 +64,8 @@ public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX1(_bool, m_bLAttackMove, LAttackMove, GET_REF)
 	GETSET_EX2(_bool, m_bPlayerHitState, PlayerHit, GET_C_REF, GET_REF)
 
+	GETSET_EX2(_bool, m_bFade, SceneFade, GET_C_REF, GET_REF)
+
 
 private:
 	GAUGE<_float>		m_fHP;					// 플레이어 hp
@@ -84,5 +86,7 @@ private:
 	
 
 	_bool				m_bPlayerHitState; //소영추가 
+
+	_bool m_bFade;
 };
 
