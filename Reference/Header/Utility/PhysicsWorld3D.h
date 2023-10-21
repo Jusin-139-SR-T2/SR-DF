@@ -49,7 +49,7 @@ public:
 private:
 	_bool						m_bCalculateIterations;			// 계산 반복
 
-	_unset<FRigidBody*>			m_setBody;						// 강체 정보 세트
+	list<FRigidBody*>			m_listBody;						// 강체 정보 세트
 
 	FContactResolver			m_ContactResolver;				// 접촉 해결자
 	list<FContactGenerator*>	m_ConGenList;					// 접촉 발생기 리스트

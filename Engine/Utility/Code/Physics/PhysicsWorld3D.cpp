@@ -65,7 +65,7 @@ _int CPhysicsWorld3D::Update_Physics(const Real& fTimeDelta)
 
 
 	// 강체 위치 기반으로 충돌체 위치 수정
-	for (auto iter = m_setBody.begin(); iter != m_setBody.end(); ++iter)
+	for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
 	{
 		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
 		pCol->Set_Position(pCol->matOffset.Get_PosVector());
@@ -132,58 +132,167 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 	//	if (iLimit <= 0) break;
 	//}
 
+	struct FDistPoint
+	{
+		FRigidBody* pBody = nullptr;
+		Real fDist = -1.f;
+
+		bool operator < (const FDistPoint& other) const
+		{
+			return fDist < other.fDist;
+		}
+	};
+
+	struct FEndPoint
+	{
+		FRigidBody* pBody = nullptr;
+		Real fPoint = -1.f;
+		bool bIsStart = false;
+
+		bool operator < (const FEndPoint& other) const
+		{
+			return fPoint < other.fPoint;
+		}
+	};
+
+	// D-SAP
+	list<FDistPoint> listDistance;			// 거리점
+	list<FEndPoint> listEndPoint;			// 첫점, 끝점 저장
+	list<FEndPoint> listEndPoint_Calc;			// 계산용 리스트
+	list<pair<FRigidBody*, FRigidBody*>> listPairCollide;	// 충돌 계산 페어
+
+	// 거리 만들기, Square 거리로 계산한다.
+	// O(n)
+	for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
+		listDistance.push_back({ (*iter), ((*iter)->Get_Position() - FVector3(-100.f, -100.f, -100.f)).Magnitude() });
+	// 정렬 O(log(n))
+	listDistance.sort();
+
+	// 시작점, 끝점 만들기, 똑같이 Square로 계산한다.
+	// O(n)
+	for (auto iter = listDistance.begin(); iter != listDistance.end(); ++iter)
+	{
+		FCollisionPrimitive* pShape = static_cast<FCollisionPrimitive*>((*iter).pBody->Get_Owner());
+		Real fHalfScale = (pShape->Get_Scale() * 0.5f).Magnitude();
+		listEndPoint.push_back({ (*iter).pBody, (*iter).fDist - fHalfScale, true });
+		listEndPoint.push_back({ (*iter).pBody, (*iter).fDist + fHalfScale, false });
+	}
+	// 정렬 O(log(n))
+	listEndPoint.sort();
+
+	// 계산 파트
+	for (auto iter = listEndPoint.begin(); iter != listEndPoint.end(); ++iter)
+	{
+		if ((*iter).bIsStart)
+		{
+			// 계산후 충돌쌍 생성
+			for (auto iterCalc = listEndPoint_Calc.begin(); iterCalc != listEndPoint_Calc.end(); ++iterCalc)
+			{
+				// 스타트 포인트가 있다면 충돌 쌍을 생성한다.
+				listPairCollide.push_back({ (*iter).pBody, (*iterCalc).pBody });
+			}
+			listEndPoint_Calc.push_back((*iter));
+		}
+		// 끝점일 때는 매칭되는 점을 뺀다.
+		else
+		{
+			for (auto iterCalc = listEndPoint_Calc.begin(); iterCalc != listEndPoint_Calc.end(); ++iterCalc)
+			{
+				// StartPoint와 매칭될 때 삭제한다.
+				if ((*iter).pBody == (*iterCalc).pBody)
+				{
+					listEndPoint_Calc.erase(iterCalc);
+					break;
+				}
+			}
+		}
+	}
+
+
 	// 충돌 최적화, 추후 추가 예정
 	// 계획은 충돌객체를 트리로 만들어 부딪힐 것 같은 객체에 대해 처리하는 것.
 	// 여기서 발생시킨 충돌에 대한 것은 엔진에서 발생하는 
 	_int iDebugCount = 0;
 	_int iDebug_BodySrc = 0;
-	for (auto iterSrc = m_setBody.begin(); iterSrc != m_setBody.end(); ++iterSrc)
+	for (auto iter = listPairCollide.begin(); iter != listPairCollide.end(); ++iter)
 	{
-		// 재연산 방지, 현재 반복자로부터 다음 것을 가져다가 쓴다.
-		for (auto iterDst = (++iterSrc)--; iterDst != m_setBody.end(); ++iterDst)
+		bool bCollide = false;
+		if (m_bIsPaused)
+			return 0;
+
+		FCollisionPrimitive* pColSrc = static_cast<FCollisionPrimitive*>((*iter).first->Get_Owner());
+		FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iter).second->Get_Owner());
+
+		FCollisionData tColData;
+		tColData.iContactsLeft = 1;	// 작동 시킬라면 넣어야함.
+
+		// 하나라도 충돌을 체크를 하는 경우에만 계산한다.
+		if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer()
+			|| pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
+			bCollide = FCollisionDetector::CollsionPrimitive(pColSrc, pColDst, &tColData);
+		else
+			bCollide = false;
+
+		if (bCollide)
 		{
-			bool bCollide = false;
-			if ((*iterSrc) == (*iterDst))
-				continue;
-
-			// 도중에 연결 정지 신호들어오면 종료
-			if (m_bIsPaused)
-				return 0;
-
-			FCollisionPrimitive* pColSrc = static_cast<FCollisionPrimitive*>((*iterSrc)->Get_Owner());
-			FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iterDst)->Get_Owner());
-
-			FCollisionData tColData;
-			tColData.iContactsLeft = 1;	// 작동 시킬라면 넣어야함.
-
-			// 하나라도 충돌을 체크를 하는 경우에만 계산한다.
-			if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer()
-				|| pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
-				bCollide = FCollisionDetector::CollsionPrimitive(pColSrc, pColDst, &tColData);
-			else
-				bCollide = false;
-
-			if (bCollide)
-			{
-				if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer())
-					pColSrc->Handle_CollsionEvent(pColDst->Get_Owner(), &tColData.tContacts);
-				tColData.tContacts.Reverse_BodyData();
-				if (pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
-					pColDst->Handle_CollsionEvent(pColSrc->Get_Owner(), &tColData.tContacts);
-			}
-			++iDebugCount;
+			if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer())
+				pColSrc->Handle_CollsionEvent(pColDst->Get_Owner(), &tColData.tContacts);
+			tColData.tContacts.Reverse_BodyData();
+			if (pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
+				pColDst->Handle_CollsionEvent(pColSrc->Get_Owner(), &tColData.tContacts);
 		}
-		++iDebug_BodySrc;
+		++iDebugCount;
 	}
+
+
+	// O(MxN)의 굉장히 느린 알고리즘, 폐기
+	//for (auto iterSrc = m_listBody.begin(); iterSrc != m_listBody.end(); ++iterSrc)
+	//{
+	//	// 재연산 방지, 현재 반복자로부터 다음 것을 가져다가 쓴다.
+	//	for (auto iterDst = (++iterSrc)--; iterDst != m_listBody.end(); ++iterDst)
+	//	{
+	//		bool bCollide = false;
+	//		if ((*iterSrc) == (*iterDst))
+	//			continue;
+
+	//		// 도중에 연결 정지 신호들어오면 종료
+	//		if (m_bIsPaused)
+	//			return 0;
+
+	//		FCollisionPrimitive* pColSrc = static_cast<FCollisionPrimitive*>((*iterSrc)->Get_Owner());
+	//		FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iterDst)->Get_Owner());
+
+	//		FCollisionData tColData;
+	//		tColData.iContactsLeft = 1;	// 작동 시킬라면 넣어야함.
+
+	//		// 하나라도 충돌을 체크를 하는 경우에만 계산한다.
+	//		if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer()
+	//			|| pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
+	//			bCollide = FCollisionDetector::CollsionPrimitive(pColSrc, pColDst, &tColData);
+	//		else
+	//			bCollide = false;
+
+	//		if (bCollide)
+	//		{
+	//			if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer())
+	//				pColSrc->Handle_CollsionEvent(pColDst->Get_Owner(), &tColData.tContacts);
+	//			tColData.tContacts.Reverse_BodyData();
+	//			if (pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
+	//				pColDst->Handle_CollsionEvent(pColSrc->Get_Owner(), &tColData.tContacts);
+	//		}
+	//		++iDebugCount;
+	//	}
+	//	++iDebug_BodySrc;
+	//}
 	/*wstringstream ss;
 	wstring str;
 	ss << iDebugCount;
 	str = L"Physics CheckCount : " + ss.str() + L"\n";
 	OutputDebugString(str.c_str());*/
 	cout << "검사 카운트 : " << iDebugCount << endl;
-	cout << "Src 카운트 : " << iDebug_BodySrc << endl;
-	cout << "Dst 카운트 : " << ((iDebug_BodySrc) ? (iDebugCount / iDebug_BodySrc) : 0) << endl;
-	cout << "Body 카운트 : " << m_setBody.size() << endl;
+	/*cout << "Src 카운트 : " << iDebug_BodySrc << endl;
+	cout << "Dst 카운트 : " << ((iDebug_BodySrc) ? (iDebugCount / iDebug_BodySrc) : 0) << endl;*/
+	cout << "Body 카운트 : " << m_listBody.size() << endl;
 
 	// 사용된 접촉 수를 반환
 	return m_iMaxContacts - iLimit;
@@ -192,7 +301,7 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 FCollisionPrimitive* CPhysicsWorld3D::Test_Contact(FCollisionPrimitive* const pCollision)
 {
 	// 받은 충돌체로 리스트바디의 충돌체들과 비교해서 하나라도 충돌하면 반환한다.
-	for (auto iter = m_setBody.begin(); iter != m_setBody.end(); ++iter)
+	for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
 	{
 		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
 		if (FCollisionDetector::CollsionPrimitive(pCollision, pCol, nullptr))
@@ -207,7 +316,7 @@ list_collide_test CPhysicsWorld3D::Test_Contacts(FCollisionPrimitive* const pCol
 	list_collide_test listCollision;
 
 	// 받은 충돌체로 리스트바디의 충돌체들과 비교해서 하나라도 충돌하면 반환한다.
-	for (auto iter = m_setBody.begin(); iter != m_setBody.end(); ++iter)
+	for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
 	{
 		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>(pCollision);
 		FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
@@ -234,16 +343,22 @@ list_collide_test CPhysicsWorld3D::Test_Contacts(FCollisionPrimitive* const pCol
 
 void CPhysicsWorld3D::Add_RigidBody(FRigidBody* pBody)
 {
-	auto iter = m_setBody.find(pBody);
-	if (iter != m_setBody.end())
+	auto iter = find_if(m_listBody.begin(), m_listBody.end(),
+		[&pBody](FRigidBody*& pDstBody) {
+			return pDstBody == pBody;
+		});
+	if (iter != m_listBody.end())
 		return;
 	
-	m_setBody.emplace(pBody);
+	m_listBody.push_back(pBody);
 }
 
 void CPhysicsWorld3D::Delete_RigidBody(FRigidBody* pBody)
 {
-	auto iter = m_setBody.find(pBody);
-	if (iter != m_setBody.end())
-		m_setBody.erase(iter);
+	auto iter = find_if(m_listBody.begin(), m_listBody.end(),
+		[&pBody](FRigidBody*& pDstBody) {
+			return pDstBody == pBody;
+		});
+	if (iter != m_listBody.end())
+		m_listBody.erase(iter);
 }
