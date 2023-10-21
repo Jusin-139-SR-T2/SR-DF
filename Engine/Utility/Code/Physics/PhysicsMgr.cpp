@@ -73,11 +73,11 @@ list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_GetGameObject(con
 
 list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_Collider_GetGameObject(const _uint iWorldID, const _vec3 vPos, CColliderComponent* pSrc, _ulong iMask)
 {
-	FCollisionPrimitive pShape = *static_cast<FCollisionPrimitive*>(pSrc->Get_Shape());
-	pShape.Set_Position(pShape.Get_Position() + FVector3(vPos.x, vPos.y, vPos.z));
-	pShape.Set_CollisionMask(iMask);
+	FCollisionPrimitive* pShape = static_cast<FCollisionPrimitive*>(pSrc->Get_Shape());
+	pShape->Set_Position(pShape->Get_Position() + FVector3(vPos.x, vPos.y, vPos.z));
+	pShape->Set_CollisionMask(iMask);
 
-	return IntersectTests_GetGameObject(iWorldID, &pShape);
+	return IntersectTests_GetGameObject(iWorldID, pShape);
 }
 
 list<pair<CGameObject*, FContact>> CPhysicsMgr::IntersectTests_Sphere_GetGameObject(const _uint iWorldID, _vec3 vPos, _float fRadius, _ulong iMask)

@@ -476,15 +476,36 @@ bool FCollisionDetector::SphereAndOBB(const FCollisionSphere& srcSphere, const F
 		FVector3 vAxis(orientation[0], orientation[1], orientation[2]);
 		vAxis.Normalize();
 
-		Real fDistance = vAxis.DotProduct(vDir);
+		Real fDistance = (vAxis).DotProduct(vDir);
 
 		if (fDistance > dstOBB.vHalfSize.data[i])
 			fDistance = dstOBB.vHalfSize.data[i];
-		if (fDistance < -dstOBB.vHalfSize.data[i])
+		else if (fDistance < -dstOBB.vHalfSize.data[i])
 			fDistance = -dstOBB.vHalfSize.data[i];
 
-		vResult = vResult + (vAxis * fDistance);
+		vResult += (vAxis * fDistance);
 	}
+	/*FVector3 vCentre = srcSphere.Get_Axis(3);
+	FVector3 vRelCentre = dstOBB.Get_Transform().TransformInverse(vCentre);
+
+	FVector3 vResult(0, 0, 0);
+	Real fDist;
+
+	fDist = vRelCentre.x;
+	if (fDist > dstOBB.vHalfSize.x) fDist = dstOBB.vHalfSize.x;
+	if (fDist < -dstOBB.vHalfSize.x) fDist = -dstOBB.vHalfSize.x;
+	vResult.x = fDist;
+
+	fDist = vRelCentre.y;
+	if (fDist > dstOBB.vHalfSize.y) fDist = dstOBB.vHalfSize.y;
+	if (fDist < -dstOBB.vHalfSize.y) fDist = -dstOBB.vHalfSize.y;
+	vResult.y = fDist;
+
+	fDist = vRelCentre.z;
+	if (fDist > dstOBB.vHalfSize.z) fDist = dstOBB.vHalfSize.z;
+	if (fDist < -dstOBB.vHalfSize.z) fDist = -dstOBB.vHalfSize.z;
+	vResult.z = fDist;*/
+
 
 	// 구한 접점을 가지고 거리 체크
 	FVector3& vClosestPoint = vResult;
@@ -492,7 +513,14 @@ bool FCollisionDetector::SphereAndOBB(const FCollisionSphere& srcSphere, const F
 	Real fDistSq_ClosestFromSphere = (srcSphere.Get_Position() - vClosestPoint).SquareMagnitude();
 	Real fDistSq_ClosestFromOBB = (dstOBB.Get_Position() - vClosestPoint).SquareMagnitude();
 	Real fRadiusSq = (srcSphere.fRadius * srcSphere.fRadius);
-	_bool bCollide = fDistSq_ClosestFromSphere < fRadiusSq || fDistSq_Between < fDistSq_ClosestFromOBB;
+	_bool bCollide = (fDistSq_ClosestFromSphere < fRadiusSq) || (fDistSq_Between < fDistSq_ClosestFromOBB);
+
+	/*FVector3 vClosestPoint = dstOBB.Get_Transform().Transform(vResult);
+	Real fDistSq_Between = vDir.SquareMagnitude();
+	Real fDistSq_ClosestFromSphere = (srcSphere.Get_Position() - vClosestPoint).SquareMagnitude();
+	Real fDistSq_ClosestFromOBB = (dstOBB.Get_Position() - vClosestPoint).SquareMagnitude();
+	Real fRadiusSq = (srcSphere.fRadius * srcSphere.fRadius);
+	_bool bCollide = (fDistSq_ClosestFromSphere < fRadiusSq) || (fDistSq_Between < fDistSq_ClosestFromOBB);*/
 
 	// 충돌정보 생성
 	if (bCollide
@@ -506,7 +534,10 @@ bool FCollisionDetector::SphereAndOBB(const FCollisionSphere& srcSphere, const F
 			pContact.vContactNormal = -pContact.vContactNormal;
 			
 		pContact.vContactPoint = vClosestPoint;
-		pContact.fPenetration = srcSphere.fRadius - real_sqrt(fDistSq_ClosestFromSphere);
+		if (fDistSq_ClosestFromSphere < fRadiusSq)
+			pContact.fPenetration = srcSphere.fRadius - real_sqrt(fDistSq_ClosestFromSphere);
+		else if (fDistSq_Between < fDistSq_ClosestFromOBB)
+			pContact.fPenetration = srcSphere.fRadius + real_sqrt(fDistSq_ClosestFromOBB);
 		pContact.Set_BodyData(srcSphere.pBody, dstOBB.pBody, pColData->fFriction, pColData->fRestitution);
 	}
 	

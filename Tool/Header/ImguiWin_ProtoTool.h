@@ -25,12 +25,22 @@ public:
 	EGO_CLASS						eID = ECLASS_NONE;			// 프로토타입의 원본
 	string							strClassName = "";
 
+	string							strGroupKey = "";			// 텍스처 그룹키
+	string							strTextureKey = "";			// 텍스처키
+
 	_vec3							vPos = { 0.f, 0.f, 0.f };
 	_vec3							vRot = { 0.f, 0.f, 0.f };
 	_vec3							vScale = { 1.f, 1.f, 1.f };
 
-	string							strGroupKey = "";
-	string							strTextureKey = "";
+	_vec3							vTexPos = { 0.f, 0.f, 0.f };
+	_vec3							vTexRot = { 0.f, 0.f, 0.f };
+	_vec3							vTexScale = { 1.f, 1.f, 1.f };
+
+	_vec3							vColPos = { 0.f, 0.f, 0.f };
+	_vec3							vColRot = { 0.f, 0.f, 0.f };
+	_vec3							vColScale = { 1.f, 1.f, 1.f };
+
+	vector<string>					vecUserString;				// 사용자 지정 문자열
 
 	map<string, FComponentData>		mapComponent;
 

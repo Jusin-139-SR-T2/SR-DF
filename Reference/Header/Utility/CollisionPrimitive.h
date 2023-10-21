@@ -56,15 +56,46 @@ private:
 	// 보안성 코드
 	void CheckAnd_CreateBody() const
 	{
-		if (!pBody)
-			pBody = new FRigidBody();
+		if (!pBody) { pBody = new FRigidBody(); }
+	}
+	void Set_BodyType(const ERIGID_BODY_TYPE eType)
+	{
+		CheckAnd_CreateBody();
+		pBody->Set_BodyType(eType);
+	}
+	ERIGID_BODY_TYPE Get_BodyType()
+	{
+		CheckAnd_CreateBody();
+		return pBody->Get_BodyType();
 	}
 
 public:
+	mutable FRigidBody* pBody;				// 강체 정보
+	
+	FMatrix3x4	matOffset;					// 오프셋 행렬
+
+
+
+public:
+	virtual void Calculate_Shape() PURE;
+
+public:
+	void Calculate_Transform()
+	{
+		matTransform = pBody->Get_Transform() * matOffset;
+	}
+
+public:
+	GETSET_EX2(FMatrix3x4, matTransform, Transform, GET_C_REF, GET_REF)
+	// 축 정보를 트랜스폼에서 얻어옴
+	FVector3 Get_Axis(_uint iIndex) const
+	{
+		return matTransform.Get_AxisVector(iIndex);
+	}
+
 	const FVector3 Get_Position() const
 	{
-		CheckAnd_CreateBody();
-		return pBody->Get_Position();
+		return matTransform.Get_PosVector();
 	}
 	void Set_Position(const FVector3 vPos)
 	{
@@ -83,25 +114,7 @@ public:
 		pBody->Set_Rotation(vRot);
 	}
 
-public:
-	mutable FRigidBody* pBody;				// 강체 정보
 	
-	FMatrix3x4	matOffset;			// 오프셋 행렬
-
-public:
-	void Calculate_Transform()
-	{
-		matTransform = pBody->Get_Transform() * matOffset;
-	}
-
-public:
-	GETSET_EX2(FMatrix3x4, matTransform, Transform, GET_C_REF, GET_REF)
-	// 축 정보를 트랜스폼에서 얻어옴
-	FVector3 Get_Axis(_uint iIndex) const
-	{
-		return matTransform.Get_AxisVector(iIndex);
-	}
-
 	FVector3 Get_Scale() const
 	{
 		return matTransform.Get_ScaleVector();
@@ -154,6 +167,12 @@ public:
 	virtual ~FCollisionSphere() {}
 
 public:
+	virtual void Calculate_Shape() override
+	{
+		fRadius = max(max(Get_Scale().x, Get_Scale().y), Get_Scale().z) * 0.5f;
+	}
+
+public:
 	Real		fRadius;
 };
 
@@ -178,6 +197,12 @@ public:
 	virtual ~FCollisionBox() {}
 
 public:
+	virtual void Calculate_Shape() override
+	{
+		vHalfSize = Get_Scale() * 0.5f;
+	}
+
+public:
 	FVector3	vHalfSize;
 };
 
@@ -200,6 +225,13 @@ public:
 	{
 	}
 	virtual ~FCollisionCapsule() {}
+
+public:
+	virtual void Calculate_Shape() override
+	{
+		vDirHalfSize = Get_Scale() * 0.5f;
+		fRadius = max(Get_Scale().x, Get_Scale().z) * 0.5f;
+	}
 
 public:
 	FVector3	vDirHalfSize;
@@ -228,6 +260,12 @@ public:
 	virtual ~FCollisionPlane() {}
 
 public:
+	virtual void Calculate_Shape() override
+	{
+		//vHalfSize = matOffset.Get_ScaleVector() * 0.5f;
+	}
+
+public:
 	FVector3	vDirection;
 	Real		fOffset;
 };
@@ -251,6 +289,12 @@ public:
 	{
 	}
 	virtual ~FCollisionLine() {}
+
+public:
+	virtual void Calculate_Shape() override
+	{
+		//vHalfSize = matOffset.Get_ScaleVector() * 0.5f;
+	}
 
 public:
 	FVector3	vStart;
@@ -277,6 +321,12 @@ public:
 	virtual ~FCollisionRay() {}
 
 public:
+	virtual void Calculate_Shape() override
+	{
+		//vHalfSize = matOffset.Get_ScaleVector() * 0.5f;
+	}
+
+public:
 	FVector3	vOrigin;
 	FVector3	vDir;
 };
@@ -301,6 +351,12 @@ public:
 	virtual ~FCollisionTriangle() {}
 
 public:
+	virtual void Calculate_Shape() override
+	{
+		//vHalfSize = matOffset.Get_ScaleVector() * 0.5f;
+	}
+
+public:
 	FVector3	vA, vB, vC;
 };
 
@@ -322,6 +378,12 @@ public:
 	{
 	}
 	virtual ~FCollisionOBB() {}
+
+public:
+	virtual void Calculate_Shape() override
+	{
+		vHalfSize = Get_Scale() * 0.5f;
+	}
 
 public:
 	FVector3	vHalfSize;
