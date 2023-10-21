@@ -4,7 +4,7 @@
 #include "AceMonster.h"
 
 //보스
-#include "AceBoss.h"
+#include "Boss.h"
 // 몬스터
 #include "Gray.h"
 #include "Brown.h"
@@ -25,7 +25,11 @@ CPlayerSkillUnion::~CPlayerSkillUnion()
 
 HRESULT CPlayerSkillUnion::Ready_GameObject()
 {
-    srand((_uint)time(NULL));
+    //srand((_uint)time(NULL));
+
+    NULL_CHECK_RETURN(m_pBufferComp = Set_DefaultComponent_FromProto<CRcBufferComp>(ID_STATIC, L"Com_Buffer", L"Proto_RcTexBufferComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_PlayerRightTextureComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
 
     return S_OK;
 }
@@ -90,7 +94,8 @@ void CPlayerSkillUnion::Billboard()
 
     _float rad = atan2f(vDir.x, vDir.z);
 
-    m_pTransformComp->Set_RotationY(rad);
+    // D3DX_PI : 파이만큼 빼주지 않으면 빌보드시 좌우 반전이 일어남
+    m_pTransformComp->Set_RotationY(rad - D3DX_PI);
 }
 
 HRESULT CPlayerSkillUnion::Update_PlayerPos()
@@ -159,5 +164,48 @@ void CPlayerSkillUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTar
     }
 }
 
+void CPlayerSkillUnion::Monster_Select(CGameObject* _GameObject)
+{
+    CBrown* pBrown = nullptr;
+    pBrown = dynamic_cast<CBrown*>(_GameObject);
+
+    CGray* pGray = nullptr;
+    pGray = dynamic_cast<CGray*>(_GameObject);
+
+    CBoss* pBoss = nullptr;
+    pBoss = dynamic_cast<CBoss*>(_GameObject);
+
+    if (pBrown != nullptr)
+        Set_Monster(pBrown);
+
+    if (pGray != nullptr)
+        Set_Monster(pGray);
+
+    if (pBoss != nullptr)
+        Set_Monster(pBoss);
+}
+
+_vec3 CPlayerSkillUnion::Target_Pos(CGameObject* _Target)
+{
+    _vec3 vNoTarget = { 0.f, 0.f, 0.f };
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(_Target);
+
+    if (pAceObj == nullptr)
+        return vNoTarget;
+
+    if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE)
+    {
+        // 타겟 지정
+        CAceMonster* pMonster = dynamic_cast<CAceMonster*>(_Target);
+
+        // 공격받은 몬스터(타겟)가 있을 경우
+        if (nullptr != pMonster)
+        {
+            return pMonster->Get_MonsterPos();
+        }
+    }
+
+    return vNoTarget;
+}
 
 #pragma endregion

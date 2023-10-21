@@ -178,9 +178,6 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill">
       <UniqueIdentifier>{ca6f25a3-3f57-4f7d-bd0c-81b038c47176}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\NewFilter2">
-      <UniqueIdentifier>{b2b95b6d-1894-45c0-8f8b-52c6ac98da3f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\NewFilter3">
       <UniqueIdentifier>{4aeddc07-98a5-43ec-8b94-e7b9ab2c6d73}</UniqueIdentifier>
     </Filter>
@@ -258,6 +255,9 @@
     </Filter>
     <Filter Include="05. =====AceUI=====\99. UI_Fade">
       <UniqueIdentifier>{b9593666-94e6-4459-9e0b-d42b07c06070}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\Lightning">
+      <UniqueIdentifier>{b2b95b6d-1894-45c0-8f8b-52c6ac98da3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -474,6 +474,9 @@
     <ClInclude Include="UI_FadeOut.h">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClInclude>
+    <ClInclude Include="Header\PlayerLightning.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\Lightning</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -685,6 +688,9 @@
     </ClCompile>
     <ClCompile Include="UI_FadeOut.cpp">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerLightning.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\Lightning</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

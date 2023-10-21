@@ -70,8 +70,10 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBoxTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_CUBE, L"TestCube", L"4")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UITextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"UI", L"HudBox_Main")), E_FAIL);
 	
-	// 플레이어 손
+	// 플레이어 왼손
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerLeftTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Player", L"Left_RunHand")), E_FAIL);
+	
+	// 플레이어 오른손 + 플레이어 스킬 쓰는중
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerRightTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Player", L"Right_RunHand")), E_FAIL);
 
 	// 몬스터 + 이펙트 + 오브젝트 + 파티클 돌려쓰는중 
@@ -406,6 +408,12 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/AceEffect/Dazed/DazeSwirl_%d.png", TEX_NORMAL, L"Effect", L"DazeSwirl", _range<_uint>(0U, 3U));
 	Load_Texture(L"./Resource/Texture/AceEffect/HitDust/HitDust_%d.png", TEX_NORMAL, L"Effect", L"HitDust", _range<_uint>(0U, 16U)); 
 	Load_Texture(L"./Resource/Texture/AceEffect/HitPow/HitPow_%d.png", TEX_NORMAL, L"Effect", L"HitPow", _range<_uint>(0U, 3U)); 
+	
+	// 폭발
+	Load_Texture(L"./Resource/Texture/AceEffect/Explosion/Explosion (%d).png", TEX_NORMAL, L"Effect", L"Explosion", _range<_uint>(0U, 71U)); 
+	
+	// 번개
+	Load_Texture(L"./Resource/Texture/AceEffect/Lightning/Lightning (%d).png", TEX_NORMAL, L"Effect", L"Lightning", _range<_uint>(0U, 3U)); 
 
 #pragma endregion 
 

@@ -43,8 +43,33 @@ protected:
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
 	CTransformComponent* m_pPlayerTransformcomp = nullptr;
 
-public:
-	GETSET_EX2(_vec3, m_vDir, AttackDir, GET, SET)
+protected:
+	struct _PLAYERSKILL	// 플레이어 스킬 구조체
+	{
+		_float fCurTime = 0.f;
+		_float fMaxTime = 0.f;
+		_float fDeleteTime = 0.f;	// 공격 삭제 시간
+		_float fFrame = 0.f;		// 프레임 시작
+		_float fFrameEnd = 0.f;		// 프레임 끝
+		_float fFrameSpeed = 0.f;	// 프레임 속도
+		_float fMoveSpeed = 0.f;	// 투사체 속도 
+		_float fDamage = 0.f;		// 데미지
+		_float fSize = 0.f;			// 크기
+
+		PLAYER_ATTACK_STATE			ePlayer_AttackState; // 공격 유형
+
+		_vec3 vPos = { 0.f, 0.f, 0.f }; // 위치
+		_vec3 vDir = { 0.f, 0.f, 0.f }; // 방향
+	};
+
+	enum PLAYER_SKILLHIT
+	{
+		PSKILLHIT_NOHIT,
+		PSKILLHIT_ONE,
+		PSKILLHIT_TWO,
+		PSKILLHIT_THREE,
+		PSKILLHIT_END_SIZE
+	};
 
 public:
 	void						Height_On_Terrain(_float Height);
@@ -52,17 +77,32 @@ public:
 
 public: //플레이어 관련 셋팅 
 	void						Change_PlayerHp(_float pAttack);
-	void						Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, PLAYER_ATTACK_STATE _AttackState);
 	HRESULT						Update_PlayerPos();
 	void						Recoil(const _float& fTimeDelta, _float fSpeed);
+
 	GAUGE<_float>				PlayerHp; //플레이어 HP 저장용 변수 
 	GAUGE<_float>				MonsterHp; //몬스터 HP 저장용 변수 
 
+public: // 몬스터 셋팅
+	void						Monster_Select(CGameObject* _GameObject);
+	//void						Monster_Select(CAceMonster* _AceMonster);
+	_vec3						Target_Pos(CGameObject* _Target);
+	void						Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, PLAYER_ATTACK_STATE _AttackState);
+
+	GETSET_EX2(CAceMonster*, pMonster, Monster, GET, SET)
+	GETSET_EX2(CGameObject*, m_pGameObject, GameObject, GET, SET)
+
 protected:
+	_PLAYERSKILL				m_tSkill;
 	MonsterPhase				m_CurrPahse;
 	ATTACK_TARGET				m_eAttack_Target;
 	_tchar						debugString[100];
 	FRAME						m_tFrame;
 	PLAYER_ATTACK_STATE			m_ePlayer_AttackState;
 	_vec3 m_vDir = { 0.f, 0.f, 0.f };
+
+	PLAYER_SKILLHIT				m_ePlayer_SkillHit = PSKILLHIT_NOHIT;
+
+	CAceMonster* pMonster = nullptr;
+	CGameObject* m_pGameObject = nullptr;
 };

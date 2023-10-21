@@ -6,7 +6,7 @@
 
 #include "MonsterPunch.h"
 
-#include "Awareness.h"
+#include "Effect_Awareness.h"
 #include "RedLaser.h"
 #include "FallingStone.h"
 #include "SlowThunder.h"

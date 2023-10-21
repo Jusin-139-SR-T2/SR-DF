@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\PlayerLightning.h" />
     <ClInclude Include="UI_FadeOut.h" />
     <ClInclude Include="UI_PlayerHurt.h" />
     <ClInclude Include="UI_FadeIn.h" />
@@ -133,6 +134,7 @@
     <ClCompile Include="Code\Effect_HitDust.cpp" />
     <ClCompile Include="Code\Effect_HitPow.cpp" />
     <ClCompile Include="Code\Effect_DazeSwirl.cpp" />
+    <ClCompile Include="Code\PlayerLightning.cpp" />
     <ClCompile Include="UI_FadeOut.cpp" />
     <ClCompile Include="UI_PlayerHurt.cpp" />
     <ClCompile Include="UI_FadeIn.cpp" />
