@@ -109,6 +109,7 @@ HRESULT CEffect_HitPow::Update_Pos()
 	EffectPos += ResultDir * 1.5f;
 
 	m_pTransformComp->Set_Pos(ResultDir);
+
 	return S_OK;
 }
 HRESULT CEffect_HitPow::Add_Component()

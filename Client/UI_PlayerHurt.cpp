@@ -56,7 +56,7 @@ HRESULT CUI_PlayerHurt::Ready_GameObject()
 	m_tFrame.fRepeat = 0.f;
 
 	m_tFrame.fFrame = 0.f;
-	m_tFrame.fFrameSpeed = 10.f;
+	m_tFrame.fFrameSpeed = 1.f;
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	return S_OK;
 }

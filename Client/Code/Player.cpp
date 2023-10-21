@@ -18,8 +18,8 @@
 #include "AceWeapon.h"
 
 //테스트
-#include "UI_FadeIn.h"
-#include "UI_FadeOut.h"
+#include "UI_PlayerHurt.h"
+#include "UI_EatFood.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -220,11 +220,11 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     //플레이어 뒤로 콜라가 생성되는 코드
     if (Engine::IsKey_Pressed(DIK_K))
     {
-        Engine::Add_GameObject(L"UI", CUI_FadeIn::Create(m_pGraphicDev));
+        Engine::Add_GameObject(L"UI", CUI_PlayerHurt::Create(m_pGraphicDev));
     }
     if (Engine::IsKey_Pressed(DIK_L))
     {
-        Engine::Add_GameObject(L"UI", CUI_FadeOut::Create(m_pGraphicDev));
+        Engine::Add_GameObject(L"UI",CUI_EatFood::Create(m_pGraphicDev));
     }
         //Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev,CAceObjectFactory::OBJECT_CLASS::FOOD, 
     //    L"Test", m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z));
