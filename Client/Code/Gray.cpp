@@ -179,7 +179,7 @@ HRESULT CGray::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-    m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+    m_pTextureComp->Set_Scale(tObjectSerial.vScale);
     m_pTextureComp->Readjust_Transform();
     //m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
 

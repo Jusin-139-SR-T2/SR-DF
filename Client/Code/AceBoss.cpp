@@ -201,8 +201,9 @@ HRESULT CAceBoss::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
 	FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
 	m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-	m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
-	m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+	//m_pTextureComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
+	m_pTextureComp->Set_Scale(tObjectSerial.vScale);
+	m_pTextureComp->Readjust_Transform();
 
 	wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
 	Set_ObjectName(strConvName);
@@ -214,6 +215,8 @@ HRESULT CAceBoss::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
 	m_bUsePriority[0] = tObjectSerial.bUsePriority_Update;
 	m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
 	m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
+
+	m_pColliderComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
 
 	return S_OK;
 }
@@ -333,7 +336,7 @@ void CAceBoss::Render_GameObject()
 HRESULT CAceBoss::Add_Component()
 {
 	// 충돌 컴포넌트 
-	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderBoxComp"), E_FAIL);
+	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
 
 	// 물리 세계 등록
 	m_pColliderComp->EnterToPhysics(0);

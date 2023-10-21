@@ -488,21 +488,29 @@ bool FCollisionDetector::SphereAndOBB(const FCollisionSphere& srcSphere, const F
 
 	// 구한 접점을 가지고 거리 체크
 	FVector3& vClosestPoint = vResult;
-	Real fDistSq = (srcSphere.Get_Position() - vClosestPoint).SquareMagnitude();
+	Real fDistSq_Between = vDir.SquareMagnitude();
+	Real fDistSq_ClosestFromSphere = (srcSphere.Get_Position() - vClosestPoint).SquareMagnitude();
+	Real fDistSq_ClosestFromOBB = (dstOBB.Get_Position() - vClosestPoint).SquareMagnitude();
 	Real fRadiusSq = (srcSphere.fRadius * srcSphere.fRadius);
+	_bool bCollide = fDistSq_ClosestFromSphere < fRadiusSq || fDistSq_Between < fDistSq_ClosestFromOBB;
 
 	// 충돌정보 생성
-	if (fDistSq < fRadiusSq
+	if (bCollide
 	&& pColData != nullptr && pColData->iContactsLeft >= 0)
 	{
 		FContact& pContact = pColData->tContacts;
+		
 		pContact.vContactNormal = (vClosestPoint - srcSphere.Get_Position()).Unit();
+		// 구체의 중점이 OBB에 파묻힘, 노멀을 반대로
+		if (fDistSq_Between < fDistSq_ClosestFromOBB)
+			pContact.vContactNormal = -pContact.vContactNormal;
+			
 		pContact.vContactPoint = vClosestPoint;
-		pContact.fPenetration = srcSphere.fRadius - real_sqrt(fDistSq);
+		pContact.fPenetration = srcSphere.fRadius - real_sqrt(fDistSq_ClosestFromSphere);
 		pContact.Set_BodyData(srcSphere.pBody, dstOBB.pBody, pColData->fFriction, pColData->fRestitution);
 	}
 	
-	return fDistSq < fRadiusSq;
+	return bCollide;
 }
 
 bool FCollisionDetector::BoxAndBox(const FCollisionBox& srcBox, const FCollisionBox& dstBox, FCollisionData* pColData)

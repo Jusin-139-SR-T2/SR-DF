@@ -180,7 +180,7 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 	// 정렬 O(log(n))
 	listEndPoint.sort();
 
-	// 계산 파트
+	// 충돌쌍 만드는 파트
 	for (auto iter = listEndPoint.begin(); iter != listEndPoint.end(); ++iter)
 	{
 		if ((*iter).bIsStart)
@@ -189,7 +189,13 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 			for (auto iterCalc = listEndPoint_Calc.begin(); iterCalc != listEndPoint_Calc.end(); ++iterCalc)
 			{
 				// 스타트 포인트가 있다면 충돌 쌍을 생성한다.
-				listPairCollide.push_back({ (*iter).pBody, (*iterCalc).pBody });
+				// 레이어 마스크가 겹칠 때 쌍을 만든다.
+				FCollisionPrimitive* pColSrc = static_cast<FCollisionPrimitive*>((*iter).pBody->Get_Owner());
+				FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iterCalc).pBody->Get_Owner());
+
+				if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer()
+					|| pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
+					listPairCollide.push_back({ (*iter).pBody, (*iterCalc).pBody });
 			}
 			listEndPoint_Calc.push_back((*iter));
 		}
