@@ -449,6 +449,8 @@ void CBrown::MonsterDead()
     }
     else if(RECENT_COL::BOSSATK == m_eRecentCol)
         m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+    else
+        m_tState_Obj.Set_State(STATE_OBJ::DEATH);
 }
 #pragma endregion 
 

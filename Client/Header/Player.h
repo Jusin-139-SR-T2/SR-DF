@@ -215,6 +215,7 @@ public:
 
 private: // 플레이어의 왼손 상태 머신
 	STATE_SET<STATE_LEFTHAND, void(CPlayer*, float)> m_tLeftHand_State;
+	STATE_LEFTHAND m_eLeftState_Old;
 
 	void	Left_None(float fTimeDelta);
 	void	Left_Hand(float fTimeDelta);
@@ -227,6 +228,7 @@ private: // 플레이어의 오른손 상태 머신
 	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightHand_State;
 	//STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightState_Old;
 	STATE_RIGHTHAND m_eRightState_Old;
+
 	void	Right_None(float fTimeDelta);
 	void	Right_Hand(float fTimeDelta);
 	void	Right_RunHand(float fTimeDelta);
@@ -367,7 +369,7 @@ private:
 	DASHDIR m_eDashDir;
 
 	// 라이터 조명
-	CPlayerLighter* m_PlayerLighter;
+	_bool m_PlayerLighter;
 private:
 		// 애니메이션 타임 라인
 		std::vector<KEYFRAME> timeline[KEYTYPE_END];
@@ -421,7 +423,8 @@ private:
 
 	_float fAttackTime = 0.f;
 
-
+	_vec3 m_vIdlePos = { 0.f, 0.f, 0.f };
+	_bool m_bHandSwitch = false;
 private:
 	GAUGE<_float>	m_fMonsterHp;
 };

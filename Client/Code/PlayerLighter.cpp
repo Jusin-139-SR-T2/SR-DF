@@ -48,6 +48,8 @@ _int CPlayerLighter::Update_GameObject(const _float& fTimeDelta)
 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
+    Update_InternalData();
+
     return S_OK;
 }
 
@@ -106,6 +108,24 @@ HRESULT CPlayerLighter::Add_Component()
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
     
     return S_OK;
+}
+
+void CPlayerLighter::Update_InternalData()
+{
+    // 블랙보드 연결 대기, 안전 코드로 필수
+    if (!m_wpBlackBoard_Player.Get_BlackBoard())
+    {
+        m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"Player"));
+        // 연결 실패
+        if (!m_wpBlackBoard_Player.Get_BlackBoard())
+            return;
+    }
+
+    // 안전 코드를 거치면 일반 포인터로 접근 허용.
+    CBlackBoard_Player* m_pBlackBoard = m_wpBlackBoard_Player.Get_BlackBoard();
+
+    // 여기서부터 블랙보드의 정보를 얻어온다.
+    m_bLightOn = m_pBlackBoard->Get_LighterLight();
 }
 
 void CPlayerLighter::Free()

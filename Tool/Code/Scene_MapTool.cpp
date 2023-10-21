@@ -115,7 +115,8 @@ HRESULT CScene_MapTool::Ready_Texture()
 	// 오픈 핸드 [오른손이 무언가를 할 때 아무것도 아닌상태] (왼손)
 	Load_Texture(L"../Client/Resource/Texture/Player/OpenHand/OpenHand (%d).png", TEX_NORMAL, L"Player", L"OpenHand", _range<_uint>(0U, 0U));
 #pragma endregion
-
+	// 애니메이션 툴 배경
+	Load_Texture(L"../Client/Resource/Texture/MAP/ClientSizeBox1280x720.png", TEX_NORMAL, L"UI", L"ClientSize", _range<_uint>(0U, 0U));
 #pragma region 멀티 텍스처
 	// 왼손
 	Load_Texture(L"../Client/Resource/Texture/Player/LeftHand/LeftHand (%d).png", TEX_NORMAL, L"Player", L"Left_Hand", _range<_uint>(0U, 1U));

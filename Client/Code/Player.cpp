@@ -16,6 +16,7 @@
 #include "Effect_HitPow.h"
 #include "AceUnit.h"
 #include "AceWeapon.h"
+#include "PlayerLightning.h"
 
 //테스트
 #include "UI_FadeIn.h"
@@ -399,28 +400,29 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
                 m_tLeftHand.bLeftFrameOn = true;
             }
         }
+        // 뛰기
+        if (Engine::IsKey_Released(DIK_LSHIFT))
+        {
+            // 플레이어 모두 : 초기화
+            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
+            m_tRightHand_State.Set_State(STATE_RIGHTHAND::NONE);
+            m_tLeftHand_State.Set_State(STATE_LEFTHAND::NONE);
+
+            // 전진 속도 복구
+            m_tPlayer.fStraightSpeed = 5.f;
+            m_tRightHand.bRightFrameOn = false;
+            m_tRightHand.fRightFrame = 0.f;
+            m_tLeftHand.bLeftFrameOn = false;
+            m_tLeftHand.fLeftFrame = 0.f;
+            m_tTime.fLeftCurrentTime = 0.f;
+            m_tTime.fRightCurrentTime = 0.f;
+        }
 
         D3DXVec3Normalize(&vLook, &vLook);
         m_pTransformComp->Move_Pos(&vLook, fTimeDelta, m_tPlayer.fStraightSpeed);
     }
 
-    // 뛰기
-    if (Engine::IsKey_Released(DIK_LSHIFT))
-    {
-        // 플레이어 모두 : 초기화
-        m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
-        m_tRightHand_State.Set_State(STATE_RIGHTHAND::NONE);
-        m_tLeftHand_State.Set_State(STATE_LEFTHAND::NONE);
 
-        // 전진 속도 복구
-        m_tPlayer.fStraightSpeed = 5.f;
-        m_tRightHand.bRightFrameOn = false;
-        m_tRightHand.fRightFrame = 0.f;
-        m_tLeftHand.bLeftFrameOn = false;
-        m_tLeftHand.fLeftFrame = 0.f;
-        m_tTime.fLeftCurrentTime = 0.f;
-        m_tTime.fRightCurrentTime = 0.f;
-    }
 
     // 후진
     if (Engine::IsKey_Pressing(DIK_S))
@@ -686,25 +688,26 @@ if (!timeline[KEYTYPE_LEFTHAND].empty())
                 }
             }
 
-            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
             // 만약 최대프레임인데 라이터가 켜져있을 경우
             if (bRighter)
             {
                 // (현재 프레임) 라이터를 켜져있는 이미지(마지막)로 고정
                 m_tLeftHand.fLeftFrame = _float(timeline[KEYTYPE_LEFTHAND].back().texureframe);
-                m_PlayerLighter->Set_m_bLightOn(true);
+                m_PlayerLighter = true;
+                //m_tLeftHand.bLeftFrameOn = false;
             }
             else // 라이터가 안켜져있을 경우
             {
                 // 현재 프레임 초기화
                 m_tLeftHand.fLeftFrame = 0.f;
+                m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
             }
             // 라이터 되돌리기가 켜져있을 경우
             if (bBackRighter)
             {
                 bRighter = false;
                 bBackRighter = false;
-                m_PlayerLighter->Set_m_bLightOn(false);
+                m_PlayerLighter = false;
                 m_tLeftHand_State.Set_State(STATE_LEFTHAND::NONE); // 왼손 상태 초기화
             }
         }
@@ -801,6 +804,10 @@ if (!timeline[KEYTYPE_RIGHTHAND].empty())
                     if (m_bAttack)
                     {
                         m_bAttack = false;
+                        if (m_tRightHand_State.Get_State() == STATE_RIGHTHAND::BEERBOTLE)
+                        {
+                            m_tRightHand.bRightAttacColOn = true;
+                        }
                         //m_tRightHand.bRightAttacColOn = true;
                     }
                 }
@@ -1660,11 +1667,20 @@ void CPlayer::Hand_Check()
         {
             m_tLeftHand.bLeftFrameOn = true;
             bLeftGetAnimation = true;
+            m_tLeftHand.bPickUpState = true;
+        }
+
+        //if (m_eLeftState_Old != m_tLeftHand_State.Get_State())
+        {
+            m_tLeftHand.bLeftFrameOn = true;
+            bLeftGetAnimation = true;
+            m_tLeftHand.bPickUpState = true;
         }
     }
 
     // 플레이어의 현재 상태를 저장
     m_eRightState_Old = m_tRightHand_State.Get_State();
+    m_eLeftState_Old = m_tLeftHand_State.Get_State();
 
     switch (m_eObjectName)
     {
@@ -1802,51 +1818,35 @@ void CPlayer::Idle(float fTimeDelta)
 
     if (m_tPlayer_State.Can_Update())
     {
-        if (m_tActionKey[EACTION_KEY::UP].IsOnAct())
-        {
+        _float fRange = 9.f;
+        _float fSpeed = 0.3f;
 
+        if (m_vIdlePos.y < fRange &&
+            !m_bHandSwitch)
+        {
+            m_vIdlePos.y += fSpeed;
+        }
+        else if (m_vIdlePos.y >= fRange)
+        {
+            m_bHandSwitch = true;
         }
 
-        if (m_tActionKey[EACTION_KEY::DOWN].IsOnAct())
+        if (m_bHandSwitch)
         {
-
+            m_vIdlePos.y -= fSpeed;
         }
 
-        if (m_tActionKey[EACTION_KEY::LEFT].IsOnAct())
+        if (m_vIdlePos.y <= -fRange)
         {
-
+            m_bHandSwitch = false;
         }
 
-        if (m_tActionKey[EACTION_KEY::RIGHT].IsOnAct())
-        {
-
-        }
-
-        if (m_tActionKey[EACTION_KEY::RUN].IsOnAct())
-        {
-
-        }
-
-        if (m_tActionKey[EACTION_KEY::ATTACK].IsOnAct())
-        {
-
-        }
-
-        if (m_tActionKey[EACTION_KEY::JUMP].IsOnAct())
-        {
-
-        }
-
-        if (m_tActionKey[EACTION_KEY::SITDOWN].IsOnAct())
-        {
-
-        }
-       
+        //m_pRightHandComp->Set_Pos(m_vIdlePos);
     }
 
     if (m_tPlayer_State.IsState_Exit())
     {
-
+        m_vIdlePos.y = 0.f;
     }
 }
 
@@ -2082,7 +2082,7 @@ void CPlayer::Left_Hand(float fTimeDelta)
                 m_tLeftHand.fLeftFrame = 0.f;
                 m_tTime.fLeftCurrentTime = 0.f;        // 현재 시간 초기화
 
-                // 오른손 주먹 불러오기
+                // 왼손 주먹 불러오기
                 m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"LeftFist");
                 LeftLoadAnimationFromFile("LeftFist");
 
@@ -2189,14 +2189,37 @@ void CPlayer::Left_OpenHand(float fTimeDelta)
         m_pLeftHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"OpenHand");
 
         //bGetAnimation = false;
-        m_tLeftHand.fLeftFrame = 0.f;
-        m_tLeftHand.bLeftFrameOn = false;
-        m_tTime.fLeftMaxTime = 0.f;
+        //m_tLeftHand.fLeftFrame = 0.f;
+        //m_tLeftHand.bLeftFrameOn = false;
+        //m_tTime.fLeftMaxTime = 0.f;
+
+        // 처음 꺼내는 애니메이션
+        if (m_tLeftHand.bPickUpState)
+        {
+            // 애니메이션 불러오기
+            if (bLeftGetAnimation)
+            {
+                LeftLoadAnimationFromFile("LeftHandPickUp");
+            }
+        }
     }
 
     if (m_tLeftHand_State.Can_Update())
     {
+        // 꺼내는 애니메이션이 다 돌았을 경우
+        if (!m_tLeftHand.bPickUpState)
+        {
+            if (bLeftGetAnimation)
+            {
+                m_tLeftHand.bLeftFrameOn = false;      // 왼손 프레임 매니저 Off
+                m_tLeftHand.bPickUpState = false;      // 현재 프레임 초기화
+                m_tLeftHand.fLeftFrame = 0.f;
+                m_tTime.fLeftCurrentTime = timeline[KEYTYPE_LEFTHAND].back().time;        // 현재 시간 초기화
 
+                m_tLeftHand.bLeftFrameOn = false;
+                bLeftGetAnimation = false; // Off
+            }
+        }
     }
 
     if (m_tLeftHand_State.IsState_Exit())
@@ -2888,6 +2911,12 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
             }
         }
 
+        // 오른손 프레임이 다 돌았을 경우
+        if (m_tTime.fRightCurrentTime > m_tTime.fRightMaxTime)
+        {
+                                        // 속도, 삭제시간, 데미지, 크기
+        }
+
         // 공격 생성On
         if (m_tRightHand.bRightAttacColOn)
         {
@@ -2895,6 +2924,18 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
 
             _vec3 vPos = m_pTransformComp->Get_Pos();
             vPos.y += 0.7f;
+
+            CGameObject* pGmaeObj = nullptr;
+            CAceMonster* pAceMonster = nullptr;
+
+            pGmaeObj = RayCast();
+
+            if (pGmaeObj != nullptr)
+                pAceMonster = dynamic_cast<CAceMonster*>(pGmaeObj);
+
+            // 번개 스킬 생성
+            if (pAceMonster != nullptr)
+            Engine::Add_GameObject(L"GameLogic", CPlayerLightning::Create(m_pGraphicDev, pAceMonster)); // 디바이스, 몬스터 
 
             // 맥주병 공격 생성
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
@@ -3194,7 +3235,7 @@ void CPlayer::LeftInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                 fPosY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
 
                 m_pLeftHandComp->Set_Pos({ (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].vPos.x + fPosX_Delta,
-                (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].vPos.y + fPosY_Delta,
+                (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].vPos.y + m_vIdlePos.y + fPosY_Delta,
                 0.f });	// 이미지 위치
 
                 m_pLeftHandComp->Set_Scale({ (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
@@ -3220,7 +3261,7 @@ void CPlayer::LeftInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
 
 
                 m_pLeftHandComp->Set_Pos({ (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].vPos.x,
-                                            (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].vPos.y,
+                                            (timeline)[KEYTYPE_LEFTHAND][iFrameIndex].vPos.y + m_vIdlePos.y,
                                             0.f });	// 이미지 위치
 
                 // 텍스처 번호
@@ -3290,7 +3331,7 @@ void CPlayer::RightInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                     fPosY_Delta *= fCurFrameTimeDelta / fFrameTimeDelta;
 
                     m_pRightHandComp->Set_Pos({ (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].vPos.x + fPosX_Delta,
-                    (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].vPos.y + fPosY_Delta,
+                    (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].vPos.y + m_vIdlePos.y + fPosY_Delta,
                     0.f });	// 이미지 위치
 
                     m_pRightHandComp->Set_Scale({ (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].vScale.x + fSizeX_Delta, 	// 이미지 크기
@@ -3316,7 +3357,7 @@ void CPlayer::RightInterpolation() // 왼손, 오른손 선형 보간 함수 별개로 만들기
                     (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].vRot.z });
 
                     m_pRightHandComp->Set_Pos({ (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].vPos.x,
-                                                (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].vPos.y,
+                                                (timeline)[KEYTYPE_RIGHTHAND][iFrameIndex].vPos.y + m_vIdlePos.y,
                                                 0.f });	// 이미지 위치
 
                     // 텍스처 번호

@@ -3,6 +3,8 @@
 
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "BlackBoardPtr.h"
+#include "BlackBoard_Player.h"
 
 BEGIN(Engine)
 
@@ -29,8 +31,10 @@ public:
 private:
 	void				Height_On_Terrain();
 	HRESULT				Add_Component();
+	void				Update_InternalData();
 	virtual void		Free();
 
+	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player;
 private:
 	CTransformComponent* m_pTransformComp = nullptr;
 	CTransformComponent* m_pPlayerTransformcomp = nullptr;
