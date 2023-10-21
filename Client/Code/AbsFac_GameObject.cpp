@@ -85,6 +85,10 @@ CGameObject* CAbsFac_GameObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSe
 	{
 		return static_cast<CGameObject*>(CAceBoss::Create(pGraphicDev, tObject));
 	}
+	else if (strType == "Player")
+	{
+		return static_cast<CGameObject*>(CPlayer::Create(pGraphicDev, tObject));
+	}
 	else if (strType == "Trigger_ToStageHall")
 	{
 		return static_cast<CGameObject*>(CTrigger_ToStageHall::Create(pGraphicDev, tObject));

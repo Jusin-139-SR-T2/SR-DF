@@ -14388,7 +14388,40 @@
                 "name": "GameLogic"
             },
             "priority": 0.0,
-            "objects": []
+            "objects": [
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Player"
+                    },
+                    "ID": 9,
+                    "class_name": "Player",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.201726913452148,
+                        "y": 0.6637461185455322,
+                        "z": 13.802106857299805
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -122.03999328613281,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Player",
+                    "texture_key": "OpenHand"
+                }
+            ]
         },
         {
             "header": {

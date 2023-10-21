@@ -89,6 +89,17 @@ private:	// ∫‰ √ﬂ∞° ∑π¿Ãæ∆øÙ
 
 	_bool			m_bSnap_Active = false;
 
+	// ≈«πŸ
+	enum ETAB_BROWSER
+	{
+		ETAB_BROWSER_SCENE,
+		ETAB_BROWSER_TERRAIN,
+		ETAB_BROWSER_OBJECT,
+		ETAB_BROWSER_LIGHT,
+		ETAB_BROWSER_CAMERA
+	};
+	ETAB_BROWSER	m_eTab_Browser = ETAB_BROWSER_SCENE;
+
 
 private:	// º±≈√ ≈∏¿‘
 	enum ESELECTED_TYPE : _ulong
