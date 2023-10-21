@@ -101,11 +101,6 @@ void CTrigger_ToJumpMap::MeshSphereColider(_float Radius, _uint Slices, _uint St
 
 void CTrigger_ToJumpMap::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
-
-}
-
-void CTrigger_ToJumpMap::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
-{
     if (FadeInEnd) // 페이드아웃이 완료되면 블랙보드에 올라옴 - 해당변수먼저 체크 
     {
         if (!m_bIsTriggered)
@@ -120,9 +115,14 @@ void CTrigger_ToJumpMap::OnCollisionEntered(CGameObject* pDst, const FContact* c
     }
 }
 
-void CTrigger_ToJumpMap::OnCollisionExited(CGameObject* pDst)
+void CTrigger_ToJumpMap::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
     Engine::Add_GameObject(L"UI", CUI_FadeOut::Create(m_pGraphicDev)); // 페이드아웃 먼저 생성
+}
+
+void CTrigger_ToJumpMap::OnCollisionExited(CGameObject* pDst)
+{
+   
 }
 
 HRESULT CTrigger_ToJumpMap::Add_Component()

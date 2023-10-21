@@ -770,10 +770,10 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Scene/Fade_%d.png", TEX_NORMAL, L"UI_Scene", L"FadeInOut", _range<_uint>(0U, 30U));
 	
 	// Green Effect - 아이템 획득
-	Load_Texture(L"./Resource/Texture/UI/EatEffect_%d.png", TEX_NORMAL, L"UI_Scene", L"EatEffect", _range<_uint>(0U, 4U));
+	Load_Texture(L"./Resource/Texture/UI/EatEffect_%d.png", TEX_NORMAL, L"UI_Scene", L"EatEffect", _range<_uint>(0U, 7U));
 	 
 	// Red Effect - 플레이어 피격
-	Load_Texture(L"./Resource/Texture/UI/PlayerHurt_%d.png", TEX_NORMAL, L"UI_Scene", L"PlayerHurt", _range<_uint>(0U, 6U));
+	Load_Texture(L"./Resource/Texture/UI/PlayerHurt_%d.tga", TEX_NORMAL, L"UI_Scene", L"PlayerHurt", _range<_uint>(0U, 7U));
 
 #pragma endregion
 
