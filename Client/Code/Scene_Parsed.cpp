@@ -136,7 +136,7 @@ HRESULT CScene_Parsed::Ready_Layer_Completed()
 
     Add_GameObject(L"UI", CUI_Player::Create(m_pGraphicDev));
 
-    Add_GameObject(L"GameLogic", CPlayer::Create(m_pGraphicDev));
+    //Add_GameObject(L"GameLogic", CPlayer::Create(m_pGraphicDev));
 
     Add_GameObject(L"Environment", L"SkyBox", CSkyBox::Create(m_pGraphicDev, 10.f));
 

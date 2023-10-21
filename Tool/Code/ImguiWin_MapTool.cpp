@@ -1186,6 +1186,7 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
         || tObjectData.strClassName == "AceFood"
         || tObjectData.strClassName == "AceThrow"
         || tObjectData.strClassName == "AceInteraction"
+        || tObjectData.strClassName == "Player"
         )
     {
         CGameObject* pObj = static_cast<CGameObject*>(CRectObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),

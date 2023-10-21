@@ -5300,6 +5300,38 @@
                     },
                     "group_key": "Develop",
                     "texture_key": "BoxTrigger"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Player"
+                    },
+                    "ID": 9,
+                    "class_name": "Player",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 2.91131329536438,
+                        "y": 0.9883596301078796,
+                        "z": 24.77179527282715
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Player",
+                    "texture_key": "OpenHand"
                 }
             ]
         },
