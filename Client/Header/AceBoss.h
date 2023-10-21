@@ -142,7 +142,7 @@ public:
 	enum class STATE_ACT {
 		IDLE, 
 		APPROACH,			// RUN + WALK 
-		MOVING,				// ROLL
+		MOVING,	FALLING,		// ROLL
 		ATTACK,				// CLOSEATTACK
 		SHOOT,				//
 		INSTALL, BUFF,		// 관문별 1회성 스킬 
@@ -153,7 +153,7 @@ public:
 	// 액션키
 	enum class ACTION_KEY {
 		IDLE,
-		RUN, WALK, ROLL,
+		RUN, WALK, ROLL, FALLING,
 		CLOSEATK,
 		ATTACK,  // ??버그임?? 
 		SHOOT,
@@ -219,7 +219,8 @@ private:
 	void Moving(float fDeltaTime);			// ROLL
 	void Attack(float fDeltaTime);			// CloseATK
 	void Shoot(float fDeltaTime);			// Shoot
-	
+	void Falling(float fDeltaTime);		    // Falling	
+
 	void LaserInstall(float fDeltaTime);	// 레이저 설치
 	void BuffActive(float fDeltaTime);		// 버프 추가  
 

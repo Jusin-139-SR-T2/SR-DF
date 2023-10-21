@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Effect_Bubble.h" />
     <ClInclude Include="UI_FadeOut.h" />
     <ClInclude Include="UI_PlayerHurt.h" />
     <ClInclude Include="UI_FadeIn.h" />
@@ -92,6 +93,7 @@
     <ClInclude Include="UI_EatFood.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Effect_Bubble.cpp" />
     <ClCompile Include="Code\AceEffect.cpp" />
     <ClCompile Include="Code\BlackBoard_Camera.cpp" />
     <ClCompile Include="Code\Effect_FallingDust.cpp" />

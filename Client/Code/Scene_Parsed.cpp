@@ -13,6 +13,9 @@
 #include "UI_CrossHair.h"
 #include "UI_PlayerFace.h"
 
+#include "Export_System.h"
+#include "Export_Utility.h"\
+
 CScene_Parsed::CScene_Parsed(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {
@@ -38,6 +41,7 @@ CScene_Parsed* CScene_Parsed::Create(LPDIRECT3DDEVICE9 pGraphicDev, const char* 
 
 void CScene_Parsed::Free()
 {
+    Engine::StopAll();
     SUPER::Free();
 }
 
@@ -93,6 +97,8 @@ HRESULT CScene_Parsed::Ready_Scene(const char* pSceneFileName)
 
 
     FAILED_CHECK_RETURN(Ready_Scene(), E_FAIL);
+
+    SoundReady(strFileName);
 
     return S_OK;
 }
@@ -150,4 +156,12 @@ HRESULT CScene_Parsed::Ready_Layer_Completed()
     
 
     return S_OK;
+}
+
+void CScene_Parsed::SoundReady(string _scene)
+{
+    if (_scene.compare("Stage1") == 0)
+    {
+        Engine::Play_BGM(L"FallenAces", L"Ambience_OldTimeyMusic6.mp3", 0.75f);
+    }
 }

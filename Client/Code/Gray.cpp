@@ -536,6 +536,8 @@ void CGray::MonsterDead()
     }
     else if (RECENT_COL::BOSSATK == m_eRecentCol)
         m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+    else
+    m_tState_Obj.Set_State(STATE_OBJ::DEATH);
 }
 #pragma endregion 
 
@@ -731,6 +733,7 @@ void CGray::AI_GoHome(float fDeltaTime)
         //행동이 IDLE일때 WALK 가상키 누르기 
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
             m_mapActionKey[ACTION_KEY::GOHOME].Act();
+
 
         if (m_bArrive && m_tFrame.fFrame > m_tFrame.fFrameEnd) // 프레임 다 돌면 
         {
@@ -1741,12 +1744,11 @@ void CGray::Falling(float fDeltaTime)
 
     // 실행
     {
-        _vec3 vDirect = m_pTransformComp->Get_Pos() - m_pPlayerTransformcomp->Get_Pos();
+        vDir = m_pPlayerTransformcomp->Get_Look();
 
-        D3DXVec3Normalize(&vDirect, &vDirect);
+        D3DXVec3Normalize(&vDir, &vDir);
 
-        m_pTransformComp->Move_Pos(&vDirect, fDeltaTime, 5.f);
-       
+        m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 7.f);
 
         if (STATE_OBJ::FALLING != m_tState_Obj.Get_State())
             m_tState_Act.Set_State(STATE_ACT::IDLE);

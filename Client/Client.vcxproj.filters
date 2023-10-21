@@ -259,6 +259,9 @@
     <Filter Include="05. =====AceUI=====\99. UI_Fade">
       <UniqueIdentifier>{b9593666-94e6-4459-9e0b-d42b07c06070}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\06. Bubble">
+      <UniqueIdentifier>{06b6cd4d-a514-402d-9d7e-9c9a180adc76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -474,6 +477,9 @@
     <ClInclude Include="UI_FadeOut.h">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClInclude>
+    <ClInclude Include="Effect_Bubble.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\06. Bubble</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -685,6 +691,9 @@
     </ClCompile>
     <ClCompile Include="UI_FadeOut.cpp">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Bubble.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\06. Bubble</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

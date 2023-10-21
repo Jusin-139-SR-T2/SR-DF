@@ -161,6 +161,7 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_tState_Act.Add_Func(STATE_ACT::MOVING, &CAceBoss::Moving);
 	m_tState_Act.Add_Func(STATE_ACT::ATTACK, &CAceBoss::Attack);
 	m_tState_Act.Add_Func(STATE_ACT::SHOOT, &CAceBoss::Shoot);
+	m_tState_Act.Add_Func(STATE_ACT::FALLING, &CAceBoss::Falling);
 
 	m_tState_Act.Add_Func(STATE_ACT::INSTALL, &CAceBoss::LaserInstall);
 	m_tState_Act.Add_Func(STATE_ACT::BUFF, &CAceBoss::BuffActive);
@@ -180,6 +181,8 @@ HRESULT CAceBoss::Ready_GameObject()
 	m_mapActionKey.Add_Action(ACTION_KEY::WALK); //중간
 	m_mapActionKey.Add_Action(ACTION_KEY::ROLL); 
 	m_mapActionKey.Add_Action(ACTION_KEY::ATTACK);
+	m_mapActionKey.Add_Action(ACTION_KEY::FALLING);
+
 	m_mapActionKey.Add_Action(ACTION_KEY::CLOSEATK);
 	m_mapActionKey.Add_Action(ACTION_KEY::SHOOT);
 	m_mapActionKey.Add_Action(ACTION_KEY::SKILL_LASER);
@@ -1515,6 +1518,11 @@ void CAceBoss::AI_Falling(float fDeltaTime)
 
 	if (m_tState_Obj.Can_Update())
 	{
+		if (m_tState_Act.IsOnState(STATE_ACT::IDLE))
+		{
+			m_mapActionKey[ACTION_KEY::FALLING].Act();
+		}
+
 		if (m_tFrame.fFrame > m_tFrame.fFrameEnd)
 		{
 			m_tFrame.fFrame = 0.f;
@@ -1632,6 +1640,9 @@ void CAceBoss::Idle(float fDeltaTime)
 
 	if (m_tState_Act.Can_Update())
 	{
+		if (m_mapActionKey[ACTION_KEY::FALLING].IsOnAct()) 
+			m_tState_Act.Set_State(STATE_ACT::FALLING);
+
 		if (Engine::MonsterPhase::Intro == m_ePhase)
 		{
 			if (m_mapActionKey[ACTION_KEY::WALK].IsOnAct()) // WALK
@@ -1847,6 +1858,31 @@ void CAceBoss::Shoot(float fDeltaTime)
 	if (m_tState_Act.IsState_Exit())
 	{
 		//OutputDebugString(L"▷BOSS - 행동 : Shoot 끝   \n");
+	}
+}
+
+void CAceBoss::Falling(float fDeltaTime)
+{
+	if (m_tState_Act.IsState_Entered())
+	{
+		//OutputDebugString(L"▷BOSS - 행동머신 :FALLING 진입   \n");
+	}
+
+	// 실행
+	{
+		vDir = m_pPlayerTransformcomp->Get_Look();
+
+		D3DXVec3Normalize(&vDir, &vDir);
+
+		m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 7.f);
+
+		if (STATE_OBJ::FALLING != m_tState_Obj.Get_State())
+			m_tState_Act.Set_State(STATE_ACT::IDLE);
+	}
+
+	if (m_tState_Act.IsState_Exit())
+	{
+		////OutputDebugString(L"▷BOSS - 행동머신 : GOHOME 끝   \n");
 	}
 }
 

@@ -61,6 +61,10 @@ protected:
 	void				Height_On_Terrain(); // 지형타기 
 
 public:
+	GETSET_EX2(OBJECT_CLASS, m_eFactoryClass, FACTORY_NAME, GET, SET)
+	GETSET_EX2(_bool, m_bEaten, FOOD_EAT, GET, SET)
+
+public:
 	FOOD_NAME	Get_FoodName() { return m_pCurName; }
 	_float		Get_Hp() { return m_fHp; }
 	_bool		m_bEaten = false;
@@ -73,8 +77,9 @@ private:
 	CColliderComponent* m_pColliderComp = nullptr;
 
 private:// 함수
-	void				FoodName(const _tchar* pObjTag); // TCHAR를 ENUM에 맞게 고치기 
+	void				FoodName(const _tchar* pObjTag); // 연습스테이지용
 	void				Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat);
+	void				Serialize_FoodName(wstring _ObjName); // 시리얼넘버용 
 
 private: //변수
 	FOOD_NAME			m_pCurName;
@@ -84,8 +89,5 @@ private: //변수
 	OBJECT_CLASS		m_eFactoryClass;
 	_float				m_fHp;
 
-public:
-	GETSET_EX2(OBJECT_CLASS, m_eFactoryClass, FACTORY_NAME, GET, SET)
-	GETSET_EX2(_bool , m_bEaten, FOOD_EAT, GET, SET)
 };
 

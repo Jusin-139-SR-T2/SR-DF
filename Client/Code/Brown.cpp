@@ -184,6 +184,8 @@ HRESULT CBrown::Ready_GameObject(const FSerialize_GameObject tObjectSerial)
 
     m_pColliderComp->Set_TransformToWorld(*m_pTransformComp->Get_Transform());
 
+    m_ftheta = 0.f; 
+
     return S_OK;
 }
 
@@ -230,28 +232,15 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
             m_tFrame.fRepeat += 1;
     }
 
-    
+
     if (IsKey_Pressed(DIK_I))
     {
-        //m_tState_Obj.Set_State(STATE_OBJ::FALLING);
 
-        //m_pTransformComp->Get_Look();
-
-   /*     for (_float i = 0; i < D3DX_PI; ++i)
-        {
-            m_pTransformComp->Set_RotationY(i * fTimeDelta);
-        }*/
-
-
-       //_vec3 look = m_pPlayerTransformcomp->Get_Look();
-       //
-       //swprintf_s(debugString, L"디버그용 현재 플레이어 LOOK x %f\n", look.x);
-       //OutputDebugStringW(debugString);
-       //swprintf_s(debugString, L"디버그용 현재 플레이어 LOOK y %f\n", look.y);
-       //OutputDebugStringW(debugString);
-       //swprintf_s(debugString, L"디버그용 현재 플레이어 LOOK z %f\n", look.z);
-       //OutputDebugStringW(debugString);
-
+        m_tState_Obj.Set_State(STATE_OBJ::GOHOME);
+    //  Calc_Theta();
+    //
+    //swprintf_s(debugString, L"Brown - 변수 확인 플레이어 - Brown 외적 m_ftheta = %f\n", m_ftheta);
+    // OutputDebugStringW(debugString);
     }
 
     // 블랙보드용 
@@ -283,7 +272,7 @@ void CBrown::Render_GameObject()
     m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
-    MeshSphereColider(_float(pSphereShape->fRadius), 32, 16);
+    //MeshSphereColider(_float(pSphereShape->fRadius), 32, 16);
 #pragma endregion
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -448,6 +437,8 @@ void CBrown::MonsterDead()
             m_tState_Obj.Set_State(STATE_OBJ::DEATH);
     }
     else if(RECENT_COL::BOSSATK == m_eRecentCol)
+        m_tState_Obj.Set_State(STATE_OBJ::DEATH);
+    else // 몬스터가 인식하지못하는 죽음 추가 
         m_tState_Obj.Set_State(STATE_OBJ::DEATH);
 }
 #pragma endregion 
@@ -1263,7 +1254,40 @@ void CBrown::AI_GoHome(float fDeltaTime)
     {
         if (m_tState_Act.IsOnState(STATE_ACT::IDLE)) // 현재 액션키가 IDLE 이므로 
             m_mapActionKey[ACTION_KEY::GOHOME].Act(); // 액션키 누르기 
-     
+
+        Calc_Theta();
+
+       // switch (m_eDirection)
+       // {
+       // case CAceMonster::Dir::EAST:
+       //     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_West");
+       //     m_pTextureComp->Set_RotationY( - D3DX_PI);
+       //     break;
+       // case CAceMonster::Dir::SOUTHEAST:
+       //     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_SouthWest");
+       //     m_pTextureComp->Set_RotationY(-D3DX_PI);
+       //     break;
+       // case CAceMonster::Dir::SOUTH:
+       //     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_South");
+       //     break;
+       // case CAceMonster::Dir::SOUTHWEST:
+       //     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_SouthWest");
+       //     break;
+       // case CAceMonster::Dir::WEST:
+       //     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_West");
+       //     break;
+       // case CAceMonster::Dir::NORTHWEST:
+       //     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_NorthWest");
+       //     break;
+       // case CAceMonster::Dir::NORTH:
+       //     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_North");
+       //     break;
+       // case CAceMonster::Dir::NORTHEAST:
+       //     m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Brown_Multi", L"Walk_NorthWest");
+       //     m_pTextureComp->Set_RotationY(-D3DX_PI);
+       //     break;
+       // }
+
         if (m_bArrive && (m_tFrame.fFrame >  m_tFrame.fFrameEnd)) // 프레임 다 돌면 
         {
             m_bArrive = FALSE;
@@ -1463,11 +1487,11 @@ void CBrown::Falling(float fDeltaTime)
 
     // 실행
     {
-        vDir = m_pTransformComp->Get_Look();
+        vDir = m_pPlayerTransformcomp->Get_Look();
 
         D3DXVec3Normalize(&vDir, &vDir);
 
-        m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 14.f);
+        m_pTransformComp->Move_Pos(&vDir, fDeltaTime, 7.f);
 
         if (STATE_OBJ::FALLING != m_tState_Obj.Get_State())
             m_tState_Act.Set_State(STATE_ACT::IDLE);
@@ -1489,7 +1513,7 @@ void CBrown::GoHome(float fDeltaTime)
 
     // 실행
     {
-        _vec3 vDirect = m_tStat.vPatrolPointZero - m_pTransformComp->Get_Pos();
+        vDirect = m_tStat.vPatrolPointZero - m_pTransformComp->Get_Pos();
 
         _float fDistance = D3DXVec3Length(&vDirect);
 

@@ -58,6 +58,7 @@ class CAceMonster : public CAceUnit
 {
 	DERIVED_CLASS(CAceUnit, CAceMonster)
 
+	PUBLIC enum class Dir {EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST, NORTH, NORTHEAST, DIR_END };
 protected:
 	explicit CAceMonster(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CAceMonster(const CAceMonster& rhs);
@@ -82,7 +83,10 @@ protected:
 	_bool						m_bDazedState;		// 힐하는 도중에 끊기는거 용도 
 	_bool						m_bDazeToHeal;		// 끊기면 daze더이상 진입x
 	_bool						m_bCollisionOn;     // 현재 충돌한상태를 의미 
-	_float VoiceDistance();
+	Dir							m_eDirection;
+	_float						VoiceDistance();
+	_float						m_ftheta;
+	_vec3						vDirect; //Go Home전용 벡터 
 
 protected:
 	CRcBufferComp*				m_pBufferComp = nullptr; 
@@ -115,7 +119,7 @@ public:
 	_bool						m_bPlayerAttakBool; // 플레이어 공격상태 블랙보드로 가져와야함 
 	_vec3						m_vPos;
 	void						Add_BasicEffect(CGameObject* pOwner);
-
+	void						Calc_Theta();
 
 	//제작함수 리스트 - 스킬 셋팅할때 사용중 
 public:
