@@ -160,8 +160,17 @@ HRESULT CScene_Parsed::Ready_Layer_Completed()
 
 void CScene_Parsed::SoundReady(string _scene)
 {
-    if (_scene.compare("Stage1") == 0)
+    if (_scene.compare("Stage1") == 0) 
     {
-        Engine::Play_BGM(L"FallenAces", L"Ambience_OldTimeyMusic6.mp3", 0.75f);
+        Engine::Play_BGM(L"FallenAces", L"Ambience_OldTimeyMusic6.mp3", 0.5f);
     }
+    else if (_scene.compare("BossStage") == 0)
+        Engine::Play_BGM(L"FallenAces", L"Scene_BossStage.mp3", 0.5f);
+    else if (_scene.compare("Malone") == 0)
+        Engine::Play_BGM(L"FallenAces", L"Scene_Malone.mp3", 0.5f);
+    else if (_scene.compare("SeongHee") == 0)
+    {
+
+    }
+
 }

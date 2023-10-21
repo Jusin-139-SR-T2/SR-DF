@@ -292,6 +292,7 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat
         {
         case CAceFood::FOOD_NAME::APPLE:
             Engine::Add_GameObject(L"UI", CUI_EatFood::Create(m_pGraphicDev));
+            Engine::Play_Sound(L"Food", L"ummm.wav", SOUND_PLAYER, 1.f);
             Engine::Play_Sound(L"Food", L"BiteApple.mp3", SOUND_PLAYER_EFFECT, 0.5f);
             m_pCurName = CAceFood::FOOD_NAME::EATENAPPLE;
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"EatenApple");
@@ -300,13 +301,12 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat
                 m_pTransformComp->Get_Pos().y,
                 m_pTransformComp->Get_Pos().z));
 
-            Engine::Play_Sound(L"Food", L"Example.wav", SOUND_PLAYER, 0.5f);
              m_bDead = FALSE; 
             break;
 
         case CAceFood::FOOD_NAME::BANANA:
             Engine::Add_GameObject(L"UI", CUI_EatFood::Create(m_pGraphicDev));
-            Engine::Play_Sound(L"Food", L"ummm.wav", SOUND_PLAYER, 0.5f);
+            Engine::Play_Sound(L"Food", L"ummm.wav", SOUND_PLAYER, 1.f);
             Engine::Play_Sound(L"Food", L"EatBanana.wav", SOUND_PLAYER_EFFECT, 0.5f);
             m_pCurName = CAceFood::FOOD_NAME::BANANAPEEL;
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"BananaPeel");
@@ -318,7 +318,7 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat
 
         case CAceFood::FOOD_NAME::COLA:
             Engine::Add_GameObject(L"UI", CUI_EatFood::Create(m_pGraphicDev));
-             Engine::Play_Sound(L"Food", L"uhmmm.wav", SOUND_PLAYER, 0.5f);
+             Engine::Play_Sound(L"Food", L"uhmmm.wav", SOUND_PLAYER, 1.f);
              Engine::Play_Sound(L"Food", L"DrinkSoda.wav", SOUND_PLAYER_EFFECT, 0.3f);
              Engine::Add_GameObject(L"GameLogic", CEffect_Bubble::Create(m_pGraphicDev,
                                     m_pTransformComp->Get_Pos().x,
@@ -329,7 +329,7 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat
 
         case CAceFood::FOOD_NAME::MEDIKIT:
             Engine::Add_GameObject(L"UI", CUI_EatFood::Create(m_pGraphicDev));
-            Engine::Play_Sound(L"Food", L"uhmmm.wav", SOUND_PLAYER, 0.5f);
+            Engine::Play_Sound(L"Food", L"uhmmm.wav", SOUND_PLAYER, 1.f);
             Engine::Play_Sound(L"Food", L"FirstAid.wav", SOUND_PLAYER_EFFECT, 0.3f);
             Engine::Add_GameObject(L"GameLogic", CEffect_Bubble::Create(m_pGraphicDev,
                                     m_pTransformComp->Get_Pos().x,
