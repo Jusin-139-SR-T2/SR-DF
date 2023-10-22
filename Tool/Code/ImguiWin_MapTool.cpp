@@ -1634,6 +1634,7 @@ void CImguiWin_MapTool::Import_Proto(const string& strName, FSerialize_Proto& tP
         if (tProtoSerial.Receive_ByRapidJSON(strJson))
         {
             tProtoData.eID = tProtoSerial.eID;
+            tProtoData.strName = tProtoSerial.tHeader.strName;
             tProtoData.strClassName = tProtoSerial.strClassName;
             tProtoData.strGroupKey = tProtoSerial.strGroupKey;
             tProtoData.strTextureKey = tProtoSerial.strTextureKey;
