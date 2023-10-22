@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MonsterPunch.h"
 #include "AceBoss.h"
+#include "Gray.h"
 
 CMonsterPunch::CMonsterPunch(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)

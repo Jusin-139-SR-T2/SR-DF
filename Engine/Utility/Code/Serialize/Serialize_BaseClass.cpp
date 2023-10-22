@@ -549,9 +549,9 @@ _bool FSerialize_Scene::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 			gameobjectSR.bUsePriority_LateUpdate = RPJSON_RECIEVE_BOOL(object, "use_priority_late_update");
 			gameobjectSR.bUsePriority_Render = RPJSON_RECIEVE_BOOL(object, "use_priority_render");
 
-			if (doc.HasMember("user_strings") && doc["user_strings"].IsArray())
+			if (object.HasMember("user_strings") && object["user_strings"].IsArray())
 			{
-				const Value& user_strings = doc["user_strings"];
+				const Value& user_strings = object["user_strings"];
 				for (SizeType i = 0; i < user_strings.Size(); i++)
 				{
 					if (user_strings[i].IsObject())

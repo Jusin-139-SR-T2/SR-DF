@@ -12,6 +12,7 @@
 #include "AceBuilding.h"
 #include "UI_CrossHair.h"
 #include "UI_PlayerFace.h"
+#include "PlayerLighter.h"
 #include "PlayerGunLighter.h"
 #include "SnowParticle.h"
 

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "UI_FadeIn.h"
 
 CUI_FadeIn::CUI_FadeIn(LPDIRECT3DDEVICE9 pGraphicDev)

@@ -5,6 +5,8 @@
     },
     "class": 6,
     "class_name": "AceWeapon",
+    "group_key": "",
+    "texture_key": "",
     "pos": {
         "x": 0.0,
         "y": 0.0,

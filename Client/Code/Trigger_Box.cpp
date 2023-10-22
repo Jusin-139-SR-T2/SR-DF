@@ -8,6 +8,9 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 
+#include "Player.h"
+#include "Brown.h"
+
 CTrigger_Box::CTrigger_Box(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
 {
@@ -65,6 +68,17 @@ HRESULT CTrigger_Box::Ready_GameObject(const FSerialize_GameObject& tObjectSeria
 
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
 
+    if (!tObjectSerial.vecUserString.empty())
+    {
+        string strTrigger = tObjectSerial.vecUserString.front();
+        if (strTrigger == "GateWay1")
+        {
+            m_fnTrigger = [this]() {
+                this->GateWay();
+            };
+        }
+    }
+
     FadeInEnd = false;
 
     return S_OK;
@@ -105,7 +119,15 @@ void CTrigger_Box::OnCollision(CGameObject* pDst, const FContact* const pContact
 
 void CTrigger_Box::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
-
+    CPlayer* pPlayer = dynamic_cast<CPlayer*>(pDst);
+    if (pPlayer)
+    {
+        if (m_fnTrigger)
+        {
+            m_fnTrigger();
+        }
+        Set_Dead();
+    }
 }
 
 void CTrigger_Box::OnCollisionExited(CGameObject* pDst)
@@ -118,4 +140,12 @@ HRESULT CTrigger_Box::Add_Component()
     SUPER::Add_Component();
 
     return S_OK;
+}
+
+void CTrigger_Box::GateWay()
+{
+    Add_GameObject(L"GameLogic", CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x,
+        m_pTransformComp->Get_Pos().y,
+        m_pTransformComp->Get_Pos().z));
 }

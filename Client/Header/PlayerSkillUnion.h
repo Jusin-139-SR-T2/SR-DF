@@ -15,6 +15,8 @@ class CCalculatorComponent;
 
 END
 
+class CAceMonster;
+
 class CPlayerSkillUnion : public CAttackUnion
 {
 	DERIVED_CLASS(CAttackUnion, CPlayerSkillUnion)

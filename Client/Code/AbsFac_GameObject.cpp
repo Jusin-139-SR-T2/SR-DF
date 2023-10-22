@@ -13,6 +13,7 @@
 #include "Trigger_ToStageHall.h"
 #include "Trigger_ToJumpMap.h"
 #include "Trigger_ToBossMap.h"
+#include "Trigger_Box.h"
 #include "JumpBgm.h"
 #include "JumpBat.h"
 #include "JumpMonster.h"
@@ -107,7 +108,7 @@ CGameObject* CAbsFac_GameObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSe
 	}
 	else if (strType == "Trigger_Box")
 	{
-		//return static_cast<CGameObject*>(CTrigger_ToJumpMap::Create(pGraphicDev, tObject));
+		return static_cast<CGameObject*>(CTrigger_Box::Create(pGraphicDev, tObject));
 	}
 	else if (strType == "JumpBgm")
 	{

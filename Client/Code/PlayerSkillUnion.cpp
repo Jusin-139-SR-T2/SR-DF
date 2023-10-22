@@ -4,7 +4,7 @@
 #include "AceMonster.h"
 
 //보스
-#include "Boss.h"
+#include "AceBoss.h"
 // 몬스터
 #include "Gray.h"
 #include "Brown.h"
@@ -172,8 +172,8 @@ void CPlayerSkillUnion::Monster_Select(CGameObject* _GameObject)
     CGray* pGray = nullptr;
     pGray = dynamic_cast<CGray*>(_GameObject);
 
-    CBoss* pBoss = nullptr;
-    pBoss = dynamic_cast<CBoss*>(_GameObject);
+    CAceBoss* pBoss = nullptr;
+    pBoss = dynamic_cast<CAceBoss*>(_GameObject);
 
     if (pBrown != nullptr)
         Set_Monster(pBrown);

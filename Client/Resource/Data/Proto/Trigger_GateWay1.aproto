@@ -1,12 +1,12 @@
 {
     "header": {
         "type": 4,
-        "name": "BrokenBottle"
+        "name": "Trigger_GateWay1"
     },
-    "class": 6,
-    "class_name": "AceWeapon",
-    "group_key": "",
-    "texture_key": "",
+    "class": 9,
+    "class_name": "Trigger_Box",
+    "group_key": "Develop",
+    "texture_key": "BoxTrigger",
     "pos": {
         "x": 0.0,
         "y": 0.0,
@@ -18,9 +18,9 @@
         "z": 0.0
     },
     "scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
+        "x": 5.0,
+        "y": 5.0,
+        "z": 5.0
     },
     "tex_pos": {
         "x": 0.0,
@@ -52,5 +52,9 @@
         "y": 1.0,
         "z": 1.0
     },
-    "user_strings": []
+    "user_strings": [
+        {
+            "user_string": "GateWay1"
+        }
+    ]
 }

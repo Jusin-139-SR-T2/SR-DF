@@ -1219,6 +1219,9 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
         || tObjectData.strClassName == "Trigger_ToJumpMap"
         || tObjectData.strClassName == "Trigger_ToMalone"
         || tObjectData.strClassName == "JumpBgm"
+        || tObjectData.strClassName == "JumpMainBgm"
+        || tObjectData.strClassName == "JumpBat"
+        || tObjectData.strClassName == "JumpMonster"
         || tObjectData.strClassName == "Trigger_Box")
     {
         CGameObject* pObj = static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
@@ -1421,6 +1424,9 @@ void CImguiWin_MapTool::Save_SceneAll()
                 tObjectSerial.eID = tObjectData.eObjectID;
                 tObjectSerial.strClassName = tObjectData.strClassName;
 
+                tObjectSerial.strGroupKey = tObjectData.strGroupKey;
+                tObjectSerial.strTextureKey = tObjectData.strTextureKey;
+
                 tObjectSerial.fPriority_Update = tObjectData.fPriority[0];
                 tObjectSerial.fPriority_LateUpdate = tObjectData.fPriority[1];
                 tObjectSerial.fPriority_Render = tObjectData.fPriority[2];
@@ -1433,8 +1439,15 @@ void CImguiWin_MapTool::Save_SceneAll()
                 tObjectSerial.vRotation = tObjectData.vRot;
                 tObjectSerial.vScale = tObjectData.vScale;
 
-                tObjectSerial.strGroupKey = tObjectData.strGroupKey;
-                tObjectSerial.strTextureKey = tObjectData.strTextureKey;
+                tObjectSerial.vTexPos = tObjectData.vTexPos;
+                tObjectSerial.vTexRot = tObjectData.vTexRot;
+                tObjectSerial.vTexScale = tObjectData.vTexScale;
+
+                tObjectSerial.vColPos = tObjectData.vColPos;
+                tObjectSerial.vColRot = tObjectData.vColRot;
+                tObjectSerial.vColScale = tObjectData.vColScale;
+
+                tObjectSerial.vecUserString = tObjectData.vecUserString;
 
                 // 완료시 레이어에 직렬화 추가
                 tLayerSerial.vecGameObject.reserve(300);

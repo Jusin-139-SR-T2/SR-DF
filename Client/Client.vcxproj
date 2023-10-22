@@ -19,10 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Bat.h" />
+    <ClInclude Include="Header\Effect_Bubble.h" />
+    <ClInclude Include="Header\Hegrid.h" />
+    <ClInclude Include="Header\JumpBat.h" />
+    <ClInclude Include="Header\JumpBgm.h" />
+    <ClInclude Include="Header\JumpMainBgm.h" />
+    <ClInclude Include="Header\JumpMonster.h" />
+    <ClInclude Include="Header\PlayerLightning.h" />
     <ClInclude Include="Header\Trigger_Box.h" />
-    <ClInclude Include="UI_FadeOut.h" />
-    <ClInclude Include="UI_PlayerHurt.h" />
-    <ClInclude Include="UI_FadeIn.h" />
+    <ClInclude Include="Header\UI_FadeOut.h" />
+    <ClInclude Include="Header\UI_MonsterHP.h" />
+    <ClInclude Include="Header\UI_PlayerHurt.h" />
+    <ClInclude Include="Header\UI_FadeIn.h" />
     <ClInclude Include="Header\AceEffect.h" />
     <ClInclude Include="Header\BlackBoard_Camera.h" />
     <ClInclude Include="Header\Effect_DazeSwirl.h" />
@@ -90,10 +99,11 @@
     <ClInclude Include="Header\UI_CrossHair.h" />
     <ClInclude Include="Header\PlayerSkillUnion.h" />
     <ClInclude Include="Header\UI_PlayerFace.h" />
-    <ClInclude Include="UI_EatFood.h" />
+    <ClInclude Include="Header\UI_EatFood.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceEffect.cpp" />
+    <ClCompile Include="Code\Bat.cpp" />
     <ClCompile Include="Code\BlackBoard_Camera.cpp" />
     <ClCompile Include="Code\Effect_FallingDust.cpp" />
     <ClCompile Include="Code\BossLight.cpp" />
@@ -111,6 +121,11 @@
     <ClCompile Include="Code\AceBuilding.cpp" />
     <ClCompile Include="Code\AceInteraction.cpp" />
     <ClCompile Include="Code\AceFood.cpp" />
+    <ClCompile Include="Code\Hegrid.cpp" />
+    <ClCompile Include="Code\JumpBat.cpp" />
+    <ClCompile Include="Code\JumpBgm.cpp" />
+    <ClCompile Include="Code\JumpMainBgm.cpp" />
+    <ClCompile Include="Code\JumpMonster.cpp" />
     <ClCompile Include="Code\MonsterAttackUnion.cpp" />
     <ClCompile Include="Code\PlayerLighter.cpp" />
     <ClCompile Include="Code\AceObjectFactory.cpp" />
@@ -119,6 +134,7 @@
     <ClCompile Include="Code\BackGround.cpp" />
     <ClCompile Include="Code\Loading.cpp" />
     <ClCompile Include="Code\MainApp.cpp" />
+    <ClCompile Include="Code\PlayerLightning.cpp" />
     <ClCompile Include="Code\Stage.cpp" />
     <ClCompile Include="Code\DynamicCamera.cpp" />
     <ClCompile Include="Code\Trigger.cpp" />
@@ -135,9 +151,11 @@
     <ClCompile Include="Code\Effect_HitDust.cpp" />
     <ClCompile Include="Code\Effect_HitPow.cpp" />
     <ClCompile Include="Code\Effect_DazeSwirl.cpp" />
-    <ClCompile Include="UI_FadeOut.cpp" />
-    <ClCompile Include="UI_PlayerHurt.cpp" />
-    <ClCompile Include="UI_FadeIn.cpp" />
+    <ClCompile Include="Code\Effect_Bubble.cpp" />
+    <ClCompile Include="Code\UI_FadeOut.cpp" />
+    <ClCompile Include="Code\UI_MonsterHP.cpp" />
+    <ClCompile Include="Code\UI_PlayerHurt.cpp" />
+    <ClCompile Include="Code\UI_FadeIn.cpp" />
     <ClCompile Include="Include\Client.cpp" />
     <ClCompile Include="Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -167,7 +185,7 @@
     <ClCompile Include="Code\UI_CrossHair.cpp" />
     <ClCompile Include="Code\PlayerSkillUnion.cpp" />
     <ClCompile Include="Code\UI_PlayerFace.cpp" />
-    <ClCompile Include="UI_EatFood.cpp" />
+    <ClCompile Include="Code\UI_EatFood.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

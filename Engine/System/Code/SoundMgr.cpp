@@ -50,6 +50,7 @@ HRESULT CSoundMgr::Ready_Sound()
 	
 	// 스테이지별 브금리스트 
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/bgm/");
+	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/sfx/etc/");
 
 	// 플레이어 
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/Player/");
