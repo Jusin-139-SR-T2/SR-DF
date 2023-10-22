@@ -78,6 +78,12 @@ HRESULT CTrigger_Box::Ready_GameObject(const FSerialize_GameObject& tObjectSeria
                 this->GateWay();
             };
         }
+        else if (strTrigger == "Turnnel")
+        {
+            m_fnTrigger = [this]() {
+                this->Turnnel();
+            };
+        }
     }
 
     FadeInEnd = false;
@@ -144,6 +150,32 @@ HRESULT CTrigger_Box::Add_Component()
 }
 
 void CTrigger_Box::GateWay()
+{
+    CBlackBoard_GateWay1* pBlackBoard = CBlackBoard_GateWay1::Create();
+    Engine::Add_BlackBoard(L"GateWay1", pBlackBoard);
+
+    CAceMonster* pMonster = nullptr;
+
+    Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 5.f,
+        m_pTransformComp->Get_Pos().z + 1.5f));
+    pBlackBoard->Get_VecMonster().push_back(pMonster);
+
+    Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 5.f,
+        m_pTransformComp->Get_Pos().z - 1.5f));
+    pBlackBoard->Get_VecMonster().push_back(pMonster);
+
+    Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 5.f,
+        m_pTransformComp->Get_Pos().z));
+    pBlackBoard->Get_VecMonster().push_back(pMonster);
+}
+
+void CTrigger_Box::Turnnel()
 {
     CBlackBoard_GateWay1* pBlackBoard = CBlackBoard_GateWay1::Create();
     Engine::Add_BlackBoard(L"GateWay1", pBlackBoard);

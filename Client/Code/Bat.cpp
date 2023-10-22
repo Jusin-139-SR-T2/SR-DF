@@ -55,7 +55,7 @@ HRESULT CBat::Ready_GameObject(const _vec3 vPos, const _vec3 vRot, const _vec3 v
 
     m_pTransformComp->Readjust_Transform();
 
-    m_pTextureComp->Receive_Texture(TEX_CUBE, L"Building", L"B");
+    m_pTextureComp->Receive_Texture(TEX_CUBE, L"Furniture", L"WhiteCurtainTable");
 
     return S_OK;
 }

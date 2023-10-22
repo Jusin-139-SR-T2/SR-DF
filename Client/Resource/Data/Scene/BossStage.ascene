@@ -4,163 +4,6 @@
         "name": "BossStage"
     },
     "terrain": "BossStage",
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
-    "user_strings": [],
     "layers": [
         {
             "header": {
@@ -5899,7 +5742,8 @@
                         "x": 1.3968191146850586,
                         "y": 0.2969092130661011,
                         "z": 3.641291856765747
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -5961,7 +5805,8 @@
                         "x": 1.7999999523162842,
                         "y": 1.0,
                         "z": 0.20000000298023224
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -6023,7 +5868,8 @@
                         "x": 0.41739410161972046,
                         "y": 1.8096188306808472,
                         "z": 4.011223316192627
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -6085,7 +5931,8 @@
                         "x": 1.7999999523162842,
                         "y": 1.0,
                         "z": 0.20000000298023224
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -6210,7 +6057,8 @@
                         "x": 0.4062982499599457,
                         "y": 1.0344072580337524,
                         "z": 0.9212441444396973
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -6272,7 +6120,8 @@
                         "x": 0.42184197902679443,
                         "y": 0.29774314165115356,
                         "z": 5.53113317489624
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -6334,7 +6183,8 @@
                         "x": 0.2728120684623718,
                         "y": 0.5456241369247437,
                         "z": 0.5456241369247437
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -9168,7 +9018,8 @@
                         "x": 0.21239355206489563,
                         "y": 3.0127549171447754,
                         "z": 1.0
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -9230,7 +9081,8 @@
                         "x": 0.8561951518058777,
                         "y": 1.206001877784729,
                         "z": 2.6978392601013184
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -9292,7 +9144,8 @@
                         "x": 0.49509865045547485,
                         "y": 0.49509865045547485,
                         "z": 0.49509865045547485
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -9354,7 +9207,8 @@
                         "x": 0.19706745445728302,
                         "y": 0.6341246366500854,
                         "z": 0.19706745445728302
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -9416,7 +9270,8 @@
                         "x": 0.19706745445728302,
                         "y": 0.6341246366500854,
                         "z": 0.19706745445728302
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -9478,7 +9333,8 @@
                         "x": 0.6068514585494995,
                         "y": 0.1748424917459488,
                         "z": 0.35069119930267334
-                    }
+                    },
+                    "user_strings": []
                 }
             ]
         },
@@ -9801,7 +9657,8 @@
                         "x": 5.05867862701416,
                         "y": 5.05867862701416,
                         "z": 5.05867862701416
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -9863,7 +9720,8 @@
                         "x": -3.0,
                         "y": 3.0,
                         "z": 3.0
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -9925,7 +9783,8 @@
                         "x": 0.699999988079071,
                         "y": 0.699999988079071,
                         "z": 0.699999988079071
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -9987,7 +9846,8 @@
                         "x": 2.5,
                         "y": 0.4000000059604645,
                         "z": 0.800000011920929
-                    }
+                    },
+                    "user_strings": []
                 },
                 {
                     "header": {
@@ -10049,7 +9909,8 @@
                         "x": 3.0,
                         "y": 3.0,
                         "z": 1.0
-                    }
+                    },
+                    "user_strings": []
                 }
             ]
         },
