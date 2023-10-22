@@ -5,6 +5,8 @@
 #include <Scene.h>
 #include <Scene_Parsed.h>
 
+#include "Bat.h"
+
 #include "Export_System.h"
 #include "Export_Utility.h"
 
@@ -106,7 +108,19 @@ void CJumpBat::OnCollision(CGameObject* pDst, const FContact* const pContact)
 
 void CJumpBat::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
+    _vec3 vLook = m_pTransformComp->Get_Look();
+    D3DXVec3Normalize(&vLook, &vLook);
+
     // 밟으면 작은 박쥐들 생성 (3~5마리가 옆으로 날아감)
+    for (size_t i = 0; i < 5; i++)
+    {
+        Engine::Add_GameObject(L"GameLogic", CBat::Create(m_pGraphicDev,
+            m_pTransformComp->Get_Pos() + _vec3(0.f, (_float)i * 0.5f, 0.f) - vLook * (8.f + (_float)i * 2.f),
+            D3DXToDegree(m_pTransformComp->Get_Rotation()),
+            _vec3(2.f, 2.f, 2.f)));
+    }
+    Engine::Play_Sound(L"FallenAces", L"Boo.mp3", SOUND_VFX, 0.9f);
+    Set_Dead();
 }
 
 void CJumpBat::OnCollisionExited(CGameObject* pDst)

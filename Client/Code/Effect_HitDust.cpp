@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Effect_HitDust.h"
+#include <AceMonster.h>
 
 CEffect_HitDust::CEffect_HitDust(LPDIRECT3DDEVICE9 pGraphicDev)
 	:Base(pGraphicDev)

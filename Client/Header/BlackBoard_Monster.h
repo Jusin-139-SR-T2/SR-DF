@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BlackBoard.h"
+#include "GameObject.h"
 
 class CBrown;
 class CGray;

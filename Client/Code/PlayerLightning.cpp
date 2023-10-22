@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Brown.h"
 #include "Gray.h"
-#include "Boss.h"
+#include "AceBoss.h"
 
 CPlayerLightning::CPlayerLightning(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CPlayerSkillUnion(pGraphicDev)

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Effect_Awareness.h"
 #include "AceMonster.h"
 

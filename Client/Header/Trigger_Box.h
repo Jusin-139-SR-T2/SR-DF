@@ -35,5 +35,11 @@ public:
 
 protected:
 	virtual HRESULT		Add_Component();
+
+protected:
+	function<void()>	m_fnTrigger;
+
+protected:
+	void GateWay();
 };
 

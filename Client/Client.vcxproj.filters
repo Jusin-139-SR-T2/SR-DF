@@ -259,6 +259,9 @@
     <Filter Include="05. =====AceUI=====\99. UI_Fade">
       <UniqueIdentifier>{b9593666-94e6-4459-9e0b-d42b07c06070}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03..=====Object=====\01. Trigger\3. GateWay1">
+      <UniqueIdentifier>{2b489e7d-d915-4f8f-aa83-66b4c90aa106}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -462,19 +465,46 @@
     <ClInclude Include="Header\Trigger_ToStageHall.h">
       <Filter>03..=====Object=====\01. Trigger\0. To_Hall</Filter>
     </ClInclude>
-    <ClInclude Include="UI_FadeIn.h">
+    <ClInclude Include="Header\UI_FadeIn.h">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClInclude>
-    <ClInclude Include="UI_EatFood.h">
+    <ClInclude Include="Header\UI_EatFood.h">
       <Filter>05. =====AceUI=====\98. UI_EatFood</Filter>
     </ClInclude>
-    <ClInclude Include="UI_PlayerHurt.h">
+    <ClInclude Include="Header\UI_PlayerHurt.h">
       <Filter>05. =====AceUI=====\97. UI_PlayerHurt</Filter>
     </ClInclude>
-    <ClInclude Include="UI_FadeOut.h">
+    <ClInclude Include="Header\UI_FadeOut.h">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClInclude>
     <ClInclude Include="Header\Trigger_Box.h">
+      <Filter>03..=====Object=====\01. Trigger\3. GateWay1</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Hegrid.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PlayerLightning.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI_MonsterHP.h">
+      <Filter>05. =====AceUI=====</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpBat.h">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpBgm.h">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpMainBgm.h">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpMonster.h">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Effect_Bubble.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Bat.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -677,19 +707,46 @@
     <ClCompile Include="Code\Trigger_ToStageHall.cpp">
       <Filter>03..=====Object=====\01. Trigger\0. To_Hall</Filter>
     </ClCompile>
-    <ClCompile Include="UI_FadeIn.cpp">
+    <ClCompile Include="Code\UI_FadeIn.cpp">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClCompile>
-    <ClCompile Include="UI_EatFood.cpp">
+    <ClCompile Include="Code\UI_EatFood.cpp">
       <Filter>05. =====AceUI=====\98. UI_EatFood</Filter>
     </ClCompile>
-    <ClCompile Include="UI_PlayerHurt.cpp">
+    <ClCompile Include="Code\UI_PlayerHurt.cpp">
       <Filter>05. =====AceUI=====\97. UI_PlayerHurt</Filter>
     </ClCompile>
-    <ClCompile Include="UI_FadeOut.cpp">
+    <ClCompile Include="Code\UI_FadeOut.cpp">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClCompile>
     <ClCompile Include="Code\Trigger_Box.cpp">
+      <Filter>03..=====Object=====\01. Trigger\3. GateWay1</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Hegrid.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerLightning.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI_MonsterHP.cpp">
+      <Filter>05. =====AceUI=====</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\JumpMonster.cpp">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\JumpMainBgm.cpp">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\JumpBgm.cpp">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\JumpBat.cpp">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Effect_Bubble.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Bat.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -52,6 +52,7 @@ HRESULT CSoundMgr::Ready_Sound()
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/bgm/");
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/announce/");
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/talk/");
+	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/sfx/etc/");
 
 
 	// ¼ºÈñ Bgm
