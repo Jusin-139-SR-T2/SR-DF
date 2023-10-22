@@ -34,6 +34,7 @@ CLogo* CLogo::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 HRESULT CLogo::Ready_Scene()
 {
+
 	g_bLockEsc = true;
 	m_bInitFrame = true;
 
@@ -80,15 +81,14 @@ void CLogo::LateUpdate_Scene()
 	if (!m_bInitFrame && m_pLoading->Get_Finish())
 	{
 		g_bLockEsc = false;
-		//Engine::Play_BGM(L"FallenAces", L"Ambience_OldTimeyMusic6.mp3", 0.75f);
 
 		if (Engine::IsKey_Pressed(DIK_RETURN))
 		{
 			//CScene* pScene = CStage::Create(m_pGraphicDev);
 			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Stage1");
-			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "BossStage");
+			CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "BossStage");
 			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Malone");
-			CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "SeongHee");
+			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "SeongHee");
 			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "TestPhysics");
 			NULL_CHECK(pScene);
 

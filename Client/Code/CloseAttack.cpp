@@ -37,7 +37,7 @@ HRESULT CCloseAttack::Ready_GameObject()
 	m_bDbugFrame = pPlayer->Get_DBugFrame();
 
 	// 데미지 설정
-	m_tAttack.fDamage = 50.f;
+	m_tAttack.fDamage = 7.f;
 
 	return S_OK;
 }
@@ -85,9 +85,7 @@ void CCloseAttack::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CCloseAttack* CCloseAttack::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir,
-									CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID,
-									_float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize)
+CCloseAttack* CCloseAttack::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir, CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID, _float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize, STATE_RIGHTHAND _pType)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -105,7 +103,8 @@ CCloseAttack* CCloseAttack::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _v
 	pInstance->m_pTransformComp->Set_Pos(vAttackPosition.x, vAttackPosition.y, vAttackPosition.z);	// 생성 위치
 	pInstance->Set_PlayerAttackState(vDir, _AttackState, fMoveSpeed, fDeleteTime, fDamage, fSize);	// 공격 세팅
 	pInstance->Set_Owner(_Owner);									// 공격의 주인
-	pInstance->Set_TeamID(_eTeamID);								// 공격의 팀 설정
+	pInstance->Set_TeamID(_eTeamID);	// 공격의 팀 설정
+	pInstance->m_pWeaponType = _pType; //공격유형설정
 
 	return pInstance;
 }
@@ -151,7 +150,7 @@ void CCloseAttack::OnCollisionEntered(CGameObject* pDst, const FContact* const p
 	OutputDebugString(L"플레이어의 주먹 충돌 \n");
 	
 	// 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
-	Change_MonsterHp(-m_tAttack.fDamage, pDst, m_tAttack.ePlayer_AttackState);
+	Change_MonsterHp(-m_tAttack.fDamage, pDst, m_tAttack.ePlayer_AttackState, m_pWeaponType);
 	
 	// Test 앉기 공격 확인
 	if (m_tAttack.ePlayer_AttackState == PSITDONW_ATTACK)

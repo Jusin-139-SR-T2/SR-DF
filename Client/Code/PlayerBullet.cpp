@@ -93,9 +93,11 @@ void CPlayerBullet::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir,
-	CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID,
-	_float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize)
+CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, 
+	_vec3 vPos, _vec3 vDir, CAceUnit* _Owner, 
+	PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID, 
+	_float fMoveSpeed, _float fDeleteTime, _float fDamage, 
+	_float fSize, STATE_RIGHTHAND pRight)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -111,7 +113,8 @@ CPlayerBullet* CPlayerBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, 
 	pInstance->m_pTransformComp->Set_Pos(vPos.x, vPos.y + 0.7f, vPos.z);	// 생성 위치
 	pInstance->Set_PlayerAttackState(vDir, _AttackState, fMoveSpeed, fDeleteTime, fDamage, fSize); // 공격 상태 세팅
 	pInstance->Set_Owner(_Owner);									// 공격의 주인
-	pInstance->Set_TeamID(_eTeamID);								// 공격의 팀 설정
+	pInstance->Set_TeamID(_eTeamID);	// 공격의 팀 설정
+	pInstance->m_pWeaponType = pRight; // 무기종류 설정 
 
 	return pInstance;
 }
@@ -160,7 +163,7 @@ void CPlayerBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const 
 	if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE)
 	{
 		// 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
-		Change_MonsterHp(-m_tAttack.fDamage, pDst, m_tAttack.ePlayer_AttackState);
+		Change_MonsterHp(-m_tAttack.fDamage, pDst, m_tAttack.ePlayer_AttackState, m_pWeaponType);
 
 		// Test 공격 확인
 		if (m_tAttack.ePlayer_AttackState == PSITDONW_ATTACK)

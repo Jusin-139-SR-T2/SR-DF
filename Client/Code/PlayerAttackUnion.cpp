@@ -128,7 +128,7 @@ void CPlayerAttackUnion::Change_PlayerHp(_float pAttack)
     pPlayer->Set_PlayerHP(PlayerHp);
 }
 
-void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, PLAYER_ATTACK_STATE _AttackState)
+void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, PLAYER_ATTACK_STATE _AttackState, STATE_RIGHTHAND _attacktype)
 {
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(_AttackTarget);
 
@@ -143,20 +143,93 @@ void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTa
         // 공격받은 몬스터(타겟)가 있을 경우
         if (nullptr != pMonster)
         {
-            // 몬스터 체력 받아오기
-            MonsterHp = pMonster->Get_MonsterHP();
+            CBrown* pBrown = dynamic_cast<CBrown*>(pMonster);
 
-            // 몬스터 체력 계산
-            MonsterHp.Cur += pAttack;
+            if (nullptr == pBrown)
+            {
+                CGray* pGray = dynamic_cast<CGray*>(pMonster);
 
-            if (MonsterHp.Cur <= 0)
-                MonsterHp.Cur = 0.f;
-            if (MonsterHp.IsMax())
-                MonsterHp.Cur = MonsterHp.Max;
+                if (nullptr == pGray)
+                {
+                    CAceBoss* pBoss = dynamic_cast<CAceBoss*>(pMonster);
 
+                    if (nullptr == pBoss)
+                        return;
+                    else
+                    {
+                        //보스충돌
+
+                        if (STATE_RIGHTHAND::BEERBOTLE == _attacktype)
+                            pAttack = 5.f;
+                        else if (STATE_RIGHTHAND::FRYINGPAN == _attacktype)
+                            pAttack = 5.f;
+                        else if (STATE_RIGHTHAND::GUN == _attacktype)
+                            pAttack = 7.f;
+                        else if (STATE_RIGHTHAND::HAND == _attacktype)
+                            pAttack = 3.f;
+                        else if (STATE_RIGHTHAND::RUN_HAND == _attacktype)
+                            pAttack = 1.f;
+                        else if (STATE_RIGHTHAND::STEELPIPE == _attacktype)
+                            pAttack = 6.f;
+                        else if (STATE_RIGHTHAND::THOMPSON == _attacktype)
+                            pAttack = 10.f;
+
+                        MonsterHp = pMonster->Get_MonsterHP();
+                        // 몬스터 체력 계산
+                        MonsterHp.Cur -= pAttack;
+                    }
+                }
+                else
+                {
+                    // Gray 충돌
+                    if (STATE_RIGHTHAND::BEERBOTLE == _attacktype)
+                        pAttack = 6.f;
+                    else if (STATE_RIGHTHAND::FRYINGPAN == _attacktype)
+                        pAttack = 5.f;
+                    else if (STATE_RIGHTHAND::GUN == _attacktype)
+                        pAttack = 30.f; // 4번
+                    else if (STATE_RIGHTHAND::HAND == _attacktype)
+                        pAttack = 5.f;
+                    else if (STATE_RIGHTHAND::RUN_HAND == _attacktype)
+                        pAttack = 1.f;
+                    else if (STATE_RIGHTHAND::STEELPIPE == _attacktype)
+                        pAttack = 19.f;
+                    else if (STATE_RIGHTHAND::THOMPSON == _attacktype)
+                        pAttack = 55.f; // 2
+
+                    MonsterHp = pMonster->Get_MonsterHP();
+                    // 몬스터 체력 계산
+                    MonsterHp.Cur -= pAttack;
+                }
+            }
+            else
+            {
+                // Brown 충돌 
+                if (STATE_RIGHTHAND::BEERBOTLE == _attacktype)
+                    pAttack = 10.f;
+                else if (STATE_RIGHTHAND::FRYINGPAN == _attacktype)
+                    pAttack = 15.f;
+                else if (STATE_RIGHTHAND::GUN == _attacktype)
+                    pAttack = 55.f;
+                else if (STATE_RIGHTHAND::HAND == _attacktype)
+                    pAttack = 7.f;
+                else if (STATE_RIGHTHAND::RUN_HAND == _attacktype)
+                    pAttack = 3.f;
+                else if (STATE_RIGHTHAND::STEELPIPE == _attacktype)
+                    pAttack = 40.f;
+                else if (STATE_RIGHTHAND::THOMPSON == _attacktype)
+                    pAttack = 100.1f;
+                // 몬스터 체력 받아오기
+                MonsterHp = pMonster->Get_MonsterHP();
+
+                // 몬스터 체력 계산
+                MonsterHp.Cur -= pAttack;
+            }
             pMonster->Set_MonsterHP(MonsterHp); // 계산이 끝난 몬스터의 체력으로 넣어줌
             pMonster->Set_Player_AttackState(_AttackState); // 공격받은 유형을 넣어줌
+
         }
+
     }
 }
 

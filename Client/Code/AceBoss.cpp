@@ -449,8 +449,15 @@ void CAceBoss::OnCollisionEntered(CGameObject* pDst, const FContact* const pCont
 	}
 
 	else if (Check_Relation(pAceObj, this) == ERELATION::NUETRAL) // 오브젝트 충돌 
+		return;	//m_tState_Obj.Set_State(STATE_OBJ::HIT);
+
+	// 피격의 40프로 확률로 반격 시전 - 반격의 종류는 반반확률  
+	if (Random_variable(25))
 	{
-		//m_tState_Obj.Set_State(STATE_OBJ::HIT);
+		if (Random_variable(50))
+			m_tState_Obj.Set_State(STATE_OBJ::FALLING_STONE);
+		else
+			m_tState_Obj.Set_State(STATE_OBJ::HEAVYSHOOT);
 	}
 }
 void CAceBoss::OnCollisionExited(CGameObject* pDst)

@@ -772,6 +772,8 @@
     "user_strings": [],
     "user_strings": [],
     "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
     "layers": [
         {
             "header": {
@@ -44397,8 +44399,36 @@
                         "y": 20.0,
                         "z": 20.0
                     },
-                    "group_key": "Structure",
-                    "texture_key": "TileA_18"
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 },
                 {
                     "header": {
@@ -44408,6 +44438,8 @@
                     "ID": 5,
                     "class_name": "AceFood",
                     "tags": [],
+                    "group_key": "Food",
+                    "texture_key": "Cola",
                     "priority_update": 0.0,
                     "use_priority_update": true,
                     "priority_late_update": 0.0,
@@ -44429,8 +44461,36 @@
                         "y": 1.0,
                         "z": 1.0
                     },
-                    "group_key": "Food",
-                    "texture_key": "Cola"
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 },
                 {
                     "header": {
@@ -44440,6 +44500,8 @@
                     "ID": 5,
                     "class_name": "AceFood",
                     "tags": [],
+                    "group_key": "Food",
+                    "texture_key": "Banana",
                     "priority_update": 0.0,
                     "use_priority_update": true,
                     "priority_late_update": 0.0,
@@ -44461,8 +44523,36 @@
                         "y": 1.0,
                         "z": 1.0
                     },
-                    "group_key": "Food",
-                    "texture_key": "Banana"
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 },
                 {
                     "header": {
@@ -44472,6 +44562,8 @@
                     "ID": 5,
                     "class_name": "AceFood",
                     "tags": [],
+                    "group_key": "Food",
+                    "texture_key": "BananaPeel",
                     "priority_update": 0.0,
                     "use_priority_update": true,
                     "priority_late_update": 0.0,
@@ -44493,8 +44585,36 @@
                         "y": 1.0,
                         "z": 1.0
                     },
-                    "group_key": "Food",
-                    "texture_key": "BananaPeel"
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ]
         },

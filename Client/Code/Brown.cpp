@@ -415,6 +415,15 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
     {
         m_tState_Obj.Set_State(STATE_OBJ::HIT);
     }
+
+    // 피격의 40프로 확률로 반격 시전 
+    if (Random_variable(40))
+    {
+        if (Random_variable(50))
+            m_tState_Obj.Set_State(STATE_OBJ::NORMALATTACK);
+        else
+            m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
+    }
 }
 
 void CBrown::OnCollisionExited(CGameObject* pDst) // 충돌 나갈때 

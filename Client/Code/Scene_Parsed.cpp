@@ -172,7 +172,8 @@ void CScene_Parsed::SoundReady(string _scene)
 {
     if (_scene.compare("Stage1") == 0) 
     {
-        Engine::Play_BGM(L"FallenAces", L"Ambience_OldTimeyMusic6.mp3", 0.5f);
+        Engine::StopAll();
+        Engine::Play_BGM(L"FallenAces", L"Scene_Stage1.wav", 0.5f);
     }
     else if (_scene.compare("BossStage") == 0)
     {

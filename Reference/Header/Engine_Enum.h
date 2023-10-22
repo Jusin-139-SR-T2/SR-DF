@@ -65,8 +65,7 @@ namespace Engine
 		PJUMP_ATTACK,
 		PRUN_ATTACK,
 		PDOUBLE_ATTACK,
-		PTRIPLE_ATTACK,
-		PATTACK_END_SIZE
+		PTRIPLE_ATTACK
 	};
 
 	enum EBIT_FLAG_32 : unsigned long

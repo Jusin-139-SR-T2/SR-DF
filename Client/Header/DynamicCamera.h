@@ -74,6 +74,14 @@ private:
 	_float			m_fAngleY;
 	_float			m_fRotSpeed = 0.2f;
 
+	//소영 추가 
+	_bool		m_bPressC = false;
+	_vec3		m_fBackupEye;
+
+	_vec3		m_vSit;
+	_tchar						debugString[100];	// 디버그용 sting 
+
+
 	// 이전 프레임에서 마우스 이동 값 저장
 	_long m_dwPrevMouseMoveX = 0;
 	_long m_dwPrevMouseMoveY = 0;
