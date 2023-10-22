@@ -14379,6 +14379,102 @@
                     },
                     "group_key": "Furniture",
                     "texture_key": "WoodCabinet"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BuildingJ0"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 65.5855941772461,
+                        "y": 5.945014953613281,
+                        "z": 0.02969355881214142
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 9.711875915527344,
+                        "y": 12.0,
+                        "z": 9.711875915527344
+                    },
+                    "group_key": "Building",
+                    "texture_key": "J"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Cola"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 63.89268493652344,
+                        "y": 3.98781156539917,
+                        "z": 16.01543426513672
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 180.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Cola"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Trigger_JumpBgm"
+                    },
+                    "ID": 9,
+                    "class_name": "JumpBgm",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 63.893001556396484,
+                        "y": 3.98799991607666,
+                        "z": 16.014999389648438
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 3.0
+                    },
+                    "group_key": "Develop",
+                    "texture_key": "BoxTrigger"
                 }
             ]
         },
@@ -14404,13 +14500,13 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 11.201726913452148,
-                        "y": 0.6637461185455322,
-                        "z": 13.802106857299805
+                        "x": 20.395050048828125,
+                        "y": 4.209981918334961,
+                        "z": -10.943203926086426
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": -122.03999328613281,
+                        "y": -122.03998565673828,
                         "z": 0.0
                     },
                     "scale": {

@@ -20,6 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\PlayerLightning.h" />
+    <ClInclude Include="Header\JumpBat.h" />
+    <ClInclude Include="Header\JumpBgm.h" />
+    <ClInclude Include="Header\JumpMonster.h" />
+    <ClInclude Include="Header\Hegrid.h" />
+    <ClInclude Include="Header\JumpMainBgm.h" />
     <ClInclude Include="UI_FadeOut.h" />
     <ClInclude Include="UI_PlayerHurt.h" />
     <ClInclude Include="UI_FadeIn.h" />
@@ -135,6 +140,11 @@
     <ClCompile Include="Code\Effect_HitPow.cpp" />
     <ClCompile Include="Code\Effect_DazeSwirl.cpp" />
     <ClCompile Include="Code\PlayerLightning.cpp" />
+    <ClCompile Include="Code\JumpBat.cpp" />
+    <ClCompile Include="Code\JumpBgm.cpp" />
+    <ClCompile Include="Code\JumpMonster.cpp" />
+    <ClCompile Include="Code\Hegrid.cpp" />
+    <ClCompile Include="Code\JumpMainBgm.cpp" />
     <ClCompile Include="UI_FadeOut.cpp" />
     <ClCompile Include="UI_PlayerHurt.cpp" />
     <ClCompile Include="UI_FadeIn.cpp" />

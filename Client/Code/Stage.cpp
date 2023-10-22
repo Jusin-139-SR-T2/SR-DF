@@ -8,6 +8,7 @@
 #include "SkyBox.h"
 #include "UI_Player.h"
 #include <AceBuilding.h>
+#include "Hegrid.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
@@ -88,13 +89,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar * pLayerTag)
 	// SkyBox
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", CSkyBox::Create(m_pGraphicDev, 10.f)), E_FAIL);
 
-	
-	
 	// Particle
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SnowParticle", CSnowParticle::Create(m_pGraphicDev, {40.f, 3.f, 40.f}, 10000) ), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"FireWorkParticle", CFireWork::Create(m_pGraphicDev, { 24.f, 3.f, 12.f }, 200)), E_FAIL);
 	
-
 	pLayer = Engine::CLayer::Create(-10.f);
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 	m_mapLayer.insert({ L"Terrain", pLayer});
@@ -112,6 +110,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	m_mapLayer.insert({ pLayerTag, pLayer });
 
 	Engine::CGameObject*		pGameObject = nullptr;
+
+	// NPC
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hegrid",  CHegrid::Create(m_pGraphicDev, 25.f, 2.2f, 30.f)), E_FAIL);
 
 	// Player
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", CPlayer::Create(m_pGraphicDev)), E_FAIL);

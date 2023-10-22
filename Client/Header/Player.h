@@ -43,6 +43,22 @@ struct FPlayer_Create
 	_float fPriority[static_cast<_uint>(EPRIORITY_TYPE::SIZE)] = {0.f, 0.f, 0.f};
 };
 
+typedef struct tag_PlayerSound_Info
+{
+	_float		m_fTalkAge;				// 말하는 시간 - 나이
+	_float		m_fTalkLife;			// 말하는시간 - 수명 
+	_float		m_fTalkReapeat;			// 말하는시간  - 반복횟수 카운트 
+
+	_float		m_fSoundVolume;			//	사운드 재생하는 볼륨 
+	_float		m_fSoundEffectVolume;	//	이펙트 재생볼륨
+	
+	_int		m_iHpSection;			// 구간나누기 위한 섹션 정의 - 20으로 나눈구간임 
+
+	_bool		m_bSoundOnce;			// 한번만 재생되어야할때 
+	_bool		m_bSoundCheck;
+
+}PlayerSound;
+
 class CPlayer : public CAceUnit
 {
 	DERIVED_CLASS(CAceUnit, CPlayer)
@@ -378,6 +394,9 @@ private:
 	_long			dwMouseMove = 0;		// 마우스 무브
 	CMeshColComp*	m_pMeshComp = nullptr;
 	LPD3DXMESH*		m_MeshBox;
+
+private:
+	PlayerSound m_tPlayerSound;
 
 private:
 	virtual void		Free();

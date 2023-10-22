@@ -70,6 +70,35 @@ _int CPlayerLightning::Update_GameObject(const _float& fTimeDelta)
 
 	m_pTransformComp->Set_Pos(m_vPos);
 
+	if (!m_bSoundOff) // 사운드 한번만 재생
+	{
+		// 공격마다 랜덤 재생 (현재 폭발공격, 폭발 사운드)
+		if (true)
+		{
+			// 사운드 ex)
+			// 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+			Engine::Play_Sound(L"FallenAces", L"Explosion (0).wav", SOUND_PLAYER_EFFECT, m_fVolume);
+
+		}
+		else if (true)
+		{
+			// 사운드 ex)
+			// 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+			Engine::Play_Sound(L"FallenAces", L"Explosion (1).wav", SOUND_PLAYER_EFFECT, m_fVolume);
+
+		}
+		else if (true)
+		{
+			// 사운드 ex)
+			// 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+			Engine::Play_Sound(L"FallenAces", L"Explosion (2).wav", SOUND_PLAYER_EFFECT, m_fVolume);
+
+		}
+
+		m_bSoundOff = true; // 사운드 재생 끄기
+	}
+
+
 	// 타격
 	if (m_tSkill.fFrame > 8.f &&
 		m_ePlayer_SkillHit == PSKILLHIT_NOHIT)

@@ -50,6 +50,8 @@ private:
 
 private:
 	_bool* m_bDbugFrame;
+	_bool  m_bSoundOff = false;
+	_float m_fVolume = 0.5f;
 	FCollisionSphere* pShape;
 	_vec3	m_vPos = { 0.f, 0.f, 0.f };
 

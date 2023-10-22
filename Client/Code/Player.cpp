@@ -63,6 +63,15 @@ HRESULT CPlayer::Ready_GameObject()
     pShape->fRadius = 5.f;*/
 #pragma endregion
 
+    //사운드 관련
+    m_tPlayerSound.m_fTalkAge = 0.f;
+    m_tPlayerSound.m_fTalkLife = 5.f; // 반복이 필요한애들은 대충 이거기준으로 
+    m_tPlayerSound.m_fTalkReapeat = 0.f;
+    m_tPlayerSound.m_fSoundVolume = 0.6f;
+    m_tPlayerSound.m_fSoundEffectVolume = 0.2f;
+    m_tPlayerSound.m_bSoundOnce = FALSE;
+    m_tPlayerSound.m_bSoundCheck = FALSE;
+
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
     // 플레이어 정보 (초기값)
     m_gHp.Max = 100.f;
@@ -677,7 +686,7 @@ if (!timeline[KEYTYPE_LEFTHAND].empty())
                         bRightPunch = true;
 
                         m_bAttack = false;
-                        m_tLeftHand.bLeftAttacColOn = true;
+                        //m_tLeftHand.bLeftAttacColOn = true;
                     }
                 }
 
@@ -808,7 +817,10 @@ if (!timeline[KEYTYPE_RIGHTHAND].empty())
                         {
                             m_tRightHand.bRightAttacColOn = true;
                         }
-                        //m_tRightHand.bRightAttacColOn = true;
+                        if (m_tRightHand_State.Get_State() == STATE_RIGHTHAND::FRYINGPAN)
+                        {
+                            m_tRightHand.bRightAttacColOn = true;
+                        }
                     }
                 }
             }
@@ -1189,11 +1201,13 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                 if (bLeftPunch)
                 {
                     m_tLeftHand.bLeftFrameOn = true;
+                    m_tLeftHand.bLeftAttacColOn = true;
                     m_bLAttackMove = true;
                 }
                 if (bRightPunch)
                 {
                     m_tRightHand.bRightFrameOn = true;
+                    m_tRightHand.bRightAttacColOn = true;
                     m_bRAttackMove = true;
                 }
             }
@@ -1204,6 +1218,11 @@ bool CPlayer::Attack_Input(const _float& fTimeDelta)
                 m_tRightHand.bRightFrameOn = true;
                 //m_tRightHand.bRightAttacColOn = true;
                 m_bRAttackMove = true;
+
+                if (m_tRightHand_State.Get_State() == STATE_RIGHTHAND::GUN)
+                {
+                    m_tRightHand.bRightAttacColOn = true;
+                }
             }
         }
     }
@@ -2080,6 +2099,7 @@ void CPlayer::Left_Hand(float fTimeDelta)
                 m_tLeftHand.bLeftFrameOn = false;      // 왼손 프레임 매니저 Off
                 m_tLeftHand.bPickUpState = false;         // 현재 프레임 초기화
                 m_tLeftHand.fLeftFrame = 0.f;
+                m_tTime.fRightChangeTime = 1.3f;
                 m_tTime.fLeftCurrentTime = 0.f;        // 현재 시간 초기화
 
                 // 왼손 주먹 불러오기
@@ -2142,6 +2162,36 @@ void CPlayer::Left_Hand(float fTimeDelta)
         {
             m_tLeftHand.bLeftAttacColOn = false;    // 공격 생성 Off
 
+            // 공격마다 랜덤 재생
+            if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"Punch (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"Punch (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"Punch (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"Punch (3).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+
             _vec3 vPos = m_pTransformComp->Get_Pos();
             vPos.y += 0.7f;
 
@@ -2152,6 +2202,8 @@ void CPlayer::Left_Hand(float fTimeDelta)
                                    0.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
             
             m_bAttack = false;  // 공격 Off
+            bLeftPunch = false;
+            bRightPunch = true;
         }
     }
 
@@ -2362,7 +2414,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
                 m_tRightHand.bRightFrameOn = false;     // 오른손 프레임 매니저 Off
                 m_tRightHand.fRightFrame = 0.f;         // 현재 프레임 초기화
                 m_tTime.fRightCurrentTime = 0.f;        // 현재 시간 초기화
-
+                m_tTime.fRightChangeTime = 1.3f;
                 // 오른손 주먹 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Right_Hand");
                 RightLoadAnimationFromFile("RightFist");
@@ -2419,6 +2471,36 @@ void CPlayer::Right_Hand(float fTimeDelta)
         {
             m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
+            // 공격마다 랜덤 재생
+            if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"Punch (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"Punch (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"Punch (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"Punch (3).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+
             _vec3 vPos = m_pTransformComp->Get_Pos();
             vPos.y += 0.7f;
             // 주먹공격 생성
@@ -2428,6 +2510,8 @@ void CPlayer::Right_Hand(float fTimeDelta)
                 0.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
+            bLeftPunch = true;
+            bRightPunch = false;
         }
 
         // 플레이어가 차징을 하고있을 경우
@@ -2528,6 +2612,10 @@ void CPlayer::Right_Gun(float fTimeDelta)
             // 애니메이션 불러오기
             if (bRightGetAnimation)
             {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                //Engine::Play_Sound(L"FallenAces", L"GunSpin (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
                 RightLoadAnimationFromFile("GunPickUp");
                 m_tTime.fRightChangeTime = 1.5f; // 프레임 속도 조절
             }
@@ -2607,10 +2695,54 @@ void CPlayer::Right_Gun(float fTimeDelta)
 
             m_bGunLight = TRUE; // 총 조명On
 
-            CGameObject* pDst = RayCast();
+            //CGameObject* pDst = RayCast();
 
             // 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
             //RayAttack(pDst , -10.f, m_eAttackState);
+
+            // 공격마다 랜덤 재생
+            if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"GunFire (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"GunFire (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"GunFire (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"GunFire (3).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"GunFire (4).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"GunFire (5).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
 
             _vec3 vPos = m_pTransformComp->Get_Pos();
 
@@ -2740,6 +2872,11 @@ void CPlayer::Right_Thompson(float fTimeDelta)
 
             _vec3 vPos = m_pTransformComp->Get_Pos();
 
+            // 사운드 ex)
+            // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+            Engine::Play_Sound(L"FallenAces", L"ThompsonFire (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+
             // 총알 생성
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev, // 레이어, 디바이스
                 vPos, m_pTransformComp->Get_Look(),             // 생성위치, 방향
@@ -2784,6 +2921,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
                 m_tRightHand.bRightFrameOn = false;     // 오른손 프레임 매니저 Off
                 m_tRightHand.fRightFrame = 0.f;         // 현재 프레임 초기화
                 m_tTime.fRightCurrentTime = 0.f;        // 현재 시간 초기화
+                m_tTime.fRightChangeTime = 1.3f;
 
                 // 오른손 쇠파이프 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"Steel_Pipe");
@@ -2809,6 +2947,29 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
         if (m_tRightHand.bRightAttacColOn)
         {
             m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
+
+            // 공격마다 랜덤 재생
+            if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"SteelPipe (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"SteelPipe (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"SteelPipe (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
 
             _vec3 vPos = m_pTransformComp->Get_Pos();
             vPos.y += 0.7f;
@@ -2902,7 +3063,8 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
                 m_tRightHand.bRightFrameOn = false;     // 오른손 프레임 매니저 Off
                 m_tRightHand.fRightFrame = 0.f;         // 현재 프레임 초기화
                 m_tTime.fRightCurrentTime = 0.f;        // 현재 시간 초기화
-
+                m_tTime.fRightChangeTime = 1.5f;
+                
                 // 오른손 맥주병 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"BeerBottle");
                 RightLoadAnimationFromFile("Beer_Botle");
@@ -2922,6 +3084,8 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
         {
             m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
 
+            // 맥주병(폭발 스킬) 사운드는 PlayerLightning에서 재생
+
             _vec3 vPos = m_pTransformComp->Get_Pos();
             vPos.y += 0.7f;
 
@@ -2933,15 +3097,15 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
             if (pGmaeObj != nullptr)
                 pAceMonster = dynamic_cast<CAceMonster*>(pGmaeObj);
 
-            // 번개 스킬 생성
+            // 번개 or 폭발 스킬 생성 (라이트닝인데 폭발공격임 정상 작동, 허공에다 공격하면 안나감, 내려쳤을때 기준)
             if (pAceMonster != nullptr)
             Engine::Add_GameObject(L"GameLogic", CPlayerLightning::Create(m_pGraphicDev, pAceMonster)); // 디바이스, 몬스터 
 
-            // 맥주병 공격 생성
-            Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
-                vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
-                this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                       // 공격유형, 팀
-                100.f, 1.f, 10.f, 3.f));                                            // 속도, 삭제시간, 데미지, 크기
+            //// 맥주병 공격 생성
+            //Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+            //    vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
+            //    this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                       // 공격유형, 팀
+            //    100.f, 1.f, 10.f, 3.f));                                            // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
         }
@@ -2982,6 +3146,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
                 m_tRightHand.bRightFrameOn = false;     // 오른손 프레임 매니저 Off
                 m_tRightHand.fRightFrame = 0.f;         // 현재 프레임 초기화
                 m_tTime.fRightCurrentTime = 0.f;        // 현재 시간 초기화
+                m_tTime.fRightChangeTime = 1.3f;
 
                 // 오른손 총 불러오기
                 m_pRightHandComp->Receive_Texture(TEX_NORMAL, L"Player", L"FryingPan");
@@ -2995,6 +3160,28 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
         if (m_tRightHand.bRightAttacColOn)
         {
             m_tRightHand.bRightAttacColOn = false;    // 공격 생성 Off
+
+            // 공격마다 랜덤 재생
+            if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"FryingPan (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"FryingPan (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
+            else if (true)
+            {
+                // 사운드 ex)
+                // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
+                Engine::Play_Sound(L"FallenAces", L"FryingPan (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
+            }
 
             _vec3 vPos = m_pTransformComp->Get_Pos();
             vPos.y += 0.7f;
@@ -3059,7 +3246,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
     }
 }
 
-void CPlayer::Right_Kick(float fTimeDelta)
+void CPlayer::Right_Kick(float fTimeDelta) // @@@안씀@@@
 {
     if (m_tRightHand_State.IsState_Entered())
     {
