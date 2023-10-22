@@ -797,8 +797,6 @@ HRESULT CLoading::Loading_For_Texture()
 
 	// NPC
 	Load_Texture(L"./Resource/Texture/NPC/Hegrid.png", TEX_NORMAL, L"NPC", L"Hagrid");
-	Load_Texture(L"./Resource/Texture/Monster/Hegrid.png", TEX_NORMAL, L"NPC", L"Hagrid2");
-	Load_Texture(L"./Resource/Texture/Monster/Hagrid.png", TEX_NORMAL, L"NPC", L"Hagrid3");
 
 #pragma endregion
 

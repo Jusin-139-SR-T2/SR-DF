@@ -59,10 +59,10 @@ public:
 	virtual void		LateUpdate_GameObject() override;
 	virtual void		Render_GameObject() override;
 
-public:
+public:/*
 	virtual void OnCollision(CGameObject* pDst, const FContact* const pContact) override;
 	virtual void OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) override;
-	virtual void OnCollisionExited(CGameObject* pDst) override;
+	virtual void OnCollisionExited(CGameObject* pDst) override;*/
 	
 
 private: // ÇÔ¼ö 
@@ -90,7 +90,7 @@ private:
 	CTextureComponent* m_pTextureComp = nullptr;
 	CTransformComponent* m_pTransformComp = nullptr;
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;
+	//CColliderComponent* m_pColliderComp = nullptr;
 
 	
 };

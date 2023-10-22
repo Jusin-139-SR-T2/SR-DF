@@ -482,6 +482,7 @@
     "user_strings": [],
     "user_strings": [],
     "user_strings": [],
+    "user_strings": [],
     "layers": [
         {
             "header": {
@@ -30133,6 +30134,68 @@
                         "x": 0.25,
                         "y": 0.75,
                         "z": 0.4000000059604645
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Hagrid"
+                    },
+                    "ID": 6,
+                    "class_name": "Hagrid",
+                    "tags": [],
+                    "group_key": "NPC",
+                    "texture_key": "Hagrid",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 64.98500061035156,
+                        "y": 0.11599999666213989,
+                        "z": 18.805999755859375
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
                     }
                 }
             ]

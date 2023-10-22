@@ -255,6 +255,11 @@ HRESULT CScene_MapTool::Ready_Texture()
 	Load_Texture(L"../Client/Resource/Texture/Monster/Projectile/ThrowPipe_%d.png", TEX_NORMAL, L"Projectile", L"ThrowPipe", _range<_uint>(0U, 11U)); // Bomb
 	//Load_Texture(L"../Client/Resource/Texture/idk/Circle.png", TEX_NORMAL, L"Debug", L"Sphere"); // Bomb
 
+	// NPC
+	Load_Texture(L"../Client/Resource/Texture/NPC/Hegrid.png", TEX_NORMAL, L"NPC", L"Hagrid");
+
+
+
 #pragma endregion
 
 #pragma region Object 
