@@ -66,6 +66,7 @@ HRESULT CTrigger_ToJumpMap::Ready_GameObject(const FSerialize_GameObject& tObjec
     m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
 
     FadeInEnd = false;
+    MagicBottle = false;
 
     return S_OK;
 }
@@ -109,6 +110,7 @@ void CTrigger_ToJumpMap::OnCollision(CGameObject* pDst, const FContact* const pC
             Engine::Set_Scene(pScene);
             pScene->Add_GameObject(L"UI", CUI_FadeIn::Create(m_pGraphicDev));
             m_bIsTriggered = true;
+            MagicBottle = true;
             Update_InternalData();
             Set_Dead();
         }
@@ -148,6 +150,7 @@ void CTrigger_ToJumpMap::Update_InternalData()
 
     // 여기서부터 블랙보드의 정보를 얻어온다.
     FadeInEnd = pBlackBoard->Get_SceneFade();
+    pBlackBoard->Get_MagicBottle() = MagicBottle;
 
     if (m_bIsTriggered)
         pBlackBoard->Get_SceneFade() = false;

@@ -4,9 +4,9 @@
         "name": "CrackedBottle"
     },
     "class": 0,
-    "class_name": "",
-    "group_key": "",
-    "texture_key": "",
+    "class_name": "AceWeapon",
+    "group_key": "Weapon",
+    "texture_key": "CrackedBottle",
     "pos": {
         "x": 0.0,
         "y": 0.0,

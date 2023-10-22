@@ -65,7 +65,7 @@ public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX2(_bool, m_bPlayerHitState, PlayerHit, GET_C_REF, GET_REF)
 
 	GETSET_EX2(_bool, m_bFade, SceneFade, GET_C_REF, GET_REF)
-
+	GETSET_EX2(_bool, m_bMagicBottle, MagicBottle, GET_C_REF, GET_REF)
 
 private:
 	GAUGE<_float>		m_fHP;					// 플레이어 hp
@@ -80,13 +80,15 @@ private:
 	_bool				m_bAttackOn;
 	_bool				m_bRAttackMove;
 	_bool				m_bLAttackMove;
+	
+	
 
 	STATE_PLAYER		m_ePlayer_State;
 	STATE_RIGHTHAND		m_eRightHand_State;
 	
 
 	_bool				m_bPlayerHitState; //소영추가 
-
-	_bool m_bFade;
+	_bool				m_bMagicBottle;
+	_bool				m_bFade;
 };
 

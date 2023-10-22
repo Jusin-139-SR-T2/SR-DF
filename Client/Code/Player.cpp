@@ -1053,6 +1053,8 @@ void CPlayer::Update_BlackBoard()
     pBlackBoard->Get_AttackOn() = m_bAttack;
     pBlackBoard->Get_PlayerHit() = m_bHitState;
 
+    m_bMagicBottle = pBlackBoard->Get_MagicBottle();
+
 
     switch (m_bRAttackMove)
     {
@@ -3133,18 +3135,22 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
 
             if (pGmaeObj != nullptr)
                 pAceMonster = dynamic_cast<CAceMonster*>(pGmaeObj);
-
-            // 번개 or 폭발 스킬 생성 (라이트닝인데 폭발공격임 정상 작동, 허공에다 공격하면 안나감, 내려쳤을때 기준)
+            //
+           // // 번개 or 폭발 스킬 생성 (라이트닝인데 폭발공격임 정상 작동, 허공에다 공격하면 안나감, 내려쳤을때 기준)
             if (pAceMonster != nullptr)
-            Engine::Add_GameObject(L"GameLogic", CPlayerLightning::Create(m_pGraphicDev, pAceMonster)); // 디바이스, 몬스터 
+            {
+                if(m_bMagicBottle)
+                    Engine::Add_GameObject(L"GameLogic", CPlayerLightning::Create(m_pGraphicDev, pAceMonster)); // 디바이스, 몬스터 
+                else
+                {                // 맥주병 공격 생성
+                    Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                        vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                        this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                       // 공격유형, 팀
+                        100.f, 1.f, 10.f, 3.f, m_eRIGHTState));                                            // 속도, 삭제시간, 데미지, 크기
 
-            //// 맥주병 공격 생성
-            //Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
-            //    vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
-            //    this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                       // 공격유형, 팀
-            //    100.f, 1.f, 10.f, 3.f));                                            // 속도, 삭제시간, 데미지, 크기
-
-            m_bAttack = false;  // 공격 Off
+                    m_bAttack = false;  // 공격 Off
+                }
+            }
         }
     }
 
@@ -3658,8 +3664,36 @@ void CPlayer::LineEvent()
     
     if (pWeapon != nullptr)
     {
+        pWeapon->Set_Weapon_GearUp(true);
         m_eObjectName = pWeapon->Get_WeaponName();
-        pWeapon->Set_Dead();
+
+        switch (m_eObjectName)
+        {
+        case CPlayer::OBJECT_NAME::NONE:
+            Engine::Play_Sound(L"FallenAces", L"Crack.mp3", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        case CPlayer::OBJECT_NAME::GUN:
+            Engine::Play_Sound(L"FallenAces", L"Nice (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        case CPlayer::OBJECT_NAME::THOMPSON:
+            Engine::Play_Sound(L"FallenAces", L"Nice (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        case CPlayer::OBJECT_NAME::STEELPIPE:
+            Engine::Play_Sound(L"FallenAces", L"Nice (3).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        case CPlayer::OBJECT_NAME::BEERBOTLE:
+            Engine::Play_Sound(L"FallenAces", L"Nice (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        case CPlayer::OBJECT_NAME::FRYINGPAN:
+            Engine::Play_Sound(L"FallenAces", L"Nice (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        }
     }
 
     CAceFood* pFood = dynamic_cast<CAceFood*>(pAceObj);

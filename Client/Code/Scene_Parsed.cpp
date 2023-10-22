@@ -102,12 +102,9 @@ HRESULT CScene_Parsed::Ready_Scene(const char* pSceneFileName)
 
     SoundReady(strFileName);
     
-    if(strFileName.compare("SeongHee"))
+    if(strFileName.compare("SeongHee") == 0)
         Add_GameObject(L"Environment", L"SnowParticle", CSnowParticle::Create(m_pGraphicDev, {40.f, 3.f, 40.f}, 10000));
     
-        
-
-
     return S_OK;
 }
 
@@ -174,7 +171,7 @@ void CScene_Parsed::SoundReady(string _scene)
     if (_scene.compare("Stage1") == 0) 
     {
         Engine::StopAll();
-        Engine::Play_BGM(L"FallenAces", L"Scene_Stage1.wav", 0.5f);
+        Engine::Play_BGM(L"FallenAces", L"Ambience_Wind.wav", 0.5f);
     }
     else if (_scene.compare("BossStage") == 0)
     {

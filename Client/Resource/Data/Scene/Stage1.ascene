@@ -774,6 +774,18 @@
     "user_strings": [],
     "user_strings": [],
     "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
     "layers": [
         {
             "header": {
@@ -44615,6 +44627,130 @@
                         "y": 1.0,
                         "z": 1.0
                     }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "MetalBarrel"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "group_key": "Throw",
+                    "texture_key": "MetalBarrel",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 17.890310287475586,
+                        "y": 1.019885540008545,
+                        "z": 5.168785095214844
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -87.6624984741211,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.744134783744812,
+                        "y": 1.3873822689056396,
+                        "z": 0.744134783744812
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 17.890310287475586,
+                        "y": 1.019885540008545,
+                        "z": 5.168785095214844
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": -87.6624984741211,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 0.744134783744812,
+                        "y": 1.3873822689056396,
+                        "z": 0.744134783744812
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Lamp_1"
+                    },
+                    "ID": 6,
+                    "class_name": "AceThrow",
+                    "tags": [],
+                    "group_key": "Throw",
+                    "texture_key": "Lamp_1",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -8.940826416015625,
+                        "y": 0.5539177656173706,
+                        "z": -0.13135427236557007
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 79.06816864013672,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": -8.940826416015625,
+                        "y": 0.5539177656173706,
+                        "z": -0.13135427236557007
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 79.06816864013672,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ]
         },
@@ -48405,6 +48541,750 @@
                         "x": 18.84020233154297,
                         "y": 16.540403366088867,
                         "z": 16.540403366088867
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Bottle"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "Bottle",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 3.148725986480713,
+                        "y": 0.5789607763290405,
+                        "z": -4.04144811630249
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.25,
+                        "y": 0.75,
+                        "z": 0.4000000059604645
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 3.148725986480713,
+                        "y": 0.5789607763290405,
+                        "z": -4.04144811630249
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 0.25,
+                        "y": 0.75,
+                        "z": 0.4000000059604645
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BrokenBottle"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "BrokenBottle",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 1.1536996364593506,
+                        "y": 0.0,
+                        "z": -4.878683090209961
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 1.1536996364593506,
+                        "y": 0.0,
+                        "z": -4.878683090209961
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BrokenFryingPan"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "BrokenFryingPan",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 5.048919200897217,
+                        "y": 0.0,
+                        "z": -4.704826831817627
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 5.048919200897217,
+                        "y": 0.0,
+                        "z": -4.704826831817627
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BrokenPipe"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "BrokenPipe",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 6.62017822265625,
+                        "y": 0.0,
+                        "z": -4.7928266525268555
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 6.62017822265625,
+                        "y": 0.0,
+                        "z": -4.7928266525268555
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BrokenPistol"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "BrokenPistol",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 1.8440512418746948,
+                        "y": 0.0,
+                        "z": -0.13858141005039215
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 1.8440512418746948,
+                        "y": 0.0,
+                        "z": -0.13858141005039215
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BrokenTommyGun"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "BrokenTommyGun",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 3.485961675643921,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 3.485961675643921,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "CrackedBottle"
+                    },
+                    "ID": 0,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "CrackedBottle",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 5.129610538482666,
+                        "y": 0.5395182371139526,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 5.129610538482666,
+                        "y": 0.5395182371139526,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "LeadPipe"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "LeadPipe",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 6.552505970001221,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 6.552505970001221,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Pistol"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "Pistol",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 8.297361373901367,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 8.297361373901367,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "TommyGun"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "TommyGun",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 9.674750328063965,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 9.674750328063965,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BrokenFryingPan0"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "BrokenFryingPan",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 0.1507364809513092,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 0.1507364809513092,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "FryingPan"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "FryingPan",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -1.1402651071548462,
+                        "y": 0.44094038009643555,
+                        "z": 0.6712278723716736
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": -3.437746286392212
+                    },
+                    "scale": {
+                        "x": 0.699999988079071,
+                        "y": 0.3499999940395355,
+                        "z": 0.6000000238418579
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": -1.1402651071548462,
+                        "y": 0.44094038009643555,
+                        "z": 0.6712278723716736
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": -3.437746286392212
+                    },
+                    "col_scale": {
+                        "x": 0.699999988079071,
+                        "y": 0.3499999940395355,
+                        "z": 0.6000000238418579
                     }
                 }
             ]

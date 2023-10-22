@@ -90,6 +90,7 @@ private:
 	CTextureComponent* m_pTextureComp = nullptr;
 	CTransformComponent* m_pTransformComp = nullptr;
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
+	CColliderComponent* m_pColliderComp = nullptr;
 
 	
 };

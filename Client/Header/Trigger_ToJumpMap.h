@@ -38,5 +38,6 @@ protected:
 
 private:
 	void Update_InternalData();
+	_bool MagicBottle = false;
 }; 
 

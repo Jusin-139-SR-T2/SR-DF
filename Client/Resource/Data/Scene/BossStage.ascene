@@ -148,6 +148,15 @@
     "user_strings": [],
     "user_strings": [],
     "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
     "layers": [
         {
             "header": {
@@ -1771,68 +1780,6 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Struct_Wood_4"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wood_2",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 68.08076477050781,
-                        "y": 4.368683338165283,
-                        "z": 1.2877161502838135
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 5.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 68.08076477050781,
-                        "y": 4.368683338165283,
-                        "z": 1.2877161502838135
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
                         "name": "Struct_Wood_40"
                     },
                     "ID": 9,
@@ -3011,68 +2958,6 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Struct_Wall_181001"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wall_18",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": -13.180803298950195,
-                        "y": 1.8815343379974365,
-                        "z": -3.149496078491211
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 89.48148345947266,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 1.0524704456329346,
-                        "y": 5.262351989746094,
-                        "z": 5.262351989746094
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": -13.180803298950195,
-                        "y": 1.8815343379974365,
-                        "z": -3.149496078491211
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 89.48148345947266,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 1.0524704456329346,
-                        "y": 5.262351989746094,
-                        "z": 5.262351989746094
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
                         "name": "Struct_Wall_1811"
                     },
                     "ID": 9,
@@ -4003,130 +3888,6 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Struct_Wood_421"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wood_2",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 10.572623252868652,
-                        "y": 0.48351114988327026,
-                        "z": 23.39095115661621
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 2.5197372436523438
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 10.572623252868652,
-                        "y": 0.48351114988327026,
-                        "z": 23.39095115661621
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 2.5197372436523438
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_Wall_1810020000000"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wall_18",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 36.53352737426758,
-                        "y": 2.5,
-                        "z": -14.941499710083008
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 36.53352737426758,
-                        "y": 2.5,
-                        "z": -14.941499710083008
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
                         "name": "Struct_Wall_1810020000001"
                     },
                     "ID": 9,
@@ -4178,130 +3939,6 @@
                     "col_rot": {
                         "x": 0.0,
                         "y": 90.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_Wood_400"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wood_2",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 45.0,
-                        "y": -0.4000000059604645,
-                        "z": -5.0
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 5.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 45.0,
-                        "y": -0.4000000059604645,
-                        "z": -5.0
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_Wall_1810020000002"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wall_18",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 37.78759765625,
-                        "y": 2.5,
-                        "z": -7.0922932624816895
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 87.27473449707031,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 37.78759765625,
-                        "y": 2.5,
-                        "z": -7.0922932624816895
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 87.27473449707031,
                         "z": 0.0
                     },
                     "col_scale": {
@@ -4499,130 +4136,6 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Struct_Wood_401"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wood_2",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 55.0,
-                        "y": -0.4000000059604645,
-                        "z": -5.0
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 5.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 55.0,
-                        "y": -0.4000000059604645,
-                        "z": -5.0
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_Wall_18100200000000"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wall_18",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 34.69355010986328,
-                        "y": 2.5,
-                        "z": -9.945671081542969
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 34.69355010986328,
-                        "y": 2.5,
-                        "z": -9.945671081542969
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
                         "name": "Struct_Wall_18100200000001"
                     },
                     "ID": 9,
@@ -4646,57 +4159,10 @@
                         "y": 0.0,
                         "z": 0.0
                     },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 44.91825866699219,
-                        "y": 2.5,
-                        "z": -24.11916732788086
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 88.73606872558594,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_Wall_181002000000010"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wall_18",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 49.871280670166016,
-                        "y": 2.5,
-                        "z": -23.20655059814453
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 88.73606872558594,
-                        "z": 0.0
-                    },
                     "scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
                     },
                     "tex_pos": {
                         "x": 0.0,
@@ -4714,19 +4180,19 @@
                         "z": 1.0
                     },
                     "col_pos": {
-                        "x": 49.871280670166016,
+                        "x": 44.91825866699219,
                         "y": 2.5,
-                        "z": -23.20655059814453
+                        "z": -24.11916732788086
                     },
                     "col_rot": {
                         "x": 0.0,
-                        "y": 88.73606872558594,
+                        "y": 0.0,
                         "z": 0.0
                     },
                     "col_scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
                     }
                 },
                 {
@@ -4841,68 +4307,6 @@
                         "x": 67.41364288330078,
                         "y": 2.5,
                         "z": -14.693224906921387
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_Wall_181002000000020"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wall_18",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 58.02954864501953,
-                        "y": 2.5,
-                        "z": -11.480332374572754
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 58.02954864501953,
-                        "y": 2.5,
-                        "z": -11.480332374572754
                     },
                     "col_rot": {
                         "x": 0.0,
@@ -6029,130 +5433,6 @@
                         "x": 1.5,
                         "y": 1.5,
                         "z": 1.5
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_Wood_4210"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wood_2",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 10.919193267822266,
-                        "y": 3.5503475666046143,
-                        "z": 18.214754104614258
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 2.372978448867798
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 10.919193267822266,
-                        "y": 3.5503475666046143,
-                        "z": 18.214754104614258
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 2.372978448867798
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_Wood_42100"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wood_2",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 10.720609664916992,
-                        "y": 1.5556914806365967,
-                        "z": 20.77978515625
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 2.6048483848571777
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 10.720609664916992,
-                        "y": 1.5556914806365967,
-                        "z": 20.77978515625
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 2.6048483848571777
                     }
                 },
                 {
@@ -7336,68 +6616,6 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Apple1"
-                    },
-                    "ID": 5,
-                    "class_name": "AceFood",
-                    "tags": [],
-                    "group_key": "Food",
-                    "texture_key": "Apple",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 21.651979446411133,
-                        "y": 1.785099744796753,
-                        "z": 17.83188247680664
-                    },
-                    "rot": {
-                        "x": 37.81521224975586,
-                        "y": 130.6343231201172,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 7.344615459442139,
-                        "y": 5.575394630432129,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 21.651979446411133,
-                        "y": 1.785099744796753,
-                        "z": 17.83188247680664
-                    },
-                    "col_rot": {
-                        "x": 37.81521224975586,
-                        "y": 130.6343231201172,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 7.344615459442139,
-                        "y": 5.575394630432129,
-                        "z": 1.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
                         "name": "Struct_TileB_270"
                     },
                     "ID": 9,
@@ -8204,192 +7422,6 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Struct_Wall_1810020000003"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wall_18",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 45.64815902709961,
-                        "y": 9.809494972229004,
-                        "z": -5.245530605316162
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 90.0002670288086,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 45.64815902709961,
-                        "y": 9.809494972229004,
-                        "z": -5.245530605316162
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 90.0002670288086,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 1.0,
-                        "y": 5.0,
-                        "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_Wood_260"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wood_26",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 58.40960693359375,
-                        "y": 4.306258678436279,
-                        "z": -3.000999927520752
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 58.40960693359375,
-                        "y": 4.306258678436279,
-                        "z": -3.000999927520752
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_Wood_2600"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wood_26",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 61.556434631347656,
-                        "y": 4.300000190734863,
-                        "z": -3.0
-                    },
-                    "rot": {
-                        "x": 90.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 61.556434631347656,
-                        "y": 4.300000190734863,
-                        "z": -3.0
-                    },
-                    "col_rot": {
-                        "x": 90.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
                         "name": "Struct_Wood_23001"
                     },
                     "ID": 9,
@@ -8700,68 +7732,6 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Struct_Wood_23001010"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "Wood_23",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 31.95480728149414,
-                        "y": 2.6586520671844482,
-                        "z": -10.00827693939209
-                    },
-                    "rot": {
-                        "x": 90.0,
-                        "y": 90.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 5.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 31.95480728149414,
-                        "y": 2.6586520671844482,
-                        "z": -10.00827693939209
-                    },
-                    "col_rot": {
-                        "x": 90.0,
-                        "y": 90.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 5.0,
-                        "y": 1.0,
-                        "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
                         "name": "Struct_Wood_230010100"
                     },
                     "ID": 9,
@@ -8881,68 +7851,6 @@
                         "x": 5.0,
                         "y": 1.0,
                         "z": 5.0
-                    }
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Struct_TileA_250"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Structure",
-                    "texture_key": "TileA_25",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 9.995279312133789,
-                        "y": 0.0,
-                        "z": -9.772379875183105
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 9.995279312133789,
-                        "y": 0.0,
-                        "z": -9.772379875183105
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
                     }
                 },
                 {
@@ -9892,8 +8800,8 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 50.01036834716797,
-                        "y": 3.1603987216949463,
+                        "x": 49.980430603027344,
+                        "y": 3.1901626586914063,
                         "z": -2.7931723594665527
                     },
                     "rot": {
@@ -9923,7 +8831,7 @@
                     },
                     "col_pos": {
                         "x": 50.01036834716797,
-                        "y": 3.707400321960449,
+                        "y": 3.1901626586914063,
                         "z": -2.7931723594665527
                     },
                     "col_rot": {
@@ -9933,7 +8841,7 @@
                     },
                     "col_scale": {
                         "x": 3.0,
-                        "y": 2.0,
+                        "y": 3.0127549171447754,
                         "z": 1.0
                     }
                 },
@@ -9984,9 +8892,9 @@
                         "z": 1.0
                     },
                     "col_pos": {
-                        "x": -26.141498565673828,
-                        "y": 7.678909778594971,
-                        "z": -2.256244659423828
+                        "x": 8.0,
+                        "y": 2.5,
+                        "z": 20.0
                     },
                     "col_rot": {
                         "x": 0.0,
@@ -9995,7 +8903,317 @@
                     },
                     "col_scale": {
                         "x": 1.0,
+                        "y": 5.0,
+                        "z": 5.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "BrokenBottle"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "BrokenBottle",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -1.6615115404129028,
+                        "y": 0.14833155274391174,
+                        "z": 18.6601505279541
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -58.44169235229492,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.6769912838935852,
+                        "y": 0.25140342116355896,
+                        "z": 0.36046409606933594
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
                         "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": -1.6615115404129028,
+                        "y": 0.14833155274391174,
+                        "z": 18.6601505279541
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": -58.44169235229492,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 0.6769912838935852,
+                        "y": 0.25140342116355896,
+                        "z": 0.36046409606933594
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Column2"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "group_key": "Furniture",
+                    "texture_key": "Column8",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 47.97595977783203,
+                        "y": 2.5,
+                        "z": -7.020965099334717
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 47.97595977783203,
+                        "y": 2.5,
+                        "z": -7.020965099334717
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Column3"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "group_key": "Furniture",
+                    "texture_key": "Column8",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 52.00618362426758,
+                        "y": 2.5,
+                        "z": -7.020965099334717
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 52.00618362426758,
+                        "y": 2.5,
+                        "z": -7.020965099334717
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_Column4"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "group_key": "Furniture",
+                    "texture_key": "Column8",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 52.00618362426758,
+                        "y": 2.5,
+                        "z": -7.020965099334717
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 52.00618362426758,
+                        "y": 2.5,
+                        "z": -7.020965099334717
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 5.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_RedCurtain0"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "group_key": "Furniture",
+                    "texture_key": "RedCurtain",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 51.42015075683594,
+                        "y": 3.2198262214660645,
+                        "z": -6.993276596069336
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.21239355206489563,
+                        "y": 3.0127549171447754,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 51.42015075683594,
+                        "y": 3.2198262214660645,
+                        "z": -6.993276596069336
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 0.21239355206489563,
+                        "y": 3.0127549171447754,
                         "z": 1.0
                     }
                 }

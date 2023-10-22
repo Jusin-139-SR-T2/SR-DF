@@ -158,6 +158,7 @@ public: // Get_Set
 	_float m_fLifeTime = 0.2f;
 	_bool m_bGunLight; // 불켜는 bool값 
 	_bool m_bHitState = false;
+	_bool m_bMagicBottle = false;
 
 	void CrossHairState();
 	// ------------------------- 

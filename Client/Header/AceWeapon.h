@@ -45,16 +45,18 @@ public:
 
 public:
 	CPlayer::OBJECT_NAME Get_WeaponName() { return m_pCurName; }
+	GETSET_EX2(_bool, m_bWeaponGearup, Weapon_GearUp, GET, SET)
 
 private: // 함수 
 	HRESULT				Add_Component();
 	HRESULT				BillBoard(const _float& fTimeDelta); // 플레이어쪽으로 향하는 함수 
 	void				Height_On_Terrain();
 	void				WeaponName(const _tchar* pObjTag);
-
+	void				WeaponName(wstring pObjTag);
 
 	void				Change_Texture(CPlayer::OBJECT_NAME eReceiveName); //모든 무기에 내구도에 따른 이미지 존재 
-	
+
+
 private: // 변수 
 	CPlayer::OBJECT_NAME			m_pCurName;
 	_float m_fHp = 2.f;
@@ -62,6 +64,7 @@ private: // 변수
 	_float m_fCrackedHp = 1.f;
 	_float m_fMaxHP = 2.f;
 	OBJECT_CLASS		m_eFactoryClass;
+	_bool m_bWeaponGearup = false;
 
 private:
 	CRcBufferComp* m_pBufferComp = nullptr;
