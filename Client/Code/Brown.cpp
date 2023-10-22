@@ -756,7 +756,7 @@ void CBrown::AI_Walk(float fDeltaTime)
         m_tFrame.fFrame = 0.f;
 
         // 한번만 재생(L"경로를 알고있는 키값", L"파일명.확장자", 사운드 채널, 볼륨);
-        Engine::Play_Sound(L"Enemy", L"Brown_Walk.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
+        //Engine::Play_Sound(L"Enemy", L"Brown_Walk.wav", SOUND_ENEMY_MONSTER, m_tSound.m_fSoundVolume);
 
     }
     if (m_tState_Obj.Can_Update())
