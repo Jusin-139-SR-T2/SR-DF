@@ -4,6 +4,9 @@
         "name": "TestPhysics"
     },
     "terrain": "TestPhysics",
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
     "layers": [
         {
             "header": {
@@ -20,6 +23,8 @@
                     "ID": 9,
                     "class_name": "AceBuilding",
                     "tags": [],
+                    "group_key": "Fourth",
+                    "texture_key": "OneButton_Off",
                     "priority_update": 0.0,
                     "use_priority_update": true,
                     "priority_late_update": 0.0,
@@ -41,8 +46,36 @@
                         "y": 3.003598690032959,
                         "z": 3.003598690032959
                     },
-                    "group_key": "Fourth",
-                    "texture_key": "OneButton_Off"
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 },
                 {
                     "header": {
@@ -52,6 +85,8 @@
                     "ID": 9,
                     "class_name": "AceBuilding",
                     "tags": [],
+                    "group_key": "Fourth",
+                    "texture_key": "OneButton_Off",
                     "priority_update": 0.0,
                     "use_priority_update": true,
                     "priority_late_update": 0.0,
@@ -73,8 +108,36 @@
                         "y": 1.2997121810913086,
                         "z": 1.2997121810913086
                     },
-                    "group_key": "Fourth",
-                    "texture_key": "OneButton_Off"
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ]
         },
@@ -93,6 +156,8 @@
                     "ID": 9,
                     "class_name": "Player",
                     "tags": [],
+                    "group_key": "Player",
+                    "texture_key": "OpenHand",
                     "priority_update": 0.0,
                     "use_priority_update": true,
                     "priority_late_update": 0.0,
@@ -114,8 +179,36 @@
                         "y": 3.0,
                         "z": 3.0
                     },
-                    "group_key": "Player",
-                    "texture_key": "OpenHand"
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
                 }
             ]
         },

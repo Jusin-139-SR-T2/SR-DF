@@ -101,6 +101,10 @@ CGameObject* CAbsFac_GameObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSe
 	{
 		return static_cast<CGameObject*>(CTrigger_ToJumpMap::Create(pGraphicDev, tObject));
 	}
+	else if (strType == "Trigger_Box")
+	{
+		//return static_cast<CGameObject*>(CTrigger_ToJumpMap::Create(pGraphicDev, tObject));
+	}
 
 	return static_cast<CGameObject*>(nullptr);
 }

@@ -422,6 +422,27 @@ void CImguiWin_ProtoTool::Layout_Property(const ImGuiWindowFlags& iMain_Flags)
                     refObject->strTextureKey = strEdit_TextureKey;
                 }
             }
+
+            if (ImGui::CollapsingHeader(u8"사용자 정의 문자열"))
+            {
+                if (ImGui::Button(u8"문자열 추가"))
+                {
+                    refObject->vecUserString.push_back(string());
+                    refObject->vecUserString.back().reserve(30);
+                }
+                for (size_t i = 0; i < refObject->vecUserString.size(); i++)
+                {
+                    char strEdit_UserString[30] = {};
+                    refObject->vecUserString[i].reserve(30);
+                    strcpy_s(strEdit_UserString, refObject->vecUserString[i].c_str());
+                    if (ImGui::InputTextEx(u8"##UserString", u8"",
+                        strEdit_UserString, IM_ARRAYSIZE(strEdit_UserString),
+                        ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
+                    {
+                        refObject->vecUserString[i] = strEdit_UserString;
+                    }
+                }
+            }
         }
 
     }   ImGui::End();
@@ -462,11 +483,18 @@ void CImguiWin_ProtoTool::Save_Protos()
         tProto.tHeader.strName = (*iter).first;
         tProto.eID = (*iter).second->eID;
         tProto.strClassName = (*iter).second->strClassName;
+        tProto.strGroupKey = (*iter).second->strGroupKey;
+        tProto.strTextureKey = (*iter).second->strTextureKey;
         tProto.vPos = (*iter).second->vPos;
         tProto.vRot = (*iter).second->vRot;
         tProto.vScale = (*iter).second->vScale;
-        tProto.strGroupKey = (*iter).second->strGroupKey;
-        tProto.strTextureKey = (*iter).second->strTextureKey;
+        tProto.vTexPos = (*iter).second->vTexPos;
+        tProto.vTexRot = (*iter).second->vTexRot;
+        tProto.vTexScale = (*iter).second->vTexScale;
+        tProto.vColPos = (*iter).second->vColPos;
+        tProto.vColRot = (*iter).second->vColRot;
+        tProto.vColScale = (*iter).second->vColScale;
+        tProto.vecUserString = (*iter).second->vecUserString;
 
         // 프로토 저장
         Export_Proto(tProto);
@@ -551,11 +579,18 @@ void CImguiWin_ProtoTool::Import_Proto(const string& strName, FSerialize_Proto& 
         {
             tProtoData.eID = tProtoSerial.eID;
             tProtoData.strClassName = tProtoSerial.strClassName;
+            tProtoData.strGroupKey = tProtoSerial.strGroupKey;
+            tProtoData.strTextureKey = tProtoSerial.strTextureKey;
             tProtoData.vPos = tProtoSerial.vPos;
             tProtoData.vRot = tProtoSerial.vRot;
             tProtoData.vScale = tProtoSerial.vScale;
-            tProtoData.strGroupKey = tProtoSerial.strGroupKey;
-            tProtoData.strTextureKey = tProtoSerial.strTextureKey;
+            tProtoData.vTexPos = tProtoSerial.vTexPos;
+            tProtoData.vTexRot = tProtoSerial.vTexRot;
+            tProtoData.vTexScale = tProtoSerial.vTexScale;
+            tProtoData.vColPos = tProtoSerial.vColPos;
+            tProtoData.vColRot = tProtoSerial.vColRot;
+            tProtoData.vColScale = tProtoSerial.vColScale;
+            tProtoData.vecUserString = tProtoSerial.vecUserString;
         }
     }
     else

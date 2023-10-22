@@ -63,7 +63,7 @@ void FSerialize_Proto::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 	tex_scale.AddMember("x", Value().SetFloat(vTexScale.x), allocator);
 	tex_scale.AddMember("y", Value().SetFloat(vTexScale.y), allocator);
 	tex_scale.AddMember("z", Value().SetFloat(vTexScale.z), allocator);
-	doc.AddMember("tex_scale", scale, allocator);
+	doc.AddMember("tex_scale", tex_scale, allocator);
 
 	// 위치
 	Value col_pos(kObjectType);
@@ -175,7 +175,7 @@ _bool FSerialize_Proto::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 		vTexRot.z = RPJSON_RECIEVE_FLOAT(rot, "z");
 	}
 
-	if (doc.HasMember("tex_scale"))
+	if (doc.HasMember("tex_scale") && !doc["tex_scale"].IsNull())
 	{
 		const Value& scale = doc["tex_scale"];
 		vTexScale.x = RPJSON_RECIEVE_FLOAT(scale, "x");
@@ -358,6 +358,9 @@ void FSerialize_Scene::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 			}
 			gameobject.AddMember("tags", arrtag, allocator);
 
+			gameobject.AddMember("group_key", Value().SetString(tObjectSerial.strGroupKey.c_str(), allocator), allocator);
+			gameobject.AddMember("texture_key", Value().SetString(tObjectSerial.strTextureKey.c_str(), allocator), allocator);
+
 			// 우선도 설정
 			gameobject.AddMember("priority_update", Value().SetFloat(tObjectSerial.fPriority_Update), allocator);
 			gameobject.AddMember("use_priority_update", Value().SetBool(tObjectSerial.bUsePriority_Update), allocator);
@@ -385,8 +388,50 @@ void FSerialize_Scene::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 			gameobject_scale.AddMember("z", Value().SetFloat(tObjectSerial.vScale.z), allocator);
 			gameobject.AddMember("scale", gameobject_scale, allocator);
 
-			gameobject.AddMember("group_key", Value().SetString(tObjectSerial.strGroupKey.c_str(), allocator), allocator);
-			gameobject.AddMember("texture_key", Value().SetString(tObjectSerial.strTextureKey.c_str(), allocator), allocator);
+			Value gameobject_tex_pos(kObjectType);
+			gameobject_tex_pos.AddMember("x", Value().SetFloat(tObjectSerial.vTexPos.x), allocator);
+			gameobject_tex_pos.AddMember("y", Value().SetFloat(tObjectSerial.vTexPos.y), allocator);
+			gameobject_tex_pos.AddMember("z", Value().SetFloat(tObjectSerial.vTexPos.z), allocator);
+			gameobject.AddMember("tex_pos", gameobject_tex_pos, allocator);
+
+			Value gameobject_tex_rot(kObjectType);
+			gameobject_tex_rot.AddMember("x", Value().SetFloat(tObjectSerial.vTexRot.x), allocator);
+			gameobject_tex_rot.AddMember("y", Value().SetFloat(tObjectSerial.vTexRot.y), allocator);
+			gameobject_tex_rot.AddMember("z", Value().SetFloat(tObjectSerial.vTexRot.z), allocator);
+			gameobject.AddMember("tex_rot", gameobject_tex_rot, allocator);
+
+			Value gameobject_tex_scale(kObjectType);
+			gameobject_tex_scale.AddMember("x", Value().SetFloat(tObjectSerial.vTexScale.x), allocator);
+			gameobject_tex_scale.AddMember("y", Value().SetFloat(tObjectSerial.vTexScale.y), allocator);
+			gameobject_tex_scale.AddMember("z", Value().SetFloat(tObjectSerial.vTexScale.z), allocator);
+			gameobject.AddMember("tex_scale", gameobject_tex_scale, allocator);
+
+			Value gameobject_col_pos(kObjectType);
+			gameobject_col_pos.AddMember("x", Value().SetFloat(tObjectSerial.vColPos.x), allocator);
+			gameobject_col_pos.AddMember("y", Value().SetFloat(tObjectSerial.vColPos.y), allocator);
+			gameobject_col_pos.AddMember("z", Value().SetFloat(tObjectSerial.vColPos.z), allocator);
+			gameobject.AddMember("col_pos", gameobject_col_pos, allocator);
+
+			Value gameobject_col_rot(kObjectType);
+			gameobject_col_rot.AddMember("x", Value().SetFloat(tObjectSerial.vColRot.x), allocator);
+			gameobject_col_rot.AddMember("y", Value().SetFloat(tObjectSerial.vColRot.y), allocator);
+			gameobject_col_rot.AddMember("z", Value().SetFloat(tObjectSerial.vColRot.z), allocator);
+			gameobject.AddMember("col_rot", gameobject_col_rot, allocator);
+
+			Value gameobject_col_scale(kObjectType);
+			gameobject_col_scale.AddMember("x", Value().SetFloat(tObjectSerial.vColScale.x), allocator);
+			gameobject_col_scale.AddMember("y", Value().SetFloat(tObjectSerial.vColScale.y), allocator);
+			gameobject_col_scale.AddMember("z", Value().SetFloat(tObjectSerial.vColScale.z), allocator);
+			gameobject.AddMember("col_scale", gameobject_col_scale, allocator);
+
+			Value user_strings(kArrayType);
+			for (size_t i = 0; i < tObjectSerial.vecUserString.size(); i++)
+			{
+				Value user_string(kObjectType);
+				user_string.AddMember("user_string", Value().SetString(tObjectSerial.vecUserString[i].c_str(), allocator), allocator);
+				user_strings.PushBack(user_string, allocator);
+			}
+			doc.AddMember("user_strings", user_strings, allocator);
 
 			// 배열에 넣기
 			arrObject.PushBack(gameobject, allocator);
@@ -469,6 +514,9 @@ _bool FSerialize_Scene::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 			gameobjectSR.eID = static_cast<EGO_CLASS>(RPJSON_RECIEVE_INT(object, "ID"));
 			gameobjectSR.strClassName = RPJSON_RECIEVE_STRING(object, "class_name");
 
+			gameobjectSR.strGroupKey = RPJSON_RECIEVE_STRING(object, "group_key");
+			gameobjectSR.strTextureKey = RPJSON_RECIEVE_STRING(object, "texture_key");
+
 			if (object.HasMember("pos"))
 			{
 				const Value& object_pos = object["pos"];
@@ -501,8 +549,19 @@ _bool FSerialize_Scene::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 			gameobjectSR.bUsePriority_LateUpdate = RPJSON_RECIEVE_BOOL(object, "use_priority_late_update");
 			gameobjectSR.bUsePriority_Render = RPJSON_RECIEVE_BOOL(object, "use_priority_render");
 
-			gameobjectSR.strGroupKey = RPJSON_RECIEVE_STRING(object, "group_key");
-			gameobjectSR.strTextureKey = RPJSON_RECIEVE_STRING(object, "texture_key");
+			if (doc.HasMember("user_strings") && doc["user_strings"].IsArray())
+			{
+				const Value& user_strings = doc["user_strings"];
+				for (SizeType i = 0; i < user_strings.Size(); i++)
+				{
+					if (user_strings[i].IsObject())
+					{
+						const Value& user_string = user_strings[i];
+						string strPushBack = RPJSON_RECIEVE_STRING(user_string, "user_string");
+						gameobjectSR.vecUserString.push_back(strPushBack);
+					}
+				}
+			}
 
 			layerSR.vecGameObject.push_back(gameobjectSR);
 		}

@@ -128,14 +128,27 @@ private:	// 계층 관련 정의부
 		string			strClassName = "";
 		CGameObject*	pObject = nullptr;
 
-		_vec3			vPos = { 0.f,0.f,0.f };
-		_vec3			vRot = { 0.f,0.f,0.f };
-		_vec3			vScale = { 1.f,1.f,1.f };
+		string			strGroupKey;
+		string			strTextureKey;
+
 		_float			fPriority[EPRIORITY_OBJECT_END] = { 0.f, 0.f, 0.f };
 		_bool			bUsePriority[EPRIORITY_OBJECT_END] = { true, true, true };
 
-		string							strGroupKey;
-		string							strTextureKey;
+		_vec3			vPos = { 0.f,0.f,0.f };
+		_vec3			vRot = { 0.f,0.f,0.f };
+		_vec3			vScale = { 1.f,1.f,1.f };
+		
+		_vec3			vTexPos = { 0.f, 0.f, 0.f };
+		_vec3			vTexRot = { 0.f, 0.f, 0.f };
+		_vec3			vTexScale = { 1.f, 1.f, 1.f };
+
+		_vec3			vColPos = { 0.f, 0.f, 0.f };
+		_vec3			vColRot = { 0.f, 0.f, 0.f };
+		_vec3			vColScale = { 1.f, 1.f, 1.f };
+
+		vector<string>					vecUserString;				// 사용자 지정 문자열
+
+		
 	};
 	struct FLayerData
 	{
@@ -216,8 +229,8 @@ private:
 	_int						m_iLastLoaded_Scene = -1;
 	_bool						m_bScene_Loaded = false;
 
-	vector<FSceneData>			m_vecScene;					// 씬, 레이어, 오브젝트
-	FSceneData					m_tBackupScene;				// 로드시 저장 데이터
+	vector<FSceneData>			m_vecScene;						// 씬, 레이어, 오브젝트
+	FSceneData					m_tBackupScene;					// 로드시 저장 데이터
 	_int						m_iSelected_Layer = -1;
 	_int						m_iSelected_Layer_Remain = -1;
 	_int						m_iSelected_Object = -1;

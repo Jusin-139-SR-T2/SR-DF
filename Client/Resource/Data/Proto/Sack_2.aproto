@@ -5,6 +5,8 @@
     },
     "class": 6,
     "class_name": "AceThrow",
+    "group_key": "Throw",
+    "texture_key": "Sack_2",
     "pos": {
         "x": 0.0,
         "y": 0.0,
@@ -20,6 +22,35 @@
         "y": 1.0,
         "z": 1.0
     },
-    "group_key": "Throw",
-    "texture_key": "Sack_2"
+    "tex_pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "tex_rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "tex_scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "col_pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "col_rot": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "col_scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "user_strings": []
 }
