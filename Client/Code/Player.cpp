@@ -70,8 +70,8 @@ HRESULT CPlayer::Ready_GameObject()
     m_tPlayerSound.m_fTalkReapeat = 0.f;
     m_tPlayerSound.m_fSoundVolume = 0.6f;
     m_tPlayerSound.m_fSoundEffectVolume = 0.2f;
-    m_tPlayerSound.m_bSoundOnce = FALSE;
-    m_tPlayerSound.m_bSoundCheck = FALSE;
+    m_tPlayerSound.m_bSoundOnce = false;
+    m_tPlayerSound.m_bSoundCheck = false;
 
 #pragma region 플레이어 크기 및 위치 설정 (초기 값)
     // 플레이어 정보 (초기값)
@@ -79,9 +79,10 @@ HRESULT CPlayer::Ready_GameObject()
     m_gHp.Cur = m_gHp.Max;
     m_fChage.Max = 2.f; // 차지를 완료 할 시간
     m_tTime.fChargeStartTime = 1.f; // 차지를 시작할 시간
-    m_bGunLight = FALSE;
+    m_bGunLight = false;
     bRightPunch = true;
     bLeftPunch = false;
+    m_PlayerLighter = false;
 
     m_tLeftHand.bPickUpState = true;
     m_tRightHand.bPickUpState = true;

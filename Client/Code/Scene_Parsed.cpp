@@ -43,7 +43,6 @@ CScene_Parsed* CScene_Parsed::Create(LPDIRECT3DDEVICE9 pGraphicDev, const char* 
 
 void CScene_Parsed::Free()
 {
-    Engine::StopAll();
     SUPER::Free();
 }
 
@@ -102,8 +101,10 @@ HRESULT CScene_Parsed::Ready_Scene(const char* pSceneFileName)
 
     SoundReady(strFileName);
     
-    if(strFileName.compare("Stage1"))
+    if(strFileName.compare("SeongHee"))
         Add_GameObject(L"Environment", L"SnowParticle", CSnowParticle::Create(m_pGraphicDev, {40.f, 3.f, 40.f}, 10000));
+    
+        
 
 
     return S_OK;
@@ -174,11 +175,18 @@ void CScene_Parsed::SoundReady(string _scene)
         Engine::Play_BGM(L"FallenAces", L"Ambience_OldTimeyMusic6.mp3", 0.5f);
     }
     else if (_scene.compare("BossStage") == 0)
-        Engine::Play_BGM(L"FallenAces", L"Scene_BossStage.mp3", 0.5f);
+    {
+        Engine::StopAll();
+        Engine::Play_BGM(L"FallenAces", L"Scene_BossStage.wav", 0.5f);
+    }
     else if (_scene.compare("Malone") == 0)
-        Engine::Play_BGM(L"FallenAces", L"Scene_Malone.mp3", 0.5f);
+    {
+        Engine::StopAll();
+        Engine::Play_BGM(L"FallenAces", L"Scene_Malone.wav", 0.5f);
+    }
     else if (_scene.compare("SeongHee") == 0)
     {
+        Engine::StopAll();
 
     }
 

@@ -34,7 +34,7 @@ HRESULT CPlayerLighter::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_bLightOn = FALSE;
+    m_bLightOn = false;
 
 	return S_OK;
 }
