@@ -27,5 +27,8 @@ public:
 protected:
 	HRESULT				Ready_Layer();
 	virtual HRESULT		Ready_Layer_Completed();
+
+public:
+	void SoundReady(string _scene);
 };
 

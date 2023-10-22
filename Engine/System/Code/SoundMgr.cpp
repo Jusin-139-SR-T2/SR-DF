@@ -53,8 +53,14 @@ HRESULT CSoundMgr::Ready_Sound()
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/announce/");
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/talk/");
 
-	//플레이어 
+
+	// 성희 Bgm
+	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/Sh_Bgm/");
+	// 플레이어 
 	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/Player/");
+	// 공격
+	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/Player/Attack/");
+
 
 	// Food 사운드
 	LoadSoundFile_GroupAsync(L"Food", "./Resource/Sound/FallenAces/sfx/Food/");

@@ -3,10 +3,8 @@
         "type": 4,
         "name": "TommyGun"
     },
-    "class": 0,
-    "class_name": "",
-    "group_key": "",
-    "texture_key": "",
+    "class": 6,
+    "class_name": "AceWeapon",
     "pos": {
         "x": 0.0,
         "y": 0.0,

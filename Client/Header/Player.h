@@ -43,6 +43,22 @@ struct FPlayer_Create
 	_float fPriority[static_cast<_uint>(EPRIORITY_TYPE::SIZE)] = {0.f, 0.f, 0.f};
 };
 
+typedef struct tag_PlayerSound_Info
+{
+	_float		m_fTalkAge;				// 말하는 시간 - 나이
+	_float		m_fTalkLife;			// 말하는시간 - 수명 
+	_float		m_fTalkReapeat;			// 말하는시간  - 반복횟수 카운트 
+
+	_float		m_fSoundVolume;			//	사운드 재생하는 볼륨 
+	_float		m_fSoundEffectVolume;	//	이펙트 재생볼륨
+	
+	_int		m_iHpSection;			// 구간나누기 위한 섹션 정의 - 20으로 나눈구간임 
+
+	_bool		m_bSoundOnce;			// 한번만 재생되어야할때 
+	_bool		m_bSoundCheck;
+
+}PlayerSound;
+
 class CPlayer : public CAceUnit
 {
 	DERIVED_CLASS(CAceUnit, CPlayer)
@@ -215,6 +231,7 @@ public:
 
 private: // 플레이어의 왼손 상태 머신
 	STATE_SET<STATE_LEFTHAND, void(CPlayer*, float)> m_tLeftHand_State;
+	STATE_LEFTHAND m_eLeftState_Old;
 
 	void	Left_None(float fTimeDelta);
 	void	Left_Hand(float fTimeDelta);
@@ -227,6 +244,7 @@ private: // 플레이어의 오른손 상태 머신
 	STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightHand_State;
 	//STATE_SET<STATE_RIGHTHAND, void(CPlayer*, float)> m_tRightState_Old;
 	STATE_RIGHTHAND m_eRightState_Old;
+
 	void	Right_None(float fTimeDelta);
 	void	Right_Hand(float fTimeDelta);
 	void	Right_RunHand(float fTimeDelta);
@@ -367,7 +385,7 @@ private:
 	DASHDIR m_eDashDir;
 
 	// 라이터 조명
-	CPlayerLighter* m_PlayerLighter;
+	_bool m_PlayerLighter;
 private:
 		// 애니메이션 타임 라인
 		std::vector<KEYFRAME> timeline[KEYTYPE_END];
@@ -376,6 +394,9 @@ private:
 	_long			dwMouseMove = 0;		// 마우스 무브
 	CMeshColComp*	m_pMeshComp = nullptr;
 	LPD3DXMESH*		m_MeshBox;
+
+private:
+	PlayerSound m_tPlayerSound;
 
 private:
 	virtual void		Free();
@@ -421,7 +442,8 @@ private:
 
 	_float fAttackTime = 0.f;
 
-
+	_vec3 m_vIdlePos = { 0.f, 0.f, 0.f };
+	_bool m_bHandSwitch = false;
 private:
 	GAUGE<_float>	m_fMonsterHp;
 };

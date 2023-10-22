@@ -139,6 +139,8 @@ _bool CMonsterAttackUnion::Attack_Occurrence(CGameObject* pDst, _float fAttack)
                     m_gPlayerHp.Cur = m_gPlayerHp.Max;
 
                 pPlayer->Set_PlayerHP(m_gPlayerHp);
+                
+                Engine::Add_GameObject(L"UI", CUI_PlayerHurt::Create(m_pGraphicDev));
 
                 return true;
             }
@@ -162,6 +164,7 @@ _bool CMonsterAttackUnion::Attack_Occurrence(CGameObject* pDst, _float fAttack)
 
                 pMonster->Set_MonsterHP(m_gMonsterHp);
 
+                Engine::Add_GameObject(L"UI", CUI_PlayerHurt::Create(m_pGraphicDev));
                 return true;
             }
             else

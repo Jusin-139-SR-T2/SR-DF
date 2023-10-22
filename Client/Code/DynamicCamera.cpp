@@ -576,7 +576,7 @@ void CDynamicCamera::Update_InternalData()
 	{
 		m_wpBlackBoard_Player.Set_BlackBoard(Engine::Get_BlackBoard(L"Player"));
 		// 연결 실패
-		if (!m_wpBlackBoard_Camera.Get_BlackBoard())
+		if (!m_wpBlackBoard_Player.Get_BlackBoard())
 			return;
 	}
 

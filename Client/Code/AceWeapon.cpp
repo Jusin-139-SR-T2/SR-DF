@@ -65,12 +65,6 @@ HRESULT CAceWeapon::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
     m_pTransformComp->Set_Scale(tObjectSerial.vScale);
 
-    //_vec3 vScale = { 1.f, 1.f, 1.f };
-    //m_pColliderComp->Set_Scale(vScale);
-
-    //m_pTextureComp->Set_Scale(vScale);
-
-
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
     Set_ObjectName(strConvName);
 

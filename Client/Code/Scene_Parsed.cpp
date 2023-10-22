@@ -12,6 +12,11 @@
 #include "AceBuilding.h"
 #include "UI_CrossHair.h"
 #include "UI_PlayerFace.h"
+#include "PlayerGunLighter.h"
+#include "SnowParticle.h"
+
+#include "Export_System.h"
+#include "Export_Utility.h"
 
 CScene_Parsed::CScene_Parsed(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -38,6 +43,7 @@ CScene_Parsed* CScene_Parsed::Create(LPDIRECT3DDEVICE9 pGraphicDev, const char* 
 
 void CScene_Parsed::Free()
 {
+    Engine::StopAll();
     SUPER::Free();
 }
 
@@ -94,6 +100,12 @@ HRESULT CScene_Parsed::Ready_Scene(const char* pSceneFileName)
 
     FAILED_CHECK_RETURN(Ready_Scene(), E_FAIL);
 
+    SoundReady(strFileName);
+    
+    if(strFileName.compare("Stage1"))
+        Add_GameObject(L"Environment", L"SnowParticle", CSnowParticle::Create(m_pGraphicDev, {40.f, 3.f, 40.f}, 10000));
+
+
     return S_OK;
 }
 
@@ -129,6 +141,7 @@ HRESULT CScene_Parsed::Ready_Layer()
 
 HRESULT CScene_Parsed::Ready_Layer_Completed()
 {
+    
     Add_GameObject(L"Camera", CDynamicCamera::Create(m_pGraphicDev,
         &_vec3(0.f, 5.f, -10.f),
         &_vec3(0.f, 0.f, 1.f),
@@ -143,6 +156,8 @@ HRESULT CScene_Parsed::Ready_Layer_Completed()
     Add_GameObject(L"UI", L"UI_CrossHair", CUI_CrossHair::Create(m_pGraphicDev));
     Add_GameObject(L"UI", L"UI_PlayerFace", CUI_PlayerFace::Create(m_pGraphicDev));
 
+    Add_GameObject(L"GameLogic", L"PlayerLighter", CPlayerLighter::Create(m_pGraphicDev));
+    Add_GameObject(L"GameLogic", L"PlayerGunLighter", CPlayerGunLighter::Create(m_pGraphicDev));
     /*for (size_t i = 0; i < 3000; i++)
     {
         Add_GameObject(L"GameLogic", CAceBuilding::Create(m_pGraphicDev, L"Test", 0.f, 0.f, 0.f));
@@ -150,4 +165,21 @@ HRESULT CScene_Parsed::Ready_Layer_Completed()
     
 
     return S_OK;
+}
+
+void CScene_Parsed::SoundReady(string _scene)
+{
+    if (_scene.compare("Stage1") == 0) 
+    {
+        Engine::Play_BGM(L"FallenAces", L"Ambience_OldTimeyMusic6.mp3", 0.5f);
+    }
+    else if (_scene.compare("BossStage") == 0)
+        Engine::Play_BGM(L"FallenAces", L"Scene_BossStage.mp3", 0.5f);
+    else if (_scene.compare("Malone") == 0)
+        Engine::Play_BGM(L"FallenAces", L"Scene_Malone.mp3", 0.5f);
+    else if (_scene.compare("SeongHee") == 0)
+    {
+
+    }
+
 }

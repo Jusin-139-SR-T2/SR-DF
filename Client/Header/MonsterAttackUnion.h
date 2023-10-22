@@ -5,6 +5,7 @@
 #include "Engine_Define.h"
 
 #include "AceMonster.h"
+#include "UI_PlayerHurt.h"
 
 BEGIN(Engine)
 

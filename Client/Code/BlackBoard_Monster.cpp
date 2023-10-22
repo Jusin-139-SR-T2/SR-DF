@@ -43,5 +43,8 @@ void CBlackBoard_Monster::Free()
 
 HRESULT CBlackBoard_Monster::Ready_BlackBoard(const FBlackBoard_MonsterInit& tInit)
 {
+    m_gMonsterHP.Cur = 0.f;
+    m_gMonsterHP.Max = 100.f;
+    
     return S_OK;
 }

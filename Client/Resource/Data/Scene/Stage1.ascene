@@ -44397,47 +44397,17 @@
                         "y": 20.0,
                         "z": 20.0
                     },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    }
+                    "group_key": "Structure",
+                    "texture_key": "TileA_18"
                 },
                 {
                     "header": {
                         "type": 3,
-                        "name": "Fur_Crate82"
+                        "name": "Cola"
                     },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
+                    "ID": 5,
+                    "class_name": "AceFood",
                     "tags": [],
-                    "group_key": "Furniture",
-                    "texture_key": "Crate4",
                     "priority_update": 0.0,
                     "use_priority_update": true,
                     "priority_late_update": 0.0,
@@ -44445,50 +44415,86 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 7.091870307922363,
-                        "y": 1.0651404857635498,
-                        "z": 20.29623794555664
+                        "x": -87.00987243652344,
+                        "y": 17.585031509399414,
+                        "z": 93.892333984375
                     },
                     "rot": {
                         "x": 0.0,
-                        "y": 53.85802459716797,
+                        "y": 90.0,
+                        "z": 180.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Cola"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Banana"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 13.228132247924805,
+                        "y": 0.481315016746521,
+                        "z": 15.375838279724121
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 2.218506336212158,
-                        "y": 2.218506336212158,
-                        "z": 2.218506336212158
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
                         "x": 1.0,
                         "y": 1.0,
                         "z": 1.0
                     },
-                    "col_pos": {
+                    "group_key": "Food",
+                    "texture_key": "Banana"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "PeelBanana"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.23022747039795,
+                        "y": 0.4954848289489746,
+                        "z": 18.157907485961914
+                    },
+                    "rot": {
                         "x": 0.0,
                         "y": 0.0,
                         "z": 0.0
                     },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
+                    "scale": {
                         "x": 1.0,
                         "y": 1.0,
                         "z": 1.0
-                    }
+                    },
+                    "group_key": "Food",
+                    "texture_key": "BananaPeel"
                 }
             ]
         },

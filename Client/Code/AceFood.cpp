@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "AceFood.h"
 #include "UI_EatFood.h"
+#include "Effect_Bubble.h"
 
 CAceFood::CAceFood(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -61,7 +62,6 @@ void CAceFood::OnCollision(CGameObject* pDst, const FContact* const pContact) //
 {
     OutputDebugString(L"Object - Food 충돌중\n");
 
-    
 }
 
 void CAceFood::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) // 처음 충동 진입 
@@ -120,6 +120,8 @@ HRESULT CAceFood::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
             , wstring(tObjectSerial.strTextureKey.begin(), tObjectSerial.strTextureKey.end()).c_str());
 
     m_eFactoryClass = OBJECT_CLASS::FOOD;
+
+    Serialize_FoodName(strConvName);
 
     return S_OK;
 }
@@ -279,9 +281,7 @@ void CAceFood::FoodName(const _tchar* pObjTag)
     }
     else
         m_pCurName = CAceFood::FOOD_NAME::FOOD_END;
-
 }
-
 
 void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat)
 {
@@ -295,7 +295,12 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat
             Engine::Play_Sound(L"Food", L"BiteApple.mp3", SOUND_PLAYER_EFFECT, 0.5f);
             m_pCurName = CAceFood::FOOD_NAME::EATENAPPLE;
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"EatenApple");
-            m_bDead = FALSE; 
+            Engine::Add_GameObject(L"GameLogic", CEffect_Bubble::Create(m_pGraphicDev, 
+                m_pTransformComp->Get_Pos().x, 
+                m_pTransformComp->Get_Pos().y,
+                m_pTransformComp->Get_Pos().z));
+
+             m_bDead = FALSE; 
             break;
 
         case CAceFood::FOOD_NAME::BANANA:
@@ -304,13 +309,20 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat
             Engine::Play_Sound(L"Food", L"EatBanana.wav", SOUND_PLAYER_EFFECT, 0.5f);
             m_pCurName = CAceFood::FOOD_NAME::BANANAPEEL;
             m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"BananaPeel");
-            m_bDead = FALSE;
+            Engine::Add_GameObject(L"GameLogic", CEffect_Bubble::Create(m_pGraphicDev,
+                                     m_pTransformComp->Get_Pos().x,
+                                     m_pTransformComp->Get_Pos().y,
+                                     m_pTransformComp->Get_Pos().z)); m_bDead = FALSE;
             break;
 
         case CAceFood::FOOD_NAME::COLA:
             Engine::Add_GameObject(L"UI", CUI_EatFood::Create(m_pGraphicDev));
              Engine::Play_Sound(L"Food", L"uhmmm.wav", SOUND_PLAYER, 1.f);
              Engine::Play_Sound(L"Food", L"DrinkSoda.wav", SOUND_PLAYER_EFFECT, 0.3f);
+             Engine::Add_GameObject(L"GameLogic", CEffect_Bubble::Create(m_pGraphicDev,
+                                    m_pTransformComp->Get_Pos().x,
+                                    m_pTransformComp->Get_Pos().y,
+                                    m_pTransformComp->Get_Pos().z));
              m_bDead = TRUE;
             break;
 
@@ -318,16 +330,68 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat
             Engine::Add_GameObject(L"UI", CUI_EatFood::Create(m_pGraphicDev));
             Engine::Play_Sound(L"Food", L"uhmmm.wav", SOUND_PLAYER, 1.f);
             Engine::Play_Sound(L"Food", L"FirstAid.wav", SOUND_PLAYER_EFFECT, 0.3f);
+            Engine::Add_GameObject(L"GameLogic", CEffect_Bubble::Create(m_pGraphicDev,
+                                    m_pTransformComp->Get_Pos().x,
+                                    m_pTransformComp->Get_Pos().y,
+                                    m_pTransformComp->Get_Pos().z)); 
             m_bDead = TRUE;
             break;
 
         case CAceFood::FOOD_NAME::EATENAPPLE:
+            Engine::Play_Sound(L"Food", L"Huh.wav", SOUND_PLAYER, 0.5f);
                 break;
 
         case CAceFood::FOOD_NAME::BANANAPEEL:
+            Engine::Play_Sound(L"Food", L"Huh.wav", SOUND_PLAYER, 0.5f);
                break;
         }
+
+        m_bEaten = false;
     }
+}
+void CAceFood::Serialize_FoodName(wstring _ObjName)
+{
+    wstring NewObj = _ObjName.substr(0, 4);
+
+    if(NewObj.compare(L"Appl") == 0)
+    {
+        m_pCurName = CAceFood::FOOD_NAME::APPLE;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Apple");
+        m_fHp = 5.f;
+    }
+    else if (NewObj.compare(L"Peel") == 0)
+    {
+        m_pCurName = CAceFood::FOOD_NAME::EATENAPPLE;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"EatenApple");
+        m_fHp = 0.f;
+    }
+    else if (NewObj.compare(L"Bana") == 0)
+    {
+        m_pCurName = CAceFood::FOOD_NAME::BANANA;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Banana");
+        m_fHp = 5.f;
+    }
+    else if (NewObj.compare(L"Bana") == 0)
+    {
+        m_pCurName = CAceFood::FOOD_NAME::BANANAPEEL;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"BananaPeel");
+        m_fHp = 0.f;
+    }
+    else if (NewObj.compare(L"Cola") == 0)
+    {
+        m_pCurName = CAceFood::FOOD_NAME::COLA;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Cola");
+        m_fHp = 12.f;
+    }
+    else if (NewObj.compare(L"Medk") == 0)
+    {
+        m_pCurName = CAceFood::FOOD_NAME::MEDIKIT;
+        m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Food", L"Medkit");
+        m_fHp = 20.f;
+    }
+    else
+        m_pCurName = CAceFood::FOOD_NAME::FOOD_END;
+
 }
 /*
 APPLE, BANANA, COLA, MEDIKIT,

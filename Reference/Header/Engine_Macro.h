@@ -310,6 +310,7 @@ namespace Engine
 #define DXCOLOR_SILVER        D3DCOLOR_ARGB(255, 192, 192, 192) // 은색
 #define DXCOLOR_BROWN         D3DCOLOR_ARGB(255, 165,  42,  42) // 갈색
 #define DXCOLOR_GRAY          D3DCOLOR_ARGB(255, 128, 128, 128) // 회색
+#define DXCOLOR_LIGHT_GRAY    D3DCOLOR_ARGB(255, 194, 194, 194) // 회색
 #define DXCOLOR_INDIGO        D3DCOLOR_ARGB(255,  75,   0, 130) // 남색
 #define DXCOLOR_TURQUOISE     D3DCOLOR_ARGB(255,  64, 224, 208) // 터키스색
 #define DXCOLOR_LIME          D3DCOLOR_ARGB(255,   0, 255,   0) // 라임색

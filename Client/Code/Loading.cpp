@@ -70,8 +70,10 @@ _uint CLoading::Loading_For_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBoxTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_CUBE, L"TestCube", L"4")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UITextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"UI", L"HudBox_Main")), E_FAIL);
 	
-	// 플레이어 손
+	// 플레이어 왼손
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerLeftTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Player", L"Left_RunHand")), E_FAIL);
+	
+	// 플레이어 오른손 + 플레이어 스킬 쓰는중
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerRightTextureComp", CTextureComponent::Create(m_pGraphicDev, TEX_NORMAL, L"Player", L"Right_RunHand")), E_FAIL);
 
 	// 몬스터 + 이펙트 + 오브젝트 + 파티클 돌려쓰는중 
@@ -96,6 +98,9 @@ _uint CLoading::Loading_For_Stage()
 // 텍스처 매니저 텍스처 추가
 HRESULT CLoading::Loading_For_Texture()
 {
+	// NPC
+	Load_Texture(L"./Resource/Texture/NPC/Hegrid.png", TEX_NORMAL, L"Hegrid", L"Idle");
+
 #pragma region Terrain, Default
 	Load_Texture(L"./Resource/Texture/Tile/Tile/22.jpg", TEX_NORMAL, L"Tile", L"22");
 	Load_Texture(L"./Resource/Texture/SkyBox/Test4.dds", TEX_CUBE, L"TestCube", L"4");
@@ -147,17 +152,15 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Single/CrotchHit.png", TEX_NORMAL, L"Brown_Single", L"CrotchHit");
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Stand/StandSouth.png", TEX_NORMAL, L"Brown_Single", L"Stand_South");
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Single/Suspicious.png", TEX_NORMAL, L"Brown_Single", L"Suspicious");
-
+	
 	// Monster Texture - Brown - Multi : 18EA
 	Load_Texture(L"./Resource/Texture/Monster/Brown/BasicAttack/BasicAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"NormalAttack", _range<_uint>(0U, 4U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/HeavyAttack/HeavyAttack_%d.png", TEX_NORMAL, L"Brown_Multi", L"HeavyAttack", _range<_uint>(0U, 6U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/InchForward/InchForward_%d.png", TEX_NORMAL, L"Brown_Multi", L"InchForward", _range<_uint>(0U, 5U));
-	Load_Texture(L"./Resource/Texture/Monster/Brown/Walk/North/WalkNorth_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_North", _range<_uint>(0U, 31U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Chopped/KarateChopped_%d.png", TEX_NORMAL, L"Brown_Multi", L"Chopped", _range<_uint>(0U, 17U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/FacePunch/FacePunch_%d.png", TEX_NORMAL, L"Brown_Multi", L"FacePunch", _range<_uint>(0U, 7U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Run/South/RunSouth_%d.png", TEX_NORMAL, L"Brown_Multi", L"RunSouth", _range<_uint>(0U, 20U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Headless/Headless_%d.png", TEX_NORMAL, L"Brown_Multi", L"Headless", _range<_uint>(0U, 15U));
-	Load_Texture(L"./Resource/Texture/Monster/Brown/Walk/South/Walk_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_South", _range<_uint>(0U, 23U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Strafing/Strafing_%d.png", TEX_NORMAL, L"Brown_Multi", L"Strafing", _range<_uint>(0U, 5U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Falling/Falling_%d.png", TEX_NORMAL, L"Brown_Multi", L"Falling", _range<_uint>(0U, 17U)); // FALLING + GETUP 
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Rest/IdleReady_%d.png", TEX_NORMAL, L"Brown_Multi", L"Rest", _range<_uint>(0U, 6U));
@@ -167,6 +170,11 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Taunt/Taunt_%d.png", TEX_NORMAL, L"Brown_Multi", L"Taunt", _range<_uint>(0U, 5U));
 	Load_Texture(L"./Resource/Texture/Monster/Brown/Hit/Hit_%d.png", TEX_NORMAL, L"Brown_Multi", L"Hit", _range<_uint>(0U, 5U));
 
+	Load_Texture(L"./Resource/Texture/Monster/Brown/Walk/North/WalkNorth_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_North", _range<_uint>(0U, 31U));
+	Load_Texture(L"./Resource/Texture/Monster/Brown/Walk/NorthWest/NorthWestWalk_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_NorthWest", _range<_uint>(0U, 15U));
+	Load_Texture(L"./Resource/Texture/Monster/Brown/Walk/South/Walk_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_South", _range<_uint>(0U, 23U));
+	Load_Texture(L"./Resource/Texture/Monster/Brown/Walk/SouthWest/SouthWest_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_SouthWest", _range<_uint>(0U, 23U));
+	Load_Texture(L"./Resource/Texture/Monster/Brown/Walk/West/West_%d.png", TEX_NORMAL, L"Brown_Multi", L"Walk_West", _range<_uint>(0U, 23U));
 #pragma endregion
 
 #pragma region Gray Monster
@@ -406,6 +414,14 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/AceEffect/Dazed/DazeSwirl_%d.png", TEX_NORMAL, L"Effect", L"DazeSwirl", _range<_uint>(0U, 3U));
 	Load_Texture(L"./Resource/Texture/AceEffect/HitDust/HitDust_%d.png", TEX_NORMAL, L"Effect", L"HitDust", _range<_uint>(0U, 16U)); 
 	Load_Texture(L"./Resource/Texture/AceEffect/HitPow/HitPow_%d.png", TEX_NORMAL, L"Effect", L"HitPow", _range<_uint>(0U, 3U)); 
+	
+	// 폭발
+	Load_Texture(L"./Resource/Texture/AceEffect/Explosion/Explosion (%d).png", TEX_NORMAL, L"Effect", L"Explosion", _range<_uint>(0U, 71U)); 
+	
+	// 번개
+	Load_Texture(L"./Resource/Texture/AceEffect/Lightning/Lightning (%d).png", TEX_NORMAL, L"Effect", L"Lightning", _range<_uint>(0U, 3U)); 
+
+	Load_Texture(L"./Resource/Texture/AceEffect/Bubble/Bubble_%d.png", TEX_NORMAL, L"Effect", L"Bubble", _range<_uint>(0U, 7U)); 
 
 #pragma endregion 
 
@@ -762,10 +778,6 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/UI/Hurt_%d.png", TEX_NORMAL, L"UI_Face", L"Hurt", _range<_uint>(0U, 4U));
 	Load_Texture(L"./Resource/Texture/UI/DeadFace.png", TEX_NORMAL, L"UI_Face", L"DeadFace");
 
-	// Bar
-	Load_Texture(L"./Resource/Texture/UI/Health.png", TEX_NORMAL, L"UI", L"Health");
-	Load_Texture(L"./Resource/Texture/UI/Stamina.png", TEX_NORMAL, L"UI", L"Stamina");
-
 	// Fade
 	Load_Texture(L"./Resource/Texture/Scene/Fade_%d.png", TEX_NORMAL, L"UI_Scene", L"FadeInOut", _range<_uint>(0U, 30U));
 	
@@ -773,7 +785,13 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/UI/EatEffect_%d.png", TEX_NORMAL, L"UI_Scene", L"EatEffect", _range<_uint>(0U, 7U));
 	 
 	// Red Effect - 플레이어 피격
-	Load_Texture(L"./Resource/Texture/UI/PlayerHurt_%d.tga", TEX_NORMAL, L"UI_Scene", L"PlayerHurt", _range<_uint>(0U, 7U));
+	Load_Texture(L"./Resource/Texture/UI/PlayerHurt_%d.png", TEX_NORMAL, L"UI_Scene", L"PlayerHurt", _range<_uint>(0U, 7U));
+
+	// Monster Hp Bar
+	Load_Texture(L"./Resource/Texture/UI/HealthBar_Border.png", TEX_NORMAL, L"UI_HpBar", L"Border");
+	Load_Texture(L"./Resource/Texture/UI/PreHealth.png", TEX_NORMAL, L"UI_HpBar", L"PreHealth");
+	Load_Texture(L"./Resource/Texture/UI/Health.png", TEX_NORMAL, L"UI_HpBar", L"Health");
+	Load_Texture(L"./Resource/Texture/UI/Stamina.png", TEX_NORMAL, L"UI_HpBar", L"Stamina");
 
 #pragma endregion
 

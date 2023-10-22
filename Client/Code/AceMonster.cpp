@@ -120,6 +120,40 @@ void CAceMonster::Add_BasicEffect(CGameObject* pOwner)
 		m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
 }
 
+void CAceMonster::Calc_Theta()
+{
+	// 플레이어와 몬스터 각각의 look벡터 사이의 각도를 계산해서 이미지를 바꾸는용도 (8방향 이미지) 
+	//_vec3 PlayerLook = m_pPlayerTransformcomp->Get_Look();
+
+	//_vec3 MonsterLook = m_pTransformComp->Get_Look();
+
+	// 플레이어와 몬스터의 시선 각도를 계산
+	_vec3 CrossResult;
+
+	D3DXVec3Cross(&CrossResult, &(m_pPlayerTransformcomp->Get_Look()), &(vDirect)); // 플레이어 기준으로 외적
+
+	m_ftheta = atan2(CrossResult.z, CrossResult.x);// ( -2/PI ~ 2/PI사이값으로 결과나옴 )
+
+	if (m_ftheta >= D3DXToRadian(0.f) && m_ftheta < D3DXToRadian(22.5f))
+		m_eDirection = Dir::SOUTH;
+	else if (m_ftheta >= D3DXToRadian(22.5f) && m_ftheta < D3DXToRadian(67.5f))
+		m_eDirection = Dir::SOUTHWEST;
+	else if (m_ftheta >= D3DXToRadian(67.5f) && m_ftheta < D3DXToRadian(112.5f))
+		m_eDirection = Dir::WEST;
+	else if (m_ftheta >= D3DXToRadian(112.5f) && m_ftheta < D3DXToRadian(157.5f))
+		m_eDirection = Dir::NORTHWEST;
+	else if (m_ftheta >= D3DXToRadian(157.5f) && m_ftheta < D3DXToRadian(202.5f))
+		m_eDirection = Dir::NORTH;
+	else if (m_ftheta >= D3DXToRadian(247.5f) && m_ftheta < D3DXToRadian(292.5f))
+		m_eDirection = Dir::NORTHEAST;
+	else if (m_ftheta >= D3DXToRadian(292.5f) && m_ftheta < D3DXToRadian(337.5f))
+		m_eDirection = Dir::EAST;
+	else if (m_ftheta >= D3DXToRadian(315.0f) && m_ftheta < D3DXToRadian(337.5f))
+		m_eDirection = Dir::SOUTHEAST;
+	else if (m_ftheta >= D3DXToRadian(337.5f) && m_ftheta < D3DXToRadian(360.0f))
+		m_eDirection = Dir::SOUTH;
+}
+
 void CAceMonster::Height_On_Terrain()
 {
 	_vec3		vPos;
