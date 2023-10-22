@@ -88,7 +88,7 @@ public:
 
 public: //플레이어 관련 셋팅 
 	void						Change_PlayerHp(_float pAttack);
-	void						Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, 
+	_bool						Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget,
 		PLAYER_ATTACK_STATE _AttackState, STATE_RIGHTHAND _attacktype);
 	HRESULT						Update_PlayerPos();
 	void						Recoil(const _float& fTimeDelta, _float fSpeed);

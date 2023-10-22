@@ -128,12 +128,12 @@ void CPlayerAttackUnion::Change_PlayerHp(_float pAttack)
     pPlayer->Set_PlayerHP(PlayerHp);
 }
 
-void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, PLAYER_ATTACK_STATE _AttackState, STATE_RIGHTHAND _attacktype)
+_bool CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTarget, PLAYER_ATTACK_STATE _AttackState, STATE_RIGHTHAND _attacktype)
 {
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(_AttackTarget);
 
     if (pAceObj == nullptr)
-        return;
+        return false;
 
     if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE)
     {
@@ -154,10 +154,12 @@ void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTa
                     CAceBoss* pBoss = dynamic_cast<CAceBoss*>(pMonster);
 
                     if (nullptr == pBoss)
-                        return;
+                        return false;
                     else
                     {
                         //보스충돌
+                        if (true == pBoss->Get_IsMonsterDeath())
+                            return false;
 
                         if (STATE_RIGHTHAND::BEERBOTLE == _attacktype)
                             pAttack = 1.5f;
@@ -177,10 +179,18 @@ void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTa
                         MonsterHp = pMonster->Get_MonsterHP();
                         // 몬스터 체력 계산
                         MonsterHp.Cur -= pAttack;
+
+                        pMonster->Set_MonsterHP(MonsterHp); // 계산이 끝난 몬스터의 체력으로 넣어줌
+                        pMonster->Set_Player_AttackState(_AttackState); // 공격받은 유형을 넣어줌
+
+                        return true;
                     }
                 }
                 else
                 {
+                    if (true == pGray->Get_IsMonsterDeath())
+                        return false;
+
                     // Gray 충돌
                     if (STATE_RIGHTHAND::BEERBOTLE == _attacktype)
                         pAttack = 6.f;
@@ -200,10 +210,18 @@ void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTa
                     MonsterHp = pMonster->Get_MonsterHP();
                     // 몬스터 체력 계산
                     MonsterHp.Cur -= pAttack;
+
+                    pMonster->Set_MonsterHP(MonsterHp); // 계산이 끝난 몬스터의 체력으로 넣어줌
+                    pMonster->Set_Player_AttackState(_AttackState); // 공격받은 유형을 넣어줌
+
+                    return true;
                 }
             }
             else
             {
+                if (true == pBrown->Get_IsMonsterDeath())
+                    return false;
+
                 // Brown 충돌 
                 if (STATE_RIGHTHAND::BEERBOTLE == _attacktype)
                     pAttack = 10.f;
@@ -224,9 +242,12 @@ void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTa
 
                 // 몬스터 체력 계산
                 MonsterHp.Cur -= pAttack;
+
+                pMonster->Set_MonsterHP(MonsterHp); // 계산이 끝난 몬스터의 체력으로 넣어줌
+                pMonster->Set_Player_AttackState(_AttackState); // 공격받은 유형을 넣어줌
+
+                return true;
             }
-            pMonster->Set_MonsterHP(MonsterHp); // 계산이 끝난 몬스터의 체력으로 넣어줌
-            pMonster->Set_Player_AttackState(_AttackState); // 공격받은 유형을 넣어줌
 
         }
 

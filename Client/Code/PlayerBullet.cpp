@@ -162,21 +162,11 @@ void CPlayerBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const 
 
 	if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE)
 	{
-		// 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
-		Change_MonsterHp(-m_tAttack.fDamage, pDst, m_tAttack.ePlayer_AttackState, m_pWeaponType);
-
-		//// Test 공격 확인
-		//if (m_tAttack.ePlayer_AttackState == PSITDONW_ATTACK)
-		//{
-		//	//OutputDebugString(L"플레이어가 앉아서 공격함 \n");
-		//}
-		//else
-		//{
-		//	//OutputDebugString(L"플레이어의 총알 충돌 \n");
-		//}
-
-		// 총알 삭제
-		Set_Dead(); //투사체는 사라짐 
+		if( false == Change_MonsterHp(-m_tAttack.fDamage, pDst, m_tAttack.ePlayer_AttackState, m_pWeaponType))
+			m_pTransformComp->Move_Pos(&m_tAttack.vDir, 0.001f, m_tAttack.fMoveSpeed);
+		else
+			Set_Dead(); //투사체는 사라짐 
+		
 	}
 
 	//pContact->pBody

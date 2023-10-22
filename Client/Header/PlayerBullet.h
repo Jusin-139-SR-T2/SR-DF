@@ -34,10 +34,10 @@ public:
 		);
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
-		GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
-		GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
-		GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-		//GETSET_EX2(_vec3, m_tBullet.vDir, AttackDir, GET, SET)
+	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
+	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
+	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
+	//GETSET_EX2(_vec3, m_tBullet.vDir, AttackDir, GET, SET)
 
 		// Ãæµ¹ -----------------------------------------------------------------
 protected:
