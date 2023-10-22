@@ -3,6 +3,7 @@
 
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include <AceBuilding.h>
 
 CAceInteraction::CAceInteraction(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
@@ -78,6 +79,12 @@ HRESULT CAceInteraction::Ready_GameObject(const FSerialize_GameObject& tObjectSe
     m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
+
+    if (!tObjectSerial.strGroupKey.empty() && !tObjectSerial.strTextureKey.empty())
+        m_pTextureComp->Receive_Texture(TEX_NORMAL,
+            wstring(tObjectSerial.strGroupKey.begin(), tObjectSerial.strGroupKey.end()).c_str()
+            , wstring(tObjectSerial.strTextureKey.begin(), tObjectSerial.strTextureKey.end()).c_str());
+
     return S_OK;
 }
 
@@ -87,6 +94,21 @@ HRESULT CAceInteraction::Add_Component()
     NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
+    
+    // 충돌 컴포넌트 
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+
+    // 물리 세계 등록
+    m_pColliderComp->EnterToPhysics(0);
+
+    // 충돌 함수 연결
+    m_pColliderComp->Set_Collision_Event<ThisClass>(this, &ThisClass::OnCollision);
+    m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
+    m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
+
+    // 충돌 레이어, 마스크 설정
+    m_pColliderComp->Set_CollisionLayer(LAYER_ITEM); // 이 클래스가 속할 충돌레이어 
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_WALL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
     return S_OK;
 }
@@ -94,10 +116,19 @@ HRESULT CAceInteraction::Add_Component()
 _int CAceInteraction::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
+    
+    Gravity(fTimeDelta);
+
+    m_pTransformComp->Move_Pos(&m_vSpeed, fTimeDelta, 1.f);
 
     // 지형타기 
-    Height_On_Terrain();
-
+    if (m_pTransformComp->Get_Pos().y < 1.5f && m_vSpeed.y < 0.f)
+    {
+        Height_On_Terrain();
+        m_IsOnGround = true;
+    }
+    else
+        m_IsOnGround = false;
     // 빌보드
     //if((CAceInteraction::INTERACTION_NAME::NEWSPAPER ) <= m_pCurName)
     //BillBoard(fTimeDelta);
@@ -288,6 +319,14 @@ void CAceInteraction::Change_Texture(INTERACTION_NAME eReceiveName)
 
 void CAceInteraction::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
+    CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
+    if (pSolid)
+    {
+        _vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));
+        m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * static_cast<_float>(pContact->fPenetration)));
+        if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
+            m_IsOnGround = true;
+    }
 }
 
 void CAceInteraction::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)

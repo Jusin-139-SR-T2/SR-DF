@@ -1,22 +1,13 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Solid.h"
 
 #include "Serialize_BaseClass.h"
 #include <BlackBoard_GateWay1.h>
 
-BEGIN(Engine)
-
-class CCubeBufferComp;
-class CTextureComponent;
-class CTransformComponent;
-class CColliderComponent;
-
-END
-
-class CGateWay1 : public CGameObject
+class CGateWay1 : public CSolid
 {
-	DERIVED_CLASS(CGameObject, CGateWay1)
+	DERIVED_CLASS(CSolid, CGateWay1)
 
 private:
 	explicit CGateWay1(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -27,7 +18,7 @@ public:
 	static CGateWay1*	Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3 vPos, const _vec3 vRot, const _vec3 vScale);
 	static CGateWay1*	Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject& tObjectSerial);
 
-private: // 함수 
+protected: // 함수 
 	virtual void		Free();											// Release
 
 public:
@@ -43,20 +34,8 @@ public:
 	virtual void		OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) override;
 	virtual void		OnCollisionExited(CGameObject* pDst) override;
 
-public:
-	GETSET_EX2(CCubeBufferComp*, m_pCubeBufferComp, CubeBufferComponent, GET, SET)
-	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
-	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-
-private:
-	CCubeBufferComp* m_pCubeBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;
-
-
-private:
-	HRESULT				Add_Component();								// 컴포넌트 추가 
+protected:
+	virtual HRESULT				Add_Component();						// 컴포넌트 추가 
 
 private:
 	_bool				m_bIsStarted = false;

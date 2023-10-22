@@ -54,6 +54,7 @@ HRESULT CBackGround::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	Engine::Play_BGM(L"FallenAces", L"Scene_Logo.wav", 0.75f);
 	Set_ObjectName(L"Background");
 
 	m_fSizeX = WINCX;

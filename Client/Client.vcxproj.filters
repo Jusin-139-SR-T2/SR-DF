@@ -516,6 +516,9 @@
     <ClInclude Include="Header\GateWay1.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Solid.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -762,6 +765,9 @@
       <Filter>04. =====BlackBoard=====\3. Wave</Filter>
     </ClCompile>
     <ClCompile Include="Code\GateWay1.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Solid.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

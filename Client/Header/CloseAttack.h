@@ -30,7 +30,8 @@ public:
 
 	static CCloseAttack* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir,
 		CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID,
-		_float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize);
+		_float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize,
+		STATE_RIGHTHAND _pType);
 
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
@@ -58,6 +59,6 @@ private:
 
 private:
 	_bool* m_bDbugFrame;
-
+	STATE_RIGHTHAND m_pWeaponType;
 };
 

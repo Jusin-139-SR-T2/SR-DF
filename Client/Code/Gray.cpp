@@ -29,7 +29,8 @@ CGray* CGray::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float
     }
 
     pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
-    pInstance->m_pTextureComp->Set_Scale({ 3.f, 3.f, 1.f });
+    pInstance->m_pTextureComp->Set_Scale({ 3.f, 5.f, 1.f });
+    pInstance->m_pTextureComp->Readjust_Transform();
     pInstance->m_tStat.vPatrolPointZero = { _x, _y, _z };
     return pInstance;
 }
@@ -445,6 +446,14 @@ void CGray::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact
         Add_BasicEffect(m_pOwner); // 이펙트 추가
     }
 
+    // 피격의 40프로 확률로 반격 시전 - 반격의 종류는 반반확률  
+    if (Random_variable(40))
+    {
+        if (Random_variable(50))
+            m_tState_Obj.Set_State(STATE_OBJ::THROW);
+        else
+            m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
+    }
 }
 
 void CGray::OnCollisionExited(CGameObject* pDst)

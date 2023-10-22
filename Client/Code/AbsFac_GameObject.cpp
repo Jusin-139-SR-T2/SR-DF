@@ -75,6 +75,10 @@ CGameObject* CAbsFac_GameObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSe
 	{
 		return static_cast<CGameObject*>(CAceThrow::Create(pGraphicDev, tObject));
 	}
+	else if (strType == "AceWeapon")
+	{
+		return static_cast<CGameObject*>(CAceWeapon::Create(pGraphicDev, tObject));
+	}
 	else if (strType == "AceInteraction")
 	{
 		return static_cast<CGameObject*>(CAceInteraction::Create(pGraphicDev, tObject));

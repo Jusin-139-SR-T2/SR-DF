@@ -64,7 +64,7 @@ HRESULT CCubeObject::Ready_GameObject(const _vec3& vPos, const _vec3& vRot, cons
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
     m_pTransformComp->Set_Pos(vPos);
-    m_pTransformComp->Set_Rotation(D3DXToRadian(vRot));
+    m_pTransformComp->Set_Rotation(vRot);
     m_pTransformComp->Set_Scale(vScale);
 
     if (!strGroupKey.empty() && !strTextureKey.empty())
@@ -80,7 +80,7 @@ HRESULT CCubeObject::Ready_GameObject(const FSerialize_GameObject& tObjectSerial
     FAILED_CHECK_RETURN(Ready_GameObject(), E_FAIL);
 
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-    m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
+    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
     m_pTransformComp->Set_Scale(tObjectSerial.vScale);
 
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());

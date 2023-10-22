@@ -1799,12 +1799,14 @@ void CImguiWin_MapTool::Add_ObjectFromProto()
     FObjectData tObjectData;
 
     tObjectData.eObjectID = tProtoData.eID;
-    tObjectData.strClassName = tProtoData.strClassName;
-    tObjectData.vRot = tProtoData.vRot;
-    tObjectData.vScale = tProtoData.vScale;
     tObjectData.strName = tProtoData.strName;
+    tObjectData.strClassName = tProtoData.strClassName;
     tObjectData.strGroupKey = tProtoData.strGroupKey;
     tObjectData.strTextureKey = tProtoData.strTextureKey;
+    tObjectData.vRot = tProtoData.vRot;
+    tObjectData.vScale = tProtoData.vScale;
+    tObjectData.vecUserString = tProtoData.vecUserString;
+    
 
     FLayerData& tLayerData = m_vecScene[m_iLoaded_Scene].vecLayer[m_iSelected_Layer_Remain];
     _bool bAdded = false;
@@ -2520,7 +2522,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
                 {
-                    pTransform->Set_Rotation(D3DXToRadian(m_vTransform_Rotate) + vRight * fLength);
+                    //pTransform->Set_Rotation(D3DXToRadian(m_vTransform_Rotate) + vRight * fLength);
                     break;
                 }
                 default:

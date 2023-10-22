@@ -158,6 +158,7 @@ public: // Get_Set
 	_float m_fLifeTime = 0.2f;
 	_bool m_bGunLight; // 불켜는 bool값 
 	_bool m_bHitState = false;
+	_bool m_bMagicBottle = false;
 
 	void CrossHairState();
 	// ------------------------- 
@@ -446,6 +447,26 @@ private:
 	_bool m_bHandSwitch = false;
 private:
 	GAUGE<_float>	m_fMonsterHp;
+
+
+	_bool Random_variable(_int _winning)
+	{
+		//운영체제 단에서 제공하는 진짜 난수 - 컴퓨터가 주변의 환경과 무작위적으로 상호작용하면서 만드는것
+		// 의사난수보다 난수를 생성하는 속도가 매우 느리다. 
+		random_device rd;
+
+		// 메르센 트위스터라는 알고리즘을 사용해서 난수 생성 엔진을 초기화
+		mt19937 gen(rd());
+
+		// 0 부터 99 까지 연속확률분포 생성   (min, max)
+		uniform_int_distribution<_int> iDistribution(0, 99);
+
+		//랜덤값 생성 
+		_int RandomValue = iDistribution(gen);
+
+		//매개변수가 5일경우 5프로 확률로 true가 반환된다
+		return (RandomValue <= _winning);
+	}
 };
 
 /*	현재 키 설명

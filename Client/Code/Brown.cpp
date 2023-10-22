@@ -30,6 +30,7 @@ CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _flo
 
     pInstance->m_pTransformComp->Set_Pos(_x, _y, _z); // 시작위치 설정
     pInstance->m_pTextureComp->Set_Scale({3.f, 3.f, 1.f});
+    pInstance->m_pTextureComp->Readjust_Transform();
     pInstance->m_tStat.vPatrolPointZero = { _x, _y, _z }; // 시작위치로 복귀포인트 설정 
     return pInstance;
 }
@@ -308,7 +309,7 @@ void CBrown::Free()
 
 void CBrown::OnCollision(CGameObject* pDst, const FContact* const pContact) // 계속 충돌중 
 {
-    CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
+    CSolid* pSolid = dynamic_cast<CSolid*>(pDst);
     if (pSolid)
     {
         _vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));
@@ -415,6 +416,15 @@ void CBrown::OnCollisionEntered(CGameObject* pDst, const FContact* const pContac
     else if (Check_Relation(pAceObj, this) == ERELATION::NUETRAL) // 오브젝트 충돌 
     {
         m_tState_Obj.Set_State(STATE_OBJ::HIT);
+    }
+
+    // 피격의 40프로 확률로 반격 시전 
+    if (Random_variable(40))
+    {
+        if (Random_variable(50))
+            m_tState_Obj.Set_State(STATE_OBJ::NORMALATTACK);
+        else
+            m_tState_Obj.Set_State(STATE_OBJ::HEAVYATTACK);
     }
 }
 

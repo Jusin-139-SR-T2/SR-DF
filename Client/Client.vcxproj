@@ -102,6 +102,7 @@
     <ClInclude Include="Header\PlayerSkillUnion.h" />
     <ClInclude Include="Header\UI_PlayerFace.h" />
     <ClInclude Include="Header\UI_EatFood.h" />
+    <ClInclude Include="Solid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceEffect.cpp" />
@@ -190,6 +191,7 @@
     <ClCompile Include="Code\PlayerSkillUnion.cpp" />
     <ClCompile Include="Code\UI_PlayerFace.cpp" />
     <ClCompile Include="Code\UI_EatFood.cpp" />
+    <ClCompile Include="Solid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AceWeapon.h"
+#include <AceBuilding.h>
 
 CAceWeapon::CAceWeapon(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -76,7 +77,16 @@ HRESULT CAceWeapon::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     m_bUsePriority[1] = tObjectSerial.bUsePriority_LateUpdate;
     m_bUsePriority[2] = tObjectSerial.bUsePriority_Render;
 
+
+    if (!tObjectSerial.strGroupKey.empty() && !tObjectSerial.strTextureKey.empty())
+        m_pTextureComp->Receive_Texture(TEX_NORMAL,
+            wstring(tObjectSerial.strGroupKey.begin(), tObjectSerial.strGroupKey.end()).c_str()
+            , wstring(tObjectSerial.strTextureKey.begin(), tObjectSerial.strTextureKey.end()).c_str());
+
     m_eFactoryClass = OBJECT_CLASS::WEAPON;
+
+    WeaponName(strConvName);
+
     return S_OK;
 }
 
@@ -84,8 +94,18 @@ _int CAceWeapon::Update_GameObject(const _float& fTimeDelta)
 {
     SUPER::Update_GameObject(fTimeDelta);
 
+    Gravity(fTimeDelta);
+
+    m_pTransformComp->Move_Pos(&m_vSpeed, fTimeDelta, 1.f);
+
     // 지형타기 
-    Height_On_Terrain();
+    if (m_pTransformComp->Get_Pos().y < 1.5f && m_vSpeed.y < 0.f)
+    {
+        Height_On_Terrain();
+        m_IsOnGround = true;
+    }
+    else
+        m_IsOnGround = false;
 
     BillBoard(fTimeDelta);
 
@@ -145,8 +165,8 @@ HRESULT CAceWeapon::Add_Component()
 
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_ITEM); // 이 클래스가 속할 충돌레이어 
-    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
-
+    m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_WALL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
+  
     return S_OK;
 }
 
@@ -186,7 +206,7 @@ HRESULT CAceWeapon::BillBoard(const _float& fTimeDelta)
 
 void CAceWeapon::WeaponName(const _tchar* pObjTag)
 {
-        if ((wcscmp(pObjTag, L"BOTTLE") == 0) || (wcscmp(pObjTag, L"Bottle") == 0))
+    if ((wcscmp(pObjTag, L"BOTTLE") == 0) || (wcscmp(pObjTag, L"Bottle") == 0))
         m_pCurName = CPlayer::OBJECT_NAME::BEERBOTLE;
     else if ((wcscmp(pObjTag, L"PIPE") == 0) || (wcscmp(pObjTag, L"Pipe") == 0))
         m_pCurName = CPlayer::OBJECT_NAME::STEELPIPE;
@@ -197,6 +217,24 @@ void CAceWeapon::WeaponName(const _tchar* pObjTag)
     else if ((wcscmp(pObjTag, L"TOMMYGUN") == 0) || (wcscmp(pObjTag, L"TommyGun") == 0))
         m_pCurName = CPlayer::OBJECT_NAME::THOMPSON;
 
+}
+
+void CAceWeapon::WeaponName(wstring pObjTag)
+{
+    wstring NewObj = pObjTag.substr(0, 4);
+
+    if (NewObj.compare(L"Bott") == 0)           // L"Bottle"
+        m_pCurName = CPlayer::OBJECT_NAME::BEERBOTLE;
+    else if (NewObj.compare(L"Lead") == 0)       // L"LeadPipe"
+        m_pCurName = CPlayer::OBJECT_NAME::STEELPIPE;
+    else if (NewObj.compare(L"Fryi") == 0)       // L"FryingPan"
+        m_pCurName = CPlayer::OBJECT_NAME::FRYINGPAN;
+    else if (NewObj.compare(L"Pist") == 0)       // L"Pistol"
+        m_pCurName = CPlayer::OBJECT_NAME::GUN;
+    else if (NewObj.compare(L"Tomm") == 0)       //L"TommyGun"
+        m_pCurName = CPlayer::OBJECT_NAME::THOMPSON;
+    else
+        m_pCurName = CPlayer::OBJECT_NAME::NONE;
 }
 
 void CAceWeapon::Change_Texture(CPlayer::OBJECT_NAME eReceiveName)
@@ -241,7 +279,6 @@ void CAceWeapon::Change_Texture(CPlayer::OBJECT_NAME eReceiveName)
         break;
 
     case CPlayer::OBJECT_NAME::FRYINGPAN:
-
         m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"FryingPan");
         break;
     }
@@ -249,6 +286,14 @@ void CAceWeapon::Change_Texture(CPlayer::OBJECT_NAME eReceiveName)
 
 void CAceWeapon::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
+    CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
+    if (pSolid)
+    {
+        _vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));
+        m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * static_cast<_float>(pContact->fPenetration)));
+        if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
+            m_IsOnGround = true;
+    }
 }
 
 void CAceWeapon::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)

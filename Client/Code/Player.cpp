@@ -4,6 +4,7 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 
+#include "Solid.h"
 #include "CalculatorComponent.h"
 #include "ColliderComponent.h"
 #include "PlayerLighter.h"
@@ -566,12 +567,14 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         if (!bRighter)  // 라이터가 꺼져있을 경우
         {
             bRighter = true;        // 라이터 켜주기
+            Engine::Play_Sound(L"FallenAces", L"Open_Zippo.wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
             m_tLeftHand_State.Set_State(STATE_LEFTHAND::RIGHTER); // 왼손 상태 라이터로
             m_tLeftHand.fLeftFrame = 0.f;
             m_tTime.fLeftCurrentTime = 0.f;
         }
         else // 라이터가 켜져있을 경우
         {
+            Engine::Play_Sound(L"FallenAces", L"Close_Zippo.wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
             bBackRighter = true; // 라이터 되돌리기On
             m_tLeftHand.fLeftFrame = 0.f;
             m_tTime.fLeftCurrentTime = 0.f;
@@ -582,20 +585,26 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     if (Engine::IsKey_Pressed(DIK_F) && m_eObjectName != OBJECT_NAME::NONE)
     {
         // 플레이어 상태 오브젝트 버리는 중
+        Engine::Play_Sound(L"FallenAces", L"Drop_Item.wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
         m_tPlayer_Action.Set_State(STATE_PLAYER_ACTION::THROW_AWAY);
     }
 
     // 앉기 (누르는 중)
     if (Engine::IsKey_Pressing(DIK_C))
     {
-        // 플레이어 상태 앉기
-        m_tPlayer_State.Set_State(STATE_PLAYER::SITDOWN);
+        if (m_tPlayer_State.Get_State() != STATE_PLAYER::SITDOWN) // 이미 앉은상태가 아닐때 
+        {        
+            // 플레이어 상태 앉기
+            m_tPlayer_State.Set_State(STATE_PLAYER::SITDOWN);
 
-        _vec3 vSitDown = { 0.f, 5.f, 0.f };
+            _vec3 vSitDown = { 0.f, 5.f, 0.f };
 
-        // 대쉬 높이
-        m_pTransformComp->Set_MovePos(fTimeDelta, vSitDown);
-        //m_pTransformComp->Set_PosY(-10.f);
+            // 대쉬 높이
+            m_pTransformComp->Set_MovePos(fTimeDelta, vSitDown);
+            //m_pTransformComp->Set_PosY(-10.f);
+        }
+        else //앉은상태일때 -> 일어서야함 
+            m_tPlayer_State.Set_State(STATE_PLAYER::IDLE);
     }
 
     // Test
@@ -915,7 +924,7 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
     // 충돌중일때
    // OutputDebugString(L"플레이어와 충돌중\n");
     
-    CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
+    CSolid* pSolid = dynamic_cast<CSolid*>(pDst);
     if (pSolid)
     {
         _vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));
@@ -937,6 +946,33 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
     if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE) // 적대관계
     {
         CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
+
+        Engine::Add_GameObject(L"UI", CUI_PlayerHurt::Create(m_pGraphicDev));
+
+        if(Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (3).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (4).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (5).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (6).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (7).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (8).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (9).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else if (Random_variable(10))
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (10).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+        else
+            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (11).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
 
         if (pMonster == nullptr) 
         {
@@ -1018,6 +1054,8 @@ void CPlayer::Update_BlackBoard()
     pBlackBoard->Get_AttackOn() = m_bAttack;
     pBlackBoard->Get_PlayerHit() = m_bHitState;
 
+    m_bMagicBottle = pBlackBoard->Get_MagicBottle();
+
 
     switch (m_bRAttackMove)
     {
@@ -1082,11 +1120,11 @@ void CPlayer::Update_InternalData()
 
 bool CPlayer::Attack_Input(const _float& fTimeDelta)
 {
-    ////발차기
-    //if (Engine::Get_DIKeyState(DIK_Q) & 0x80)
-    //{
-    //    m_tRightHand_State.Set_State(STATE_RIGHTHAND::KICK);
-    //}
+    //발차기
+   //if (Engine::Get_DIKeyState(DIK_Q) & 0x80)
+   //{
+   //    m_tRightHand_State.Set_State(STATE_RIGHTHAND::KICK);
+   //}
 
 #pragma region 마우스
 
@@ -2201,7 +2239,7 @@ void CPlayer::Left_Hand(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
                 vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
                                    this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                                   0.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
+                                   0.f, 1.f, 10.f, 3.f, m_eRIGHTState));                                           // 속도, 삭제시간, 데미지, 크기
             
             m_bAttack = false;  // 공격 Off
             bLeftPunch = false;
@@ -2509,7 +2547,7 @@ void CPlayer::Right_Hand(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
                 vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                0.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
+                0.f, 1.f, 10.f, 3.f, m_eRIGHTState));                                           // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
             bLeftPunch = true;
@@ -2752,7 +2790,7 @@ void CPlayer::Right_Gun(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev,                // 레이어, 디바이스
                 vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                100.f, 1.f, 10.f, 1.f));                                           // 속도, 삭제시간, 데미지, 크기
+                100.f, 1.f, 10.f, 1.f, m_eRIGHTState));                                           // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
         }
@@ -2883,7 +2921,7 @@ void CPlayer::Right_Thompson(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CPlayerBullet::Create(m_pGraphicDev, // 레이어, 디바이스
                 vPos, m_pTransformComp->Get_Look(),             // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),   // 공격유형, 팀
-                100.f, 1.f, 40.f, 1.f));                        // 속도, 삭제시간, 데미지, 크기f
+                100.f, 1.f, 40.f, 1.f, m_eRIGHTState));                        // 속도, 삭제시간, 데미지, 크기f
 
             m_bAttack = false;  // 공격 Off
         }
@@ -2979,7 +3017,7 @@ void CPlayer::Right_Steelpipe(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
                 vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                0.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
+                0.f, 1.f, 10.f, 3.f, m_eRIGHTState));                                           // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
         }
@@ -3098,18 +3136,22 @@ void CPlayer::Right_BeerBotle(float fTimeDelta)
 
             if (pGmaeObj != nullptr)
                 pAceMonster = dynamic_cast<CAceMonster*>(pGmaeObj);
-
-            // 번개 or 폭발 스킬 생성 (라이트닝인데 폭발공격임 정상 작동, 허공에다 공격하면 안나감, 내려쳤을때 기준)
+            //
+           // // 번개 or 폭발 스킬 생성 (라이트닝인데 폭발공격임 정상 작동, 허공에다 공격하면 안나감, 내려쳤을때 기준)
             if (pAceMonster != nullptr)
-            Engine::Add_GameObject(L"GameLogic", CPlayerLightning::Create(m_pGraphicDev, pAceMonster)); // 디바이스, 몬스터 
+            {
+                if(m_bMagicBottle)
+                    Engine::Add_GameObject(L"GameLogic", CPlayerLightning::Create(m_pGraphicDev, pAceMonster)); // 디바이스, 몬스터 
+                else
+                {                // 맥주병 공격 생성
+                    Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
+                        vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
+                        this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                       // 공격유형, 팀
+                        100.f, 1.f, 10.f, 3.f, m_eRIGHTState));                                            // 속도, 삭제시간, 데미지, 크기
 
-            //// 맥주병 공격 생성
-            //Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
-            //    vPos, m_pTransformComp->Get_Look(),    // 생성위치, 방향
-            //    this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                       // 공격유형, 팀
-            //    100.f, 1.f, 10.f, 3.f));                                            // 속도, 삭제시간, 데미지, 크기
-
-            m_bAttack = false;  // 공격 Off
+                    m_bAttack = false;  // 공격 Off
+                }
+            }
         }
     }
 
@@ -3192,7 +3234,7 @@ void CPlayer::Right_FryingPan(float fTimeDelta)
             Engine::Add_GameObject(L"GameLogic", CCloseAttack::Create(m_pGraphicDev,                // 레이어, 디바이스
                 m_pTransformComp->Get_Pos(), m_pTransformComp->Get_Look(),    // 생성위치, 방향
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
-                0.f, 1.f, 10.f, 3.f));                                           // 속도, 삭제시간, 데미지, 크기
+                0.f, 1.f, 10.f, 3.f, m_eRIGHTState));                                           // 속도, 삭제시간, 데미지, 크기
 
             m_bAttack = false;  // 공격 Off
         }
@@ -3623,8 +3665,36 @@ void CPlayer::LineEvent()
     
     if (pWeapon != nullptr)
     {
+        pWeapon->Set_Weapon_GearUp(true);
         m_eObjectName = pWeapon->Get_WeaponName();
-        pWeapon->Set_Dead();
+
+        switch (m_eObjectName)
+        {
+        case CPlayer::OBJECT_NAME::NONE:
+            Engine::Play_Sound(L"FallenAces", L"Crack.mp3", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        case CPlayer::OBJECT_NAME::GUN:
+            Engine::Play_Sound(L"FallenAces", L"Nice (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        case CPlayer::OBJECT_NAME::THOMPSON:
+            Engine::Play_Sound(L"FallenAces", L"Nice (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        case CPlayer::OBJECT_NAME::STEELPIPE:
+            Engine::Play_Sound(L"FallenAces", L"Nice (3).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        case CPlayer::OBJECT_NAME::BEERBOTLE:
+            Engine::Play_Sound(L"FallenAces", L"Nice (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        case CPlayer::OBJECT_NAME::FRYINGPAN:
+            Engine::Play_Sound(L"FallenAces", L"Nice (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            pWeapon->Set_Dead();
+            break;
+        }
     }
 
     CAceFood* pFood = dynamic_cast<CAceFood*>(pAceObj);

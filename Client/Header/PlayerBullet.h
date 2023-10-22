@@ -30,7 +30,8 @@ public:
 
 	static CPlayerBullet* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _vec3 vDir,
 		CAceUnit* _Owner, PLAYER_ATTACK_STATE _AttackState, ETEAM_ID _eTeamID,
-		_float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize);
+		_float fMoveSpeed, _float fDeleteTime, _float fDamage, _float fSize, STATE_RIGHTHAND pRight
+		);
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 		GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
@@ -55,6 +56,7 @@ private:
 	CTransformComponent* m_pPlayerTransformcomp = nullptr; //플레이어용도 
 
 private:
+	STATE_RIGHTHAND m_pWeaponType;
 	_bool*	m_bDbugFrame;
 	FCollisionSphere* pShape;
 	_vec3	m_vPos = { 0.f, 0.f, 0.f };

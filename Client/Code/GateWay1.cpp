@@ -54,6 +54,7 @@ void CGateWay1::Free()
 
 HRESULT CGateWay1::Ready_GameObject()
 {
+    SUPER::Ready_GameObject();
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     return S_OK;
@@ -81,6 +82,8 @@ HRESULT CGateWay1::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
     m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
     m_pTransformComp->Set_Scale(tObjectSerial.vScale);
+
+    m_pTransformComp->Readjust_Transform();
 
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
     Set_ObjectName(strConvName);
@@ -115,7 +118,7 @@ _int CGateWay1::Update_GameObject(const _float& fTimeDelta)
         if (m_bIsStarted)
         {
             if (m_pTransformComp->Get_Pos().y < 3.5f)
-                m_pTransformComp->Set_Pos(m_pTransformComp->Get_Pos() + vUp * 1.f * fTimeDelta);
+                m_pTransformComp->Set_Pos(m_pTransformComp->Get_Pos() + vUp * 10.f * fTimeDelta);
             else
             {
                 m_bIsClosed = true;
@@ -130,7 +133,7 @@ _int CGateWay1::Update_GameObject(const _float& fTimeDelta)
     else if (m_bIsClosed && m_bIsEnded)
     {
         if (m_pTransformComp->Get_Pos().y > -3.5f)
-            m_pTransformComp->Set_Pos(m_pTransformComp->Get_Pos() - vUp * 1.f * fTimeDelta);
+            m_pTransformComp->Set_Pos(m_pTransformComp->Get_Pos() - vUp * 2.f * fTimeDelta);
     }
 
     m_pTransformComp->Readjust_Transform();
@@ -179,22 +182,7 @@ void CGateWay1::OnCollisionExited(CGameObject* pDst)
 
 HRESULT CGateWay1::Add_Component()
 {
-    NULL_CHECK_RETURN(m_pTransformComp = Set_DefaultComponent_FromProto<CTransformComponent>(ID_DYNAMIC, L"Com_Transform", L"Proto_TransformComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pTextureComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_Texture", L"Proto_MonsterTextureComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pCubeBufferComp = Set_DefaultComponent_FromProto<CCubeBufferComp>(ID_STATIC, L"Com_CubeTex", L"Proto_CubeBufferComp"), E_FAIL);
-    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderOBBComp"), E_FAIL);
-
-    // 물리 세계 등록
-    m_pColliderComp->EnterToPhysics(0);
-
-    // 충돌 함수 연결
-    m_pColliderComp->Set_Collision_Event<ThisClass>(this, &ThisClass::OnCollision);
-    m_pColliderComp->Set_CollisionEntered_Event<ThisClass>(this, &ThisClass::OnCollisionEntered);
-    m_pColliderComp->Set_CollisionExited_Event<ThisClass>(this, &ThisClass::OnCollisionExited);
-
-    // 충돌 레이어, 마스크 설정
-    m_pColliderComp->Set_CollisionLayer(LAYER_WALL);
-    //m_pColliderComp->Set_CollisionMask(LAYER_PLAYER);
+    SUPER::Add_Component();
 
     return S_OK;
 }

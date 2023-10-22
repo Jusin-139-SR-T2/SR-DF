@@ -151,20 +151,20 @@ void CTrigger_Box::GateWay()
     CAceMonster* pMonster = nullptr;
 
     Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
-        m_pTransformComp->Get_Pos().x - 2.f,
-        m_pTransformComp->Get_Pos().y - 2.f,
-        m_pTransformComp->Get_Pos().z + 1.f));
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 5.f,
+        m_pTransformComp->Get_Pos().z + 1.5f));
     pBlackBoard->Get_VecMonster().push_back(pMonster);
 
     Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
-        m_pTransformComp->Get_Pos().x - 2.f,
-        m_pTransformComp->Get_Pos().y - 2.f,
-        m_pTransformComp->Get_Pos().z - 1.f));
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 5.f,
+        m_pTransformComp->Get_Pos().z - 1.5f));
     pBlackBoard->Get_VecMonster().push_back(pMonster);
 
     Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
-        m_pTransformComp->Get_Pos().x - 2.f,
-        m_pTransformComp->Get_Pos().y - 2.f,
-        m_pTransformComp->Get_Pos().z - 1.f));
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 5.f,
+        m_pTransformComp->Get_Pos().z));
     pBlackBoard->Get_VecMonster().push_back(pMonster);
 }

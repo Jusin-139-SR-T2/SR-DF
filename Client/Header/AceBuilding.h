@@ -1,23 +1,13 @@
 #pragma once
 
 #include "AceObjectFactory.h"
-#include "AceUnit.h"
+#include "Solid.h"
 
 #include "Serialize_BaseClass.h"
 
-BEGIN(Engine)
-
-class CRcBufferComp;
-class CCubeBufferComp;
-class CTextureComponent;
-class CTransformComponent;
-class CCalculatorComponent;
-
-END
-
-class CAceBuilding : public CAceUnit
+class CAceBuilding : public CSolid
 {
-	DERIVED_CLASS(CAceUnit, CAceBuilding)
+	DERIVED_CLASS(CSolid, CAceBuilding)
 
 	enum class BUILDING_NAME { 
 		A, // 2층집
@@ -56,31 +46,8 @@ public:
 	virtual void OnCollisionEntered(CGameObject* pDst, const FContact* const pContact) override;
 	virtual void OnCollisionExited(CGameObject* pDst) override;
 
-public:
-	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
-	GETSET_EX2(CCubeBufferComp*, m_pCubeBufferComp, CubeBufferComponent, GET, SET)
-	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
-	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
-	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-
-private:
-	CRcBufferComp* m_pBufferComp = nullptr;
-	CCubeBufferComp* m_pCubeBufferComp = nullptr;
-	CTextureComponent* m_pTextureComp = nullptr;
-	CTransformComponent* m_pTransformComp = nullptr;
-	CCalculatorComponent* m_pCalculatorComp = nullptr;
-	CColliderComponent* m_pColliderComp = nullptr;
-
-
 private: // 함수 
 	virtual void		Free();											// Release
-	HRESULT				Add_Component();								// 컴포넌트 추가 
-	void				Height_On_Terrain();							// 지형타기 
-	void				ObjectName(const _tchar* pObjTag);				// 처음 주어진 wchar를 enum으로 변경 
-
-	BUILDING_NAME		m_pCurName;
-	_float				m_fHeight;
-	HRESULT				Set_BuildingDir(CAceObjectFactory::OBJECT_DIRECTION _eDir);
-
+	virtual HRESULT		Add_Component();								// 컴포넌트 추가 
 	
 };

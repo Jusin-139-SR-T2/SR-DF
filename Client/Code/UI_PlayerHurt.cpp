@@ -52,11 +52,11 @@ HRESULT CUI_PlayerHurt::Ready_GameObject()
 
 	// 수명 및 프레임 설정 
 	m_tFrame.fAge = 0.f;
-	m_tFrame.fLifeTime = 5.f;
+	m_tFrame.fLifeTime = 3.f;
 	m_tFrame.fRepeat = 0.f;
 
 	m_tFrame.fFrame = 0.f;
-	m_tFrame.fFrameSpeed = 1.f;
+	m_tFrame.fFrameSpeed = 15.f;
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	return S_OK;
 }

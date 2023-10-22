@@ -38,7 +38,7 @@ void CDynamicCamera::Free()
 
 HRESULT CDynamicCamera::Ready_GameObject(const _vec3* pEye, const _vec3* pAt, const _vec3* pUp, const _float& fFov, const _float& fAspect, const _float& fNear, const _float& fFar)
 {
-	m_vEye = *pEye;
+	m_vEye = m_fBackupEye = *pEye;
 	m_vAt = *pAt;
 	m_vUp = *pUp;
 	m_fFov = fFov;
@@ -68,6 +68,12 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 {
 	// #만약 카메라가 이상하다면 기존 카메라로 변경하세요
 
+	// 블랙보드 업로드
+	Update_BlackBoard();
+
+	// 블랙보드 다운로드
+	Update_InternalData();
+
 	Check_KeyInput(fTimeDelta);
 
 	// 기존 카메라
@@ -91,15 +97,42 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 	//	m_vAt = vPos;
 	//}
 
-	_int	iExit = CCamera::Update_GameObject(fTimeDelta);
+	//if (m_bPressC)
+	//{
+	//	if (STATE_PLAYER::SITDOWN == m_ePlayer_State) //앉아있는상태 = 일어남
+	//	{
+	//		_vec3	vLength = *D3DXVec3Normalize(&m_vSit, &m_vSit) * -m_fSpeed * fTimeDelta;
 
-	// 블랙보드 업로드
-	Update_BlackBoard();
+	//		m_vEye += vLength;
 
-	// 블랙보드 다운로드
-	Update_InternalData();
+	//		if (m_vEye.y <= 1.1f)
+	//		{
+	//			m_vEye.y = 1.1f;
+	//			m_bPressC = false;
+	//		}
+	//	}
+		//else // 앉기
+		//{
+		//	_vec3	vLength = *D3DXVec3Normalize(&m_vSit, &m_vSit) * -m_fSpeed * fTimeDelta;
 
-	return iExit;
+		//	m_vEye += vLength;
+
+		//	if (m_vEye.y <= 1.1) //m_fBackupEye.y * 0.5 = 2.5
+		//	{
+		//		m_vEye.y = 1.1;
+		//		m_bPressC = false;
+		//	}
+		//}
+	//}
+
+
+	swprintf_s(debugString, L"★변수체크 카메라y  = %f \n", m_vEye.y);
+	OutputDebugStringW(debugString);
+
+	SUPER::Update_GameObject(fTimeDelta);
+
+
+	return 0;
 }
 
 void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
@@ -151,6 +184,25 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 		m_vAt += vLength;
 	}
 
+	if (Engine::IsKey_Pressed(DIK_C)) // 앉기 추가
+	{
+		memcpy(&m_vSit, &matCamWorld.m[1][0], sizeof(_vec3));
+		m_bPressC = true;
+	}
+
+
+	//if (m_bPressC)
+	//{
+	//	if (true == m_bWakeUp) //일어남
+	//	{
+	//		m_vEye += vLength;
+	//		m_bPressC = false;
+	//	}
+	//	else if (false == m_bWakeUp) // 앉기 
+	//	{
+	//		m_bPressC = false;
+	//	}
+	//}
 	//if (Engine::Get_DIKeyState(DIK_Q) & 0x80)
 	//{
 	//	_vec3	vUp;
@@ -228,7 +280,6 @@ void CDynamicCamera::Check_KeyInput(const _float& fTimeDelta)
 	if (false == m_bFix)
 		return;
 }
-
 void CDynamicCamera::Mouse_Move()
 {
 	// 마우스로 이동하는 동작
@@ -375,12 +426,6 @@ void CDynamicCamera::Camera_State(const _float& fTimeDelta)
 	//		Mouse_Fix();  // 마우스 고정
 	//	}
 	//}
-
-
-	if (true)
-	{
-
-	}
 }
 
 void CDynamicCamera::Quaternion_Ver(const _float& fTimeDelta)
@@ -819,3 +864,4 @@ void CDynamicCamera::CameraAttackMove(const _float& fTimeDelta)
 	//Mouse_Move(); // 마우스 이동
 	//Mouse_Fix();  // 마우스 고정
 }
+
