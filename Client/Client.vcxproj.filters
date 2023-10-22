@@ -262,6 +262,9 @@
     <Filter Include="03..=====Object=====\01. Trigger\3. GateWay1">
       <UniqueIdentifier>{2b489e7d-d915-4f8f-aa83-66b4c90aa106}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. =====BlackBoard=====\3. Wave">
+      <UniqueIdentifier>{101c1d11-e336-4bd9-8c6d-562f2869d98a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -507,6 +510,12 @@
     <ClInclude Include="Header\Bat.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Header\BlackBoard_GateWay1.h">
+      <Filter>04. =====BlackBoard=====\3. Wave</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\GateWay1.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\Client.cpp">
@@ -747,6 +756,12 @@
       <Filter>02. =====AceGameObject=====\02. AceEffect</Filter>
     </ClCompile>
     <ClCompile Include="Code\Bat.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoard_GateWay1.cpp">
+      <Filter>04. =====BlackBoard=====\3. Wave</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GateWay1.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

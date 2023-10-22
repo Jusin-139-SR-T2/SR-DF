@@ -772,6 +772,9 @@
     "user_strings": [],
     "user_strings": [],
     "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
+    "user_strings": [],
     "layers": [
         {
             "header": {
@@ -48403,6 +48406,197 @@
                         "x": 18.84020233154297,
                         "y": 16.540403366088867,
                         "z": 16.540403366088867
+                    },
+					"user_strings": [
+						{
+							"user_string": "GateWay1"
+						}
+					]
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Kinematic_Gate1"
+                    },
+                    "ID": 9,
+                    "class_name": "GateWay1",
+                    "tags": [],
+                    "group_key": "Furniture",
+                    "texture_key": "Gate1",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -8.01587200164795,
+                        "y": -2.5857009887695313,
+                        "z": -41.550594329833984
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.6186630129814148,
+                        "y": 4.936253547668457,
+                        "z": 4.4095964431762695
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": -8.01587200164795,
+                        "y": -2.5857009887695313,
+                        "z": -41.550594329833984
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 0.6186630129814148,
+                        "y": 4.936253547668457,
+                        "z": 4.4095964431762695
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Kinematic_Gate2"
+                    },
+                    "ID": 9,
+                    "class_name": "GateWay1",
+                    "tags": [],
+                    "group_key": "Furniture",
+                    "texture_key": "Gate1",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -3.6813535690307617,
+                        "y": -2.5857009887695313,
+                        "z": -41.550594329833984
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.6186630129814148,
+                        "y": 4.936253547668457,
+                        "z": 4.4095964431762695
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": -3.6813535690307617,
+                        "y": -2.5857009887695313,
+                        "z": -41.550594329833984
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 90.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 0.6186630129814148,
+                        "y": 4.936253547668457,
+                        "z": 4.4095964431762695
+                    }
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Kinematic_Gate3"
+                    },
+                    "ID": 9,
+                    "class_name": "GateWay1",
+                    "tags": [],
+                    "group_key": "Furniture",
+                    "texture_key": "Gate1",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": -31.443660736083984,
+                        "y": -3.348595380783081,
+                        "z": -33.35275650024414
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.3785468339920044,
+                        "y": 6.610174655914307,
+                        "z": 5.904923915863037
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": -31.443660736083984,
+                        "y": -3.348595380783081,
+                        "z": -33.35275650024414
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 0.3785468339920044,
+                        "y": 6.610174655914307,
+                        "z": 5.904923915863037
                     }
                 }
             ]

@@ -20,7 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Bat.h" />
+    <ClInclude Include="Header\BlackBoard_GateWay1.h" />
     <ClInclude Include="Header\Effect_Bubble.h" />
+    <ClInclude Include="Header\GateWay1.h" />
     <ClInclude Include="Header\Hegrid.h" />
     <ClInclude Include="Header\JumpBat.h" />
     <ClInclude Include="Header\JumpBgm.h" />
@@ -105,6 +107,7 @@
     <ClCompile Include="Code\AceEffect.cpp" />
     <ClCompile Include="Code\Bat.cpp" />
     <ClCompile Include="Code\BlackBoard_Camera.cpp" />
+    <ClCompile Include="Code\BlackBoard_GateWay1.cpp" />
     <ClCompile Include="Code\Effect_FallingDust.cpp" />
     <ClCompile Include="Code\BossLight.cpp" />
     <ClCompile Include="Code\AbsFac_GameObject.cpp" />
@@ -121,6 +124,7 @@
     <ClCompile Include="Code\AceBuilding.cpp" />
     <ClCompile Include="Code\AceInteraction.cpp" />
     <ClCompile Include="Code\AceFood.cpp" />
+    <ClCompile Include="Code\GateWay1.cpp" />
     <ClCompile Include="Code\Hegrid.cpp" />
     <ClCompile Include="Code\JumpBat.cpp" />
     <ClCompile Include="Code\JumpBgm.cpp" />

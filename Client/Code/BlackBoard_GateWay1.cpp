@@ -42,13 +42,11 @@ void CBlackBoard_GateWay1::Add_Monster(CAceMonster* const pMonster)
 
 _bool CBlackBoard_GateWay1::Is_MonsterAllDead()
 {
-    _bool bIsAllDead = false;
-
     for (auto iter = m_vecMonster.begin(); iter != m_vecMonster.end(); ++iter)
     {
         if (!(*iter)->Get_IsMonsterDeath())
             return false;
     }
 
-    return bIsAllDead;
+    return true;
 }

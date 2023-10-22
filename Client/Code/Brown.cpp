@@ -29,6 +29,7 @@ CBrown* CBrown::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _flo
     }
 
     pInstance->m_pTransformComp->Set_Pos(_x, _y, _z); // 시작위치 설정
+    pInstance->m_pTextureComp->Set_Scale({3.f, 3.f, 1.f});
     pInstance->m_tStat.vPatrolPointZero = { _x, _y, _z }; // 시작위치로 복귀포인트 설정 
     return pInstance;
 }

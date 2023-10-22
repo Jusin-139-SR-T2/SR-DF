@@ -15,7 +15,7 @@ class CCalculatorComponent;
 
 END
 
-class CAceBuilding :public CAceUnit
+class CAceBuilding : public CAceUnit
 {
 	DERIVED_CLASS(CAceUnit, CAceBuilding)
 

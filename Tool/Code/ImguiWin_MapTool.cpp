@@ -1222,7 +1222,8 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
         || tObjectData.strClassName == "JumpMainBgm"
         || tObjectData.strClassName == "JumpBat"
         || tObjectData.strClassName == "JumpMonster"
-        || tObjectData.strClassName == "Trigger_Box")
+        || tObjectData.strClassName == "Trigger_Box"
+        || tObjectData.strClassName == "GateWay1")
     {
         CGameObject* pObj = static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
             tObjectData.vPos, D3DXToRadian(tObjectData.vRot), tObjectData.vScale, tObjectData.strGroupKey, tObjectData.strTextureKey));

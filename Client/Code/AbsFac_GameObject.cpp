@@ -18,6 +18,7 @@
 #include "JumpBat.h"
 #include "JumpMonster.h"
 #include "JumpMainBgm.h"
+#include "GateWay1.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -125,6 +126,10 @@ CGameObject* CAbsFac_GameObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSe
 	else if (strType == "JumpMainBgm")
 	{
 		return static_cast<CGameObject*>(CJumpMainBgm::Create(pGraphicDev, tObject));
+	}
+	else if (strType == "GateWay1")
+	{
+		return static_cast<CGameObject*>(CGateWay1::Create(pGraphicDev, tObject));
 	}
 
 	return static_cast<CGameObject*>(nullptr);
