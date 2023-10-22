@@ -114,6 +114,7 @@ void CJumpBgm::OnCollisionExited(CGameObject* pDst)
     // 빠져나갈때 사운드 모두 정지 후 BGM변경
     Engine::StopAll();
     Engine::Play_BGM(L"FallenAces", L"JumpClassic.mp3", 0.75f);
+    Set_Dead();
 }
 
 HRESULT CJumpBgm::Add_Component()

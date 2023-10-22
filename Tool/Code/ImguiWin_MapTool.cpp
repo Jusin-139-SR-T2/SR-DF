@@ -1218,6 +1218,7 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
         || tObjectData.strClassName == "Trigger_ToBossMap"
         || tObjectData.strClassName == "Trigger_ToJumpMap"
         || tObjectData.strClassName == "Trigger_ToMalone"
+        || tObjectData.strClassName == "JumpBgm"
         || tObjectData.strClassName == "Trigger_Box")
     {
         CGameObject* pObj = static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),

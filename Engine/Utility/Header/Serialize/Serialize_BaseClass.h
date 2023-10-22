@@ -11,16 +11,16 @@ BEGIN(Engine)
 			(value.HasMember(name))
 
 #define RPJSON_RECIEVE_STRING(value, name)	\
-			(!value[name].IsNull() && (RPJSON_IS_MEMBER(value, name)&& value[name].IsString()) ? value[name].GetString() : "")
+			((RPJSON_IS_MEMBER(value, name) && !value[name].IsNull() && value[name].IsString()) ? value[name].GetString() : "")
 
 #define RPJSON_RECIEVE_BOOL(value, name)	\
-			(!value[name].IsNull() && (RPJSON_IS_MEMBER(value, name) && value[name].IsBool()) ? value[name].GetBool() : false)
+			((RPJSON_IS_MEMBER(value, name) && !value[name].IsNull() && value[name].IsBool()) ? value[name].GetBool() : false)
 
 #define RPJSON_RECIEVE_FLOAT(value, name)	\
-			(!value[name].IsNull() && (RPJSON_IS_MEMBER(value, name) && value[name].IsFloat()) ? value[name].GetFloat() : 0.f)
+			((RPJSON_IS_MEMBER(value, name) && !value[name].IsNull() && value[name].IsFloat()) ? value[name].GetFloat() : 0.f)
 
 #define RPJSON_RECIEVE_INT(value, name)	\
-			(!value[name].IsNull() && (RPJSON_IS_MEMBER(value, name) && value[name].IsInt()) ? value[name].GetInt() : 0)
+			((RPJSON_IS_MEMBER(value, name) && !value[name].IsNull() && value[name].IsInt()) ? value[name].GetInt() : 0)
 
 #define RPJSON_IS_MEMARRAY(value, name)		\
 			(value.HasMember(name) && value[name].IsArray())

@@ -132,8 +132,8 @@ _bool FSerialize_Proto::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 	doc.HasMember("class") ? eID = static_cast<EGO_CLASS>(doc["class"].GetInt()) : 0;
 	doc.HasMember("class_name") ? strClassName = doc["class_name"].GetString() : "";
 
-	doc.HasMember("group_key") ? strGroupKey = doc["group_key"].GetString() : 0;
-	doc.HasMember("texture_key") ? strTextureKey = doc["texture_key"].GetString() : 0;
+	strGroupKey = RPJSON_RECIEVE_STRING(doc, "group_key");
+	strTextureKey = RPJSON_RECIEVE_STRING(doc, "texture_key");
 
 	if (doc.HasMember("pos"))
 	{
