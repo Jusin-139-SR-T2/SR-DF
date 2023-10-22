@@ -19,15 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header\PlayerLightning.h" />
-    <ClInclude Include="Header\JumpBat.h" />
-    <ClInclude Include="Header\JumpBgm.h" />
-    <ClInclude Include="Header\JumpMonster.h" />
-    <ClInclude Include="Header\Hegrid.h" />
-    <ClInclude Include="Header\JumpMainBgm.h" />
-    <ClInclude Include="Effect_Bubble.h" />
+    <ClInclude Include="Header\Trigger_Box.h" />
     <ClInclude Include="UI_FadeOut.h" />
-    <ClInclude Include="UI_MonsterHP.h" />
     <ClInclude Include="UI_PlayerHurt.h" />
     <ClInclude Include="UI_FadeIn.h" />
     <ClInclude Include="Header\AceEffect.h" />
@@ -100,7 +93,6 @@
     <ClInclude Include="UI_EatFood.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Effect_Bubble.cpp" />
     <ClCompile Include="Code\AceEffect.cpp" />
     <ClCompile Include="Code\BlackBoard_Camera.cpp" />
     <ClCompile Include="Code\Effect_FallingDust.cpp" />
@@ -130,6 +122,7 @@
     <ClCompile Include="Code\Stage.cpp" />
     <ClCompile Include="Code\DynamicCamera.cpp" />
     <ClCompile Include="Code\Trigger.cpp" />
+    <ClCompile Include="Code\Trigger_Box.cpp" />
     <ClCompile Include="Code\Trigger_ToBossMap.cpp" />
     <ClCompile Include="Code\Trigger_ToJumpMap.cpp" />
     <ClCompile Include="Code\Trigger_ToStageHall.cpp" />
@@ -142,14 +135,7 @@
     <ClCompile Include="Code\Effect_HitDust.cpp" />
     <ClCompile Include="Code\Effect_HitPow.cpp" />
     <ClCompile Include="Code\Effect_DazeSwirl.cpp" />
-    <ClCompile Include="Code\PlayerLightning.cpp" />
-    <ClCompile Include="Code\JumpBat.cpp" />
-    <ClCompile Include="Code\JumpBgm.cpp" />
-    <ClCompile Include="Code\JumpMonster.cpp" />
-    <ClCompile Include="Code\Hegrid.cpp" />
-    <ClCompile Include="Code\JumpMainBgm.cpp" />
     <ClCompile Include="UI_FadeOut.cpp" />
-    <ClCompile Include="UI_MonsterHP.cpp" />
     <ClCompile Include="UI_PlayerHurt.cpp" />
     <ClCompile Include="UI_FadeIn.cpp" />
     <ClCompile Include="Include\Client.cpp" />

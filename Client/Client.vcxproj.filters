@@ -178,6 +178,9 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill">
       <UniqueIdentifier>{ca6f25a3-3f57-4f7d-bd0c-81b038c47176}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\NewFilter2">
+      <UniqueIdentifier>{b2b95b6d-1894-45c0-8f8b-52c6ac98da3f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\NewFilter3">
       <UniqueIdentifier>{4aeddc07-98a5-43ec-8b94-e7b9ab2c6d73}</UniqueIdentifier>
     </Filter>
@@ -198,6 +201,9 @@
     </Filter>
     <Filter Include="03..=====Object=====\01. Trigger\0. To_Hall">
       <UniqueIdentifier>{4558362d-c2fa-4be3-bdbb-fda4467973aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03..=====Object=====\01. Trigger\2. To_JumpMap">
+      <UniqueIdentifier>{3c92a682-bebc-419d-bcb2-b68e32565298}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\00. Lighter">
       <UniqueIdentifier>{e350700e-8895-4112-89d7-93342261724e}</UniqueIdentifier>
@@ -252,33 +258,6 @@
     </Filter>
     <Filter Include="05. =====AceUI=====\99. UI_Fade">
       <UniqueIdentifier>{b9593666-94e6-4459-9e0b-d42b07c06070}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\Lightning">
-      <UniqueIdentifier>{b2b95b6d-1894-45c0-8f8b-52c6ac98da3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03..=====Object=====\01. Trigger\2. JumpMap">
-      <UniqueIdentifier>{3c92a682-bebc-419d-bcb2-b68e32565298}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03..=====Object=====\01. Trigger\2. JumpMap\00. To_JumpMap">
-      <UniqueIdentifier>{2eb7e7dd-1d3c-41be-916b-63276cbc9dc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03..=====Object=====\01. Trigger\2. JumpMap\01. Bgm">
-      <UniqueIdentifier>{0149d179-0033-4109-b886-16639cd59d22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03..=====Object=====\01. Trigger\2. JumpMap\02. Bat">
-      <UniqueIdentifier>{7d11db98-b4a3-47c3-8024-4b99930f7269}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03..=====Object=====\01. Trigger\2. JumpMap\03. Monster">
-      <UniqueIdentifier>{cb049857-7e02-4fff-944d-2a74cbbf55eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\03. NPC">
-      <UniqueIdentifier>{f805b6fa-4889-4d51-bd7d-39016cc1ec1a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\06. Bubble">
-      <UniqueIdentifier>{06b6cd4d-a514-402d-9d7e-9c9a180adc76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. =====AceUI=====\03. UI_MonsterHP">
-      <UniqueIdentifier>{d577ce92-c631-4619-811f-00562b197cd6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -477,6 +456,9 @@
     <ClInclude Include="Header\Trigger_ToBossMap.h">
       <Filter>03..=====Object=====\01. Trigger\1. To_Malone</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Trigger_ToJumpMap.h">
+      <Filter>03..=====Object=====\01. Trigger\2. To_JumpMap</Filter>
+    </ClInclude>
     <ClInclude Include="Header\Trigger_ToStageHall.h">
       <Filter>03..=====Object=====\01. Trigger\0. To_Hall</Filter>
     </ClInclude>
@@ -492,32 +474,8 @@
     <ClInclude Include="UI_FadeOut.h">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClInclude>
-    <ClInclude Include="Header\PlayerLightning.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\Lightning</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Trigger_ToJumpMap.h">
-      <Filter>03..=====Object=====\01. Trigger\2. JumpMap\00. To_JumpMap</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\JumpBgm.h">
-      <Filter>03..=====Object=====\01. Trigger\2. JumpMap\01. Bgm</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\JumpBat.h">
-      <Filter>03..=====Object=====\01. Trigger\2. JumpMap\02. Bat</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\JumpMonster.h">
-      <Filter>03..=====Object=====\01. Trigger\2. JumpMap\03. Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Hegrid.h">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\03. NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\JumpMainBgm.h">
-      <Filter>03..=====Object=====\01. Trigger\2. JumpMap\01. Bgm</Filter>
-    </ClInclude>
-    <ClInclude Include="Effect_Bubble.h">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\06. Bubble</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_MonsterHP.h">
-      <Filter>05. =====AceUI=====\03. UI_MonsterHP</Filter>
+    <ClInclude Include="Header\Trigger_Box.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -713,6 +671,9 @@
     <ClCompile Include="Code\Trigger_ToBossMap.cpp">
       <Filter>03..=====Object=====\01. Trigger\1. To_Malone</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Trigger_ToJumpMap.cpp">
+      <Filter>03..=====Object=====\01. Trigger\2. To_JumpMap</Filter>
+    </ClCompile>
     <ClCompile Include="Code\Trigger_ToStageHall.cpp">
       <Filter>03..=====Object=====\01. Trigger\0. To_Hall</Filter>
     </ClCompile>
@@ -728,32 +689,8 @@
     <ClCompile Include="UI_FadeOut.cpp">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClCompile>
-    <ClCompile Include="Code\PlayerLightning.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\Lightning</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Trigger_ToJumpMap.cpp">
-      <Filter>03..=====Object=====\01. Trigger\2. JumpMap\00. To_JumpMap</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\JumpBgm.cpp">
-      <Filter>03..=====Object=====\01. Trigger\2. JumpMap\01. Bgm</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\JumpBat.cpp">
-      <Filter>03..=====Object=====\01. Trigger\2. JumpMap\02. Bat</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\JumpMonster.cpp">
-      <Filter>03..=====Object=====\01. Trigger\2. JumpMap\03. Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Hegrid.cpp">
-      <Filter>02. =====AceGameObject=====\00. AceUnit\03. NPC</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\JumpMainBgm.cpp">
-      <Filter>03..=====Object=====\01. Trigger\2. JumpMap\01. Bgm</Filter>
-    </ClCompile>
-    <ClCompile Include="Effect_Bubble.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\06. Bubble</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_MonsterHP.cpp">
-      <Filter>05. =====AceUI=====\03. UI_MonsterHP</Filter>
+    <ClCompile Include="Code\Trigger_Box.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
