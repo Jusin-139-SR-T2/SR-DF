@@ -11,16 +11,16 @@ BEGIN(Engine)
 			(value.HasMember(name))
 
 #define RPJSON_RECIEVE_STRING(value, name)	\
-			((RPJSON_IS_MEMBER(value, name) && value[name].IsString()) ? value[name].GetString() : "")
+			((RPJSON_IS_MEMBER(value, name) && !value[name].IsNull() && value[name].IsString()) ? value[name].GetString() : "")
 
 #define RPJSON_RECIEVE_BOOL(value, name)	\
-			((RPJSON_IS_MEMBER(value, name) && value[name].IsBool()) ? value[name].GetBool() : false)
+			((RPJSON_IS_MEMBER(value, name) && !value[name].IsNull() && value[name].IsBool()) ? value[name].GetBool() : false)
 
 #define RPJSON_RECIEVE_FLOAT(value, name)	\
-			((RPJSON_IS_MEMBER(value, name) && value[name].IsFloat()) ? value[name].GetFloat() : 0.f)
+			((RPJSON_IS_MEMBER(value, name) && !value[name].IsNull() && value[name].IsFloat()) ? value[name].GetFloat() : 0.f)
 
 #define RPJSON_RECIEVE_INT(value, name)	\
-			((RPJSON_IS_MEMBER(value, name) && value[name].IsInt()) ? value[name].GetInt() : 0)
+			((RPJSON_IS_MEMBER(value, name) && !value[name].IsNull() && value[name].IsInt()) ? value[name].GetInt() : 0)
 
 #define RPJSON_IS_MEMARRAY(value, name)		\
 			(value.HasMember(name) && value[name].IsArray())
@@ -47,6 +47,9 @@ public:
 	EGO_CLASS						eID;						// 실제 오브젝트의 원본 태그
 	string							strClassName;				// 원본이 되는 클래스의 이름
 
+	string							strGroupKey;
+	string							strTextureKey;
+
 	set<string>						bTag;						// 태그
 
 	_float							fPriority_Update;			// 업데이트 우선도
@@ -60,8 +63,15 @@ public:
 	_vec3							vRotation;
 	_vec3							vScale;
 
-	string							strGroupKey;
-	string							strTextureKey;
+	_vec3							vTexPos = { 0.f, 0.f, 0.f };
+	_vec3							vTexRot = { 0.f, 0.f, 0.f };
+	_vec3							vTexScale = { 1.f, 1.f, 1.f };
+
+	_vec3							vColPos = { 0.f, 0.f, 0.f };
+	_vec3							vColRot = { 0.f, 0.f, 0.f };
+	_vec3							vColScale = { 1.f, 1.f, 1.f };
+
+	vector<string>					vecUserString;				// 사용자 지정 문자열
 
 	vector<FSerialize_Component>	vecComponent;
 };
@@ -74,12 +84,22 @@ public:
 	EGO_CLASS						eID;
 	string							strClassName = "";
 
-	_vec3							vPos;
-	_vec3							vRot;
-	_vec3							vScale;
-
 	string							strGroupKey = "";
 	string							strTextureKey = "";
+
+	_vec3							vPos = { 0.f, 0.f, 0.f };
+	_vec3							vRot = { 0.f, 0.f, 0.f };
+	_vec3							vScale = { 1.f, 1.f, 1.f };
+
+	_vec3							vTexPos = { 0.f, 0.f, 0.f };
+	_vec3							vTexRot = { 0.f, 0.f, 0.f };
+	_vec3							vTexScale = { 1.f, 1.f, 1.f };
+
+	_vec3							vColPos = { 0.f, 0.f, 0.f };
+	_vec3							vColRot = { 0.f, 0.f, 0.f };
+	_vec3							vColScale = { 1.f, 1.f, 1.f };
+
+	vector<string>					vecUserString;				// 사용자 지정 문자열
 
 	void Parse_RapidJSON(Document& doc, StringBuffer& strBuf,
 		const ESERIALIZE_PROCESS eProcess,

@@ -20,6 +20,9 @@ void FSerialize_Proto::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 	// 클래스 이름
 	doc.AddMember("class_name", Value().SetString(strClassName.c_str(), allocator), allocator);
 
+	doc.AddMember("group_key", Value().SetString(strGroupKey.c_str(), allocator), allocator);
+	doc.AddMember("texture_key", Value().SetString(strTextureKey.c_str(), allocator), allocator);
+
 	// 위치
 	Value pos(kObjectType);
 	pos.AddMember("x", Value().SetFloat(vPos.x), allocator);
@@ -41,8 +44,56 @@ void FSerialize_Proto::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 	scale.AddMember("z", Value().SetFloat(vScale.z), allocator);
 	doc.AddMember("scale", scale, allocator);
 
-	doc.AddMember("group_key", Value().SetString(strGroupKey.c_str(), allocator), allocator);
-	doc.AddMember("texture_key", Value().SetString(strTextureKey.c_str(), allocator), allocator);
+	// 위치
+	Value tex_pos(kObjectType);
+	tex_pos.AddMember("x", Value().SetFloat(vTexPos.x), allocator);
+	tex_pos.AddMember("y", Value().SetFloat(vTexPos.y), allocator);
+	tex_pos.AddMember("z", Value().SetFloat(vTexPos.z), allocator);
+	doc.AddMember("tex_pos", tex_pos, allocator);
+
+	// 회전
+	Value tex_rot(kObjectType);
+	tex_rot.AddMember("x", Value().SetFloat(vTexRot.x), allocator);
+	tex_rot.AddMember("y", Value().SetFloat(vTexRot.y), allocator);
+	tex_rot.AddMember("z", Value().SetFloat(vTexRot.z), allocator);
+	doc.AddMember("tex_rot", tex_rot, allocator);
+
+	// 크기
+	Value tex_scale(kObjectType);
+	tex_scale.AddMember("x", Value().SetFloat(vTexScale.x), allocator);
+	tex_scale.AddMember("y", Value().SetFloat(vTexScale.y), allocator);
+	tex_scale.AddMember("z", Value().SetFloat(vTexScale.z), allocator);
+	doc.AddMember("tex_scale", tex_scale, allocator);
+
+	// 위치
+	Value col_pos(kObjectType);
+	col_pos.AddMember("x", Value().SetFloat(vColPos.x), allocator);
+	col_pos.AddMember("y", Value().SetFloat(vColPos.y), allocator);
+	col_pos.AddMember("z", Value().SetFloat(vColPos.z), allocator);
+	doc.AddMember("col_pos", col_pos, allocator);
+
+	// 회전
+	Value col_rot(kObjectType);
+	col_rot.AddMember("x", Value().SetFloat(vColRot.x), allocator);
+	col_rot.AddMember("y", Value().SetFloat(vColRot.y), allocator);
+	col_rot.AddMember("z", Value().SetFloat(vColRot.z), allocator);
+	doc.AddMember("col_rot", col_rot, allocator);
+
+	// 크기
+	Value col_scale(kObjectType);
+	col_scale.AddMember("x", Value().SetFloat(vColScale.x), allocator);
+	col_scale.AddMember("y", Value().SetFloat(vColScale.y), allocator);
+	col_scale.AddMember("z", Value().SetFloat(vColScale.z), allocator);
+	doc.AddMember("col_scale", col_scale, allocator);
+
+	Value user_strings(kArrayType);
+	for (size_t i = 0; i < vecUserString.size(); i++)
+	{
+		Value user_string(kObjectType);
+		user_string.AddMember("user_string", Value().SetString(vecUserString[i].c_str(), allocator), allocator);
+		user_strings.PushBack(user_string, allocator);
+	}
+	doc.AddMember("user_strings", user_strings, allocator);
 
 	if (eProcess == ESERIALIZE_PROCESS_END
 		|| eProcess == ESERIALIZE_PROCESS_IMMEDIATE)
@@ -81,32 +132,94 @@ _bool FSerialize_Proto::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 	doc.HasMember("class") ? eID = static_cast<EGO_CLASS>(doc["class"].GetInt()) : 0;
 	doc.HasMember("class_name") ? strClassName = doc["class_name"].GetString() : "";
 
+	strGroupKey = RPJSON_RECIEVE_STRING(doc, "group_key");
+	strTextureKey = RPJSON_RECIEVE_STRING(doc, "texture_key");
+
 	if (doc.HasMember("pos"))
 	{
 		const Value& pos = doc["pos"];
-		pos.HasMember("x") ? vPos.x = pos["x"].GetFloat() : 0;
-		pos.HasMember("y") ? vPos.y = pos["y"].GetFloat() : 0;
-		pos.HasMember("z") ? vPos.z = pos["z"].GetFloat() : 0;
+		vPos.x = RPJSON_RECIEVE_FLOAT(pos, "x");
+		vPos.y = RPJSON_RECIEVE_FLOAT(pos, "y");
+		vPos.z = RPJSON_RECIEVE_FLOAT(pos, "z");
 	}
 
 	if (doc.HasMember("rot"))
 	{
 		const Value& rot = doc["rot"];
-		rot.HasMember("x") ? vRot.x = rot["x"].GetFloat() : 0;
-		rot.HasMember("y") ? vRot.y = rot["y"].GetFloat() : 0;
-		rot.HasMember("z") ? vRot.z = rot["z"].GetFloat() : 0;
+		vRot.x = RPJSON_RECIEVE_FLOAT(rot, "x");
+		vRot.y = RPJSON_RECIEVE_FLOAT(rot, "y");
+		vRot.z = RPJSON_RECIEVE_FLOAT(rot, "z");
 	}
 
 	if (doc.HasMember("scale"))
 	{
 		const Value& scale = doc["scale"];
-		scale.HasMember("x") ? vScale.x = scale["x"].GetFloat() : 0;
-		scale.HasMember("y") ? vScale.y = scale["y"].GetFloat() : 0;
-		scale.HasMember("z") ? vScale.z = scale["z"].GetFloat() : 0;
+		vScale.x = RPJSON_RECIEVE_FLOAT(scale, "x");
+		vScale.y = RPJSON_RECIEVE_FLOAT(scale, "y");
+		vScale.z = RPJSON_RECIEVE_FLOAT(scale, "z");
 	}
 
-	doc.HasMember("group_key") ? strGroupKey = doc["group_key"].GetString() : 0;
-	doc.HasMember("texture_key") ? strTextureKey = doc["texture_key"].GetString() : 0;
+	if (doc.HasMember("tex_pos"))
+	{
+		const Value& pos = doc["tex_pos"];
+		vTexPos.x = RPJSON_RECIEVE_FLOAT(pos, "x");
+		vTexPos.y = RPJSON_RECIEVE_FLOAT(pos, "y");
+		vTexPos.z = RPJSON_RECIEVE_FLOAT(pos, "z");
+	}
+
+	if (doc.HasMember("tex_rot"))
+	{
+		const Value& rot = doc["tex_rot"];
+		vTexRot.x = RPJSON_RECIEVE_FLOAT(rot, "x");
+		vTexRot.y = RPJSON_RECIEVE_FLOAT(rot, "y");
+		vTexRot.z = RPJSON_RECIEVE_FLOAT(rot, "z");
+	}
+
+	if (doc.HasMember("tex_scale") && !doc["tex_scale"].IsNull())
+	{
+		const Value& scale = doc["tex_scale"];
+		vTexScale.x = RPJSON_RECIEVE_FLOAT(scale, "x");
+		vTexScale.y = RPJSON_RECIEVE_FLOAT(scale, "y");
+		vTexScale.z = RPJSON_RECIEVE_FLOAT(scale, "z");
+	}
+
+	if (doc.HasMember("col_pos"))
+	{
+		const Value& pos = doc["col_pos"];
+		vColPos.x = RPJSON_RECIEVE_FLOAT(pos, "x");
+		vColPos.y = RPJSON_RECIEVE_FLOAT(pos, "y");
+		vColPos.z = RPJSON_RECIEVE_FLOAT(pos, "z");
+	}
+
+	if (doc.HasMember("col_rot"))
+	{
+		const Value& rot = doc["col_rot"];
+		vColRot.x = RPJSON_RECIEVE_FLOAT(rot, "x");
+		vColRot.y = RPJSON_RECIEVE_FLOAT(rot, "y");
+		vColRot.z = RPJSON_RECIEVE_FLOAT(rot, "z");
+	}
+
+	if (doc.HasMember("col_scale"))
+	{
+		const Value& scale = doc["col_scale"];
+		vColScale.x = RPJSON_RECIEVE_FLOAT(scale, "x");
+		vColScale.y = RPJSON_RECIEVE_FLOAT(scale, "y");
+		vColScale.z = RPJSON_RECIEVE_FLOAT(scale, "z");
+	}
+
+	if (doc.HasMember("user_strings") && doc["user_strings"].IsArray())
+	{
+		const Value& user_strings = doc["user_strings"];
+		for (SizeType i = 0; i < user_strings.Size(); i++)
+		{
+			if (user_strings[i].IsObject())
+			{
+				const Value& user_string = user_strings[i];
+				string strPushBack = RPJSON_RECIEVE_STRING(user_string, "user_string");
+				vecUserString.push_back(strPushBack);
+			}
+		}
+	}
 
 	return true;
 }
@@ -245,6 +358,9 @@ void FSerialize_Scene::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 			}
 			gameobject.AddMember("tags", arrtag, allocator);
 
+			gameobject.AddMember("group_key", Value().SetString(tObjectSerial.strGroupKey.c_str(), allocator), allocator);
+			gameobject.AddMember("texture_key", Value().SetString(tObjectSerial.strTextureKey.c_str(), allocator), allocator);
+
 			// 우선도 설정
 			gameobject.AddMember("priority_update", Value().SetFloat(tObjectSerial.fPriority_Update), allocator);
 			gameobject.AddMember("use_priority_update", Value().SetBool(tObjectSerial.bUsePriority_Update), allocator);
@@ -272,8 +388,50 @@ void FSerialize_Scene::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 			gameobject_scale.AddMember("z", Value().SetFloat(tObjectSerial.vScale.z), allocator);
 			gameobject.AddMember("scale", gameobject_scale, allocator);
 
-			gameobject.AddMember("group_key", Value().SetString(tObjectSerial.strGroupKey.c_str(), allocator), allocator);
-			gameobject.AddMember("texture_key", Value().SetString(tObjectSerial.strTextureKey.c_str(), allocator), allocator);
+			Value gameobject_tex_pos(kObjectType);
+			gameobject_tex_pos.AddMember("x", Value().SetFloat(tObjectSerial.vTexPos.x), allocator);
+			gameobject_tex_pos.AddMember("y", Value().SetFloat(tObjectSerial.vTexPos.y), allocator);
+			gameobject_tex_pos.AddMember("z", Value().SetFloat(tObjectSerial.vTexPos.z), allocator);
+			gameobject.AddMember("tex_pos", gameobject_tex_pos, allocator);
+
+			Value gameobject_tex_rot(kObjectType);
+			gameobject_tex_rot.AddMember("x", Value().SetFloat(tObjectSerial.vTexRot.x), allocator);
+			gameobject_tex_rot.AddMember("y", Value().SetFloat(tObjectSerial.vTexRot.y), allocator);
+			gameobject_tex_rot.AddMember("z", Value().SetFloat(tObjectSerial.vTexRot.z), allocator);
+			gameobject.AddMember("tex_rot", gameobject_tex_rot, allocator);
+
+			Value gameobject_tex_scale(kObjectType);
+			gameobject_tex_scale.AddMember("x", Value().SetFloat(tObjectSerial.vTexScale.x), allocator);
+			gameobject_tex_scale.AddMember("y", Value().SetFloat(tObjectSerial.vTexScale.y), allocator);
+			gameobject_tex_scale.AddMember("z", Value().SetFloat(tObjectSerial.vTexScale.z), allocator);
+			gameobject.AddMember("tex_scale", gameobject_tex_scale, allocator);
+
+			Value gameobject_col_pos(kObjectType);
+			gameobject_col_pos.AddMember("x", Value().SetFloat(tObjectSerial.vColPos.x), allocator);
+			gameobject_col_pos.AddMember("y", Value().SetFloat(tObjectSerial.vColPos.y), allocator);
+			gameobject_col_pos.AddMember("z", Value().SetFloat(tObjectSerial.vColPos.z), allocator);
+			gameobject.AddMember("col_pos", gameobject_col_pos, allocator);
+
+			Value gameobject_col_rot(kObjectType);
+			gameobject_col_rot.AddMember("x", Value().SetFloat(tObjectSerial.vColRot.x), allocator);
+			gameobject_col_rot.AddMember("y", Value().SetFloat(tObjectSerial.vColRot.y), allocator);
+			gameobject_col_rot.AddMember("z", Value().SetFloat(tObjectSerial.vColRot.z), allocator);
+			gameobject.AddMember("col_rot", gameobject_col_rot, allocator);
+
+			Value gameobject_col_scale(kObjectType);
+			gameobject_col_scale.AddMember("x", Value().SetFloat(tObjectSerial.vColScale.x), allocator);
+			gameobject_col_scale.AddMember("y", Value().SetFloat(tObjectSerial.vColScale.y), allocator);
+			gameobject_col_scale.AddMember("z", Value().SetFloat(tObjectSerial.vColScale.z), allocator);
+			gameobject.AddMember("col_scale", gameobject_col_scale, allocator);
+
+			Value user_strings(kArrayType);
+			for (size_t i = 0; i < tObjectSerial.vecUserString.size(); i++)
+			{
+				Value user_string(kObjectType);
+				user_string.AddMember("user_string", Value().SetString(tObjectSerial.vecUserString[i].c_str(), allocator), allocator);
+				user_strings.PushBack(user_string, allocator);
+			}
+			doc.AddMember("user_strings", user_strings, allocator);
 
 			// 배열에 넣기
 			arrObject.PushBack(gameobject, allocator);
@@ -356,6 +514,9 @@ _bool FSerialize_Scene::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 			gameobjectSR.eID = static_cast<EGO_CLASS>(RPJSON_RECIEVE_INT(object, "ID"));
 			gameobjectSR.strClassName = RPJSON_RECIEVE_STRING(object, "class_name");
 
+			gameobjectSR.strGroupKey = RPJSON_RECIEVE_STRING(object, "group_key");
+			gameobjectSR.strTextureKey = RPJSON_RECIEVE_STRING(object, "texture_key");
+
 			if (object.HasMember("pos"))
 			{
 				const Value& object_pos = object["pos"];
@@ -388,8 +549,19 @@ _bool FSerialize_Scene::Receive_ByRapidJSON(string& strJSON, _bool bParseRewrite
 			gameobjectSR.bUsePriority_LateUpdate = RPJSON_RECIEVE_BOOL(object, "use_priority_late_update");
 			gameobjectSR.bUsePriority_Render = RPJSON_RECIEVE_BOOL(object, "use_priority_render");
 
-			gameobjectSR.strGroupKey = RPJSON_RECIEVE_STRING(object, "group_key");
-			gameobjectSR.strTextureKey = RPJSON_RECIEVE_STRING(object, "texture_key");
+			if (doc.HasMember("user_strings") && doc["user_strings"].IsArray())
+			{
+				const Value& user_strings = doc["user_strings"];
+				for (SizeType i = 0; i < user_strings.Size(); i++)
+				{
+					if (user_strings[i].IsObject())
+					{
+						const Value& user_string = user_strings[i];
+						string strPushBack = RPJSON_RECIEVE_STRING(user_string, "user_string");
+						gameobjectSR.vecUserString.push_back(strPushBack);
+					}
+				}
+			}
 
 			layerSR.vecGameObject.push_back(gameobjectSR);
 		}

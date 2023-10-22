@@ -34,9 +34,22 @@ class ENGINE_DLL FRigidBody
 
 public:
     FRigidBody()
-        : fInverseMass(), vPosition(0.f, 0.f, 0.f), vRotation(0.f, 0.f, 0.f)
-        , vVelocity(0.f, 0.f, 0.f), vAcceleration(0.f, 0.f, 0.f)
-        , vTorqueAccum()
+        : eBodyType(ERIGID_BODY_TYPE::STATIC), iID()
+        , fInverseMass(Real()), matInverseInertiaTensor()
+        , fLinearDamping(Real()), fAngularDamping(Real())
+        , vForceAccum(), vTorqueAccum(), vAcceleration(), vLastFrameAcceleration()
+        , vPosition(), vVelocity(), vRotation(), qtOrientation()
+        , matTransform(), matInverseInertiaTensorWorld()
+        , fMotion(Real()), bIsAwake(false), bCanSleep(false)
+    {}
+    FRigidBody(const FRigidBody& rhs)
+        : eBodyType(rhs.eBodyType), iID(rhs.iID)
+        , fInverseMass(rhs.fInverseMass), matInverseInertiaTensor(rhs.matInverseInertiaTensor)
+        , fLinearDamping(rhs.fLinearDamping), fAngularDamping(rhs.fAngularDamping)
+        , vForceAccum(rhs.vForceAccum), vTorqueAccum(rhs.vTorqueAccum), vAcceleration(rhs.vAcceleration), vLastFrameAcceleration(rhs.vLastFrameAcceleration)
+        , vPosition(rhs.vPosition), vVelocity(rhs.vVelocity), vRotation(rhs.vRotation), qtOrientation(rhs.qtOrientation)
+        , matTransform(rhs.matTransform), matInverseInertiaTensorWorld(rhs.matInverseInertiaTensorWorld)
+        , fMotion(rhs.fMotion), bIsAwake(rhs.bIsAwake), bCanSleep(rhs.bCanSleep)
     {}
     ~FRigidBody() {}
 
@@ -456,29 +469,36 @@ public:
     {
         return vLastFrameAcceleration;
     }
+    GETSET_EX2(ERIGID_BODY_TYPE, eBodyType, BodyType, GET_C_REF, SET_C)
+    GETSET_EX2(unsigned long long, iID, ID, GET_C_REF, SET_C)
 
 protected:
-    ERIGID_BODY_TYPE    eBodyType = ERIGID_BODY_TYPE::DYNAMIC;
+    ERIGID_BODY_TYPE                eBodyType;
+    unsigned long long              iID;
 
 protected:
     Real                            fInverseMass;				    // 역질량
 	FMatrix3                        matInverseInertiaTensor;		// 역관성텐서
+
     Real                            fLinearDamping;                 // 등속이동 감쇄
     Real                            fAngularDamping;                // 각속도 감쇄
-    FVector3                        vPosition;                      // 위치
-    FQuaternion                     qtOrientation;                  // 정위, 나중에 쿼터니온으로 바꿀 것
-    FVector3                        vVelocity;                      // 속도
-    FVector3                        vRotation;                      // 회전 속도
-
-    FMatrix3                        matInverseInertiaTensorWorld;   // 3차원 행렬
-    Real                            fMotion;                        // 모션
-    _bool                           bIsAwake;                       // 힘 작용 업데이트 가능 여부
-    _bool                           bCanSleep;                      // 앱실론 자동 연산 제외 기능
-    FMatrix3x4                      matTransform;                   // 4차원 행렬, 트랜스폼
     FVector3                        vForceAccum;                    // 속도힘 합
     FVector3                        vTorqueAccum;                   // 회전힘 합
     FVector3                        vAcceleration;                  // 가속도
     FVector3                        vLastFrameAcceleration;         // 이전 프레임 가속도
+    
+    FVector3                        vPosition;                      // 위치
+    FVector3                        vVelocity;                      // 속도
+    FVector3                        vRotation;                      // 회전 속도
+    FQuaternion                     qtOrientation;                  // 정위, 나중에 쿼터니온으로 바꿀 것
+    
+
+    FMatrix3                        matInverseInertiaTensorWorld;   // 3차원 행렬
+    FMatrix3x4                      matTransform;                   // 4차원 행렬, 트랜스폼
+    
+    Real                            fMotion;                        // 모션
+    _bool                           bIsAwake;                       // 힘 작용 업데이트 가능 여부
+    _bool                           bCanSleep;                      // 앱실론 자동 연산 제외 기능
 
 public:
     GETSET_EX2(void*, pOwner, Owner, GET, SET)

@@ -954,6 +954,54 @@ void CImguiWin_MapTool::Layout_Property_Object()
             &vecObject[iSelected_Object].bUsePriority[EPRIORITY_OBJECT_RENDER]);
     }
 
+    ImGui::Separator();
+    if (ImGui::CollapsingHeader(u8"텍스처 키"))
+    {
+        ImGui::Text(u8"그룹 키");
+        char strEdit_GroupKey[30] = {};
+        vecObject[iSelected_Object].strGroupKey.reserve(30);
+        strcpy_s(strEdit_GroupKey, vecObject[iSelected_Object].strGroupKey.c_str());
+        if (ImGui::InputTextEx(u8"##GroupKey", u8"",
+            strEdit_GroupKey, IM_ARRAYSIZE(strEdit_GroupKey),
+            ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            vecObject[iSelected_Object].strGroupKey = strEdit_GroupKey;
+        }
+
+        ImGui::Text(u8"텍스처 키");
+        char strEdit_TextureKey[30] = {};
+        vecObject[iSelected_Object].strTextureKey.reserve(30);
+        strcpy_s(strEdit_TextureKey, vecObject[iSelected_Object].strTextureKey.c_str());
+        if (ImGui::InputTextEx(u8"##TextureKey", u8"",
+            strEdit_TextureKey, IM_ARRAYSIZE(strEdit_TextureKey),
+            ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            vecObject[iSelected_Object].strTextureKey = strEdit_TextureKey;
+        }
+    }
+
+    ImGui::Separator();
+    if (ImGui::CollapsingHeader(u8"사용자 정의 문자열"))
+    {
+        if (ImGui::Button(u8"문자열 추가"))
+        {
+            vecObject[iSelected_Object].vecUserString.push_back(string());
+            vecObject[iSelected_Object].vecUserString.back().reserve(30);
+        }
+        for (size_t i = 0; i < vecObject[iSelected_Object].vecUserString.size(); i++)
+        {
+            char strEdit_UserString[30] = {};
+            vecObject[iSelected_Object].vecUserString[i].reserve(30);
+            strcpy_s(strEdit_UserString, vecObject[iSelected_Object].vecUserString[i].c_str());
+            if (ImGui::InputTextEx(u8"##UserString", u8"",
+                strEdit_UserString, IM_ARRAYSIZE(strEdit_UserString),
+                ImVec2(200, 0), ImGuiInputTextFlags_EnterReturnsTrue))
+            {
+                vecObject[iSelected_Object].vecUserString[i] = strEdit_UserString;
+            }
+        }
+    }
+
     if (bIsEdited)
     {
         FLayerData& tLayerData = vecLayer[m_iSelected_Layer_Remain];
@@ -1169,7 +1217,9 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
         || tObjectData.strClassName == "Trigger_ToStageHall"
         || tObjectData.strClassName == "Trigger_ToBossMap"
         || tObjectData.strClassName == "Trigger_ToJumpMap"
-        || tObjectData.strClassName == "Trigger_ToMalone")
+        || tObjectData.strClassName == "Trigger_ToMalone"
+        || tObjectData.strClassName == "JumpBgm"
+        || tObjectData.strClassName == "Trigger_Box")
     {
         CGameObject* pObj = static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
             tObjectData.vPos, D3DXToRadian(tObjectData.vRot), tObjectData.vScale, tObjectData.strGroupKey, tObjectData.strTextureKey));
@@ -1493,6 +1543,9 @@ void CImguiWin_MapTool::Import_Scene(const string& strName, FSerialize_Scene& tS
                     tObjectData.eObjectID = tObjectSerial.eID;
                     tObjectData.strClassName = tObjectSerial.strClassName;
 
+                    tObjectData.strGroupKey = tObjectSerial.strGroupKey;
+                    tObjectData.strTextureKey = tObjectSerial.strTextureKey;
+
                     tObjectData.fPriority[EPRIORITY_OBJECT_UPDATE] = tObjectSerial.fPriority_Update;
                     tObjectData.fPriority[EPRIORITY_OBJECT_LATE] = tObjectSerial.fPriority_LateUpdate;
                     tObjectData.fPriority[EPRIORITY_OBJECT_RENDER] = tObjectSerial.fPriority_Render;
@@ -1505,8 +1558,15 @@ void CImguiWin_MapTool::Import_Scene(const string& strName, FSerialize_Scene& tS
                     tObjectData.vRot = tObjectSerial.vRotation;
                     tObjectData.vScale = tObjectSerial.vScale;
 
-                    tObjectData.strGroupKey = tObjectSerial.strGroupKey;
-                    tObjectData.strTextureKey = tObjectSerial.strTextureKey;
+                    tObjectData.vTexPos = tObjectSerial.vTexPos;
+                    tObjectData.vTexRot = tObjectSerial.vTexRot;
+                    tObjectData.vTexScale = tObjectSerial.vTexScale;
+
+                    tObjectData.vColPos = tObjectSerial.vPos;
+                    tObjectData.vColRot = tObjectSerial.vRotation;
+                    tObjectData.vColScale = tObjectSerial.vScale;
+
+                    tObjectData.vecUserString = tObjectSerial.vecUserString;
 
                     tLayerData.vecObject.push_back(tObjectData);
                 }
@@ -1573,14 +1633,20 @@ void CImguiWin_MapTool::Import_Proto(const string& strName, FSerialize_Proto& tP
         // 파싱 성공시 툴전용 Data에 전달
         if (tProtoSerial.Receive_ByRapidJSON(strJson))
         {
-            tProtoData.strName = tProtoSerial.tHeader.strName;
             tProtoData.eID = tProtoSerial.eID;
             tProtoData.strClassName = tProtoSerial.strClassName;
+            tProtoData.strGroupKey = tProtoSerial.strGroupKey;
+            tProtoData.strTextureKey = tProtoSerial.strTextureKey;
             tProtoData.vPos = tProtoSerial.vPos;
             tProtoData.vRot = tProtoSerial.vRot;
             tProtoData.vScale = tProtoSerial.vScale;
-            tProtoData.strGroupKey = tProtoSerial.strGroupKey;
-            tProtoData.strTextureKey = tProtoSerial.strTextureKey;
+            tProtoData.vTexPos = tProtoSerial.vTexPos;
+            tProtoData.vTexRot = tProtoSerial.vTexRot;
+            tProtoData.vTexScale = tProtoSerial.vTexScale;
+            tProtoData.vColPos = tProtoSerial.vColPos;
+            tProtoData.vColRot = tProtoSerial.vColRot;
+            tProtoData.vColScale = tProtoSerial.vColScale;
+            tProtoData.vecUserString = tProtoSerial.vecUserString;
 
             m_vecProto.push_back(tProtoData);
         }

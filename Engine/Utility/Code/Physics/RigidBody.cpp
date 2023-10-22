@@ -18,8 +18,8 @@ void FRigidBody::CalculateDerivedData()
 
 void FRigidBody::Integrate(const Real& fDuration)
 {
-	if (!bIsAwake) return;
-	if (!(eBodyType == ERIGID_BODY_TYPE::DYNAMIC)) return;		// 다이나믹이 아니면 여기서 힘을 부과하지 않음.
+	if (eBodyType == ERIGID_BODY_TYPE::STATIC) return;					// STATIC이면 힘을 부과하지 않는다.
+	if (eBodyType == ERIGID_BODY_TYPE::DYNAMIC && !bIsAwake) return;	// DYNAMIC에 대해서만 재운다.
 
 	// 선형 가속 합을 가속에 더하기
 	vLastFrameAcceleration = vAcceleration;
@@ -54,7 +54,7 @@ void FRigidBody::Integrate(const Real& fDuration)
 	Clear_Accumulators();
 
 	// 운동 에너지 저장을 업데이트, 몸체를 재울 수 있으면 재운다.
-	if (bCanSleep)
+	if (eBodyType == ERIGID_BODY_TYPE::DYNAMIC && bCanSleep)
 	{
 		// 각 벡터들을 제곱한 값
 		Real fCurrentMotion = vVelocity.DotProduct(vVelocity) + vRotation.DotProduct(vRotation);

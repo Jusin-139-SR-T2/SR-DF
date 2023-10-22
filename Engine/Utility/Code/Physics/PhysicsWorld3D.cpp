@@ -57,52 +57,18 @@ _int CPhysicsWorld3D::Update_Physics(const Real& fTimeDelta)
 	if (m_bIsPaused)
 		return 0;
 
-	// 힘 더하기
-	/*for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
-	{
-		(*iter)->Integrate(fTimeDelta);
-	}*/
-
-
-	// 강체 위치 기반으로 충돌체 위치 수정
+	// 힘 더하기, 강체 위치 기반으로 충돌체 위치 수정
 	for (auto iter = m_listBody.begin(); iter != m_listBody.end(); ++iter)
 	{
-		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
-		pCol->Set_Position(pCol->matOffset.Get_PosVector());
-		pCol->Calculate_Transform();
-		switch (pCol->Get_Type())
-		{
-		case ECOLLISION::SPHERE:
-		{
-			FCollisionSphere* pShape = dynamic_cast<FCollisionSphere*>(pCol);
-			pShape->fRadius = max(max(pShape->matOffset.Get_ScaleVector().x,
-				pShape->matOffset.Get_ScaleVector().y),
-				pShape->matOffset.Get_ScaleVector().z) * 0.5f;
-			break;
-		}
-		case ECOLLISION::BOX:
-		{
-			FCollisionBox* pShape = dynamic_cast<FCollisionBox*>(pCol);
-			pShape->vHalfSize = pShape->matOffset.Get_ScaleVector() * 0.5f;
-			break;
-		}
-		case ECOLLISION::CAPSULE:
-		{
-			FCollisionCapsule* pShape = dynamic_cast<FCollisionCapsule*>(pCol);
-			//pShape->vDirHalfSize.y = pShape->matOffset.Get_ScaleVector().y;
-			//pShape->vDirHalfSize.z = pShape->matOffset.Get_ScaleVector().y;
-			break;
-		}
-		case ECOLLISION::OBB:
-		{
-			FCollisionOBB* pShape = dynamic_cast<FCollisionOBB*>(pCol);
-			pShape->vHalfSize = pShape->matOffset.Get_ScaleVector() * 0.5f;
-			int t = 0;
-			break;
-		}
-		}
-	}
+		(*iter)->Integrate(fTimeDelta);
 
+		FCollisionPrimitive* pCol = static_cast<FCollisionPrimitive*>((*iter)->Get_Owner());
+		pCol->Calculate_Transform();
+		pCol->Set_Position(pCol->Get_Position());
+		pCol->Calculate_Shape();
+
+		
+	}
 
 	// 접촉 발생기
 	_uint iUsedContacts = Generate_Contacts();
