@@ -90,46 +90,48 @@ protected:
 
 inline void CSceneComponent::Readjust_Transform()
 {
+	/*D3DXMatrixIdentity(&m_matTransform);
+
 	_matrix matTranslate, matRotation, matScale;
 
 	D3DXMatrixTranslation(&matTranslate, m_vInfo[INFO_POS].x, m_vInfo[INFO_POS].y, m_vInfo[INFO_POS].z);
-	D3DXMatrixRotationYawPitchRoll(&matRotation, m_vRotation.x, m_vRotation.y, m_vRotation.z);
+	D3DXMatrixRotationYawPitchRoll(&matRotation, m_vRotation.y, m_vRotation.x, m_vRotation.z);
 	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
 
-	m_matTransform = matScale * matRotation * matTranslate;
+	m_matTransform *= matScale * matRotation * matTranslate;*/
 
 
-	//D3DXMatrixIdentity(&m_matTransform);
+	D3DXMatrixIdentity(&m_matTransform);
 
-	//// 3x3만큼 월드 행렬로부터 vInfo에 복사
-	//for (_int i = 0; i < INFO_POS; ++i)
-	//	memcpy(&m_vInfo[i], &m_matTransform.m[i][0], sizeof(_vec3));
+	// 3x3만큼 월드 행렬로부터 vInfo에 복사
+	for (_int i = 0; i < INFO_POS; ++i)
+		memcpy(&m_vInfo[i], &m_matTransform.m[i][0], sizeof(_vec3));
 
-	//// 크기 변환
-	//for (_int i = 0; i < INFO_POS; ++i)
-	//{
-	//	D3DXVec3Normalize(&m_vInfo[i], &m_vInfo[i]);
-	//	m_vInfo[i] *= *(((_float*)&m_vScale) + i);
-	//}
+	// 크기 변환
+	for (_int i = 0; i < INFO_POS; ++i)
+	{
+		D3DXVec3Normalize(&m_vInfo[i], &m_vInfo[i]);
+		m_vInfo[i] *= *(((_float*)&m_vScale) + i);
+	}
 
-	//// 회전 변환
-	//_matrix		matRot[ROT_END];
+	// 회전 변환
+	_matrix		matRot[ROT_END];
 
-	//D3DXMatrixRotationX(&matRot[ROT_X], m_vRotation.x);
-	//D3DXMatrixRotationY(&matRot[ROT_Y], m_vRotation.y);
-	//D3DXMatrixRotationZ(&matRot[ROT_Z], m_vRotation.z);
+	D3DXMatrixRotationX(&matRot[ROT_X], m_vRotation.x);
+	D3DXMatrixRotationY(&matRot[ROT_Y], m_vRotation.y);
+	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vRotation.z);
 
-	//for (_int i = 0; i < INFO_POS; ++i)
-	//{
-	//	for (_int j = 0; j < ROT_END; ++j)
-	//	{
-	//		D3DXVec3TransformNormal(&m_vInfo[i], &m_vInfo[i], &matRot[j]);
-	//	}
-	//}
+	for (_int i = 0; i < INFO_POS; ++i)
+	{
+		for (_int j = 0; j < ROT_END; ++j)
+		{
+			D3DXVec3TransformNormal(&m_vInfo[i], &m_vInfo[i], &matRot[j]);
+		}
+	}
 
-	//// 월드 행렬 구성
-	//for (_int i = 0; i < INFO_END; ++i)
-	//	memcpy(&m_matTransform.m[i][0], &m_vInfo[i], sizeof(_vec3));
+	// 월드 행렬 구성
+	for (_int i = 0; i < INFO_END; ++i)
+		memcpy(&m_matTransform.m[i][0], &m_vInfo[i], sizeof(_vec3));
 }
 
 

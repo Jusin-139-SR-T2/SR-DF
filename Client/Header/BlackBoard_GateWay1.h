@@ -25,6 +25,9 @@ public:
 	void Add_Monster(CAceMonster* const pMonster);
 	_bool Is_MonsterAllDead();
 
+public:
+	GETSET_EX1(vector<CAceMonster*>, m_vecMonster, VecMonster, GET_REF)
+
 protected:
 	vector<CAceMonster*>	m_vecMonster;
 	_bool					m_bIsTriggered = false;		// 페이즈 들어갔는지 체크

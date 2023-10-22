@@ -172,6 +172,15 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill">
       <UniqueIdentifier>{ca6f25a3-3f57-4f7d-bd0c-81b038c47176}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\NewFilter2">
+      <UniqueIdentifier>{b2b95b6d-1894-45c0-8f8b-52c6ac98da3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\NewFilter3">
+      <UniqueIdentifier>{4aeddc07-98a5-43ec-8b94-e7b9ab2c6d73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\NewFilter4">
+      <UniqueIdentifier>{e5b11e75-edb0-4201-9b0d-54c141b12eee}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\99. Union">
       <UniqueIdentifier>{c5996238-3bde-44b5-a712-86ae90bc08f3}</UniqueIdentifier>
     </Filter>
@@ -247,8 +256,8 @@
     <Filter Include="03..=====Object=====\01. Trigger\3. GateWay1">
       <UniqueIdentifier>{2b489e7d-d915-4f8f-aa83-66b4c90aa106}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\PlayerLightning">
-      <UniqueIdentifier>{b2b95b6d-1894-45c0-8f8b-52c6ac98da3f}</UniqueIdentifier>
+    <Filter Include="04. =====BlackBoard=====\3. Wave">
+      <UniqueIdentifier>{101c1d11-e336-4bd9-8c6d-562f2869d98a}</UniqueIdentifier>
     </Filter>
     <Filter Include="03..=====Object=====\01. Trigger\4. JumpBat">
       <UniqueIdentifier>{4357fc55-8d39-43e6-9125-a32fd672b8d2}</UniqueIdentifier>
@@ -501,6 +510,27 @@
     <ClInclude Include="Header\Trigger_Box.h">
       <Filter>03..=====Object=====\01. Trigger\3. GateWay1</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Hegrid.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PlayerLightning.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI_MonsterHP.h">
+      <Filter>05. =====AceUI=====</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpBat.h">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpBgm.h">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpMainBgm.h">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpMonster.h">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClInclude>
     <ClInclude Include="Header\Effect_Bubble.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect</Filter>
     </ClInclude>
@@ -510,11 +540,20 @@
     <ClInclude Include="Header\JumpMainBgm.h">
       <Filter>03..=====Object=====\01. Trigger\5. JumpMainBGM</Filter>
     </ClInclude>
-    <ClInclude Include="Header\JumpBgm.h">
-      <Filter>03..=====Object=====\01. Trigger\6. JumpBGM</Filter>
+    <ClInclude Include="Header\Bat.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Header\JumpMonster.h">
-      <Filter>03..=====Object=====\01. Trigger\7. JumpMonster</Filter>
+    <ClInclude Include="Header\BlackBoard_GateWay1.h">
+      <Filter>04. =====BlackBoard=====\3. Wave</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpMainBgm.h">
+      <Filter>03..=====Object=====\01. Trigger\5. JumpMainBGM</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\GateWay1.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Solid.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Header\UI.h">
       <Filter>05. =====AceUI=====</Filter>
@@ -752,11 +791,35 @@
     <ClCompile Include="Code\UI_FadeOut.cpp">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Trigger_Box.cpp">
-      <Filter>03..=====Object=====\01. Trigger\3. GateWay1</Filter>
+    <ClCompile Include="Code\Hegrid.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Effect_Bubble.cpp">
-      <Filter>02. =====AceGameObject=====\02. AceEffect</Filter>
+    <ClCompile Include="Code\PlayerLightning.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI_MonsterHP.cpp">
+      <Filter>05. =====AceUI=====</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\JumpMonster.cpp">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\JumpMainBgm.cpp">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\JumpBgm.cpp">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\JumpBat.cpp">
+      <Filter>03..=====Object=====\01. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI_MonsterHP.cpp">
+      <Filter>05. =====AceUI=====</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Bat.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\BlackBoard_GateWay1.cpp">
+      <Filter>04. =====BlackBoard=====\3. Wave</Filter>
     </ClCompile>
     <ClCompile Include="Code\JumpBat.cpp">
       <Filter>03..=====Object=====\01. Trigger\4. JumpBat</Filter>
@@ -764,11 +827,14 @@
     <ClCompile Include="Code\JumpMainBgm.cpp">
       <Filter>03..=====Object=====\01. Trigger\5. JumpMainBGM</Filter>
     </ClCompile>
-    <ClCompile Include="Code\JumpBgm.cpp">
-      <Filter>03..=====Object=====\01. Trigger\6. JumpBGM</Filter>
+    <ClCompile Include="Code\JumpMainBgm.cpp">
+      <Filter>03..=====Object=====\01. Trigger\5. JumpMainBGM</Filter>
     </ClCompile>
-    <ClCompile Include="Code\JumpMonster.cpp">
-      <Filter>03..=====Object=====\01. Trigger\7. JumpMonster</Filter>
+    <ClCompile Include="Code\GateWay1.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Solid.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Code\UI_MonsterHP.cpp">
       <Filter>05. =====AceUI=====\03. UI_MonsterHp</Filter>
