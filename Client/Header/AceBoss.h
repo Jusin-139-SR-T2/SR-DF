@@ -116,6 +116,8 @@ private:
 	_bool m_bBuffActive = false;
 	_bool m_bShitTrigger = false;
 	_bool m_bCollisionOn = false;
+	_bool m_bMakeGun = false;
+
 	// 조명관련 - 블랙보드 연동 
 	_bool m_bLightOn = FALSE;
 	void LightControl(const _float& fTimeDelta);
@@ -234,6 +236,17 @@ private:
 #pragma endregion
 
 };
+
+
+/* 스킬 공격력 정리 
+Falling Stone = 3
+Fire = 4
+EnergyBall = 4
+Thunder = 6
+
+일반 Atk = 3
+Heavy Atk = 5
+*/
 
 
 /* SPEED 정리

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "AceThrow.h"
 #include <AceBuilding.h>
+#include "PlayerAttackUnion.h"
+#include "Effect_HitPow.h"
 
 CAceThrow::CAceThrow(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
@@ -104,6 +106,7 @@ _int CAceThrow::Update_GameObject(const _float& fTimeDelta)
     else
         m_IsOnGround = false;
 
+
     // 빌보드 
     BillBoard(fTimeDelta);
 
@@ -124,6 +127,9 @@ _int CAceThrow::Update_GameObject(const _float& fTimeDelta)
 
     // 변수에 저장된 enum으로 texture 결정 - eaten 변경때문에 
     Change_Texture(m_pCurName);
+
+    // 물리바디 업데이트
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
 
     // Renderer 등록 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
@@ -588,7 +594,9 @@ void CAceThrow::OnCollision(CGameObject* pDst, const FContact* const pContact)
     if (pSolid)
     {
         _vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));
+
         m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * static_cast<_float>(pContact->fPenetration)));
+        
         if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
             m_IsOnGround = true;
     }
@@ -596,6 +604,24 @@ void CAceThrow::OnCollision(CGameObject* pDst, const FContact* const pContact)
 
 void CAceThrow::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
+
+    if (nullptr == pAceObj)
+        return;
+    else
+    {
+        CPlayerAttackUnion* pPlayerAttack = dynamic_cast<CPlayerAttackUnion*>(pAceObj);
+
+        if (nullptr == pPlayerAttack)
+            return;
+        else
+        {
+            Engine::Add_GameObject(L"GameLogic", CEffect_HitPow::Create(m_pGraphicDev,
+                m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+
+            Set_Dead();
+        }
+    }
 }
 
 void CAceThrow::OnCollisionExited(CGameObject* pDst)

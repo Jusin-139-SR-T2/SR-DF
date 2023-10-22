@@ -45,8 +45,8 @@ HRESULT CMonsterPunch::Ready_GameObject()
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	// 기본셋팅
-	m_fAttack = 4.f;
-	m_fHeavyAttack = 6.f;
+	m_fAttack = 3.f;
+	m_fHeavyAttack = 5.f;
 
 	// 충돌 - 구형 
 	m_pTransformComp->Readjust_Transform();
@@ -92,7 +92,7 @@ void CMonsterPunch::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 #pragma region 충돌 메쉬 콜라이더
-	MeshSphereColider(_float(pSphereShape->fRadius), 8, 16);
+	//MeshSphereColider(_float(pSphereShape->fRadius), 8, 16);
 #pragma endregion
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);

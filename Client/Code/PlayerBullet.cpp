@@ -86,7 +86,7 @@ void CPlayerBullet::Render_GameObject()
 	
 	if (*m_bDbugFrame)
 	{
-		MeshSphereColider(_float(pShape->fRadius), 30, 30);
+	//	MeshSphereColider(_float(pShape->fRadius), 30, 30);
 	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -139,7 +139,7 @@ HRESULT CPlayerBullet::Add_Component()
 
 	// 충돌 레이어, 마스크 설정
 	m_pColliderComp->Set_CollisionLayer(LAYER_PLAYER_ATTACK); // 이 클래스가 속할 충돌레이어 (플레이어 공격)
-	m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_BOSSMONSTER); // 얘랑 충돌해야하는 레이어들 (몬스터)
+	m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_BOSSMONSTER | LAYER_WALL); // 얘랑 충돌해야하는 레이어들 (몬스터)
 	return S_OK;
 }
 
@@ -165,19 +165,21 @@ void CPlayerBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const 
 		// 몬스터 피해  (데미지, 이 공격을 받은 타겟, 이 공격의 유형)
 		Change_MonsterHp(-m_tAttack.fDamage, pDst, m_tAttack.ePlayer_AttackState, m_pWeaponType);
 
-		// Test 공격 확인
-		if (m_tAttack.ePlayer_AttackState == PSITDONW_ATTACK)
-		{
-			OutputDebugString(L"플레이어가 앉아서 공격함 \n");
-		}
-		else
-		{
-			OutputDebugString(L"플레이어의 총알 충돌 \n");
-		}
+		//// Test 공격 확인
+		//if (m_tAttack.ePlayer_AttackState == PSITDONW_ATTACK)
+		//{
+		//	//OutputDebugString(L"플레이어가 앉아서 공격함 \n");
+		//}
+		//else
+		//{
+		//	//OutputDebugString(L"플레이어의 총알 충돌 \n");
+		//}
 
 		// 총알 삭제
 		Set_Dead(); //투사체는 사라짐 
 	}
+
+	//pContact->pBody
 }
 
 void CPlayerBullet::OnCollisionExited(CGameObject* pDst)

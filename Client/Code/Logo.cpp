@@ -65,9 +65,6 @@ _int CLogo::Update_Scene(const _float& fTimeDelta)
 			}
 		}
 	}
-	
-	
-	
 
 	return iExit;
 }
@@ -85,11 +82,16 @@ void CLogo::LateUpdate_Scene()
 		if (Engine::IsKey_Pressed(DIK_RETURN))
 		{
 			//CScene* pScene = CStage::Create(m_pGraphicDev);
-			CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Stage1");
-			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "BossStage");
+			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Stage1");
+			CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "BossStage");
 			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "Malone");
 			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "SeongHee");
 			//CScene* pScene = CScene_Parsed::Create(m_pGraphicDev, "TestPhysics");
+
+			/*주의
+			* 마법의 병은 Malone씬에서 넘어갈떄 트리거에 의해 작동하므로 그냥 성희맵으로 들어가면 마법의 병 적용x
+			*/
+
 			NULL_CHECK(pScene);
 
 			Engine::Set_Scene(pScene);
@@ -115,9 +117,6 @@ HRESULT CLogo::Ready_Texture()
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Scene/LogoShot.png", TEX_NORMAL, L"UI", L"Logo"), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Texture(L"../Client/Resource/Texture/Scene/Title.png", TEX_NORMAL, L"UI", L"Title"), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Texture(L"Resource/Texture/Scene/Title_%d.png", TEX_NORMAL, L"UI", L"Title", _range<_uint>(0U, 2U), E_FAIL);
-
-
-
 
 	return S_OK;
 }

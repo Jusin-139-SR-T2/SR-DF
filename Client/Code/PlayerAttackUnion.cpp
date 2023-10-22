@@ -160,19 +160,19 @@ void CPlayerAttackUnion::Change_MonsterHp(_float pAttack, CGameObject* _AttackTa
                         //보스충돌
 
                         if (STATE_RIGHTHAND::BEERBOTLE == _attacktype)
-                            pAttack = 5.f;
+                            pAttack = 1.5f;
                         else if (STATE_RIGHTHAND::FRYINGPAN == _attacktype)
-                            pAttack = 5.f;
+                            pAttack = 2.f;
                         else if (STATE_RIGHTHAND::GUN == _attacktype)
-                            pAttack = 7.f;
+                            pAttack = 4.f;
                         else if (STATE_RIGHTHAND::HAND == _attacktype)
-                            pAttack = 3.f;
-                        else if (STATE_RIGHTHAND::RUN_HAND == _attacktype)
                             pAttack = 1.f;
+                        else if (STATE_RIGHTHAND::RUN_HAND == _attacktype)
+                            pAttack = 0.f;
                         else if (STATE_RIGHTHAND::STEELPIPE == _attacktype)
-                            pAttack = 6.f;
+                            pAttack = 3.5f;
                         else if (STATE_RIGHTHAND::THOMPSON == _attacktype)
-                            pAttack = 10.f;
+                            pAttack = 6.f;
 
                         MonsterHp = pMonster->Get_MonsterHP();
                         // 몬스터 체력 계산

@@ -112,9 +112,6 @@
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion">
       <UniqueIdentifier>{4d7235d5-ebba-485f-bdeb-70a9af708dcb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\01. PlayerAttackUnion">
-      <UniqueIdentifier>{e23e79b3-2df7-484c-8e50-823d2f1ea1e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion">
       <UniqueIdentifier>{70659f66-630d-47a6-a4e9-309af33302cf}</UniqueIdentifier>
     </Filter>
@@ -171,9 +168,6 @@
     </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\00. Close Attack">
       <UniqueIdentifier>{62ff4301-9922-4291-bc8b-eea1daff7cf7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\01. Attack\02.">
-      <UniqueIdentifier>{7977318f-ce2b-4665-b2af-4052cbb15483}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill">
       <UniqueIdentifier>{ca6f25a3-3f57-4f7d-bd0c-81b038c47176}</UniqueIdentifier>
@@ -267,6 +261,27 @@
     </Filter>
     <Filter Include="03..=====Object=====\01. Trigger\7. JumpMonster">
       <UniqueIdentifier>{664f8a61-d70f-40b0-8054-a2268c14dac3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. =====AceUI=====\03. UI_MonsterHp">
+      <UniqueIdentifier>{9dc93cfc-43fe-467b-ae3a-7c37c73f8092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\03. NPC">
+      <UniqueIdentifier>{fd628615-312e-4792-9866-84dd94c3ba04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\01. Monster\01. TriggerMonster">
+      <UniqueIdentifier>{a5092dca-96fb-488c-adae-37415022bee1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\01. Monster\01. TriggerMonster\0. Bat">
+      <UniqueIdentifier>{3335ae69-f766-4f20-9c47-228624a4a575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\00. AceUnit\03. NPC\0. Hagrid">
+      <UniqueIdentifier>{cd5150da-11a5-4440-8320-752c268a0f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\06. CartridgeCase">
+      <UniqueIdentifier>{79f17db2-f5b2-4a03-a62d-97d32fa012ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\07. BulletHole">
+      <UniqueIdentifier>{7df10c66-56bd-41a5-a328-8f20239481cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -378,9 +393,6 @@
     <ClInclude Include="Header\TitleLogo.h">
       <Filter>01. =====Scene=====\00. Logo\TitleLogo</Filter>
     </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>05. =====AceUI=====</Filter>
-    </ClInclude>
     <ClInclude Include="Header\SpawnFire.h">
       <Filter>02. =====AceGameObject=====\00. AceUnit\02. AttackUnion\00. MonsterAttackUnion\02. Boss Skill\02. Fire</Filter>
     </ClInclude>
@@ -486,20 +498,8 @@
     <ClInclude Include="Header\Trigger_Box.h">
       <Filter>03..=====Object=====\01. Trigger\3. GateWay1</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Hegrid.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\PlayerLightning.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\UI_MonsterHP.h">
-      <Filter>05. =====AceUI=====</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Effect_Bubble.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Bat.h">
-      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Header\JumpBat.h">
       <Filter>03..=====Object=====\01. Trigger\4. JumpBat</Filter>
@@ -513,11 +513,32 @@
     <ClInclude Include="Header\JumpMonster.h">
       <Filter>03..=====Object=====\01. Trigger\7. JumpMonster</Filter>
     </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>05. =====AceUI=====</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI_MonsterHP.h">
+      <Filter>05. =====AceUI=====\03. UI_MonsterHp</Filter>
+    </ClInclude>
+    <ClInclude Include="Npc.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\03. NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PlayerLightning.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\PlayerLightning</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Bat.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\01. TriggerMonster\0. Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Hagrid.h">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\03. NPC\0. Hagrid</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_CartridgeCase.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\06. CartridgeCase</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_BulletHole.h">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\07. BulletHole</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Include\Client.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Include\stdafx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -728,20 +749,8 @@
     <ClCompile Include="Code\Trigger_Box.cpp">
       <Filter>03..=====Object=====\01. Trigger\3. GateWay1</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Hegrid.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\PlayerLightning.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\UI_MonsterHP.cpp">
-      <Filter>05. =====AceUI=====</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Effect_Bubble.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Bat.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Code\JumpBat.cpp">
       <Filter>03..=====Object=====\01. Trigger\4. JumpBat</Filter>
@@ -754,6 +763,30 @@
     </ClCompile>
     <ClCompile Include="Code\JumpMonster.cpp">
       <Filter>03..=====Object=====\01. Trigger\7. JumpMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\UI_MonsterHP.cpp">
+      <Filter>05. =====AceUI=====\03. UI_MonsterHp</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\Client.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\03. NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PlayerLightning.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\00. Player\02. Skill\PlayerLightning</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Bat.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\01. Monster\01. TriggerMonster\0. Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Hagrid.cpp">
+      <Filter>02. =====AceGameObject=====\00. AceUnit\03. NPC\0. Hagrid</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_CartridgeCase.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\06. CartridgeCase</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_BulletHole.cpp">
+      <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\07. BulletHole</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -218,6 +218,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     else
         m_IsOnGround = false;
 
+
     // 몬스터 죽이기 
     if (m_gHp.Cur <= 0 && FALSE == m_bDeadState)
         MonsterDead();
@@ -277,9 +278,8 @@ void CGray::Render_GameObject()
     m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
-    MeshSphereColider(_float(pSphereShape->fRadius), 32, 16);
-    //MeshBoxColider(_float(pBoxShape->vHalfSize.x), _float(pBoxShape->vHalfSize.y), _float(pBoxShape->vHalfSize.z));
-#pragma endregion
+    //MeshSphereColider(_float(pSphereShape->fRadius), 32, 16);
+ #pragma endregion
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

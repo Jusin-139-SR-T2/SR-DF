@@ -298,6 +298,24 @@ void CAceWeapon::OnCollision(CGameObject* pDst, const FContact* const pContact)
 
 void CAceWeapon::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
+
+    if (nullptr == pAceObj)
+        return;
+    else
+    {
+        CPlayerAttackUnion* pPlayerAttack = dynamic_cast<CPlayerAttackUnion*>(pAceObj);
+
+        if (nullptr == pPlayerAttack)
+            return;
+        else
+        {
+            Engine::Add_GameObject(L"GameLogic", CEffect_HitPow::Create(m_pGraphicDev,
+                m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y, m_pTransformComp->Get_Pos().z, this));
+
+            Set_Dead();
+        }
+    }
 }
 
 void CAceWeapon::OnCollisionExited(CGameObject* pDst)

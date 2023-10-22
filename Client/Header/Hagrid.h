@@ -16,14 +16,14 @@ class CCalculatorComponent;
 
 END
 
-class CHegrid : public CAceUnit
+class CHagrid : public CAceUnit
 {
-	DERIVED_CLASS(CAceUnit, CHegrid)
+	DERIVED_CLASS(CAceUnit, CHagrid)
 
 protected:
-	explicit CHegrid(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CHegrid(const CHegrid& rhs);
-	virtual ~CHegrid();
+	explicit CHagrid(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CHagrid(const CHagrid& rhs);
+	virtual ~CHagrid();
 	virtual void	Free();
 
 protected:
@@ -34,10 +34,12 @@ protected:
 	virtual void		Render_GameObject() override;
 
 public:
-	static CHegrid* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CHagrid* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CHagrid* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject tObjectSerial);
 
 private:
 	HRESULT				Add_Component();
+	void	Height_On_Terrain();
 
 	CRcBufferComp* m_pBufferComp = nullptr;
 	CTextureComponent* m_pTextureComp = nullptr;
@@ -46,11 +48,9 @@ private:
 	CCalculatorComponent* m_pCalculatorComp = nullptr;
 	CTransformComponent* m_pPlayerTransformcomp = nullptr;
 
-	FRAME						m_tFrame;
-
 	_vec3						m_vPos = { 0.f, 0.f, 0.f };
 
 private:
 	HRESULT						Billboard(const _float& fTimeDelta);
-	//HRESULT						Get_PlayerPos();
+	//HRESULT					Get_PlayerPos();
 };

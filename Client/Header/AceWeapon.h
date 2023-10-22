@@ -59,11 +59,11 @@ private: // 함수
 
 private: // 변수 
 	CPlayer::OBJECT_NAME			m_pCurName;
+	OBJECT_CLASS		m_eFactoryClass;
 	_float m_fHp = 2.f;
 	_float m_fBrokenHp = 0.f;
 	_float m_fCrackedHp = 1.f;
 	_float m_fMaxHP = 2.f;
-	OBJECT_CLASS		m_eFactoryClass;
 	_bool m_bWeaponGearup = false;
 
 private:

@@ -1,12 +1,12 @@
 {
     "header": {
         "type": 4,
-        "name": "Cola"
+        "name": "Hagird"
     },
-    "class": 5,
-    "class_name": "AceFood",
-    "group_key": "Food",
-    "texture_key": "Cola",
+    "class": 6,
+    "class_name": "Hagrid",
+    "group_key": "NPC",
+    "texture_key": "Hagrid",
     "pos": {
         "x": 0.0,
         "y": 0.0,
@@ -18,7 +18,7 @@
         "z": 0.0
     },
     "scale": {
-        "x": 0.5,
+        "x": 1.0,
         "y": 1.0,
         "z": 1.0
     },

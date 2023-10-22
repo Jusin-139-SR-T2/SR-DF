@@ -98,8 +98,6 @@ _uint CLoading::Loading_For_Stage()
 // 텍스처 매니저 텍스처 추가
 HRESULT CLoading::Loading_For_Texture()
 {
-	// NPC
-	Load_Texture(L"./Resource/Texture/NPC/Hegrid.png", TEX_NORMAL, L"Hegrid", L"Idle");
 
 #pragma region Terrain, Default
 	Load_Texture(L"./Resource/Texture/Tile/Tile/22.jpg", TEX_NORMAL, L"Tile", L"22");
@@ -282,6 +280,7 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/Item/Weapon/WallPipe.png", TEX_NORMAL, L"Weapon", L"WallPipe");
 	Load_Texture(L"./Resource/Texture/Item/Weapon/Pistol.png", TEX_NORMAL, L"Weapon", L"Pistol");
 	Load_Texture(L"./Resource/Texture/Item/Weapon/Bottle.png", TEX_NORMAL, L"Weapon", L"Bottle");
+	Load_Texture(L"./Resource/Texture/Item/Weapon/Ammo.png", TEX_NORMAL, L"Weapon", L"Ammo");
 
 	//Object - Throw 
 	Load_Texture(L"./Resource/Texture/Item/Throw/ScrunchedPaper_0.png", TEX_NORMAL, L"Throw", L"ScrunchedPaper_0");
@@ -417,11 +416,14 @@ HRESULT CLoading::Loading_For_Texture()
 	
 	// 폭발
 	Load_Texture(L"./Resource/Texture/AceEffect/Explosion/Explosion (%d).png", TEX_NORMAL, L"Effect", L"Explosion", _range<_uint>(0U, 71U)); 
-	
-	// 번개
 	Load_Texture(L"./Resource/Texture/AceEffect/Lightning/Lightning (%d).png", TEX_NORMAL, L"Effect", L"Lightning", _range<_uint>(0U, 3U)); 
-
 	Load_Texture(L"./Resource/Texture/AceEffect/Bubble/Bubble_%d.png", TEX_NORMAL, L"Effect", L"Bubble", _range<_uint>(0U, 7U)); 
+
+	// 플레이어 총이펙트
+	Load_Texture(L"./Resource/Texture/AceEffect/CartridgeCase/Cartridge_%d.png", TEX_NORMAL, L"Effect", L"Cartridge", _range<_uint>(0U, 9U)); 
+	Load_Texture(L"./Resource/Texture/AceEffect/Hole/BulletHoles1.png", TEX_NORMAL, L"Effect", L"BulletHoles1"); 
+	Load_Texture(L"./Resource/Texture/AceEffect/Hole/BulletHoles2.png", TEX_NORMAL, L"Effect", L"BulletHoles2"); 
+
 
 #pragma endregion 
 
@@ -793,6 +795,11 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/UI/Health.png", TEX_NORMAL, L"UI_HpBar", L"Health");
 	Load_Texture(L"./Resource/Texture/UI/Stamina.png", TEX_NORMAL, L"UI_HpBar", L"Stamina");
 
+	// NPC
+	Load_Texture(L"./Resource/Texture/NPC/Hegrid.png", TEX_NORMAL, L"NPC", L"Hagrid");
+	Load_Texture(L"./Resource/Texture/Monster/Hegrid.png", TEX_NORMAL, L"NPC", L"Hagrid2");
+	Load_Texture(L"./Resource/Texture/Monster/Hagrid.png", TEX_NORMAL, L"NPC", L"Hagrid3");
+
 #pragma endregion
 
 #pragma region 4차
@@ -820,10 +827,8 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/CubeTexture/Fourth/WhiteLight.dds", TEX_NORMAL, L"Fourth", L"WhiteLight");
 	Load_Texture(L"./Resource/Texture/CubeTexture/Fourth/YellowLight.dds", TEX_NORMAL, L"Fourth", L"YellowLight");
 
-
-
-
 #pragma endregion
+
 
 	Wait_LoadTextureAsync();
 

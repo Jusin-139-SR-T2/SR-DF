@@ -59,7 +59,6 @@ HRESULT CEnergyBall::Ready_GameObject()
 	m_pTransformComp->Readjust_Transform();
 	m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform()); // 충돌 불러오는곳 
 	pShape = dynamic_cast<FCollisionSphere*>(m_pColliderComp->Get_Shape());
-	pShape->fRadius = 0.4f;
 
 	Engine::Play_Sound(L"Enemy", L"_EnergyBallA.wav", SOUND_ENEMY_EFFECT, 0.4f);
 

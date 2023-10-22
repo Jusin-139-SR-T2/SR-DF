@@ -17,6 +17,7 @@
 #include "AceUnit.h"
 #include "AceWeapon.h"
 #include "PlayerLightning.h"
+#include "Effect_CartridgeCase.h"
 
 //테스트
 #include "UI_PlayerHurt.h"
@@ -305,13 +306,13 @@ void CPlayer::Render_GameObject()
 
     if (bDbugFrame)
     {
-        m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-
-        MeshSphereColider(10.f, 30, 30);
-        MeshBoxColider(5.f, 20.f, 20.f);
-        //m_pBufferComp->Render_Buffer();
-
-        m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+       // m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+       //
+       // MeshSphereColider(10.f, 30, 30);
+       // MeshBoxColider(5.f, 20.f, 20.f);
+       // //m_pBufferComp->Render_Buffer();
+       //
+       // m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
     }
 
     m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -948,31 +949,7 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
 
         Engine::Add_GameObject(L"UI", CUI_PlayerHurt::Create(m_pGraphicDev));
 
-        if(Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else if (Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else if (Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else if (Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (3).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else if (Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (4).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else if (Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (5).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else if (Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (6).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else if (Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (7).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else if (Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (8).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else if (Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (9).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else if (Random_variable(10))
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (10).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-        else
-            Engine::Play_Sound(L"FallenAces", L"PlayerHurt (11).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
-
+       
         if (pMonster == nullptr) 
         {
             CMonsterAttackUnion* pMonsterSkill = dynamic_cast<CMonsterAttackUnion*>(pAceObj);
@@ -981,6 +958,31 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
                 return;
             else
             {
+                if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (3).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (4).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (5).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (6).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (7).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (8).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (9).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else if (Random_variable(10))
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (10).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                else
+                    Engine::Play_Sound(L"FallenAces", L"PlayerHurt (11).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
                 // 충돌한게 몬스터의 스킬일때  진행하는곳 
                 m_bHitState = true;
             }
@@ -988,6 +990,31 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
         }
         else
         {
+            if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (3).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (4).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (5).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (6).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (7).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (8).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (9).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else if (Random_variable(10))
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (10).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            else
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (11).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+
             // 충돌한게 몬스터일때 진행하는곳
             switch (m_eRIGHTState)
             {
@@ -2791,6 +2818,10 @@ void CPlayer::Right_Gun(float fTimeDelta)
                 this, m_eAttackState, (ETEAM_ID)Get_TeamID(),                    // 공격유형, 팀
                 100.f, 1.f, 10.f, 1.f, m_eRIGHTState));                                           // 속도, 삭제시간, 데미지, 크기
 
+            Engine::Add_GameObject(L"GameLogic", CEffect_CartridgeCase::Create(m_pGraphicDev,                // 레이어, 디바이스
+                m_pTransformComp->Get_Pos().x + 1.f, m_pTransformComp->Get_Pos().y + 0.5f, m_pTransformComp->Get_Pos().z, 
+                m_pTransformComp->Get_Right(), m_pOwner));
+
             m_bAttack = false;  // 공격 Off
         }
     }
@@ -3661,7 +3692,7 @@ void CPlayer::LineEvent()
         return;
 
     CAceWeapon* pWeapon = dynamic_cast<CAceWeapon*>(pAceObj);
-    
+    // Weapon 피킹 
     if (pWeapon != nullptr)
     {
         pWeapon->Set_Weapon_GearUp(true);
@@ -3670,34 +3701,37 @@ void CPlayer::LineEvent()
         switch (m_eObjectName)
         {
         case CPlayer::OBJECT_NAME::NONE:
-            Engine::Play_Sound(L"FallenAces", L"Crack.mp3", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            Engine::Play_Sound(L"FallenAces", L"Crack.mp3", SOUND_PLAYER, m_tPlayerSound.m_fSoundVolume);
             pWeapon->Set_Dead();
             break;
         case CPlayer::OBJECT_NAME::GUN:
-            Engine::Play_Sound(L"FallenAces", L"Nice (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            Engine::Play_Sound(L"FallenAces", L"LooseSpin.wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            Engine::Play_Sound(L"FallenAces", L"Nice (2).wav", SOUND_PLAYER, m_tPlayerSound.m_fSoundVolume);
             pWeapon->Set_Dead();
             break;
         case CPlayer::OBJECT_NAME::THOMPSON:
-            Engine::Play_Sound(L"FallenAces", L"Nice (2).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            Engine::Play_Sound(L"FallenAces", L"Reload.wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            Engine::Play_Sound(L"FallenAces", L"Nice (2).wav", SOUND_PLAYER, m_tPlayerSound.m_fSoundVolume);
             pWeapon->Set_Dead();
             break;
         case CPlayer::OBJECT_NAME::STEELPIPE:
-            Engine::Play_Sound(L"FallenAces", L"Nice (3).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            Engine::Play_Sound(L"FallenAces", L"Nice (3).wav", SOUND_PLAYER, m_tPlayerSound.m_fSoundVolume);
             pWeapon->Set_Dead();
             break;
         case CPlayer::OBJECT_NAME::BEERBOTLE:
-            Engine::Play_Sound(L"FallenAces", L"Nice (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            Engine::Play_Sound(L"FallenAces", L"BottlePickup.wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            Engine::Play_Sound(L"FallenAces", L"Nice (1).wav", SOUND_PLAYER, m_tPlayerSound.m_fSoundVolume);
             pWeapon->Set_Dead();
             break;
         case CPlayer::OBJECT_NAME::FRYINGPAN:
-            Engine::Play_Sound(L"FallenAces", L"Nice (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+            Engine::Play_Sound(L"FallenAces", L"Nice (0).wav", SOUND_PLAYER, m_tPlayerSound.m_fSoundVolume);
             pWeapon->Set_Dead();
             break;
         }
     }
 
     CAceFood* pFood = dynamic_cast<CAceFood*>(pAceObj);
-
+    // Food 피킹 
     if (pFood != nullptr)
     {
         pFood->Set_FOOD_EAT(true);
@@ -3708,6 +3742,8 @@ void CPlayer::LineEvent()
             m_gHp.Cur = 100.f;
 
     }
+    else
+    { }
 }
 
 void CPlayer::RayAttack(CGameObject* _pDst, _float _fAttack, PLAYER_ATTACK_STATE _eAttackState)

@@ -232,11 +232,21 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 
 	// 죽는모션이 하나뿐이라서 충돌체 가리지않고 그냥 0 되면 죽음 
 	if (m_gHp.Cur <= 0 && FALSE == m_bDeadState)
+	{
+		Engine::Play_Sound(L"FallenAces", L"DeadCaution.mp3", SOUND_EFFECT, 0.4f);
 		m_tState_Obj.Set_State(STATE_OBJ::DEATH);
-
+	}
 	//보스 페이즈 갱신 
 	Change_Phase();
+	
+	//톰슨소환 
+	if (m_gHp.Cur <= 55 && !m_bMakeGun)
+	{
+		Engine::Add_GameObject(L"GameLogic", CAceObjectFactory::Create(m_pGraphicDev, OBJECT_CLASS::WEAPON, L"TommyGun",
+			m_pTransformComp->Get_Pos().x, m_pTransformComp->Get_Pos().y + 1.5f, m_pTransformComp->Get_Pos().z));
 
+		m_bMakeGun = true;
+	}
 
 	// 빌보드
 	if (FALSE == m_bDeadState)
@@ -407,6 +417,12 @@ void CAceBoss::OnCollisionEntered(CGameObject* pDst, const FContact* const pCont
 				m_bCollisionOn = true;
 				Add_BasicEffect(m_pOwner); // 이펙트 추가
 
+				// 피격시 반격먼저 해보고 안되면 히트로 넘어감
+				if (Random_variable(50))
+					m_tState_Obj.Set_State(STATE_OBJ::SHOOTING);
+				if (Random_variable(50))
+					m_tState_Obj.Set_State(STATE_OBJ::FALLING_STONE);
+
 				if (m_tStat.iDazedHP >= m_gHp.Cur && FALSE == m_bDazedState)
 				{
 					OutputDebugString(L"▷Brown - 충돌판정 DAZED 진입   \n");
@@ -430,6 +446,12 @@ void CAceBoss::OnCollisionEntered(CGameObject* pDst, const FContact* const pCont
 		{
 			//==== 플레이어와 충돌 =====================================
 			m_bCollisionOn = true;
+
+			if (Random_variable(50))
+				m_tState_Obj.Set_State(STATE_OBJ::SHOOTING);
+			if (Random_variable(50))
+				m_tState_Obj.Set_State(STATE_OBJ::FALLING_STONE);
+
 			switch (ePlayerRighthand)
 			{
 			case Engine::STATE_RIGHTHAND::RUN_HAND:	//달릴때 
@@ -447,18 +469,11 @@ void CAceBoss::OnCollisionEntered(CGameObject* pDst, const FContact* const pCont
 			}
 		}
 	}
-
 	else if (Check_Relation(pAceObj, this) == ERELATION::NUETRAL) // 오브젝트 충돌 
 		return;	//m_tState_Obj.Set_State(STATE_OBJ::HIT);
 
 	// 피격의 40프로 확률로 반격 시전 - 반격의 종류는 반반확률  
-	if (Random_variable(25))
-	{
-		if (Random_variable(50))
-			m_tState_Obj.Set_State(STATE_OBJ::FALLING_STONE);
-		else
-			m_tState_Obj.Set_State(STATE_OBJ::HEAVYSHOOT);
-	}
+
 }
 void CAceBoss::OnCollisionExited(CGameObject* pDst)
 {
@@ -776,7 +791,7 @@ void CAceBoss::AI_Chase(float fDeltaTime)
 			{
 				m_fTriggerHP = 90.f;
 				m_bPhaseStart = TRUE;
-				m_tState_Obj.Set_State(STATE_OBJ::PHASE1_INSTALL);
+				//m_tState_Obj.Set_State(STATE_OBJ::PHASE1_INSTALL);
 			}
 			else if(m_fTriggerHP > HP) // 15단위 깎을때마다 나오는 패턴 
 			{

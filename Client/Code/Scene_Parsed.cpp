@@ -157,12 +157,7 @@ HRESULT CScene_Parsed::Ready_Layer_Completed()
 
     Add_GameObject(L"GameLogic", L"PlayerLighter", CPlayerLighter::Create(m_pGraphicDev));
     Add_GameObject(L"GameLogic", L"PlayerGunLighter", CPlayerGunLighter::Create(m_pGraphicDev));
-    /*for (size_t i = 0; i < 3000; i++)
-    {
-        Add_GameObject(L"GameLogic", CAceBuilding::Create(m_pGraphicDev, L"Test", 0.f, 0.f, 0.f));
-    }*/
     
-
     return S_OK;
 }
 
@@ -186,6 +181,7 @@ void CScene_Parsed::SoundReady(string _scene)
     else if (_scene.compare("SeongHee") == 0)
     {
         Engine::StopAll();
+       // Engine::Play_BGM(L"FallenAces", L"Ambience_Outside.wav", 0.5f); 
 
     }
 

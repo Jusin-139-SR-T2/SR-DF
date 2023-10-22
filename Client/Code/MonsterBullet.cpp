@@ -50,7 +50,7 @@ HRESULT CMonsterBullet::Ready_GameObject()
 	pSphereShape->fRadius = 0.3f;
 
 	//디버그용 텍스쳐
-	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Debug", L"Sphere");
+	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"Ammo");
 	m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
 	return S_OK;
 }
@@ -76,10 +76,19 @@ void CMonsterBullet::LateUpdate_GameObject()
 void CMonsterBullet::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformComp->Get_Transform());
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &((*m_pTextureComp->Get_Transform()) * (*m_pTransformComp->Get_Transform())));
+	m_pTextureComp->Render_Texture();
+	m_pBufferComp->Render_Buffer();
 
 #pragma region 충돌 메쉬 콜라이더
-	MeshSphereColider(_float(pSphereShape->fRadius), 8, 16);
+	//MeshSphereColider(_float(pSphereShape->fRadius), 32, 16);
 #pragma endregion
+
+	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 
@@ -135,8 +144,6 @@ void CMonsterBullet::OnCollisionEntered(CGameObject* pDst, const FContact* const
 {
 	if(false == Attack_Occurrence(pDst, m_fAttack))
 		m_pTransformComp->Move_Pos(&vDir, 0.001f, m_fMovingSpeed); // 충돌했는데 대상이 죽었으면 계속 움직
-
-	
 }
 
 void CMonsterBullet::OnCollisionExited(CGameObject* pDst)

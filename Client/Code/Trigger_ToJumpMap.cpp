@@ -120,6 +120,7 @@ void CTrigger_ToJumpMap::OnCollision(CGameObject* pDst, const FContact* const pC
 void CTrigger_ToJumpMap::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
     Engine::Add_GameObject(L"UI", CUI_FadeOut::Create(m_pGraphicDev)); // 페이드아웃 먼저 생성
+    Engine::Play_Sound(L"FallenAces", L"BreakWindow.mp3", SOUND_PLAYER_EFFECT, 0.7f);
 }
 
 void CTrigger_ToJumpMap::OnCollisionExited(CGameObject* pDst)

@@ -142,6 +142,9 @@ _int CAceInteraction::Update_GameObject(const _float& fTimeDelta)
     // 변수에 저장된 enum으로 texture 결정 - eaten 변경때문에 
     Change_Texture(m_pCurName);
 
+    // 물리바디 업데이트
+    m_pColliderComp->Update_Physics(*m_pTransformComp->Get_Transform());
+
     // Renderer 등록 
     Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 

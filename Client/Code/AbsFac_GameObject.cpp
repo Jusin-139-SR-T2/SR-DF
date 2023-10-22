@@ -18,6 +18,7 @@
 #include "JumpBat.h"
 #include "JumpMonster.h"
 #include "JumpMainBgm.h"
+#include "Hagrid.h"
 
 #include "Serialize_BaseClass.h"
 
@@ -130,6 +131,9 @@ CGameObject* CAbsFac_GameObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSe
 	{
 		return static_cast<CGameObject*>(CJumpMainBgm::Create(pGraphicDev, tObject));
 	}
-
+	else if (strType == "Hagrid")
+	{
+		return static_cast<CGameObject*>(CHagrid::Create(pGraphicDev, tObject));
+	}
 	return static_cast<CGameObject*>(nullptr);
 }

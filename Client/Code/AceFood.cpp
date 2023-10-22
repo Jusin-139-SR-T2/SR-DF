@@ -146,6 +146,7 @@ _int CAceFood::Update_GameObject(const _float& fTimeDelta)
     else
         m_IsOnGround = false;
 
+
     // ºôº¸µå 
     BillBoard(fTimeDelta);
     
@@ -293,7 +294,10 @@ void CAceFood::FoodName(const _tchar* pObjTag)
         m_fHp = 20.f;
     }
     else
+    {
         m_pCurName = CAceFood::FOOD_NAME::FOOD_END;
+        m_fHp = 0.f;
+    }
 }
 
 void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat)
@@ -312,8 +316,6 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat
                 m_pTransformComp->Get_Pos().x, 
                 m_pTransformComp->Get_Pos().y,
                 m_pTransformComp->Get_Pos().z));
-
-             m_bDead = FALSE; 
             break;
 
         case CAceFood::FOOD_NAME::BANANA:
@@ -336,7 +338,7 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat
                                     m_pTransformComp->Get_Pos().x,
                                     m_pTransformComp->Get_Pos().y,
                                     m_pTransformComp->Get_Pos().z));
-             m_bDead = TRUE;
+             Set_Dead();
             break;
 
         case CAceFood::FOOD_NAME::MEDIKIT:
@@ -346,8 +348,8 @@ void CAceFood::Eat_Food(FOOD_NAME eCurName, const _float& fTimeDelta, _bool bEat
             Engine::Add_GameObject(L"GameLogic", CEffect_Bubble::Create(m_pGraphicDev,
                                     m_pTransformComp->Get_Pos().x,
                                     m_pTransformComp->Get_Pos().y,
-                                    m_pTransformComp->Get_Pos().z)); 
-            m_bDead = TRUE;
+                                    m_pTransformComp->Get_Pos().z));
+            Set_Dead();
             break;
 
         case CAceFood::FOOD_NAME::EATENAPPLE:
@@ -403,8 +405,10 @@ void CAceFood::Serialize_FoodName(wstring _ObjName)
         m_fHp = 20.f;
     }
     else
+    {
         m_pCurName = CAceFood::FOOD_NAME::FOOD_END;
-
+        m_fHp = 0.f;
+    }
 }
 /*
 APPLE, BANANA, COLA, MEDIKIT,

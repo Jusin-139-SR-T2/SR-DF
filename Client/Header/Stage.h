@@ -18,6 +18,7 @@
 #include "UI_PlayerFace.h"
 //test
 #include "UI_MonsterHP.h"
+#include "Hagrid.h"
 
 class CStage : public Engine::CScene
 {
