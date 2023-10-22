@@ -4,6 +4,7 @@
 #include "Engine_Define.h"
 
 #include "BlackBoard_Player.h"
+#include "BlackBoard_Monster.h"
 #include "BlackBoardPtr.h"
 #include "BlackBoardMgr.h"
 
@@ -42,7 +43,8 @@ protected:
 	CTransformComponent*	m_pTransformComp = nullptr;
 	CTextureComponent*		m_pTextureComp = nullptr;
 
-	FBlackBoardPtr<CBlackBoard_Player>	m_wpBlackBoard_Player;	// 블랙보드 플레이어
+	FBlackBoardPtr<CBlackBoard_Player>		m_wpBlackBoard_Player;	// 블랙보드 플레이어
+	FBlackBoardPtr<CBlackBoard_Monster>		m_wpBlackBoard_Monster; // 블랙보드용 
 
 protected:
 	_float				m_fX, m_fY, m_fSizeX, m_fSizeY;

@@ -86,7 +86,6 @@ private:
 	_bool		m_AttackOnce = FALSE;
 	_bool		m_bCollisionEnter = TRUE;
 	_bool		m_bSecondFall = FALSE;
-
 	// 외부타격으로 인한 죽음
 	enum class RECENT_COL {PLAYER, PLAYERATK, BOSSATK, RECEND_END};
 	

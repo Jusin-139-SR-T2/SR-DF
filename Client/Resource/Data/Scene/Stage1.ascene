@@ -22571,6 +22571,70 @@
                     },
                     "group_key": "Food",
                     "texture_key": "Cola"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Banana"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 13.228132247924805,
+                        "y": 0.481315016746521,
+                        "z": 15.375838279724121
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Food",
+                    "texture_key": "Banana"
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "PeelBanana"
+                    },
+                    "ID": 5,
+                    "class_name": "AceFood",
+                    "tags": [],
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 11.23022747039795,
+                        "y": 0.4954848289489746,
+                        "z": 18.157907485961914
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "group_key": "Food",
+                    "texture_key": "BananaPeel"
                 }
             ]
         },

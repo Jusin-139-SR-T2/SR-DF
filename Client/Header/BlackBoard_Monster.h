@@ -57,15 +57,18 @@ private:
 public:		// 데이터 가공의 성격을 띌때는 해당 함수를 직접 만들것.
 	GETSET_EX2(_bool, m_bLightOn, ControlLight, GET, SET)
 	GETSET_EX2(GAUGE<_float>, m_gBossHP, BossHP, GET_C_REF, GET_REF)
-	GETSET_EX2(GAUGE<_float>, m_gBrownHP, BrownHP, GET_C_REF, GET_REF)
-	GETSET_EX2(GAUGE<_float>, m_gGrayHP, GrayHP, GET_C_REF, GET_REF)
+	GETSET_EX2(GAUGE<_float>, m_gMonsterHP, MonsterHP, GET_C_REF, GET_REF)
+	GETSET_EX2(CGameObject*, m_pHpOwner, HPOwner, SET_REF, GET_REF)
+	GETSET_EX2(wstring, m_Owner, Owner, SET_REF, GET_REF)
 
 
 private:
 	_bool				m_bLightOn;
 	GAUGE<_float>		m_gBossHP;	//보스hp ui에 저장용
-	GAUGE<_float>		m_gBrownHP; // brown hp ui에 저장용
-	GAUGE<_float>		m_gGrayHP;	// gray hp - ui에 저장용 
+	GAUGE<_float>		m_gMonsterHP;	// gray hp - ui에 저장용 
+	CGameObject*		m_pHpOwner;
+	wstring				m_Owner;
 
+//	GETSET_EX2(CTextureComponent*, m_pRightHandComp, m_pRightHandComp, GET, SET)
 };
 

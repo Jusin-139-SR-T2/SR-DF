@@ -10,6 +10,7 @@
 #include <AceBuilding.h>
 #include "Hegrid.h"
 
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 {
@@ -123,18 +124,29 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bullet", CBullet::Create(m_pGraphicDev)), E_FAIL);
 
 	// Monster - TEST중이라 상시로 서로 위치 바뀝니다. 
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CAceBoss::Create(m_pGraphicDev, 65.f, 1.f, 25.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CAceBoss::Create(m_pGraphicDev, 65.f, 1.f, 25.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown3", CBrown::Create(m_pGraphicDev, 20.f, 1.f, 40.f)), E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray2",  CGray::Create(m_pGraphicDev, 35.f, 1.f, 50.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray", CGray::Create(m_pGraphicDev, 35.f, 1.f, 25.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown",  CBrown::Create(m_pGraphicDev, 20.f, 1.f, 20.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown2", CBrown::Create(m_pGraphicDev, 20.f, 1.f, 25.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray4",  CGray::Create(m_pGraphicDev, 20.f, 1.f, 35.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray5",  CGray::Create(m_pGraphicDev, 20.f, 1.f, 40.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray6",  CGray::Create(m_pGraphicDev, 20.f, 1.f, 45.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray7",  CGray::Create(m_pGraphicDev, 20.f, 1.f, 50.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray8",  CGray::Create(m_pGraphicDev, 20.f, 1.f, 55.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray2",  CGray::Create(m_pGraphicDev, 15.f, 1.f, 50.f)), E_FAIL);
+	
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray4",  CBrown::Create(m_pGraphicDev, 15.f, 1.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray5",  CBrown::Create(m_pGraphicDev, 15.75f, 1.f, 22.5f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray6",  CBrown::Create(m_pGraphicDev, 17.5f, 1.f, 24.25f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray7",  CBrown::Create(m_pGraphicDev, 20.f, 1.f, 25.f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray8",  CBrown::Create(m_pGraphicDev, 22.5f, 1.f, 24.25f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gray",   CBrown::Create(m_pGraphicDev, 24.25f, 1.f, 22.5f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown3", CBrown::Create(m_pGraphicDev, 25.f, 1.f, 20.f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown",  CBrown::Create(m_pGraphicDev, 24.25f, 1.f, 17.5f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown2", CBrown::Create(m_pGraphicDev, 22.5f, 1.f, 15.75f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown21", CBrown::Create(m_pGraphicDev, 20.f, 1.f, 15.f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown22", CBrown::Create(m_pGraphicDev, 17.5f, 1.f, 15.75f)), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Brown23", CBrown::Create(m_pGraphicDev, 15.75f, 1.f, 17.5f)), E_FAIL);
+
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Boss", CBoss::Create(m_pGraphicDev, 60.f, 1.f, 25.f)), E_FAIL);
 
 	// 스킬 실험실
@@ -219,6 +231,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Player", CUI_Player::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CrossHair", CUI_CrossHair::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_PlayerFace", CUI_PlayerFace::Create(m_pGraphicDev)), E_FAIL);
+
 	
 	m_mapLayer.insert({ pLayerTag, pLayer });
 	

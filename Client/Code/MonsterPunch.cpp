@@ -134,12 +134,12 @@ void CMonsterPunch::OnCollisionEntered(CGameObject* pDst, const FContact* const 
 	
 	if (nullptr == pGray)
 	{
-		Engine::Play_Sound(L"Enemy", L"_HitPunch.mp3", SOUND_ENEMY_MONSTER_EFFECT, 0.6f);
+		Engine::Play_Sound(L"Enemy", L"_HitPunch.mp3", SOUND_ENEMY_NORMAL_EFFECT, 0.6f);
 	}
 	else
 	{
 		// Gray가 만든것 
-		Engine::Play_Sound(L"Enemy", L"_PipeHit.wav", SOUND_ENEMY_MONSTER_EFFECT, 0.6f);
+		Engine::Play_Sound(L"Enemy", L"_PipeHit.wav", SOUND_ENEMY_NORMAL_EFFECT, 0.6f);
 	}
 	
 
