@@ -39,7 +39,7 @@ public:
 
 private:
 	HRESULT				Add_Component();
-	void	Height_On_Terrain();
+	void				Height_On_Terrain();
 
 	CRcBufferComp* m_pBufferComp = nullptr;
 	CTextureComponent* m_pTextureComp = nullptr;

@@ -283,6 +283,9 @@
     <Filter Include="02. =====AceGameObject=====\02. AceEffect\02. Effect\07. BulletHole">
       <UniqueIdentifier>{7df10c66-56bd-41a5-a328-8f20239481cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. =====AceUI=====\04. UI_Conversation">
+      <UniqueIdentifier>{242c6845-5556-4ddf-9780-bbcf73257c1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -537,6 +540,9 @@
     <ClInclude Include="Effect_BulletHole.h">
       <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\07. BulletHole</Filter>
     </ClInclude>
+    <ClInclude Include="UI_Conversation.h">
+      <Filter>05. =====AceUI=====\04. UI_Conversation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Include\stdafx.cpp">
@@ -787,6 +793,9 @@
     </ClCompile>
     <ClCompile Include="Effect_BulletHole.cpp">
       <Filter>02. =====AceGameObject=====\02. AceEffect\02. Effect\07. BulletHole</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Conversation.cpp">
+      <Filter>05. =====AceUI=====\04. UI_Conversation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -103,6 +103,7 @@
     <ClInclude Include="Header\UI_PlayerFace.h" />
     <ClInclude Include="Header\UI_EatFood.h" />
     <ClInclude Include="Npc.h" />
+    <ClInclude Include="UI_Conversation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceEffect.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Code\UI_PlayerFace.cpp" />
     <ClCompile Include="Code\UI_EatFood.cpp" />
     <ClCompile Include="Npc.cpp" />
+    <ClCompile Include="UI_Conversation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />
