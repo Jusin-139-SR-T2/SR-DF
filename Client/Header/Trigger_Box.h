@@ -3,6 +3,7 @@
 #include "Trigger.h"
 
 #include "Serialize_BaseClass.h"
+#include <BlackBoard_GateWay1.h>
 
 class CTrigger_Box : public CTrigger
 {

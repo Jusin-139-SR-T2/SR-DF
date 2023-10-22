@@ -4,6 +4,7 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 
+#include "Solid.h"
 #include "CalculatorComponent.h"
 #include "ColliderComponent.h"
 #include "PlayerLighter.h"
@@ -924,7 +925,7 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
     // 충돌중일때
    // OutputDebugString(L"플레이어와 충돌중\n");
     
-    CAceBuilding* pSolid = dynamic_cast<CAceBuilding*>(pDst);
+    CSolid* pSolid = dynamic_cast<CSolid*>(pDst);
     if (pSolid)
     {
         _vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));

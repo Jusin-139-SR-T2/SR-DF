@@ -431,7 +431,7 @@ void FSerialize_Scene::Parse_RapidJSON(Document& doc, StringBuffer& strBuf, cons
 				user_string.AddMember("user_string", Value().SetString(tObjectSerial.vecUserString[i].c_str(), allocator), allocator);
 				user_strings.PushBack(user_string, allocator);
 			}
-			doc.AddMember("user_strings", user_strings, allocator);
+			gameobject.AddMember("user_strings", user_strings, allocator);
 
 			// 배열에 넣기
 			arrObject.PushBack(gameobject, allocator);

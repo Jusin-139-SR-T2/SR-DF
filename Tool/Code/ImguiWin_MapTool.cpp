@@ -1222,7 +1222,8 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
         || tObjectData.strClassName == "JumpMainBgm"
         || tObjectData.strClassName == "JumpBat"
         || tObjectData.strClassName == "JumpMonster"
-        || tObjectData.strClassName == "Trigger_Box")
+        || tObjectData.strClassName == "Trigger_Box"
+        || tObjectData.strClassName == "GateWay1")
     {
         CGameObject* pObj = static_cast<CGameObject*>(CCubeObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
             tObjectData.vPos, D3DXToRadian(tObjectData.vRot), tObjectData.vScale, tObjectData.strGroupKey, tObjectData.strTextureKey));
@@ -1240,6 +1241,7 @@ void CImguiWin_MapTool::Factory_GameObject(const _tchar* pLayerTag, const EGO_CL
         || tObjectData.strClassName == "AceThrow"
         || tObjectData.strClassName == "AceInteraction"
         || tObjectData.strClassName == "Player"
+        || tObjectData.strClassName == "Hagrid"
         )
     {
         CGameObject* pObj = static_cast<CGameObject*>(CRectObject::Create(CImguiMgr::GetInstance()->Get_GraphicDev(),
@@ -1798,12 +1800,14 @@ void CImguiWin_MapTool::Add_ObjectFromProto()
     FObjectData tObjectData;
 
     tObjectData.eObjectID = tProtoData.eID;
-    tObjectData.strClassName = tProtoData.strClassName;
-    tObjectData.vRot = tProtoData.vRot;
-    tObjectData.vScale = tProtoData.vScale;
     tObjectData.strName = tProtoData.strName;
+    tObjectData.strClassName = tProtoData.strClassName;
     tObjectData.strGroupKey = tProtoData.strGroupKey;
     tObjectData.strTextureKey = tProtoData.strTextureKey;
+    tObjectData.vRot = tProtoData.vRot;
+    tObjectData.vScale = tProtoData.vScale;
+    tObjectData.vecUserString = tProtoData.vecUserString;
+    
 
     FLayerData& tLayerData = m_vecScene[m_iLoaded_Scene].vecLayer[m_iSelected_Layer_Remain];
     _bool bAdded = false;
@@ -2519,7 +2523,7 @@ void CImguiWin_MapTool::Input_Camera(const _float& fTimeDelta)
                     break;
                 case CImguiWin_MapTool::ETRANSFORM_AXIS_ALL:
                 {
-                    pTransform->Set_Rotation(D3DXToRadian(m_vTransform_Rotate) + vRight * fLength);
+                    //pTransform->Set_Rotation(D3DXToRadian(m_vTransform_Rotate) + vRight * fLength);
                     break;
                 }
                 default:

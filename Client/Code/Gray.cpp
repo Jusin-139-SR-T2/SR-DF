@@ -29,6 +29,8 @@ CGray* CGray::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float
     }
 
     pInstance->m_pTransformComp->Set_Pos(_x, _y, _z);
+    pInstance->m_pTextureComp->Set_Scale({ 3.f, 5.f, 1.f });
+    pInstance->m_pTextureComp->Readjust_Transform();
     pInstance->m_tStat.vPatrolPointZero = { _x, _y, _z };
     return pInstance;
 }
