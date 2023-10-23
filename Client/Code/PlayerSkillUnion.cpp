@@ -62,7 +62,7 @@ void CPlayerSkillUnion::MeshBoxColider(FLOAT _Width, FLOAT _Height, FLOAT Depth)
 
 void CPlayerSkillUnion::MeshSphereColider(FLOAT Radius, UINT Slices, UINT Stacks)
 {
-    SUPER::MeshSphereColider(Radius, Slices, Stacks);
+   // SUPER::MeshSphereColider(Radius, Slices, Stacks);
 }
 
 #pragma region ¼ÂÆÃ

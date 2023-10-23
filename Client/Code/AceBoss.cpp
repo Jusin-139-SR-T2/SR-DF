@@ -65,7 +65,7 @@ HRESULT CAceBoss::Ready_GameObject()
 
 	// 프레임 및 이미지 관련 
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Boss_Single", L"Idle_South");
-	m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });
+	//m_pTransformComp->Set_Scale({ 3.f, 2.5f, 1.f });
 	m_tFrame.fFrame = 0.f;
 	m_tFrame.fFrameEnd = _float(m_pTextureComp->Get_VecTexture()->size());
 	m_tFrame.fFrameSpeed = 12.f;
@@ -227,8 +227,18 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 
 	m_tSound.m_iHpSection = _int((m_gHp.Cur)/20.f); // 20구간으로 나눈 현재 보스의 hpsection 
 
+	Gravity(fTimeDelta);
+
+	m_pTransformComp->Move_Pos(&m_vSpeed, fTimeDelta, 1.f);
+
 	// 지형타기 
-	Height_On_Terrain();
+	if (m_pTransformComp->Get_Pos().y < 1.5f && m_vSpeed.y < 0.f)
+	{
+		Height_On_Terrain();
+		m_IsOnGround = true;
+	}
+	else
+		m_IsOnGround = false;
 
 	// 죽는모션이 하나뿐이라서 충돌체 가리지않고 그냥 0 되면 죽음 
 	if (m_gHp.Cur <= 0 && FALSE == m_bDeadState)
@@ -331,6 +341,7 @@ void CAceBoss::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &((*m_pTextureComp->Get_Transform()) * (*m_pTransformComp->Get_Transform())));
 	m_pTextureComp->Render_Texture(_ulong(m_tFrame.fFrame));
 	m_pBufferComp->Render_Buffer();
 

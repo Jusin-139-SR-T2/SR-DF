@@ -510,9 +510,6 @@
     <ClInclude Include="Header\Trigger_Box.h">
       <Filter>03..=====Object=====\01. Trigger\3. GateWay1</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Hegrid.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Header\PlayerLightning.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -791,9 +788,6 @@
     <ClCompile Include="Code\UI_FadeOut.cpp">
       <Filter>05. =====AceUI=====\99. UI_Fade</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Hegrid.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Code\PlayerLightning.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -862,6 +856,12 @@
     </ClCompile>
     <ClCompile Include="UI_Conversation.cpp">
       <Filter>05. =====AceUI=====\04. UI_Conversation</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Trigger_Box.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Effect_Bubble.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
