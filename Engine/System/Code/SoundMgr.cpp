@@ -66,6 +66,8 @@ HRESULT CSoundMgr::Ready_Sound()
 	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/Gray/");
 	LoadSoundFile_GroupAsync(L"Enemy", "./Resource/Sound/FallenAces/Monster/SkillEffect/");
 
+	LoadSoundFile_GroupAsync(L"FallenAces", "./Resource/Sound/FallenAces/extra/");
+
 	
 	Wait_GroupAsync();
 

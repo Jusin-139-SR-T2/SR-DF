@@ -208,11 +208,13 @@ void CGateWay1::Update_BlackBoard()
     {
         m_bIsStarted = true;
         // 凯府绰 家府 梅啊
+        Engine::Play_Sound(L"FallenAces", L"MetalGateOpen.wav", SOUND_VFX, 0.9f);
     }
 
     if (!m_bIsEnded && pBlackBoard->Is_MonsterAllDead())
     {
         m_bIsEnded = true;
         // 枚娜 家府 梅啊
+        Engine::Play_Sound(L"FallenAces", L"MetalGateClose.wav", SOUND_VFX, 0.9f);
     }
 }

@@ -180,6 +180,10 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 
 void CMainApp::Render_FrameRate()
 {
+#ifndef _DEBUG
+	return;
+#endif
+
 	_float fFrameRate = Engine::Get_FrameRate(L"Frame");
 	_float fTimeDelta = Engine::Get_TimeDelta(L"Timer_FPS");
 	_float fResultFrameRate = static_cast<_float>(fFrameRate / (fTimeDelta * fFrameRate));

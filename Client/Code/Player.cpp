@@ -928,18 +928,34 @@ void CPlayer::OnCollision(CGameObject* pDst, const FContact* const pContact)
    // OutputDebugString(L"플레이어와 충돌중\n");
     
     CSolid* pSolid = dynamic_cast<CSolid*>(pDst);
-    if (pSolid)
+    if (nullptr != pSolid)
     {
         _vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));
         m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * static_cast<_float>(pContact->fPenetration)));
         if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
             m_IsOnGround = true;
     }
+
+    CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
+
+    if (nullptr != pAceObj)
+    {
+        if (Check_Relation(pAceObj, this) == ERELATION::HOSTILE) // 적대관계
+        {
+            CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
+
+            if (pMonster != nullptr && !pMonster->Get_IsMonsterDeath() 
+            && !m_tPlayer_Action.IsOnState(STATE_PLAYER_ACTION::RUN))
+            {
+                _vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));
+                m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * static_cast<_float>(pContact->fPenetration)));
+            }
+        }
+    }
 }
 
 void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
-
     CAceGameObject* pAceObj = dynamic_cast<CAceGameObject*>(pDst);
 
     if (nullptr == pAceObj)
