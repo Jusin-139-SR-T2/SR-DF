@@ -42,5 +42,7 @@ protected:
 
 protected:
 	void GateWay();
+	void Turnnel();
+	void Turnnel2();
 };
 

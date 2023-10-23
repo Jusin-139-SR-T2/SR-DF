@@ -200,7 +200,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     m_pTransformComp->Move_Pos(&m_vSpeed, fTimeDelta, 1.f);
 
     // 지형타기 
-    if (m_pTransformComp->Get_Pos().y < 1.5f && m_vSpeed.y < 0.f)
+    if (m_pTransformComp->Get_Pos().y < 1.6f && m_vSpeed.y < 0.f)
     {
         Height_On_Terrain();
         m_IsOnGround = true;
@@ -281,7 +281,7 @@ void CBrown::Render_GameObject()
 HRESULT CBrown::Add_Component()
 {
     // 충돌 컴포넌트 
-    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderCapsuleComp"), E_FAIL);
     
     // 물리 세계 등록
     m_pColliderComp->EnterToPhysics(0);
@@ -294,6 +294,8 @@ HRESULT CBrown::Add_Component()
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
     m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL | LAYER_PLAYER_ATTACK | LAYER_BOSS_SKILL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
+
+    m_pColliderComp->Set_Scale(_vec3(1.f, 3.f, 1.f));
 
     return S_OK;
 }

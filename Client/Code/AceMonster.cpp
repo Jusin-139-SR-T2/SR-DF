@@ -169,7 +169,7 @@ void CAceMonster::Height_On_Terrain()
 		pTerrainBufferComp->Get_Scale(),
 		pTerrainBufferComp->Get_InvOffset());
 
-	m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.5f , vPos.z);
+	m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.6f , vPos.z);
 }
 
 HRESULT CAceMonster::Get_PlayerPos()

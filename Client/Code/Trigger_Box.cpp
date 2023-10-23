@@ -84,6 +84,12 @@ HRESULT CTrigger_Box::Ready_GameObject(const FSerialize_GameObject& tObjectSeria
                 this->Turnnel();
             };
         }
+        else if (strTrigger == "Turnnel2")
+        {
+            m_fnTrigger = [this]() {
+                this->Turnnel2();
+            };
+        }
     }
 
     FadeInEnd = false;
@@ -160,12 +166,14 @@ void CTrigger_Box::GateWay()
         m_pTransformComp->Get_Pos().x + 8.f,
         m_pTransformComp->Get_Pos().y - 5.f,
         m_pTransformComp->Get_Pos().z + 1.5f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
     pBlackBoard->Get_VecMonster().push_back(pMonster);
 
     Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
         m_pTransformComp->Get_Pos().x + 8.f,
         m_pTransformComp->Get_Pos().y - 5.f,
         m_pTransformComp->Get_Pos().z - 1.5f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
     pBlackBoard->Get_VecMonster().push_back(pMonster);
 
     Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
@@ -177,26 +185,123 @@ void CTrigger_Box::GateWay()
 
 void CTrigger_Box::Turnnel()
 {
-    CBlackBoard_GateWay1* pBlackBoard = CBlackBoard_GateWay1::Create();
-    Engine::Add_BlackBoard(L"GateWay1", pBlackBoard);
+    /*CBlackBoard_GateWay1* pBlackBoard = CBlackBoard_GateWay1::Create();
+    Engine::Add_BlackBoard(L"GateWay1", pBlackBoard);*/
 
     CAceMonster* pMonster = nullptr;
 
     Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
         m_pTransformComp->Get_Pos().x + 8.f,
-        m_pTransformComp->Get_Pos().y - 5.f,
-        m_pTransformComp->Get_Pos().z + 1.5f));
-    pBlackBoard->Get_VecMonster().push_back(pMonster);
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 1.5f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
 
     Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
         m_pTransformComp->Get_Pos().x + 8.f,
-        m_pTransformComp->Get_Pos().y - 5.f,
-        m_pTransformComp->Get_Pos().z - 1.5f));
-    pBlackBoard->Get_VecMonster().push_back(pMonster);
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 3.f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
 
     Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
         m_pTransformComp->Get_Pos().x + 8.f,
-        m_pTransformComp->Get_Pos().y - 5.f,
-        m_pTransformComp->Get_Pos().z));
-    pBlackBoard->Get_VecMonster().push_back(pMonster);
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 4.5f));
+    static_cast<CGray*>(pMonster)->Get_StateObj().Set_State(CGray::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 6.5f));
+    static_cast<CGray*>(pMonster)->Get_StateObj().Set_State(CGray::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 8.5f));
+    static_cast<CGray*>(pMonster)->Get_StateObj().Set_State(CGray::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 10.f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
+}
+
+void CTrigger_Box::Turnnel2()
+{
+    CAceMonster* pMonster = nullptr;
+
+    Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 1.5f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 3.f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 4.5f));
+    static_cast<CGray*>(pMonster)->Get_StateObj().Set_State(CGray::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 8.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 6.5f));
+    static_cast<CGray*>(pMonster)->Get_StateObj().Set_State(CGray::STATE_OBJ::CHASE);
+
+    // ------------
+
+    Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 3.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 3.5f));
+    static_cast<CGray*>(pMonster)->Get_StateObj().Set_State(CGray::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 4.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 2.f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 5.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 1.f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x - 3.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 3.5f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 4.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 2.5f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CBrown::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 5.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z - 1.f));
+    static_cast<CBrown*>(pMonster)->Get_StateObj().Set_State(CBrown::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x - 4.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z + 4.5f));
+    static_cast<CGray*>(pMonster)->Get_StateObj().Set_State(CGray::STATE_OBJ::CHASE);
+
+    Add_GameObject(L"GameLogic", pMonster = CGray::Create(m_pGraphicDev,
+        m_pTransformComp->Get_Pos().x + 4.f,
+        m_pTransformComp->Get_Pos().y - 1.f,
+        m_pTransformComp->Get_Pos().z + 4.5f));
+    static_cast<CGray*>(pMonster)->Get_StateObj().Set_State(CGray::STATE_OBJ::CHASE);
 }
