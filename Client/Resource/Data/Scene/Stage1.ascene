@@ -48030,447 +48030,6 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Unit_Gray14"
-                    },
-                    "ID": 9,
-                    "class_name": "Gray",
-                    "tags": [],
-                    "group_key": "Gray_Single",
-                    "texture_key": "Idle",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 124.36508178710938,
-                        "y": 1.3687735795974731,
-                        "z": -13.044075012207031
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 3.0,
-                        "y": 5.0,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 124.36508178710938,
-                        "y": 1.3687735795974731,
-                        "z": -13.044075012207031
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 3.0,
-                        "y": 5.0,
-                        "z": 1.0
-                    },
-                    "user_strings": []
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Unit_Brown29"
-                    },
-                    "ID": 9,
-                    "class_name": "Brown",
-                    "tags": [],
-                    "group_key": "Brown_Single",
-                    "texture_key": "Stand_South",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 125.81680297851563,
-                        "y": 1.434950828552246,
-                        "z": -3.8221993446350098
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 125.81680297851563,
-                        "y": 1.434950828552246,
-                        "z": -3.8221993446350098
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "user_strings": []
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Unit_Brown30"
-                    },
-                    "ID": 9,
-                    "class_name": "Brown",
-                    "tags": [],
-                    "group_key": "Brown_Single",
-                    "texture_key": "Stand_South",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 128.1988067626953,
-                        "y": 1.434950828552246,
-                        "z": 1.3409630060195923
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 128.1988067626953,
-                        "y": 1.434950828552246,
-                        "z": 1.3409630060195923
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "user_strings": []
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Unit_Brown31"
-                    },
-                    "ID": 9,
-                    "class_name": "Brown",
-                    "tags": [],
-                    "group_key": "Brown_Single",
-                    "texture_key": "Stand_South",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 124.88459777832031,
-                        "y": 1.434950828552246,
-                        "z": -8.345736503601074
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 124.88459777832031,
-                        "y": 1.434950828552246,
-                        "z": -8.345736503601074
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "user_strings": []
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Unit_Brown32"
-                    },
-                    "ID": 9,
-                    "class_name": "Brown",
-                    "tags": [],
-                    "group_key": "Brown_Single",
-                    "texture_key": "Stand_South",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 124.88459777832031,
-                        "y": 1.434950828552246,
-                        "z": -18.223983764648438
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 124.88459777832031,
-                        "y": 1.434950828552246,
-                        "z": -18.223983764648438
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "user_strings": []
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Unit_Brown33"
-                    },
-                    "ID": 9,
-                    "class_name": "Brown",
-                    "tags": [],
-                    "group_key": "Brown_Single",
-                    "texture_key": "Stand_South",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 127.0800552368164,
-                        "y": 1.434950828552246,
-                        "z": -23.16986846923828
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 127.0800552368164,
-                        "y": 1.434950828552246,
-                        "z": -23.16986846923828
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "user_strings": []
-                },
-                {
-                    "header": {
-                        "type": 3,
-                        "name": "Unit_Brown34"
-                    },
-                    "ID": 9,
-                    "class_name": "Brown",
-                    "tags": [],
-                    "group_key": "Brown_Single",
-                    "texture_key": "Stand_South",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 129.84176635742188,
-                        "y": 1.434950828552246,
-                        "z": -27.495241165161133
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 129.84176635742188,
-                        "y": 1.434950828552246,
-                        "z": -27.495241165161133
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 3.0,
-                        "y": 3.0,
-                        "z": 1.0
-                    },
-                    "user_strings": []
-                },
-                {
-                    "header": {
-                        "type": 3,
                         "name": "Unit_Brown35"
                     },
                     "ID": 9,
@@ -49434,9 +48993,9 @@
                     "priority_render": 0.0,
                     "use_priority_render": true,
                     "pos": {
-                        "x": 9.674750328063965,
-                        "y": 0.0,
-                        "z": 0.0
+                        "x": 100.47061920166016,
+                        "y": 0.5102806091308594,
+                        "z": -10.870369911193848
                     },
                     "rot": {
                         "x": 0.0,
@@ -49444,9 +49003,9 @@
                         "z": 0.0
                     },
                     "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
+                        "x": 1.4126354455947876,
+                        "y": 0.9120277166366577,
+                        "z": 1.4126354455947876
                     },
                     "tex_pos": {
                         "x": 0.0,
@@ -49464,9 +49023,9 @@
                         "z": 1.0
                     },
                     "col_pos": {
-                        "x": 9.674750328063965,
-                        "y": 0.0,
-                        "z": 0.0
+                        "x": 100.47061920166016,
+                        "y": 0.5102806091308594,
+                        "z": -10.870369911193848
                     },
                     "col_rot": {
                         "x": 0.0,
@@ -49474,9 +49033,9 @@
                         "z": 0.0
                     },
                     "col_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
+                        "x": 1.4126354455947876,
+                        "y": 0.9120277166366577,
+                        "z": 1.4126354455947876
                     },
                     "user_strings": []
                 },
@@ -49720,9 +49279,9 @@
                         "z": 1.0
                     },
                     "col_pos": {
-                        "x": 35.70280838012695,
+                        "x": -44.45979690551758,
                         "y": 0.2495431900024414,
-                        "z": -51.710575103759766
+                        "z": -51.17192459106445
                     },
                     "col_rot": {
                         "x": 0.0,
@@ -49783,9 +49342,9 @@
                         "z": 1.0
                     },
                     "col_pos": {
-                        "x": 35.70280838012695,
+                        "x": -43.25630569458008,
                         "y": 0.2495431900024414,
-                        "z": -51.710575103759766
+                        "z": -53.40293884277344
                     },
                     "col_rot": {
                         "x": 0.0,
@@ -49846,9 +49405,9 @@
                         "z": 1.0
                     },
                     "col_pos": {
-                        "x": 35.70280838012695,
+                        "x": -47.36538314819336,
                         "y": 0.2495431900024414,
-                        "z": -51.710575103759766
+                        "z": -52.480674743652344
                     },
                     "col_rot": {
                         "x": 0.0,
@@ -49909,9 +49468,9 @@
                         "z": 1.0
                     },
                     "col_pos": {
-                        "x": 35.70280838012695,
+                        "x": -57.019657135009766,
                         "y": 0.2495431900024414,
-                        "z": -51.710575103759766
+                        "z": -11.598127365112305
                     },
                     "col_rot": {
                         "x": 0.0,
@@ -49972,9 +49531,9 @@
                         "z": 1.0
                     },
                     "col_pos": {
-                        "x": 35.70280838012695,
+                        "x": -57.92143249511719,
                         "y": 0.2495431900024414,
-                        "z": -51.710575103759766
+                        "z": -12.955573081970215
                     },
                     "col_rot": {
                         "x": 0.0,
@@ -50035,9 +49594,9 @@
                         "z": 1.0
                     },
                     "col_pos": {
-                        "x": 35.70280838012695,
-                        "y": 0.2495431900024414,
-                        "z": -51.710575103759766
+                        "x": -63.346431732177734,
+                        "y": 13.385409355163574,
+                        "z": 36.53797912597656
                     },
                     "col_rot": {
                         "x": 0.0,
@@ -50098,9 +49657,9 @@
                         "z": 1.0
                     },
                     "col_pos": {
-                        "x": 35.70280838012695,
-                        "y": 0.2495431900024414,
-                        "z": -51.710575103759766
+                        "x": -70.73841094970703,
+                        "y": 13.385409355163574,
+                        "z": 36.53797912597656
                     },
                     "col_rot": {
                         "x": 0.0,
@@ -50161,6 +49720,73 @@
                         "z": 1.0
                     },
                     "col_pos": {
+                        "x": -68.37703704833984,
+                        "y": 16.80575180053711,
+                        "z": 127.8777084350586
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 20.288837432861328,
+                        "y": 25.11087417602539,
+                        "z": 2.2903575897216797
+                    },
+                    "user_strings": [
+                        {
+                            "user_string": "Turnnel2"
+                        }
+                    ]
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Trigger_GateWay4"
+                    },
+                    "ID": 9,
+                    "class_name": "Trigger_Box",
+                    "tags": [],
+                    "group_key": "Develop",
+                    "texture_key": "BoxTrigger",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 107.50540924072266,
+                        "y": 2.4457175731658936,
+                        "z": -11.180566787719727
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 4.657545566558838,
+                        "y": 4.484286308288574,
+                        "z": 17.85943031311035
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
                         "x": -67.41742706298828,
                         "y": 16.80575180053711,
                         "z": 166.74365234375
@@ -50177,7 +49803,7 @@
                     },
                     "user_strings": [
                         {
-                            "user_string": "Turnnel2"
+                            "user_string": "Entrance"
                         }
                     ]
                 }

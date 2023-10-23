@@ -631,13 +631,14 @@ bool FCollisionDetector::CapsuleAndCapsule(const FCollisionCapsule& srcCapsule, 
 	// 반대의 경우도 계산
 	vBestA = FLineTests::ClosestPointOnLineSegment(vSrc_A, vSrc_B, vBestB);
 
-	FVector3 vPenetration_Normal = vBestA - vBestB;
+	FVector3 vPenetration_Normal = vBestB - vBestA;
 	Real fLength = vPenetration_Normal.Magnitude();
 	Real fPenetration_Depth = srcCapsule.fRadius + dstCapsule.fRadius - fLength;
 	bool bIntersects = fPenetration_Depth > 0.f;
 
 	// 충돌정보 생성
-	if (pColData != nullptr && pColData->iContactsLeft >= 0)
+	if (bIntersects
+	&& pColData != nullptr && pColData->iContactsLeft >= 0)
 	{
 		FContact& pContact = pColData->tContacts;
 		pContact.vContactNormal = vPenetration_Normal.Unit();
