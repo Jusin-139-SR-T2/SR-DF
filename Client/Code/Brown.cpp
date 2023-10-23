@@ -202,7 +202,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     // 지형타기 
     if (m_pTransformComp->Get_Pos().y < 1.6f && m_vSpeed.y < 0.f)
     {
-        Height_On_Terrain(1.5f);
+        Height_On_Terrain(1.6f);
         m_IsOnGround = true;
     }
     else
@@ -283,6 +283,8 @@ HRESULT CBrown::Add_Component()
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
     m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL | LAYER_PLAYER_ATTACK | LAYER_BOSS_SKILL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
+
+    m_pColliderComp->Set_Scale(_vec3(0.75f, 2.8f, 0.75f));
 
     return S_OK;
 }

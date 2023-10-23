@@ -345,6 +345,8 @@ HRESULT CAceBoss::Add_Component()
 	m_pColliderComp->Set_CollisionLayer(LAYER_BOSSMONSTER); // 이 클래스가 속할 충돌레이어 
 	m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_MONSTER | LAYER_WALL | LAYER_PLAYER_ATTACK); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
+	m_pColliderComp->Set_Scale(_vec3(0.75f, 3.0f, 0.75f));
+
 	return S_OK;
 }
 

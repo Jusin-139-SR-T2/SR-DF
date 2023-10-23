@@ -63,7 +63,7 @@ HRESULT CAceWeapon::Ready_GameObject(const FSerialize_GameObject& tObjectSerial)
     m_gHp.Max = 100.f;
 
     m_pTransformComp->Set_Pos(tObjectSerial.vPos);
-    m_pTransformComp->Set_Rotation(tObjectSerial.vRotation);
+    m_pTransformComp->Set_Rotation(D3DXToRadian(tObjectSerial.vRotation));
     m_pTransformComp->Set_Scale(tObjectSerial.vScale);
 
     wstring strConvName(tObjectSerial.tHeader.strName.begin(), tObjectSerial.tHeader.strName.end());
