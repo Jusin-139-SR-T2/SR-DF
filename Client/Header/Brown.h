@@ -122,6 +122,8 @@ public:
 		NORMALATTACK, HEAVY_ATTACK,
 		GOHOME 
 	};
+	using state_set_object = STATE_SET<STATE_OBJ, void(CBrown*, float)>;
+	GETSET_EX1(state_set_object, m_tState_Obj, StateObj, GET_REF)
 
 private:
 	STATE_SET<STATE_OBJ, void(CBrown*, float)> m_tState_Obj;				//AI

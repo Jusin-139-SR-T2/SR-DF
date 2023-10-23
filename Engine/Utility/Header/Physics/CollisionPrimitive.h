@@ -229,7 +229,7 @@ public:
 public:
 	virtual void Calculate_Shape() override
 	{
-		vDirHalfSize = Get_Scale() * 0.5f;
+		vDirHalfSize = FVector3(0.f, Get_Scale().y * 0.5f, 0.f);
 		fRadius = max(Get_Scale().x, Get_Scale().z) * 0.5f;
 	}
 

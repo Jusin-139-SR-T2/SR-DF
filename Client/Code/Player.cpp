@@ -209,7 +209,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     PlayerJump(fTimeDelta);
 
     // 지형 타기
-    if (m_pTransformComp->Get_Pos().y < 1.5f && m_vSpeed.y < 0.f)
+    if (m_pTransformComp->Get_Pos().y < 1.7f && m_vSpeed.y < 0.f)
     {
         Height_On_Terrain();
         m_IsOnGround = true;
@@ -348,7 +348,7 @@ HRESULT CPlayer::Add_Component()
     // 지형타기 컴포넌트
     NULL_CHECK_RETURN(m_pCalculatorComp = Set_DefaultComponent_FromProto<CCalculatorComponent>(ID_STATIC, L"Com_Calculator", L"Proto_CalculatorComp"), E_FAIL);
     // 콜라이더 컴포넌트
-    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+    NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderCapsuleComp"), E_FAIL);
     // 왼손 컴포넌트
     NULL_CHECK_RETURN(m_pLeftHandComp = Set_DefaultComponent_FromProto<CTextureComponent>(ID_STATIC, L"Com_TextureLeftHandTest", L"Proto_PlayerLeftTextureComp"), E_FAIL);
     // 오른손 컴포넌트
@@ -373,6 +373,8 @@ HRESULT CPlayer::Add_Component()
     m_pColliderComp->Set_CollisionMask(LAYER_MONSTER | LAYER_BOSSMONSTER |
                                       LAYER_BOSS_SKILL | LAYER_MONSTER_ATTACK |
                                       LAYER_ITEM | LAYER_WALL);
+    m_pColliderComp->Set_Scale(_vec3(1.f, 3.f, 1.f));
+    m_pColliderComp->Readjust_Transform();
     // 플레이어가 shift로 대쉬를 하거나 공격을 했을때만 몬스터와 충돌이 허용됨. 
 
     return S_OK;
@@ -469,13 +471,13 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
 
         // fSpeed = 5.f , fDash = 20.f
         // D + Shift 우측 대쉬
-        if (Engine::IsKey_Pressed(DIK_LSHIFT))
-        {
-            m_tDash.fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
-            m_tDash.fDash = 20.f;       // 대쉬 값 설정
-            bDashOn = true;     // 대쉬 On/Off
-            m_eDashDir = RIGHT; // 대쉬 방향
-        }
+        //if (Engine::IsKey_Pressed(DIK_LSHIFT))
+        //{
+        //    m_tDash.fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
+        //    m_tDash.fDash = 20.f;       // 대쉬 값 설정
+        //    bDashOn = true;     // 대쉬 On/Off
+        //    m_eDashDir = RIGHT; // 대쉬 방향
+        //}
     }
 
     // 왼쪽
@@ -490,13 +492,13 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         m_pTransformComp->Move_Pos(&-vRight, fTimeDelta, m_tPlayer.fSpeed);
 
         // A + Shift 좌측 대쉬
-        if (Engine::IsKey_Pressed(DIK_LSHIFT))
-        {
-            m_tDash.fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
-            m_tDash.fDash = 20.f;       // 대쉬 값 설정
-            bDashOn = true;     // 대쉬 On/Off
-            m_eDashDir = LEFT;  // 대쉬 방향
-        }
+        //if (Engine::IsKey_Pressed(DIK_LSHIFT))
+        //{
+        //    m_tDash.fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
+        //    m_tDash.fDash = 20.f;       // 대쉬 값 설정
+        //    bDashOn = true;     // 대쉬 On/Off
+        //    m_eDashDir = LEFT;  // 대쉬 방향
+        //}
     }
 
     // 손
@@ -948,9 +950,6 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
     {
         CAceMonster* pMonster = dynamic_cast<CAceMonster*>(pAceObj);
 
-        Engine::Add_GameObject(L"UI", CUI_PlayerHurt::Create(m_pGraphicDev));
-
-       
         if (pMonster == nullptr) 
         {
             CMonsterAttackUnion* pMonsterSkill = dynamic_cast<CMonsterAttackUnion*>(pAceObj);
@@ -959,6 +958,8 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
                 return;
             else
             {
+                Engine::Add_GameObject(L"UI", CUI_PlayerHurt::Create(m_pGraphicDev));
+
                 if (Random_variable(10))
                     Engine::Play_Sound(L"FallenAces", L"PlayerHurt (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
                 else if (Random_variable(10))
@@ -991,7 +992,7 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
         }
         else
         {
-            if (Random_variable(10))
+            /*if (Random_variable(10))
                 Engine::Play_Sound(L"FallenAces", L"PlayerHurt (0).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
             else if (Random_variable(10))
                 Engine::Play_Sound(L"FallenAces", L"PlayerHurt (1).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
@@ -1014,7 +1015,7 @@ void CPlayer::OnCollisionEntered(CGameObject* pDst, const FContact* const pConta
             else if (Random_variable(10))
                 Engine::Play_Sound(L"FallenAces", L"PlayerHurt (10).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
             else
-                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (11).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);
+                Engine::Play_Sound(L"FallenAces", L"PlayerHurt (11).wav", SOUND_PLAYER_EFFECT, m_tPlayerSound.m_fSoundVolume);*/
 
             // 충돌한게 몬스터일때 진행하는곳
             switch (m_eRIGHTState)
@@ -1515,7 +1516,7 @@ void CPlayer::Height_On_Terrain()
                                 pTerrainBufferComp->Get_Scale(),
                                 pTerrainBufferComp->Get_InvOffset());
 
-    m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.5f, vPos.z);
+    m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.7f, vPos.z);
 }
 
 void CPlayer::Dash(const _float& fTimeDelta)

@@ -123,6 +123,10 @@ private:
 	void			MonsterDead();
 	RECENT_COL		m_eRecentCol; // 플레이어1 플레이어공격체2 보스스킬3 
 
+public:
+	using state_set_object = STATE_SET<STATE_OBJ, void(CGray*, float)>;
+	GETSET_EX1(state_set_object, m_tState_Obj, StateObj, GET_REF)
+
 private:
 	//상태머신 등록 
 	STATE_SET<STATE_OBJ, void(CGray*, float)> m_tState_Obj;				//AI
