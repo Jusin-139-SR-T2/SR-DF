@@ -89,6 +89,6 @@ private:
 
 	_bool				m_bPlayerHitState; //소영추가 
 	_bool				m_bMagicBottle;
-	_bool				m_bFade;
+	_bool				m_bFade; 
 };
 

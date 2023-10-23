@@ -126,8 +126,8 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 	//}
 
 
-	swprintf_s(debugString, L"★변수체크 카메라y  = %f \n", m_vEye.y);
-	OutputDebugStringW(debugString);
+	//swprintf_s(debugString, L"★변수체크 카메라y  = %f \n", m_vEye.y);
+	//OutputDebugStringW(debugString);
 
 	SUPER::Update_GameObject(fTimeDelta);
 
