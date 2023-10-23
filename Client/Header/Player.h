@@ -332,7 +332,7 @@ private:
 
 	struct _DASH	// 대쉬
 	{
-		_float		fDash = 20.f;				// 플레이어 대쉬
+		_float		fDash = 50.f;				// 플레이어 대쉬
 		_float		fDownDash = 0.f;			// 플레이어 대쉬할때 높이
 	};
 
