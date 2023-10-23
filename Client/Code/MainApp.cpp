@@ -184,22 +184,22 @@ void CMainApp::Render_FrameRate()
 	return;
 #endif
 
-	_float fFrameRate = Engine::Get_FrameRate(L"Frame");
-	_float fTimeDelta = Engine::Get_TimeDelta(L"Timer_FPS");
-	_float fResultFrameRate = static_cast<_float>(fFrameRate / (fTimeDelta * fFrameRate));
+	//_float fFrameRate = Engine::Get_FrameRate(L"Frame");
+	//_float fTimeDelta = Engine::Get_TimeDelta(L"Timer_FPS");
+	//_float fResultFrameRate = static_cast<_float>(fFrameRate / (fTimeDelta * fFrameRate));
+	//
+	//wstringstream ss;
+	//ss << fResultFrameRate;
+	//wstring str = ss.str();
+	//_vec2 vFontPos = { 0.f, 0.f };
+	//D3DXCOLOR colorFont;
+	//
+	//if (fResultFrameRate >= fFrameRate * 0.9f)
+	//	colorFont = DXCOLOR_GREEN;
+	//else if (fResultFrameRate >= fFrameRate * 0.5f)
+	//	colorFont = DXCOLOR_ORANGE;
+	//else
+	//	colorFont = DXCOLOR_RED;
 
-	wstringstream ss;
-	ss << fResultFrameRate;
-	wstring str = ss.str();
-	_vec2 vFontPos = { 0.f, 0.f };
-	D3DXCOLOR colorFont;
-
-	if (fResultFrameRate >= fFrameRate * 0.9f)
-		colorFont = DXCOLOR_GREEN;
-	else if (fResultFrameRate >= fFrameRate * 0.5f)
-		colorFont = DXCOLOR_ORANGE;
-	else
-		colorFont = DXCOLOR_RED;
-
-	Engine::Render_Font(L"Font_Jinji", str.c_str(), &vFontPos, colorFont);
+	//Engine::Render_Font(L"Font_Jinji", str.c_str(), &vFontPos, colorFont);
 }
