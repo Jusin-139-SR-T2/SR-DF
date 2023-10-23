@@ -154,7 +154,7 @@ void CAceMonster::Calc_Theta()
 		m_eDirection = Dir::SOUTH;
 }
 
-void CAceMonster::Height_On_Terrain()
+void CAceMonster::Height_On_Terrain(_float height)
 {
 	_vec3		vPos;
 	m_pTransformComp->Get_Info(INFO_POS, &vPos);
@@ -169,7 +169,7 @@ void CAceMonster::Height_On_Terrain()
 		pTerrainBufferComp->Get_Scale(),
 		pTerrainBufferComp->Get_InvOffset());
 
-	m_pTransformComp->Set_Pos(vPos.x, fHeight + 1.6f , vPos.z);
+	m_pTransformComp->Set_Pos(vPos.x, fHeight + height, vPos.z);
 }
 
 HRESULT CAceMonster::Get_PlayerPos()

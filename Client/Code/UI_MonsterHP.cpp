@@ -62,10 +62,10 @@ HRESULT CUI_MonsterHP::Ready_GameObject()
 	m_fY = m_fSizeY * 0.5f;
 
 	//// 이미지 위치
-	m_pTextureComp->Set_Pos({ 0.f , WINCY * 0.5 - 68.f, 0.f });	
+	m_pTextureComp->Set_Pos({ 0.f , WINCY * 0.5 - 65.f, 0.f });	
 	m_pTextureComp->Set_Scale({ m_fBarSizeX, m_fBarSizeY, 1.f });							// 이미지 크기
 
-	m_pHPTextureComp->Set_Pos({ 0.f , WINCY * 0.5 - 70.f, 0.f });
+	m_pHPTextureComp->Set_Pos({ 0.f , WINCY * 0.5 - 67.f, 0.f });
 	m_pHPTextureComp->Set_Scale({ m_fRedSizeX, m_fRedSizeY, 1.f });							// 이미지 크기
 
 	return S_OK;
@@ -156,11 +156,11 @@ void CUI_MonsterHP::Update_InternalData()
 	m_sOwner = pBlackBoard->Get_Owner();
 
 	if(m_sOwner.compare(L"Unarmed Goon") == 0)
-		vFontPos = { WINCX * 0.5f - 80.f, 30.f };
+		vFontPos = { WINCX * 0.5f - 80.f, 28.f };
 	else if (m_sOwner.compare(L"Pipe Wielding Mook") == 0)
-		vFontPos = { WINCX * 0.5f - 130.f, 30.f };
+		vFontPos = { WINCX * 0.5f - 130.f, 28.f };
 	else //보스
-		vFontPos = { WINCX * 0.5f - 50.f, 30.f };
+		vFontPos = { WINCX * 0.5f - 50.f, 28.f };
 
 	//Reveal_Owner(m_pHPOwner);
 }

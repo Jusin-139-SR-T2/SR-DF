@@ -8,6 +8,7 @@
 #include "SkyBox.h"
 #include "UI_Player.h"
 #include <AceBuilding.h>
+#include "UI_Hagrid.h"
 
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -112,7 +113,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	Engine::CGameObject*		pGameObject = nullptr;
 
 	// NPC
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hagrid",  CHagrid::Create(m_pGraphicDev, 25.f, 2.2f, 30.f)), E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hagrid",  CHagrid::Create(m_pGraphicDev, 25.f, 2.2f, 30.f)), E_FAIL);
 
 	// Player
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", CPlayer::Create(m_pGraphicDev)), E_FAIL);

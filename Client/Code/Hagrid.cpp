@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Hagrid.h"
 #include "Player.h"
+#include "UI_Hagrid.h"
 
 void CHagrid::Free()
 {
@@ -31,6 +32,9 @@ HRESULT CHagrid::Ready_GameObject()
 	// 이미지 및 프레임 셋팅
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"NPC", L"Hagrid");
 	m_pTextureComp->Readjust_Transform();
+
+	m_tFrame.fAge = 0.f;
+	m_tFrame.fLifeTime = 2.5f;
 
 	return S_OK;
 }
@@ -69,6 +73,16 @@ _int CHagrid::Update_GameObject(const _float& fTimeDelta)
 
 	Billboard(fTimeDelta);
 
+	m_tFrame.fAge += fTimeDelta;
+
+	if (m_tFrame.fAge > m_tFrame.fLifeTime && !m_bOnce)
+	{
+		Engine::Play_Sound(L"FallenAces", L"yourwizard.wav", SOUND_EFFECT, 0.8f);
+
+		Engine::Add_GameObject(L"GameLogic", CUI_Hagrid::Create(m_pGraphicDev));
+		m_bOnce = true;
+	}
+
 	Engine::Add_RenderGroup(RENDER_ALPHATEST, this);
 
 	return S_OK;
@@ -91,7 +105,7 @@ void CHagrid::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-CHagrid* CHagrid::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z)
+CHagrid* CHagrid::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, _vec3 _size)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);
 
@@ -104,10 +118,9 @@ CHagrid* CHagrid::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _f
 	}
 
 	pInstance->m_pTransformComp->Set_Pos(_x, _y, _z); // 시작위치 설정
-
+	pInstance->m_pTransformComp->Set_Scale(_size);
 	return pInstance;
 }
-
 CHagrid* CHagrid::Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject tObjectSerial)
 {
 	ThisClass* pInstance = new ThisClass(pGraphicDev);

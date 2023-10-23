@@ -73,14 +73,12 @@ private:
 	HRESULT				Add_Component();
 	void				Change_Phase();
 	
-
 public:
 	GETSET_EX2(CRcBufferComp*, m_pBufferComp, BufferComponent, GET, SET)
 	GETSET_EX2(CTextureComponent*, m_pTextureComp, TextureComponent, GET, SET)
 	GETSET_EX2(CColliderComponent*, m_pColliderComp, ColliderComponent, GET, SET)
 	GETSET_EX2(CTransformComponent*, m_pTransformComp, TransformComponent, GET, SET)
 	GETSET_EX2(CCalculatorComponent*, m_pCalculatorComp, CalculatorComponent, GET, SET)
-
 	GETSET_EX2(_float, m_tStat.fAwareness, Awareness, GET, SET)
 	
 	// 충돌 
@@ -107,16 +105,16 @@ private:
 	_float			m_fSideTime = 1.5f;
 	_float			m_fAwareness;
 
-	_float m_fTalk;
-	_float m_fTalkLife;
-	_float m_fTalkReapeat;
+	_float			m_fTalk;
+	_float			m_fTalkLife;
+	_float			m_fTalkReapeat;
 
 	//공격 컨트롤 
-	_bool m_AttackOnce = false;
-	_bool m_bBuffActive = false;
-	_bool m_bShitTrigger = false;
-	_bool m_bCollisionOn = false;
-	_bool m_bMakeGun = false;
+	_bool			m_AttackOnce = false;
+	_bool			m_bBuffActive = false;
+	_bool			m_bShitTrigger = false;
+	_bool			m_bCollisionOn = false;
+	_bool			m_bMakeGun = false;
 
 	// 조명관련 - 블랙보드 연동 
 	_bool m_bLightOn = FALSE;

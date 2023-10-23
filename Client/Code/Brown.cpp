@@ -202,7 +202,7 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
     // 지형타기 
     if (m_pTransformComp->Get_Pos().y < 1.6f && m_vSpeed.y < 0.f)
     {
-        Height_On_Terrain();
+        Height_On_Terrain(1.5f);
         m_IsOnGround = true;
     }
     else
@@ -229,17 +229,6 @@ _int CBrown::Update_GameObject(const _float& fTimeDelta)
         if (STATE_OBJ::TAUNT == m_tState_Obj.Get_State() ||
             STATE_OBJ::STRAFING == m_tState_Obj.Get_State())
             m_tFrame.fRepeat += 1;
-    }
-
-
-    if (IsKey_Pressed(DIK_I))
-    {
-
-        m_tState_Obj.Set_State(STATE_OBJ::GOHOME);
-    //  Calc_Theta();
-    //
-    //swprintf_s(debugString, L"Brown - 변수 확인 플레이어 - Brown 외적 m_ftheta = %f\n", m_ftheta);
-    // OutputDebugStringW(debugString);
     }
 
     // 블랙보드
@@ -294,8 +283,6 @@ HRESULT CBrown::Add_Component()
     // 충돌 레이어, 마스크 설정
     m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
     m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_PROJECTILE | LAYER_WALL | LAYER_PLAYER_ATTACK | LAYER_BOSS_SKILL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
-
-    m_pColliderComp->Set_Scale(_vec3(0.75f, 3.f, 0.75f));
 
     return S_OK;
 }

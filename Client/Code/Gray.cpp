@@ -214,7 +214,7 @@ _int CGray::Update_GameObject(const _float& fTimeDelta)
     // 지형타기 
     if (m_pTransformComp->Get_Pos().y < 1.5f && m_vSpeed.y < 0.f)
     {
-        Height_On_Terrain();
+        Height_On_Terrain(1.5f);
         m_IsOnGround = true;
     }
     else

@@ -51,7 +51,7 @@ HRESULT CMonsterBullet::Ready_GameObject()
 
 	//디버그용 텍스쳐
 	m_pTextureComp->Receive_Texture(TEX_NORMAL, L"Weapon", L"Ammo");
-	m_pTransformComp->Set_Scale({ 0.5f, 0.5f, 0.5f });
+	m_pTransformComp->Set_Scale({ 0.3f, 0.3f, 0.3f });
 	return S_OK;
 }
 

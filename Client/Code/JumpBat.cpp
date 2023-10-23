@@ -9,6 +9,7 @@
 
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "Hagrid.h"
 
 CJumpBat::CJumpBat(LPDIRECT3DDEVICE9 pGraphicDev)
     : Base(pGraphicDev)
@@ -119,6 +120,9 @@ void CJumpBat::OnCollisionEntered(CGameObject* pDst, const FContact* const pCont
             D3DXToDegree(m_pTransformComp->Get_Rotation()),
             _vec3(2.f, 2.f, 2.f)));
     }
+
+    Engine::Add_GameObject(L"GameLogic", CHagrid::Create(m_pGraphicDev, -2.f, 3.0f, 15.5f, {6.f, 6.f, 6.f}));
+    
     Engine::Play_Sound(L"FallenAces", L"Boo.mp3", SOUND_VFX, 0.9f);
     Set_Dead();
 }

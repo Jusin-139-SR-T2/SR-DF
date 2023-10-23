@@ -295,6 +295,9 @@
     <Filter Include="05. =====AceUI=====\04. UI_Conversation">
       <UniqueIdentifier>{242c6845-5556-4ddf-9780-bbcf73257c1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. =====AceUI=====\05. UI_Hagrid">
+      <UniqueIdentifier>{59acca21-ac1c-4ad3-a4b2-738f968c5397}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\targetver.h">
@@ -519,13 +522,7 @@
     <ClInclude Include="Header\JumpBat.h">
       <Filter>03..=====Object=====\01. Trigger</Filter>
     </ClInclude>
-    <ClInclude Include="Header\JumpBgm.h">
-      <Filter>03..=====Object=====\01. Trigger</Filter>
-    </ClInclude>
     <ClInclude Include="Header\JumpMainBgm.h">
-      <Filter>03..=====Object=====\01. Trigger</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\JumpMonster.h">
       <Filter>03..=====Object=====\01. Trigger</Filter>
     </ClInclude>
     <ClInclude Include="Header\Effect_Bubble.h">
@@ -578,6 +575,15 @@
     </ClInclude>
     <ClInclude Include="UI_Conversation.h">
       <Filter>05. =====AceUI=====\04. UI_Conversation</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpBgm.h">
+      <Filter>03..=====Object=====\01. Trigger\6. JumpBGM</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\JumpMonster.h">
+      <Filter>03..=====Object=====\01. Trigger\7. JumpMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Hagrid.h">
+      <Filter>05. =====AceUI=====\05. UI_Hagrid</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -794,13 +800,7 @@
     <ClCompile Include="Code\UI_MonsterHP.cpp">
       <Filter>05. =====AceUI=====</Filter>
     </ClCompile>
-    <ClCompile Include="Code\JumpMonster.cpp">
-      <Filter>03..=====Object=====\01. Trigger</Filter>
-    </ClCompile>
     <ClCompile Include="Code\JumpMainBgm.cpp">
-      <Filter>03..=====Object=====\01. Trigger</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\JumpBgm.cpp">
       <Filter>03..=====Object=====\01. Trigger</Filter>
     </ClCompile>
     <ClCompile Include="Code\JumpBat.cpp">
@@ -862,6 +862,15 @@
     </ClCompile>
     <ClCompile Include="Code\Effect_Bubble.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\JumpBgm.cpp">
+      <Filter>03..=====Object=====\01. Trigger\6. JumpBGM</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\JumpMonster.cpp">
+      <Filter>03..=====Object=====\01. Trigger\7. JumpMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Hagrid.cpp">
+      <Filter>05. =====AceUI=====\05. UI_Hagrid</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

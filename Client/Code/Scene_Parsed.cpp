@@ -181,7 +181,7 @@ void CScene_Parsed::SoundReady(string _scene)
     else if (_scene.compare("SeongHee") == 0)
     {
         Engine::StopAll();
-       // Engine::Play_BGM(L"FallenAces", L"Ambience_Outside.wav", 0.5f); 
+        Engine::Play_BGM(L"FallenAces", L"Ambience_Wind.wav", 0.5f);
 
     }
 

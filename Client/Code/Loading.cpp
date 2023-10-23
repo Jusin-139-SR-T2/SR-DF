@@ -795,6 +795,8 @@ HRESULT CLoading::Loading_For_Texture()
 	Load_Texture(L"./Resource/Texture/UI/Health.png", TEX_NORMAL, L"UI_HpBar", L"Health");
 	Load_Texture(L"./Resource/Texture/UI/Stamina.png", TEX_NORMAL, L"UI_HpBar", L"Stamina");
 
+	Load_Texture(L"./Resource/Texture/UI/Journal.png", TEX_NORMAL, L"UI_Panel", L"Journal");
+
 	// NPC
 	Load_Texture(L"./Resource/Texture/NPC/Hegrid.png", TEX_NORMAL, L"NPC", L"Hagrid");
 

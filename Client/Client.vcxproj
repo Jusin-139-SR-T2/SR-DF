@@ -107,6 +107,7 @@
     <ClInclude Include="Solid.h" />
     <ClInclude Include="Npc.h" />
     <ClInclude Include="UI_Conversation.h" />
+    <ClInclude Include="UI_Hagrid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\AceEffect.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="Solid.cpp" />
     <ClCompile Include="Npc.cpp" />
     <ClCompile Include="UI_Conversation.cpp" />
+    <ClCompile Include="UI_Hagrid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Include\Client.ico" />

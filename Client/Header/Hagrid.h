@@ -34,7 +34,7 @@ protected:
 	virtual void		Render_GameObject() override;
 
 public:
-	static CHagrid* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z);
+	static CHagrid* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _x, _float _y, _float _z, _vec3 _size);
 	static CHagrid* Create(LPDIRECT3DDEVICE9 pGraphicDev, const FSerialize_GameObject tObjectSerial);
 
 private:
@@ -53,4 +53,6 @@ private:
 private:
 	HRESULT						Billboard(const _float& fTimeDelta);
 	//HRESULT					Get_PlayerPos();
+	FRAME						m_tFrame;
+	_bool		m_bOnce = false;
 };

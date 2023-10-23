@@ -116,7 +116,7 @@ public:
 	_float						Calc_Distance();
 	_bool						Detect_Player();
 	HRESULT						Get_PlayerPos();
-	void						Height_On_Terrain();
+	void						Height_On_Terrain(_float height);
 	void						Billboard(const _float& fTimeDelta); 
 	_bool						m_bPlayerAttakBool; // 플레이어 공격상태 블랙보드로 가져와야함 
 	_vec3						m_vPos;

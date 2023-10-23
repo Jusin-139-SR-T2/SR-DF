@@ -8583,69 +8583,6 @@
                 {
                     "header": {
                         "type": 3,
-                        "name": "Fur_RedCurtain"
-                    },
-                    "ID": 9,
-                    "class_name": "AceBuilding",
-                    "tags": [],
-                    "group_key": "Furniture",
-                    "texture_key": "RedCurtain",
-                    "priority_update": 0.0,
-                    "use_priority_update": true,
-                    "priority_late_update": 0.0,
-                    "use_priority_late_update": true,
-                    "priority_render": 0.0,
-                    "use_priority_render": true,
-                    "pos": {
-                        "x": 49.980430603027344,
-                        "y": 3.5468106269836426,
-                        "z": -2.7931723594665527
-                    },
-                    "rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 3.0,
-                        "y": 2.190016508102417,
-                        "z": 1.0
-                    },
-                    "tex_pos": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "tex_scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "col_pos": {
-                        "x": 49.980430603027344,
-                        "y": 3.5468106269836426,
-                        "z": -2.7931723594665527
-                    },
-                    "col_rot": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "col_scale": {
-                        "x": 3.0,
-                        "y": 2.190016508102417,
-                        "z": 1.0
-                    },
-                    "user_strings": []
-                },
-                {
-                    "header": {
-                        "type": 3,
                         "name": "Struct_Wall_1"
                     },
                     "ID": 9,
@@ -9333,6 +9270,195 @@
                         "x": 0.6068514585494995,
                         "y": 0.1748424917459488,
                         "z": 0.35069119930267334
+                    },
+                    "user_strings": []
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Fur_RedCurtain1"
+                    },
+                    "ID": 9,
+                    "class_name": "AceBuilding",
+                    "tags": [],
+                    "group_key": "Furniture",
+                    "texture_key": "RedCurtain",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 48.600860595703125,
+                        "y": 3.2198262214660645,
+                        "z": -2.998985528945923
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.21239355206489563,
+                        "y": 3.0127549171447754,
+                        "z": 1.0
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 48.600860595703125,
+                        "y": 3.2198262214660645,
+                        "z": -2.998985528945923
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 0.21239355206489563,
+                        "y": 3.0127549171447754,
+                        "z": 1.0
+                    },
+                    "user_strings": []
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "Bottle1"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "Bottle",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 48.0,
+                        "y": 0.5074328184127808,
+                        "z": -2.1453397274017334
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 0.3920409083366394,
+                        "y": 1.042176604270935,
+                        "z": 0.3920409083366394
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 48.0,
+                        "y": 0.5074328184127808,
+                        "z": -2.1453397274017334
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 0.3920409083366394,
+                        "y": 1.042176604270935,
+                        "z": 0.3920409083366394
+                    },
+                    "user_strings": []
+                },
+                {
+                    "header": {
+                        "type": 3,
+                        "name": "FryingPan"
+                    },
+                    "ID": 6,
+                    "class_name": "AceWeapon",
+                    "tags": [],
+                    "group_key": "Weapon",
+                    "texture_key": "FryingPan",
+                    "priority_update": 0.0,
+                    "use_priority_update": true,
+                    "priority_late_update": 0.0,
+                    "use_priority_late_update": true,
+                    "priority_render": 0.0,
+                    "use_priority_render": true,
+                    "pos": {
+                        "x": 46.993892669677734,
+                        "y": 0.27006036043167114,
+                        "z": -1.334601640701294
+                    },
+                    "rot": {
+                        "x": 0.0,
+                        "y": -72.19268035888672,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.3562368154525757,
+                        "y": 0.567011833190918,
+                        "z": 0.9720203280448914
+                    },
+                    "tex_pos": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_rot": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "tex_scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "col_pos": {
+                        "x": 46.993892669677734,
+                        "y": 0.27006036043167114,
+                        "z": -1.334601640701294
+                    },
+                    "col_rot": {
+                        "x": 0.0,
+                        "y": -72.19268035888672,
+                        "z": 0.0
+                    },
+                    "col_scale": {
+                        "x": 1.3562368154525757,
+                        "y": 0.567011833190918,
+                        "z": 0.9720203280448914
                     },
                     "user_strings": []
                 }

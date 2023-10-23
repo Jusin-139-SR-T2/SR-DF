@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AceBoss.h"
+#include <AceBuilding.h>
 
 CAceBoss::CAceBoss(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Base(pGraphicDev)
@@ -234,8 +235,8 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 	// 지형타기 
 	if (m_pTransformComp->Get_Pos().y < 1.5f && m_vSpeed.y < 0.f)
 	{
-		Height_On_Terrain();
-		m_IsOnGround = true;
+		Height_On_Terrain(1.6f);
+			m_IsOnGround = true;
 	}
 	else
 		m_IsOnGround = false;
@@ -277,8 +278,7 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 
 		if (STATE_OBJ::SHOOTING == m_tState_Obj.Get_State() ||
 			STATE_OBJ::RUN == m_tState_Obj.Get_State() ||
-			STATE_OBJ::REST == m_tState_Obj.Get_State() 
-			)
+			STATE_OBJ::REST == m_tState_Obj.Get_State() )
 		{
 			m_AttackOnce = false;
 			m_tFrame.fRepeat += 1;
@@ -291,31 +291,6 @@ _int CAceBoss::Update_GameObject(const _float& fTimeDelta)
 		m_tSound.m_fTalkReapeat += 1.f;
 	}
 
-#pragma region 테스트 장소 
-
-    if (Engine::IsKey_Pressed(DIK_N)) // 1페이즈 
-    {
-		m_gHp.Cur = 85.f;
-    }
-	if (Engine::IsKey_Pressed(DIK_M)) // 2페이즈 
-    {
-		m_gHp.Cur = 45.f;
-    }
-	if (Engine::IsKey_Pressed(DIK_X))
-	{
-		m_gHp.Cur -= 5.f;
-	}
-	if (Engine::IsKey_Pressed(DIK_O))
-	{
-
-		m_tState_Obj.Set_State(STATE_OBJ::RED_THUNDER);
-	}
-	if (Engine::IsKey_Pressed(DIK_P))
-	{
-
-	}
-#pragma endregion 
-	
 	//블랙보드 업로드 
 	Update_InternalData();
 
@@ -356,7 +331,7 @@ void CAceBoss::Render_GameObject()
 HRESULT CAceBoss::Add_Component()
 {
 	// 충돌 컴포넌트 
-	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderSphereComp"), E_FAIL);
+	NULL_CHECK_RETURN(m_pColliderComp = Set_DefaultComponent_FromProto<CColliderComponent>(ID_DYNAMIC, L"Com_Collider", L"Proto_ColliderCapsuleComp"), E_FAIL);
 
 	// 물리 세계 등록
 	m_pColliderComp->EnterToPhysics(0);
@@ -384,7 +359,14 @@ void CAceBoss::Free()
 
 void CAceBoss::OnCollision(CGameObject* pDst, const FContact* const pContact)
 {
-
+	CSolid* pSolid = dynamic_cast<CSolid*>(pDst);
+	if (pSolid)
+	{
+		_vec3 vNormal(_float(pContact->vContactNormal.x), _float(pContact->vContactNormal.y), _float(pContact->vContactNormal.z));
+		m_pTransformComp->Set_Pos((m_pTransformComp->Get_Pos() - vNormal * static_cast<_float>(pContact->fPenetration)));
+		if (D3DXVec3Dot(&(-vNormal), &_vec3({ 0.f, -1.f, 0.f })) < 0.f)
+			m_IsOnGround = true;
+	}
 }
 void CAceBoss::OnCollisionEntered(CGameObject* pDst, const FContact* const pContact)
 {
@@ -2101,7 +2083,6 @@ void CAceBoss::SkillThunder(float fDeltaTime)
 	{
 		if (!m_AttackOnce)
 		{
-
 			for (_int i = 0 ; i < 5; ++i)
 			{
 				_vec3 randomCenter;
@@ -2110,9 +2091,9 @@ void CAceBoss::SkillThunder(float fDeltaTime)
 				GetRandomPointInCircle(&randomCenter, &m_pPlayerPos, 8.f);
 
 				Engine::Add_GameObject(L"GameLogic", CRedThunder::Create(m_pGraphicDev,
-					randomCenter.x,
+					randomCenter.x * 2 ,
 					randomCenter.y,
-					randomCenter.z, m_ePhase, this, (ETEAM_ID)Get_TeamID() ));
+					randomCenter.z * 2, m_ePhase, this, (ETEAM_ID)Get_TeamID() ));
 			}
 
 			m_AttackOnce = true;
