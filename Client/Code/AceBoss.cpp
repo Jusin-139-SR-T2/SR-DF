@@ -406,10 +406,18 @@ void CAceBoss::OnCollisionEntered(CGameObject* pDst, const FContact* const pCont
 
 		if (nullptr == pPlayer)
 		{
+			if (Random_variable(50))
+				m_tState_Obj.Set_State(STATE_OBJ::SHOOTING);
+			if (Random_variable(50))
+				m_tState_Obj.Set_State(STATE_OBJ::FALLING_STONE);
 			CPlayerAttackUnion* pPlayerAttack = dynamic_cast<CPlayerAttackUnion*>(pAceObj);
 
 			if (nullptr == pPlayerAttack)
 			{
+				if (Random_variable(50))
+					m_tState_Obj.Set_State(STATE_OBJ::SHOOTING);
+				if (Random_variable(50))
+					m_tState_Obj.Set_State(STATE_OBJ::FALLING_STONE);
 				CMonsterAttackUnion* pMonsterAttack = dynamic_cast<CMonsterAttackUnion*>(pAceObj);
 
 				if (nullptr == pMonsterAttack)
@@ -429,10 +437,7 @@ void CAceBoss::OnCollisionEntered(CGameObject* pDst, const FContact* const pCont
 				Add_BasicEffect(m_pOwner); // 이펙트 추가
 
 				// 피격시 반격먼저 해보고 안되면 히트로 넘어감
-				if (Random_variable(50))
-					m_tState_Obj.Set_State(STATE_OBJ::SHOOTING);
-				if (Random_variable(50))
-					m_tState_Obj.Set_State(STATE_OBJ::FALLING_STONE);
+				
 
 				if (m_tStat.iDazedHP >= m_gHp.Cur && FALSE == m_bDazedState)
 				{
@@ -2097,7 +2102,7 @@ void CAceBoss::SkillThunder(float fDeltaTime)
 		if (!m_AttackOnce)
 		{
 
-			for (_int i = 0 ; i < 11; ++i)
+			for (_int i = 0 ; i < 5; ++i)
 			{
 				_vec3 randomCenter;
 				_vec3 m_pPlayerPos = m_pPlayerTransformcomp->Get_Pos();
