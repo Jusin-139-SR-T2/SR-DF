@@ -304,7 +304,7 @@ HRESULT CGray::Add_Component()
     m_pColliderComp->Set_CollisionLayer(LAYER_MONSTER); // 이 클래스가 속할 충돌레이어 
     m_pColliderComp->Set_CollisionMask(LAYER_PLAYER | LAYER_WALL | LAYER_PLAYER_ATTACK | LAYER_BOSS_SKILL); // 얘랑 충돌해야하는 레이어들 - 투사체랑도 충돌할예정 
 
-    m_pColliderComp->Set_Scale(_vec3(1.f, 3.f, 1.f));
+    m_pColliderComp->Set_Scale(_vec3(0.75f, 2.8f, 0.75f));
 
     return S_OK;
 }

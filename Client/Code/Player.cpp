@@ -471,13 +471,13 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
 
         // fSpeed = 5.f , fDash = 20.f
         // D + Shift 우측 대쉬
-        //if (Engine::IsKey_Pressed(DIK_LSHIFT))
-        //{
-        //    m_tDash.fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
-        //    m_tDash.fDash = 20.f;       // 대쉬 값 설정
-        //    bDashOn = true;     // 대쉬 On/Off
-        //    m_eDashDir = RIGHT; // 대쉬 방향
-        //}
+        if (Engine::IsKey_Pressed(DIK_LSHIFT))
+        {
+            m_tDash.fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
+            m_tDash.fDash = 20.f;       // 대쉬 값 설정
+            bDashOn = true;     // 대쉬 On/Off
+            m_eDashDir = RIGHT; // 대쉬 방향
+        }
     }
 
     // 왼쪽
@@ -492,13 +492,13 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
         m_pTransformComp->Move_Pos(&-vRight, fTimeDelta, m_tPlayer.fSpeed);
 
         // A + Shift 좌측 대쉬
-        //if (Engine::IsKey_Pressed(DIK_LSHIFT))
-        //{
-        //    m_tDash.fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
-        //    m_tDash.fDash = 20.f;       // 대쉬 값 설정
-        //    bDashOn = true;     // 대쉬 On/Off
-        //    m_eDashDir = LEFT;  // 대쉬 방향
-        //}
+        if (Engine::IsKey_Pressed(DIK_LSHIFT))
+        {
+            m_tDash.fDownDash = 0.f;    // 대쉬 높이(카메라) 설정
+            m_tDash.fDash = 20.f;       // 대쉬 값 설정
+            bDashOn = true;     // 대쉬 On/Off
+            m_eDashDir = LEFT;  // 대쉬 방향
+        }
     }
 
     // 손
@@ -1541,18 +1541,18 @@ void CPlayer::Dash(const _float& fTimeDelta)
     if (bDashOn)
     {
         // 대쉬 높이 최대치
-        if (m_tDash.fDownDash >= 50.f)
+        if (m_tDash.fDownDash >= 12.f)
         {
             bDashChange = true; // 감소 시작
         }
 
         if (bDashChange)
         {
-            m_tDash.fDownDash -= fDashHeight; // 다운 수치 감소
+            m_tDash.fDownDash -= fDashHeight * 0.2f; // 다운 수치 감소
         }
         else
         {
-            m_tDash.fDownDash += fDashHeight; // 다운 수치 증가
+            m_tDash.fDownDash += fDashHeight * 0.2f; // 다운 수치 증가
         }
 
         float fTime = 1.f * fTimeDelta;
