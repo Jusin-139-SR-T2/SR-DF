@@ -159,9 +159,18 @@ _uint CPhysicsWorld3D::Generate_Contacts()
 				FCollisionPrimitive* pColSrc = static_cast<FCollisionPrimitive*>((*iter).pBody->Get_Owner());
 				FCollisionPrimitive* pColDst = static_cast<FCollisionPrimitive*>((*iterCalc).pBody->Get_Owner());
 
+
+				// 마스크로 충돌되는지 확인
 				if (pColSrc->Get_CollisionMask() & pColDst->Get_CollisionLayer()
 					|| pColDst->Get_CollisionMask() & pColSrc->Get_CollisionLayer())
-					listPairCollide.push_back({ (*iter).pBody, (*iterCalc).pBody });
+				{
+					// 바운딩 박스로 충돌되는지 확인
+					if (pColSrc->BoundingBox.vMax >= pColDst->BoundingBox.vMin
+						&& pColDst->BoundingBox.vMax >= pColSrc->BoundingBox.vMin)
+					{
+						listPairCollide.push_back({ (*iter).pBody, (*iterCalc).pBody });
+					}
+				}
 			}
 			listEndPoint_Calc.push_back((*iter));
 		}
