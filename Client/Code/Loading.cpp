@@ -48,7 +48,7 @@ HRESULT CLoading::Ready_Loading(LOADINGID eID)
 
 	m_eLoadingID = eID;
 
-	m_iFutureLimit = thread::hardware_concurrency() * 2;
+	m_iFutureLimit = thread::hardware_concurrency()*2;
 
 	return S_OK;
 }
@@ -847,8 +847,21 @@ void CLoading::Load_Texture(const _tchar* pfilePath, TEXTUREID eID, const _tchar
 		// 쓰레드 만큼만 만들도록 하자. 물론 MultiTexture에서도 만들긴 하지만... 좀더 낫겠지
 		if (m_listAsyncTexture.size() > m_iFutureLimit)
 		{
-			m_listAsyncTexture.front().get();
-			m_listAsyncTexture.erase(m_listAsyncTexture.begin());
+			for (auto iter = m_listAsyncTexture.begin(); iter != m_listAsyncTexture.end();)
+			{
+				future_status status = (*iter).wait_for(0.01ms);
+				if (status == future_status::ready)
+				{
+					(*iter).get();
+					iter = m_listAsyncTexture.erase(iter);
+				}
+				else
+					++iter;
+
+				if (m_listAsyncTexture.size() != 0LL && iter == m_listAsyncTexture.end())
+					iter = m_listAsyncTexture.begin();
+			}
+			
 		}
 		m_listAsyncTexture.push_back(async(launch::async, &CLoading::Load_TextureAsync, this, pfilePath, eID, pGroupName, pTextureName, iCntRange));
 	}

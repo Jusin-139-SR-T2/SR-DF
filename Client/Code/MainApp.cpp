@@ -59,19 +59,21 @@ int CMainApp::Update_MainApp(const _float& fTimeDelta)
 
 	// 물리 업데이트
 	Engine::StartFrame_PhysicsMgr();
-
 	// 씬 업데이트
 	m_pManagementClass->Update_Scene(fTimeDelta);
-
-	//auto start = chrono::high_resolution_clock::now();
+	auto start = chrono::high_resolution_clock::now();
 
 	// 물리 업데이트
 	Engine::Update_PhysicsMgr(fTimeDelta);
 
-	//auto end = chrono::high_resolution_clock::now();
-	//chrono::duration<double> duration = end - start;
+	auto end = chrono::high_resolution_clock::now();
+	chrono::duration<double> duration = end - start;
 
-	//cout << "업데이트 실행시간 : " << duration.count() << endl;
+	
+
+	
+
+	cout << "업데이트 실행시간 : " << duration.count() << endl;
 
 	return 0;
 }

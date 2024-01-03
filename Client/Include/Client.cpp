@@ -77,7 +77,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_Immediate"), FALSE);
     FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_FPS"), FALSE);
 
-    FAILED_CHECK_RETURN(Engine::Ready_Frame(L"Frame", 60.f), FALSE);
+    FAILED_CHECK_RETURN(Engine::Ready_Frame(L"Frame", 300.f), FALSE);
 
     // 기본 메시지 루프입니다.
     while (true)

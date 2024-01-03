@@ -84,10 +84,19 @@ HRESULT CMultiStateTexture::Insert_Texture(const _tchar* pFilePath, TEXTUREID eT
 	{
 		vecAsync.push_back(async(launch::async, &CMultiStateTexture::Insert_TextureAsync, this, vecPath[i].c_str(), eType, ref(vecTexture), i));
 	}
-
-	for (_uint i = 0; i <= iCntRange.second; ++i)
+	for (auto iter = vecAsync.begin(); iter != vecAsync.end();)
 	{
-		vecAsync[i].get();
+		future_status status = (*iter).wait_for(0.01ms);
+		if (status == future_status::ready)
+		{
+			(*iter).get();
+			iter = vecAsync.erase(iter);
+		}
+		else
+			++iter;
+
+		if (vecAsync.size() != 0LL && iter == vecAsync.end())
+			iter = vecAsync.begin();
 	}
 	vecAsync.clear();
 

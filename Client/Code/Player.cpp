@@ -553,7 +553,7 @@ bool CPlayer::Keyboard_Input(const _float& fTimeDelta)
     // 점프
     if (Engine::IsKey_Pressed(DIK_SPACE))// && m_IsOnGround)
     {
-        m_vSpeed.y = 10.f;
+        m_vSpeed.y = 11.f;
     }
 
     // 발차기
