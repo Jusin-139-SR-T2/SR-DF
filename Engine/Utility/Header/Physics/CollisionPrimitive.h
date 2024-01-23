@@ -17,6 +17,30 @@ struct FBoundingBox
 {
 	FVector3 vMin;
 	FVector3 vMax;
+
+public:
+	FBoundingBox();
+	FBoundingBox(const FBoundingBox& one, const FBoundingBox& two)
+	{
+		if (one.vMin < two.vMin)
+			vMin = one.vMin;
+		else
+			vMin = two.vMin;
+
+		if (one.vMax > two.vMax)
+			vMax = one.vMax;
+		else
+			vMax = two.vMax;
+	}
+
+	_bool Overlaps(const FBoundingBox* pOther) const;
+	Real Get_Growth(const FBoundingBox& other) const;
+	// 볼륨 사이즈
+	Real Get_Size() const
+	{
+		FVector3 vSize = vMax - vMin;
+		return vSize.x * vSize.y * vSize.z;
+	}
 };
 
 /// <summary>
@@ -87,7 +111,13 @@ public:
 public:
 	void Calculate_Transform()
 	{
-		matTransform = pBody->Get_Transform() * matOffset;
+		FMatrix3x4 CalcMatrix = pBody->Get_Transform() * matOffset;
+		if (CalcMatrix == matTransform)
+			pBody->Set_Awake(true);
+		else
+			pBody->Set_Awake(false);
+
+		matTransform = CalcMatrix;
 	}
 
 public:

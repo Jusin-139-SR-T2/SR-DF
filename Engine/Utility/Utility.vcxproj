@@ -198,6 +198,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClInclude Include="Header\BlackBoardMgr.h" />
     <ClInclude Include="Header\Esystem.h" />
     <ClInclude Include="Header\Interface\ITeamAgent.h" />
+    <ClInclude Include="Header\Physics\BVH.h" />
     <ClInclude Include="Header\Physics\ContactGen_Joint.h" />
     <ClInclude Include="Header\Physics\ForceGenerator.h" />
     <ClInclude Include="Header\Physics\Collide.h" />
@@ -264,6 +265,7 @@ attrib +r "$(SolutionDir)Reference\Header\*.*" /s
     <ClCompile Include="Code\GameObject.cpp" />
     <ClCompile Include="Code\Layer.cpp" />
     <ClCompile Include="Code\Management.cpp" />
+    <ClCompile Include="Code\Physics\BVH.cpp" />
     <ClCompile Include="Code\Physics\PhysicsCore.cpp" />
     <ClCompile Include="Code\Scene.cpp" />
     <ClCompile Include="Code\Component\RcColorComp.cpp" />

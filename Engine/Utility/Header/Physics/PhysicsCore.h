@@ -457,6 +457,16 @@ public:
         );
     }
 
+    _bool operator==(const FMatrix3x4& o) const
+    {
+        for (_uint i = 0; i < 12; i++)
+        {
+            if (data[i] != o.data[i])
+                return false;
+        }
+        return true;
+    }
+
     // º¤ÅÍ Çà·Ä °ö ¹ÝÈ¯ ÇÔ¼ö
     FVector3 Transform(const FVector3& vector) const
     {
